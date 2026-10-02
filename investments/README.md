@@ -8,5 +8,9 @@
 - `investments-ch03.html` — 第 3 章 证券是如何交易的
 - `investments-ch04.html` — 第 4 章 共同基金与投资公司
 - `investments-ch05.html` — 第 5 章 风险与收益入门及历史回顾
+- `investments-ch06.html` — 第 6 章 风险资产配置
+- `investments-ch07.html` — 第 7 章 最优风险资产组合
+- `investments-ch09.html` — 第 9 章 资本资产定价模型（含第 8 章要点）
+- `investments-ch11.html` — 第 11 章 有效市场假说
 
 从 `investments-index.html` 打开即可跳转各章讲义。

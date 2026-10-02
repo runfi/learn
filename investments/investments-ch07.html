@@ -1,0 +1,622 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>投资学 · 第7章 最优风险资产组合</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700;900&family=Noto+Sans+SC:wght@400;500;700&display=swap">
+<style>
+/* 布局：双栏（212px 侧栏 + 正文），章导览 + 7.1–7.5 分节；宽图表置于横向滚动容器 */
+:root{
+  --bg:#f5f6f7;
+  --surface:#ffffff;
+  --ink:#171a20;
+  --ink-2:#4a5160;
+  --muted:#858c9b;
+  --line:#e2e5ea;
+  --line-2:#c9ced6;
+  --accent:#1d5fad;
+  --accent-ink:#174e8f;
+  --accent-soft:#eaf1fa;
+  --series:#2a78d6;
+  --series2:#eb6834;
+  --series3:#1baf7a;
+  --crit:#d03b3b;
+  --crit-soft:rgba(208,59,59,.07);
+  --serif:"Noto Serif SC","Songti SC",serif;
+  --sans:"Noto Sans SC","Microsoft YaHei",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#101215; --surface:#181b20; --ink:#eef0f3; --ink-2:#c0c5cf; --muted:#8a909d;
+    --line:#282c33; --line-2:#3a3f48;
+    --accent:#5a96e3; --accent-ink:#79abec; --accent-soft:#1c2a3d;
+    --series:#3987e5; --series2:#d95926; --series3:#199e70; --crit:#e66767; --crit-soft:rgba(230,103,103,.10);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#101215; --surface:#181b20; --ink:#eef0f3; --ink-2:#c0c5cf; --muted:#8a909d;
+  --line:#282c33; --line-2:#3a3f48;
+  --accent:#5a96e3; --accent-ink:#79abec; --accent-soft:#1c2a3d;
+  --series:#3987e5; --series2:#d95926; --series3:#199e70; --crit:#e66767; --crit-soft:rgba(230,103,103,.10);
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:var(--sans); font-size:15.5px; line-height:1.85;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1190px; margin:0 auto; padding-inline:20px; padding-block:0 72px}
+
+.layout{display:grid; grid-template-columns:212px minmax(0,1fr); gap:44px; align-items:start}
+.article{max-width:920px; min-width:0}
+.sidenav{
+  position:sticky; top:16px; max-height:calc(100vh - 32px); overflow-y:auto;
+  padding-block:40px 16px; font-size:13px;
+}
+.sidenav .sn-chap{
+  margin:0 0 10px; padding-left:13px; font-size:11.5px; letter-spacing:.14em;
+  color:var(--muted); font-weight:700;
+}
+.sidenav a{
+  display:block; color:var(--ink-2); text-decoration:none; line-height:1.55;
+  padding:6px 10px 6px 13px; border-left:2px solid var(--line);
+}
+.sidenav a:hover{color:var(--accent-ink)}
+.sidenav a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.sidenav a.active{
+  color:var(--accent-ink); border-left-color:var(--accent);
+  background:var(--accent-soft); font-weight:700;
+}
+.hero,section.ch{scroll-margin-top:10px}
+@media (max-width: 999px){
+  .sidenav{display:none}
+  .layout{display:block}
+}
+@media (min-width: 1000px){
+  nav.chapmap{display:none}
+}
+
+.masthead{
+  display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  padding-block:18px 14px; border-bottom:1px solid var(--line);
+}
+.masthead .book{font-family:var(--serif); font-weight:700; font-size:15px; letter-spacing:.02em}
+.masthead .part{font-size:12.5px; color:var(--muted); letter-spacing:.12em}
+.masthead a{color:var(--accent-ink); text-decoration:none}
+.masthead a:hover{text-decoration:underline}
+.masthead a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+a.next{color:inherit; text-decoration:none}
+a.next:hover{border-color:var(--accent)}
+a.next:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+.hero{padding-block:44px 28px; border-bottom:1px solid var(--line)}
+.chap-no{
+  display:inline-flex; align-items:center; gap:10px;
+  font-size:12.5px; letter-spacing:.22em; color:var(--accent-ink); font-weight:700;
+}
+.chap-no::after{content:""; width:46px; height:1px; background:var(--accent)}
+.hero h1{
+  font-family:var(--serif); font-weight:900; font-size:clamp(30px,5vw,46px);
+  line-height:1.25; margin:10px 0 4px; letter-spacing:.02em; text-wrap:balance;
+}
+.hero .en{font-size:14px; color:var(--muted); letter-spacing:.08em; margin:0 0 18px}
+.hero .lede{max-width:46em; color:var(--ink-2); margin:0}
+.hero .lede strong{color:var(--ink)}
+.objectives{
+  margin-top:22px; padding:16px 20px; background:var(--surface);
+  border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:0 6px 6px 0;
+}
+.objectives h2{font-size:13px; letter-spacing:.18em; color:var(--accent-ink); margin:0 0 8px; font-weight:700}
+.objectives ul{margin:0; padding-left:1.3em; color:var(--ink-2)}
+.objectives li{margin:3px 0}
+.chapmap{display:flex; flex-wrap:wrap; gap:8px; margin-top:20px}
+.chapmap a{
+  font-size:13px; color:var(--ink-2); text-decoration:none;
+  border:1px solid var(--line-2); border-radius:999px; padding:4px 13px; background:var(--surface);
+}
+.chapmap a:hover{border-color:var(--accent); color:var(--accent-ink)}
+.chapmap a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+section.ch{padding-block:40px 8px}
+section.ch + section.ch{border-top:1px solid var(--line)}
+h2.sec{
+  font-family:var(--serif); font-weight:700; font-size:clamp(22px,3.4vw,28px);
+  margin:0 0 2px; line-height:1.35; text-wrap:balance;
+}
+h2.sec .no{color:var(--accent-ink); margin-right:10px; font-feature-settings:"tnum"}
+p.sec-en{font-size:12.5px; letter-spacing:.1em; color:var(--muted); margin:0 0 18px}
+h3{font-size:16.5px; font-weight:700; margin:26px 0 8px}
+h3 .tag{color:var(--accent-ink)}
+p{margin:10px 0}
+.prose{max-width:46em}
+.prose .en-term{color:var(--muted); font-size:.88em}
+strong{font-weight:700}
+em{font-style:normal; font-weight:700; color:var(--accent-ink)}
+
+.cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px; margin:16px 0}
+.card{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:16px 18px;
+}
+.card h4{margin:0 0 6px; font-size:15px}
+.card h4 .en-term{display:block; font-weight:400; font-size:12px; color:var(--muted); letter-spacing:.04em; margin-top:2px}
+.card p{margin:6px 0; font-size:14px; color:var(--ink-2)}
+.card ul{margin:6px 0 0; padding-left:1.2em; font-size:14px; color:var(--ink-2)}
+.card li{margin:3px 0}
+
+.case{
+  margin:20px 0; padding:16px 20px 14px; background:var(--surface);
+  border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:0 8px 8px 0;
+}
+.case .label{font-size:12px; letter-spacing:.2em; color:var(--accent-ink); font-weight:700; display:block; margin-bottom:6px}
+.case h4{margin:0 0 6px; font-size:15.5px}
+.case p{margin:7px 0; font-size:14.5px; color:var(--ink-2)}
+.case p:last-child{margin-bottom:2px}
+.case .takeaway{color:var(--ink); font-weight:500}
+.case .takeaway::before{content:"▸ 教材对应 "; color:var(--accent-ink); font-weight:700; font-size:12.5px; letter-spacing:.05em}
+
+.pitfall{
+  margin:20px 0; padding:14px 20px; border:1px dashed var(--line-2); border-radius:8px; max-width:46em;
+}
+.pitfall .label{font-size:12px; letter-spacing:.2em; color:var(--crit); font-weight:700; display:block; margin-bottom:4px}
+.pitfall p{margin:4px 0; font-size:14.5px; color:var(--ink-2)}
+
+.formula{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px;
+  padding:12px 18px; margin:14px 0; max-width:46em; overflow-x:auto;
+  font-size:15px; line-height:2;
+}
+.formula .fx{white-space:nowrap}
+.formula sub,.formula sup{font-size:11px}
+.formula .note{font-size:12.5px; color:var(--muted)}
+
+table{border-collapse:collapse; width:100%; font-size:14px; font-variant-numeric:tabular-nums}
+.tablewrap{overflow-x:auto; margin:16px 0; border:1px solid var(--line); border-radius:8px; background:var(--surface)}
+.tablewrap table{min-width:560px}
+th,td{padding:9px 14px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top}
+th{font-size:12.5px; letter-spacing:.08em; color:var(--muted); font-weight:700; white-space:nowrap}
+tr:last-child td{border-bottom:none}
+td.num{white-space:nowrap}
+
+figure{margin:24px 0; background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:18px 18px 12px}
+figure .fig-scroll{overflow-x:auto}
+figure svg{display:block; max-width:100%; height:auto; color:var(--ink)}
+figure .fig-scroll svg{min-width:660px}
+figcaption{font-size:13px; color:var(--muted); margin-top:10px; line-height:1.7}
+figcaption b{color:var(--ink-2); font-weight:700}
+.fig-title{font-size:14px; font-weight:700; margin:0 0 12px}
+.fig-title .fno{color:var(--accent-ink); margin-right:8px}
+
+svg .nt{font:700 12.5px var(--sans); fill:var(--ink)}
+svg .nd{font:400 11px var(--sans); fill:var(--ink-2)}
+svg .edge-soft{stroke:var(--muted); stroke-width:1.2; fill:none; stroke-dasharray:4 4}
+svg .elabel{font:400 11.5px var(--sans); fill:var(--muted)}
+svg .grid{stroke:var(--line); stroke-width:1}
+svg .axis{stroke:var(--line-2); stroke-width:1.2}
+svg .tick{font:400 11px var(--sans); fill:var(--muted)}
+svg .atitle{font:400 11.5px var(--sans); fill:var(--muted)}
+svg .pt{fill:var(--series); stroke:var(--surface); stroke-width:2}
+svg .pt2{fill:var(--series2); stroke:var(--surface); stroke-width:2}
+svg .ptm{fill:var(--muted); stroke:var(--surface); stroke-width:1.5}
+svg .pl{font:700 13px var(--sans); fill:var(--ink)}
+svg .pv{font:400 11.5px var(--sans); fill:var(--ink-2)}
+svg .ln1{stroke:var(--series); stroke-width:2.5; fill:none}
+svg .ln2{stroke:var(--series2); stroke-width:2.5; fill:none}
+svg .ln3{stroke:var(--series3); stroke-width:2.5; fill:none}
+svg .lng{stroke:var(--muted); stroke-width:2; fill:none}
+svg .ln1d{stroke:var(--series); stroke-width:2; fill:none; stroke-dasharray:6 5}
+svg .seg1{fill:var(--series)}
+svg .seg2{fill:var(--series2)}
+svg .seg3{fill:var(--series3)}
+svg .segg{fill:var(--muted)}
+
+.recap{margin-top:8px}
+.recap ol{margin:8px 0 0; padding-left:1.4em; max-width:46em; color:var(--ink-2)}
+.recap li{margin:7px 0}
+.recap li b{color:var(--ink)}
+details{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px;
+  padding:12px 18px; margin:10px 0; max-width:46em;
+}
+details summary{cursor:pointer; font-weight:500; color:var(--ink)}
+details summary:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+details[open] summary{color:var(--accent-ink)}
+details .ans{margin-top:8px; padding-top:8px; border-top:1px dashed var(--line); font-size:14.5px; color:var(--ink-2)}
+details .ans p{margin:6px 0}
+
+.next{
+  margin-top:48px; padding:18px 22px; border:1px solid var(--line); border-radius:8px;
+  background:var(--surface); display:flex; justify-content:space-between; align-items:center; gap:14px; flex-wrap:wrap;
+}
+.next .lbl{font-size:12px; letter-spacing:.18em; color:var(--muted)}
+.next .ttl{font-family:var(--serif); font-weight:700; font-size:18px; margin-top:2px}
+.foot{margin-top:26px; font-size:12.5px; color:var(--muted); line-height:1.8}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <span class="book">《投资学》学习手册 · Investments (Bodie · Kane · Marcus)</span>
+  <span class="part"><a href="investments-index.html">学习地图</a> · 第二部分 资产组合理论与实践</span>
+</header>
+
+<div class="layout">
+
+<nav class="sidenav" aria-label="小节导航">
+  <p class="sn-chap">第 7 章 · 最优风险资产组合</p>
+  <a href="#top">章首 · 学习目标</a>
+  <a href="#s1">7.1 分散化消除什么</a>
+  <a href="#s2">7.2 两资产组合的数学</a>
+  <a href="#s3">7.3 相关系数的魔法</a>
+  <a href="#s4">7.4 有效前沿与切点组合</a>
+  <a href="#s5">7.5 从马科维茨到实务</a>
+  <a href="#recap">小结 · 术语 · 自测</a>
+</nav>
+
+<main class="article">
+
+<!-- ======================== 章首 ======================== -->
+<div class="hero" id="top">
+  <span class="chap-no">CHAPTER 7</span>
+  <h1>最优风险资产组合</h1>
+  <p class="en">Optimal Risky Portfolios</p>
+  <p class="lede">上一章把风险组合 P 当作现成的，这一章回答它<strong>怎么造</strong>。核心只有一个洞见：组合的风险不取决于成分各自多危险，而取决于它们<strong>如何共同波动</strong>——协方差。由此生出分散化、有效前沿与两基金分离定理。马科维茨靠这一章的数学拿了诺贝尔奖，而你只需要记住一句话：<strong>分散化是投资中唯一的免费午餐</strong>。</p>
+
+  <div class="objectives">
+    <h2>学习目标</h2>
+    <ul>
+      <li>区分系统性风险与公司特有风险，理解分散化消除的是哪一半</li>
+      <li>会算两资产组合的期望收益与标准差，理解协方差为何是主角</li>
+      <li>看懂相关系数 ρ 如何弯曲机会集：ρ 越低，免费午餐越丰盛</li>
+      <li>理解有效前沿、最小方差组合与切点组合，掌握两基金分离定理</li>
+      <li>知道马科维茨模型在实务中的软肋（输入敏感），为第 27 章 Black-Litterman 埋线</li>
+    </ul>
+  </div>
+
+  <nav class="chapmap" aria-label="本章导览">
+    <a href="#s1">7.1 分散化</a>
+    <a href="#s2">7.2 组合数学</a>
+    <a href="#s3">7.3 相关系数</a>
+    <a href="#s4">7.4 有效前沿</a>
+    <a href="#s5">7.5 实务</a>
+    <a href="#recap">小结与自测</a>
+  </nav>
+</div>
+
+<!-- ======================== 7.1 ======================== -->
+<section class="ch" id="s1">
+  <h2 class="sec"><span class="no">7.1</span>分散化消除什么、留下什么</h2>
+  <p class="sec-en">DIVERSIFICATION AND PORTFOLIO RISK</p>
+
+  <div class="prose">
+    <p>一只股票的风险来自两层：<strong>系统性风险</strong>（市场风险）——利率、经济周期、危机，砸下来谁也躲不开；<strong>公司特有风险</strong>——厂房失火、新药失败、高管暴雷，只属于这一家。多买几只互不相干的股票，各家的“私事”互相抵消，特有风险被摊薄；但所有股票都泡在同一个宏观环境里，系统性风险一分都摊不掉：</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 7-1</span>组合波动率随持股数量下降，但停在一堵墙前</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 395" role="img" aria-label="曲线图：组合年化波动率从单只股票的约 50% 随持股数量增加而下降，到二三十只后趋平于约 19% 的系统性风险水平">
+      <g text-anchor="end">
+        <text class="tick" x="56" y="354">0</text>
+        <text class="tick" x="56" y="296">10</text>
+        <text class="tick" x="56" y="238">20</text>
+        <text class="tick" x="56" y="179">30</text>
+        <text class="tick" x="56" y="121">40</text>
+        <text class="tick" x="56" y="63">50</text>
+      </g>
+      <line class="grid" x1="64" y1="291.8" x2="696" y2="291.8"/>
+      <line class="grid" x1="64" y1="233.6" x2="696" y2="233.6"/>
+      <line class="grid" x1="64" y1="175.4" x2="696" y2="175.4"/>
+      <line class="grid" x1="64" y1="117.2" x2="696" y2="117.2"/>
+      <line class="grid" x1="64" y1="59" x2="696" y2="59"/>
+      <line class="axis" x1="64" y1="350" x2="696" y2="350"/>
+      <line class="axis" x1="64" y1="30" x2="64" y2="350"/>
+      <g text-anchor="middle">
+        <text class="tick" x="64" y="370">1</text>
+        <text class="tick" x="125" y="370">5</text>
+        <text class="tick" x="202" y="370">10</text>
+        <text class="tick" x="356" y="370">20</text>
+        <text class="tick" x="510" y="370">30</text>
+        <text class="tick" x="664" y="370">40</text>
+      </g>
+      <text class="atitle" x="380" y="390" text-anchor="middle">组合中的股票只数</text>
+      <text class="atitle" x="64" y="18">组合年化波动率 σ（%）</text>
+      <!-- 系统性风险地板 -->
+      <path class="edge-soft" d="M 64 239.4 H 696"/>
+      <polyline class="ln1" points="64,59 79,129 110,175 141,193 172,202 203,207 279,217 356,223 510,228 664,231"/>
+      <text class="pv" x="300" y="130" text-anchor="middle">公司特有风险：可被分散消除</text>
+      <text class="pv" x="420" y="268" text-anchor="middle">系统性风险（约 19%）：分散不掉的地板</text>
+    </svg>
+    </div>
+    <figcaption><b>读图：</b>前 10 只股票干掉了大部分可分散风险，20–30 只之后曲线几乎躺平——分散化的边际收益递减极快，“持有 300 只”相对“持有 30 只”改善甚微。地板的高度由成分间的<b>平均协方差</b>决定，与你买了多少只无关。一个重要推论将在第 9 章兑现：既然特有风险可以免费消除，市场就<b>不会为它支付任何溢价</b>——补偿只属于扛不掉的系统性风险。</figcaption>
+  </figure>
+
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p>“我买了八只股票，够分散了。”——数量不是分散化的度量，<strong>相关性</strong>才是。八只白酒股的两两相关系数可能高达 0.8 以上，本质上是一只股票买了八遍；而“沪深 300 + 中债 + 黄金”三样资产的分散效果远胜于此。图 7-1 的曲线假设成分互相独立性较好，持仓高度同质时曲线根本降不下来。</p>
+  </div>
+</section>
+
+<!-- ======================== 7.2 ======================== -->
+<section class="ch" id="s2">
+  <h2 class="sec"><span class="no">7.2</span>两资产组合的数学</h2>
+  <p class="sec-en">PORTFOLIOS OF TWO RISKY ASSETS</p>
+
+  <div class="prose">
+    <p>以“债券基金 D + 股票基金 S”为教学标配：D 的 E(r) = 6%、σ = 10%；S 的 E(r) = 12%、σ = 20%。权重 w<sub>D</sub> + w<sub>S</sub> = 1。期望收益是简单加权，但<strong>风险不是</strong>——方差公式里多出了第三项：</p>
+  </div>
+
+  <div class="formula">
+    <div class="fx">E(r<sub>p</sub>) = w<sub>D</sub>E(r<sub>D</sub>) + w<sub>S</sub>E(r<sub>S</sub>)</div>
+    <div class="fx">σ<sub>p</sub>² = w<sub>D</sub>²σ<sub>D</sub>² + w<sub>S</sub>²σ<sub>S</sub>² + 2 w<sub>D</sub>w<sub>S</sub> × Cov(r<sub>D</sub>, r<sub>S</sub>)</div>
+    <div class="fx">Cov(r<sub>D</sub>, r<sub>S</sub>) = ρ<sub>DS</sub> × σ<sub>D</sub> × σ<sub>S</sub></div>
+    <div class="note">例：各投一半，ρ = 0.3：E(r<sub>p</sub>) = 9%；σ<sub>p</sub>² = 0.25 × 100 + 0.25 × 400 + 2 × 0.25 × 0.3 × 200 = 155（百分比平方），σ<sub>p</sub> = 12.4% —— 低于两者 σ 的加权平均 15%。那省下的 2.6 个百分点就是分散化白送的。</div>
+  </div>
+
+  <div class="prose">
+    <p>关键读法：权重项是平方（小于 1 的数平方后更小），所以单个资产的波动对组合的贡献被压缩；真正决定组合风险的是交叉项里的<strong>协方差</strong>。持有几十个资产时，方差矩阵里协方差项有 n(n−1) 个、方差项只有 n 个——组合风险几乎完全由“资产之间怎么共振”决定。这就是本章反复强调的换脑筋时刻：<em>评估一项资产，别问它自己多危险，问它与你已有持仓的协方差是多少</em>。</p>
+  </div>
+</section>
+
+<!-- ======================== 7.3 ======================== -->
+<section class="ch" id="s3">
+  <h2 class="sec"><span class="no">7.3</span>相关系数的魔法：机会集如何弯曲</h2>
+  <p class="sec-en">THE POWER OF CORRELATION</p>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 7-2</span>同样两个资产，不同的 ρ：曲线越向左凸，免费午餐越多</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 400" role="img" aria-label="投资机会集：债券基金与股票基金在不同相关系数下的组合曲线。相关系数为 1 时是直线，0.3 与 0 时向左弯曲，为负 1 时可组合出零波动点">
+      <rect class="segg" x="80" y="10" width="12" height="12" rx="2"/>
+      <text class="tick" x="98" y="20">ρ = +1</text>
+      <rect class="seg3" x="170" y="10" width="12" height="12" rx="2"/>
+      <text class="tick" x="188" y="20">ρ = +0.3</text>
+      <rect class="seg1" x="272" y="10" width="12" height="12" rx="2"/>
+      <text class="tick" x="290" y="20">ρ = 0</text>
+      <rect class="seg2" x="360" y="10" width="12" height="12" rx="2"/>
+      <text class="tick" x="378" y="20">ρ = −1</text>
+      <g text-anchor="end">
+        <text class="tick" x="56" y="368">5</text>
+        <text class="tick" x="56" y="325">6</text>
+        <text class="tick" x="56" y="240">8</text>
+        <text class="tick" x="56" y="155">10</text>
+        <text class="tick" x="56" y="70">12</text>
+      </g>
+      <line class="grid" x1="64" y1="321.5" x2="696" y2="321.5"/>
+      <line class="grid" x1="64" y1="236.5" x2="696" y2="236.5"/>
+      <line class="grid" x1="64" y1="151.5" x2="696" y2="151.5"/>
+      <line class="grid" x1="64" y1="66.5" x2="696" y2="66.5"/>
+      <line class="axis" x1="64" y1="364" x2="696" y2="364"/>
+      <line class="axis" x1="64" y1="24" x2="64" y2="364"/>
+      <g text-anchor="middle">
+        <text class="tick" x="64" y="384">0</text>
+        <text class="tick" x="207" y="384">5</text>
+        <text class="tick" x="351" y="384">10</text>
+        <text class="tick" x="494" y="384">15</text>
+        <text class="tick" x="638" y="384">20</text>
+      </g>
+      <text class="atitle" x="380" y="404" text-anchor="middle">组合标准差 σ（%）</text>
+      <text class="atitle" x="64" y="14">E(r)（%）</text>
+      <!-- ρ=1 直线 -->
+      <polyline class="lng" points="351,321.5 638,66.5"/>
+      <!-- ρ=0.3 -->
+      <polyline class="ln3" points="351,321.5 350,270 390,220 458,169 544,118 638,66.5"/>
+      <!-- ρ=0 -->
+      <polyline class="ln1" points="351,321.5 321,270 351,220 427,169 527,118 638,66.5"/>
+      <!-- ρ=−1 两段 -->
+      <polyline class="ln2" points="351,321.5 64,236.5"/>
+      <polyline class="ln2" points="64,236.5 638,66.5"/>
+      <circle class="pt2" cx="64" cy="236.5" r="6"><title>ρ=−1 时的零风险组合：w 股=1/3，E(r)=8%</title></circle>
+      <text class="pv" x="76" y="230">零风险点（w<tspan font-size="9">股</tspan>=1/3，E=8%）</text>
+      <!-- 两资产端点 -->
+      <circle class="pt" cx="351" cy="321.5" r="7"><title>债券基金 D：σ=10%，E(r)=6%</title></circle>
+      <text class="pl" x="367" y="332">D 债券基金（10%，6%）</text>
+      <circle class="pt" cx="638" cy="66.5" r="7"><title>股票基金 S：σ=20%，E(r)=12%</title></circle>
+      <text class="pl" x="622" y="58" text-anchor="end">S 股票基金（20%，12%）</text>
+    </svg>
+    </div>
+    <figcaption><b>读图：</b>ρ = +1 时组合只是两点连线——没有任何分散化好处；ρ 每降一点，曲线就往左多凸一分——同样的期望收益，用更低的波动买到；ρ = −1 是极限：存在一个<b>零波动</b>的组合（权重与 σ 成反比）。现实中的股债 ρ 多在 −0.2 到 +0.4 之间游走——不完美，但足够把曲线压弯。</figcaption>
+  </figure>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>2022：当 ρ 翻脸，60/40 的至暗之年</h4>
+    <p>过去二十年股债大体负相关（经济差 → 股跌、降息债涨），“60% 股 + 40% 债”因此成了机构标配。但相关性不是物理常数：2022 年美联储为压通胀暴力加息，<strong>股债同源受击</strong>——标普 500 全年约 −18%，20 年期以上国债约 −31%，经典 60/40 组合录得约 −16%，是近百年最差年份之一；同年 11 月中国债市也因赎回负反馈罕见急跌。驱动变量是通胀：通胀主导的年代（如 1970s、2022），折现率同向冲击股债，ρ 转正，图 7-2 里那条弯曲的蓝线被拉直成灰线。</p>
+    <p class="takeaway">分散化依赖的是<strong>相关结构</strong>而非资产数量，而相关结构会随宏观“政权”切换。对策不是放弃分散，而是引入与股债逻辑不同源的第三类资产（商品、趋势策略等），并在风控里为“ρ → 1”的情景留预算——呼应第 5 章 VaR 失灵的第三个原因。</p>
+  </div>
+</section>
+
+<!-- ======================== 7.4 ======================== -->
+<section class="ch" id="s4">
+  <h2 class="sec"><span class="no">7.4</span>有效前沿与切点组合</h2>
+  <p class="sec-en">THE EFFICIENT FRONTIER AND THE OPTIMAL RISKY PORTFOLIO</p>
+
+  <div class="prose">
+    <p>把资产从两个扩展到全市场，所有可能的组合在（σ, E(r)）平面上填出一片区域；它的左边界是一条子弹头形的曲线——<strong>最小方差前沿</strong>。曲线最左端是<strong>全局最小方差组合（MVP）</strong>；MVP 以上的半支才值得要（同样 σ 收益更高），称<strong>有效前沿</strong>。接入无风险资产后，答案唯一化：从 r<sub>f</sub> 出发向前沿作切线，切点 P 就是<strong>最优风险组合</strong>——它让 CAL 斜率（夏普比率）最大。</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 7-3</span>从一片云到一个点：有效前沿与切点组合 P</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 400" role="img" aria-label="有效前沿图：散落的单个资产位于前沿内部，子弹头形前沿的上半支为有效前沿，从无风险利率 3% 出发的资本配置线与前沿相切于最优风险组合 P">
+      <g text-anchor="end">
+        <text class="tick" x="56" y="368">0</text>
+        <text class="tick" x="56" y="295">3</text>
+        <text class="tick" x="56" y="222">6</text>
+        <text class="tick" x="56" y="149">9</text>
+        <text class="tick" x="56" y="77">12</text>
+      </g>
+      <line class="grid" x1="64" y1="291" x2="696" y2="291"/>
+      <line class="grid" x1="64" y1="218" x2="696" y2="218"/>
+      <line class="grid" x1="64" y1="145" x2="696" y2="145"/>
+      <line class="grid" x1="64" y1="73" x2="696" y2="73"/>
+      <line class="axis" x1="64" y1="364" x2="696" y2="364"/>
+      <line class="axis" x1="64" y1="24" x2="64" y2="364"/>
+      <g text-anchor="middle">
+        <text class="tick" x="64" y="384">0</text>
+        <text class="tick" x="186" y="384">5</text>
+        <text class="tick" x="307" y="384">10</text>
+        <text class="tick" x="429" y="384">15</text>
+        <text class="tick" x="550" y="384">20</text>
+        <text class="tick" x="672" y="384">25</text>
+      </g>
+      <text class="atitle" x="380" y="404" text-anchor="middle">标准差 σ（%）</text>
+      <text class="atitle" x="64" y="14">E(r)（%）</text>
+      <!-- CAL -->
+      <polyline class="ln2" points="64,291 501,36"/>
+      <text class="pv" x="430" y="64">CAL：斜率 = 全市场可达的最大夏普比率</text>
+      <!-- 有效前沿上半支 -->
+      <polyline class="ln1" points="283,194 295,170 319,145 356,121 404,99 465,80 526,65 599,53 672,43"/>
+      <!-- 无效下半支 -->
+      <polyline class="ln1d" points="283,194 295,218 319,238 356,255 404,269 453,281"/>
+      <!-- 内部单个资产 -->
+      <circle class="ptm" cx="453" cy="170" r="4.5"><title>单个资产</title></circle>
+      <circle class="ptm" cx="550" cy="145" r="4.5"><title>单个资产</title></circle>
+      <circle class="ptm" cx="380" cy="206" r="4.5"><title>单个资产</title></circle>
+      <circle class="ptm" cx="501" cy="109" r="4.5"><title>单个资产</title></circle>
+      <circle class="ptm" cx="331" cy="230" r="4.5"><title>单个资产</title></circle>
+      <text class="elabel" x="470" y="200" text-anchor="middle">单个资产都落在前沿内部</text>
+      <!-- 关键点 -->
+      <circle class="pt" cx="64" cy="291" r="6"/>
+      <text class="pl" x="80" y="300">r<tspan font-size="9">f</tspan> = 3%</text>
+      <circle class="pt" cx="283" cy="194" r="6"><title>全局最小方差组合 MVP</title></circle>
+      <text class="pl" x="267" y="188" text-anchor="end">MVP</text>
+      <circle class="pt2" cx="356" cy="121" r="7.5"><title>切点组合 P：夏普比率最大的风险组合</title></circle>
+      <text class="pl" x="372" y="116">P 切点组合（最优风险组合）</text>
+      <text class="elabel" x="372" y="134">所有人该持有的“配方”</text>
+      <text class="elabel" x="420" y="296" text-anchor="middle">下半支：同 σ 收益更低，无效</text>
+    </svg>
+    </div>
+    <figcaption><b>读图：</b>单个资产永远在前沿内部——任何单一持仓都能被某个组合碾压。加入无风险资产后，整条前沿只剩一个点有意义：切点 P。由此得到<b>两基金分离定理</b>：所有投资者无论胆大胆小，持有的风险组合都应是同一个 P，差别只在上一章的剂量 y。“选什么”与“买多少”完全分离——这正是“指数基金 + 货基”两只基金足以服务所有人的理论执照。</figcaption>
+  </figure>
+
+  <div class="prose">
+    <p>把两章拼起来，完整的组合构建流程是：① 估计各资产的 E(r)、σ、ρ → ② 算出有效前沿 → ③ 作切线找到 P（最大夏普）→ ④ 用 y* = 溢价 /（Aσ²）决定 P 与货基的比例。前三步人人相同，第四步因人而异。</p>
+  </div>
+</section>
+
+<!-- ======================== 7.5 ======================== -->
+<section class="ch" id="s5">
+  <h2 class="sec"><span class="no">7.5</span>从马科维茨到实务</h2>
+  <p class="sec-en">THE MARKOWITZ MODEL IN PRACTICE</p>
+
+  <div class="prose">
+    <p>理论如此优雅，为什么没人直接拿均值—方差优化器管钱？因为它是个<strong>误差放大器</strong>：n 个资产需要估 n 个期望收益、n 个方差、n(n−1)/2 个相关系数（50 个资产就是 1325 个参数），而期望收益恰恰是最估不准的那个——输入差之毫厘，优化器就会输出“做空资产 A 300%、做多资产 B 280%”之类的荒唐权重。实务的修补方向有三：</p>
+    <p>① 用<strong>指数模型</strong>压缩参数（第 9 章并入讲）；② 对权重加约束（禁卖空、设上限）；③ 换起点——<strong>Black-Litterman</strong> 从市场均衡权重出发、再温和地叠加个人观点（第 27 章）。而对普通投资者，最稳健的近似自始至终只有一个：持有市值加权的市场组合本身，让市场替你完成优化。</p>
+  </div>
+
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p>“把历史收益塞进优化器，就能算出最优组合。”——历史均值对未来期望的估计误差极大，而优化器对期望收益最敏感：它会向被高估的资产疯狂加仓，把估计噪声当成信息放大（garbage in, leverage out）。实务铁律：对期望收益保持谦卑（宁用均衡值 / 收缩估计），把精力花在相对可估的 σ 与 ρ 上。</p>
+  </div>
+</section>
+
+<!-- ======================== 小结 ======================== -->
+<section class="ch" id="recap">
+  <h2 class="sec"><span class="no">※</span>本章小结</h2>
+  <p class="sec-en">SUMMARY</p>
+
+  <div class="recap">
+    <ol>
+      <li><b>风险两层：</b>系统性（分散不掉、将获补偿）vs 公司特有（可免费消除、无补偿）；20–30 只低相关资产已拿走绝大部分分散收益。</li>
+      <li><b>组合方差的主角是协方差：</b>σ<sub>p</sub>² = Σ权重²σ² + 交叉项；资产多时交叉项统治一切——评估资产看它与持仓的协方差，不看它自己的 σ。</li>
+      <li><b>ρ 弯曲机会集：</b>ρ=+1 无午餐，ρ 越低曲线越左凸，ρ=−1 可达零风险；ρ 随宏观政权切换（2022 股债双杀），分散化依赖相关结构而非数量。</li>
+      <li><b>有效前沿：</b>MVP 以上的半支；接入 r<sub>f</sub> 后唯一答案是切点组合 P——夏普比率最大的风险组合。</li>
+      <li><b>两基金分离：</b>人人持同一个 P，差别只在剂量 y——“选什么”与“买多少”分离，被动指数化由此获得理论执照。</li>
+      <li><b>实务警告：</b>均值—方差优化是误差放大器；压缩参数（指数模型）、加约束、或从均衡出发（Black-Litterman）是三条修补路。</li>
+    </ol>
+  </div>
+
+  <h3>核心术语（中英对照）</h3>
+  <div class="tablewrap">
+    <table>
+      <tr><th>中文</th><th>English</th><th>一句话定义</th></tr>
+      <tr><td>系统性 / 市场风险</td><td>systematic / market risk</td><td>宏观共同因素导致、分散不掉的风险</td></tr>
+      <tr><td>公司特有风险</td><td>firm-specific / unique risk</td><td>只属于单个公司、可分散消除的风险</td></tr>
+      <tr><td>分散化</td><td>diversification</td><td>用低相关资产相互抵消特有风险</td></tr>
+      <tr><td>协方差 / 相关系数</td><td>covariance / correlation</td><td>两资产共同波动的幅度 / 标准化度量</td></tr>
+      <tr><td>投资机会集</td><td>investment opportunity set</td><td>全部可行组合在（σ, E）平面的集合</td></tr>
+      <tr><td>最小方差前沿</td><td>minimum-variance frontier</td><td>每个收益水平上 σ 最小的组合连线</td></tr>
+      <tr><td>全局最小方差组合</td><td>global minimum-variance portfolio</td><td>整个前沿上 σ 最小的那一点</td></tr>
+      <tr><td>有效前沿</td><td>efficient frontier</td><td>MVP 以上、不被任何组合支配的半支</td></tr>
+      <tr><td>切点 / 最优风险组合</td><td>tangency / optimal risky portfolio</td><td>使 CAL 斜率（夏普比率）最大的组合 P</td></tr>
+      <tr><td>两基金分离定理</td><td>separation property / two-fund theorem</td><td>风险组合的选择与风险剂量的选择相互独立</td></tr>
+      <tr><td>均值—方差优化</td><td>mean-variance optimization</td><td>马科维茨求前沿的数学程序，对输入极敏感</td></tr>
+    </table>
+  </div>
+
+  <h3>自测（先想后翻）</h3>
+  <details>
+    <summary>Q1 债基（E=6%，σ=10%）与股基（E=12%，σ=20%），ρ = 0.2，各投一半：组合的 E(r) 与 σ 是多少？比“σ 的加权平均”省了多少？</summary>
+    <div class="ans"><p>E(r) = 9%。σ² = 0.25×100 + 0.25×400 + 2×0.25×（0.2×10×20）= 25 + 100 + 20 = 145，σ ≈ 12.04%。两者 σ 的加权平均是 15%，分散化白送了约 3 个百分点的减震——这就是“免费午餐”的定量形态。ρ 若降到 0，σ 进一步降至 11.18%。</p></div>
+  </details>
+  <details>
+    <summary>Q2 若上述两资产 ρ = −1，什么权重能把风险降到零？那个组合的收益是多少？这揭示了什么定价含义？</summary>
+    <div class="ans"><p>零风险要求两边波动完全对冲：w<sub>S</sub>σ<sub>S</sub> = w<sub>D</sub>σ<sub>D</sub> → w<sub>S</sub> = 10/(10+20) = 1/3。组合收益 = 1/3×12% + 2/3×6% = 8%。含义：一个零风险组合的收益必须等于无风险利率，否则存在套利——若 r<sub>f</sub> = 3% 而这个组合稳拿 8%，借钱买入即可印钞。这是第 10 章套利定价思想的第一次露面。</p></div>
+  </details>
+  <details>
+    <summary>Q3 为什么市场只补偿系统性风险，不补偿公司特有风险？</summary>
+    <div class="ans"><p>特有风险可以通过分散化免费消除——理性投资者都已消除它，定价由“已分散的边际买家”决定，他们不需要为自己感受不到的风险索取溢价。于是承担特有风险（如重仓单票）得不到任何期望收益补偿，纯属无偿暴露。补偿只流向人人都躲不开的系统性风险——下一章 CAPM 把这句话精确成 β 定价公式。</p></div>
+  </details>
+  <details>
+    <summary>Q4 最小方差组合 MVP 与切点组合 P 有什么区别？理性投资者该持有哪个？</summary>
+    <div class="ans"><p>MVP 目标是 σ 最小，不管收益；P 目标是夏普比率最大。只要存在无风险资产，任何人都不该持有 MVP：想要 MVP 那样的低波动，用“P + 货基”调低 y 就能在同样 σ 下拿到更高收益（CAL 在 MVP 上方穿过）。极度怕险的正确姿势是降剂量，不是换配方——这正是分离定理的内容。</p></div>
+  </details>
+  <details>
+    <summary>Q5 用本章语言解释 2022 年 60/40 组合为何失效，以及正确的应对。</summary>
+    <div class="ans"><p>60/40 的低波动建立在股债 ρ ≤ 0 的历史结构上；2022 年通胀主导宏观，加息同时压低股票估值与债券价格，ρ 转正，图 7-2 的弯曲机会集被拉直——组合 σ 向加权平均退化，两边同跌约 −16%。应对：① 承认 ρ 是状态变量，压力测试里必须包含“ρ→1”情景（呼应第 5 章 VaR 教训）；② 分散的维度从“资产数量”升级为“风险来源”——加入通胀受益或与股债逻辑异源的资产；③ 不因一年失效放弃分散——2023 年起股债负相关逐步回归，长期看分散仍是唯一免费午餐。</p></div>
+  </details>
+
+  <a class="next" href="investments-ch09.html">
+    <div>
+      <div class="lbl">NEXT CHAPTER · HAPPY PATH</div>
+      <div class="ttl">第 9 章 · 资本资产定价模型（CAPM）</div>
+    </div>
+    <div class="lbl">第 8 章指数模型要点已并入 · β 与 α 的正式登场</div>
+  </a>
+
+  <p class="foot">本页为依据 Bodie–Kane–Marcus《投资学》（Investments）框架整理的原创学习笔记，仅用于教学理解；数值为教学算例，历史数据为近似值。内容不构成任何投资建议。</p>
+</section>
+
+</main>
+</div>
+</div>
+
+<script>
+(function(){
+  var links = Array.prototype.slice.call(document.querySelectorAll('.sidenav a[href^="#"]'));
+  if(!links.length) return;
+  var map = [];
+  links.forEach(function(a){
+    var el = document.getElementById(a.getAttribute('href').slice(1));
+    if(el) map.push([el, a]);
+  });
+  function update(){
+    var y = window.scrollY + 150;
+    var cur = map[0][1];
+    for(var i = 0; i < map.length; i++){
+      if(map[i][0].offsetTop <= y) cur = map[i][1];
+    }
+    map.forEach(function(p){ p[1].classList.toggle('active', p[1] === cur); });
+  }
+  var tick = false;
+  window.addEventListener('scroll', function(){
+    if(!tick){
+      tick = true;
+      requestAnimationFrame(function(){ tick = false; update(); });
+    }
+  }, {passive:true});
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+</body>
+</html>

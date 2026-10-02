@@ -1,0 +1,542 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>投资学 · 第11章 有效市场假说</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700;900&family=Noto+Sans+SC:wght@400;500;700&display=swap">
+<style>
+/* 布局：双栏（212px 侧栏 + 正文），章导览 + 11.1–11.5 分节；宽图表置于横向滚动容器 */
+:root{
+  --bg:#f5f6f7;
+  --surface:#ffffff;
+  --ink:#171a20;
+  --ink-2:#4a5160;
+  --muted:#858c9b;
+  --line:#e2e5ea;
+  --line-2:#c9ced6;
+  --accent:#1d5fad;
+  --accent-ink:#174e8f;
+  --accent-soft:#eaf1fa;
+  --series:#2a78d6;
+  --series2:#eb6834;
+  --series3:#1baf7a;
+  --crit:#d03b3b;
+  --crit-soft:rgba(208,59,59,.07);
+  --serif:"Noto Serif SC","Songti SC",serif;
+  --sans:"Noto Sans SC","Microsoft YaHei",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#101215; --surface:#181b20; --ink:#eef0f3; --ink-2:#c0c5cf; --muted:#8a909d;
+    --line:#282c33; --line-2:#3a3f48;
+    --accent:#5a96e3; --accent-ink:#79abec; --accent-soft:#1c2a3d;
+    --series:#3987e5; --series2:#d95926; --series3:#199e70; --crit:#e66767; --crit-soft:rgba(230,103,103,.10);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#101215; --surface:#181b20; --ink:#eef0f3; --ink-2:#c0c5cf; --muted:#8a909d;
+  --line:#282c33; --line-2:#3a3f48;
+  --accent:#5a96e3; --accent-ink:#79abec; --accent-soft:#1c2a3d;
+  --series:#3987e5; --series2:#d95926; --series3:#199e70; --crit:#e66767; --crit-soft:rgba(230,103,103,.10);
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:var(--sans); font-size:15.5px; line-height:1.85;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1190px; margin:0 auto; padding-inline:20px; padding-block:0 72px}
+
+.layout{display:grid; grid-template-columns:212px minmax(0,1fr); gap:44px; align-items:start}
+.article{max-width:920px; min-width:0}
+.sidenav{
+  position:sticky; top:16px; max-height:calc(100vh - 32px); overflow-y:auto;
+  padding-block:40px 16px; font-size:13px;
+}
+.sidenav .sn-chap{
+  margin:0 0 10px; padding-left:13px; font-size:11.5px; letter-spacing:.14em;
+  color:var(--muted); font-weight:700;
+}
+.sidenav a{
+  display:block; color:var(--ink-2); text-decoration:none; line-height:1.55;
+  padding:6px 10px 6px 13px; border-left:2px solid var(--line);
+}
+.sidenav a:hover{color:var(--accent-ink)}
+.sidenav a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.sidenav a.active{
+  color:var(--accent-ink); border-left-color:var(--accent);
+  background:var(--accent-soft); font-weight:700;
+}
+.hero,section.ch{scroll-margin-top:10px}
+@media (max-width: 999px){
+  .sidenav{display:none}
+  .layout{display:block}
+}
+@media (min-width: 1000px){
+  nav.chapmap{display:none}
+}
+
+.masthead{
+  display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  padding-block:18px 14px; border-bottom:1px solid var(--line);
+}
+.masthead .book{font-family:var(--serif); font-weight:700; font-size:15px; letter-spacing:.02em}
+.masthead .part{font-size:12.5px; color:var(--muted); letter-spacing:.12em}
+.masthead a{color:var(--accent-ink); text-decoration:none}
+.masthead a:hover{text-decoration:underline}
+.masthead a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+a.next{color:inherit; text-decoration:none}
+a.next:hover{border-color:var(--accent)}
+a.next:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+.hero{padding-block:44px 28px; border-bottom:1px solid var(--line)}
+.chap-no{
+  display:inline-flex; align-items:center; gap:10px;
+  font-size:12.5px; letter-spacing:.22em; color:var(--accent-ink); font-weight:700;
+}
+.chap-no::after{content:""; width:46px; height:1px; background:var(--accent)}
+.hero h1{
+  font-family:var(--serif); font-weight:900; font-size:clamp(30px,5vw,46px);
+  line-height:1.25; margin:10px 0 4px; letter-spacing:.02em; text-wrap:balance;
+}
+.hero .en{font-size:14px; color:var(--muted); letter-spacing:.08em; margin:0 0 18px}
+.hero .lede{max-width:46em; color:var(--ink-2); margin:0}
+.hero .lede strong{color:var(--ink)}
+.objectives{
+  margin-top:22px; padding:16px 20px; background:var(--surface);
+  border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:0 6px 6px 0;
+}
+.objectives h2{font-size:13px; letter-spacing:.18em; color:var(--accent-ink); margin:0 0 8px; font-weight:700}
+.objectives ul{margin:0; padding-left:1.3em; color:var(--ink-2)}
+.objectives li{margin:3px 0}
+.chapmap{display:flex; flex-wrap:wrap; gap:8px; margin-top:20px}
+.chapmap a{
+  font-size:13px; color:var(--ink-2); text-decoration:none;
+  border:1px solid var(--line-2); border-radius:999px; padding:4px 13px; background:var(--surface);
+}
+.chapmap a:hover{border-color:var(--accent); color:var(--accent-ink)}
+.chapmap a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+section.ch{padding-block:40px 8px}
+section.ch + section.ch{border-top:1px solid var(--line)}
+h2.sec{
+  font-family:var(--serif); font-weight:700; font-size:clamp(22px,3.4vw,28px);
+  margin:0 0 2px; line-height:1.35; text-wrap:balance;
+}
+h2.sec .no{color:var(--accent-ink); margin-right:10px; font-feature-settings:"tnum"}
+p.sec-en{font-size:12.5px; letter-spacing:.1em; color:var(--muted); margin:0 0 18px}
+h3{font-size:16.5px; font-weight:700; margin:26px 0 8px}
+h3 .tag{color:var(--accent-ink)}
+p{margin:10px 0}
+.prose{max-width:46em}
+.prose .en-term{color:var(--muted); font-size:.88em}
+strong{font-weight:700}
+em{font-style:normal; font-weight:700; color:var(--accent-ink)}
+
+.cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px; margin:16px 0}
+.card{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:16px 18px;
+}
+.card h4{margin:0 0 6px; font-size:15px}
+.card h4 .en-term{display:block; font-weight:400; font-size:12px; color:var(--muted); letter-spacing:.04em; margin-top:2px}
+.card p{margin:6px 0; font-size:14px; color:var(--ink-2)}
+.card ul{margin:6px 0 0; padding-left:1.2em; font-size:14px; color:var(--ink-2)}
+.card li{margin:3px 0}
+
+.case{
+  margin:20px 0; padding:16px 20px 14px; background:var(--surface);
+  border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:0 8px 8px 0;
+}
+.case .label{font-size:12px; letter-spacing:.2em; color:var(--accent-ink); font-weight:700; display:block; margin-bottom:6px}
+.case h4{margin:0 0 6px; font-size:15.5px}
+.case p{margin:7px 0; font-size:14.5px; color:var(--ink-2)}
+.case p:last-child{margin-bottom:2px}
+.case .takeaway{color:var(--ink); font-weight:500}
+.case .takeaway::before{content:"▸ 教材对应 "; color:var(--accent-ink); font-weight:700; font-size:12.5px; letter-spacing:.05em}
+
+.pitfall{
+  margin:20px 0; padding:14px 20px; border:1px dashed var(--line-2); border-radius:8px; max-width:46em;
+}
+.pitfall .label{font-size:12px; letter-spacing:.2em; color:var(--crit); font-weight:700; display:block; margin-bottom:4px}
+.pitfall p{margin:4px 0; font-size:14.5px; color:var(--ink-2)}
+
+.formula{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px;
+  padding:12px 18px; margin:14px 0; max-width:46em; overflow-x:auto;
+  font-size:15px; line-height:2;
+}
+.formula .fx{white-space:nowrap}
+.formula sub,.formula sup{font-size:11px}
+.formula .note{font-size:12.5px; color:var(--muted)}
+
+table{border-collapse:collapse; width:100%; font-size:14px; font-variant-numeric:tabular-nums}
+.tablewrap{overflow-x:auto; margin:16px 0; border:1px solid var(--line); border-radius:8px; background:var(--surface)}
+.tablewrap table{min-width:560px}
+th,td{padding:9px 14px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top}
+th{font-size:12.5px; letter-spacing:.08em; color:var(--muted); font-weight:700; white-space:nowrap}
+tr:last-child td{border-bottom:none}
+td.num{white-space:nowrap}
+
+figure{margin:24px 0; background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:18px 18px 12px}
+figure .fig-scroll{overflow-x:auto}
+figure svg{display:block; max-width:100%; height:auto; color:var(--ink)}
+figure .fig-scroll svg{min-width:660px}
+figcaption{font-size:13px; color:var(--muted); margin-top:10px; line-height:1.7}
+figcaption b{color:var(--ink-2); font-weight:700}
+.fig-title{font-size:14px; font-weight:700; margin:0 0 12px}
+.fig-title .fno{color:var(--accent-ink); margin-right:8px}
+
+svg .node{fill:var(--bg); stroke:var(--line-2); stroke-width:1.2; rx:10}
+svg .node-hi{fill:var(--accent-soft); stroke:var(--accent)}
+svg .nt{font:700 12.5px var(--sans); fill:var(--ink)}
+svg .nd{font:400 11px var(--sans); fill:var(--ink-2)}
+svg .edge-soft{stroke:var(--muted); stroke-width:1.2; fill:none; stroke-dasharray:4 4}
+svg .elabel{font:400 11.5px var(--sans); fill:var(--muted)}
+svg .grid{stroke:var(--line); stroke-width:1}
+svg .axis{stroke:var(--line-2); stroke-width:1.2}
+svg .tick{font:400 11px var(--sans); fill:var(--muted)}
+svg .atitle{font:400 11.5px var(--sans); fill:var(--muted)}
+svg .pl{font:700 13px var(--sans); fill:var(--ink)}
+svg .pv{font:400 11.5px var(--sans); fill:var(--ink-2)}
+svg .ln1{stroke:var(--series); stroke-width:2.5; fill:none}
+svg .ln2{stroke:var(--series2); stroke-width:2.5; fill:none}
+svg .ln3{stroke:var(--series3); stroke-width:2.5; fill:none}
+svg .seg1{fill:var(--series)}
+svg .seg2{fill:var(--series2)}
+svg .seg3{fill:var(--series3)}
+
+.recap{margin-top:8px}
+.recap ol{margin:8px 0 0; padding-left:1.4em; max-width:46em; color:var(--ink-2)}
+.recap li{margin:7px 0}
+.recap li b{color:var(--ink)}
+details{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px;
+  padding:12px 18px; margin:10px 0; max-width:46em;
+}
+details summary{cursor:pointer; font-weight:500; color:var(--ink)}
+details summary:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+details[open] summary{color:var(--accent-ink)}
+details .ans{margin-top:8px; padding-top:8px; border-top:1px dashed var(--line); font-size:14.5px; color:var(--ink-2)}
+details .ans p{margin:6px 0}
+
+.next{
+  margin-top:48px; padding:18px 22px; border:1px solid var(--line); border-radius:8px;
+  background:var(--surface); display:flex; justify-content:space-between; align-items:center; gap:14px; flex-wrap:wrap;
+}
+.next .lbl{font-size:12px; letter-spacing:.18em; color:var(--muted)}
+.next .ttl{font-family:var(--serif); font-weight:700; font-size:18px; margin-top:2px}
+.foot{margin-top:26px; font-size:12.5px; color:var(--muted); line-height:1.8}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <span class="book">《投资学》学习手册 · Investments (Bodie · Kane · Marcus)</span>
+  <span class="part"><a href="investments-index.html">学习地图</a> · 第三部分 资本市场均衡</span>
+</header>
+
+<div class="layout">
+
+<nav class="sidenav" aria-label="小节导航">
+  <p class="sn-chap">第 11 章 · 有效市场假说</p>
+  <a href="#top">章首 · 学习目标</a>
+  <a href="#s1">11.1 随机漫步与三种形式</a>
+  <a href="#s2">11.2 对投资实践的含义</a>
+  <a href="#s3">11.3 事件研究</a>
+  <a href="#s4">11.4 异象及其命运</a>
+  <a href="#s5">11.5 对你意味着什么</a>
+  <a href="#recap">小结 · 术语 · 自测</a>
+</nav>
+
+<main class="article">
+
+<!-- ======================== 章首 ======================== -->
+<div class="hero" id="top">
+  <span class="chap-no">CHAPTER 11</span>
+  <h1>有效市场假说</h1>
+  <p class="en">The Efficient Market Hypothesis</p>
+  <p class="lede">上一章结尾埋了引线：发现 α → 交易 → α 消失。把这个循环推到极限，就得到本章的命题——<strong>价格已经反映了全部可得信息，因此无法被系统性预测</strong>。这是全书最有争议、也对你未来最有保护价值的一章：它不是让你放弃主动，而是把举证责任放到正确的位置——<em>任何策略，先假设自己没有优势，再用证据推翻</em>。</p>
+
+  <div class="objectives">
+    <h2>学习目标</h2>
+    <ul>
+      <li>理解“价格随机漫步”为什么恰恰是市场<strong>聪明</strong>而非愚蠢的表现</li>
+      <li>分清弱式 / 半强式 / 强式三种有效形式，以及各自“宣判”了哪种分析方法</li>
+      <li>掌握事件研究方法，会读累计异常收益（CAR）的三种形态</li>
+      <li>了解主要异象（规模、价值、动量、PEAD）与它们发表后的命运</li>
+      <li>形成行动守则：默认被动；做主动必须回答“收益从谁手里来、为什么会持续”</li>
+    </ul>
+  </div>
+
+  <nav class="chapmap" aria-label="本章导览">
+    <a href="#s1">11.1 三种形式</a>
+    <a href="#s2">11.2 实践含义</a>
+    <a href="#s3">11.3 事件研究</a>
+    <a href="#s4">11.4 异象</a>
+    <a href="#s5">11.5 行动守则</a>
+    <a href="#recap">小结与自测</a>
+  </nav>
+</div>
+
+<!-- ======================== 11.1 ======================== -->
+<section class="ch" id="s1">
+  <h2 class="sec"><span class="no">11.1</span>随机漫步与三种有效形式</h2>
+  <p class="sec-en">RANDOM WALKS AND THE EMH</p>
+
+  <div class="prose">
+    <p>1953 年肯德尔想在股价里找周期规律，结果发现价格变动近乎<strong>随机漫步</strong>——看不出任何可预测的模式。起初这被当作市场“非理性”的证据，直到经济学家反应过来：因果恰恰相反。<em>如果今天就能预测明天会涨，大家今天就会买到它涨完为止</em>——任何可预测的成分都会被交易立刻吃掉，剩给明天的只有不可预测的新信息。<strong>价格只对新信息起反应，而新信息按定义不可预测，所以价格变动不可预测</strong>。随机性是无数聪明人激烈竞争的痕迹，不是疯癫的痕迹。</p>
+    <p>“全部可得信息”有多大？按信息集从小到大，EMH 分三档：</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 11-1</span>三种有效形式：一层套一层的信息集</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 300" role="img" aria-label="三层嵌套：最内层弱式有效（历史价量），中层半强式有效（全部公开信息），外层强式有效（包含内幕信息的一切信息）">
+      <rect class="node" x="90" y="30" width="540" height="240" rx="12"/>
+      <text class="nt" x="110" y="56">强式有效</text>
+      <text class="nd" x="110" y="74">信息集：一切信息，包括未公开的内幕</text>
+      <rect class="node" x="130" y="92" width="400" height="150" rx="10"/>
+      <text class="nt" x="150" y="118">半强式有效</text>
+      <text class="nd" x="150" y="136">信息集：全部公开信息（财报、公告、新闻、研报）</text>
+      <rect class="node-hi" x="170" y="152" width="250" height="70" rx="8"/>
+      <text class="nt" x="295" y="183" text-anchor="middle">弱式有效</text>
+      <text class="nd" x="295" y="203" text-anchor="middle">信息集：历史价格与成交量</text>
+      <text class="elabel" x="560" y="188" text-anchor="middle">信息集逐层</text>
+      <text class="elabel" x="560" y="206" text-anchor="middle">扩大 ⟶</text>
+    </svg>
+    </div>
+    <figcaption><b>读图：</b>每一档“宣判”一种工具——<b>弱式</b>成立：历史价量已被吃干净，纯技术分析不能带来超额收益；<b>半强式</b>成立：公开信息公布瞬间已入价，看财报选股也难赚超额（主流实证大体支持到这一层）；<b>强式</b>成立：连内幕都没用——现实明确不成立，内幕交易持续有人获利，所以它才被立法严惩（第 3 章监管呼应）。</figcaption>
+  </figure>
+</section>
+
+<!-- ======================== 11.2 ======================== -->
+<section class="ch" id="s2">
+  <h2 class="sec"><span class="no">11.2</span>EMH 对投资实践的含义</h2>
+  <p class="sec-en">IMPLICATIONS FOR INVESTMENT POLICY</p>
+
+  <div class="cards">
+    <div class="card">
+      <h4>技术分析 <span class="en-term">Technical Analysis</span></h4>
+      <p>在价格图形里找趋势与形态。弱式有效下期望超额为零：图形人人可见，有效的形态会被抢跑到失效。行为金融为“动量”留了一道口子（第 12 章），但那与画线看形态是两回事。</p>
+    </div>
+    <div class="card">
+      <h4>基本面分析 <span class="en-term">Fundamental Analysis</span></h4>
+      <p>用财报与行业研究估内在价值。半强式有效下，<strong>发现好公司不够，必须发现比价格更好的公司</strong>——好消息人尽皆知时，它已经在价格里了。</p>
+    </div>
+    <div class="card">
+      <h4>主动 vs 被动 <span class="en-term">Active vs Passive</span></h4>
+      <p>EMH 的直接处方：持有低成本指数（第 4 章证据、第 6 章 CML）。但存在<strong>格罗斯曼—斯蒂格利茨悖论</strong>：若人人被动，无人搜集信息，价格会失真到让搜集信息重新有利可图——均衡是“近似有效”：α 恰好够补偿最优秀者的研究成本。</p>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p>所以“市场有效吗”不是判断题，而是程度题：<em>有效到让多数人费后无利可图，又无效到让最顶尖的少数人值得继续挖掘</em>。即便在完全有效的市场里，组合管理也不是没事可做——分散化、税务、与你的 A 匹配的 y*（第 6 章）、生命周期调整，这些“不赌价格”的工作才是多数人的正经事。</p>
+  </div>
+</section>
+
+<!-- ======================== 11.3 ======================== -->
+<section class="ch" id="s3">
+  <h2 class="sec"><span class="no">11.3</span>事件研究：检验市场反应的仪器</h2>
+  <p class="sec-en">EVENT STUDIES</p>
+
+  <div class="formula">
+    <div class="fx">异常收益 AR<sub>t</sub> = r<sub>t</sub> −（a + b·r<sub>M,t</sub>）　（实际收益减去指数模型预测的“本该有的收益”）</div>
+    <div class="fx">累计异常收益 CAR = Σ AR<sub>t</sub></div>
+    <div class="note">把每只经历同类事件（并购公告、盈余超预期）的股票按“事件日 = 第 0 天”对齐、平均，CAR 曲线的形状就是市场反应速度的 X 光片。</div>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 11-2</span>CAR 的三种形态：有效、泄露、反应不足</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 390" role="img" aria-label="事件研究示意：有效市场下累计异常收益在公告日一步跳到位后走平；信息泄露时公告前逐日漂移上行；反应不足时公告日只跳一部分、此后继续漂移">
+      <rect class="seg1" x="64" y="10" width="12" height="12" rx="2"/>
+      <text class="tick" x="82" y="20">即时反应（有效市场）</text>
+      <rect class="seg2" x="250" y="10" width="12" height="12" rx="2"/>
+      <text class="tick" x="268" y="20">公告前漂移（信息泄露）</text>
+      <rect class="seg3" x="450" y="10" width="12" height="12" rx="2"/>
+      <text class="tick" x="468" y="20">公告后漂移（反应不足 / PEAD）</text>
+      <g text-anchor="end">
+        <text class="tick" x="56" y="308">0</text>
+        <text class="tick" x="56" y="228">+2</text>
+        <text class="tick" x="56" y="148">+4</text>
+        <text class="tick" x="56" y="68">+6</text>
+      </g>
+      <line class="grid" x1="64" y1="224" x2="696" y2="224"/>
+      <line class="grid" x1="64" y1="144" x2="696" y2="144"/>
+      <line class="grid" x1="64" y1="64" x2="696" y2="64"/>
+      <line class="axis" x1="64" y1="304" x2="696" y2="304"/>
+      <path class="edge-soft" d="M 380 34 V 344"/>
+      <text class="elabel" x="380" y="360" text-anchor="middle">第 0 天（公告日）</text>
+      <g text-anchor="middle">
+        <text class="tick" x="64" y="324">−10</text>
+        <text class="tick" x="222" y="324">−5</text>
+        <text class="tick" x="380" y="324">0</text>
+        <text class="tick" x="538" y="324">+5</text>
+        <text class="tick" x="696" y="324">+10</text>
+      </g>
+      <text class="atitle" x="380" y="382" text-anchor="middle">相对公告日的交易日</text>
+      <text class="atitle" x="64" y="38">CAR（%）</text>
+      <polyline class="ln1" points="64,304 348,304 380,104 696,104"/>
+      <polyline class="ln2" points="64,304 190,304 222,272 254,240 285,208 317,176 348,144 380,104 696,104"/>
+      <polyline class="ln3" points="64,304 348,304 380,184 412,168 443,152 475,140 506,128 538,120 570,114 601,110 633,106 696,104"/>
+    </svg>
+    </div>
+    <figcaption><b>读图：</b>蓝线是教科书式的有效反应——消息一出，价格<b>一步到位</b>，此后再无漂移（想赚只能在第 0 天之前知道，即内幕）。橙线在公告前就持续上行——有人提前知道了，监管的内幕交易调查就从这种图形开始。绿线最微妙：公告日只消化了一部分，之后几周继续漂移——著名的<b>盈余公告后漂移（PEAD）</b>，对半强式有效的经典挑战，也是“反应不足”的证据（第 12 章行为金融接手解释）。</figcaption>
+  </figure>
+</section>
+
+<!-- ======================== 11.4 ======================== -->
+<section class="ch" id="s4">
+  <h2 class="sec"><span class="no">11.4</span>异象清单与它们的命运</h2>
+  <p class="sec-en">ANOMALIES AND THEIR FATE</p>
+
+  <div class="tablewrap">
+    <table>
+      <tr><th>异象</th><th>现象</th><th>主流解释</th><th>发表后的命运</th></tr>
+      <tr><td>规模效应</td><td>小盘股长期跑赢大盘股</td><td>流动性 / 风险补偿，或数据挖掘</td><td>1981 年发表后大幅衰减</td></tr>
+      <tr><td>价值效应</td><td>低市净率（价值股）跑赢高市净率（成长股）</td><td>行为：对成长过度外推；或风险补偿</td><td>2010s 长期失灵，2021 起回暖——争议持续</td></tr>
+      <tr><td>动量效应</td><td>过去 3–12 个月的赢家继续赢</td><td>行为：反应不足 + 羊群</td><td>跨市场最稳健，但有“动量崩溃”（2009 年美股动量组合回撤约 −70%）</td></tr>
+      <tr><td>盈余公告后漂移</td><td>超预期财报后数周继续上漂</td><td>反应不足、注意力有限</td><td>大盘股中已稀薄，小盘仍可见</td></tr>
+      <tr><td>低 β 异象</td><td>低 β 风险调整后跑赢（第 9 章）</td><td>杠杆约束</td><td>仍存在——约束性解释最能活</td></tr>
+    </table>
+  </div>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>A 股“壳价值”的生与死：制度能直接杀死异象</h4>
+    <p>2013–2016 年，A 股最暴利的“因子”是小市值：垫底市值的股票组合年化超额收益惊人。它的真实来源不是风险补偿，而是<strong>壳价值</strong>——IPO 排队漫长，借壳上市有价，市值越小壳越便宜，“乌鸡变凤凰”预期托底了垃圾股。2016 年底起监管收紧借壳、2019 年注册制开闸、退市常态化——壳的期权价值崩塌，小市值因子连续多年深度回撤，策略从“印钞机”变“绞肉机”。同样的剧本在美国以更温和的方式上演：McLean 与 Pontiff 追踪 97 个学术异象，发现<strong>发表之后收益平均衰减一半上下</strong>——被看见的 α，就开始被吃掉。</p>
+    <p class="takeaway">检验任何“规律”的三连问：收益来自谁的口袋？支撑它的机制（行为约束 / 制度摩擦）还在吗？它被多少钱盯上了？机制消失或拥挤过度，历史回测再漂亮也只是悼词——这三问应该写进你未来策略评审的模板。</p>
+  </div>
+
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p>“EMH 被异象打脸了，所以市场是提款机。”——两头都错。异象存在 ≠ 你能费后抓住它（交易成本、容量、时变性）；而 EMH 也从不主张“价格永远正确”——它只说<strong>偏离无法被系统性预测</strong>。市场可以集体犯错（2000 年科网泡沫定价荒谬），但在泡沫里赚钱依然要求你答对两次：顶在哪里、你能扛到那天吗（凯恩斯警告回看第 3 章 GameStop 案例）。</p>
+  </div>
+</section>
+
+<!-- ======================== 11.5 ======================== -->
+<section class="ch" id="s5">
+  <h2 class="sec"><span class="no">11.5</span>对你意味着什么：一份行动守则</h2>
+  <p class="sec-en">SO WHAT SHOULD YOU DO</p>
+
+  <div class="prose">
+    <p>把本章与第 4 章的证据（15 年维度约九成主动基金费后跑输）合并，可以写下四条守则：</p>
+    <p>① <strong>默认仓位给被动</strong>：低成本指数 + y* 剂量（第 6 章模板），这是无需任何预测能力就能拿到的市场回报；<br>
+    ② <strong>主动是例外，须立案审查</strong>：动手前书面回答三问——我的对手盘是谁、我的优势机制是什么、为什么它没被套利掉；回答不出，就还是被动；<br>
+    ③ <strong>警惕规模与拥挤</strong>：Berk–Green 逻辑——资金会涌向一切有效的策略，直到费后 α 归零；你的小资金灵活性本身是少数真实优势之一；<br>
+    ④ <strong>把“运气 vs 技能”留给统计</strong>：几年的好业绩在噪声里毫无证明力（第 24 章给出需要多长记录的计算）。</p>
+  </div>
+</section>
+
+<!-- ======================== 小结 ======================== -->
+<section class="ch" id="recap">
+  <h2 class="sec"><span class="no">※</span>本章小结</h2>
+  <p class="sec-en">SUMMARY</p>
+
+  <div class="recap">
+    <ol>
+      <li><b>随机漫步是竞争的痕迹：</b>可预测成分被交易吃光，价格只对不可预测的新信息反应。</li>
+      <li><b>三种形式三份判决书：</b>弱式判技术分析、半强式判基本面分析、强式判内幕（现实不成立故立法严惩）；实证大体支持到半强式。</li>
+      <li><b>近似有效是均衡态：</b>格罗斯曼—斯蒂格利茨悖论——α 恰够补偿最优研究成本，市场需要不信 EMH 的人来维持有效。</li>
+      <li><b>事件研究读 CAR：</b>一步到位 = 有效；公告前漂移 = 泄露；公告后漂移 = 反应不足（PEAD）。</li>
+      <li><b>异象的命运：</b>发表即衰减（平均折半）、机制消失即死亡（A 股壳价值）、最长寿的是约束型（低 β）；动量最稳健但带崩溃尾部。</li>
+      <li><b>行动守则：</b>默认被动；主动须书面回答“对手盘、机制、为何持续”三问；警惕规模与拥挤；运气 vs 技能交给第 24 章的统计。</li>
+    </ol>
+  </div>
+
+  <h3>核心术语（中英对照）</h3>
+  <div class="tablewrap">
+    <table>
+      <tr><th>中文</th><th>English</th><th>一句话定义</th></tr>
+      <tr><td>随机漫步</td><td>random walk</td><td>价格变动不可预测、增量为随机的过程</td></tr>
+      <tr><td>有效市场假说</td><td>efficient market hypothesis</td><td>价格已反映全部可得信息</td></tr>
+      <tr><td>弱式 / 半强式 / 强式</td><td>weak / semistrong / strong form</td><td>信息集为历史价量 / 公开信息 / 一切信息</td></tr>
+      <tr><td>技术分析</td><td>technical analysis</td><td>从历史价量图形中寻找规律</td></tr>
+      <tr><td>基本面分析</td><td>fundamental analysis</td><td>用财务与行业信息估内在价值</td></tr>
+      <tr><td>事件研究</td><td>event study</td><td>用对齐事件日的异常收益检验反应速度</td></tr>
+      <tr><td>异常收益 / 累计异常收益</td><td>abnormal return / CAR</td><td>实际收益减模型预期 / 其累计值</td></tr>
+      <tr><td>异象</td><td>anomaly</td><td>与 EMH 相悖的可预测收益模式</td></tr>
+      <tr><td>规模 / 价值 / 动量效应</td><td>size / value / momentum effect</td><td>三大经典异象（见 11.4 表）</td></tr>
+      <tr><td>盈余公告后漂移</td><td>post-earnings-announcement drift</td><td>超预期财报后的持续异常收益</td></tr>
+      <tr><td>数据挖掘 / 数据窥探</td><td>data mining / snooping</td><td>在同一数据里反复找规律导致的伪发现</td></tr>
+      <tr><td>格罗斯曼—斯蒂格利茨悖论</td><td>Grossman-Stiglitz paradox</td><td>完全有效自我瓦解，均衡是近似有效</td></tr>
+      <tr><td>卢卡斯 / 伯克—格林逻辑</td><td>Berk-Green rationale</td><td>资金追逐技能直到费后 α 归零</td></tr>
+    </table>
+  </div>
+
+  <h3>自测（先想后翻）</h3>
+  <details>
+    <summary>Q1 “股价走势完全随机”说明市场失灵了吗？弱式有效成立时，K 线分析还剩什么地位？</summary>
+    <div class="ans"><p>相反——随机是定价高效的证据：任何可预测的模式都会被抢跑交易吃掉，剩余变动只由新信息驱动，而新信息按定义随机。弱式有效下，纯粹基于历史价量的形态分析期望超额为零；它剩余的合法用途是执行层面的（评估流动性、选择进出场时点的成本），而不是预测层面的。若你相信动量类例外，那是第 12 章的行为机制，需按 11.4 的三连问立案审查，而非“图形玄学”。</p></div>
+  </details>
+  <details>
+    <summary>Q2 某并购传闻股在公告前十天 CAR 已累计 +6%，公告日再 +2% 后走平。这是哪种形态？监管者和交易者各读出什么？</summary>
+    <div class="ans"><p>公告前漂移——信息泄露形态（图 11-2 橙线）。监管者读出：可能存在内幕交易，从异动名单倒查账户。交易者读出：等公告出来才行动已经迟了，公开信息瞬间入价（半强式）；追“利好落地”常常买在一步到位之后——这正是“利好出尽是利空”的统计学原形。</p></div>
+  </details>
+  <details>
+    <summary>Q3 如果所有人都转向指数基金，市场会发生什么？这个悖论如何决定“有效的程度”？</summary>
+    <div class="ans"><p>无人做研究，新信息不再被交易进价格，错定价扩大，直到主动挖掘重新有利可图、资金回流主动——这就是格罗斯曼—斯蒂格利茨悖论。均衡点在“近似有效”：费后 α 约等于最优秀研究者的成本，普通参与者费后 α 为负。推论：被动化比例上升理论上会让残余 α 变厚一些，但同时你的竞争对手也在向“只剩职业选手”浓缩——门槛不降反升。</p></div>
+  </details>
+  <details>
+    <summary>Q4 “某基金连续五年跑赢指数”能证伪 EMH 吗？需要什么才算证据？</summary>
+    <div class="ans"><p>不能。一万只基金抛硬币，五连胜的期望就有约 300 只——亮眼纪录可以纯由运气与幸存者偏差制造。够格的证据需要：事前指定（不是事后从赢家里挑）、风险与因子调整后的 α（它可能只是高 β 或价值暴露的报酬，第 9 章）、以及足够长的样本使 α 统计显著（第 24 章将算给你看：夏普 0.5 的真本事也需要十几年才能与运气区分）。</p></div>
+  </details>
+  <details>
+    <summary>Q5 为什么异象发表后普遍衰减？据此给你未来的策略研发写三条纪律。</summary>
+    <div class="ans"><p>发表让机制暴露：套利资金涌入把价格压回（拥挤），且部分“异象”本是数据挖掘的伪发现，样本外自然消失。三条纪律：① 回测必须留出严格的样本外与发表后区间——只信策略在“被全世界知道之后”的表现；② 为每个策略写下收益机制与对手盘，机制属于“他人约束型”（杠杆限制、制度摩擦）的优先，纯统计型的降权；③ 持续监控拥挤度与容量，把“策略死亡”当作常态事件预设退出标准——异象是租约，不是产权。</p></div>
+  </details>
+
+  <a class="next" href="investments-ch12.html">
+    <div>
+      <div class="lbl">NEXT CHAPTER</div>
+      <div class="ttl">第 12 章 · 行为金融与技术分析</div>
+    </div>
+    <div class="lbl">偏差清单 → 前景理论 → 套利的限制</div>
+  </a>
+
+  <p class="foot">本页为依据 Bodie–Kane–Marcus《投资学》（Investments）框架整理的原创学习笔记，仅用于教学理解；历史与研究数据为近似表述，以原始文献为准。内容不构成任何投资建议。</p>
+</section>
+
+</main>
+</div>
+</div>
+
+<script>
+(function(){
+  var links = Array.prototype.slice.call(document.querySelectorAll('.sidenav a[href^="#"]'));
+  if(!links.length) return;
+  var map = [];
+  links.forEach(function(a){
+    var el = document.getElementById(a.getAttribute('href').slice(1));
+    if(el) map.push([el, a]);
+  });
+  function update(){
+    var y = window.scrollY + 150;
+    var cur = map[0][1];
+    for(var i = 0; i < map.length; i++){
+      if(map[i][0].offsetTop <= y) cur = map[i][1];
+    }
+    map.forEach(function(p){ p[1].classList.toggle('active', p[1] === cur); });
+  }
+  var tick = false;
+  window.addEventListener('scroll', function(){
+    if(!tick){
+      tick = true;
+      requestAnimationFrame(function(){ tick = false; update(); });
+    }
+  }, {passive:true});
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+</body>
+</html>

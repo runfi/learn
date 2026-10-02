@@ -1,0 +1,578 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>投资学 · 第9章 资本资产定价模型</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700;900&family=Noto+Sans+SC:wght@400;500;700&display=swap">
+<style>
+/* 布局：双栏（212px 侧栏 + 正文），章导览 + 9.1–9.5 分节；宽图表置于横向滚动容器 */
+:root{
+  --bg:#f5f6f7;
+  --surface:#ffffff;
+  --ink:#171a20;
+  --ink-2:#4a5160;
+  --muted:#858c9b;
+  --line:#e2e5ea;
+  --line-2:#c9ced6;
+  --accent:#1d5fad;
+  --accent-ink:#174e8f;
+  --accent-soft:#eaf1fa;
+  --series:#2a78d6;
+  --series2:#eb6834;
+  --series3:#1baf7a;
+  --crit:#d03b3b;
+  --crit-soft:rgba(208,59,59,.07);
+  --serif:"Noto Serif SC","Songti SC",serif;
+  --sans:"Noto Sans SC","Microsoft YaHei",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#101215; --surface:#181b20; --ink:#eef0f3; --ink-2:#c0c5cf; --muted:#8a909d;
+    --line:#282c33; --line-2:#3a3f48;
+    --accent:#5a96e3; --accent-ink:#79abec; --accent-soft:#1c2a3d;
+    --series:#3987e5; --series2:#d95926; --series3:#199e70; --crit:#e66767; --crit-soft:rgba(230,103,103,.10);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#101215; --surface:#181b20; --ink:#eef0f3; --ink-2:#c0c5cf; --muted:#8a909d;
+  --line:#282c33; --line-2:#3a3f48;
+  --accent:#5a96e3; --accent-ink:#79abec; --accent-soft:#1c2a3d;
+  --series:#3987e5; --series2:#d95926; --series3:#199e70; --crit:#e66767; --crit-soft:rgba(230,103,103,.10);
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:var(--sans); font-size:15.5px; line-height:1.85;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1190px; margin:0 auto; padding-inline:20px; padding-block:0 72px}
+
+.layout{display:grid; grid-template-columns:212px minmax(0,1fr); gap:44px; align-items:start}
+.article{max-width:920px; min-width:0}
+.sidenav{
+  position:sticky; top:16px; max-height:calc(100vh - 32px); overflow-y:auto;
+  padding-block:40px 16px; font-size:13px;
+}
+.sidenav .sn-chap{
+  margin:0 0 10px; padding-left:13px; font-size:11.5px; letter-spacing:.14em;
+  color:var(--muted); font-weight:700;
+}
+.sidenav a{
+  display:block; color:var(--ink-2); text-decoration:none; line-height:1.55;
+  padding:6px 10px 6px 13px; border-left:2px solid var(--line);
+}
+.sidenav a:hover{color:var(--accent-ink)}
+.sidenav a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.sidenav a.active{
+  color:var(--accent-ink); border-left-color:var(--accent);
+  background:var(--accent-soft); font-weight:700;
+}
+.hero,section.ch{scroll-margin-top:10px}
+@media (max-width: 999px){
+  .sidenav{display:none}
+  .layout{display:block}
+}
+@media (min-width: 1000px){
+  nav.chapmap{display:none}
+}
+
+.masthead{
+  display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  padding-block:18px 14px; border-bottom:1px solid var(--line);
+}
+.masthead .book{font-family:var(--serif); font-weight:700; font-size:15px; letter-spacing:.02em}
+.masthead .part{font-size:12.5px; color:var(--muted); letter-spacing:.12em}
+.masthead a{color:var(--accent-ink); text-decoration:none}
+.masthead a:hover{text-decoration:underline}
+.masthead a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+a.next{color:inherit; text-decoration:none}
+a.next:hover{border-color:var(--accent)}
+a.next:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+.hero{padding-block:44px 28px; border-bottom:1px solid var(--line)}
+.chap-no{
+  display:inline-flex; align-items:center; gap:10px;
+  font-size:12.5px; letter-spacing:.22em; color:var(--accent-ink); font-weight:700;
+}
+.chap-no::after{content:""; width:46px; height:1px; background:var(--accent)}
+.hero h1{
+  font-family:var(--serif); font-weight:900; font-size:clamp(30px,5vw,46px);
+  line-height:1.25; margin:10px 0 4px; letter-spacing:.02em; text-wrap:balance;
+}
+.hero .en{font-size:14px; color:var(--muted); letter-spacing:.08em; margin:0 0 18px}
+.hero .lede{max-width:46em; color:var(--ink-2); margin:0}
+.hero .lede strong{color:var(--ink)}
+.objectives{
+  margin-top:22px; padding:16px 20px; background:var(--surface);
+  border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:0 6px 6px 0;
+}
+.objectives h2{font-size:13px; letter-spacing:.18em; color:var(--accent-ink); margin:0 0 8px; font-weight:700}
+.objectives ul{margin:0; padding-left:1.3em; color:var(--ink-2)}
+.objectives li{margin:3px 0}
+.chapmap{display:flex; flex-wrap:wrap; gap:8px; margin-top:20px}
+.chapmap a{
+  font-size:13px; color:var(--ink-2); text-decoration:none;
+  border:1px solid var(--line-2); border-radius:999px; padding:4px 13px; background:var(--surface);
+}
+.chapmap a:hover{border-color:var(--accent); color:var(--accent-ink)}
+.chapmap a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+section.ch{padding-block:40px 8px}
+section.ch + section.ch{border-top:1px solid var(--line)}
+h2.sec{
+  font-family:var(--serif); font-weight:700; font-size:clamp(22px,3.4vw,28px);
+  margin:0 0 2px; line-height:1.35; text-wrap:balance;
+}
+h2.sec .no{color:var(--accent-ink); margin-right:10px; font-feature-settings:"tnum"}
+p.sec-en{font-size:12.5px; letter-spacing:.1em; color:var(--muted); margin:0 0 18px}
+h3{font-size:16.5px; font-weight:700; margin:26px 0 8px}
+h3 .tag{color:var(--accent-ink)}
+p{margin:10px 0}
+.prose{max-width:46em}
+.prose .en-term{color:var(--muted); font-size:.88em}
+strong{font-weight:700}
+em{font-style:normal; font-weight:700; color:var(--accent-ink)}
+
+.cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px; margin:16px 0}
+.card{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:16px 18px;
+}
+.card h4{margin:0 0 6px; font-size:15px}
+.card h4 .en-term{display:block; font-weight:400; font-size:12px; color:var(--muted); letter-spacing:.04em; margin-top:2px}
+.card p{margin:6px 0; font-size:14px; color:var(--ink-2)}
+.card ul{margin:6px 0 0; padding-left:1.2em; font-size:14px; color:var(--ink-2)}
+.card li{margin:3px 0}
+
+.case{
+  margin:20px 0; padding:16px 20px 14px; background:var(--surface);
+  border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:0 8px 8px 0;
+}
+.case .label{font-size:12px; letter-spacing:.2em; color:var(--accent-ink); font-weight:700; display:block; margin-bottom:6px}
+.case h4{margin:0 0 6px; font-size:15.5px}
+.case p{margin:7px 0; font-size:14.5px; color:var(--ink-2)}
+.case p:last-child{margin-bottom:2px}
+.case .takeaway{color:var(--ink); font-weight:500}
+.case .takeaway::before{content:"▸ 教材对应 "; color:var(--accent-ink); font-weight:700; font-size:12.5px; letter-spacing:.05em}
+
+.pitfall{
+  margin:20px 0; padding:14px 20px; border:1px dashed var(--line-2); border-radius:8px; max-width:46em;
+}
+.pitfall .label{font-size:12px; letter-spacing:.2em; color:var(--crit); font-weight:700; display:block; margin-bottom:4px}
+.pitfall p{margin:4px 0; font-size:14.5px; color:var(--ink-2)}
+
+.formula{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px;
+  padding:12px 18px; margin:14px 0; max-width:46em; overflow-x:auto;
+  font-size:15px; line-height:2;
+}
+.formula .fx{white-space:nowrap}
+.formula sub,.formula sup{font-size:11px}
+.formula .note{font-size:12.5px; color:var(--muted)}
+
+table{border-collapse:collapse; width:100%; font-size:14px; font-variant-numeric:tabular-nums}
+.tablewrap{overflow-x:auto; margin:16px 0; border:1px solid var(--line); border-radius:8px; background:var(--surface)}
+.tablewrap table{min-width:560px}
+th,td{padding:9px 14px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top}
+th{font-size:12.5px; letter-spacing:.08em; color:var(--muted); font-weight:700; white-space:nowrap}
+tr:last-child td{border-bottom:none}
+td.num{white-space:nowrap}
+
+figure{margin:24px 0; background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:18px 18px 12px}
+figure .fig-scroll{overflow-x:auto}
+figure svg{display:block; max-width:100%; height:auto; color:var(--ink)}
+figure .fig-scroll svg{min-width:660px}
+figcaption{font-size:13px; color:var(--muted); margin-top:10px; line-height:1.7}
+figcaption b{color:var(--ink-2); font-weight:700}
+.fig-title{font-size:14px; font-weight:700; margin:0 0 12px}
+.fig-title .fno{color:var(--accent-ink); margin-right:8px}
+
+svg .nt{font:700 12.5px var(--sans); fill:var(--ink)}
+svg .nd{font:400 11px var(--sans); fill:var(--ink-2)}
+svg .edge-soft{stroke:var(--muted); stroke-width:1.2; fill:none; stroke-dasharray:4 4}
+svg .elabel{font:400 11.5px var(--sans); fill:var(--muted)}
+svg .grid{stroke:var(--line); stroke-width:1}
+svg .axis{stroke:var(--line-2); stroke-width:1.2}
+svg .tick{font:400 11px var(--sans); fill:var(--muted)}
+svg .atitle{font:400 11.5px var(--sans); fill:var(--muted)}
+svg .pt{fill:var(--series); stroke:var(--surface); stroke-width:2}
+svg .pt2{fill:var(--series2); stroke:var(--surface); stroke-width:2}
+svg .pl{font:700 13px var(--sans); fill:var(--ink)}
+svg .pv{font:400 11.5px var(--sans); fill:var(--ink-2)}
+svg .ln1{stroke:var(--series); stroke-width:2.5; fill:none}
+svg .ln2{stroke:var(--series2); stroke-width:2.5; fill:none}
+svg .seg1{fill:var(--series)}
+svg .seg2{fill:var(--series2)}
+
+.recap{margin-top:8px}
+.recap ol{margin:8px 0 0; padding-left:1.4em; max-width:46em; color:var(--ink-2)}
+.recap li{margin:7px 0}
+.recap li b{color:var(--ink)}
+details{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px;
+  padding:12px 18px; margin:10px 0; max-width:46em;
+}
+details summary{cursor:pointer; font-weight:500; color:var(--ink)}
+details summary:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+details[open] summary{color:var(--accent-ink)}
+details .ans{margin-top:8px; padding-top:8px; border-top:1px dashed var(--line); font-size:14.5px; color:var(--ink-2)}
+details .ans p{margin:6px 0}
+
+.next{
+  margin-top:48px; padding:18px 22px; border:1px solid var(--line); border-radius:8px;
+  background:var(--surface); display:flex; justify-content:space-between; align-items:center; gap:14px; flex-wrap:wrap;
+}
+.next .lbl{font-size:12px; letter-spacing:.18em; color:var(--muted)}
+.next .ttl{font-family:var(--serif); font-weight:700; font-size:18px; margin-top:2px}
+.foot{margin-top:26px; font-size:12.5px; color:var(--muted); line-height:1.8}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <span class="book">《投资学》学习手册 · Investments (Bodie · Kane · Marcus)</span>
+  <span class="part"><a href="investments-index.html">学习地图</a> · 第三部分 资本市场均衡</span>
+</header>
+
+<div class="layout">
+
+<nav class="sidenav" aria-label="小节导航">
+  <p class="sn-chap">第 9 章 · CAPM（含第 8 章要点）</p>
+  <a href="#top">章首 · 学习目标</a>
+  <a href="#s1">9.1 指数模型与 β 的测量</a>
+  <a href="#s2">9.2 CAPM 的逻辑</a>
+  <a href="#s3">9.3 证券市场线与 α</a>
+  <a href="#s4">9.4 CAPM 怎么用</a>
+  <a href="#s5">9.5 检验、异象与地位</a>
+  <a href="#recap">小结 · 术语 · 自测</a>
+</nav>
+
+<main class="article">
+
+<!-- ======================== 章首 ======================== -->
+<div class="hero" id="top">
+  <span class="chap-no">CHAPTER 9 · 含 CH8 要点</span>
+  <h1>资本资产定价模型</h1>
+  <p class="en">The Capital Asset Pricing Model (with Index Models)</p>
+  <p class="lede">第 7 章说“只有系统性风险获得补偿”，这一章把它精确成一个公式：<strong>E(r) = r<sub>f</sub> + β ×市场风险溢价</strong>。β 度量你对市场波动的暴露，α 度量价格偏离公式的程度——这两个希腊字母是整个资管行业的通用语言。本章先用指数模型（第 8 章要点）学会<strong>测量</strong> β，再用 CAPM 理解 β <strong>为什么</strong>定价。</p>
+
+  <div class="objectives">
+    <h2>学习目标</h2>
+    <ul>
+      <li>会用回归（证券特征线）估计 β 与 α，用 R² 读出风险的系统性占比</li>
+      <li>理解 CAPM 的推理链：同质预期 → 人人持有市场组合 → β 成为唯一被定价的风险</li>
+      <li>画出并使用证券市场线（SML），严格区分它与 CML</li>
+      <li>用 CAPM 计算要求回报率 / 资本成本，并理解 α 的筛选含义</li>
+      <li>知道实证检验的结论（SML 偏平、低 β 异象），理解 CAPM 作为“基准语言”的地位</li>
+    </ul>
+  </div>
+
+  <nav class="chapmap" aria-label="本章导览">
+    <a href="#s1">9.1 β 的测量</a>
+    <a href="#s2">9.2 逻辑</a>
+    <a href="#s3">9.3 SML 与 α</a>
+    <a href="#s4">9.4 应用</a>
+    <a href="#s5">9.5 检验</a>
+    <a href="#recap">小结与自测</a>
+  </nav>
+</div>
+
+<!-- ======================== 9.1 ======================== -->
+<section class="ch" id="s1">
+  <h2 class="sec"><span class="no">9.1</span>指数模型与 β 的测量<span class="en-term">（第 8 章要点）</span></h2>
+  <p class="sec-en">INDEX MODELS: MEASURING BETA</p>
+
+  <div class="prose">
+    <p>第 7 章结尾抱怨过：全协方差矩阵要估的参数太多。<strong>单指数模型</strong>一刀砍掉绝大部分——假设个股的共同波动都来自同一个源头（市场指数 M），把超额收益 R = r − r<sub>f</sub> 拆成三块：</p>
+  </div>
+
+  <div class="formula">
+    <div class="fx">R<sub>i</sub> = α<sub>i</sub> + β<sub>i</sub> R<sub>M</sub> + e<sub>i</sub></div>
+    <div class="fx">σ<sub>i</sub>² = β<sub>i</sub>²σ<sub>M</sub>²（系统性）+ σ²(e<sub>i</sub>)（公司特有）</div>
+    <div class="note">α：与市场无关的“额外”期望收益；β：对市场波动的敏感度（市场涨 1%，该股平均涨 β%）；e：当期的公司特有意外。R² = β²σ<sub>M</sub>² / σ² 告诉你风险里有多大比例是系统性的。参数量从 n²/2 级降到 3n + 2 个——这是它成为行业标准的工程学原因。</div>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 9-1</span>证券特征线（SCL）：β 就是这条回归线的斜率</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 400" role="img" aria-label="散点图：个股月度超额收益对市场超额收益回归，拟合直线斜率约 1.2 即贝塔，截距约每月 0.5% 即阿尔法">
+      <line class="grid" x1="84" y1="58" x2="676" y2="58"/>
+      <line class="grid" x1="84" y1="125" x2="676" y2="125"/>
+      <line class="grid" x1="84" y1="259" x2="676" y2="259"/>
+      <line class="grid" x1="84" y1="326" x2="676" y2="326"/>
+      <line class="axis" x1="84" y1="192" x2="676" y2="192"/>
+      <line class="axis" x1="380" y1="30" x2="380" y2="354"/>
+      <g text-anchor="end">
+        <text class="tick" x="76" y="62">+10</text>
+        <text class="tick" x="76" y="129">+5</text>
+        <text class="tick" x="76" y="263">−5</text>
+        <text class="tick" x="76" y="330">−10</text>
+      </g>
+      <g text-anchor="middle">
+        <text class="tick" x="158" y="210">−6</text>
+        <text class="tick" x="269" y="210">−3</text>
+        <text class="tick" x="491" y="210">+3</text>
+        <text class="tick" x="602" y="210">+6</text>
+      </g>
+      <text class="atitle" x="676" y="182" text-anchor="end">市场超额收益 R<tspan font-size="9">M</tspan>（%，月）</text>
+      <text class="atitle" x="84" y="20">个股超额收益 R<tspan font-size="9">i</tspan>（%，月）</text>
+      <!-- 回归线 -->
+      <polyline class="ln1" points="102,306 658,65"/>
+      <!-- 散点 -->
+      <circle class="pt2" cx="158" cy="292" r="5"/>
+      <circle class="pt2" cx="213" cy="248" r="5"/>
+      <circle class="pt2" cx="269" cy="243" r="5"/>
+      <circle class="pt2" cx="306" cy="205" r="5"/>
+      <circle class="pt2" cx="343" cy="212" r="5"/>
+      <circle class="pt2" cx="398" cy="163" r="5"/>
+      <circle class="pt2" cx="417" cy="181" r="5"/>
+      <circle class="pt2" cx="454" cy="145" r="5"/>
+      <circle class="pt2" cx="491" cy="152" r="5"/>
+      <circle class="pt2" cx="528" cy="109" r="5"/>
+      <circle class="pt2" cx="565" cy="114" r="5"/>
+      <circle class="pt2" cx="620" cy="71" r="5"/>
+      <!-- 标注 -->
+      <text class="pv" x="560" y="86">斜率 = β ≈ 1.2</text>
+      <path class="edge-soft" d="M 376 185 H 250"/>
+      <text class="pv" x="244" y="162" text-anchor="end">截距 = α ≈ +0.5% / 月</text>
+      <text class="elabel" x="244" y="178" text-anchor="end">（样本内跑赢模型的部分）</text>
+    </svg>
+    </div>
+    <figcaption><b>读图：</b>每个点是一个月：横坐标市场的超额收益，纵坐标个股的。回归线就是<b>证券特征线</b>：斜率 β ≈ 1.2（市场每动 1%，它平均动 1.2%），截距 α ≈ 0.5%/月。点离线的散布就是特有风险 e；点越贴线 R² 越高。实务提醒：β 用 36–60 个月数据估计，存在估计误差且随时间漂移，机构常向 1 收缩修正（adjusted beta）。</figcaption>
+  </figure>
+</section>
+
+<!-- ======================== 9.2 ======================== -->
+<section class="ch" id="s2">
+  <h2 class="sec"><span class="no">9.2</span>CAPM 的逻辑：从“人人一样”到“β 定价”</h2>
+  <p class="sec-en">THE CAPM: LOGIC AND ASSUMPTIONS</p>
+
+  <div class="prose">
+    <p>CAPM 问的是：如果第 6、7 章的每个人都按教科书行事，均衡时价格必须长什么样？假设清单故意写得极端——投资者理性且只看均值—方差、<strong>同质预期</strong>（人人看到同样的数据得出同样的前沿）、同一个 r<sub>f</sub> 可存可借、无税无交易成本。推理三步走：</p>
+    <p>① 同质预期 ⇒ 所有人算出<em>同一个</em>切点组合 P；② 所有人都持有 P ⇒ 加总后 P 必须等于<strong>市场组合 M</strong>（每只股票按市值占比全被装下）——这就是共同基金定理：一只市场指数基金满足所有人的风险组合需求；③ 既然人人都已充分分散，单只股票的特有风险没人在乎，它对投资者的边际风险贡献只剩<em>它与市场的协方差</em>——于是补偿必须与 β = Cov(r<sub>i</sub>, r<sub>M</sub>) / σ<sub>M</sub>² 成正比，否则就有人调仓套利，直到比例恢复。</p>
+    <p>结论浓缩成期望收益—β 关系，也是全书最著名的公式：</p>
+  </div>
+
+  <div class="formula">
+    <div class="fx">E(r<sub>i</sub>) = r<sub>f</sub> + β<sub>i</sub> × [ E(r<sub>M</sub>) − r<sub>f</sub> ]</div>
+    <div class="note">读法：任何资产的公允期望收益 = 时间的价格（r<sub>f</sub>）+ 风险的数量（β）× 风险的单价（市场风险溢价）。注意公式里没有 σ——单票波动再大，只要 β 低，公允回报就低；多出来的波动是特有风险，理应被你自己分散掉，市场不付钱。</div>
+  </div>
+</section>
+
+<!-- ======================== 9.3 ======================== -->
+<section class="ch" id="s3">
+  <h2 class="sec"><span class="no">9.3</span>证券市场线与 α</h2>
+  <p class="sec-en">THE SECURITY MARKET LINE AND ALPHA</p>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 9-2</span>SML：每份 β 该挣多少，一条线说了算（r<sub>f</sub>=3%，市场溢价 5%）</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 400" role="img" aria-label="证券市场线：横轴贝塔、纵轴期望收益，直线从 3% 出发经过市场组合（贝塔 1，收益 8%）；线上方的股票 A 阿尔法为正 2% 被低估，线下方的股票 B 阿尔法为负 3% 被高估">
+      <g text-anchor="end">
+        <text class="tick" x="56" y="368">0</text>
+        <text class="tick" x="56" y="295">3</text>
+        <text class="tick" x="56" y="222">6</text>
+        <text class="tick" x="56" y="149">9</text>
+        <text class="tick" x="56" y="77">12</text>
+      </g>
+      <line class="grid" x1="64" y1="291" x2="696" y2="291"/>
+      <line class="grid" x1="64" y1="218" x2="696" y2="218"/>
+      <line class="grid" x1="64" y1="145" x2="696" y2="145"/>
+      <line class="grid" x1="64" y1="73" x2="696" y2="73"/>
+      <line class="axis" x1="64" y1="364" x2="696" y2="364"/>
+      <line class="axis" x1="64" y1="24" x2="64" y2="364"/>
+      <g text-anchor="middle">
+        <text class="tick" x="64" y="384">0</text>
+        <text class="tick" x="239" y="384">0.5</text>
+        <text class="tick" x="415" y="384">1.0</text>
+        <text class="tick" x="590" y="384">1.5</text>
+      </g>
+      <text class="atitle" x="380" y="404" text-anchor="middle">β（系统性风险的数量）</text>
+      <text class="atitle" x="64" y="14">E(r)（%）</text>
+      <!-- SML -->
+      <polyline class="ln1" points="64,291 661,85"/>
+      <text class="pv" x="480" y="82">SML：E(r) = 3% + β × 5%</text>
+      <!-- 线上资产 -->
+      <circle class="pt" cx="64" cy="291" r="6"/>
+      <text class="pl" x="80" y="300">r<tspan font-size="9">f</tspan> = 3%</text>
+      <circle class="pt" cx="275" cy="218" r="6"><title>防御型股票：β=0.6，公允回报 6%</title></circle>
+      <text class="pv" x="275" y="240" text-anchor="middle">β=0.6 → 6%</text>
+      <circle class="pt" cx="415" cy="170" r="7.5"><title>市场组合 M：β=1，E(r)=8%</title></circle>
+      <text class="pl" x="415" y="194" text-anchor="middle">M（β=1，8%）</text>
+      <circle class="pt" cx="555" cy="121" r="6"><title>进攻型股票：β=1.4，公允回报 10%</title></circle>
+      <text class="pv" x="555" y="143" text-anchor="middle">β=1.4 → 10%</text>
+      <!-- 错定价 A -->
+      <path class="edge-soft" d="M 415 166 V 125"/>
+      <circle class="pt2" cx="415" cy="121" r="6.5"><title>股票 A：β=1，预期回报 10%，α=+2%</title></circle>
+      <text class="pl" x="427" y="116">A：α = +2%（低估 → 买入）</text>
+      <!-- 错定价 B -->
+      <path class="edge-soft" d="M 485 149 V 214"/>
+      <circle class="pt2" cx="485" cy="218" r="6.5"><title>股票 B：β=1.2，预期回报 6%，α=−3%</title></circle>
+      <text class="pl" x="497" y="232">B：α = −3%（高估 → 回避）</text>
+    </svg>
+    </div>
+    <figcaption><b>读图：</b>均衡时<b>所有</b>资产和组合都该趴在 SML 上。偏离量就是 <b>α</b>：A 在线上方——同样的 β 却给出更高的预期回报，便宜货；B 在下方——担着 1.2 的 β 只给 6%，贵了。主动投资的全部工作可以一句话概括：<b>寻找并持有正 α，回避或做空负 α</b>；而 CAPM 的世界里，均衡会把所有 α 挤回零。</figcaption>
+  </figure>
+
+  <div class="tablewrap">
+    <table>
+      <tr><th></th><th>资本市场线 CML（第 6 章）</th><th>证券市场线 SML（本章）</th></tr>
+      <tr><td>横轴</td><td>总风险 σ</td><td>系统性风险 β</td></tr>
+      <tr><td>适用对象</td><td>只有<strong>有效组合</strong>（市场组合与 r<sub>f</sub> 的混合）</td><td><strong>一切</strong>资产与组合，包括单只股票</td></tr>
+      <tr><td>回答的问题</td><td>“配多少剂量”的菜单</td><td>“任何资产该挣多少”的定价尺</td></tr>
+      <tr><td>单只股票的位置</td><td>在线下方（含特有风险，σ 偏大）</td><td>均衡时在线上</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ======================== 9.4 ======================== -->
+<section class="ch" id="s4">
+  <h2 class="sec"><span class="no">9.4</span>CAPM 怎么用</h2>
+  <p class="sec-en">APPLICATIONS OF THE CAPM</p>
+
+  <div class="prose">
+    <p>即便没人相信假设字面成立，CAPM 每天都在被使用，因为它回答一个绕不开的问题：<strong>“这笔钱的风险，值多少回报？”</strong>三个标准场景：</p>
+    <p>① <strong>资本成本 / 折现率</strong>：企业评估项目、分析师折现现金流（第 18 章 DCF 的 k 就从这来）；② <strong>公允回报基准</strong>：监管给公用事业定价、法院算赔偿，都用它当“合理回报”的锚；③ <strong>业绩评价</strong>：基金收益先按其 β 扣掉“本该挣的”，剩下的才算本事——Jensen's α，第 24 章的主角。</p>
+  </div>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>同样赚 10 亿，为什么估值差一倍：β 决定折现率</h4>
+    <p>设 r<sub>f</sub> = 3%、市场溢价 5%。水电公司（现金流稳、β ≈ 0.5）的要求回报 = 3% + 0.5 × 5% = 5.5%；半导体设备公司（订单随周期大起大落、β ≈ 1.5）= 3% + 1.5 × 5% = 10.5%。把同样“每年 10 亿、零增长”的永续利润折现：水电值 10 / 5.5% ≈ 182 亿，半导体只值 10 / 10.5% ≈ 95 亿——<strong>利润相同，估值差近一倍</strong>，差的全是风险的价格。这解释了市场为何长期给公用事业更高的市盈率“而不是不懂周期股”；也解释了 2020 年利率趋零时高 β 成长股估值暴涨、2022 年加息时又暴跌——分母 r<sub>f</sub> 一动，长久期资产最敏感。</p>
+    <p class="takeaway">估值分歧经常不在分子（盈利预测），而在分母（β 与利率）。第 18 章 DCF 的 k，就按本节方法取。</p>
+  </div>
+</section>
+
+<!-- ======================== 9.5 ======================== -->
+<section class="ch" id="s5">
+  <h2 class="sec"><span class="no">9.5</span>检验、异象与 CAPM 的地位</h2>
+  <p class="sec-en">EMPIRICAL TESTS AND THE STATUS OF THE CAPM</p>
+
+  <div class="prose">
+    <p>半个世纪的实证给出一个尴尬而有趣的结论：β 与平均收益确实正相关，但<strong>实测的 SML 比理论更平</strong>——低 β 股票的实际回报高于公式应许，高 β 股票低于应许。另有两条著名批评：Roll 批判（真正的“市场组合”包含房产、人力资本等一切资产，不可观测，故 CAPM 严格说不可检验）；以及规模、价值等因子的解释力（第 10、13 章的多因子方向，选学）。</p>
+  </div>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>低 β 异象与巴菲特的“无聊股 + 杠杆”</h4>
+    <p>既然低 β 股票的风险调整后回报系统性偏高，一个反直觉的策略成立：<strong>做多低 β、做空高 β</strong>（Frazzini–Pedersen 的 BAB 策略），历史夏普比率显著为正。对异象的主流解释恰好用得上第 6 章：许多投资者<strong>借不到钱</strong>（杠杆约束），想要高收益只能去追高 β 股票，把它们买贵；低 β 股票则被冷落变得便宜。AQR 的论文《Buffett's Alpha》据此拆解巴菲特：其超额收益可大部分由“持有便宜、优质、低 β 的股票 + 用保险浮存金加约 1.6 倍杠杆”解释——不神秘，但五十年如一日地执行，无人能及。</p>
+    <p class="takeaway">对你的交易系统两点启示：① 异象往往源自他人的约束（借贷、机构规则），这类优势比“信息优势”更持久；② 高 β ≠ 高风险调整回报，用杠杆放大低波动资产常优于裸持高波动资产——前提是管好第 3 章讲过的保证金风险。</p>
+  </div>
+
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p>“β 高弹性大，牛市买高 β 稳赢。”——β 对称放大涨跌，择时对了才赢，而择时本身极难（第 11 章）；长期看高 β 的风险调整回报反而偏低（上面的异象）。另一个混用：“α 为正 = 经理有本事”——短样本的 α 多半是噪声或隐性因子暴露，显著性检验与归因留到第 24 章。CAPM 的正确地位：<strong>不是精确的定价真理，而是风险—回报的度量衡与对话语言</strong>——α、β 这套坐标系本身，比公式是否精确成立重要得多。</p>
+  </div>
+</section>
+
+<!-- ======================== 小结 ======================== -->
+<section class="ch" id="recap">
+  <h2 class="sec"><span class="no">※</span>本章小结</h2>
+  <p class="sec-en">SUMMARY</p>
+
+  <div class="recap">
+    <ol>
+      <li><b>指数模型（第 8 章要点）：</b>R = α + βR<sub>M</sub> + e；总风险 = β²σ<sub>M</sub>²（系统）+ σ²(e)（特有）；R² 是系统性占比；β 由回归（SCL 斜率）估计，有误差、会漂移。</li>
+      <li><b>CAPM 三步推理：</b>同质预期 → 人人持市场组合 M（共同基金定理）→ 充分分散后只有与市场的协方差有价，补偿 ∝ β。</li>
+      <li><b>定价公式：</b>E(r) = r<sub>f</sub> + β × 市场溢价；公式里没有 σ——特有风险无偿。</li>
+      <li><b>SML 是定价尺：</b>一切资产均衡时趴线上，偏离即 α（上方低估、下方高估）；与 CML 的区别——横轴 β vs σ，对象一切资产 vs 仅有效组合。</li>
+      <li><b>应用三件套：</b>折现率 / 资本成本（β 决定估值分母）、公允回报基准、业绩评价的 Jensen α。</li>
+      <li><b>实证地位：</b>实测 SML 偏平，低 β 异象（杠杆约束解释，BAB 与巴菲特案例）；CAPM 是度量衡与语言，而非精确真理。</li>
+    </ol>
+  </div>
+
+  <h3>核心术语（中英对照）</h3>
+  <div class="tablewrap">
+    <table>
+      <tr><th>中文</th><th>English</th><th>一句话定义</th></tr>
+      <tr><td>单指数模型</td><td>single-index model</td><td>用一个市场因子解释共同波动的简化模型</td></tr>
+      <tr><td>证券特征线</td><td>security characteristic line (SCL)</td><td>个股超额收益对市场超额收益的回归线</td></tr>
+      <tr><td>贝塔 β</td><td>beta</td><td>对市场波动的敏感度，系统性风险的数量</td></tr>
+      <tr><td>阿尔法 α</td><td>alpha</td><td>超出 β 应得回报的部分，错定价的度量</td></tr>
+      <tr><td>特有风险 / 残差</td><td>residual / firm-specific risk</td><td>市场解释不了的波动 e，可分散</td></tr>
+      <tr><td>决定系数 R²</td><td>R-squared</td><td>总风险中系统性成分的占比</td></tr>
+      <tr><td>市场组合</td><td>market portfolio</td><td>全部资产按市值加权的组合 M</td></tr>
+      <tr><td>共同基金定理</td><td>mutual fund theorem</td><td>一只市场指数基金满足所有人的风险组合需求</td></tr>
+      <tr><td>资本资产定价模型</td><td>capital asset pricing model</td><td>E(r) = r<sub>f</sub> + β × 市场风险溢价</td></tr>
+      <tr><td>证券市场线</td><td>security market line (SML)</td><td>期望收益对 β 的定价直线</td></tr>
+      <tr><td>市场风险溢价</td><td>market risk premium</td><td>E(r<sub>M</sub>) − r<sub>f</sub>，风险的单价</td></tr>
+      <tr><td>要求回报率 / 资本成本</td><td>required return / cost of capital</td><td>按 β 算出的公允回报，DCF 的折现率</td></tr>
+      <tr><td>低 β 异象</td><td>low-beta / BAB anomaly</td><td>低 β 资产风险调整后回报系统性偏高</td></tr>
+    </table>
+  </div>
+
+  <h3>自测（先想后翻）</h3>
+  <details>
+    <summary>Q1 回归输出：α = 0.3%/月，β = 1.15，R² = 0.55。逐项翻译成人话；这只股票的风险有多少可以被你分散掉？</summary>
+    <div class="ans"><p>市场每涨跌 1%，它平均同向动 1.15%（β）；过去样本里每月平均额外跑赢模型 0.3%（α——注意只是历史，未必延续）；它的波动有 55% 由市场解释（R²），剩下 45% 是特有风险——放进分散组合后这 45% 近乎免费消失。所以该股对组合风险的真实贡献只看 β，不看它自己的总波动。</p></div>
+  </details>
+  <details>
+    <summary>Q2 r<sub>f</sub> = 3%、市场溢价 6%。某股 β = 0.8，你的研究预期它年回报 9%：α 是多少？该怎么做？若人人都这么做，会发生什么？</summary>
+    <div class="ans"><p>公允回报 = 3% + 0.8 × 6% = 7.8%；α = 9% − 7.8% = +1.2%，在 SML 上方——低估，买入。当足够多的人买入，价格上涨、未来预期回报被压低，α 向零收敛，股票回到线上。这个“发现 α → 交易 → α 消失”的循环，正是第 11 章有效市场的微观机制。</p></div>
+  </details>
+  <details>
+    <summary>Q3 组合 60% 资金在 β = 1.4 的股票、40% 在 β = 0.5 的股票：组合 β 是多少？组合的 α 呢？</summary>
+    <div class="ans"><p>β 按权重线性加总：β<sub>p</sub> = 0.6 × 1.4 + 0.4 × 0.5 = 1.04。α 同样线性：α<sub>p</sub> = Σwα。这两条线性性质极有用——调仓就是在直接调 β；对冲掉 β（如用股指期货，第 23 章）后剩下的收益就是纯 α，这正是“中性策略”的构造原理。</p></div>
+  </details>
+  <details>
+    <summary>Q4 一只黄金矿业股年化 σ 高达 40%，但与股市相关性极低（β ≈ 0.2）。按 CAPM 它的公允回报是多少？“波动 40% 却只配这点回报”合理吗？</summary>
+    <div class="ans"><p>公允回报 = 3% + 0.2 × 5% = 4%（用 9.3 节参数）。合理：它 40% 的波动几乎全是特有 / 自身行业风险，放进分散组合里会被抵消，还能凭低相关<strong>降低</strong>组合总波动（第 7 章 ρ 的魔法）——对已分散的边际买家而言它接近“减震器”，自然不必支付高溢价。再次强调：资产的定价看它对组合的边际贡献（β），不看它独自的 σ。</p></div>
+  </details>
+  <details>
+    <summary>Q5 为什么“实测 SML 偏平”？杠杆约束如何解释低 β 异象？这对构建策略有何含义？</summary>
+    <div class="ans"><p>大量投资者（散户、受监管机构）无法或不愿加杠杆，想提高收益只能超配高 β 股票——高 β 被系统性买贵（未来回报被压低），低 β 被冷落变便宜（未来回报偏高），SML 两端向中间压平。含义：① 想要高收益，“低 β 资产 + 适度杠杆”在风险调整后常优于裸买高 β（BAB / 巴菲特路径）；② 源自他人结构性约束的溢价比信息优势更持久；③ 执行时的真正约束是你自己的杠杆风险管理（第 3 章追保数学）。</p></div>
+  </details>
+
+  <a class="next" href="investments-ch11.html">
+    <div>
+      <div class="lbl">NEXT CHAPTER · HAPPY PATH</div>
+      <div class="ttl">第 11 章 · 有效市场假说</div>
+    </div>
+    <div class="lbl">第 10 章 APT 为选学 · 直达“α 为什么稀缺”</div>
+  </a>
+
+  <p class="foot">本页为依据 Bodie–Kane–Marcus《投资学》（Investments）第 8–9 章框架整理的原创学习笔记，仅用于教学理解；数值为教学算例。内容不构成任何投资建议。</p>
+</section>
+
+</main>
+</div>
+</div>
+
+<script>
+(function(){
+  var links = Array.prototype.slice.call(document.querySelectorAll('.sidenav a[href^="#"]'));
+  if(!links.length) return;
+  var map = [];
+  links.forEach(function(a){
+    var el = document.getElementById(a.getAttribute('href').slice(1));
+    if(el) map.push([el, a]);
+  });
+  function update(){
+    var y = window.scrollY + 150;
+    var cur = map[0][1];
+    for(var i = 0; i < map.length; i++){
+      if(map[i][0].offsetTop <= y) cur = map[i][1];
+    }
+    map.forEach(function(p){ p[1].classList.toggle('active', p[1] === cur); });
+  }
+  var tick = false;
+  window.addEventListener('scroll', function(){
+    if(!tick){
+      tick = true;
+      requestAnimationFrame(function(){ tick = false; update(); });
+    }
+  }, {passive:true});
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+</body>
+</html>

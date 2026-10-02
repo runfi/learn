@@ -1,0 +1,621 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>投资学 · 第6章 风险资产配置</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700;900&family=Noto+Sans+SC:wght@400;500;700&display=swap">
+<style>
+/* 布局：双栏（212px 侧栏 + 正文），章导览 + 6.1–6.5 分节；宽图表置于横向滚动容器 */
+:root{
+  --bg:#f5f6f7;
+  --surface:#ffffff;
+  --ink:#171a20;
+  --ink-2:#4a5160;
+  --muted:#858c9b;
+  --line:#e2e5ea;
+  --line-2:#c9ced6;
+  --accent:#1d5fad;
+  --accent-ink:#174e8f;
+  --accent-soft:#eaf1fa;
+  --series:#2a78d6;
+  --series2:#eb6834;
+  --series3:#1baf7a;
+  --crit:#d03b3b;
+  --crit-soft:rgba(208,59,59,.07);
+  --serif:"Noto Serif SC","Songti SC",serif;
+  --sans:"Noto Sans SC","Microsoft YaHei",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#101215; --surface:#181b20; --ink:#eef0f3; --ink-2:#c0c5cf; --muted:#8a909d;
+    --line:#282c33; --line-2:#3a3f48;
+    --accent:#5a96e3; --accent-ink:#79abec; --accent-soft:#1c2a3d;
+    --series:#3987e5; --series2:#d95926; --series3:#199e70; --crit:#e66767; --crit-soft:rgba(230,103,103,.10);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#101215; --surface:#181b20; --ink:#eef0f3; --ink-2:#c0c5cf; --muted:#8a909d;
+  --line:#282c33; --line-2:#3a3f48;
+  --accent:#5a96e3; --accent-ink:#79abec; --accent-soft:#1c2a3d;
+  --series:#3987e5; --series2:#d95926; --series3:#199e70; --crit:#e66767; --crit-soft:rgba(230,103,103,.10);
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:var(--sans); font-size:15.5px; line-height:1.85;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1190px; margin:0 auto; padding-inline:20px; padding-block:0 72px}
+
+.layout{display:grid; grid-template-columns:212px minmax(0,1fr); gap:44px; align-items:start}
+.article{max-width:920px; min-width:0}
+.sidenav{
+  position:sticky; top:16px; max-height:calc(100vh - 32px); overflow-y:auto;
+  padding-block:40px 16px; font-size:13px;
+}
+.sidenav .sn-chap{
+  margin:0 0 10px; padding-left:13px; font-size:11.5px; letter-spacing:.14em;
+  color:var(--muted); font-weight:700;
+}
+.sidenav a{
+  display:block; color:var(--ink-2); text-decoration:none; line-height:1.55;
+  padding:6px 10px 6px 13px; border-left:2px solid var(--line);
+}
+.sidenav a:hover{color:var(--accent-ink)}
+.sidenav a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.sidenav a.active{
+  color:var(--accent-ink); border-left-color:var(--accent);
+  background:var(--accent-soft); font-weight:700;
+}
+.hero,section.ch{scroll-margin-top:10px}
+@media (max-width: 999px){
+  .sidenav{display:none}
+  .layout{display:block}
+}
+@media (min-width: 1000px){
+  nav.chapmap{display:none}
+}
+
+.masthead{
+  display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  padding-block:18px 14px; border-bottom:1px solid var(--line);
+}
+.masthead .book{font-family:var(--serif); font-weight:700; font-size:15px; letter-spacing:.02em}
+.masthead .part{font-size:12.5px; color:var(--muted); letter-spacing:.12em}
+.masthead a{color:var(--accent-ink); text-decoration:none}
+.masthead a:hover{text-decoration:underline}
+.masthead a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+a.next{color:inherit; text-decoration:none}
+a.next:hover{border-color:var(--accent)}
+a.next:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+.hero{padding-block:44px 28px; border-bottom:1px solid var(--line)}
+.chap-no{
+  display:inline-flex; align-items:center; gap:10px;
+  font-size:12.5px; letter-spacing:.22em; color:var(--accent-ink); font-weight:700;
+}
+.chap-no::after{content:""; width:46px; height:1px; background:var(--accent)}
+.hero h1{
+  font-family:var(--serif); font-weight:900; font-size:clamp(30px,5vw,46px);
+  line-height:1.25; margin:10px 0 4px; letter-spacing:.02em; text-wrap:balance;
+}
+.hero .en{font-size:14px; color:var(--muted); letter-spacing:.08em; margin:0 0 18px}
+.hero .lede{max-width:46em; color:var(--ink-2); margin:0}
+.hero .lede strong{color:var(--ink)}
+.objectives{
+  margin-top:22px; padding:16px 20px; background:var(--surface);
+  border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:0 6px 6px 0;
+}
+.objectives h2{font-size:13px; letter-spacing:.18em; color:var(--accent-ink); margin:0 0 8px; font-weight:700}
+.objectives ul{margin:0; padding-left:1.3em; color:var(--ink-2)}
+.objectives li{margin:3px 0}
+.chapmap{display:flex; flex-wrap:wrap; gap:8px; margin-top:20px}
+.chapmap a{
+  font-size:13px; color:var(--ink-2); text-decoration:none;
+  border:1px solid var(--line-2); border-radius:999px; padding:4px 13px; background:var(--surface);
+}
+.chapmap a:hover{border-color:var(--accent); color:var(--accent-ink)}
+.chapmap a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+section.ch{padding-block:40px 8px}
+section.ch + section.ch{border-top:1px solid var(--line)}
+h2.sec{
+  font-family:var(--serif); font-weight:700; font-size:clamp(22px,3.4vw,28px);
+  margin:0 0 2px; line-height:1.35; text-wrap:balance;
+}
+h2.sec .no{color:var(--accent-ink); margin-right:10px; font-feature-settings:"tnum"}
+p.sec-en{font-size:12.5px; letter-spacing:.1em; color:var(--muted); margin:0 0 18px}
+h3{font-size:16.5px; font-weight:700; margin:26px 0 8px}
+h3 .tag{color:var(--accent-ink)}
+p{margin:10px 0}
+.prose{max-width:46em}
+.prose .en-term{color:var(--muted); font-size:.88em}
+strong{font-weight:700}
+em{font-style:normal; font-weight:700; color:var(--accent-ink)}
+
+.cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px; margin:16px 0}
+.card{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:16px 18px;
+}
+.card h4{margin:0 0 6px; font-size:15px}
+.card h4 .en-term{display:block; font-weight:400; font-size:12px; color:var(--muted); letter-spacing:.04em; margin-top:2px}
+.card p{margin:6px 0; font-size:14px; color:var(--ink-2)}
+.card ul{margin:6px 0 0; padding-left:1.2em; font-size:14px; color:var(--ink-2)}
+.card li{margin:3px 0}
+.chip{
+  display:inline-block; font-size:12.5px; color:var(--accent-ink); background:var(--accent-soft);
+  border-radius:4px; padding:1px 8px; margin:2px 4px 0 0;
+}
+
+.case{
+  margin:20px 0; padding:16px 20px 14px; background:var(--surface);
+  border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:0 8px 8px 0;
+}
+.case .label{font-size:12px; letter-spacing:.2em; color:var(--accent-ink); font-weight:700; display:block; margin-bottom:6px}
+.case h4{margin:0 0 6px; font-size:15.5px}
+.case p{margin:7px 0; font-size:14.5px; color:var(--ink-2)}
+.case p:last-child{margin-bottom:2px}
+.case .takeaway{color:var(--ink); font-weight:500}
+.case .takeaway::before{content:"▸ 教材对应 "; color:var(--accent-ink); font-weight:700; font-size:12.5px; letter-spacing:.05em}
+
+.pitfall{
+  margin:20px 0; padding:14px 20px; border:1px dashed var(--line-2); border-radius:8px; max-width:46em;
+}
+.pitfall .label{font-size:12px; letter-spacing:.2em; color:var(--crit); font-weight:700; display:block; margin-bottom:4px}
+.pitfall p{margin:4px 0; font-size:14.5px; color:var(--ink-2)}
+
+.formula{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px;
+  padding:12px 18px; margin:14px 0; max-width:46em; overflow-x:auto;
+  font-size:15px; line-height:2;
+}
+.formula .fx{white-space:nowrap}
+.formula sub,.formula sup{font-size:11px}
+.formula .note{font-size:12.5px; color:var(--muted)}
+
+table{border-collapse:collapse; width:100%; font-size:14px; font-variant-numeric:tabular-nums}
+.tablewrap{overflow-x:auto; margin:16px 0; border:1px solid var(--line); border-radius:8px; background:var(--surface)}
+.tablewrap table{min-width:560px}
+th,td{padding:9px 14px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top}
+th{font-size:12.5px; letter-spacing:.08em; color:var(--muted); font-weight:700; white-space:nowrap}
+tr:last-child td{border-bottom:none}
+td.num{white-space:nowrap}
+
+figure{margin:24px 0; background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:18px 18px 12px}
+figure .fig-scroll{overflow-x:auto}
+figure svg{display:block; max-width:100%; height:auto; color:var(--ink)}
+figure .fig-scroll svg{min-width:660px}
+figcaption{font-size:13px; color:var(--muted); margin-top:10px; line-height:1.7}
+figcaption b{color:var(--ink-2); font-weight:700}
+.fig-title{font-size:14px; font-weight:700; margin:0 0 12px}
+.fig-title .fno{color:var(--accent-ink); margin-right:8px}
+
+svg .node{fill:var(--bg); stroke:var(--line-2); stroke-width:1.2; rx:6}
+svg .node-hi{fill:var(--accent-soft); stroke:var(--accent)}
+svg .nt{font:700 12.5px var(--sans); fill:var(--ink)}
+svg .nd{font:400 11px var(--sans); fill:var(--ink-2)}
+svg .edge{stroke:var(--ink-2); stroke-width:1.4; fill:none}
+svg .edge-soft{stroke:var(--muted); stroke-width:1.2; fill:none; stroke-dasharray:4 4}
+svg .elabel{font:400 11.5px var(--sans); fill:var(--muted)}
+svg .grid{stroke:var(--line); stroke-width:1}
+svg .axis{stroke:var(--line-2); stroke-width:1.2}
+svg .tick{font:400 11px var(--sans); fill:var(--muted)}
+svg .atitle{font:400 11.5px var(--sans); fill:var(--muted)}
+svg .pt{fill:var(--series); stroke:var(--surface); stroke-width:2}
+svg .pt2{fill:var(--series2); stroke:var(--surface); stroke-width:2}
+svg .pl{font:700 13px var(--sans); fill:var(--ink)}
+svg .pv{font:400 11.5px var(--sans); fill:var(--ink-2)}
+svg .ln1{stroke:var(--series); stroke-width:2.5; fill:none}
+svg .ln2{stroke:var(--series2); stroke-width:2.5; fill:none}
+svg .ln2d{stroke:var(--series2); stroke-width:2; fill:none; stroke-dasharray:6 5}
+svg .seg1{fill:var(--series)}
+svg .seg2{fill:var(--series2)}
+
+.recap{margin-top:8px}
+.recap ol{margin:8px 0 0; padding-left:1.4em; max-width:46em; color:var(--ink-2)}
+.recap li{margin:7px 0}
+.recap li b{color:var(--ink)}
+details{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px;
+  padding:12px 18px; margin:10px 0; max-width:46em;
+}
+details summary{cursor:pointer; font-weight:500; color:var(--ink)}
+details summary:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+details[open] summary{color:var(--accent-ink)}
+details .ans{margin-top:8px; padding-top:8px; border-top:1px dashed var(--line); font-size:14.5px; color:var(--ink-2)}
+details .ans p{margin:6px 0}
+
+.next{
+  margin-top:48px; padding:18px 22px; border:1px solid var(--line); border-radius:8px;
+  background:var(--surface); display:flex; justify-content:space-between; align-items:center; gap:14px; flex-wrap:wrap;
+}
+.next .lbl{font-size:12px; letter-spacing:.18em; color:var(--muted)}
+.next .ttl{font-family:var(--serif); font-weight:700; font-size:18px; margin-top:2px}
+.foot{margin-top:26px; font-size:12.5px; color:var(--muted); line-height:1.8}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <span class="book">《投资学》学习手册 · Investments (Bodie · Kane · Marcus)</span>
+  <span class="part"><a href="investments-index.html">学习地图</a> · 第二部分 资产组合理论与实践</span>
+</header>
+
+<div class="layout">
+
+<nav class="sidenav" aria-label="小节导航">
+  <p class="sn-chap">第 6 章 · 风险资产配置</p>
+  <a href="#top">章首 · 学习目标</a>
+  <a href="#s1">6.1 风险厌恶与效用</a>
+  <a href="#s2">6.2 资本配置问题</a>
+  <a href="#s3">6.3 资本配置线 CAL</a>
+  <a href="#s4">6.4 最优仓位 y*</a>
+  <a href="#s5">6.5 资本市场线与被动策略</a>
+  <a href="#recap">小结 · 术语 · 自测</a>
+</nav>
+
+<main class="article">
+
+<!-- ======================== 章首 ======================== -->
+<div class="hero" id="top">
+  <span class="chap-no">CHAPTER 6</span>
+  <h1>风险资产配置</h1>
+  <p class="en">Capital Allocation to Risky Assets</p>
+  <p class="lede">这一章回答投资中<strong>最重要的那个数字</strong>：你的钱里，多大比例该放进风险资产？答案不靠感觉——先用效用函数把“你有多怕亏”写成数字 A，再画出所有可选的风险—收益组合（资本配置线），两者相遇的那一点就是你的最优仓位 <strong>y*</strong>。学完你会得到一个可以直接套参数的公式。</p>
+
+  <div class="objectives">
+    <h2>学习目标</h2>
+    <ul>
+      <li>用效用函数 U = E(r) − ½Aσ² 给“风险厌恶”定量，理解确定性等价</li>
+      <li>把投资决策拆成两层：风险组合内部构成（第 7 章）与风险 / 无风险的比例 y（本章）</li>
+      <li>画出并读懂资本配置线：截距是无风险利率，斜率是夏普比率</li>
+      <li>掌握最优仓位公式 y* =（E(r<sub>p</sub>）− r<sub>f</sub>）/（Aσ<sub>p</sub>²），并理解它与波动率目标仓位的关系</li>
+      <li>理解资本市场线与被动策略为何是合格的默认选择</li>
+    </ul>
+  </div>
+
+  <nav class="chapmap" aria-label="本章导览">
+    <a href="#s1">6.1 风险厌恶</a>
+    <a href="#s2">6.2 配置问题</a>
+    <a href="#s3">6.3 CAL</a>
+    <a href="#s4">6.4 最优 y*</a>
+    <a href="#s5">6.5 CML 与被动</a>
+    <a href="#recap">小结与自测</a>
+  </nav>
+</div>
+
+<!-- ======================== 6.1 ======================== -->
+<section class="ch" id="s1">
+  <h2 class="sec"><span class="no">6.1</span>风险厌恶与效用</h2>
+  <p class="sec-en">RISK AVERSION AND UTILITY</p>
+
+  <div class="prose">
+    <p>第 5 章说过：风险资产必须提供正的风险溢价才有人买，因为多数投资者是<strong>风险厌恶</strong>的——在期望收益相同的两个选择之间，永远挑波动小的那个。区分一个重要概念：<strong>投机</strong>是为可观的风险溢价承担风险（期望为正）；<strong>赌博</strong>是为刺激承担零或负溢价的风险。投资学只处理前者。</p>
+    <p>要把“怕亏的程度”放进公式，教材给了一张简洁的打分卡：</p>
+  </div>
+
+  <div class="formula">
+    <div class="fx">效用　U = E(r) − ½ A σ²　（r、σ 用小数）</div>
+    <div class="note">A 是风险厌恶系数：A 越大，同样的波动扣分越狠。A > 0 风险厌恶（常人 2–6）；A = 0 风险中性（只看期望）；A < 0 风险偏好（赌徒）。例：组合 E(r) = 10%、σ = 20%，对 A = 4 的人：U = 0.10 − ½ × 4 × 0.04 = 0.02——这组合在他心里只“值”2% 的无风险收益，这个 2% 就叫<strong>确定性等价收益率</strong>。若无风险利率是 3%，他干脆不该买。</div>
+  </div>
+
+  <div class="prose">
+    <p>把 U 取同一个值的所有（σ, E(r)）组合连起来，就是一条<strong>无差异曲线</strong>：风险厌恶者的无差异曲线向右上翘——波动每多一分，必须用更多期望收益补偿才觉得“无所谓”。它将在 6.4 节与资本配置线相切，切点就是答案。</p>
+  </div>
+
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p>“我的风险承受力是问卷测出来的，固定不变。”——风险厌恶 A 在实证中是<strong>状态依赖</strong>的：牛市顶点人人填出 A = 2，暴跌 30% 后同一批人答出 A = 8。2015 年上半年满仓加杠杆、下半年割肉空仓的是同一群人。解决办法不是测得更准，而是把 y* 写成<strong>事前规则</strong>，用纪律对冲情绪——这正是本章公式的实战价值。</p>
+  </div>
+</section>
+
+<!-- ======================== 6.2 ======================== -->
+<section class="ch" id="s2">
+  <h2 class="sec"><span class="no">6.2</span>资本配置问题：两层决策的第一层</h2>
+  <p class="sec-en">CAPITAL ALLOCATION ACROSS RISKY AND RISK-FREE PORTFOLIOS</p>
+
+  <div class="prose">
+    <p>把你的全部资产想成两只桶：<strong>无风险资产 F</strong>（货币基金 / 短期国债，收益 r<sub>f</sub>，σ = 0）和<strong>风险组合 P</strong>（股票、债券等打包成的一个组合）。投资决策于是拆成两层：</p>
+    <p>① P 的内部怎么构成——第 7 章的事；<br>② 财富的多大比例 <strong>y</strong> 放进 P、剩下 1 − y 放 F——<strong>本章的事</strong>。</p>
+    <p>由 y 决定的整体资产叫<strong>完整组合 C</strong>。它的期望收益与波动都是 y 的线性函数：</p>
+  </div>
+
+  <div class="formula">
+    <div class="fx">E(r<sub>C</sub>) = r<sub>f</sub> + y × [ E(r<sub>P</sub>) − r<sub>f</sub> ]</div>
+    <div class="fx">σ<sub>C</sub> = y × σ<sub>P</sub></div>
+    <div class="note">例：r<sub>f</sub> = 3%，P 的 E(r) = 10%、σ = 20%。取 y = 0.5：E(r<sub>C</sub>) = 3% + 0.5 × 7% = 6.5%，σ<sub>C</sub> = 10%。风险与超额收益按同一比例缩放——这是下一节那条直线的来源。</div>
+  </div>
+</section>
+
+<!-- ======================== 6.3 ======================== -->
+<section class="ch" id="s3">
+  <h2 class="sec"><span class="no">6.3</span>资本配置线：你的全部选择是一条直线</h2>
+  <p class="sec-en">THE CAPITAL ALLOCATION LINE</p>
+
+  <div class="prose">
+    <p>让 y 从 0 滑到 1 再滑过 1（借钱加杠杆），完整组合 C 在（σ, E(r)）平面上扫出一条直线——<strong>资本配置线（CAL）</strong>。它的截距是 r<sub>f</sub>，斜率是每多担一单位波动能换到的超额收益：</p>
+  </div>
+
+  <div class="formula">
+    <div class="fx">CAL 斜率 =（E(r<sub>P</sub>) − r<sub>f</sub>）/ σ<sub>P</sub> ＝ P 的夏普比率</div>
+    <div class="note">本例斜率 =（10% − 3%）/ 20% = 0.35。第 5 章铺垫的夏普比率在这里有了几何身份：<strong>它是你机会集的斜率，越陡越好</strong>。</div>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 6-1</span>资本配置线：y 的每个取值都是线上一点（借款利率更高则线会折弯）</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 420" role="img" aria-label="资本配置线：从无风险利率 3% 出发经过风险组合 P（波动 20%、期望收益 10%）的直线；y 等于 0.5 的点标在中段；超过 P 的杠杆段因借款利率 5% 而斜率变缓">
+      <g text-anchor="end">
+        <text class="tick" x="56" y="368">0</text>
+        <text class="tick" x="56" y="295">3</text>
+        <text class="tick" x="56" y="222">6</text>
+        <text class="tick" x="56" y="149">9</text>
+        <text class="tick" x="56" y="77">12</text>
+      </g>
+      <line class="grid" x1="64" y1="291" x2="696" y2="291"/>
+      <line class="grid" x1="64" y1="218" x2="696" y2="218"/>
+      <line class="grid" x1="64" y1="145" x2="696" y2="145"/>
+      <line class="grid" x1="64" y1="73" x2="696" y2="73"/>
+      <line class="axis" x1="64" y1="364" x2="696" y2="364"/>
+      <line class="axis" x1="64" y1="24" x2="64" y2="364"/>
+      <g text-anchor="middle">
+        <text class="tick" x="64" y="384">0</text>
+        <text class="tick" x="169" y="384">5</text>
+        <text class="tick" x="275" y="384">10</text>
+        <text class="tick" x="380" y="384">15</text>
+        <text class="tick" x="485" y="384">20</text>
+        <text class="tick" x="591" y="384">25</text>
+        <text class="tick" x="696" y="384">30</text>
+      </g>
+      <text class="atitle" x="380" y="408" text-anchor="middle">完整组合的标准差 σ（%）</text>
+      <text class="atitle" x="64" y="14">期望收益 E(r)（%）</text>
+      <!-- 同斜率虚影（若能按 3% 借款） -->
+      <line class="edge-soft" x1="485" y1="121" x2="654" y2="53"/>
+      <text class="elabel" x="660" y="48">若仍按 3% 借款</text>
+      <!-- CAL 主线 0..P -->
+      <polyline class="ln1" points="64,291 485,121"/>
+      <!-- 杠杆段（借款 5%） -->
+      <polyline class="ln2" points="485,121 654,73"/>
+      <text class="pv" x="610" y="110" text-anchor="middle">杠杆段：借款利率 5%，斜率降为 0.25</text>
+      <!-- 关键点 -->
+      <circle class="pt" cx="64" cy="291" r="6"><title>无风险资产 F：σ=0，r=3%</title></circle>
+      <text class="pl" x="80" y="282">F（全存货基，y=0）</text>
+      <circle class="pt" cx="275" cy="206" r="6"><title>y=0.5：σ=10%，E(r)=6.5%</title></circle>
+      <text class="pl" x="291" y="200">y = 0.5</text>
+      <text class="pv" x="291" y="218">σ=10%，E=6.5%</text>
+      <circle class="pt" cx="485" cy="121" r="7"><title>风险组合 P：σ=20%，E(r)=10%</title></circle>
+      <text class="pl" x="469" y="112" text-anchor="end">P（满仓风险组合，y=1）</text>
+      <text class="pv" x="240" y="268" text-anchor="middle">斜率 = 夏普比率 = 0.35</text>
+    </svg>
+    </div>
+    <figcaption><b>读图：</b>线上每一点都是“同一个 P + 不同剂量”的组合，点的选择只改变<b>剂量</b>不改变配方。y &gt; 1 要借钱买入更多 P；散户融资利率高于 r<sub>f</sub>，于是 CAL 在 P 处折弯——杠杆段的性价比（斜率）系统性变差，这是对加杠杆的第一道数学警告。</figcaption>
+  </figure>
+</section>
+
+<!-- ======================== 6.4 ======================== -->
+<section class="ch" id="s4">
+  <h2 class="sec"><span class="no">6.4</span>最优仓位 y*：公式与直觉</h2>
+  <p class="sec-en">RISK TOLERANCE AND ASSET ALLOCATION</p>
+
+  <div class="prose">
+    <p>CAL 给出“能选什么”，效用函数给出“你想要什么”。把 E(r<sub>C</sub>) 与 σ<sub>C</sub> 代入效用函数对 y 求最大，得到全章的目的地：</p>
+  </div>
+
+  <div class="formula">
+    <div class="fx">最优风险仓位　y* =（E(r<sub>P</sub>) − r<sub>f</sub>）/（A × σ<sub>P</sub>²）</div>
+    <div class="note">读法：仓位 = 风险溢价 ÷（风险厌恶 × 方差）。分子是动机，分母是刹车。例：溢价 7%、σ = 20%、A = 4：y* = 0.07 /（4 × 0.04）= 43.75%——这位投资者该把约 44% 的钱放进风险组合，其余买货基。</div>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 6-2</span>相切的瞬间：无差异曲线碰到 CAL 的那一点就是 y*</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 420" role="img" aria-label="资本配置线与两条无差异曲线：较低的曲线与 CAL 相交，最高可达的曲线与 CAL 相切于最优组合 C*，对应约 44% 的风险仓位">
+      <g text-anchor="end">
+        <text class="tick" x="56" y="368">0</text>
+        <text class="tick" x="56" y="295">3</text>
+        <text class="tick" x="56" y="222">6</text>
+        <text class="tick" x="56" y="149">9</text>
+        <text class="tick" x="56" y="77">12</text>
+      </g>
+      <line class="grid" x1="64" y1="291" x2="696" y2="291"/>
+      <line class="grid" x1="64" y1="218" x2="696" y2="218"/>
+      <line class="grid" x1="64" y1="145" x2="696" y2="145"/>
+      <line class="grid" x1="64" y1="73" x2="696" y2="73"/>
+      <line class="axis" x1="64" y1="364" x2="696" y2="364"/>
+      <line class="axis" x1="64" y1="24" x2="64" y2="364"/>
+      <g text-anchor="middle">
+        <text class="tick" x="64" y="384">0</text>
+        <text class="tick" x="169" y="384">5</text>
+        <text class="tick" x="275" y="384">10</text>
+        <text class="tick" x="380" y="384">15</text>
+        <text class="tick" x="485" y="384">20</text>
+        <text class="tick" x="591" y="384">25</text>
+        <text class="tick" x="696" y="384">30</text>
+      </g>
+      <text class="atitle" x="380" y="408" text-anchor="middle">标准差 σ（%）</text>
+      <text class="atitle" x="64" y="14">期望收益 E(r)（%）</text>
+      <!-- CAL -->
+      <polyline class="ln1" points="64,291 612,70"/>
+      <text class="pv" x="560" y="120">CAL（斜率 0.35）</text>
+      <!-- 较低无差异曲线（与 CAL 相交两次，非最优） -->
+      <polyline class="ln2d" points="64,279 148,271 233,248 317,209 401,155 485,85"/>
+      <text class="elabel" x="497" y="80">U = 3.5%（穿过 CAL：非最优）</text>
+      <!-- 最高可达的无差异曲线（相切） -->
+      <polyline class="ln2" points="64,254 106,252 148,246 190,237 248,217 317,184 401,130 485,60 506,40"/>
+      <text class="pv" x="430" y="96">U = 4.53%（最高可达）</text>
+      <!-- 切点 -->
+      <circle class="pt" cx="248" cy="217" r="7"><title>最优完整组合 C*：σ=8.75%，E(r)=6.06%，y*=43.75%</title></circle>
+      <text class="pl" x="262" y="210">C*</text>
+      <text class="pv" x="262" y="228">y* = 43.75%，σ = 8.75%，E = 6.06%</text>
+      <!-- 更高效用方向 -->
+      <text class="elabel" x="140" y="200">↖ 效用更高的方向</text>
+    </svg>
+    </div>
+    <figcaption><b>读图：</b>虚线那条无差异曲线（U = 3.5%）与 CAL 相交两次——线上还有更好的点没拿到；把曲线往左上推，推到<b>恰好相切</b>就再也推不动了，切点 C* 同时满足“在能选的线上”与“效用最高”。切点处曲线斜率（A·σ）等于 CAL 斜率（夏普比率），解出来的就是 y* 公式。</figcaption>
+  </figure>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 6-3</span>同一条 CAL，不同的人：y* 随风险厌恶 A 的变化（溢价 7%、σ = 20%）</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 310" role="img" aria-label="条形图：风险厌恶系数从 1.5 到 8，最优风险仓位从约 117% 降到约 22%；A 为 1.5 时超过 100% 需要杠杆">
+      <line class="axis" x1="180" y1="36" x2="180" y2="286"/>
+      <path class="edge-soft" d="M 580 36 V 286"/>
+      <text class="elabel" x="580" y="28" text-anchor="middle">100%：满仓线，超过即需杠杆</text>
+      <text class="nd" x="170" y="64" text-anchor="end">A = 1.5（激进）</text>
+      <rect class="seg2" x="180" y="48" width="466.7" height="22" rx="3"/>
+      <text class="pv" x="652" y="64">117%（需杠杆）</text>
+      <text class="nd" x="170" y="106" text-anchor="end">A = 2</text>
+      <rect class="seg1" x="180" y="90" width="350" height="22" rx="3"/>
+      <text class="pv" x="536" y="106">87.5%</text>
+      <text class="nd" x="170" y="148" text-anchor="end">A = 3</text>
+      <rect class="seg1" x="180" y="132" width="233.3" height="22" rx="3"/>
+      <text class="pv" x="419" y="148">58.3%</text>
+      <text class="nd" x="170" y="190" text-anchor="end">A = 4</text>
+      <rect class="seg1" x="180" y="174" width="175" height="22" rx="3"/>
+      <text class="pv" x="361" y="190">43.8%</text>
+      <text class="nd" x="170" y="232" text-anchor="end">A = 6</text>
+      <rect class="seg1" x="180" y="216" width="116.7" height="22" rx="3"/>
+      <text class="pv" x="303" y="232">29.2%</text>
+      <text class="nd" x="170" y="274" text-anchor="end">A = 8（极保守）</text>
+      <rect class="seg1" x="180" y="258" width="87.5" height="22" rx="3"/>
+      <text class="pv" x="274" y="274">21.9%</text>
+    </svg>
+    </div>
+    <figcaption><b>读图：</b>市场（CAL）对所有人一样，仓位的差异全部来自分母里的 A。注意公式的另一半：<b>σ 升高时 y* 按平方缩减</b>——波动翻倍，仓位砍到四分之一。把 σ 换成滚动估计值，这个公式就是量化实务里“波动率目标仓位”（vol targeting）的雏形，也是你未来交易系统仓位模块的第一块积木。</figcaption>
+  </figure>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>目标日期基金：把 y* 做成产品的下滑航道</h4>
+    <p>美国 401(k) 养老体系的默认选项是<strong>目标日期基金</strong>（如“Target 2055”）：30 岁时股票仓位约 90%，随年龄增长逐步下调，退休时降到 40% 以下——那条著名的“下滑航道”（glide path），本质就是让 y* 随生命周期衰减。理由用本章语言说得很干净：年轻人拥有大量尚未变现的<strong>人力资本</strong>（未来工资像一只巨大的类债券资产），金融账户里的高 y 只是对冲了整体资产负债表的保守；临近退休，人力资本耗尽，σ 的承受力与 A 的现实约束都变了，y* 自然下移。中国的养老目标日期 FOF（2018 年起）复制了同一设计。</p>
+    <p class="takeaway">y* 不是测一次用一生的常数，而是随财富结构、负债与剩余人力资本演化的变量——但它的每次调整都应来自<strong>公式输入的变化</strong>，而不是行情引发的情绪。</p>
+  </div>
+</section>
+
+<!-- ======================== 6.5 ======================== -->
+<section class="ch" id="s5">
+  <h2 class="sec"><span class="no">6.5</span>资本市场线与被动策略</h2>
+  <p class="sec-en">PASSIVE STRATEGIES AND THE CAPITAL MARKET LINE</p>
+
+  <div class="prose">
+    <p>本章一直假设风险组合 P 已经选好。最省事的选法是<strong>被动策略</strong>：直接拿市值加权的市场组合 M（如沪深 300 / 标普 500 指数基金）当 P。此时的 CAL 有个专名——<strong>资本市场线（CML）</strong>。</p>
+    <p>被动策略的辩护词来自前五章的积累：市场组合免分析费、免高额管理费（第 4 章）、天然充分分散（第 7 章将证明）、且在近似有效的市场里（第 11 章）它的夏普比率极难被费后超越——美国历史上 CML 的斜率约为 0.4，能长期做得更陡的人凤毛麟角。于是一个朴素的组合模板成立：<em>指数基金 + 货币基金，用 y* 调节剂量</em>。这不是懒惰，是把精力留给唯一真正属于你的决策——y。</p>
+  </div>
+
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p>“行情好就把 y 加上去，行情差再降回来。”——把 y 当成择时工具，等于用情绪驱动最重要的变量，第 4 章“基民行为缺口”就是这么亏出来的。y* 公式里没有“近期涨跌”这个输入；让 y 变动的合法理由只有三个：溢价的长期估计变了、σ 变了、你的 A（财务处境）变了。</p>
+  </div>
+</section>
+
+<!-- ======================== 小结 ======================== -->
+<section class="ch" id="recap">
+  <h2 class="sec"><span class="no">※</span>本章小结</h2>
+  <p class="sec-en">SUMMARY</p>
+
+  <div class="recap">
+    <ol>
+      <li><b>风险厌恶可以定量：</b>U = E(r) − ½Aσ²；A 是你对波动的扣分力度，确定性等价是风险组合在你心中的“无风险现金价”。</li>
+      <li><b>投资决策两层分离：</b>先定风险组合 P 的配方（第 7 章），再定剂量 y（本章）——后者对普通投资者更重要。</li>
+      <li><b>资本配置线：</b>E(r<sub>C</sub>) = r<sub>f</sub> + y·溢价，σ<sub>C</sub> = y·σ<sub>P</sub>；截距 r<sub>f</sub>，斜率 = 夏普比率；借款利率更高使杠杆段折弯变缓。</li>
+      <li><b>最优仓位公式：</b>y* = 溢价 /（A·σ²）——动机除以刹车；σ 按平方进入分母，是波动率目标仓位的理论原型。</li>
+      <li><b>几何语言：</b>y* 出现在无差异曲线与 CAL 相切处；切点条件“A·σ = 夏普比率”就是公式的来源。</li>
+      <li><b>被动基准：</b>以市场组合为 P 的 CAL 称 CML；“指数基金 + 货基 + y* 调剂量”是理论支持的默认模板，y 的变动只应响应输入变化，不应响应行情情绪。</li>
+    </ol>
+  </div>
+
+  <h3>核心术语（中英对照）</h3>
+  <div class="tablewrap">
+    <table>
+      <tr><th>中文</th><th>English</th><th>一句话定义</th></tr>
+      <tr><td>风险厌恶</td><td>risk aversion</td><td>同等期望下偏好更低波动的倾向，强度记为 A</td></tr>
+      <tr><td>投机 / 赌博</td><td>speculation / gamble</td><td>为正溢价担险 vs 为刺激担无偿风险</td></tr>
+      <tr><td>效用函数</td><td>utility function</td><td>U = E(r) − ½Aσ²，给组合打分</td></tr>
+      <tr><td>确定性等价收益率</td><td>certainty equivalent rate</td><td>与风险组合效用相同的无风险收益</td></tr>
+      <tr><td>无差异曲线</td><td>indifference curve</td><td>效用相同的（σ, E(r)）点的轨迹</td></tr>
+      <tr><td>完整组合</td><td>complete portfolio</td><td>风险组合与无风险资产按 y 混合后的整体</td></tr>
+      <tr><td>资本配置线</td><td>capital allocation line (CAL)</td><td>改变 y 扫出的直线，斜率为夏普比率</td></tr>
+      <tr><td>奖励—波动比率</td><td>reward-to-volatility (Sharpe) ratio</td><td>超额收益 ÷ 标准差，CAL 的斜率</td></tr>
+      <tr><td>最优风险仓位</td><td>optimal risky share y*</td><td>溢价 /（A·σ²），效用最大的剂量</td></tr>
+      <tr><td>资本市场线</td><td>capital market line (CML)</td><td>以市场组合为风险组合的 CAL</td></tr>
+      <tr><td>被动策略</td><td>passive strategy</td><td>持有市场指数不做分析的策略</td></tr>
+      <tr><td>下滑航道</td><td>glide path</td><td>目标日期基金随年龄下调股票仓位的曲线</td></tr>
+    </table>
+  </div>
+
+  <h3>自测（先想后翻）</h3>
+  <details>
+    <summary>Q1 组合 E(r) = 12%、σ = 25%，无风险利率 3%。A = 2 与 A = 5 的投资者各给它打多少效用分？谁可能拒绝它？</summary>
+    <div class="ans"><p>A = 2：U = 0.12 − ½ × 2 × 0.0625 = 5.75%；A = 5：U = 0.12 − ½ × 5 × 0.0625 = −3.6%。后者的确定性等价是负数，远低于 3% 的无风险利率——他会拒绝全仓持有该组合（但注意：按 y* 持有一部分仍然合理，y* = 0.09 /（5 × 0.0625）= 28.8%）。</p></div>
+  </details>
+  <details>
+    <summary>Q2 r<sub>f</sub> = 3%，P：E(r) = 10%、σ = 20%。写出 CAL 方程；y = 0.3 与 y = 1.4 的完整组合各落在哪？后者需要什么条件？</summary>
+    <div class="ans"><p>CAL：E(r<sub>C</sub>) = 3% + 0.35 × σ<sub>C</sub>。y = 0.3：σ = 6%，E = 5.1%。y = 1.4：σ = 28%，E = 12.8%——前提是能按 3% 借款；现实中融资利率若为 6%，杠杆段方程变为 E = 6% +（10% − 6%）/ 20% × σ = 6% + 0.2σ，y = 1.4 只有 E = 11.6%，斜率从 0.35 掉到 0.2——杠杆部分的性价比打了六折。</p></div>
+  </details>
+  <details>
+    <summary>Q3 溢价 6%、σ = 18%、A = 3：y* 是多少？若波动升到 27%（1.5 倍），y* 变成多少？</summary>
+    <div class="ans"><p>y* = 0.06 /（3 × 0.0324）= 61.7%。σ 升至 27%：y* = 0.06 /（3 × 0.0729）= 27.4%——波动乘 1.5，仓位除以 2.25（平方效应）。这个“σ 升、仓位按平方砍”的反应函数，就是波动率目标策略在理论上的出生证明。</p></div>
+  </details>
+  <details>
+    <summary>Q4 为什么最优点是无差异曲线与 CAL 的切点，而不是交点？</summary>
+    <div class="ans"><p>有交点说明这条曲线穿过了机会集：线上存在效用更高的点（往左上方挪一点仍在 CAL 上但到了更高的曲线），所以交点不最优。把曲线推高到恰好相切，再推就离开 CAL 了——切点是“可行”与“最想要”的边界。数学条件：曲线斜率 A·σ = CAL 斜率（夏普比率），整理即得 y* 公式。</p></div>
+  </details>
+  <details>
+    <summary>Q5 用本章框架解释目标日期基金的下滑航道，并指出“行情大跌后把 y 降到 0”错在哪。</summary>
+    <div class="ans"><p>下滑航道 = y* 的生命周期版本：年轻时人力资本（未来工资流）像一笔巨大的类债券资产，金融账户的高 y 对冲了总资产负债表的保守；年龄增长人力资本缩水，承受力下降，y* 平滑下移——输入变了，仓位才变。而“大跌后清仓”的输入是情绪：跌后溢价往往更高（价格更便宜）、公式反而可能指向更高的 y*；在 σ 飙升时适度降仓合法（分母变大），但降到 0 对应 A = ∞，与本人长期的真实偏好矛盾——这就是用规则（事前的 y* 函数）代替临场判断的意义。</p></div>
+  </details>
+
+  <a class="next" href="investments-ch07.html">
+    <div>
+      <div class="lbl">NEXT CHAPTER</div>
+      <div class="ttl">第 7 章 · 最优风险资产组合</div>
+    </div>
+    <div class="lbl">分散化 → 协方差 → 有效前沿 → 两基金分离</div>
+  </a>
+
+  <p class="foot">本页为依据 Bodie–Kane–Marcus《投资学》（Investments）框架整理的原创学习笔记，仅用于教学理解；数值为教学算例。内容不构成任何投资建议。</p>
+</section>
+
+</main>
+</div>
+</div>
+
+<script>
+(function(){
+  var links = Array.prototype.slice.call(document.querySelectorAll('.sidenav a[href^="#"]'));
+  if(!links.length) return;
+  var map = [];
+  links.forEach(function(a){
+    var el = document.getElementById(a.getAttribute('href').slice(1));
+    if(el) map.push([el, a]);
+  });
+  function update(){
+    var y = window.scrollY + 150;
+    var cur = map[0][1];
+    for(var i = 0; i < map.length; i++){
+      if(map[i][0].offsetTop <= y) cur = map[i][1];
+    }
+    map.forEach(function(p){ p[1].classList.toggle('active', p[1] === cur); });
+  }
+  var tick = false;
+  window.addEventListener('scroll', function(){
+    if(!tick){
+      tick = true;
+      requestAnimationFrame(function(){ tick = false; update(); });
+    }
+  }, {passive:true});
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+</body>
+</html>
