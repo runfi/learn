@@ -1,0 +1,561 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>投资学 · 第12章 行为金融与技术分析</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700;900&family=Noto+Sans+SC:wght@400;500;700&display=swap">
+<style>
+/* 布局：双栏（212px 侧栏 + 正文），章导览 + 12.1–12.5 分节；宽图表置于横向滚动容器 */
+:root{
+  --bg:#f5f6f7;
+  --surface:#ffffff;
+  --ink:#171a20;
+  --ink-2:#4a5160;
+  --muted:#858c9b;
+  --line:#e2e5ea;
+  --line-2:#c9ced6;
+  --accent:#1d5fad;
+  --accent-ink:#174e8f;
+  --accent-soft:#eaf1fa;
+  --series:#2a78d6;
+  --series2:#eb6834;
+  --series3:#1baf7a;
+  --crit:#d03b3b;
+  --crit-soft:rgba(208,59,59,.07);
+  --serif:"Noto Serif SC","Songti SC",serif;
+  --sans:"Noto Sans SC","Microsoft YaHei",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#101215; --surface:#181b20; --ink:#eef0f3; --ink-2:#c0c5cf; --muted:#8a909d;
+    --line:#282c33; --line-2:#3a3f48;
+    --accent:#5a96e3; --accent-ink:#79abec; --accent-soft:#1c2a3d;
+    --series:#3987e5; --series2:#d95926; --series3:#199e70; --crit:#e66767; --crit-soft:rgba(230,103,103,.10);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#101215; --surface:#181b20; --ink:#eef0f3; --ink-2:#c0c5cf; --muted:#8a909d;
+  --line:#282c33; --line-2:#3a3f48;
+  --accent:#5a96e3; --accent-ink:#79abec; --accent-soft:#1c2a3d;
+  --series:#3987e5; --series2:#d95926; --series3:#199e70; --crit:#e66767; --crit-soft:rgba(230,103,103,.10);
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:var(--sans); font-size:15.5px; line-height:1.85;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1190px; margin:0 auto; padding-inline:20px; padding-block:0 72px}
+
+.layout{display:grid; grid-template-columns:212px minmax(0,1fr); gap:44px; align-items:start}
+.article{max-width:920px; min-width:0}
+.sidenav{
+  position:sticky; top:16px; max-height:calc(100vh - 32px); overflow-y:auto;
+  padding-block:40px 16px; font-size:13px;
+}
+.sidenav .sn-chap{
+  margin:0 0 10px; padding-left:13px; font-size:11.5px; letter-spacing:.14em;
+  color:var(--muted); font-weight:700;
+}
+.sidenav a{
+  display:block; color:var(--ink-2); text-decoration:none; line-height:1.55;
+  padding:6px 10px 6px 13px; border-left:2px solid var(--line);
+}
+.sidenav a:hover{color:var(--accent-ink)}
+.sidenav a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.sidenav a.active{
+  color:var(--accent-ink); border-left-color:var(--accent);
+  background:var(--accent-soft); font-weight:700;
+}
+.hero,section.ch{scroll-margin-top:10px}
+@media (max-width: 999px){
+  .sidenav{display:none}
+  .layout{display:block}
+}
+@media (min-width: 1000px){
+  nav.chapmap{display:none}
+}
+
+.masthead{
+  display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  padding-block:18px 14px; border-bottom:1px solid var(--line);
+}
+.masthead .book{font-family:var(--serif); font-weight:700; font-size:15px; letter-spacing:.02em}
+.masthead .part{font-size:12.5px; color:var(--muted); letter-spacing:.12em}
+.masthead a{color:var(--accent-ink); text-decoration:none}
+.masthead a:hover{text-decoration:underline}
+.masthead a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+a.next{color:inherit; text-decoration:none}
+a.next:hover{border-color:var(--accent)}
+a.next:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+.hero{padding-block:44px 28px; border-bottom:1px solid var(--line)}
+.chap-no{
+  display:inline-flex; align-items:center; gap:10px;
+  font-size:12.5px; letter-spacing:.22em; color:var(--accent-ink); font-weight:700;
+}
+.chap-no::after{content:""; width:46px; height:1px; background:var(--accent)}
+.hero h1{
+  font-family:var(--serif); font-weight:900; font-size:clamp(30px,5vw,46px);
+  line-height:1.25; margin:10px 0 4px; letter-spacing:.02em; text-wrap:balance;
+}
+.hero .en{font-size:14px; color:var(--muted); letter-spacing:.08em; margin:0 0 18px}
+.hero .lede{max-width:46em; color:var(--ink-2); margin:0}
+.hero .lede strong{color:var(--ink)}
+.objectives{
+  margin-top:22px; padding:16px 20px; background:var(--surface);
+  border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:0 6px 6px 0;
+}
+.objectives h2{font-size:13px; letter-spacing:.18em; color:var(--accent-ink); margin:0 0 8px; font-weight:700}
+.objectives ul{margin:0; padding-left:1.3em; color:var(--ink-2)}
+.objectives li{margin:3px 0}
+.chapmap{display:flex; flex-wrap:wrap; gap:8px; margin-top:20px}
+.chapmap a{
+  font-size:13px; color:var(--ink-2); text-decoration:none;
+  border:1px solid var(--line-2); border-radius:999px; padding:4px 13px; background:var(--surface);
+}
+.chapmap a:hover{border-color:var(--accent); color:var(--accent-ink)}
+.chapmap a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+section.ch{padding-block:40px 8px}
+section.ch + section.ch{border-top:1px solid var(--line)}
+h2.sec{
+  font-family:var(--serif); font-weight:700; font-size:clamp(22px,3.4vw,28px);
+  margin:0 0 2px; line-height:1.35; text-wrap:balance;
+}
+h2.sec .no{color:var(--accent-ink); margin-right:10px; font-feature-settings:"tnum"}
+p.sec-en{font-size:12.5px; letter-spacing:.1em; color:var(--muted); margin:0 0 18px}
+h3{font-size:16.5px; font-weight:700; margin:26px 0 8px}
+h3 .tag{color:var(--accent-ink)}
+p{margin:10px 0}
+.prose{max-width:46em}
+.prose .en-term{color:var(--muted); font-size:.88em}
+strong{font-weight:700}
+em{font-style:normal; font-weight:700; color:var(--accent-ink)}
+
+.cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px; margin:16px 0}
+.card{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:16px 18px;
+}
+.card h4{margin:0 0 6px; font-size:15px}
+.card h4 .en-term{display:block; font-weight:400; font-size:12px; color:var(--muted); letter-spacing:.04em; margin-top:2px}
+.card p{margin:6px 0; font-size:14px; color:var(--ink-2)}
+.card ul{margin:6px 0 0; padding-left:1.2em; font-size:14px; color:var(--ink-2)}
+.card li{margin:3px 0}
+
+.case{
+  margin:20px 0; padding:16px 20px 14px; background:var(--surface);
+  border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:0 8px 8px 0;
+}
+.case .label{font-size:12px; letter-spacing:.2em; color:var(--accent-ink); font-weight:700; display:block; margin-bottom:6px}
+.case h4{margin:0 0 6px; font-size:15.5px}
+.case p{margin:7px 0; font-size:14.5px; color:var(--ink-2)}
+.case p:last-child{margin-bottom:2px}
+.case .takeaway{color:var(--ink); font-weight:500}
+.case .takeaway::before{content:"▸ 教材对应 "; color:var(--accent-ink); font-weight:700; font-size:12.5px; letter-spacing:.05em}
+
+.pitfall{
+  margin:20px 0; padding:14px 20px; border:1px dashed var(--line-2); border-radius:8px; max-width:46em;
+}
+.pitfall .label{font-size:12px; letter-spacing:.2em; color:var(--crit); font-weight:700; display:block; margin-bottom:4px}
+.pitfall p{margin:4px 0; font-size:14.5px; color:var(--ink-2)}
+
+.formula{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px;
+  padding:12px 18px; margin:14px 0; max-width:46em; overflow-x:auto;
+  font-size:15px; line-height:2;
+}
+.formula .fx{white-space:nowrap}
+.formula sub,.formula sup{font-size:11px}
+.formula .note{font-size:12.5px; color:var(--muted)}
+
+table{border-collapse:collapse; width:100%; font-size:14px; font-variant-numeric:tabular-nums}
+.tablewrap{overflow-x:auto; margin:16px 0; border:1px solid var(--line); border-radius:8px; background:var(--surface)}
+.tablewrap table{min-width:560px}
+th,td{padding:9px 14px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top}
+th{font-size:12.5px; letter-spacing:.08em; color:var(--muted); font-weight:700; white-space:nowrap}
+tr:last-child td{border-bottom:none}
+td.num{white-space:nowrap}
+
+figure{margin:24px 0; background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:18px 18px 12px}
+figure .fig-scroll{overflow-x:auto}
+figure svg{display:block; max-width:100%; height:auto; color:var(--ink)}
+figure .fig-scroll svg{min-width:660px}
+figcaption{font-size:13px; color:var(--muted); margin-top:10px; line-height:1.7}
+figcaption b{color:var(--ink-2); font-weight:700}
+.fig-title{font-size:14px; font-weight:700; margin:0 0 12px}
+.fig-title .fno{color:var(--accent-ink); margin-right:8px}
+
+svg .node{fill:var(--bg); stroke:var(--line-2); stroke-width:1.2; rx:8}
+svg .node-hi{fill:var(--accent-soft); stroke:var(--accent)}
+svg .nt{font:700 12.5px var(--sans); fill:var(--ink)}
+svg .nd{font:400 11px var(--sans); fill:var(--ink-2)}
+svg .edge{stroke:var(--ink-2); stroke-width:1.4; fill:none}
+svg .edge-soft{stroke:var(--muted); stroke-width:1.2; fill:none; stroke-dasharray:4 4}
+svg .elabel{font:400 11.5px var(--sans); fill:var(--muted)}
+svg .grid{stroke:var(--line); stroke-width:1}
+svg .axis{stroke:var(--line-2); stroke-width:1.2}
+svg .tick{font:400 11px var(--sans); fill:var(--muted)}
+svg .atitle{font:400 11.5px var(--sans); fill:var(--muted)}
+svg .pl{font:700 13px var(--sans); fill:var(--ink)}
+svg .pv{font:400 11.5px var(--sans); fill:var(--ink-2)}
+svg .ln1{stroke:var(--series); stroke-width:2.8; fill:none}
+svg .seg1{fill:var(--series)}
+svg .seg2{fill:var(--series2)}
+
+.recap{margin-top:8px}
+.recap ol{margin:8px 0 0; padding-left:1.4em; max-width:46em; color:var(--ink-2)}
+.recap li{margin:7px 0}
+.recap li b{color:var(--ink)}
+details{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px;
+  padding:12px 18px; margin:10px 0; max-width:46em;
+}
+details summary{cursor:pointer; font-weight:500; color:var(--ink)}
+details summary:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+details[open] summary{color:var(--accent-ink)}
+details .ans{margin-top:8px; padding-top:8px; border-top:1px dashed var(--line); font-size:14.5px; color:var(--ink-2)}
+details .ans p{margin:6px 0}
+
+.next{
+  margin-top:48px; padding:18px 22px; border:1px solid var(--line); border-radius:8px;
+  background:var(--surface); display:flex; justify-content:space-between; align-items:center; gap:14px; flex-wrap:wrap;
+}
+.next .lbl{font-size:12px; letter-spacing:.18em; color:var(--muted)}
+.next .ttl{font-family:var(--serif); font-weight:700; font-size:18px; margin-top:2px}
+.foot{margin-top:26px; font-size:12.5px; color:var(--muted); line-height:1.8}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <span class="book">《投资学》学习手册 · Investments (Bodie · Kane · Marcus)</span>
+  <span class="part"><a href="investments-index.html">学习地图</a> · 第三部分 资本市场均衡</span>
+</header>
+
+<div class="layout">
+
+<nav class="sidenav" aria-label="小节导航">
+  <p class="sn-chap">第 12 章 · 行为金融与技术分析</p>
+  <a href="#top">章首 · 学习目标</a>
+  <a href="#s1">12.1 信息加工偏差</a>
+  <a href="#s2">12.2 行为偏差与前景理论</a>
+  <a href="#s3">12.3 套利的限制</a>
+  <a href="#s4">12.4 处置效应与制度化防御</a>
+  <a href="#s5">12.5 技术分析的行为学地位</a>
+  <a href="#recap">小结 · 术语 · 自测</a>
+</nav>
+
+<main class="article">
+
+<!-- ======================== 章首 ======================== -->
+<div class="hero" id="top">
+  <span class="chap-no">CHAPTER 12</span>
+  <h1>行为金融与技术分析</h1>
+  <p class="en">Behavioral Finance and Technical Analysis</p>
+  <p class="lede">上一章说价格近似有效，这一章解释为什么只是“近似”：<strong>定价的人是人</strong>。行为金融的论证分两步——投资者系统性地犯错（偏差不是随机噪声，是有方向的），且理性资金<strong>纠正这些错误的能力有限</strong>（套利的限制），所以错价能产生并存活。对你而言这章有双重身份：既是认识市场的透镜，更是认识<strong>你自己这台交易机器出厂缺陷</strong>的说明书。</p>
+
+  <div class="objectives">
+    <h2>学习目标</h2>
+    <ul>
+      <li>能识别主要认知偏差：过度自信、代表性、锚定、框架、心理账户</li>
+      <li>看懂前景理论的价值函数：参照点依赖、损失厌恶、处置效应的来源</li>
+      <li>理解套利的三重限制，解释“数学上确定的错价”为何能长期存在</li>
+      <li>掌握处置效应的实证证据，为自己的交易设计制度化防御</li>
+      <li>给技术分析一个严肃的行为学定位：哪些有机制支撑，哪些是玄学</li>
+    </ul>
+  </div>
+
+  <nav class="chapmap" aria-label="本章导览">
+    <a href="#s1">12.1 认知偏差</a>
+    <a href="#s2">12.2 前景理论</a>
+    <a href="#s3">12.3 套利限制</a>
+    <a href="#s4">12.4 处置效应</a>
+    <a href="#s5">12.5 技术分析</a>
+    <a href="#recap">小结与自测</a>
+  </nav>
+</div>
+
+<!-- ======================== 12.1 ======================== -->
+<section class="ch" id="s1">
+  <h2 class="sec"><span class="no">12.1</span>信息加工偏差：输入端就歪了</h2>
+  <p class="sec-en">INFORMATION PROCESSING ERRORS</p>
+
+  <div class="cards">
+    <div class="card">
+      <h4>过度自信 <span class="en-term">Overconfidence</span></h4>
+      <p>多数人认为自己驾驶水平高于平均——投资中同理。直接后果是<strong>过度交易</strong>：Barber 与 Odean 对数万个散户账户的研究发现，换手率最高的组净收益比最低组每年落后约 6 个百分点——交易越勤，亏得越稳（第 3 章交易成本 + 本章自信的合谋）。男性账户换手显著高于女性，业绩更差。</p>
+    </div>
+    <div class="card">
+      <h4>代表性偏差 <span class="en-term">Representativeness</span></h4>
+      <p>把小样本当规律：基金三年牛就是“战胜市场的天才”（第 4 章冠军魔咒）、三根阳线就是“趋势确立”。统计上这叫忽视样本量——噪声里读出故事，是人脑的出厂设置。</p>
+    </div>
+    <div class="card">
+      <h4>锚定与保守主义 <span class="en-term">Anchoring &amp; Conservatism</span></h4>
+      <p>判断被无关的初始值拖住：盯着自己的成本价、股票的“前高”做决策（价格锚）；新证据来了又更新得太慢（保守主义）——后者正是第 11 章 PEAD“反应不足”的心理底层。</p>
+    </div>
+    <div class="card">
+      <h4>可得性与框架 <span class="en-term">Availability &amp; Framing</span></h4>
+      <p>容易想起的事被高估概率：涨停板上过热搜的股票被疯抢（注意力驱动买入）。同一事实换个说法结论就变：“成功率 90%”与“失败率 10%”引发不同选择——偏好竟取决于措辞。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== 12.2 ======================== -->
+<section class="ch" id="s2">
+  <h2 class="sec"><span class="no">12.2</span>行为偏差与前景理论</h2>
+  <p class="sec-en">BEHAVIORAL BIASES AND PROSPECT THEORY</p>
+
+  <div class="prose">
+    <p>即便信息读对了，决策环节还有第二层偏差。<strong>心理账户</strong>：把钱分成“本金不能动”“赚来的随便浪”——可钱没有记忆，分户头只会扭曲风险决策（用“盈利仓”梭哈的勇气就是这么来的）。<strong>后悔厌恶</strong>：买冷门股亏钱比买茅台亏钱更痛，于是人们抱团取暖、追随共识。而把这些现象统一起来的，是卡尼曼与特沃斯基的<strong>前景理论</strong>——它用一条曲线替换了第 6 章的效用函数：</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 12-1</span>前景理论的价值函数：人不衡量财富，只衡量得失</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 360" role="img" aria-label="S 形价值函数：横轴为相对参照点的得失，纵轴为心理价值；收益端曲线凹且平缓，损失端曲线凸且陡峭约 2.25 倍，体现损失厌恶">
+      <line class="axis" x1="80" y1="130" x2="680" y2="130"/>
+      <line class="axis" x1="380" y1="24" x2="380" y2="336"/>
+      <g text-anchor="middle">
+        <text class="tick" x="140" y="148">−4</text>
+        <text class="tick" x="260" y="148">−2</text>
+        <text class="tick" x="500" y="148">+2</text>
+        <text class="tick" x="620" y="148">+4</text>
+      </g>
+      <text class="atitle" x="676" y="118" text-anchor="end">相对参照点的得失</text>
+      <text class="atitle" x="390" y="36">心理价值 v</text>
+      <!-- 损失厌恶标尺 -->
+      <path class="edge-soft" d="M 440 130 V 110"/>
+      <text class="pv" x="452" y="106">赚 1 → 价值 +1</text>
+      <path class="edge-soft" d="M 320 130 V 175"/>
+      <text class="pv" x="308" y="192" text-anchor="end">亏 1 → 价值 −2.25</text>
+      <!-- 曲线 -->
+      <polyline class="ln1" points="80,315 140,283 200,248 260,213 320,175 350,154 380,130 410,119 440,110 470,101 500,93 560,77 620,62 680,48"/>
+      <text class="pv" x="500" y="60">收益端凹：边际快乐递减，倾向落袋为安</text>
+      <text class="pv" x="92" y="246">损失端凸且更陡：</text>
+      <text class="pv" x="92" y="264">痛感是快乐的约 2.25 倍，</text>
+      <text class="pv" x="92" y="282">宁愿赌一把也不认亏</text>
+      <text class="elabel" x="388" y="150">参照点（通常 = 成本价）</text>
+    </svg>
+    </div>
+    <figcaption><b>读图：</b>与第 6 章效用函数的三点决裂：① 评价对象是相对<b>参照点</b>的得失，不是财富总量——所以成本价这个经济学上无关的数字支配着你的决策；② <b>损失厌恶</b>——亏 1 元的痛约等于赚 2.25 元的乐；③ 损失端是凸的——亏损中的人反而<b>偏好风险</b>（“摊平”“再赌一把回本”）。这三条合起来，就是下一节处置效应的发生器，也顺带解释了同一个人为何既买保险（收益端怕风险）又买彩票（损失端 / 小概率端好赌）。</figcaption>
+  </figure>
+</section>
+
+<!-- ======================== 12.3 ======================== -->
+<section class="ch" id="s3">
+  <h2 class="sec"><span class="no">12.3</span>套利的限制：聪明钱为什么没把错价吃掉</h2>
+  <p class="sec-en">LIMITS TO ARBITRAGE</p>
+
+  <div class="prose">
+    <p>有偏差不够——若理性资金能无限纠错，错价仍会瞬间消失（第 11 章逻辑）。行为金融的第二块基石是：<strong>现实的套利有三重镣铐</strong>。</p>
+    <p>① <strong>基本面风险</strong>：你做空泡沫，泡沫可以先膨胀三倍（凯恩斯：市场保持非理性的时间可以长过你保持偿付能力的时间——GameStop 空头的墓志铭，第 3 章）；② <strong>执行成本</strong>：券源借不到、融券费率高、保证金占用、追保风险；③ <strong>模型风险</strong>：你以为的错价也许是你的模型错了。三重镣铐下，套利者变得胆小，错价获得了寿命。</p>
+  </div>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>3Com 与 Palm：市场公开违反算术的两个月</h4>
+    <p>2000 年 3 月，3Com 分拆掌上电脑子公司 Palm 上市，只流通 5% 股份，并承诺年内把剩余 95% 按比例分给 3Com 股东——每股 3Com 约可分得 1.5 股 Palm。算术上 3Com 股价 ≥ 1.5 × Palm 股价。上市首日 Palm 收于 95 美元，隐含 3Com 至少值 143 美元，而 3Com 实际收于 82 美元——<strong>市场给 3Com 的其余全部业务定价为负 60 美元 / 股</strong>，负值合计上百亿。教科书级套利（买 3Com、做空 1.5 倍 Palm）明摆着，错价却持续了约两个月，才随 Palm 下跌逐渐闭合。原因全在第二重镣铐：Palm 流通盘极小，券源近乎借不到，借券费率高到吞掉价差——<strong>看得见的错价，够不着</strong>。</p>
+    <p class="takeaway">错价存在性 ≠ 可套利性。评估任何“确定性机会”，先核对三重镣铐：我能扛多久（资金久期）、我借得到 / 交易得起吗（执行）、我确定不是我错了吗（模型）。封闭式基金折价（第 4 章）同样是三镣铐下的长寿错价。</p>
+  </div>
+</section>
+
+<!-- ======================== 12.4 ======================== -->
+<section class="ch" id="s4">
+  <h2 class="sec"><span class="no">12.4</span>处置效应与制度化防御</h2>
+  <p class="sec-en">THE DISPOSITION EFFECT AND RULE-BASED DEFENSE</p>
+
+  <div class="prose">
+    <p>前景理论最硬核的实证预言：投资者会<strong>过早卖出盈利持仓（收益端怕风险，急于锁定），同时死扛亏损持仓（损失端好风险，拒绝把浮亏变实亏）</strong>——处置效应。Odean 拿一万个美国散户账户数了数：</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 12-2</span>卖盈 vs 卖亏：处置效应的实证指纹（Odean，1998）</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 200" role="img" aria-label="条形图：有机会卖出时，浮盈持仓被卖出的比例为 14.8%，浮亏持仓仅 9.8%——卖出盈利的倾向高出约五成">
+      <line class="axis" x1="240" y1="36" x2="240" y2="166"/>
+      <text class="nd" x="230" y="64" text-anchor="end">浮盈持仓被卖出</text>
+      <rect class="seg2" x="240" y="48" width="400" height="26" rx="3"/>
+      <text class="pv" x="648" y="66">14.8%</text>
+      <text class="nd" x="230" y="128" text-anchor="end">浮亏持仓被卖出</text>
+      <rect class="seg1" x="240" y="112" width="265" height="26" rx="3"/>
+      <text class="pv" x="513" y="130">9.8%</text>
+      <text class="elabel" x="380" y="186" text-anchor="middle">同样有机会卖出时，人们卖掉盈利股的倾向比卖掉亏损股高约 50%</text>
+    </svg>
+    </div>
+    <figcaption><b>读图：</b>更扎心的是后续追踪：被卖掉的盈利股在之后一年平均<b>继续跑赢</b>被留下的亏损股约 3 个百分点——卖对了的被卖掉，该卖的被留下；而且卖盈利还提前触发资本利得税（税务上恰恰该反着做：优先兑现亏损抵税）。A 股散户的版本是年化数倍的换手率叠加“割肉难”，与第 4 章“基金赚钱基民不赚钱”的行为缺口同根同源。</figcaption>
+  </figure>
+
+  <div class="prose">
+    <h3>防御靠流程，不靠意志力</h3>
+    <p>知道偏差不等于免疫——偏差长在系统一（直觉）里，盘中的你永远斗不过它。唯一可靠的办法是把决策<strong>前置并规则化</strong>，让冷静时的你约束上头时的你：</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 12-3</span>偏差地图：决策链每一环的出厂缺陷与制度补丁</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 230" role="img" aria-label="流程图：接收信息、形成信念、做出交易、复盘归因四个环节，各自列出典型偏差，底部提示用清单、预设规则与交易日志做制度化防御">
+      <defs>
+        <marker id="ar1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/>
+        </marker>
+      </defs>
+      <rect class="node" x="20" y="44" width="150" height="110" rx="8"/>
+      <text class="nt" x="95" y="70" text-anchor="middle">① 接收信息</text>
+      <text class="nd" x="95" y="94" text-anchor="middle">可得性：只见热闹</text>
+      <text class="nd" x="95" y="112" text-anchor="middle">框架效应</text>
+      <rect class="node" x="196" y="44" width="150" height="110" rx="8"/>
+      <text class="nt" x="271" y="70" text-anchor="middle">② 形成信念</text>
+      <text class="nd" x="271" y="94" text-anchor="middle">过度自信 · 锚定</text>
+      <text class="nd" x="271" y="112" text-anchor="middle">代表性：小样本成规律</text>
+      <rect class="node" x="372" y="44" width="150" height="110" rx="8"/>
+      <text class="nt" x="447" y="70" text-anchor="middle">③ 做出交易</text>
+      <text class="nd" x="447" y="94" text-anchor="middle">处置效应 · 损失厌恶</text>
+      <text class="nd" x="447" y="112" text-anchor="middle">心理账户</text>
+      <rect class="node" x="548" y="44" width="150" height="110" rx="8"/>
+      <text class="nt" x="623" y="70" text-anchor="middle">④ 复盘归因</text>
+      <text class="nd" x="623" y="94" text-anchor="middle">后见之明</text>
+      <text class="nd" x="623" y="112" text-anchor="middle">自我归因：赚靠本事</text>
+      <path class="edge" d="M 170 99 H 192" marker-end="url(#ar1)"/>
+      <path class="edge" d="M 346 99 H 368" marker-end="url(#ar1)"/>
+      <path class="edge" d="M 522 99 H 544" marker-end="url(#ar1)"/>
+      <text class="elabel" x="360" y="190" text-anchor="middle">对应补丁：① 固定信息源清单　② 书面立案（11 章三连问）　③ 事前写死止损 / 仓位 / 再平衡规则　④ 交易日志记“当时为什么”</text>
+      <text class="elabel" x="360" y="212" text-anchor="middle">原则：决策在冷静时一次做完，执行时只剩服从——这就是“交易系统”存在的全部理由</text>
+    </svg>
+    </div>
+    <figcaption><b>读图：</b>你未来的交易系统，本质上是一台<b>反偏差机器</b>：仓位公式（第 6 章 y*）防情绪加仓，预设止损防损失端的赌性，再平衡日历防追涨杀跌，交易日志防事后给自己编故事。规则不必完美，<b>可执行且事前写死</b>比聪明重要。</figcaption>
+  </figure>
+</section>
+
+<!-- ======================== 12.5 ======================== -->
+<section class="ch" id="s5">
+  <h2 class="sec"><span class="no">12.5</span>技术分析的行为学地位</h2>
+  <p class="sec-en">TECHNICAL ANALYSIS THROUGH A BEHAVIORAL LENS</p>
+
+  <div class="prose">
+    <p>第 11 章判了纯图形主义死刑，但行为金融为技术分析的两类现象找到了<strong>可检验的机制</strong>：</p>
+    <p>① <strong>趋势 / 动量</strong>：保守主义让价格对新信息反应不足，信息分几周渗进价格——“趋势”是消化不良的痕迹，这正是动量异象的行为解释（11.4 表）；<br>
+    ② <strong>支撑与阻力</strong>：锚定 + 处置效应的痕迹——大量套牢盘堆在前期高点，价格一回到成本价，“终于解套”的卖单倾泻而出，阻力位由此有了微观结构的真身；整数关口则是集体锚定的自我实现。</p>
+    <p>分界线由此清晰：有机制、可统计检验、能在样本外活着的（动量、量价失衡），按第 11 章三连问立案研究；只剩命名学的（“金叉银叉”“神奇数字”），归玄学。还要记住自毁性：任何被广泛识别的形态，会被抢跑到失效——技术信号的生命周期比基本面异象更短。</p>
+  </div>
+
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p>“行为金融证明了市场愚蠢，所以看图就能赢。”——行为金融的解释力 ≠ 你的预测力：偏差是统计倾向，不是每日时刻表；而且你的对手盘里有整支行为金融武装起来的量化军团，专门收割教科书式的散户行为。本章的第一用途永远是<strong>向内的</strong>：先用图 12-3 给自己打补丁，再谈利用别人的偏差。</p>
+  </div>
+</section>
+
+<!-- ======================== 小结 ======================== -->
+<section class="ch" id="recap">
+  <h2 class="sec"><span class="no">※</span>本章小结</h2>
+  <p class="sec-en">SUMMARY</p>
+
+  <div class="recap">
+    <ol>
+      <li><b>行为金融 = 偏差 + 套利限制：</b>只有两者同时成立，错价才能产生并存活——这是对第 11 章“近似有效”的微观解释。</li>
+      <li><b>信息加工偏差：</b>过度自信（→ 过度交易，年均拖累约 6 个百分点）、代表性（小样本当规律）、锚定与保守主义（→ 反应不足 / PEAD）、可得性与框架。</li>
+      <li><b>前景理论：</b>评价得失而非财富、参照点（成本价）支配决策、损失厌恶约 2.25 倍、损失端偏好风险——处置效应的发生器。</li>
+      <li><b>套利三镣铐：</b>基本面风险（扛不到纠错日）、执行成本（券源 / 费率 / 追保）、模型风险；3Com-Palm 证明“看得见的错价够不着”。</li>
+      <li><b>处置效应实证：</b>卖盈倾向高出约 50%，且卖错方向、多缴税；防御靠制度化规则（事前仓位、止损、再平衡、日志），不靠意志力。</li>
+      <li><b>技术分析分界线：</b>动量（反应不足）与支撑阻力（锚定 + 套牢盘）有行为机制、可立案检验；命名学归玄学；一切形态自带自毁倒计时。</li>
+    </ol>
+  </div>
+
+  <h3>核心术语（中英对照）</h3>
+  <div class="tablewrap">
+    <table>
+      <tr><th>中文</th><th>English</th><th>一句话定义</th></tr>
+      <tr><td>行为金融</td><td>behavioral finance</td><td>用心理偏差 + 套利限制解释价格异常</td></tr>
+      <tr><td>过度自信</td><td>overconfidence</td><td>高估自己信息与判断的精度</td></tr>
+      <tr><td>代表性偏差</td><td>representativeness</td><td>忽视样本量，把小样本当规律</td></tr>
+      <tr><td>保守主义</td><td>conservatism</td><td>对新证据更新过慢——反应不足之源</td></tr>
+      <tr><td>可得性偏差</td><td>availability bias</td><td>易想起的事被高估概率</td></tr>
+      <tr><td>框架效应</td><td>framing</td><td>同一事实不同表述引出不同决策</td></tr>
+      <tr><td>心理账户</td><td>mental accounting</td><td>把钱按来源 / 用途分户头差别对待</td></tr>
+      <tr><td>后悔厌恶</td><td>regret avoidance</td><td>非常规决策的错误带来更大痛苦</td></tr>
+      <tr><td>前景理论</td><td>prospect theory</td><td>参照点 + 损失厌恶 + S 形价值函数</td></tr>
+      <tr><td>参照点</td><td>reference point</td><td>衡量得失的基准，常为买入成本</td></tr>
+      <tr><td>损失厌恶</td><td>loss aversion</td><td>亏损的痛约为等额收益快乐的 2–2.5 倍</td></tr>
+      <tr><td>处置效应</td><td>disposition effect</td><td>过早卖盈、长期扛亏的系统倾向</td></tr>
+      <tr><td>套利的限制</td><td>limits to arbitrage</td><td>基本面风险、执行成本、模型风险</td></tr>
+      <tr><td>自我归因 / 后见之明</td><td>self-attribution / hindsight bias</td><td>赚靠本事亏怪运气；事后觉得“早知道”</td></tr>
+      <tr><td>动量的行为解释</td><td>underreaction momentum</td><td>保守主义使信息缓慢入价形成趋势</td></tr>
+    </table>
+  </div>
+
+  <h3>自测（先想后翻）</h3>
+  <details>
+    <summary>Q1 配对练习：①“等回到我的成本价就卖”；②“这基金连续三年前十，闭眼买”；③“工资账户不能亏，年终奖拿去梭哈”；④“跌停上热搜的票，买点试试”。各是什么偏差？</summary>
+    <div class="ans"><p>① 锚定 + 处置效应：成本价是经济学上无关的参照点，卖出决策只该看未来，不该看你在哪上的车；② 代表性偏差（小样本当规律）+ 第 4 章业绩无持续性的证据；③ 心理账户：钱没有标签，统一的组合只该服从一个 y*；④ 可得性 / 注意力驱动交易——研究表明散户净买入上新闻的股票，平均结局不佳。</p></div>
+  </details>
+  <details>
+    <summary>Q2 用前景理论的三个特征，分别推出“卖盈持亏”“同一人买保险又买彩票”“跌 20% 后反而敢梭哈”。</summary>
+    <div class="ans"><p>① 收益端凹（落袋的快乐边际递减但确定）+ 损失端凸（实现亏损的痛一次性兑现）→ 卖盈持亏；② 收益端怕风险 → 买保险锁定确定性；对小概率大奖的权重高估 + 损失端好赌 → 买彩票，两者在同一条 S 曲线上并不矛盾；③ 亏损中的人位于凸段，赌“回本”的期望痛苦小于认亏的确定痛苦 → 风险偏好反转，这是“摊平加仓直到爆仓”的心理引擎。防御全部指向同一招：决策前置、规则写死。</p></div>
+  </details>
+  <details>
+    <summary>Q3 3Com/Palm 的错价在算术上无可争议，为什么没有被瞬间抹平？列出三重镣铐在此案中的具体形态。</summary>
+    <div class="ans"><p>执行成本是主犯：Palm 流通盘仅 5%，做空的券几乎借不到，借到的费率高到吞掉价差；基本面 / 噪声风险：错价在闭合前可以继续扩大，做空者先见保证金电话（第 3 章追保数学）；模型风险最小但存在：分拆方案若生变，1.5 的换股比率就不成立。推论：套利资本是稀缺且胆小的，错价的寿命 = 镣铐的强度——这也是为什么“人人看得见的机会”未必是假机会，但一定要先问自己够不够得着。</p></div>
+  </details>
+  <details>
+    <summary>Q4 Barber–Odean 的换手率研究对你未来交易系统的直接工程含义是什么？</summary>
+    <div class="ans"><p>给系统设<strong>换手预算</strong>：每一次交易都要先付价差 + 冲击 + 税费（第 3 章），而驱动多余交易的主力是过度自信而非信息。工程化做法：① 回测时扣足真实成本，成本敏感性单独报告；② 给策略设定换手上限，信号强度不足以覆盖成本的交易直接过滤；③ 用日志复盘每笔交易的事前理由，季度统计“冲动交易”的占比与损益——让数据而不是感觉告诉你，你的换手里有多少是 α，多少是自信税。</p></div>
+  </details>
+  <details>
+    <summary>Q5 用行为机制解释“前期高点是阻力位”，并说明它与“画线玄学”的区别。</summary>
+    <div class="ans"><p>机制：前高处堆积着大量套牢盘，这些投资者以成本价为参照点（锚定），深陷“回本就卖”的处置心理；价格重返前高时，解套卖单集中释放，形成真实的供给墙——阻力位有微观结构支撑，且可检验（换手密集区的抛压可用筹码分布数据统计）。与玄学的区别：① 有明确的行为机制与对手盘（谁在卖、为什么卖）；② 可做样本外统计检验；③ 有自毁预期——被普遍利用后会被抢跑。按第 11 章三连问立案，它是合格的研究对象；“神奇角度线”之类无机制、不可检验，则不是。</p></div>
+  </details>
+
+  <a class="next" href="investments-ch14.html">
+    <div>
+      <div class="lbl">NEXT CHAPTER · HAPPY PATH</div>
+      <div class="ttl">第 14 章 · 债券的价格与收益</div>
+    </div>
+    <div class="lbl">第 13 章实证为选学 · 进入固定收益：定价、YTM、久期</div>
+  </a>
+
+  <p class="foot">本页为依据 Bodie–Kane–Marcus《投资学》（Investments）框架整理的原创学习笔记，仅用于教学理解；研究数据为近似表述，以原始文献为准。内容不构成任何投资建议。</p>
+</section>
+
+</main>
+</div>
+</div>
+
+<script>
+(function(){
+  var links = Array.prototype.slice.call(document.querySelectorAll('.sidenav a[href^="#"]'));
+  if(!links.length) return;
+  var map = [];
+  links.forEach(function(a){
+    var el = document.getElementById(a.getAttribute('href').slice(1));
+    if(el) map.push([el, a]);
+  });
+  function update(){
+    var y = window.scrollY + 150;
+    var cur = map[0][1];
+    for(var i = 0; i < map.length; i++){
+      if(map[i][0].offsetTop <= y) cur = map[i][1];
+    }
+    map.forEach(function(p){ p[1].classList.toggle('active', p[1] === cur); });
+  }
+  var tick = false;
+  window.addEventListener('scroll', function(){
+    if(!tick){
+      tick = true;
+      requestAnimationFrame(function(){ tick = false; update(); });
+    }
+  }, {passive:true});
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+</body>
+</html>

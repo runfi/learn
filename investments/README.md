@@ -12,5 +12,10 @@
 - `investments-ch07.html` — 第 7 章 最优风险资产组合
 - `investments-ch09.html` — 第 9 章 资本资产定价模型（含第 8 章要点）
 - `investments-ch11.html` — 第 11 章 有效市场假说
+- `investments-ch12.html` — 第 12 章 行为金融与技术分析
+- `investments-ch14.html` — 第 14 章 债券的价格与收益（含第 15、16 章要点）
+- `investments-ch18.html` — 第 18 章 权益估值模型
+- `investments-ch23.html` — 第 23 章 期货、互换与风险管理（含第 22 章要点）
+- `investments-ch24.html` — 第 24 章 投资组合业绩评价
 
 从 `investments-index.html` 打开即可跳转各章讲义。

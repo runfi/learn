@@ -1,0 +1,584 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>投资学 · 第24章 业绩评价</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700;900&family=Noto+Sans+SC:wght@400;500;700&display=swap">
+<style>
+/* 布局：双栏（212px 侧栏 + 正文），章导览 + 24.1–24.5 分节；宽图表置于横向滚动容器 */
+:root{
+  --bg:#f5f6f7;
+  --surface:#ffffff;
+  --ink:#171a20;
+  --ink-2:#4a5160;
+  --muted:#858c9b;
+  --line:#e2e5ea;
+  --line-2:#c9ced6;
+  --accent:#1d5fad;
+  --accent-ink:#174e8f;
+  --accent-soft:#eaf1fa;
+  --series:#2a78d6;
+  --series2:#eb6834;
+  --series3:#1baf7a;
+  --crit:#d03b3b;
+  --crit-soft:rgba(208,59,59,.07);
+  --serif:"Noto Serif SC","Songti SC",serif;
+  --sans:"Noto Sans SC","Microsoft YaHei",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#101215; --surface:#181b20; --ink:#eef0f3; --ink-2:#c0c5cf; --muted:#8a909d;
+    --line:#282c33; --line-2:#3a3f48;
+    --accent:#5a96e3; --accent-ink:#79abec; --accent-soft:#1c2a3d;
+    --series:#3987e5; --series2:#d95926; --series3:#199e70; --crit:#e66767; --crit-soft:rgba(230,103,103,.10);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#101215; --surface:#181b20; --ink:#eef0f3; --ink-2:#c0c5cf; --muted:#8a909d;
+  --line:#282c33; --line-2:#3a3f48;
+  --accent:#5a96e3; --accent-ink:#79abec; --accent-soft:#1c2a3d;
+  --series:#3987e5; --series2:#d95926; --series3:#199e70; --crit:#e66767; --crit-soft:rgba(230,103,103,.10);
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:var(--sans); font-size:15.5px; line-height:1.85;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1190px; margin:0 auto; padding-inline:20px; padding-block:0 72px}
+
+.layout{display:grid; grid-template-columns:212px minmax(0,1fr); gap:44px; align-items:start}
+.article{max-width:920px; min-width:0}
+.sidenav{
+  position:sticky; top:16px; max-height:calc(100vh - 32px); overflow-y:auto;
+  padding-block:40px 16px; font-size:13px;
+}
+.sidenav .sn-chap{
+  margin:0 0 10px; padding-left:13px; font-size:11.5px; letter-spacing:.14em;
+  color:var(--muted); font-weight:700;
+}
+.sidenav a{
+  display:block; color:var(--ink-2); text-decoration:none; line-height:1.55;
+  padding:6px 10px 6px 13px; border-left:2px solid var(--line);
+}
+.sidenav a:hover{color:var(--accent-ink)}
+.sidenav a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.sidenav a.active{
+  color:var(--accent-ink); border-left-color:var(--accent);
+  background:var(--accent-soft); font-weight:700;
+}
+.hero,section.ch{scroll-margin-top:10px}
+@media (max-width: 999px){
+  .sidenav{display:none}
+  .layout{display:block}
+}
+@media (min-width: 1000px){
+  nav.chapmap{display:none}
+}
+
+.masthead{
+  display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  padding-block:18px 14px; border-bottom:1px solid var(--line);
+}
+.masthead .book{font-family:var(--serif); font-weight:700; font-size:15px; letter-spacing:.02em}
+.masthead .part{font-size:12.5px; color:var(--muted); letter-spacing:.12em}
+.masthead a{color:var(--accent-ink); text-decoration:none}
+.masthead a:hover{text-decoration:underline}
+.masthead a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+a.next{color:inherit; text-decoration:none}
+a.next:hover{border-color:var(--accent)}
+a.next:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+.hero{padding-block:44px 28px; border-bottom:1px solid var(--line)}
+.chap-no{
+  display:inline-flex; align-items:center; gap:10px;
+  font-size:12.5px; letter-spacing:.22em; color:var(--accent-ink); font-weight:700;
+}
+.chap-no::after{content:""; width:46px; height:1px; background:var(--accent)}
+.hero h1{
+  font-family:var(--serif); font-weight:900; font-size:clamp(30px,5vw,46px);
+  line-height:1.25; margin:10px 0 4px; letter-spacing:.02em; text-wrap:balance;
+}
+.hero .en{font-size:14px; color:var(--muted); letter-spacing:.08em; margin:0 0 18px}
+.hero .lede{max-width:46em; color:var(--ink-2); margin:0}
+.hero .lede strong{color:var(--ink)}
+.objectives{
+  margin-top:22px; padding:16px 20px; background:var(--surface);
+  border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:0 6px 6px 0;
+}
+.objectives h2{font-size:13px; letter-spacing:.18em; color:var(--accent-ink); margin:0 0 8px; font-weight:700}
+.objectives ul{margin:0; padding-left:1.3em; color:var(--ink-2)}
+.objectives li{margin:3px 0}
+.chapmap{display:flex; flex-wrap:wrap; gap:8px; margin-top:20px}
+.chapmap a{
+  font-size:13px; color:var(--ink-2); text-decoration:none;
+  border:1px solid var(--line-2); border-radius:999px; padding:4px 13px; background:var(--surface);
+}
+.chapmap a:hover{border-color:var(--accent); color:var(--accent-ink)}
+.chapmap a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+section.ch{padding-block:40px 8px}
+section.ch + section.ch{border-top:1px solid var(--line)}
+h2.sec{
+  font-family:var(--serif); font-weight:700; font-size:clamp(22px,3.4vw,28px);
+  margin:0 0 2px; line-height:1.35; text-wrap:balance;
+}
+h2.sec .no{color:var(--accent-ink); margin-right:10px; font-feature-settings:"tnum"}
+p.sec-en{font-size:12.5px; letter-spacing:.1em; color:var(--muted); margin:0 0 18px}
+h3{font-size:16.5px; font-weight:700; margin:26px 0 8px}
+h3 .tag{color:var(--accent-ink)}
+p{margin:10px 0}
+.prose{max-width:46em}
+.prose .en-term{color:var(--muted); font-size:.88em}
+strong{font-weight:700}
+em{font-style:normal; font-weight:700; color:var(--accent-ink)}
+
+.cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px; margin:16px 0}
+.card{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:16px 18px;
+}
+.card h4{margin:0 0 6px; font-size:15px}
+.card h4 .en-term{display:block; font-weight:400; font-size:12px; color:var(--muted); letter-spacing:.04em; margin-top:2px}
+.card p{margin:6px 0; font-size:14px; color:var(--ink-2)}
+.card ul{margin:6px 0 0; padding-left:1.2em; font-size:14px; color:var(--ink-2)}
+.card li{margin:3px 0}
+
+.case{
+  margin:20px 0; padding:16px 20px 14px; background:var(--surface);
+  border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:0 8px 8px 0;
+}
+.case .label{font-size:12px; letter-spacing:.2em; color:var(--accent-ink); font-weight:700; display:block; margin-bottom:6px}
+.case h4{margin:0 0 6px; font-size:15.5px}
+.case p{margin:7px 0; font-size:14.5px; color:var(--ink-2)}
+.case p:last-child{margin-bottom:2px}
+.case .takeaway{color:var(--ink); font-weight:500}
+.case .takeaway::before{content:"▸ 教材对应 "; color:var(--accent-ink); font-weight:700; font-size:12.5px; letter-spacing:.05em}
+
+.pitfall{
+  margin:20px 0; padding:14px 20px; border:1px dashed var(--line-2); border-radius:8px; max-width:46em;
+}
+.pitfall .label{font-size:12px; letter-spacing:.2em; color:var(--crit); font-weight:700; display:block; margin-bottom:4px}
+.pitfall p{margin:4px 0; font-size:14.5px; color:var(--ink-2)}
+
+.formula{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px;
+  padding:12px 18px; margin:14px 0; max-width:46em; overflow-x:auto;
+  font-size:15px; line-height:2;
+}
+.formula .fx{white-space:nowrap}
+.formula sub,.formula sup{font-size:11px}
+.formula .note{font-size:12.5px; color:var(--muted)}
+
+table{border-collapse:collapse; width:100%; font-size:14px; font-variant-numeric:tabular-nums}
+.tablewrap{overflow-x:auto; margin:16px 0; border:1px solid var(--line); border-radius:8px; background:var(--surface)}
+.tablewrap table{min-width:560px}
+th,td{padding:9px 14px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top}
+th{font-size:12.5px; letter-spacing:.08em; color:var(--muted); font-weight:700; white-space:nowrap}
+tr:last-child td{border-bottom:none}
+td.num{white-space:nowrap}
+
+figure{margin:24px 0; background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:18px 18px 12px}
+figure .fig-scroll{overflow-x:auto}
+figure svg{display:block; max-width:100%; height:auto; color:var(--ink)}
+figure .fig-scroll svg{min-width:660px}
+figcaption{font-size:13px; color:var(--muted); margin-top:10px; line-height:1.7}
+figcaption b{color:var(--ink-2); font-weight:700}
+.fig-title{font-size:14px; font-weight:700; margin:0 0 12px}
+.fig-title .fno{color:var(--accent-ink); margin-right:8px}
+
+svg .node{fill:var(--bg); stroke:var(--line-2); stroke-width:1.2; rx:8}
+svg .node-hi{fill:var(--accent-soft); stroke:var(--accent)}
+svg .nt{font:700 12.5px var(--sans); fill:var(--ink)}
+svg .nd{font:400 11px var(--sans); fill:var(--ink-2)}
+svg .edge{stroke:var(--ink-2); stroke-width:1.4; fill:none}
+svg .edge-soft{stroke:var(--muted); stroke-width:1.2; fill:none; stroke-dasharray:4 4}
+svg .elabel{font:400 11.5px var(--sans); fill:var(--muted)}
+svg .grid{stroke:var(--line); stroke-width:1}
+svg .axis{stroke:var(--line-2); stroke-width:1.2}
+svg .tick{font:400 11px var(--sans); fill:var(--muted)}
+svg .atitle{font:400 11.5px var(--sans); fill:var(--muted)}
+svg .pl{font:700 13px var(--sans); fill:var(--ink)}
+svg .pv{font:400 11.5px var(--sans); fill:var(--ink-2)}
+svg .big{font:700 24px var(--sans); fill:var(--accent-ink)}
+svg .bigc{font:700 24px var(--sans); fill:var(--crit)}
+svg .seg1{fill:var(--series)}
+svg .seg2{fill:var(--series2)}
+svg .seg3{fill:var(--series3)}
+
+.recap{margin-top:8px}
+.recap ol{margin:8px 0 0; padding-left:1.4em; max-width:46em; color:var(--ink-2)}
+.recap li{margin:7px 0}
+.recap li b{color:var(--ink)}
+details{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px;
+  padding:12px 18px; margin:10px 0; max-width:46em;
+}
+details summary{cursor:pointer; font-weight:500; color:var(--ink)}
+details summary:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+details[open] summary{color:var(--accent-ink)}
+details .ans{margin-top:8px; padding-top:8px; border-top:1px dashed var(--line); font-size:14.5px; color:var(--ink-2)}
+details .ans p{margin:6px 0}
+
+.next{
+  margin-top:48px; padding:18px 22px; border:1px solid var(--line); border-radius:8px;
+  background:var(--surface); display:flex; justify-content:space-between; align-items:center; gap:14px; flex-wrap:wrap;
+}
+.next .lbl{font-size:12px; letter-spacing:.18em; color:var(--muted)}
+.next .ttl{font-family:var(--serif); font-weight:700; font-size:18px; margin-top:2px}
+.foot{margin-top:26px; font-size:12.5px; color:var(--muted); line-height:1.8}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <span class="book">《投资学》学习手册 · Investments (Bodie · Kane · Marcus)</span>
+  <span class="part"><a href="investments-index.html">学习地图</a> · 第七部分 应用投资组合管理</span>
+</header>
+
+<div class="layout">
+
+<nav class="sidenav" aria-label="小节导航">
+  <p class="sn-chap">第 24 章 · 投资组合业绩评价</p>
+  <a href="#top">章首 · 学习目标</a>
+  <a href="#s1">24.1 两种收益率</a>
+  <a href="#s2">24.2 风险调整指标</a>
+  <a href="#s3">24.3 业绩归因</a>
+  <a href="#s4">24.4 择时能力</a>
+  <a href="#s5">24.5 运气还是本事</a>
+  <a href="#recap">小结 · 术语 · 自测</a>
+</nav>
+
+<main class="article">
+
+<!-- ======================== 章首 ======================== -->
+<div class="hero" id="top">
+  <span class="chap-no">CHAPTER 24</span>
+  <h1>投资组合业绩评价</h1>
+  <p class="en">Portfolio Performance Evaluation</p>
+  <p class="lede">这是对你未来最有用的一章：<strong>怎么判断一份成绩单的真假</strong>——别人的基金，和你自己的交易系统。四件工具按顺序交付：先把收益率口径算对（TWR vs MWR），再做风险调整（四大指标怎么选），然后拆来源（归因），最后回答终极问题：<strong>这是本事，还是运气？需要多长的记录才能分清？</strong></p>
+
+  <div class="objectives">
+    <h2>学习目标</h2>
+    <ul>
+      <li>会算时间加权与资金加权收益率，理解两者分别评价谁</li>
+      <li>掌握夏普、特雷诺、詹森 α、信息比率的公式与适用场景</li>
+      <li>会做三项式业绩归因：配置效应 + 选择效应 + 交互项</li>
+      <li>理解择时能力的统计指纹（收益对市场的凸性）</li>
+      <li>会用 t ≈ SR × √T 估算“证明技能需要多少年”，警惕回测的多重检验陷阱</li>
+    </ul>
+  </div>
+
+  <nav class="chapmap" aria-label="本章导览">
+    <a href="#s1">24.1 收益口径</a>
+    <a href="#s2">24.2 四大指标</a>
+    <a href="#s3">24.3 归因</a>
+    <a href="#s4">24.4 择时</a>
+    <a href="#s5">24.5 运气与本事</a>
+    <a href="#recap">小结与自测</a>
+  </nav>
+</div>
+
+<!-- ======================== 24.1 ======================== -->
+<section class="ch" id="s1">
+  <h2 class="sec"><span class="no">24.1</span>两种收益率：基金的成绩单 vs 你的真实体验</h2>
+  <p class="sec-en">TIME-WEIGHTED VERSUS DOLLAR-WEIGHTED RETURNS</p>
+
+  <div class="formula">
+    <div class="fx">时间加权 TWR：各期收益率的几何平均——<strong>与资金进出无关</strong></div>
+    <div class="fx">资金加权 MWR：令全部现金流现值为零的 IRR——<strong>被你的申赎时点加权</strong></div>
+    <div class="note">评价<strong>管理人</strong>用 TWR（资金何时进出不由他决定）；评价<strong>你自己</strong>用 MWR（择时正是你的决策）。两者之差就是第 4、12 章说的行为缺口。</div>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 24-1</span>同一只基金，两张成绩单：追涨如何把 0% 做成 −32%</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 262" role="img" aria-label="示例：第 0 年投入 1 万，第一年翻倍后追加 3 万，第二年腰斩剩 2.5 万。时间加权收益为 0%，资金加权收益约为每年负 32%">
+      <defs>
+        <marker id="ar1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/>
+        </marker>
+      </defs>
+      <rect class="node" x="16" y="48" width="150" height="100" rx="8"/>
+      <text class="nt" x="91" y="76" text-anchor="middle">第 0 年</text>
+      <text class="nd" x="91" y="98" text-anchor="middle">投入 1 万</text>
+      <text class="nd" x="91" y="118" text-anchor="middle">账户 1 万</text>
+      <rect class="node" x="196" y="48" width="150" height="100" rx="8"/>
+      <text class="nt" x="271" y="76" text-anchor="middle">第 1 年末</text>
+      <text class="nd" x="271" y="98" text-anchor="middle">+100% → 2 万</text>
+      <text class="nd" x="271" y="118" text-anchor="middle">心动追加 3 万 → 5 万</text>
+      <rect class="node" x="376" y="48" width="150" height="100" rx="8"/>
+      <text class="nt" x="451" y="76" text-anchor="middle">第 2 年末</text>
+      <text class="nd" x="451" y="98" text-anchor="middle">−50%</text>
+      <text class="nd" x="451" y="118" text-anchor="middle">账户只剩 2.5 万</text>
+      <path class="edge" d="M 166 98 H 192" marker-end="url(#ar1)"/>
+      <path class="edge" d="M 346 98 H 372" marker-end="url(#ar1)"/>
+      <path class="edge-soft" d="M 556 40 V 220"/>
+      <text class="pv" x="576" y="62">基金的成绩单（TWR）</text>
+      <text class="big" x="576" y="96">0%</text>
+      <text class="pv" x="576" y="138">你的真实收益（MWR）</text>
+      <text class="bigc" x="576" y="172">≈ −32%/年</text>
+      <text class="elabel" x="576" y="204">差额 = 追涨的代价</text>
+      <text class="elabel" x="286" y="192" text-anchor="middle">累计投入 4 万，期末 2.5 万——净亏 1.5 万；而基金宣传页写着“两年累计 0%，未亏损”，两句话都对</text>
+      <text class="elabel" x="286" y="216" text-anchor="middle">TWR =（2.0 × 0.5）<tspan font-size="9" dy="-4">1/2</tspan><tspan dy="4"> </tspan>− 1 = 0%；MWR 为现金流 −1、−3、+2.5 的内部收益率</text>
+    </svg>
+    </div>
+    <figcaption><b>读图：</b>大钱（3 万）只经历了 −50%，小钱（1 万）才享受过 +100%——资金加权把权重压在你进场最重的时段。这正是“基金赚钱、基民不赚钱”的算术本体。给自己的系统记账时，<b>必须算 MWR</b>；只看净值曲线（TWR），你会系统性高估自己。</figcaption>
+  </figure>
+</section>
+
+<!-- ======================== 24.2 ======================== -->
+<section class="ch" id="s2">
+  <h2 class="sec"><span class="no">24.2</span>风险调整指标：四把尺子怎么选</h2>
+  <p class="sec-en">RISK-ADJUSTED PERFORMANCE MEASURES</p>
+
+  <div class="tablewrap">
+    <table>
+      <tr><th>指标</th><th>公式</th><th>分母担什么风险</th><th>什么时候用</th></tr>
+      <tr><td>夏普比率</td><td class="num">（r̄ − r<sub>f</sub>）/ σ</td><td>总波动</td><td>评价<strong>全部身家</strong>所在的组合</td></tr>
+      <tr><td>特雷诺比率</td><td class="num">（r̄ − r<sub>f</sub>）/ β</td><td>仅系统性风险</td><td>它只是大分散组合的<strong>一块</strong>时</td></tr>
+      <tr><td>詹森 α</td><td class="num">r̄ −［r<sub>f</sub> + β(r̄<sub>M</sub> − r<sub>f</sub>)］</td><td>按 CAPM 扣完 β 的剩余</td><td>检验“有没有超额”，第 9 章的 α 本尊</td></tr>
+      <tr><td>信息比率 IR</td><td class="num">α / σ(e)（跟踪误差）</td><td>主动偏离的波动</td><td>评价<strong>相对基准</strong>的主动管理质量</td></tr>
+      <tr><td>M²</td><td class="num">把组合杠杆调到与市场同 σ 后的收益差</td><td>总波动</td><td>把夏普翻译成“百分点”，方便向人解释</td></tr>
+    </table>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 24-2</span>选指标决策树：先问“这笔钱在整体财富里的角色”</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 300" role="img" aria-label="决策树：评价对象是全部财富用夏普比率；是充分分散组合的一个子组合用特雷诺或詹森阿尔法；评价相对基准的主动偏离用信息比率">
+      <defs>
+        <marker id="ar2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/>
+        </marker>
+      </defs>
+      <rect class="node" x="40" y="26" width="300" height="60" rx="8"/>
+      <text class="nt" x="190" y="52" text-anchor="middle">这是你的全部风险资产吗？</text>
+      <text class="nd" x="190" y="72" text-anchor="middle">（独立承担全部波动）</text>
+      <rect class="node-hi" x="420" y="26" width="280" height="60" rx="8"/>
+      <text class="nt" x="560" y="52" text-anchor="middle">→ 夏普比率</text>
+      <text class="nd" x="560" y="72" text-anchor="middle">分母 = 总波动 σ（M² 是它的百分点版）</text>
+      <path class="edge" d="M 340 56 H 416" marker-end="url(#ar2)"/>
+      <text class="elabel" x="378" y="48" text-anchor="middle">是</text>
+      <rect class="node" x="40" y="122" width="300" height="60" rx="8"/>
+      <text class="nt" x="190" y="148" text-anchor="middle">是大分散组合里的一个子组合？</text>
+      <text class="nd" x="190" y="168" text-anchor="middle">（特有风险已被整体分散掉）</text>
+      <rect class="node-hi" x="420" y="122" width="280" height="60" rx="8"/>
+      <text class="nt" x="560" y="148" text-anchor="middle">→ 特雷诺比率 / 詹森 α</text>
+      <text class="nd" x="560" y="168" text-anchor="middle">分母只担 β：剩下的风险与你无关</text>
+      <path class="edge" d="M 340 152 H 416" marker-end="url(#ar2)"/>
+      <text class="elabel" x="378" y="144" text-anchor="middle">是</text>
+      <rect class="node" x="40" y="218" width="300" height="60" rx="8"/>
+      <text class="nt" x="190" y="244" text-anchor="middle">评价“偏离基准”的主动部分？</text>
+      <text class="nd" x="190" y="264" text-anchor="middle">（指增、行业轮动、你的选股腿）</text>
+      <rect class="node-hi" x="420" y="218" width="280" height="60" rx="8"/>
+      <text class="nt" x="560" y="244" text-anchor="middle">→ 信息比率 IR = α / 跟踪误差</text>
+      <text class="nd" x="560" y="264" text-anchor="middle">每单位主动风险换到多少 α</text>
+      <path class="edge" d="M 340 248 H 416" marker-end="url(#ar2)"/>
+      <text class="elabel" x="378" y="240" text-anchor="middle">是</text>
+      <path class="edge" d="M 190 86 V 118" marker-end="url(#ar2)"/>
+      <text class="elabel" x="202" y="108">否</text>
+      <path class="edge" d="M 190 182 V 214" marker-end="url(#ar2)"/>
+      <text class="elabel" x="202" y="204">否</text>
+    </svg>
+    </div>
+    <figcaption><b>读图：</b>同一份业绩，不同角色用不同尺子，排名可以完全颠倒：一只高特有风险的行业基金，夏普垫底（总波动大）而特雷诺领先（β 低）——如果它只占你组合 5%，特雷诺才是对的尺子。对你的交易系统：整体账户看<b>夏普 + 最大回撤</b>，相对基准的策略腿看 <b>IR</b>。</figcaption>
+  </figure>
+</section>
+
+<!-- ======================== 24.3 ======================== -->
+<section class="ch" id="s3">
+  <h2 class="sec"><span class="no">24.3</span>业绩归因：超额收益从哪来</h2>
+  <p class="sec-en">PERFORMANCE ATTRIBUTION</p>
+
+  <div class="formula">
+    <div class="fx">配置效应 = Σ（w<sub>p,i</sub> − w<sub>b,i</sub>）×（r<sub>b,i</sub> − r<sub>b</sub>）　｜　选择效应 = Σ w<sub>b,i</sub> ×（r<sub>p,i</sub> − r<sub>b,i</sub>）　｜　交互项 = Σ Δw × Δr</div>
+    <div class="note">算例：基准 50/50 股债，股票基准涨 10%、债券 2%（基准整体 6%）。你的组合 70/30，且股票部分选出 11%：组合收益 8.3%，超额 +2.3%。分解：配置 =（0.2）(10−6)+（−0.2）(2−6) = +1.6%；选择 = 0.5×(11−10) = +0.5%；交互 = 0.2×1 = +0.2%。</div>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 24-3</span>归因瀑布：把 +2.3% 的超额拆开看</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 330" role="img" aria-label="瀑布图：超额收益 2.3% 分解为资产配置效应 1.6%、证券选择效应 0.5% 与交互项 0.2%">
+      <g text-anchor="end">
+        <text class="tick" x="76" y="284">0</text>
+        <text class="tick" x="76" y="214">1.0</text>
+        <text class="tick" x="76" y="144">2.0</text>
+      </g>
+      <line class="grid" x1="84" y1="210" x2="700" y2="210"/>
+      <line class="grid" x1="84" y1="140" x2="700" y2="140"/>
+      <line class="axis" x1="84" y1="280" x2="700" y2="280"/>
+      <!-- 配置 0→1.6 -->
+      <rect class="seg1" x="100" y="168" width="110" height="112" rx="3"/>
+      <text class="pl" x="155" y="158" text-anchor="middle">+1.6%</text>
+      <text class="nd" x="155" y="300" text-anchor="middle">资产配置效应</text>
+      <text class="elabel" x="155" y="318" text-anchor="middle">超配了跑赢的股票类</text>
+      <path class="edge-soft" d="M 210 168 H 260"/>
+      <!-- 选择 1.6→2.1 -->
+      <rect class="seg1" x="260" y="133" width="110" height="35" rx="3"/>
+      <text class="pl" x="315" y="123" text-anchor="middle">+0.5%</text>
+      <text class="nd" x="315" y="300" text-anchor="middle">证券选择效应</text>
+      <text class="elabel" x="315" y="318" text-anchor="middle">类内选得比基准好</text>
+      <path class="edge-soft" d="M 370 133 H 420"/>
+      <!-- 交互 2.1→2.3 -->
+      <rect class="seg2" x="420" y="119" width="110" height="14" rx="3"/>
+      <text class="pl" x="475" y="109" text-anchor="middle">+0.2%</text>
+      <text class="nd" x="475" y="300" text-anchor="middle">交互项</text>
+      <text class="elabel" x="475" y="318" text-anchor="middle">超配 × 选得好的乘积</text>
+      <path class="edge-soft" d="M 530 119 H 580"/>
+      <!-- 总计 0→2.3 -->
+      <rect class="seg3" x="580" y="119" width="110" height="161" rx="3"/>
+      <text class="pl" x="635" y="109" text-anchor="middle">= +2.3%</text>
+      <text class="nd" x="635" y="300" text-anchor="middle">总超额收益</text>
+    </svg>
+    </div>
+    <figcaption><b>读图：</b>归因回答“赢在哪一层决策”：这个例子里 70% 的超额来自<b>资产配置</b>（敢于超配股票），选股只贡献了小头——与第 1 章 Brinson 的结论遥相呼应。对系统化交易者，归因是迭代指南针：如果你以为自己赢在选股、归因却显示全靠 β 超配，下一步该优化的就不是选股模型。</figcaption>
+  </figure>
+</section>
+
+<!-- ======================== 24.4 ======================== -->
+<section class="ch" id="s4">
+  <h2 class="sec"><span class="no">24.4</span>择时能力：凸性是它的指纹</h2>
+  <p class="sec-en">MARKET TIMING</p>
+
+  <div class="prose">
+    <p>成功的择时者会在上涨前调高 β、下跌前调低 β——于是组合收益对市场收益的散点不再是直线（第 9 章 SCL），而是<strong>向上弯的凸线</strong>：市场越好时组合的有效 β 越高。Treynor–Mazuy 检验据此在回归里加一个平方项：R<sub>p</sub> = α + βR<sub>M</sub> + c·R<sub>M</sub>² + e——<strong>c 显著为正</strong>即择时证据。实证结论冷峻：公募基金的 c 平均约为零甚至为负（现金拖累 + 追涨杀跌），真正可证的择时能力凤毛麟角。注意一个伪装者：<em>卖出期权型策略会制造负凸性却抬高表面夏普</em>——平时稳稳赚权利金、极端行情一次性归还（第 2 章压路机、第 5 章尾部警告在业绩语言里的重现）。所以看任何平滑得不自然的净值曲线，先查它的凸性与尾部。</p>
+  </div>
+</section>
+
+<!-- ======================== 24.5 ======================== -->
+<section class="ch" id="s5">
+  <h2 class="sec"><span class="no">24.5</span>运气还是本事：需要多长的成绩单</h2>
+  <p class="sec-en">SKILL VERSUS LUCK</p>
+
+  <div class="formula">
+    <div class="fx">t 统计量 ≈ 年化夏普比率 × √年数　（要求 t ≥ 2 才算显著）</div>
+    <div class="fx">所需年数 T ≈（2 / SR）²</div>
+    <div class="note">SR = 0.5（优秀的长期主动水平）→ 需 16 年；SR = 1（顶尖）→ 4 年；SR = 2（大奖章级）→ 1 年。三五年的亮眼业绩，在统计上几乎没有证明力。</div>
+  </div>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>ARK 创新基金：一张被四件工具拆完的成绩单</h4>
+    <p>2020 年 ARKK 大涨约 150%，被封“女版巴菲特”，资金蜂拥而入；2021–22 年从高点回撤约 80%。用本章工具复盘：① <strong>口径</strong>——因为绝大多数资金在高位进场，晨星估算其投资者的资金加权收益显著为负，而成立以来的 TWR 一度仍为正（图 24-1 的真人版）；② <strong>风险调整</strong>——150% 伴随极端波动与集中度，夏普并不出众；③ <strong>归因</strong>——超额大部分可由“高 β + 超长久期成长风格 + 零利率环境”解释，风格 β 冒充了 α（第 9 章利率案例的反面）；④ <strong>显著性</strong>——单一年份的爆发在 t ≈ SR×√T 面前毫无分量。四步走完，“天才叙事”还原成一次杠杆化的风格暴露。</p>
+    <p class="takeaway">这套四步流程（口径 → 风险调整 → 归因 → 显著性）就是你审查一切业绩的标准作业——包括将来你自己的。</p>
+  </div>
+
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p>“我的回测夏普 2.0，上线稳了。”——回测的夏普要先过三道折减：① <strong>多重检验</strong>：试过 100 个参数组合后挑出的最好者，期望值本身就被选择偏差抬高（第 11 章数据窥探的私人版，学界用“收缩 / deflated Sharpe”校正，粗暴起见先打对折）；② <strong>成本与容量</strong>：扣足价差冲击（第 3 章）；③ <strong>样本外</strong>：只有未参与任何调参的区间才算数。上线纪律：小资金实盘 ≥ 若干月作为最终样本外，实盘 MWR 对回测 TWR 的偏离本身就是一个监控指标。</p>
+  </div>
+</section>
+
+<!-- ======================== 小结 ======================== -->
+<section class="ch" id="recap">
+  <h2 class="sec"><span class="no">※</span>本章小结</h2>
+  <p class="sec-en">SUMMARY</p>
+
+  <div class="recap">
+    <ol>
+      <li><b>先对口径：</b>评管理人用时间加权 TWR，评自己用资金加权 MWR；两者之差 = 行为缺口（追涨把 0% 做成 −32% 的算术）。</li>
+      <li><b>四把尺子按角色选：</b>全部身家 → 夏普（/M²）；大组合的一块 → 特雷诺 / 詹森 α；相对基准的主动腿 → 信息比率。</li>
+      <li><b>归因三项式：</b>配置 + 选择 + 交互——找出赢在哪一层决策，迭代就优化那一层。</li>
+      <li><b>择时的指纹是凸性：</b>T–M 平方项显著为正才算数；负凸 + 高夏普组合要警惕卖期权型策略的尾部。</li>
+      <li><b>显著性门槛：</b>t ≈ SR×√T；SR 0.5 需 16 年——短期排名无证明力；回测夏普先过多重检验、成本、样本外三道折减。</li>
+      <li><b>标准作业：</b>口径 → 风险调整 → 归因 → 显著性，四步审查一切成绩单，包括自己的。</li>
+    </ol>
+  </div>
+
+  <h3>核心术语（中英对照）</h3>
+  <div class="tablewrap">
+    <table>
+      <tr><th>中文</th><th>English</th><th>一句话定义</th></tr>
+      <tr><td>时间加权收益率</td><td>time-weighted return</td><td>各期收益几何平均，不受申赎影响</td></tr>
+      <tr><td>资金加权收益率</td><td>dollar-weighted return (IRR)</td><td>以现金流为权重的内部收益率</td></tr>
+      <tr><td>夏普比率</td><td>Sharpe ratio</td><td>超额收益 ÷ 总波动</td></tr>
+      <tr><td>特雷诺比率</td><td>Treynor ratio</td><td>超额收益 ÷ β</td></tr>
+      <tr><td>詹森 α</td><td>Jensen's alpha</td><td>实际收益超出 CAPM 应得的部分</td></tr>
+      <tr><td>信息比率</td><td>information ratio</td><td>α ÷ 跟踪误差</td></tr>
+      <tr><td>跟踪误差</td><td>tracking error</td><td>相对基准的主动偏离波动 σ(e)</td></tr>
+      <tr><td>M² 测度</td><td>M-squared</td><td>等波动化后与市场的收益差</td></tr>
+      <tr><td>业绩归因</td><td>performance attribution</td><td>把超额拆成配置、选择与交互</td></tr>
+      <tr><td>配置 / 选择效应</td><td>allocation / selection effect</td><td>敢于偏配的贡献 / 类内选券的贡献</td></tr>
+      <tr><td>择时</td><td>market timing</td><td>随市场前景调整 β 的能力</td></tr>
+      <tr><td>Treynor–Mazuy 检验</td><td>Treynor-Mazuy test</td><td>用 R<sub>M</sub>² 项检测收益凸性</td></tr>
+      <tr><td>t 统计量门槛</td><td>t-statistic (SR×√T)</td><td>区分技能与运气所需的记录长度</td></tr>
+      <tr><td>多重检验 / 过拟合</td><td>multiple testing / overfitting</td><td>反复调参挑最优导致的虚高业绩</td></tr>
+    </table>
+  </div>
+
+  <h3>自测（先想后翻）</h3>
+  <details>
+    <summary>Q1 投入 1 万，第一年 +50%（1.5 万）后追加 1.5 万（共 3 万），第二年 −20% 剩 2.4 万：TWR 与 MWR 各是多少？</summary>
+    <div class="ans"><p>TWR =（1.5 × 0.8）<sup>1/2</sup> − 1 ≈ +9.5%/年——基金层面两年是赚的。MWR 解 −1 − 1.5/(1+r) + 2.4/(1+r)² = 0，得 r ≈ −2.9%/年——你实际投入 2.5 万只拿回 2.4 万。同一段历史，经理及格、你不及格，差的是追加的时点。给自己记账，请永远算 MWR。</p></div>
+  </details>
+  <details>
+    <summary>Q2 三个场景各用什么指标：① 全部积蓄放在一个全球配置组合；② 组合里 5% 仓位的半导体行业基金；③ 一只沪深 300 指数增强基金？</summary>
+    <div class="ans"><p>① 夏普比率（你独自承担全部波动，总 σ 才是真实风险），辅以最大回撤；② 特雷诺 / 詹森 α——它的特有波动会被你另外 95% 的持仓分散掉，只有 β 部分的性价比与你有关；③ 信息比率——指增的全部使命是“相对基准的主动偏离”，IR = α ÷ 跟踪误差正好度量每单位主动风险买到多少超额。用错尺子（比如拿夏普评行业基金）会系统性冤枉或高估。</p></div>
+  </details>
+  <details>
+    <summary>Q3 组合年化 15%，β = 1.2，r<sub>f</sub> = 3%，市场 11%，跟踪误差 4%：詹森 α 与信息比率各是多少？</summary>
+    <div class="ans"><p>应得收益 = 3% + 1.2 ×（11% − 3%）= 12.6%；α = 15% − 12.6% = +2.4%。IR = 2.4% / 4% = 0.6——这是相当优秀的主动管理水平（长期 IR 能稳定在 0.5 以上已属一流）。下一问应是 24.5 的：这个 α 的 t 值够吗？t ≈ IR × √T，0.6 的 IR 需要约 11 年才过显著性门槛。</p></div>
+  </details>
+  <details>
+    <summary>Q4 基准 40/60 股债，股票基准涨 12%、债券 3%；你的组合 60/40，股票部分赚 12%、债券部分赚 4%：做三项归因。</summary>
+    <div class="ans"><p>基准收益 = 0.4×12 + 0.6×3 = 6.6%；组合 = 0.6×12 + 0.4×4 = 8.8%；超额 +2.2%。配置 =（0.6−0.4）(12−6.6) +（0.4−0.6）(3−6.6) = 1.08 + 0.72 = +1.8%；选择 = 0.4×(12−12) + 0.6×(4−3) = +0.6%；交互 =（0.2)(0) +（−0.2)(1) = −0.2%。合计 1.8 + 0.6 − 0.2 = +2.2% ✓。解读：这次赢在敢于超配股票（配置 1.8%），债内选券贡献小头，交互为负（超配的那类没有选券优势）。</p></div>
+  </details>
+  <details>
+    <summary>Q5 你的系统回测年化夏普 0.8。按显著性门槛需要几年实盘？上线前还要做哪三道折减？</summary>
+    <div class="ans"><p>T ≈（2/0.8）² ≈ 6.3 年——这还是假设回测夏普无偏的乐观值。三道折减：① 多重检验：若这是几十次调参挑出的最优版本，期望夏普先打对折再估 T（变成 25 年量级——这就是为什么“策略组合 + 低相关”比单策略更现实）；② 成本：按第 3 章口径扣足价差与冲击，再看夏普还剩多少；③ 严格样本外 + 小资金实盘若干月，并持续监控实盘相对回测的衰减。把这三条写进上线清单，是本章对你的交易系统最直接的交付物。</p></div>
+  </details>
+
+  <a class="next" href="investments-ch27.html">
+    <div>
+      <div class="lbl">NEXT CHAPTER · HAPPY PATH 终点站</div>
+      <div class="ttl">第 27 章 · 积极型投资组合管理理论</div>
+    </div>
+    <div class="lbl">Treynor-Black → 基本定律 → Black-Litterman → 通往 Kelly</div>
+  </a>
+
+  <p class="foot">本页为依据 Bodie–Kane–Marcus《投资学》（Investments）框架整理的原创学习笔记，仅用于教学理解；数值为教学算例，案例为近似表述。内容不构成任何投资建议。</p>
+</section>
+
+</main>
+</div>
+</div>
+
+<script>
+(function(){
+  var links = Array.prototype.slice.call(document.querySelectorAll('.sidenav a[href^="#"]'));
+  if(!links.length) return;
+  var map = [];
+  links.forEach(function(a){
+    var el = document.getElementById(a.getAttribute('href').slice(1));
+    if(el) map.push([el, a]);
+  });
+  function update(){
+    var y = window.scrollY + 150;
+    var cur = map[0][1];
+    for(var i = 0; i < map.length; i++){
+      if(map[i][0].offsetTop <= y) cur = map[i][1];
+    }
+    map.forEach(function(p){ p[1].classList.toggle('active', p[1] === cur); });
+  }
+  var tick = false;
+  window.addEventListener('scroll', function(){
+    if(!tick){
+      tick = true;
+      requestAnimationFrame(function(){ tick = false; update(); });
+    }
+  }, {passive:true});
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,554 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>投资学 · 第23章 期货互换与风险管理</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700;900&family=Noto+Sans+SC:wght@400;500;700&display=swap">
+<style>
+/* 布局：双栏（212px 侧栏 + 正文），章导览 + 23.1–23.5 分节；宽图表置于横向滚动容器 */
+:root{
+  --bg:#f5f6f7;
+  --surface:#ffffff;
+  --ink:#171a20;
+  --ink-2:#4a5160;
+  --muted:#858c9b;
+  --line:#e2e5ea;
+  --line-2:#c9ced6;
+  --accent:#1d5fad;
+  --accent-ink:#174e8f;
+  --accent-soft:#eaf1fa;
+  --series:#2a78d6;
+  --series2:#eb6834;
+  --series3:#1baf7a;
+  --crit:#d03b3b;
+  --crit-soft:rgba(208,59,59,.07);
+  --serif:"Noto Serif SC","Songti SC",serif;
+  --sans:"Noto Sans SC","Microsoft YaHei",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#101215; --surface:#181b20; --ink:#eef0f3; --ink-2:#c0c5cf; --muted:#8a909d;
+    --line:#282c33; --line-2:#3a3f48;
+    --accent:#5a96e3; --accent-ink:#79abec; --accent-soft:#1c2a3d;
+    --series:#3987e5; --series2:#d95926; --series3:#199e70; --crit:#e66767; --crit-soft:rgba(230,103,103,.10);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#101215; --surface:#181b20; --ink:#eef0f3; --ink-2:#c0c5cf; --muted:#8a909d;
+  --line:#282c33; --line-2:#3a3f48;
+  --accent:#5a96e3; --accent-ink:#79abec; --accent-soft:#1c2a3d;
+  --series:#3987e5; --series2:#d95926; --series3:#199e70; --crit:#e66767; --crit-soft:rgba(230,103,103,.10);
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:var(--sans); font-size:15.5px; line-height:1.85;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1190px; margin:0 auto; padding-inline:20px; padding-block:0 72px}
+
+.layout{display:grid; grid-template-columns:212px minmax(0,1fr); gap:44px; align-items:start}
+.article{max-width:920px; min-width:0}
+.sidenav{
+  position:sticky; top:16px; max-height:calc(100vh - 32px); overflow-y:auto;
+  padding-block:40px 16px; font-size:13px;
+}
+.sidenav .sn-chap{
+  margin:0 0 10px; padding-left:13px; font-size:11.5px; letter-spacing:.14em;
+  color:var(--muted); font-weight:700;
+}
+.sidenav a{
+  display:block; color:var(--ink-2); text-decoration:none; line-height:1.55;
+  padding:6px 10px 6px 13px; border-left:2px solid var(--line);
+}
+.sidenav a:hover{color:var(--accent-ink)}
+.sidenav a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.sidenav a.active{
+  color:var(--accent-ink); border-left-color:var(--accent);
+  background:var(--accent-soft); font-weight:700;
+}
+.hero,section.ch{scroll-margin-top:10px}
+@media (max-width: 999px){
+  .sidenav{display:none}
+  .layout{display:block}
+}
+@media (min-width: 1000px){
+  nav.chapmap{display:none}
+}
+
+.masthead{
+  display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  padding-block:18px 14px; border-bottom:1px solid var(--line);
+}
+.masthead .book{font-family:var(--serif); font-weight:700; font-size:15px; letter-spacing:.02em}
+.masthead .part{font-size:12.5px; color:var(--muted); letter-spacing:.12em}
+.masthead a{color:var(--accent-ink); text-decoration:none}
+.masthead a:hover{text-decoration:underline}
+.masthead a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+a.next{color:inherit; text-decoration:none}
+a.next:hover{border-color:var(--accent)}
+a.next:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+.hero{padding-block:44px 28px; border-bottom:1px solid var(--line)}
+.chap-no{
+  display:inline-flex; align-items:center; gap:10px;
+  font-size:12.5px; letter-spacing:.22em; color:var(--accent-ink); font-weight:700;
+}
+.chap-no::after{content:""; width:46px; height:1px; background:var(--accent)}
+.hero h1{
+  font-family:var(--serif); font-weight:900; font-size:clamp(30px,5vw,46px);
+  line-height:1.25; margin:10px 0 4px; letter-spacing:.02em; text-wrap:balance;
+}
+.hero .en{font-size:14px; color:var(--muted); letter-spacing:.08em; margin:0 0 18px}
+.hero .lede{max-width:46em; color:var(--ink-2); margin:0}
+.hero .lede strong{color:var(--ink)}
+.objectives{
+  margin-top:22px; padding:16px 20px; background:var(--surface);
+  border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:0 6px 6px 0;
+}
+.objectives h2{font-size:13px; letter-spacing:.18em; color:var(--accent-ink); margin:0 0 8px; font-weight:700}
+.objectives ul{margin:0; padding-left:1.3em; color:var(--ink-2)}
+.objectives li{margin:3px 0}
+.chapmap{display:flex; flex-wrap:wrap; gap:8px; margin-top:20px}
+.chapmap a{
+  font-size:13px; color:var(--ink-2); text-decoration:none;
+  border:1px solid var(--line-2); border-radius:999px; padding:4px 13px; background:var(--surface);
+}
+.chapmap a:hover{border-color:var(--accent); color:var(--accent-ink)}
+.chapmap a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+section.ch{padding-block:40px 8px}
+section.ch + section.ch{border-top:1px solid var(--line)}
+h2.sec{
+  font-family:var(--serif); font-weight:700; font-size:clamp(22px,3.4vw,28px);
+  margin:0 0 2px; line-height:1.35; text-wrap:balance;
+}
+h2.sec .no{color:var(--accent-ink); margin-right:10px; font-feature-settings:"tnum"}
+p.sec-en{font-size:12.5px; letter-spacing:.1em; color:var(--muted); margin:0 0 18px}
+h3{font-size:16.5px; font-weight:700; margin:26px 0 8px}
+h3 .tag{color:var(--accent-ink)}
+p{margin:10px 0}
+.prose{max-width:46em}
+.prose .en-term{color:var(--muted); font-size:.88em}
+strong{font-weight:700}
+em{font-style:normal; font-weight:700; color:var(--accent-ink)}
+
+.cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px; margin:16px 0}
+.card{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:16px 18px;
+}
+.card h4{margin:0 0 6px; font-size:15px}
+.card h4 .en-term{display:block; font-weight:400; font-size:12px; color:var(--muted); letter-spacing:.04em; margin-top:2px}
+.card p{margin:6px 0; font-size:14px; color:var(--ink-2)}
+.card ul{margin:6px 0 0; padding-left:1.2em; font-size:14px; color:var(--ink-2)}
+.card li{margin:3px 0}
+
+.case{
+  margin:20px 0; padding:16px 20px 14px; background:var(--surface);
+  border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:0 8px 8px 0;
+}
+.case .label{font-size:12px; letter-spacing:.2em; color:var(--accent-ink); font-weight:700; display:block; margin-bottom:6px}
+.case h4{margin:0 0 6px; font-size:15.5px}
+.case p{margin:7px 0; font-size:14.5px; color:var(--ink-2)}
+.case p:last-child{margin-bottom:2px}
+.case .takeaway{color:var(--ink); font-weight:500}
+.case .takeaway::before{content:"▸ 教材对应 "; color:var(--accent-ink); font-weight:700; font-size:12.5px; letter-spacing:.05em}
+
+.pitfall{
+  margin:20px 0; padding:14px 20px; border:1px dashed var(--line-2); border-radius:8px; max-width:46em;
+}
+.pitfall .label{font-size:12px; letter-spacing:.2em; color:var(--crit); font-weight:700; display:block; margin-bottom:4px}
+.pitfall p{margin:4px 0; font-size:14.5px; color:var(--ink-2)}
+
+.formula{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px;
+  padding:12px 18px; margin:14px 0; max-width:46em; overflow-x:auto;
+  font-size:15px; line-height:2;
+}
+.formula .fx{white-space:nowrap}
+.formula sub,.formula sup{font-size:11px}
+.formula .note{font-size:12.5px; color:var(--muted)}
+
+table{border-collapse:collapse; width:100%; font-size:14px; font-variant-numeric:tabular-nums}
+.tablewrap{overflow-x:auto; margin:16px 0; border:1px solid var(--line); border-radius:8px; background:var(--surface)}
+.tablewrap table{min-width:560px}
+th,td{padding:9px 14px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top}
+th{font-size:12.5px; letter-spacing:.08em; color:var(--muted); font-weight:700; white-space:nowrap}
+tr:last-child td{border-bottom:none}
+td.num{white-space:nowrap}
+
+figure{margin:24px 0; background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:18px 18px 12px}
+figure .fig-scroll{overflow-x:auto}
+figure svg{display:block; max-width:100%; height:auto; color:var(--ink)}
+figure .fig-scroll svg{min-width:660px}
+figcaption{font-size:13px; color:var(--muted); margin-top:10px; line-height:1.7}
+figcaption b{color:var(--ink-2); font-weight:700}
+.fig-title{font-size:14px; font-weight:700; margin:0 0 12px}
+.fig-title .fno{color:var(--accent-ink); margin-right:8px}
+
+svg .node{fill:var(--bg); stroke:var(--line-2); stroke-width:1.2; rx:8}
+svg .node-hi{fill:var(--accent-soft); stroke:var(--accent)}
+svg .node-crit{fill:var(--crit-soft); stroke:var(--crit)}
+svg .nt{font:700 12.5px var(--sans); fill:var(--ink)}
+svg .nd{font:400 11px var(--sans); fill:var(--ink-2)}
+svg .edge{stroke:var(--ink-2); stroke-width:1.4; fill:none}
+svg .edge-soft{stroke:var(--muted); stroke-width:1.2; fill:none; stroke-dasharray:4 4}
+svg .elabel{font:400 11.5px var(--sans); fill:var(--muted)}
+svg .grid{stroke:var(--line); stroke-width:1}
+svg .axis{stroke:var(--line-2); stroke-width:1.2}
+svg .tick{font:400 11px var(--sans); fill:var(--muted)}
+svg .atitle{font:400 11.5px var(--sans); fill:var(--muted)}
+svg .pl{font:700 13px var(--sans); fill:var(--ink)}
+svg .pv{font:400 11.5px var(--sans); fill:var(--ink-2)}
+svg .ln1{stroke:var(--series); stroke-width:2.5; fill:none}
+svg .ln2{stroke:var(--series2); stroke-width:2.5; fill:none}
+
+.recap{margin-top:8px}
+.recap ol{margin:8px 0 0; padding-left:1.4em; max-width:46em; color:var(--ink-2)}
+.recap li{margin:7px 0}
+.recap li b{color:var(--ink)}
+details{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px;
+  padding:12px 18px; margin:10px 0; max-width:46em;
+}
+details summary{cursor:pointer; font-weight:500; color:var(--ink)}
+details summary:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+details[open] summary{color:var(--accent-ink)}
+details .ans{margin-top:8px; padding-top:8px; border-top:1px dashed var(--line); font-size:14.5px; color:var(--ink-2)}
+details .ans p{margin:6px 0}
+
+.next{
+  margin-top:48px; padding:18px 22px; border:1px solid var(--line); border-radius:8px;
+  background:var(--surface); display:flex; justify-content:space-between; align-items:center; gap:14px; flex-wrap:wrap;
+}
+.next .lbl{font-size:12px; letter-spacing:.18em; color:var(--muted)}
+.next .ttl{font-family:var(--serif); font-weight:700; font-size:18px; margin-top:2px}
+.foot{margin-top:26px; font-size:12.5px; color:var(--muted); line-height:1.8}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <span class="book">《投资学》学习手册 · Investments (Bodie · Kane · Marcus)</span>
+  <span class="part"><a href="investments-index.html">学习地图</a> · 第六部分 期权、期货与其他衍生证券</span>
+</header>
+
+<div class="layout">
+
+<nav class="sidenav" aria-label="小节导航">
+  <p class="sn-chap">第 23 章 · 期货、互换与风险管理（含 22 章要点）</p>
+  <a href="#top">章首 · 学习目标</a>
+  <a href="#s1">23.1 期货机制速读</a>
+  <a href="#s2">23.2 期现平价</a>
+  <a href="#s3">23.3 用股指期货对冲 β</a>
+  <a href="#s4">23.4 外汇与利率互换</a>
+  <a href="#s5">23.5 套保的边界</a>
+  <a href="#recap">小结 · 术语 · 自测</a>
+</nav>
+
+<main class="article">
+
+<!-- ======================== 章首 ======================== -->
+<div class="hero" id="top">
+  <span class="chap-no">CHAPTER 23 · 含 CH22 要点</span>
+  <h1>期货、互换与风险管理</h1>
+  <p class="en">Futures, Swaps, and Risk Management</p>
+  <p class="lede">第 2 章认识了期货的损益形状，这一章把它变成<strong>风控工具</strong>：期货价格由什么决定（期现平价）、怎么用股指期货把组合的 β 关掉只留 α、互换怎样置换利率敞口，以及最重要的一课——<strong>套保自身的风险清单</strong>。对走主动交易路线的你，这是“风控工具箱”的教材原型。</p>
+
+  <div class="objectives">
+    <h2>学习目标</h2>
+    <ul>
+      <li>复述期货机制要点：标准化、盯市、基差及其到期收敛（第 22 章要点）</li>
+      <li>掌握持有成本模型 F = S(1 + r − d)，理解 contango / backwardation 与展期损耗</li>
+      <li>会算 β 对冲手数，理解“对冲掉 β、剩下 α”的市场中性构造</li>
+      <li>看懂利率互换的现金流结构与用途（衔接第 14 章免疫）</li>
+      <li>背下套保的四条边界：不等于盈利、有基差风险、会被保证金杀死、容易变形为投机</li>
+    </ul>
+  </div>
+
+  <nav class="chapmap" aria-label="本章导览">
+    <a href="#s1">23.1 机制</a>
+    <a href="#s2">23.2 平价</a>
+    <a href="#s3">23.3 β 对冲</a>
+    <a href="#s4">23.4 互换</a>
+    <a href="#s5">23.5 边界</a>
+    <a href="#recap">小结与自测</a>
+  </nav>
+</div>
+
+<!-- ======================== 23.1 ======================== -->
+<section class="ch" id="s1">
+  <h2 class="sec"><span class="no">23.1</span>期货机制速读<span class="en-term">（第 22 章要点）</span></h2>
+  <p class="sec-en">FUTURES MECHANICS IN BRIEF</p>
+
+  <div class="prose">
+    <p>四个要点撑起整个期货市场：① <strong>标准化合约</strong>——品种、数量、交割日全部统一，流动性因此集中（与之相对的远期是私人定制）；② <strong>保证金 + 每日盯市</strong>——盈亏每天现金结算（第 2、3 章讲过），违约风险被切成“一天的量”，由交易所清算层兜底；③ 绝大多数头寸<strong>对冲平仓</strong>了结，实物交割不到 3%；④ <strong>基差 = 现货价 − 期货价</strong>，随到期日逼近必然<strong>收敛于零</strong>（到期日期货就是现货）——套保者真正暴露的就是基差的波动。</p>
+  </div>
+</section>
+
+<!-- ======================== 23.2 ======================== -->
+<section class="ch" id="s2">
+  <h2 class="sec"><span class="no">23.2</span>期现平价：期货价格是算出来的<span class="en-term">（第 22 章要点）</span></h2>
+  <p class="sec-en">SPOT-FUTURES PARITY</p>
+
+  <div class="formula">
+    <div class="fx">F₀ = S₀ ×（1 + r<sub>f</sub> + 持有成本 − 持有收益）<sup>T</sup></div>
+    <div class="note">股指期货：持有收益是股息率 d，故 F = S(1 + r<sub>f</sub> − d)<sup>T</sup>；商品还要加仓储成本、减便利收益。例：沪深 300 现货 4000 点、r<sub>f</sub> = 3%、股息率 2%，一年期合约公允价 = 4000 × 1.01 = 4040 点。</div>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 23-1</span>持有成本套利：谁把期货价格钉在公式上</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 206" role="img" aria-label="期现套利流程：借入资金买入现货，同时卖出高估的期货，到期交割收取期货价并偿还本息，锁定无风险利润">
+      <defs>
+        <marker id="ar1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/>
+        </marker>
+      </defs>
+      <rect class="node" x="16" y="36" width="150" height="88" rx="8"/>
+      <text class="nt" x="91" y="62" text-anchor="middle">① 借入资金 S</text>
+      <text class="nd" x="91" y="82" text-anchor="middle">成本：利率 r</text>
+      <rect class="node" x="196" y="36" width="150" height="88" rx="8"/>
+      <text class="nt" x="271" y="62" text-anchor="middle">② 买入现货持有</text>
+      <text class="nd" x="271" y="82" text-anchor="middle">收股息 / 付仓储</text>
+      <rect class="node" x="376" y="36" width="150" height="88" rx="8"/>
+      <text class="nt" x="451" y="62" text-anchor="middle">③ 同时卖出期货</text>
+      <text class="nd" x="451" y="82" text-anchor="middle">锁定卖价 F（高估）</text>
+      <rect class="node-hi" x="556" y="36" width="150" height="88" rx="8"/>
+      <text class="nt" x="631" y="56" text-anchor="middle">④ 到期交割</text>
+      <text class="nd" x="631" y="76" text-anchor="middle">收 F · 还本息 S(1+r)</text>
+      <text class="nd" x="631" y="96" text-anchor="middle">利润无风险落袋</text>
+      <path class="edge" d="M 166 80 H 192" marker-end="url(#ar1)"/>
+      <path class="edge" d="M 346 80 H 372" marker-end="url(#ar1)"/>
+      <path class="edge" d="M 526 80 H 552" marker-end="url(#ar1)"/>
+      <text class="elabel" x="360" y="156" text-anchor="middle">只要 F ＞ S(1 + r − d)，这套“现货多头 + 期货空头”就稳赚差额；F 偏低则反向操作（卖现货买期货）</text>
+      <text class="elabel" x="360" y="180" text-anchor="middle">套利者的贪婪把 F 钉在公允值附近——期货价格是成本关系，不是市场对未来的预言</text>
+    </svg>
+    </div>
+    <figcaption><b>读图：</b>由平价公式，期限越远期货越贵（r &gt; d 时）称 <b>contango（期货升水）</b>；现货紧缺、便利收益高时远期反而便宜，称 <b>backwardation（贴水）</b>。对持仓者的含义是<b>展期损耗</b>：升水结构下的多头每次移仓都“卖低买高”——原油 ETF 长期跑输油价、2020 年原油宝悲剧（第 2 章）背后都有这台磨损机。</figcaption>
+  </figure>
+
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p>“期货价高于现货，说明市场看涨。”——升水主要反映<strong>持有成本</strong>（利率、仓储减股息），不是预测。同理，A 股股指期货长年贴水也不等于市场看跌——它更多反映对冲需求把期货端压低（愿付费转移风险的人多）。把平价结构读成情绪指标，是衍生品里最常见的误读。</p>
+  </div>
+</section>
+
+<!-- ======================== 23.3 ======================== -->
+<section class="ch" id="s3">
+  <h2 class="sec"><span class="no">23.3</span>用股指期货对冲 β：关掉市场，留下 α</h2>
+  <p class="sec-en">HEDGING SYSTEMATIC RISK</p>
+
+  <div class="formula">
+    <div class="fx">对冲手数 N = β × 组合市值 /（期货点位 × 合约乘数）</div>
+    <div class="note">例：持有 500 万元 A 股组合，β = 1.2；沪深 300 期货 4000 点、每点 300 元（一手名义价值 120 万元）：N = 1.2 × 500 / 120 = 5 手空单。此后市场涨跌由期货端对冲，组合只剩选股的 α 与残差——第 9 章“组合 β 线性可调”的实战形态。</div>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 23-2</span>对冲前后：把斜率从 1.2 压到 0（示例组合 α = 1%）</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 340" role="img" aria-label="两条损益线：未对冲组合随市场涨跌呈斜率 1.2 的直线；用股指期货对冲后变为接近水平的直线，只剩约 1% 的阿尔法与基差噪声">
+      <line class="axis" x1="90" y1="180" x2="670" y2="180"/>
+      <line class="axis" x1="380" y1="36" x2="380" y2="316"/>
+      <g text-anchor="middle">
+        <text class="tick" x="90" y="198">−10</text>
+        <text class="tick" x="235" y="198">−5</text>
+        <text class="tick" x="525" y="198">+5</text>
+        <text class="tick" x="670" y="198">+10</text>
+      </g>
+      <g text-anchor="end">
+        <text class="tick" x="372" y="91">+10</text>
+        <text class="tick" x="372" y="277">−10</text>
+      </g>
+      <text class="atitle" x="666" y="170" text-anchor="end">市场涨跌（%）</text>
+      <text class="atitle" x="92" y="30">组合收益（%）</text>
+      <polyline class="ln1" points="90,282 670,59"/>
+      <polyline class="ln2" points="90,171 670,171"/>
+      <text class="pv" x="556" y="84">未对冲：斜率 = β = 1.2</text>
+      <text class="pv" x="512" y="156">对冲后：≈ α + 基差噪声</text>
+    </svg>
+    </div>
+    <figcaption><b>读图：</b>蓝线是裸组合：市场 −10% 时亏 11%。橙线是加了 5 手空单之后：无论市场怎么动，收益都贴着 α ≈ 1% 的水平线——这就是<b>市场中性</b>策略的骨架（量化对冲基金的标准构造）。但“水平”是近似：<b>基差波动、β 估计误差与漂移、分红偏离预期</b>都会让橙线抖动——对冲消除的是系统性风险的大头，不是全部。</figcaption>
+  </figure>
+
+  <div class="prose">
+    <p>三点实务提醒：① β 用第 9 章的回归估计，有误差且随时间漂移，需定期重估再平衡手数；② 用相近而非完全对应的合约对冲（如用沪深 300 期货对冲中小盘组合）引入<strong>交叉套保</strong>的额外基差风险；③ 期货端每日盯市——组合浮盈时期货端在亏现金，<em>保证金的现金流管理</em>是对冲头寸的生命线（23.5 的主角）。</p>
+  </div>
+</section>
+
+<!-- ======================== 23.4 ======================== -->
+<section class="ch" id="s4">
+  <h2 class="sec"><span class="no">23.4</span>外汇平价与利率互换</h2>
+  <p class="sec-en">FX PARITY AND INTEREST RATE SWAPS</p>
+
+  <div class="formula">
+    <div class="fx">利率平价　F / S =（1 + r<sub>本币</sub>）/（1 + r<sub>外币</sub>）</div>
+    <div class="note">远期汇率同样是算出来的：高息货币的远期必然贴水，否则“借低息买高息 + 远期锁汇”就是印钞机。出海企业的锁汇成本，本质是两国利差。</div>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 23-3</span>利率互换：不换本金，只换“利率的脾气”</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 270" role="img" aria-label="利率互换结构：企业 A 向交易商支付固定利率 3.50% 并收取浮动利率，企业 B 向交易商支付浮动利率并收取固定 3.45%，交易商赚取价差，名义本金不交换">
+      <defs>
+        <marker id="ar2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/>
+        </marker>
+      </defs>
+      <rect class="node" x="20" y="50" width="150" height="120" rx="8"/>
+      <text class="nt" x="95" y="86" text-anchor="middle">企业 A</text>
+      <text class="nd" x="95" y="108" text-anchor="middle">背着浮动利率贷款</text>
+      <text class="nd" x="95" y="126" text-anchor="middle">想锁定融资成本</text>
+      <rect class="node-hi" x="285" y="50" width="150" height="120" rx="8"/>
+      <text class="nt" x="360" y="86" text-anchor="middle">互换交易商</text>
+      <text class="nd" x="360" y="108" text-anchor="middle">撮合两边</text>
+      <text class="nd" x="360" y="126" text-anchor="middle">赚 0.05% 价差</text>
+      <rect class="node" x="550" y="50" width="150" height="120" rx="8"/>
+      <text class="nt" x="625" y="86" text-anchor="middle">企业 B</text>
+      <text class="nd" x="625" y="108" text-anchor="middle">持有固定收益资产</text>
+      <text class="nd" x="625" y="126" text-anchor="middle">想换成浮动现金流</text>
+      <text class="elabel" x="227" y="76" text-anchor="middle">固定 3.50% →</text>
+      <path class="edge" d="M 174 86 H 281" marker-end="url(#ar2)"/>
+      <text class="elabel" x="227" y="128" text-anchor="middle">← 浮动 SHIBOR</text>
+      <path class="edge" d="M 281 138 H 178" marker-end="url(#ar2)"/>
+      <text class="elabel" x="492" y="76" text-anchor="middle">固定 3.45% →</text>
+      <path class="edge" d="M 439 86 H 546" marker-end="url(#ar2)"/>
+      <text class="elabel" x="492" y="128" text-anchor="middle">← 浮动 SHIBOR</text>
+      <path class="edge" d="M 546 138 H 443" marker-end="url(#ar2)"/>
+      <text class="elabel" x="360" y="210" text-anchor="middle">名义本金从不交换，每期只结算利息差额；A 的净成本 =（SHIBOR + 信用加点）− SHIBOR + 3.50% = 固定化</text>
+      <text class="elabel" x="360" y="232" text-anchor="middle">本质：A 与 B 互换了利率敞口——互换是久期管理（第 14 章免疫）最常用的批发工具</text>
+    </svg>
+    </div>
+    <figcaption><b>读图：</b>互换把“付浮动”换成“付固定”（或反之），一张合约就能调整整张资产负债表的久期——银行与保险公司管理第 14 章那种错配，主要靠它而不是现券买卖。信用风险只及于<b>利息差额</b>（本金不动手），这是互换市场能长到数百万亿美元名义规模的原因。</figcaption>
+  </figure>
+</section>
+
+<!-- ======================== 23.5 ======================== -->
+<section class="ch" id="s5">
+  <h2 class="sec"><span class="no">23.5</span>套保的边界：四条铁律</h2>
+  <p class="sec-en">THE LIMITS OF HEDGING</p>
+
+  <div class="prose">
+    <p>① <strong>套保不是盈利工具</strong>：锁定价格 = 同时放弃不利与<em>有利</em>的波动，事后看“亏钱”的套保单恰恰说明主业赚了——评价套保只能看“组合总体波动是否下降”，不能单看期货腿盈亏；② <strong>基差风险不可消</strong>：套保把“价格风险”换成了小得多的“基差风险”，是换不是灭；③ <strong>保证金现金流能杀死正确的头寸</strong>——下面的案例；④ <strong>警惕套保变形</strong>：在套保合约里嵌入卖期权“降成本”（2008 年东航燃油套保巨亏数十亿的结构），或套保数量超过真实敞口，都已越界成投机——第 2 章期权卖方“压路机”警告在此重演。</p>
+  </div>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>青山镍事件（2022）：正确的套保，差点死在保证金上</h4>
+    <p>青山控股是全球最大镍生产商，在 LME 持有大量镍空单——教科书意义上的产业套保（锁定未来产品售价）。2022 年 3 月，俄乌冲突引发供应恐慌叠加<strong>逼空</strong>，LME 镍价两个交易日内从约 2.9 万美元飙到盘中 10 万美元以上。空单浮亏以十亿美元计，保证金追缴沿着“青山 → 经纪商 → 清算所”的链条逐级放大，多家经纪商濒临违约——最终 LME 史无前例地<strong>取消当日全部成交并停市一周</strong>，争议至今。事后镍价大幅回落，证明青山对基本面的判断并不错。</p>
+    <p class="takeaway">三条抄进风控清单的教训：① 盯市制度下，<strong>方向正确也可能先死于现金流</strong>——持仓规模必须以“极端行情下的追保能力”为上限（第 3 章追保数学 × 第 5 章肥尾）；② 流动性差的合约上，大持仓本身就是逼空靶子（头寸拥挤度回看第 11 章）；③ 场内套保的现金流是刚性的，而被套保的现货利润是远期的——<strong>期限错配又一次现身</strong>（SVB 的镜像）。</p>
+  </div>
+</section>
+
+<!-- ======================== 小结 ======================== -->
+<section class="ch" id="recap">
+  <h2 class="sec"><span class="no">※</span>本章小结</h2>
+  <p class="sec-en">SUMMARY</p>
+
+  <div class="recap">
+    <ol>
+      <li><b>机制四件套（22 章要点）：</b>标准化、保证金盯市、平仓了结、基差到期收敛——套保者的真实敞口是基差。</li>
+      <li><b>期现平价：</b>F = S(1 + r + 成本 − 收益)——期货价是持有成本关系不是预言；升水结构下多头承受展期损耗（原油 ETF / 原油宝）。</li>
+      <li><b>β 对冲：</b>N = β × 市值 / 合约名义值；对冲后组合 ≈ α + 基差噪声——市场中性的骨架；β 漂移与交叉套保引入残余风险。</li>
+      <li><b>互换：</b>不换本金只换利息流，一张合约重塑久期——第 14 章免疫的批发工具；利率平价同理决定远期汇率。</li>
+      <li><b>套保四铁律：</b>不为盈利、基差不灭、保证金现金流是生命线（青山）、嵌期权与超敞口即投机（东航）。</li>
+      <li><b>评价套保看总体：</b>只问“组合波动是否下降、极端情景现金流是否扛得住”，永远不单独核算对冲腿的盈亏。</li>
+    </ol>
+  </div>
+
+  <h3>核心术语（中英对照）</h3>
+  <div class="tablewrap">
+    <table>
+      <tr><th>中文</th><th>English</th><th>一句话定义</th></tr>
+      <tr><td>基差</td><td>basis</td><td>现货价 − 期货价，到期收敛于零</td></tr>
+      <tr><td>持有成本模型 / 期现平价</td><td>cost-of-carry / spot-futures parity</td><td>F = S(1 + r + 成本 − 收益)</td></tr>
+      <tr><td>期现套利</td><td>cash-and-carry arbitrage</td><td>买现货卖期货锁定价差的套利</td></tr>
+      <tr><td>升水 / 贴水</td><td>contango / backwardation</td><td>期货高于 / 低于现货的期限结构</td></tr>
+      <tr><td>展期损耗 / 收益</td><td>roll cost / roll yield</td><td>移仓换月时结构带来的损益</td></tr>
+      <tr><td>套保比率</td><td>hedge ratio</td><td>每单位敞口所需的期货数量</td></tr>
+      <tr><td>β 对冲 / 市场中性</td><td>beta hedge / market neutral</td><td>用股指期货压平 β 只留 α</td></tr>
+      <tr><td>交叉套保</td><td>cross-hedging</td><td>用相近而非对应标的的合约对冲</td></tr>
+      <tr><td>基差风险</td><td>basis risk</td><td>套保后剩余的基差波动风险</td></tr>
+      <tr><td>利率平价</td><td>interest rate parity</td><td>远期汇率由两国利差决定</td></tr>
+      <tr><td>利率互换</td><td>interest rate swap</td><td>固定与浮动利息流的互换，本金不动</td></tr>
+      <tr><td>名义本金</td><td>notional principal</td><td>仅用于计息的基准金额</td></tr>
+      <tr><td>逼空 / 保证金螺旋</td><td>short squeeze / margin spiral</td><td>追保强平与价格互相放大的正反馈</td></tr>
+    </table>
+  </div>
+
+  <h3>自测（先想后翻）</h3>
+  <details>
+    <summary>Q1 沪深 300 现货 4000 点，r<sub>f</sub> = 3%、股息率 2%：一年期期货公允价是多少？若市场报 4100 点，写出套利操作与利润。</summary>
+    <div class="ans"><p>公允 F = 4000 ×（1 + 0.03 − 0.02）= 4040 点。市价 4100 高估 60 点：借钱买入一篮子现货（或 ETF），同时按 4100 卖出期货；持有一年收股息、到期交割。成本 4000 × 1.03 − 股息 80 = 4040，收入 4100，无风险利润 60 点。套利资金的涌入会把 4100 压回 4040 附近——这就是图 23-1 的日常工作。</p></div>
+  </details>
+  <details>
+    <summary>Q2 800 万元组合、β = 1.1；期货 4000 点、乘数 300 元 / 点：完全对冲需要几手空单？对冲后组合还剩什么？</summary>
+    <div class="ans"><p>一手名义值 = 4000 × 300 = 120 万元；N = 1.1 × 800 / 120 ≈ 7.3，取 7 手（留约 0.04 的残余 β）。对冲后收益 ≈ 选股 α + 残差 e + 基差变动——市场暴跌不再伤你，但你也赚不到市场上涨；这笔交易的本质是把“赌方向”换成“赌选股能力”，α 为零的人对冲完只剩成本。</p></div>
+  </details>
+  <details>
+    <summary>Q3 做了对冲为什么还会亏钱？列出三个残余风险源并各给一个缓解动作。</summary>
+    <div class="ans"><p>① 基差风险：期货与现货价差自身波动（到期前尤甚）——选择与敞口期限匹配的合约、避免频繁跨月；② β 估计误差与漂移：回归 β 是历史值——定期重估、设重平衡阈值；③ 交叉套保错配：对冲标的与持仓结构不符（用 300 对冲小盘）——换用对应指数合约或接受并计量错配敞口。另加现金流维度：期货腿逐日盯市，需预留追保备付金——对冲头寸的现金管理与方向判断同等重要。</p></div>
+  </details>
+  <details>
+    <summary>Q4 为什么长期持有原油期货类产品（如原油 ETF）常年跑输油价本身？</summary>
+    <div class="ans"><p>升水（contango）结构下，近月便宜远月贵；基金到期必须“卖掉便宜的近月、买入更贵的次月”——每次移仓都磨损一层，即展期损耗。油价横盘时净值照样阴跌；2020 年极端升水叠加负油价，造就了原油宝式的灾难。推论：期货类工具适合<strong>短期方向交易或套保</strong>，不适合“长期看好就拿着”——持有结构（现货、股票、期货）的选择与方向判断同样重要。</p></div>
+  </details>
+  <details>
+    <summary>Q5 青山的空单方向最终被证明正确，为什么仍几乎酿成灾难？写一份三行的“套保现金流预案”。</summary>
+    <div class="ans"><p>因为盯市制度结算的是<strong>每天的市价</strong>而不是最终的对错：逼空行情里浮亏即刻变成追保现金流，而套保对应的现货利润要等产品卖出才兑现——期限错配 + 流动性挤压，正确的头寸先于真理破产。预案三行：① 压力测试：按历史极端波动（含逼空情景）测算最大追保额，持仓上限 = 可动用现金 ÷ 该数；② 授信与备付：事前锁定银行授信 / 高流动性资产作为第二梯队保证金；③ 分散执行：拆分到多个经纪商与场内外工具，避免单一链条挤兑——并永远不在套保合约里嵌入卖期权“降成本”。</p></div>
+  </details>
+
+  <a class="next" href="investments-ch24.html">
+    <div>
+      <div class="lbl">NEXT CHAPTER · HAPPY PATH</div>
+      <div class="ttl">第 24 章 · 投资组合业绩评价</div>
+    </div>
+    <div class="lbl">TWR/MWR → 四大指标 → 归因 → 运气还是本事</div>
+  </a>
+
+  <p class="foot">本页为依据 Bodie–Kane–Marcus《投资学》（Investments）第 22–23 章框架整理的原创学习笔记，仅用于教学理解；数值为教学算例，案例为近似表述。内容不构成任何投资建议。</p>
+</section>
+
+</main>
+</div>
+</div>
+
+<script>
+(function(){
+  var links = Array.prototype.slice.call(document.querySelectorAll('.sidenav a[href^="#"]'));
+  if(!links.length) return;
+  var map = [];
+  links.forEach(function(a){
+    var el = document.getElementById(a.getAttribute('href').slice(1));
+    if(el) map.push([el, a]);
+  });
+  function update(){
+    var y = window.scrollY + 150;
+    var cur = map[0][1];
+    for(var i = 0; i < map.length; i++){
+      if(map[i][0].offsetTop <= y) cur = map[i][1];
+    }
+    map.forEach(function(p){ p[1].classList.toggle('active', p[1] === cur); });
+  }
+  var tick = false;
+  window.addEventListener('scroll', function(){
+    if(!tick){
+      tick = true;
+      requestAnimationFrame(function(){ tick = false; update(); });
+    }
+  }, {passive:true});
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+</body>
+</html>

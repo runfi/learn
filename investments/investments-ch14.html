@@ -1,0 +1,646 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>投资学 · 第14章 债券的价格与收益</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700;900&family=Noto+Sans+SC:wght@400;500;700&display=swap">
+<style>
+/* 布局：双栏（212px 侧栏 + 正文），章导览 + 14.1–14.5 分节；宽图表置于横向滚动容器 */
+:root{
+  --bg:#f5f6f7;
+  --surface:#ffffff;
+  --ink:#171a20;
+  --ink-2:#4a5160;
+  --muted:#858c9b;
+  --line:#e2e5ea;
+  --line-2:#c9ced6;
+  --accent:#1d5fad;
+  --accent-ink:#174e8f;
+  --accent-soft:#eaf1fa;
+  --series:#2a78d6;
+  --series2:#eb6834;
+  --series3:#1baf7a;
+  --crit:#d03b3b;
+  --crit-soft:rgba(208,59,59,.07);
+  --serif:"Noto Serif SC","Songti SC",serif;
+  --sans:"Noto Sans SC","Microsoft YaHei",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#101215; --surface:#181b20; --ink:#eef0f3; --ink-2:#c0c5cf; --muted:#8a909d;
+    --line:#282c33; --line-2:#3a3f48;
+    --accent:#5a96e3; --accent-ink:#79abec; --accent-soft:#1c2a3d;
+    --series:#3987e5; --series2:#d95926; --series3:#199e70; --crit:#e66767; --crit-soft:rgba(230,103,103,.10);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#101215; --surface:#181b20; --ink:#eef0f3; --ink-2:#c0c5cf; --muted:#8a909d;
+  --line:#282c33; --line-2:#3a3f48;
+  --accent:#5a96e3; --accent-ink:#79abec; --accent-soft:#1c2a3d;
+  --series:#3987e5; --series2:#d95926; --series3:#199e70; --crit:#e66767; --crit-soft:rgba(230,103,103,.10);
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:var(--sans); font-size:15.5px; line-height:1.85;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1190px; margin:0 auto; padding-inline:20px; padding-block:0 72px}
+
+.layout{display:grid; grid-template-columns:212px minmax(0,1fr); gap:44px; align-items:start}
+.article{max-width:920px; min-width:0}
+.sidenav{
+  position:sticky; top:16px; max-height:calc(100vh - 32px); overflow-y:auto;
+  padding-block:40px 16px; font-size:13px;
+}
+.sidenav .sn-chap{
+  margin:0 0 10px; padding-left:13px; font-size:11.5px; letter-spacing:.14em;
+  color:var(--muted); font-weight:700;
+}
+.sidenav a{
+  display:block; color:var(--ink-2); text-decoration:none; line-height:1.55;
+  padding:6px 10px 6px 13px; border-left:2px solid var(--line);
+}
+.sidenav a:hover{color:var(--accent-ink)}
+.sidenav a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.sidenav a.active{
+  color:var(--accent-ink); border-left-color:var(--accent);
+  background:var(--accent-soft); font-weight:700;
+}
+.hero,section.ch{scroll-margin-top:10px}
+@media (max-width: 999px){
+  .sidenav{display:none}
+  .layout{display:block}
+}
+@media (min-width: 1000px){
+  nav.chapmap{display:none}
+}
+
+.masthead{
+  display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  padding-block:18px 14px; border-bottom:1px solid var(--line);
+}
+.masthead .book{font-family:var(--serif); font-weight:700; font-size:15px; letter-spacing:.02em}
+.masthead .part{font-size:12.5px; color:var(--muted); letter-spacing:.12em}
+.masthead a{color:var(--accent-ink); text-decoration:none}
+.masthead a:hover{text-decoration:underline}
+.masthead a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+a.next{color:inherit; text-decoration:none}
+a.next:hover{border-color:var(--accent)}
+a.next:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+.hero{padding-block:44px 28px; border-bottom:1px solid var(--line)}
+.chap-no{
+  display:inline-flex; align-items:center; gap:10px;
+  font-size:12.5px; letter-spacing:.22em; color:var(--accent-ink); font-weight:700;
+}
+.chap-no::after{content:""; width:46px; height:1px; background:var(--accent)}
+.hero h1{
+  font-family:var(--serif); font-weight:900; font-size:clamp(30px,5vw,46px);
+  line-height:1.25; margin:10px 0 4px; letter-spacing:.02em; text-wrap:balance;
+}
+.hero .en{font-size:14px; color:var(--muted); letter-spacing:.08em; margin:0 0 18px}
+.hero .lede{max-width:46em; color:var(--ink-2); margin:0}
+.hero .lede strong{color:var(--ink)}
+.objectives{
+  margin-top:22px; padding:16px 20px; background:var(--surface);
+  border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:0 6px 6px 0;
+}
+.objectives h2{font-size:13px; letter-spacing:.18em; color:var(--accent-ink); margin:0 0 8px; font-weight:700}
+.objectives ul{margin:0; padding-left:1.3em; color:var(--ink-2)}
+.objectives li{margin:3px 0}
+.chapmap{display:flex; flex-wrap:wrap; gap:8px; margin-top:20px}
+.chapmap a{
+  font-size:13px; color:var(--ink-2); text-decoration:none;
+  border:1px solid var(--line-2); border-radius:999px; padding:4px 13px; background:var(--surface);
+}
+.chapmap a:hover{border-color:var(--accent); color:var(--accent-ink)}
+.chapmap a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+section.ch{padding-block:40px 8px}
+section.ch + section.ch{border-top:1px solid var(--line)}
+h2.sec{
+  font-family:var(--serif); font-weight:700; font-size:clamp(22px,3.4vw,28px);
+  margin:0 0 2px; line-height:1.35; text-wrap:balance;
+}
+h2.sec .no{color:var(--accent-ink); margin-right:10px; font-feature-settings:"tnum"}
+p.sec-en{font-size:12.5px; letter-spacing:.1em; color:var(--muted); margin:0 0 18px}
+h3{font-size:16.5px; font-weight:700; margin:26px 0 8px}
+h3 .tag{color:var(--accent-ink)}
+p{margin:10px 0}
+.prose{max-width:46em}
+.prose .en-term{color:var(--muted); font-size:.88em}
+strong{font-weight:700}
+em{font-style:normal; font-weight:700; color:var(--accent-ink)}
+
+.cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px; margin:16px 0}
+.card{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:16px 18px;
+}
+.card h4{margin:0 0 6px; font-size:15px}
+.card h4 .en-term{display:block; font-weight:400; font-size:12px; color:var(--muted); letter-spacing:.04em; margin-top:2px}
+.card p{margin:6px 0; font-size:14px; color:var(--ink-2)}
+.card ul{margin:6px 0 0; padding-left:1.2em; font-size:14px; color:var(--ink-2)}
+.card li{margin:3px 0}
+
+.case{
+  margin:20px 0; padding:16px 20px 14px; background:var(--surface);
+  border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:0 8px 8px 0;
+}
+.case .label{font-size:12px; letter-spacing:.2em; color:var(--accent-ink); font-weight:700; display:block; margin-bottom:6px}
+.case h4{margin:0 0 6px; font-size:15.5px}
+.case p{margin:7px 0; font-size:14.5px; color:var(--ink-2)}
+.case p:last-child{margin-bottom:2px}
+.case .takeaway{color:var(--ink); font-weight:500}
+.case .takeaway::before{content:"▸ 教材对应 "; color:var(--accent-ink); font-weight:700; font-size:12.5px; letter-spacing:.05em}
+
+.pitfall{
+  margin:20px 0; padding:14px 20px; border:1px dashed var(--line-2); border-radius:8px; max-width:46em;
+}
+.pitfall .label{font-size:12px; letter-spacing:.2em; color:var(--crit); font-weight:700; display:block; margin-bottom:4px}
+.pitfall p{margin:4px 0; font-size:14.5px; color:var(--ink-2)}
+
+.formula{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px;
+  padding:12px 18px; margin:14px 0; max-width:46em; overflow-x:auto;
+  font-size:15px; line-height:2;
+}
+.formula .fx{white-space:nowrap}
+.formula sub,.formula sup{font-size:11px}
+.formula .note{font-size:12.5px; color:var(--muted)}
+
+table{border-collapse:collapse; width:100%; font-size:14px; font-variant-numeric:tabular-nums}
+.tablewrap{overflow-x:auto; margin:16px 0; border:1px solid var(--line); border-radius:8px; background:var(--surface)}
+.tablewrap table{min-width:560px}
+th,td{padding:9px 14px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top}
+th{font-size:12.5px; letter-spacing:.08em; color:var(--muted); font-weight:700; white-space:nowrap}
+tr:last-child td{border-bottom:none}
+td.num{white-space:nowrap}
+
+figure{margin:24px 0; background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:18px 18px 12px}
+figure .fig-scroll{overflow-x:auto}
+figure svg{display:block; max-width:100%; height:auto; color:var(--ink)}
+figure .fig-scroll svg{min-width:660px}
+figcaption{font-size:13px; color:var(--muted); margin-top:10px; line-height:1.7}
+figcaption b{color:var(--ink-2); font-weight:700}
+.fig-title{font-size:14px; font-weight:700; margin:0 0 12px}
+.fig-title .fno{color:var(--accent-ink); margin-right:8px}
+
+svg .node{fill:var(--bg); stroke:var(--line-2); stroke-width:1.2; rx:8}
+svg .node-hi{fill:var(--accent-soft); stroke:var(--accent)}
+svg .node-crit{fill:var(--crit-soft); stroke:var(--crit)}
+svg .nt{font:700 12.5px var(--sans); fill:var(--ink)}
+svg .nd{font:400 11px var(--sans); fill:var(--ink-2)}
+svg .edge{stroke:var(--ink-2); stroke-width:1.4; fill:none}
+svg .edge-soft{stroke:var(--muted); stroke-width:1.2; fill:none; stroke-dasharray:4 4}
+svg .elabel{font:400 11.5px var(--sans); fill:var(--muted)}
+svg .grid{stroke:var(--line); stroke-width:1}
+svg .axis{stroke:var(--line-2); stroke-width:1.2}
+svg .tick{font:400 11px var(--sans); fill:var(--muted)}
+svg .atitle{font:400 11.5px var(--sans); fill:var(--muted)}
+svg .pt{fill:var(--series); stroke:var(--surface); stroke-width:2}
+svg .pl{font:700 13px var(--sans); fill:var(--ink)}
+svg .pv{font:400 11.5px var(--sans); fill:var(--ink-2)}
+svg .ln1{stroke:var(--series); stroke-width:2.5; fill:none}
+svg .ln2{stroke:var(--series2); stroke-width:2.5; fill:none}
+svg .ln3{stroke:var(--series3); stroke-width:2.5; fill:none}
+svg .seg1{fill:var(--series)}
+svg .seg2{fill:var(--series2)}
+
+.recap{margin-top:8px}
+.recap ol{margin:8px 0 0; padding-left:1.4em; max-width:46em; color:var(--ink-2)}
+.recap li{margin:7px 0}
+.recap li b{color:var(--ink)}
+details{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px;
+  padding:12px 18px; margin:10px 0; max-width:46em;
+}
+details summary{cursor:pointer; font-weight:500; color:var(--ink)}
+details summary:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+details[open] summary{color:var(--accent-ink)}
+details .ans{margin-top:8px; padding-top:8px; border-top:1px dashed var(--line); font-size:14.5px; color:var(--ink-2)}
+details .ans p{margin:6px 0}
+
+.next{
+  margin-top:48px; padding:18px 22px; border:1px solid var(--line); border-radius:8px;
+  background:var(--surface); display:flex; justify-content:space-between; align-items:center; gap:14px; flex-wrap:wrap;
+}
+.next .lbl{font-size:12px; letter-spacing:.18em; color:var(--muted)}
+.next .ttl{font-family:var(--serif); font-weight:700; font-size:18px; margin-top:2px}
+.foot{margin-top:26px; font-size:12.5px; color:var(--muted); line-height:1.8}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <span class="book">《投资学》学习手册 · Investments (Bodie · Kane · Marcus)</span>
+  <span class="part"><a href="investments-index.html">学习地图</a> · 第四部分 固定收益证券</span>
+</header>
+
+<div class="layout">
+
+<nav class="sidenav" aria-label="小节导航">
+  <p class="sn-chap">第 14 章 · 债券的价格与收益（含 15/16 章要点）</p>
+  <a href="#top">章首 · 学习目标</a>
+  <a href="#s1">14.1 定价与价格—收益率关系</a>
+  <a href="#s2">14.2 收益率的三副面孔</a>
+  <a href="#s3">14.3 违约风险与信用利差</a>
+  <a href="#s4">14.4 久期与免疫（16 章要点）</a>
+  <a href="#s5">14.5 期限结构（15 章要点）</a>
+  <a href="#recap">小结 · 术语 · 自测</a>
+</nav>
+
+<main class="article">
+
+<!-- ======================== 章首 ======================== -->
+<div class="hero" id="top">
+  <span class="chap-no">CHAPTER 14 · 含 CH15/16 要点</span>
+  <h1>债券的价格与收益</h1>
+  <p class="en">Bond Prices and Yields (with Term Structure &amp; Duration)</p>
+  <p class="lede">债券是现金流贴现的第一个完整应用：<strong>先学会给“确定的承诺”定价，才轮得到给“不确定的盈利”定价（第 18 章）</strong>。本章打包三件套：定价与收益率的换算、违约风险的定价（信用利差），以及两件并入的利器——<strong>久期</strong>（利率风险的尺子，第 16 章要点）与<strong>期限结构</strong>（收益率曲线怎么读，第 15 章要点）。</p>
+
+  <div class="objectives">
+    <h2>学习目标</h2>
+    <ul>
+      <li>会用贴现公式给债券定价，理解价格与收益率的反向凸性关系</li>
+      <li>分清到期收益率、当期收益率与实际持有收益，理解“向面值回归”</li>
+      <li>看懂评级与信用利差：利差是违约风险的市场报价，也是恐惧的体温计</li>
+      <li>掌握久期：ΔP/P ≈ −D* × Δy，会算追保级别的利率冲击（SVB 案例）</li>
+      <li>会读收益率曲线三形态，理解远期利率与“倒挂预示衰退”的逻辑与限度</li>
+    </ul>
+  </div>
+
+  <nav class="chapmap" aria-label="本章导览">
+    <a href="#s1">14.1 定价</a>
+    <a href="#s2">14.2 收益率</a>
+    <a href="#s3">14.3 信用利差</a>
+    <a href="#s4">14.4 久期</a>
+    <a href="#s5">14.5 期限结构</a>
+    <a href="#recap">小结与自测</a>
+  </nav>
+</div>
+
+<!-- ======================== 14.1 ======================== -->
+<section class="ch" id="s1">
+  <h2 class="sec"><span class="no">14.1</span>定价：把一串承诺折成一个数</h2>
+  <p class="sec-en">BOND PRICING</p>
+
+  <div class="formula">
+    <div class="fx">价格 P = Σ<sub>t</sub> 票息 C /（1 + y）<sup>t</sup> ＋ 面值 F /（1 + y）<sup>T</sup></div>
+    <div class="note">y 是市场要求的收益率（贴现率）。美式惯例半年付息，则用 y/2 与 2T 期；例：3 年期、票面 8%、面值 100：每半年收 4 元共 6 次，期末另收 100。</div>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 14-1</span>一只债券 = 一串日历上的现金流</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 280" role="img" aria-label="现金流时间线：3 年期债券每半年支付 4 元票息，第三年末支付 104 元本息，每笔现金流按到期收益率折现加总即为价格">
+      <line class="axis" x1="60" y1="200" x2="700" y2="200"/>
+      <g text-anchor="middle">
+        <text class="tick" x="80" y="220">今天</text>
+        <text class="tick" x="180" y="220">0.5 年</text>
+        <text class="tick" x="280" y="220">1 年</text>
+        <text class="tick" x="380" y="220">1.5 年</text>
+        <text class="tick" x="480" y="220">2 年</text>
+        <text class="tick" x="580" y="220">2.5 年</text>
+        <text class="tick" x="680" y="220">3 年</text>
+      </g>
+      <!-- 票息 -->
+      <rect class="seg1" x="167" y="170" width="26" height="30" rx="3"/>
+      <rect class="seg1" x="267" y="170" width="26" height="30" rx="3"/>
+      <rect class="seg1" x="367" y="170" width="26" height="30" rx="3"/>
+      <rect class="seg1" x="467" y="170" width="26" height="30" rx="3"/>
+      <rect class="seg1" x="567" y="170" width="26" height="30" rx="3"/>
+      <text class="pv" x="180" y="162" text-anchor="middle">4</text>
+      <text class="pv" x="280" y="162" text-anchor="middle">4</text>
+      <text class="pv" x="380" y="162" text-anchor="middle">4</text>
+      <text class="pv" x="480" y="162" text-anchor="middle">4</text>
+      <text class="pv" x="580" y="162" text-anchor="middle">4</text>
+      <!-- 末期 -->
+      <rect class="seg2" x="667" y="70" width="26" height="130" rx="3"/>
+      <text class="pl" x="680" y="60" text-anchor="middle">104</text>
+      <text class="nd" x="680" y="46" text-anchor="middle">末期息 + 本金</text>
+      <!-- 折现标注 -->
+      <g text-anchor="middle">
+        <text class="elabel" x="180" y="244">÷(1+y/2)¹</text>
+        <text class="elabel" x="280" y="244">÷(1+y/2)²</text>
+        <text class="elabel" x="380" y="244">÷(1+y/2)³</text>
+        <text class="elabel" x="480" y="244">÷(1+y/2)⁴</text>
+        <text class="elabel" x="580" y="244">÷(1+y/2)⁵</text>
+        <text class="elabel" x="680" y="244">÷(1+y/2)⁶</text>
+      </g>
+      <text class="elabel" x="380" y="270" text-anchor="middle">价格 = 六笔折现值之和；y 升高 → 每个分母变大 → 价格必然下跌（反向关系的全部秘密）</text>
+    </svg>
+    </div>
+    <figcaption><b>读图：</b>定价只是“把未来搬回今天”。由此立刻得到债券第一定律：<b>价格与收益率反向变动</b>——不是经验规律，是除法。远期现金流被折现的次数更多，所以期限越长，同样的 Δy 杀伤越大：</figcaption>
+  </figure>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 14-2</span>价格—收益率曲线：期限放大敏感度，凸性让你“涨多跌少”（票面 8%）</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 400" role="img" aria-label="两条价格收益率曲线：3 年期债券平缓，30 年期债券陡峭且向下凸；两者都在收益率等于票面利率 8% 时价格为 100">
+      <g text-anchor="end">
+        <text class="tick" x="56" y="336">60</text>
+        <text class="tick" x="56" y="272">100</text>
+        <text class="tick" x="56" y="208">140</text>
+        <text class="tick" x="56" y="144">180</text>
+        <text class="tick" x="56" y="80">220</text>
+      </g>
+      <line class="grid" x1="64" y1="332" x2="696" y2="332"/>
+      <line class="grid" x1="64" y1="268" x2="696" y2="268"/>
+      <line class="grid" x1="64" y1="204" x2="696" y2="204"/>
+      <line class="grid" x1="64" y1="140" x2="696" y2="140"/>
+      <line class="grid" x1="64" y1="76" x2="696" y2="76"/>
+      <line class="axis" x1="64" y1="364" x2="696" y2="364"/>
+      <line class="axis" x1="64" y1="40" x2="64" y2="364"/>
+      <g text-anchor="middle">
+        <text class="tick" x="64" y="384">2</text>
+        <text class="tick" x="169" y="384">4</text>
+        <text class="tick" x="275" y="384">6</text>
+        <text class="tick" x="380" y="384">8</text>
+        <text class="tick" x="485" y="384">10</text>
+        <text class="tick" x="591" y="384">12</text>
+        <text class="tick" x="696" y="384">14</text>
+      </g>
+      <text class="atitle" x="380" y="404" text-anchor="middle">到期收益率 y（%）</text>
+      <text class="atitle" x="64" y="30">价格（面值 = 100）</text>
+      <polyline class="ln2" points="64,53 169,157 275,224 380,268 485,298 591,320 696,335"/>
+      <polyline class="ln1" points="64,240 169,250 275,259 380,268 485,276 591,283 696,290"/>
+      <circle class="pt" cx="380" cy="268" r="6.5"><title>y = 票面利率 8% 时，价格 = 面值 100（平价）</title></circle>
+      <text class="pl" x="392" y="258">平价点（y = 票面 8%）</text>
+      <text class="pv" x="140" y="96">30 年期：陡峭且凸</text>
+      <text class="pv" x="140" y="232">3 年期：平缓</text>
+    </svg>
+    </div>
+    <figcaption><b>读图：</b>两条曲线都过平价点：<b>y＝票面 → 平价；y＞票面 → 折价；y＜票面 → 溢价</b>。30 年期曲线不仅陡（长久期），而且<b>向下凸</b>：从 8% 出发同样 ±2 个百分点，涨 27.5 跌只跌 18.9——凸性是持有人的朋友。2022 年 TLT 跌 31%（第 2 章）就是沿着这条橙色曲线右滑的真实版本。</figcaption>
+  </figure>
+</section>
+
+<!-- ======================== 14.2 ======================== -->
+<section class="ch" id="s2">
+  <h2 class="sec"><span class="no">14.2</span>收益率的三副面孔</h2>
+  <p class="sec-en">YIELD TO MATURITY AND OTHER YIELDS</p>
+
+  <div class="tablewrap">
+    <table>
+      <tr><th>口径</th><th>定义</th><th>它说的是什么</th></tr>
+      <tr><td>到期收益率 YTM</td><td>使现金流现值 = 当前价格的贴现率（内部收益率）</td><td>持有到期 + 票息按 YTM 再投资 + 不违约时的年化回报——<strong>三个前提缺一不可</strong></td></tr>
+      <tr><td>当期收益率</td><td>年票息 ÷ 当前价格</td><td>只看“现金分红率”，忽略价格向面值的回归</td></tr>
+      <tr><td>持有期实际收益</td><td>（卖价 − 买价 + 票息）/ 买价</td><td>中途卖出的真实结果，由届时利率决定，可远离 YTM</td></tr>
+    </table>
+  </div>
+
+  <div class="prose">
+    <p>三者的关系由<strong>向面值回归</strong>（pull to par）串起来：折价债的价格会随到期日逼近爬回 100（当期收益率 &lt; YTM，差额是资本利得），溢价债则逐年滑回 100（当期收益率 &gt; YTM）。另一个实务角标：<strong>可赎回债券</strong>要看赎回收益率（YTC）——利率下行时发行人会行使第 2 章讲过的赎回权，你的“高 YTM”在最好的行情里被没收。</p>
+  </div>
+
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p>“买入 YTM 4.5% 的债券 = 锁定每年赚 4.5%。”——三个前提逐一核对：中途卖出则由市场价说了算（2022 年买长债者体会最深）；票息再投资利率可能低于 4.5%；信用债还可能违约。YTM 是<strong>报价语言</strong>，不是收益保证书。</p>
+  </div>
+</section>
+
+<!-- ======================== 14.3 ======================== -->
+<section class="ch" id="s3">
+  <h2 class="sec"><span class="no">14.3</span>违约风险与信用利差</h2>
+  <p class="sec-en">DEFAULT RISK AND CREDIT SPREADS</p>
+
+  <div class="prose">
+    <p>国债之外的一切债券都要回答：<em>你凭什么让我相信你会还钱？</em>评级机构（穆迪 / 标普 / 中诚信等）把答案标准化为字母：<strong>BBB−（Baa3）以上为投资级</strong>，以下为高收益（垃圾）债。市场的定价则体现在<strong>信用利差</strong>——同期限公司债收益率减国债收益率，它补偿三样东西：预期违约损失、违约风险的系统性（经济差时违约扎堆，呼应 β）、流动性折价。</p>
+  </div>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>信用利差：市场的体温计</h4>
+    <p>平时，美国高收益债利差约 3–5 个百分点；2008 年雷曼之后飙到约 <strong>20 个百分点</strong>，2020 年 3 月疫情恐慌中冲到约 11 个百分点——每次系统性危机，利差都是最诚实的恐慌刻度，比新闻标题快，也比它冷静（回落同样迅速）。反过来，利差被压到历史低位（如 2007 年、2021 年）时，意味着市场几乎不为违约定价——恒大美元债 8%–13% 的票息（第 2 章）在当年就是刺眼的例外，利差早已把风险写在明面上。</p>
+    <p class="takeaway">读信用债只看两个数：<strong>利差水平</strong>（现在的恐惧值多少钱）与<strong>利差分位</strong>（相对自己的历史贵还是便宜）。利差极窄时卖出拥挤的信用风险、极宽时买入，是固收界最朴素的均值回归纪律。</p>
+  </div>
+</section>
+
+<!-- ======================== 14.4 ======================== -->
+<section class="ch" id="s4">
+  <h2 class="sec"><span class="no">14.4</span>久期与免疫<span class="en-term">（第 16 章要点）</span></h2>
+  <p class="sec-en">DURATION AND IMMUNIZATION</p>
+
+  <div class="prose">
+    <p>图 14-2 显示期限放大利率敏感度，但“期限”不精确——票息早早还你一部分钱，等待被平均缩短了。<strong>久期 D</strong> 就是这个精确版本：以各期现金流现值为权重的<em>平均回款时间</em>。它直接给出利率风险的一阶公式：</p>
+  </div>
+
+  <div class="formula">
+    <div class="fx">ΔP / P ≈ − D* × Δy　（D* = D /（1 + y），修正久期）</div>
+    <div class="note">例：D* = 7 的债券组合，利率上行 1 个百分点 → 价格约 −7%。三条速记：期限越长、票息越低、收益率越低 → 久期越大（零息债久期 = 期限，为同期限之最）。凸性是二阶修正：真实跌幅略小于公式、涨幅略大——图 14-2 的弯曲。</div>
+  </div>
+
+  <div class="prose">
+    <p><strong>免疫</strong>（第 16 章的核心应用）：让资产久期 = 负债久期，利率涨跌对净值的冲击即近似抵消——保险公司与养老金的标准作业。反过来，<em>故意</em>的久期错配就是在赌利率方向。2023 年有一家银行把这个反面教材演到了破产：</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 14-3</span>硅谷银行（SVB）：一次教科书级的久期错配事故</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 262" role="img" aria-label="硅谷银行资产负债错配：资产端为久期约 6 年的长债与 MBS，负债端为久期近零的活期存款；2022 至 2023 年加息 4.5 个百分点后资产市值下跌约四分之一，引发挤兑与接管">
+      <defs>
+        <marker id="ar1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/>
+        </marker>
+      </defs>
+      <rect class="node" x="110" y="26" width="220" height="76" rx="8"/>
+      <text class="nt" x="220" y="52" text-anchor="middle">资产端：长债 + MBS</text>
+      <text class="nd" x="220" y="72" text-anchor="middle">久期 ≈ 6 年 · 买在收益率 ~1.6%</text>
+      <text class="nt" x="360" y="68" text-anchor="middle">vs</text>
+      <rect class="node" x="390" y="26" width="220" height="76" rx="8"/>
+      <text class="nt" x="500" y="52" text-anchor="middle">负债端：活期存款</text>
+      <text class="nd" x="500" y="72" text-anchor="middle">久期 ≈ 0 · 科技客户高度集中</text>
+      <path class="edge" d="M 360 102 V 136" marker-end="url(#ar1)"/>
+      <text class="pv" x="376" y="126">2022–23：美联储加息约 4.5 个百分点</text>
+      <rect class="node" x="20" y="150" width="200" height="76" rx="8"/>
+      <text class="nt" x="120" y="176" text-anchor="middle">① 资产市值重挫</text>
+      <text class="nd" x="120" y="196" text-anchor="middle">ΔP ≈ −6 × 4.5% ≈ −27%</text>
+      <text class="nd" x="120" y="214" text-anchor="middle">浮亏逼近全部资本金</text>
+      <rect class="node" x="260" y="150" width="200" height="76" rx="8"/>
+      <text class="nt" x="360" y="176" text-anchor="middle">② 卖债兑亏 · 增发失败</text>
+      <text class="nd" x="360" y="196" text-anchor="middle">“持有至到期”会计掩盖的</text>
+      <text class="nd" x="360" y="214" text-anchor="middle">亏损一次性暴露</text>
+      <rect class="node-crit" x="500" y="150" width="200" height="76" rx="8"/>
+      <text class="nt" x="600" y="176" text-anchor="middle">③ 挤兑与接管</text>
+      <text class="nd" x="600" y="196" text-anchor="middle">一天被提走约 420 亿美元</text>
+      <text class="nd" x="600" y="214" text-anchor="middle">次日被监管接管</text>
+      <path class="edge" d="M 220 188 H 256" marker-end="url(#ar1)"/>
+      <path class="edge" d="M 460 188 H 496" marker-end="url(#ar1)"/>
+      <text class="elabel" x="360" y="252" text-anchor="middle">没有一分钱违约——纯粹的利率风险 + 期限错配 + 挤兑，三件套与 1.7 节危机同构</text>
+    </svg>
+    </div>
+    <figcaption><b>读图：</b>SVB 持有的全是最高信用等级的国债与机构 MBS，却在 48 小时内倒闭——<b>久期风险与信用风险是两回事</b>。ΔP ≈ −D*Δy 这条公式，监管者、储户与做空者都会算，会计科目挡不住除法。对个人的缩小版同理：用“随时要用的钱”买长久期债基，就是迷你 SVB。</figcaption>
+  </figure>
+</section>
+
+<!-- ======================== 14.5 ======================== -->
+<section class="ch" id="s5">
+  <h2 class="sec"><span class="no">14.5</span>期限结构：收益率曲线怎么读<span class="en-term">（第 15 章要点）</span></h2>
+  <p class="sec-en">THE TERM STRUCTURE OF INTEREST RATES</p>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 14-4</span>收益率曲线三形态：市场对未来利率的集体投票</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 395" role="img" aria-label="三条收益率曲线：正常曲线向上倾斜，倒挂曲线向下倾斜，平坦曲线水平">
+      <rect class="seg1" x="64" y="10" width="12" height="12" rx="2"/>
+      <text class="tick" x="82" y="20">正常（向上）：扩张期常态</text>
+      <rect class="seg2" x="260" y="10" width="12" height="12" rx="2"/>
+      <text class="tick" x="278" y="20">倒挂：加息末端 · 衰退前兆</text>
+      <rect class="seg3" x="460" y="10" width="12" height="12" rx="2"/>
+      <text class="tick" x="478" y="20">平坦：过渡状态</text>
+      <g text-anchor="end">
+        <text class="tick" x="56" y="348">0</text>
+        <text class="tick" x="56" y="248">2</text>
+        <text class="tick" x="56" y="148">4</text>
+        <text class="tick" x="56" y="48">6</text>
+      </g>
+      <line class="grid" x1="64" y1="244" x2="696" y2="244"/>
+      <line class="grid" x1="64" y1="144" x2="696" y2="144"/>
+      <line class="grid" x1="64" y1="44" x2="696" y2="44"/>
+      <line class="axis" x1="64" y1="344" x2="696" y2="344"/>
+      <g text-anchor="middle">
+        <text class="tick" x="64" y="364">3 月</text>
+        <text class="tick" x="190" y="364">1 年</text>
+        <text class="tick" x="317" y="364">2 年</text>
+        <text class="tick" x="443" y="364">5 年</text>
+        <text class="tick" x="570" y="364">10 年</text>
+        <text class="tick" x="696" y="364">30 年</text>
+      </g>
+      <text class="atitle" x="380" y="388" text-anchor="middle">期限</text>
+      <text class="atitle" x="64" y="36">收益率（%）</text>
+      <polyline class="ln1" points="64,194 190,179 317,164 443,139 570,119 696,104"/>
+      <polyline class="ln2" points="64,79 190,84 317,99 443,129 570,149 696,154"/>
+      <polyline class="ln3" points="64,129 190,129 317,129 443,129 570,129 696,129"/>
+    </svg>
+    </div>
+    <figcaption><b>读图：</b>长端利率可以拆成“未来短期利率的预期 + 期限（流动性）溢价”。<b>预期假说</b>：曲线形状纯粹是利率预期——倒挂 = 市场押注央行将大幅降息（通常因为衰退）；<b>流动性溢价理论</b>：长债要额外补偿久期风险，所以正常曲线天然略向上，倒挂因此是“更强烈”的降息信号。</figcaption>
+  </figure>
+
+  <div class="formula">
+    <div class="fx">远期利率　(1 + y<sub>2</sub>)² = (1 + y<sub>1</sub>) × (1 + f<sub>2</sub>)　→　f<sub>2</sub> = (1 + y<sub>2</sub>)² / (1 + y<sub>1</sub>) − 1</div>
+    <div class="note">例：1 年期 3%、2 年期 4%，则隐含的“第 2 年利率” f<sub>2</sub> = 1.04² / 1.03 − 1 ≈ 5.0%——今天的曲线里藏着市场对明年利率的报价。含流动性溢价时，真实预期低于 f<sub>2</sub>。</div>
+  </div>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>倒挂预言衰退：战绩辉煌，但不是闹钟</h4>
+    <p>美债 10 年期与 3 个月（或 2 年）利差转负——倒挂——在过去六十年里先于<strong>每一次</strong>美国衰退出现（1980、1990、2001、2008、2020 前都有），误报极少，是宏观界战绩最好的单一指标。但它是方向表不是闹钟：从倒挂到衰退平均间隔 12–18 个月，且期间股市常常还在上涨。2022 年 7 月起的这轮倒挂创下深度与时长纪录，衰退却迟迟未至——提醒所有人：历史概率不是物理定律，样本量只有个位数。</p>
+    <p class="takeaway">把曲线当<strong>仪表盘</strong>：倒挂出现 → 调低组合的周期暴露、检查信用利差与久期敞口；而不是当<strong>开关</strong>：清仓逃命。这与第 5 章 VaR、第 11 章异象的使用哲学一脉相承——信号用于调整概率权重，不用于全有全无。</p>
+  </div>
+</section>
+
+<!-- ======================== 小结 ======================== -->
+<section class="ch" id="recap">
+  <h2 class="sec"><span class="no">※</span>本章小结</h2>
+  <p class="sec-en">SUMMARY</p>
+
+  <div class="recap">
+    <ol>
+      <li><b>定价即折现：</b>P = Σ现金流 /（1+y）<sup>t</sup>；价格与收益率反向是除法不是经验；y = 票面平价、高则折价、低则溢价。</li>
+      <li><b>YTM 三前提：</b>持有到期、票息按 YTM 再投资、不违约——缺一则实际收益偏离报价；折价 / 溢价债都会“向面值回归”。</li>
+      <li><b>信用利差 = 违约的市场报价：</b>投资级以 BBB− 为界；利差是恐慌体温计（2008 年高收益利差约 20 个百分点），看水平更看历史分位。</li>
+      <li><b>久期是利率风险的尺子：</b>ΔP/P ≈ −D*Δy；期限长、票息低、收益率低 → 久期大；免疫 = 资产负债久期对齐；SVB 证明零违约也能破产。</li>
+      <li><b>期限结构：</b>长端 = 未来短端预期 + 期限溢价；远期利率可从曲线反解；倒挂是战绩最好的衰退前兆，但平均提前一年以上——当仪表盘，别当开关。</li>
+      <li><b>两类风险分账管理：</b>利率风险（久期）与信用风险（利差）来源不同、对冲工具不同（第 23 章），任何固收持仓先问这两个敞口各有多大。</li>
+    </ol>
+  </div>
+
+  <h3>核心术语（中英对照）</h3>
+  <div class="tablewrap">
+    <table>
+      <tr><th>中文</th><th>English</th><th>一句话定义</th></tr>
+      <tr><td>票面利率</td><td>coupon rate</td><td>按面值计算的年付息比率</td></tr>
+      <tr><td>到期收益率</td><td>yield to maturity (YTM)</td><td>令现值等于价格的内部收益率</td></tr>
+      <tr><td>当期收益率</td><td>current yield</td><td>年票息 ÷ 现价</td></tr>
+      <tr><td>平价 / 溢价 / 折价</td><td>par / premium / discount</td><td>价格相对面值的三种状态</td></tr>
+      <tr><td>向面值回归</td><td>pull to par</td><td>价格随到期日逼近回到面值</td></tr>
+      <tr><td>赎回收益率</td><td>yield to call (YTC)</td><td>按最早赎回日计算的收益率</td></tr>
+      <tr><td>投资级 / 高收益</td><td>investment grade / high yield</td><td>BBB−（Baa3）及以上 / 以下</td></tr>
+      <tr><td>信用利差</td><td>credit spread</td><td>公司债对同期限国债的收益率差</td></tr>
+      <tr><td>久期</td><td>(Macaulay) duration</td><td>现值加权的平均回款时间</td></tr>
+      <tr><td>修正久期</td><td>modified duration</td><td>D/(1+y)，价格对 Δy 的敏感度</td></tr>
+      <tr><td>凸性</td><td>convexity</td><td>价格—收益率曲线的弯曲，使涨多跌少</td></tr>
+      <tr><td>免疫</td><td>immunization</td><td>资产负债久期匹配以中和利率风险</td></tr>
+      <tr><td>收益率曲线 / 期限结构</td><td>yield curve / term structure</td><td>收益率随期限变化的关系</td></tr>
+      <tr><td>远期利率</td><td>forward rate</td><td>当前曲线隐含的未来短期利率</td></tr>
+      <tr><td>预期假说 / 流动性溢价</td><td>expectations / liquidity premium</td><td>曲线形状的两种解释</td></tr>
+      <tr><td>倒挂</td><td>inverted yield curve</td><td>短端高于长端，经典衰退前兆</td></tr>
+    </table>
+  </div>
+
+  <h3>自测（先想后翻）</h3>
+  <details>
+    <summary>Q1 2 年期债券，票面 6%（年付）、面值 100，市场要求收益率 8%：价格是多少？为什么是折价？</summary>
+    <div class="ans"><p>P = 6/1.08 + 106/1.08² = 5.56 + 90.88 = 96.43 元。票面只给 6%，市场要 8%，差额只能靠“便宜买入、到期按 100 兑付”的资本利得补——价格必须低于面值。通式：票面 &lt; YTM ⇔ 折价。</p></div>
+  </details>
+  <details>
+    <summary>Q2 上题债券的当期收益率是多少？它与 YTM 的差额去哪了？</summary>
+    <div class="ans"><p>当期收益率 = 6 / 96.43 ≈ 6.22%，低于 YTM 的 8%。差额约 1.78 个百分点是“向面值回归”的年均资本利得：96.43 → 100 的爬坡。溢价债正相反：当期收益率高于 YTM，价格逐年滑向面值把多收的票息吐回去。只比较当期收益率挑债，会系统性偏向溢价债——口径错误。</p></div>
+  </details>
+  <details>
+    <summary>Q3 组合修正久期 7，利率上行 0.5 个百分点：市值变化约多少？若你的负债（三年后要付的学费）久期为 3，该怎么配资产？</summary>
+    <div class="ans"><p>ΔP/P ≈ −7 × 0.5% = −3.5%。免疫做法：把资产久期配到 3（如三年期零息债 / 久期约 3 的债基组合），利率涨跌时资产现值与负债现值同步变动、净头寸近似免疫。持有 D* = 7 的资产去匹配 3 年后的支出，就是在用学费赌利率下行——SVB 的缩小版。</p></div>
+  </details>
+  <details>
+    <summary>Q4 1 年期利率 3%、2 年期 4%：隐含的第 2 年远期利率是多少？“倒挂”在这套语言里是什么意思？</summary>
+    <div class="ans"><p>f₂ = 1.04²/1.03 − 1 ≈ 5.0%——两年期定价隐含“市场预期明年 1 年期利率约 5%”（含期限溢价则真实预期更低）。倒挂即长端收益率低于短端：隐含的远期利率大幅低于当前短端利率，等于市场集体押注央行将大幅降息——而历史上促使央行大幅降息的，几乎都是衰退。</p></div>
+  </details>
+  <details>
+    <summary>Q5 SVB 的债券组合“零违约、全是国债与机构 MBS”，为什么还是破产了？用本章语言写出三行事故报告。</summary>
+    <div class="ans"><p>① 利率风险：资产久期约 6，加息 4.5 个百分点，ΔP ≈ −27%，浮亏吞掉资本金——信用无瑕疵，除法无情面；② 期限错配：负债是久期近零、且高度集中的机构活期存款，没有任何免疫安排（呼应第 1 章“借短贷长”）；③ 流动性挤兑：被迫卖出使“持有至到期”的账面幻觉破灭，恐慌在社交网络光速传染，一日提款 420 亿美元。教训：管理固收头寸，久期敞口与资金久期必须放在同一张表上看。</p></div>
+  </details>
+
+  <a class="next" href="investments-ch18.html">
+    <div>
+      <div class="lbl">NEXT CHAPTER · HAPPY PATH</div>
+      <div class="ttl">第 18 章 · 权益估值模型</div>
+    </div>
+    <div class="lbl">第 17 章宏观行业为选学 · DDM → 戈登增长 → P/E 的正确用法</div>
+  </a>
+
+  <p class="foot">本页为依据 Bodie–Kane–Marcus《投资学》（Investments）第 14–16 章框架整理的原创学习笔记，仅用于教学理解；数值为教学算例，案例数字为近似值。内容不构成任何投资建议。</p>
+</section>
+
+</main>
+</div>
+</div>
+
+<script>
+(function(){
+  var links = Array.prototype.slice.call(document.querySelectorAll('.sidenav a[href^="#"]'));
+  if(!links.length) return;
+  var map = [];
+  links.forEach(function(a){
+    var el = document.getElementById(a.getAttribute('href').slice(1));
+    if(el) map.push([el, a]);
+  });
+  function update(){
+    var y = window.scrollY + 150;
+    var cur = map[0][1];
+    for(var i = 0; i < map.length; i++){
+      if(map[i][0].offsetTop <= y) cur = map[i][1];
+    }
+    map.forEach(function(p){ p[1].classList.toggle('active', p[1] === cur); });
+  }
+  var tick = false;
+  window.addEventListener('scroll', function(){
+    if(!tick){
+      tick = true;
+      requestAnimationFrame(function(){ tick = false; update(); });
+    }
+  }, {passive:true});
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,558 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>投资学 · 第18章 权益估值模型</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700;900&family=Noto+Sans+SC:wght@400;500;700&display=swap">
+<style>
+/* 布局：双栏（212px 侧栏 + 正文），章导览 + 18.1–18.5 分节；宽图表置于横向滚动容器 */
+:root{
+  --bg:#f5f6f7;
+  --surface:#ffffff;
+  --ink:#171a20;
+  --ink-2:#4a5160;
+  --muted:#858c9b;
+  --line:#e2e5ea;
+  --line-2:#c9ced6;
+  --accent:#1d5fad;
+  --accent-ink:#174e8f;
+  --accent-soft:#eaf1fa;
+  --series:#2a78d6;
+  --series2:#eb6834;
+  --series3:#1baf7a;
+  --crit:#d03b3b;
+  --crit-soft:rgba(208,59,59,.07);
+  --serif:"Noto Serif SC","Songti SC",serif;
+  --sans:"Noto Sans SC","Microsoft YaHei",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#101215; --surface:#181b20; --ink:#eef0f3; --ink-2:#c0c5cf; --muted:#8a909d;
+    --line:#282c33; --line-2:#3a3f48;
+    --accent:#5a96e3; --accent-ink:#79abec; --accent-soft:#1c2a3d;
+    --series:#3987e5; --series2:#d95926; --series3:#199e70; --crit:#e66767; --crit-soft:rgba(230,103,103,.10);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#101215; --surface:#181b20; --ink:#eef0f3; --ink-2:#c0c5cf; --muted:#8a909d;
+  --line:#282c33; --line-2:#3a3f48;
+  --accent:#5a96e3; --accent-ink:#79abec; --accent-soft:#1c2a3d;
+  --series:#3987e5; --series2:#d95926; --series3:#199e70; --crit:#e66767; --crit-soft:rgba(230,103,103,.10);
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:var(--sans); font-size:15.5px; line-height:1.85;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1190px; margin:0 auto; padding-inline:20px; padding-block:0 72px}
+
+.layout{display:grid; grid-template-columns:212px minmax(0,1fr); gap:44px; align-items:start}
+.article{max-width:920px; min-width:0}
+.sidenav{
+  position:sticky; top:16px; max-height:calc(100vh - 32px); overflow-y:auto;
+  padding-block:40px 16px; font-size:13px;
+}
+.sidenav .sn-chap{
+  margin:0 0 10px; padding-left:13px; font-size:11.5px; letter-spacing:.14em;
+  color:var(--muted); font-weight:700;
+}
+.sidenav a{
+  display:block; color:var(--ink-2); text-decoration:none; line-height:1.55;
+  padding:6px 10px 6px 13px; border-left:2px solid var(--line);
+}
+.sidenav a:hover{color:var(--accent-ink)}
+.sidenav a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.sidenav a.active{
+  color:var(--accent-ink); border-left-color:var(--accent);
+  background:var(--accent-soft); font-weight:700;
+}
+.hero,section.ch{scroll-margin-top:10px}
+@media (max-width: 999px){
+  .sidenav{display:none}
+  .layout{display:block}
+}
+@media (min-width: 1000px){
+  nav.chapmap{display:none}
+}
+
+.masthead{
+  display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  padding-block:18px 14px; border-bottom:1px solid var(--line);
+}
+.masthead .book{font-family:var(--serif); font-weight:700; font-size:15px; letter-spacing:.02em}
+.masthead .part{font-size:12.5px; color:var(--muted); letter-spacing:.12em}
+.masthead a{color:var(--accent-ink); text-decoration:none}
+.masthead a:hover{text-decoration:underline}
+.masthead a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+a.next{color:inherit; text-decoration:none}
+a.next:hover{border-color:var(--accent)}
+a.next:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+.hero{padding-block:44px 28px; border-bottom:1px solid var(--line)}
+.chap-no{
+  display:inline-flex; align-items:center; gap:10px;
+  font-size:12.5px; letter-spacing:.22em; color:var(--accent-ink); font-weight:700;
+}
+.chap-no::after{content:""; width:46px; height:1px; background:var(--accent)}
+.hero h1{
+  font-family:var(--serif); font-weight:900; font-size:clamp(30px,5vw,46px);
+  line-height:1.25; margin:10px 0 4px; letter-spacing:.02em; text-wrap:balance;
+}
+.hero .en{font-size:14px; color:var(--muted); letter-spacing:.08em; margin:0 0 18px}
+.hero .lede{max-width:46em; color:var(--ink-2); margin:0}
+.hero .lede strong{color:var(--ink)}
+.objectives{
+  margin-top:22px; padding:16px 20px; background:var(--surface);
+  border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:0 6px 6px 0;
+}
+.objectives h2{font-size:13px; letter-spacing:.18em; color:var(--accent-ink); margin:0 0 8px; font-weight:700}
+.objectives ul{margin:0; padding-left:1.3em; color:var(--ink-2)}
+.objectives li{margin:3px 0}
+.chapmap{display:flex; flex-wrap:wrap; gap:8px; margin-top:20px}
+.chapmap a{
+  font-size:13px; color:var(--ink-2); text-decoration:none;
+  border:1px solid var(--line-2); border-radius:999px; padding:4px 13px; background:var(--surface);
+}
+.chapmap a:hover{border-color:var(--accent); color:var(--accent-ink)}
+.chapmap a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+section.ch{padding-block:40px 8px}
+section.ch + section.ch{border-top:1px solid var(--line)}
+h2.sec{
+  font-family:var(--serif); font-weight:700; font-size:clamp(22px,3.4vw,28px);
+  margin:0 0 2px; line-height:1.35; text-wrap:balance;
+}
+h2.sec .no{color:var(--accent-ink); margin-right:10px; font-feature-settings:"tnum"}
+p.sec-en{font-size:12.5px; letter-spacing:.1em; color:var(--muted); margin:0 0 18px}
+h3{font-size:16.5px; font-weight:700; margin:26px 0 8px}
+h3 .tag{color:var(--accent-ink)}
+p{margin:10px 0}
+.prose{max-width:46em}
+.prose .en-term{color:var(--muted); font-size:.88em}
+strong{font-weight:700}
+em{font-style:normal; font-weight:700; color:var(--accent-ink)}
+
+.cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px; margin:16px 0}
+.card{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:16px 18px;
+}
+.card h4{margin:0 0 6px; font-size:15px}
+.card h4 .en-term{display:block; font-weight:400; font-size:12px; color:var(--muted); letter-spacing:.04em; margin-top:2px}
+.card p{margin:6px 0; font-size:14px; color:var(--ink-2)}
+.card ul{margin:6px 0 0; padding-left:1.2em; font-size:14px; color:var(--ink-2)}
+.card li{margin:3px 0}
+
+.case{
+  margin:20px 0; padding:16px 20px 14px; background:var(--surface);
+  border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:0 8px 8px 0;
+}
+.case .label{font-size:12px; letter-spacing:.2em; color:var(--accent-ink); font-weight:700; display:block; margin-bottom:6px}
+.case h4{margin:0 0 6px; font-size:15.5px}
+.case p{margin:7px 0; font-size:14.5px; color:var(--ink-2)}
+.case p:last-child{margin-bottom:2px}
+.case .takeaway{color:var(--ink); font-weight:500}
+.case .takeaway::before{content:"▸ 教材对应 "; color:var(--accent-ink); font-weight:700; font-size:12.5px; letter-spacing:.05em}
+
+.pitfall{
+  margin:20px 0; padding:14px 20px; border:1px dashed var(--line-2); border-radius:8px; max-width:46em;
+}
+.pitfall .label{font-size:12px; letter-spacing:.2em; color:var(--crit); font-weight:700; display:block; margin-bottom:4px}
+.pitfall p{margin:4px 0; font-size:14.5px; color:var(--ink-2)}
+
+.formula{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px;
+  padding:12px 18px; margin:14px 0; max-width:46em; overflow-x:auto;
+  font-size:15px; line-height:2;
+}
+.formula .fx{white-space:nowrap}
+.formula sub,.formula sup{font-size:11px}
+.formula .note{font-size:12.5px; color:var(--muted)}
+
+table{border-collapse:collapse; width:100%; font-size:14px; font-variant-numeric:tabular-nums}
+.tablewrap{overflow-x:auto; margin:16px 0; border:1px solid var(--line); border-radius:8px; background:var(--surface)}
+.tablewrap table{min-width:560px}
+th,td{padding:9px 14px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top}
+th{font-size:12.5px; letter-spacing:.08em; color:var(--muted); font-weight:700; white-space:nowrap}
+tr:last-child td{border-bottom:none}
+td.num{white-space:nowrap}
+
+figure{margin:24px 0; background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:18px 18px 12px}
+figure .fig-scroll{overflow-x:auto}
+figure svg{display:block; max-width:100%; height:auto; color:var(--ink)}
+figure .fig-scroll svg{min-width:660px}
+figcaption{font-size:13px; color:var(--muted); margin-top:10px; line-height:1.7}
+figcaption b{color:var(--ink-2); font-weight:700}
+.fig-title{font-size:14px; font-weight:700; margin:0 0 12px}
+.fig-title .fno{color:var(--accent-ink); margin-right:8px}
+
+svg .nt{font:700 12.5px var(--sans); fill:var(--ink)}
+svg .nd{font:400 11px var(--sans); fill:var(--ink-2)}
+svg .edge-soft{stroke:var(--muted); stroke-width:1.2; fill:none; stroke-dasharray:4 4}
+svg .elabel{font:400 11.5px var(--sans); fill:var(--muted)}
+svg .grid{stroke:var(--line); stroke-width:1}
+svg .axis{stroke:var(--line-2); stroke-width:1.2}
+svg .tick{font:400 11px var(--sans); fill:var(--muted)}
+svg .atitle{font:400 11.5px var(--sans); fill:var(--muted)}
+svg .pt{fill:var(--series); stroke:var(--surface); stroke-width:2}
+svg .pl{font:700 13px var(--sans); fill:var(--ink)}
+svg .pv{font:400 11.5px var(--sans); fill:var(--ink-2)}
+svg .ln1{stroke:var(--series); stroke-width:2.8; fill:none}
+svg .seg1{fill:var(--series)}
+svg .seg2{fill:var(--series2)}
+svg .seg3{fill:var(--series3)}
+svg .ghost{fill:var(--crit-soft); stroke:var(--crit); stroke-width:1.2; stroke-dasharray:5 4}
+
+.recap{margin-top:8px}
+.recap ol{margin:8px 0 0; padding-left:1.4em; max-width:46em; color:var(--ink-2)}
+.recap li{margin:7px 0}
+.recap li b{color:var(--ink)}
+details{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px;
+  padding:12px 18px; margin:10px 0; max-width:46em;
+}
+details summary{cursor:pointer; font-weight:500; color:var(--ink)}
+details summary:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+details[open] summary{color:var(--accent-ink)}
+details .ans{margin-top:8px; padding-top:8px; border-top:1px dashed var(--line); font-size:14.5px; color:var(--ink-2)}
+details .ans p{margin:6px 0}
+
+.next{
+  margin-top:48px; padding:18px 22px; border:1px solid var(--line); border-radius:8px;
+  background:var(--surface); display:flex; justify-content:space-between; align-items:center; gap:14px; flex-wrap:wrap;
+}
+.next .lbl{font-size:12px; letter-spacing:.18em; color:var(--muted)}
+.next .ttl{font-family:var(--serif); font-weight:700; font-size:18px; margin-top:2px}
+.foot{margin-top:26px; font-size:12.5px; color:var(--muted); line-height:1.8}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <span class="book">《投资学》学习手册 · Investments (Bodie · Kane · Marcus)</span>
+  <span class="part"><a href="investments-index.html">学习地图</a> · 第五部分 证券分析</span>
+</header>
+
+<div class="layout">
+
+<nav class="sidenav" aria-label="小节导航">
+  <p class="sn-chap">第 18 章 · 权益估值模型</p>
+  <a href="#top">章首 · 学习目标</a>
+  <a href="#s1">18.1 从账面到内在价值</a>
+  <a href="#s2">18.2 股利贴现与戈登增长</a>
+  <a href="#s3">18.3 增长的价值：PVGO</a>
+  <a href="#s4">18.4 市盈率的正确用法</a>
+  <a href="#s5">18.5 自由现金流框架</a>
+  <a href="#recap">小结 · 术语 · 自测</a>
+</nav>
+
+<main class="article">
+
+<!-- ======================== 章首 ======================== -->
+<div class="hero" id="top">
+  <span class="chap-no">CHAPTER 18</span>
+  <h1>权益估值模型</h1>
+  <p class="en">Equity Valuation Models</p>
+  <p class="lede">第 14 章给“确定的承诺”定了价，这一章挑战“不确定的盈利”：<strong>一只股票到底值多少钱？</strong>工具箱只有一个思想——把未来现金流按风险折现（k 来自第 9 章的 CAPM）——和它的三副面孔：股利贴现（DDM）、增长机会分解（PVGO）、市盈率。学完你对“贵与便宜”会有一套可计算的语言，也会明白为什么<strong>好公司与好股票是两回事</strong>。</p>
+
+  <div class="objectives">
+    <h2>学习目标</h2>
+    <ul>
+      <li>分清账面价值、清算价值与内在价值，知道估值锚该放在哪</li>
+      <li>会用戈登增长模型 V = D₁/(k − g)，并深刻理解它对 g 的恐怖敏感性</li>
+      <li>掌握 PVGO 分解：增长只有在 ROE &gt; k 时才创造价值</li>
+      <li>会正确使用（和拆穿）市盈率：它定价的是增长与风险，不是便宜</li>
+      <li>了解自由现金流估值的框架与“区间而非点”的实务纪律</li>
+    </ul>
+  </div>
+
+  <nav class="chapmap" aria-label="本章导览">
+    <a href="#s1">18.1 价值的锚</a>
+    <a href="#s2">18.2 DDM</a>
+    <a href="#s3">18.3 PVGO</a>
+    <a href="#s4">18.4 市盈率</a>
+    <a href="#s5">18.5 FCF</a>
+    <a href="#recap">小结与自测</a>
+  </nav>
+</div>
+
+<!-- ======================== 18.1 ======================== -->
+<section class="ch" id="s1">
+  <h2 class="sec"><span class="no">18.1</span>从账面到内在价值</h2>
+  <p class="sec-en">VALUATION BY COMPARABLES AND INTRINSIC VALUE</p>
+
+  <div class="prose">
+    <p>资产负债表给出的<strong>账面价值</strong>是历史成本的会计记录，通常远离真实；稍实在些的底线是<strong>清算价值</strong>（拆了卖能回收多少——股价低于它就会招来野蛮人），天花板一侧则有<strong>重置成本</strong>（重建这家公司要花多少；市值 ÷ 重置成本即托宾 q，长期难持续高于 1，否则竞争者会复制一家）。但投资者真正要估的是<strong>内在价值 V</strong>：</p>
+  </div>
+
+  <div class="formula">
+    <div class="fx">内在价值 V₀ = 未来全部现金流（股利 + 终值）按要求回报率 k 折现之和</div>
+    <div class="note">k 用第 9 章 CAPM 取：k = r<sub>f</sub> + β × 市场溢价。决策规则：V₀ &gt; 市价 → 低估（α &gt; 0，回看 SML 上方）；V₀ &lt; 市价 → 高估。市场共识的 V 就体现在市价里，你的估值本质上是在与共识打赌——这句话请与第 11 章连读。</div>
+  </div>
+</section>
+
+<!-- ======================== 18.2 ======================== -->
+<section class="ch" id="s2">
+  <h2 class="sec"><span class="no">18.2</span>股利贴现与戈登增长模型</h2>
+  <p class="sec-en">DIVIDEND DISCOUNT MODELS</p>
+
+  <div class="formula">
+    <div class="fx">一般式　V₀ = Σ D<sub>t</sub> /（1 + k）<sup>t</sup></div>
+    <div class="fx">戈登增长（股利以 g 永续增长）　V₀ = D₁ /（k − g）</div>
+    <div class="note">例：明年股利 D₁ = 2 元，k = 9%，g = 4%：V₀ = 2 / 0.05 = 40 元。两阶段版本处理“先高速后稳态”：高速期逐年折现，稳态期用戈登算终值再折回。例：D₀ = 1，前 3 年 g = 20%，之后 4%，k = 9%：D₁₋₃ = 1.20 / 1.44 / 1.73，终值 V₃ = 1.73 × 1.04 / 0.05 ≈ 35.9，折回合计 V₀ ≈ 31.4 元。</div>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 18-1</span>戈登公式的脾气：g 向 k 逼近时，估值走向无穷（D₁ = 1 元，k = 9%）</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 400" role="img" aria-label="曲线图：永续增长率从 0 升到 8% 时，每股价值从 11 元缓慢爬升后急剧飙向 100 元，在 g 接近 k 等于 9% 处趋于无穷">
+      <g text-anchor="end">
+        <text class="tick" x="56" y="296">20</text>
+        <text class="tick" x="56" y="234">40</text>
+        <text class="tick" x="56" y="172">60</text>
+        <text class="tick" x="56" y="110">80</text>
+        <text class="tick" x="56" y="48">100</text>
+      </g>
+      <line class="grid" x1="64" y1="292" x2="696" y2="292"/>
+      <line class="grid" x1="64" y1="230" x2="696" y2="230"/>
+      <line class="grid" x1="64" y1="168" x2="696" y2="168"/>
+      <line class="grid" x1="64" y1="106" x2="696" y2="106"/>
+      <line class="grid" x1="64" y1="44" x2="696" y2="44"/>
+      <line class="axis" x1="64" y1="354" x2="696" y2="354"/>
+      <line class="axis" x1="64" y1="34" x2="64" y2="354"/>
+      <g text-anchor="middle">
+        <text class="tick" x="64" y="374">0</text>
+        <text class="tick" x="213" y="374">2</text>
+        <text class="tick" x="362" y="374">4</text>
+        <text class="tick" x="510" y="374">6</text>
+        <text class="tick" x="659" y="374">8</text>
+      </g>
+      <text class="atitle" x="380" y="396" text-anchor="middle">永续增长率 g（%）</text>
+      <text class="atitle" x="64" y="24">每股价值（元）</text>
+      <path class="edge-soft" d="M 696 34 V 354"/>
+      <text class="elabel" x="688" y="200" text-anchor="end">g → k = 9%：</text>
+      <text class="elabel" x="688" y="218" text-anchor="end">估值 → ∞（数学禁区）</text>
+      <polyline class="ln1" points="64,320 138,315 213,310 287,302 362,292 436,277 510,251 585,199 622,147 659,44"/>
+      <circle class="pt" cx="510" cy="251" r="5.5"><title>g=6%：V=33.3 元</title></circle>
+      <circle class="pt" cx="585" cy="199" r="5.5"><title>g=7%：V=50 元</title></circle>
+      <text class="pv" x="470" y="212">g 从 6% 讲到 7%：估值 +50%</text>
+    </svg>
+    </div>
+    <figcaption><b>读图：</b>曲线左半段温和，右半段爆炸——<b>故事股的全部数学</b>：把永续增长假设从 6% 改到 7%，“合理价”凭空 +50%；再往右，模型输出任何你想要的数字。两条纪律：① 永续 g 不得超过名义 GDP 增速（长期超过意味着这家公司吞掉整个经济）；② 对 g 与 k 各做 ±1 个百分点的敏感性表，报告<b>区间</b>而不是点。</figcaption>
+  </figure>
+</section>
+
+<!-- ======================== 18.3 ======================== -->
+<section class="ch" id="s3">
+  <h2 class="sec"><span class="no">18.3</span>增长的价值：PVGO 分解</h2>
+  <p class="sec-en">GROWTH OPPORTUNITIES</p>
+
+  <div class="formula">
+    <div class="fx">V₀ = E₁ / k　＋　PVGO　（无成长价值 + 增长机会现值）</div>
+    <div class="fx">g = ROE × b　（b 为留存比率；增长是留存利润按 ROE 再投资出来的）</div>
+    <div class="note">E₁/k 是“把全部利润分掉、原地踏步”的价值；PVGO 是市场为未来投资机会付的溢价。关键判据：<strong>留存再投资只有当 ROE &gt; k 时才创造价值</strong>——否则增长越快，毁值越多。</div>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 18-2</span>同样赚 10 元，三种命运：增长不是美德，ROE &gt; k 才是（E₁ = 10，k = 10%）</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 410" role="img" aria-label="三根柱：全分红公司价值 100；留存一半且净资产收益率 12% 的公司价值 125，增长贡献 25；留存一半但净资产收益率仅 8% 的公司价值 83.3，增长毁掉 16.7">
+      <g text-anchor="end">
+        <text class="tick" x="56" y="348">0</text>
+        <text class="tick" x="56" y="238">50</text>
+        <text class="tick" x="56" y="128">100</text>
+      </g>
+      <line class="grid" x1="64" y1="234" x2="700" y2="234"/>
+      <line class="axis" x1="64" y1="344" x2="700" y2="344"/>
+      <path class="edge-soft" d="M 64 124 H 700"/>
+      <text class="elabel" x="696" y="86" text-anchor="end">无成长价值 E₁/k = 100</text>
+      <!-- 甲 -->
+      <rect class="seg1" x="120" y="124" width="120" height="220" rx="3"/>
+      <text class="pl" x="180" y="112" text-anchor="middle">100</text>
+      <text class="nd" x="180" y="366" text-anchor="middle">甲：全分红（b = 0，g = 0）</text>
+      <!-- 乙 -->
+      <rect class="seg1" x="320" y="124" width="120" height="220" rx="3"/>
+      <rect class="seg3" x="320" y="69" width="120" height="53" rx="3"/>
+      <text class="pl" x="380" y="57" text-anchor="middle">125</text>
+      <text class="pv" x="448" y="100">PVGO = +25</text>
+      <text class="nd" x="380" y="366" text-anchor="middle">乙：b = 0.5，ROE 12% ＞ k</text>
+      <!-- 丙 -->
+      <rect class="seg1" x="520" y="161" width="120" height="183" rx="3"/>
+      <rect class="ghost" x="520" y="124" width="120" height="35"/>
+      <text class="pl" x="580" y="112" text-anchor="middle">83.3</text>
+      <text class="pv" x="648" y="146">PVGO = −16.7</text>
+      <text class="nd" x="580" y="366" text-anchor="middle">丙：b = 0.5，ROE 8% ＜ k</text>
+      <text class="elabel" x="380" y="398" text-anchor="middle">乙的增长率 g = 12% × 0.5 = 6%，V = 5/(0.10−0.06) = 125；丙 g = 4%，V = 5/0.06 = 83.3——增长更快也救不了低回报</text>
+    </svg>
+    </div>
+    <figcaption><b>读图：</b>三家公司今年都赚 10 元。乙把一半利润投进回报 12% 的项目，每留 1 元市场奖励它 1.25 元；丙把一半利润投进只有 8% 的项目——股东自己拿去能赚 10%，<b>留存就是毁值</b>，“增长型”公司反而比全分红的甲便宜 17%。高分红不是没出息，低回报的扩张才是；这也是成熟公司回购分红会被市场奖励的原因。</figcaption>
+  </figure>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>亚马逊：一只几乎全是 PVGO 的股票</h4>
+    <p>2000 年前后的亚马逊常年亏损，E₁/k 接近零甚至为负——它的市值几乎 100% 是 PVGO：市场在为“未来投资机会”整体付费。互联网泡沫破裂时它暴跌约 94%，看似证明定价荒谬；但此后二十年它把 PVGO 一步步兑现成真实的 E，成为万亿巨头。两件事同时为真：<strong>当年的价格确实透支、而公司确实伟大</strong>。PVGO 占比高的股票不是骗局，是高方差资产——它的价值全押在“ROE &gt; k 的再投资机会是否足够多、足够久”上，对 g 与 k 的敏感性（图 18-1）被放到最大。</p>
+    <p class="takeaway">看任何高估值成长股，先拆 PVGO 占比：占比越高，你买的越是“故事的期权”，波动与估值纪律都要按期权来管理。</p>
+  </div>
+</section>
+
+<!-- ======================== 18.4 ======================== -->
+<section class="ch" id="s4">
+  <h2 class="sec"><span class="no">18.4</span>市盈率的正确用法</h2>
+  <p class="sec-en">PRICE-EARNINGS RATIOS</p>
+
+  <div class="formula">
+    <div class="fx">P₀ / E₁ =（1 − b）/（k − g）</div>
+    <div class="note">由戈登公式直接导出。读法：P/E 随 g 升、随 k（风险与利率）降——<strong>市盈率不是“贵贱表”，是市场对增长与风险的报价</strong>。高 P/E = 市场相信高 PVGO；利率上行时 k 抬升，高 P/E 股估值最受伤（回看第 9 章 2022 年案例）。</div>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <tr><th>P/E 的坑</th><th>机理</th><th>防坑动作</th></tr>
+      <tr><td>周期股的“假便宜”</td><td>盈利在周期顶部虚高，分母膨胀 → P/E 显得极低（2007 年航运股个位数 P/E，随后盈利归零）</td><td>用正常化盈利 / 周期均值盈利；周期股常反着用——低 P/E 时警惕、高 P/E（盈利谷底）时研究</td></tr>
+      <tr><td>口径混用</td><td>静态（trailing）用过去 12 个月 E，动态（forward）用预测 E，可差数倍</td><td>比较时统一口径，预测 E 记得打折</td></tr>
+      <tr><td>跨行业硬比</td><td>不同 g、k、会计政策下 P/E 没有可比性</td><td>同行业内比，跨行业用 PEG（P/E ÷ g）粗调或直接回到 DCF</td></tr>
+      <tr><td>E 可被修饰</td><td>一次性损益、会计调节污染分母</td><td>看扣非口径；极端时换 P/B、P/S 或现金流口径交叉验证</td></tr>
+    </table>
+  </div>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>可口可乐 1998 与茅台 2021：好公司，坏价格</h4>
+    <p>1998 年的可口可乐是无可争议的伟大企业，市盈率约 45 倍。此后十余年公司继续增长、盈利接近翻倍，股价却<strong>横盘十多年</strong>——回报被“估值消化”吃光：P/E 从 45 倍回落到 19 倍，涨出来的 E 全用来填当年透支的坑。中国版本同一剧本：2021 年初的贵州茅台约 70 倍 P/E，其后三年利润持续增长、股价却大幅回撤——P/E 向 20 余倍回归，戴维斯双杀的反向教材。</p>
+    <p class="takeaway">长期回报 ≈ 盈利增长 + 股息 ± 估值变动。买入价的 P/E 决定了第三项的符号——<strong>为增长付多少钱，与判断增长本身同等重要</strong>。“好公司任何价格都能买”是对价值投资最昂贵的误读。</p>
+  </div>
+
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p>“DCF 算出来目标价 87.6 元，很科学。”——图 18-1 已经演示：g 或 k 挪 1 个百分点，“科学”的目标价能变 50%。DCF 的正确用途不是报一个精确数字，而是<strong>暴露你的假设</strong>：把隐含在市价里的 g 反解出来（“这个价格要求公司永续增长 7%，我信吗？”），比正着算目标价诚实得多。永远呈现敏感性区间。</p>
+  </div>
+</section>
+
+<!-- ======================== 18.5 ======================== -->
+<section class="ch" id="s5">
+  <h2 class="sec"><span class="no">18.5</span>自由现金流框架</h2>
+  <p class="sec-en">FREE CASH FLOW APPROACHES</p>
+
+  <div class="prose">
+    <p>不分红或分红极少的公司（成长期科技股），DDM 没有抓手，改用<strong>自由现金流</strong>：公司真实“可分配”的现金，而不是它恰好选择分配的部分。两条等价路线：</p>
+    <p>① <strong>FCFF</strong>（企业自由现金流）：息前税后利润 + 折旧 − 资本开支 − 营运资本增加，按<strong>加权平均资本成本（WACC）</strong>折现得企业价值，减净债务得股权价值；<br>② <strong>FCFE</strong>（股权自由现金流）：FCFF 扣掉债权人现金流，直接按股权成本 k 折现。两条路线假设一致时结果一致；与 DDM 的关系：股利只是 FCFE 的<em>分配决定</em>，FCF 法估的是<em>分配能力</em>。</p>
+    <p>实务纪律收束全章：估值的产出永远是<strong>三件套</strong>——核心假设清单（g、k、利润率）、对关键假设的敏感性区间、以及市价隐含的反向假设。单点目标价是给客户看的，区间和假设才是给自己用的。</p>
+  </div>
+</section>
+
+<!-- ======================== 小结 ======================== -->
+<section class="ch" id="recap">
+  <h2 class="sec"><span class="no">※</span>本章小结</h2>
+  <p class="sec-en">SUMMARY</p>
+
+  <div class="recap">
+    <ol>
+      <li><b>内在价值 = 现金流折现：</b>k 来自 CAPM；V 与市价之差就是第 9 章的 α——估值即与市场共识打赌。</li>
+      <li><b>戈登模型 V = D₁/(k−g)：</b>对 g 极端敏感（6%→7% 即 +50%）；永续 g 不得超过名义 GDP；报告区间不报点。</li>
+      <li><b>PVGO 分解：</b>V = E₁/k + PVGO；g = ROE × b；<b>ROE &gt; k 增长才创造价值</b>，低回报扩张是毁值机器；高 PVGO 股按“故事的期权”管理。</li>
+      <li><b>P/E = (1−b)/(k−g)：</b>它报价增长与风险，不报价便宜；周期股的低 P/E 常是陷阱；口径（动 / 静、扣非）先对齐再比较。</li>
+      <li><b>长期回报 ≈ 盈利增长 + 股息 ± 估值变动：</b>买入 P/E 决定第三项符号——可口可乐 1998 与茅台 2021 的共同教训。</li>
+      <li><b>FCF 框架兜底不分红公司：</b>FCFF 配 WACC、FCFE 配 k；估值产出三件套——假设、敏感性、市价隐含假设。</li>
+    </ol>
+  </div>
+
+  <h3>核心术语（中英对照）</h3>
+  <div class="tablewrap">
+    <table>
+      <tr><th>中文</th><th>English</th><th>一句话定义</th></tr>
+      <tr><td>账面价值</td><td>book value</td><td>会计历史成本下的净资产</td></tr>
+      <tr><td>清算价值 / 重置成本</td><td>liquidation value / replacement cost</td><td>拆卖底线 / 重建成本（托宾 q 的分母）</td></tr>
+      <tr><td>内在价值</td><td>intrinsic value</td><td>未来现金流按 k 折现的现值</td></tr>
+      <tr><td>股利贴现模型</td><td>dividend discount model (DDM)</td><td>V = Σ股利折现</td></tr>
+      <tr><td>戈登增长模型</td><td>constant-growth (Gordon) model</td><td>V = D₁/(k − g)</td></tr>
+      <tr><td>两阶段 DDM</td><td>two-stage DDM</td><td>高速期逐年折现 + 稳态终值</td></tr>
+      <tr><td>留存比率 / 派息比率</td><td>plowback / payout ratio</td><td>利润留存 / 分配的比例（b 与 1−b）</td></tr>
+      <tr><td>可持续增长率</td><td>sustainable growth</td><td>g = ROE × b</td></tr>
+      <tr><td>增长机会现值</td><td>PVGO</td><td>V 中超出 E₁/k 的部分，为未来机会付的价</td></tr>
+      <tr><td>市盈率</td><td>price-earnings (P/E) ratio</td><td>(1−b)/(k−g)，增长与风险的报价</td></tr>
+      <tr><td>盈利收益率</td><td>earnings yield (E/P)</td><td>P/E 的倒数，可与债券收益率对照</td></tr>
+      <tr><td>PEG</td><td>PEG ratio</td><td>P/E ÷ 增长率的粗糙校正</td></tr>
+      <tr><td>企业 / 股权自由现金流</td><td>FCFF / FCFE</td><td>可分配给全部资本 / 仅股东的现金流</td></tr>
+      <tr><td>加权平均资本成本</td><td>WACC</td><td>债股加权的折现率，配 FCFF</td></tr>
+      <tr><td>终值</td><td>terminal value</td><td>预测期之后用戈登压缩的全部价值</td></tr>
+      <tr><td>价值陷阱</td><td>value trap</td><td>看似便宜实则盈利正在消失的股票</td></tr>
+    </table>
+  </div>
+
+  <h3>自测（先想后翻）</h3>
+  <details>
+    <summary>Q1 D₁ = 2 元，k = 8%，g = 3%：V 是多少？若把 g 上调到 4%，V 变多少？这说明什么？</summary>
+    <div class="ans"><p>V = 2/0.05 = 40 元；g = 4% 时 V = 2/0.04 = 50 元——假设挪 1 个百分点，估值 +25%。说明：目标价的分歧多半不是信息分歧，而是 g 与 k 的假设分歧；拿到任何研报先翻到假设页，并要求敏感性表。</p></div>
+  </details>
+  <details>
+    <summary>Q2 某公司 ROE = 15%，k = 10%。它该多分红还是多留存？若 ROE 只有 7% 呢？用 g = ROE × b 和 PVGO 说理。</summary>
+    <div class="ans"><p>ROE 15% &gt; k 10%：留存的每一元都投向超额回报项目，b 越高 g 越高且 PVGO 为正——应偏向留存（图 18-2 的乙）。ROE 7% &lt; k：留存毁值，PVGO 为负，全分红（或回购）反而价值最大（丙的教训）。推论：评价“高分红”或“高增长”都不能脱离 ROE 与 k 的相对位置——分红政策本身没有美德，资本回报率才有。</p></div>
+  </details>
+  <details>
+    <summary>Q3 某股价格 80 元，E₁ = 5 元，k = 10%：PVGO 是多少？占价格几成？这个数字怎么用？</summary>
+    <div class="ans"><p>无成长价值 = 5/0.10 = 50 元；PVGO = 80 − 50 = 30 元，占价格 37.5%。用法：这是“故事含量”仪表——37.5% 的价格押在未来投资机会上。PVGO 占比越高，估值对 g、k 越敏感（亚马逊式高方差），利率上行时跌得越狠；占比为负（价格低于 E₁/k）则市场在定价盈利衰退，便宜可能是陷阱，先查 E 的可持续性。</p></div>
+  </details>
+  <details>
+    <summary>Q4 2007 年某航运股 P/E 只有 6 倍，“历史最便宜”。用本章工具给出三条质疑。</summary>
+    <div class="ans"><p>① 分母陷阱：周期顶部的 E 是虚高的，用正常化盈利重算 P/E 可能是 30 倍；② 公式视角：P/E = (1−b)/(k−g)，市场给 6 倍等于在定价 g 为深度负值——它不是没看见“便宜”，是在预报盈利崩塌（随后运价暴跌证实）；③ 交叉验证：改用 P/B 与周期均值盈利看，估值并不低。周期股口诀：低 P/E 时警惕（盈利见顶），高 P/E 时研究（盈利见底）。</p></div>
+  </details>
+  <details>
+    <summary>Q5 “可口可乐 1998”式亏损是怎么发生的？写出长期回报的三项分解，并说明买入估值如何决定第三项。</summary>
+    <div class="ans"><p>长期回报 ≈ 盈利增长 + 股息率 ± 估值（P/E）变动。1998 年买入者的前两项都兑现了（盈利近翻倍、持续分红），但第三项是 45 倍 → 19 倍的持续失血，把前两项吃光——十余年横盘。机制：买入 P/E 隐含的 g 高于现实可兑现的 g 时，估值必然均值回归。纪律：对任何“伟大公司”，先反解市价隐含的永续 g（图 18-1），再问自己“它还能超预期多少年”——支付的价格里已经包含的卓越，不会再付你一次钱。</p></div>
+  </details>
+
+  <a class="next" href="investments-ch23.html">
+    <div>
+      <div class="lbl">NEXT CHAPTER · HAPPY PATH</div>
+      <div class="ttl">第 23 章 · 期货、互换与风险管理</div>
+    </div>
+    <div class="lbl">第 19–21 章选学、22 章要点并入 · 主动交易的风控工具箱</div>
+  </a>
+
+  <p class="foot">本页为依据 Bodie–Kane–Marcus《投资学》（Investments）框架整理的原创学习笔记，仅用于教学理解；数值为教学算例，案例为近似表述。内容不构成任何投资建议。</p>
+</section>
+
+</main>
+</div>
+</div>
+
+<script>
+(function(){
+  var links = Array.prototype.slice.call(document.querySelectorAll('.sidenav a[href^="#"]'));
+  if(!links.length) return;
+  var map = [];
+  links.forEach(function(a){
+    var el = document.getElementById(a.getAttribute('href').slice(1));
+    if(el) map.push([el, a]);
+  });
+  function update(){
+    var y = window.scrollY + 150;
+    var cur = map[0][1];
+    for(var i = 0; i < map.length; i++){
+      if(map[i][0].offsetTop <= y) cur = map[i][1];
+    }
+    map.forEach(function(p){ p[1].classList.toggle('active', p[1] === cur); });
+  }
+  var tick = false;
+  window.addEventListener('scroll', function(){
+    if(!tick){
+      tick = true;
+      requestAnimationFrame(function(){ tick = false; update(); });
+    }
+  }, {passive:true});
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+</body>
+</html>
