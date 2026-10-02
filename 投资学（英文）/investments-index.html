@@ -1,0 +1,561 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>投资学 · 学习地图</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700;900&family=Noto+Sans+SC:wght@400;500;700&display=swap">
+<style>
+/* 布局：单栏地图页（980px）：进度条 + Happy Path 站点链 + 七大部分章节清单 */
+:root{
+  --bg:#f5f6f7;
+  --surface:#ffffff;
+  --ink:#171a20;
+  --ink-2:#4a5160;
+  --muted:#858c9b;
+  --line:#e2e5ea;
+  --line-2:#c9ced6;
+  --accent:#1d5fad;
+  --accent-ink:#174e8f;
+  --accent-soft:#eaf1fa;
+  --ok:#006300;
+  --serif:"Noto Serif SC","Songti SC",serif;
+  --sans:"Noto Sans SC","Microsoft YaHei",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#101215; --surface:#181b20; --ink:#eef0f3; --ink-2:#c0c5cf; --muted:#8a909d;
+    --line:#282c33; --line-2:#3a3f48;
+    --accent:#5a96e3; --accent-ink:#79abec; --accent-soft:#1c2a3d;
+    --ok:#0ca30c;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#101215; --surface:#181b20; --ink:#eef0f3; --ink-2:#c0c5cf; --muted:#8a909d;
+  --line:#282c33; --line-2:#3a3f48;
+  --accent:#5a96e3; --accent-ink:#79abec; --accent-soft:#1c2a3d;
+  --ok:#0ca30c;
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:var(--sans); font-size:15.5px; line-height:1.8;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:980px; margin:0 auto; padding-inline:20px; padding-block:0 72px}
+
+.masthead{
+  display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  padding-block:18px 14px; border-bottom:1px solid var(--line);
+}
+.masthead .book{font-family:var(--serif); font-weight:700; font-size:15px; letter-spacing:.02em}
+.masthead .part{font-size:12.5px; color:var(--muted); letter-spacing:.12em}
+
+/* ———— 章首 ———— */
+.hero{padding-block:40px 30px; border-bottom:1px solid var(--line)}
+.chap-no{
+  display:inline-flex; align-items:center; gap:10px;
+  font-size:12.5px; letter-spacing:.22em; color:var(--accent-ink); font-weight:700;
+}
+.chap-no::after{content:""; width:46px; height:1px; background:var(--accent)}
+.hero h1{
+  font-family:var(--serif); font-weight:900; font-size:clamp(30px,5vw,44px);
+  line-height:1.25; margin:10px 0 4px; letter-spacing:.02em; text-wrap:balance;
+}
+.hero .en{font-size:14px; color:var(--muted); letter-spacing:.08em; margin:0 0 16px}
+.hero .lede{max-width:48em; color:var(--ink-2); margin:0}
+.hero .lede strong{color:var(--ink)}
+
+/* 进度 */
+.progress{
+  margin-top:24px; padding:16px 20px; background:var(--surface);
+  border:1px solid var(--line); border-radius:8px;
+}
+.progress .ptext{display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; font-size:13.5px; color:var(--ink-2); margin-bottom:10px}
+.progress .ptext b{color:var(--accent-ink); font-size:15px}
+.pbar{height:8px; background:var(--line); border-radius:999px; overflow:hidden}
+.pbar i{display:block; height:100%; width:0%; background:var(--accent); border-radius:999px; transition:width .3s}
+@media (prefers-reduced-motion: reduce){ .pbar i{transition:none} }
+
+/* Happy Path 站点链 */
+.railbox{margin-top:18px}
+.railbox .rl{font-size:12px; letter-spacing:.18em; color:var(--accent-ink); font-weight:700; margin-bottom:10px}
+.rail{display:flex; flex-wrap:wrap; gap:6px 4px; align-items:center}
+.rail .st{
+  padding:3px 11px; border-radius:999px; border:1px solid var(--line-2);
+  font-size:12.5px; background:var(--surface); color:var(--ink-2); white-space:nowrap;
+}
+.rail .st.done{background:var(--accent-soft); border-color:var(--accent); color:var(--accent-ink); font-weight:500}
+.rail .st.next{border-color:var(--accent); border-style:dashed; color:var(--accent-ink); font-weight:700}
+.rail .sep{color:var(--line-2); font-size:11px}
+.railnote{font-size:12.5px; color:var(--muted); margin-top:10px}
+
+/* 图例 */
+.legend{display:flex; flex-wrap:wrap; gap:8px; margin-top:16px; font-size:12.5px; color:var(--muted); align-items:center}
+
+/* ———— 徽标 ———— */
+.badge{
+  display:inline-block; font-size:12px; line-height:1; padding:5px 10px; border-radius:999px;
+  white-space:nowrap; font-weight:500;
+}
+.b-must{background:var(--accent-soft); border:1px solid var(--accent); color:var(--accent-ink); font-weight:700}
+.b-std{border:1px solid var(--accent); color:var(--accent-ink); background:transparent}
+.b-opt{border:1px solid var(--line-2); color:var(--muted); background:transparent}
+.b-merge{border:1px dashed var(--line-2); color:var(--muted); background:transparent}
+.b-next{border:1px dashed var(--accent); color:var(--accent-ink); background:transparent; font-weight:700}
+
+/* ———— 部分与章节清单 ———— */
+section.part{padding-block:36px 6px}
+section.part + section.part{border-top:1px solid var(--line)}
+.part h2{
+  font-family:var(--serif); font-weight:700; font-size:clamp(20px,3vw,26px);
+  margin:0 0 2px; line-height:1.4;
+}
+.part h2 .pno{color:var(--accent-ink); font-size:13px; letter-spacing:.2em; display:block; margin-bottom:4px; font-family:var(--sans); font-weight:700}
+.part h2 .pen{color:var(--muted); font-size:13px; font-family:var(--sans); font-weight:400; letter-spacing:.06em; margin-left:10px}
+.prole{font-size:14px; color:var(--muted); margin:4px 0 14px; max-width:46em}
+
+ul.chlist{list-style:none; margin:0; padding:0}
+.chrow{
+  display:flex; gap:14px; align-items:flex-start; flex-wrap:wrap;
+  padding:14px 10px; border-top:1px solid var(--line);
+}
+.chrow:first-child{border-top:none}
+.chrow .cb{
+  width:18px; height:18px; margin-top:5px; flex-shrink:0;
+  accent-color:var(--accent); cursor:pointer;
+}
+.chmain{flex:1 1 300px; min-width:0}
+.chtitle label{font-weight:700; cursor:pointer}
+.chtitle .chno{color:var(--accent-ink); font-feature-settings:"tnum"; margin-right:8px}
+.chtitle .chen{display:block; font-size:12px; color:var(--muted); letter-spacing:.04em; margin-top:1px}
+.chsum{margin:5px 0 0; font-size:13.5px; color:var(--ink-2); max-width:40em}
+.chside{
+  margin-left:auto; display:flex; align-items:center; gap:8px; flex-shrink:0;
+  padding-top:3px; flex-wrap:wrap;
+}
+.act{font-size:13px; white-space:nowrap}
+a.act{
+  color:var(--accent-ink); text-decoration:none; font-weight:700;
+  border:1px solid var(--accent); border-radius:6px; padding:5px 12px;
+}
+a.act:hover{background:var(--accent-soft)}
+a.act:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.act.ok{color:var(--ok); font-weight:700; border:none; padding:0}
+.act.todo,.act.note{color:var(--muted); padding:0}
+.chrow.checked .chtitle label{color:var(--muted); text-decoration:line-through; text-decoration-thickness:1px}
+
+/* ———— 收尾 ———— */
+.outro{
+  margin-top:40px; padding:16px 20px; background:var(--surface);
+  border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:0 8px 8px 0;
+}
+.outro h2{font-size:13px; letter-spacing:.18em; color:var(--accent-ink); margin:0 0 8px; font-weight:700}
+.outro p{margin:6px 0; font-size:14px; color:var(--ink-2)}
+.foot{margin-top:24px; font-size:12.5px; color:var(--muted); line-height:1.8}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <span class="book">《投资学》学习手册 · Investments (Bodie · Kane · Marcus)</span>
+  <span class="part">学习地图 · HAPPY PATH</span>
+</header>
+
+<div class="hero">
+  <span class="chap-no">ROADMAP</span>
+  <h1>学习地图</h1>
+  <p class="en">The Happy Path through Investments</p>
+  <p class="lede">全书七大部分、28 章，按你的目标分成三档：<strong>必学</strong>（深做讲义 + 自测）、<strong>应学</strong>（标准深度）、<strong>选学</strong>（摘要或按需）。沿着下面的 15 站走完，你就拿到了这门课的概念主干：风险怎么度量、分散化为何是唯一的免费午餐、价格“应该”是多少、为什么战胜市场难、以及怎么判断成绩的真假。</p>
+
+  <div class="progress">
+    <div class="ptext">
+      <span>Happy Path 进度：<b id="pcount">0</b> / 15 站</span>
+      <span>讲义已上线 3 章 · 勾选每章前的方框记录你的学习进度</span>
+    </div>
+    <div class="pbar"><i id="pfill"></i></div>
+    <div class="railbox">
+      <div class="rl">THE 15 STATIONS · 主动交易版</div>
+      <div class="rail" id="rail">
+        <span class="st" data-st="ch1">1 环境</span><span class="sep">→</span>
+        <span class="st" data-st="ch2">2 工具</span><span class="sep">→</span>
+        <span class="st" data-st="ch3">3 交易</span><span class="sep">→</span>
+        <span class="st" data-st="ch4">4 基金</span><span class="sep">→</span>
+        <span class="st" data-st="ch5">5 风险收益</span><span class="sep">→</span>
+        <span class="st" data-st="ch6">6 配置</span><span class="sep">→</span>
+        <span class="st" data-st="ch7">7 分散化</span><span class="sep">→</span>
+        <span class="st" data-st="ch9">9 CAPM</span><span class="sep">→</span>
+        <span class="st" data-st="ch11">11 有效市场</span><span class="sep">→</span>
+        <span class="st" data-st="ch12">12 行为金融</span><span class="sep">→</span>
+        <span class="st" data-st="ch14">14 债券</span><span class="sep">→</span>
+        <span class="st" data-st="ch18">18 估值</span><span class="sep">→</span>
+        <span class="st" data-st="ch23">23 套保风控</span><span class="sep">→</span>
+        <span class="st" data-st="ch24">24 业绩评价</span><span class="sep">→</span>
+        <span class="st" data-st="ch27">27 积极管理</span>
+      </div>
+      <p class="railnote">进度保存在这台电脑的浏览器里，仅自己可见。虚线框是你的下一站。</p>
+    </div>
+    <div class="legend">
+      <span>优先级图例：</span>
+      <span class="badge b-must">必学 · 深做</span>
+      <span class="badge b-std">应学 · 标准</span>
+      <span class="badge b-merge">并入他章</span>
+      <span class="badge b-opt">选学 · 摘要</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============ PART I ============ -->
+<section class="part">
+  <h2><span class="pno">PART Ⅰ · 第一部分</span>绪论<span class="pen">Introduction</span></h2>
+  <p class="prole">词汇与管道：市场里有什么商品、在哪儿交易、谁在参与。四章都是后面一切讨论的语言基础。</p>
+  <ul class="chlist">
+    <li class="chrow" id="row-ch1">
+      <input type="checkbox" class="cb" id="cb-ch1" data-ch="ch1" aria-label="标记第 1 章已学完">
+      <div class="chmain">
+        <div class="chtitle"><label for="cb-ch1"><span class="chno">01</span>投资环境</label><span class="chen">The Investment Environment</span></div>
+        <p class="chsum">实物 vs 金融资产、金融市场四大功能、资产配置优先于选股、风险—收益权衡、2008 危机总演练。</p>
+      </div>
+      <div class="chside"><span class="badge b-must">必学 · 深做</span><a class="act" href="investments-ch01.html">打开讲义</a></div>
+    </li>
+    <li class="chrow" id="row-ch2">
+      <input type="checkbox" class="cb" id="cb-ch2" data-ch="ch2" aria-label="标记第 2 章已学完">
+      <div class="chmain">
+        <div class="chtitle"><label for="cb-ch2"><span class="chno">02</span>资产类别与金融工具</label><span class="chen">Asset Classes and Financial Instruments</span></div>
+        <p class="chsum">货币市场 → 债券 → 股票 → 指数 → 衍生品的完整工具箱；两种收益率报价、免税换算、指数加权。</p>
+      </div>
+      <div class="chside"><span class="badge b-must">必学 · 深做</span><a class="act" href="investments-ch02.html">打开讲义</a></div>
+    </li>
+    <li class="chrow" id="row-ch3">
+      <input type="checkbox" class="cb" id="cb-ch3" data-ch="ch3" aria-label="标记第 3 章已学完">
+      <div class="chmain">
+        <div class="chtitle"><label for="cb-ch3"><span class="chno">03</span>证券是如何交易的</label><span class="chen">How Securities Are Traded</span></div>
+        <p class="chsum">发行与 IPO 抑价、订单簿与价差、交易成本、保证金交易与卖空的完整力学（含追保计算）。</p>
+      </div>
+      <div class="chside"><span class="badge b-must">必学 · 深做</span><a class="act" href="investments-ch03.html">打开讲义</a></div>
+    </li>
+    <li class="chrow" id="row-ch4">
+      <input type="checkbox" class="cb" id="cb-ch4" data-ch="ch4" aria-label="标记第 4 章已学完">
+      <div class="chmain">
+        <div class="chtitle"><label for="cb-ch4"><span class="chno">04</span>共同基金与其他投资公司</label><span class="chen">Mutual Funds and Other Investment Companies</span></div>
+        <p class="chsum">开放式 / 封闭式、ETF 的申赎套利、费用结构如何吃掉长期收益——普通人配置的默认载体。</p>
+      </div>
+      <div class="chside"><span class="badge b-must">必学 · 深做</span><span class="act todo">讲义待制作</span></div>
+    </li>
+  </ul>
+</section>
+
+<!-- ============ PART II ============ -->
+<section class="part">
+  <h2><span class="pno">PART Ⅱ · 第二部分</span>资产组合理论与实践<span class="pen">Portfolio Theory and Practice</span></h2>
+  <p class="prole">全书的心脏：先学会度量风险与收益，再决定“风险资产放多少”，然后理解分散化为什么是唯一的免费午餐，最后拿到 α 与 β 这套通用语言。</p>
+  <ul class="chlist">
+    <li class="chrow" id="row-ch5">
+      <input type="checkbox" class="cb" id="cb-ch5" data-ch="ch5" aria-label="标记第 5 章已学完">
+      <div class="chmain">
+        <div class="chtitle"><label for="cb-ch5"><span class="chno">05</span>风险与收益入门及历史回顾</label><span class="chen">Risk, Return, and the Historical Record</span></div>
+        <p class="chsum">收益率的正确算法（算术 / 几何）、风险溢价、波动率、正态与肥尾、VaR——量化风险的语言课。</p>
+      </div>
+      <div class="chside"><span class="badge b-must">必学 · 深做</span><span class="act todo">讲义待制作</span></div>
+    </li>
+    <li class="chrow" id="row-ch6">
+      <input type="checkbox" class="cb" id="cb-ch6" data-ch="ch6" aria-label="标记第 6 章已学完">
+      <div class="chmain">
+        <div class="chtitle"><label for="cb-ch6"><span class="chno">06</span>风险资产配置</label><span class="chen">Capital Allocation to Risky Assets</span></div>
+        <p class="chsum">风险厌恶与效用、资本配置线（CAL）、“股债现金各放多少”的第一性答案 y*。</p>
+      </div>
+      <div class="chside"><span class="badge b-must">必学 · 深做</span><span class="act todo">讲义待制作</span></div>
+    </li>
+    <li class="chrow" id="row-ch7">
+      <input type="checkbox" class="cb" id="cb-ch7" data-ch="ch7" aria-label="标记第 7 章已学完">
+      <div class="chmain">
+        <div class="chtitle"><label for="cb-ch7"><span class="chno">07</span>最优风险资产组合</label><span class="chen">Optimal Risky Portfolios</span></div>
+        <p class="chsum">协方差决定一切：分散化消除什么、留下什么；有效前沿、两基金分离定理。全书最重要的一章。</p>
+      </div>
+      <div class="chside"><span class="badge b-must">必学 · 深做</span><span class="act todo">讲义待制作</span></div>
+    </li>
+    <li class="chrow" id="row-ch8">
+      <input type="checkbox" class="cb" id="cb-ch8" data-ch="ch8" aria-label="标记第 8 章已学完">
+      <div class="chmain">
+        <div class="chtitle"><label for="cb-ch8"><span class="chno">08</span>指数模型</label><span class="chen">Index Models</span></div>
+        <p class="chsum">单指数回归把风险拆成市场的（β）与自己的（残差）——α/β 要点并入第 9 章一起讲。</p>
+      </div>
+      <div class="chside"><span class="badge b-merge">并入第 9 章</span><span class="act note">随第 9 章覆盖要点</span></div>
+    </li>
+  </ul>
+</section>
+
+<!-- ============ PART III ============ -->
+<section class="part">
+  <h2><span class="pno">PART Ⅲ · 第三部分</span>资本市场均衡<span class="pen">Equilibrium in Capital Markets</span></h2>
+  <p class="prole">价格“应该”是什么，以及市场到底有没有把价格定对——这两个问题决定了你未来对任何“策略”的默认怀疑程度。</p>
+  <ul class="chlist">
+    <li class="chrow" id="row-ch9">
+      <input type="checkbox" class="cb" id="cb-ch9" data-ch="ch9" aria-label="标记第 9 章已学完">
+      <div class="chmain">
+        <div class="chtitle"><label for="cb-ch9"><span class="chno">09</span>资本资产定价模型（CAPM）</label><span class="chen">The Capital Asset Pricing Model</span></div>
+        <p class="chsum">均衡下只有 β 风险获得补偿：SML、要求回报率怎么算、α 的严格定义（含第 8 章指数模型要点）。</p>
+      </div>
+      <div class="chside"><span class="badge b-must">必学 · 深做</span><span class="act todo">讲义待制作</span></div>
+    </li>
+    <li class="chrow" id="row-ch10">
+      <input type="checkbox" class="cb" id="cb-ch10" data-ch="ch10" aria-label="标记第 10 章已学完">
+      <div class="chmain">
+        <div class="chtitle"><label for="cb-ch10"><span class="chno">10</span>套利定价理论与多因子模型</label><span class="chen">Arbitrage Pricing Theory and Multifactor Models</span></div>
+        <p class="chsum">APT 思想与 Fama-French 三因子——知道“因子”这个词在说什么即可。</p>
+      </div>
+      <div class="chside"><span class="badge b-opt">选学 · 摘要</span><span class="act note">概览即可</span></div>
+    </li>
+    <li class="chrow" id="row-ch11">
+      <input type="checkbox" class="cb" id="cb-ch11" data-ch="ch11" aria-label="标记第 11 章已学完">
+      <div class="chmain">
+        <div class="chtitle"><label for="cb-ch11"><span class="chno">11</span>有效市场假说</label><span class="chen">The Efficient Market Hypothesis</span></div>
+        <p class="chsum">三种有效形式、经典异象、主动 vs 被动的证据——“先假设自己没有优势”的理论依据。</p>
+      </div>
+      <div class="chside"><span class="badge b-must">必学 · 深做</span><span class="act todo">讲义待制作</span></div>
+    </li>
+    <li class="chrow" id="row-ch12">
+      <input type="checkbox" class="cb" id="cb-ch12" data-ch="ch12" aria-label="标记第 12 章已学完">
+      <div class="chmain">
+        <div class="chtitle"><label for="cb-ch12"><span class="chno">12</span>行为金融与技术分析</label><span class="chen">Behavioral Finance and Technical Analysis</span></div>
+        <p class="chsum">偏差清单（过度自信、处置效应、锚定）、前景理论、套利的限制——认识你未来最大的敌人：自己。</p>
+      </div>
+      <div class="chside"><span class="badge b-must">必学 · 深做</span><span class="act todo">讲义待制作</span></div>
+    </li>
+    <li class="chrow" id="row-ch13">
+      <input type="checkbox" class="cb" id="cb-ch13" data-ch="ch13" aria-label="标记第 13 章已学完">
+      <div class="chmain">
+        <div class="chtitle"><label for="cb-ch13"><span class="chno">13</span>证券收益的实证证据</label><span class="chen">Empirical Evidence on Security Returns</span></div>
+        <p class="chsum">因子研究的文献巡礼，学术向；对建立概念不是必需。</p>
+      </div>
+      <div class="chside"><span class="badge b-opt">选学 · 略读</span><span class="act note">按需</span></div>
+    </li>
+  </ul>
+</section>
+
+<!-- ============ PART IV ============ -->
+<section class="part">
+  <h2><span class="pno">PART Ⅳ · 第四部分</span>固定收益证券<span class="pen">Fixed-Income Securities</span></h2>
+  <p class="prole">现金流贴现的第一个完整应用：学会给“确定的承诺”定价，才轮得到给“不确定的盈利”定价。</p>
+  <ul class="chlist">
+    <li class="chrow" id="row-ch14">
+      <input type="checkbox" class="cb" id="cb-ch14" data-ch="ch14" aria-label="标记第 14 章已学完">
+      <div class="chmain">
+        <div class="chtitle"><label for="cb-ch14"><span class="chno">14</span>债券的价格与收益</label><span class="chen">Bond Prices and Yields</span></div>
+        <p class="chsum">定价公式、到期收益率、价格—利率反向关系、信用利差；附 15/16 章要点：收益率曲线与久期。</p>
+      </div>
+      <div class="chside"><span class="badge b-std">应学 · 标准</span><span class="act todo">讲义待制作</span></div>
+    </li>
+    <li class="chrow" id="row-ch15">
+      <input type="checkbox" class="cb" id="cb-ch15" data-ch="ch15" aria-label="标记第 15 章已学完">
+      <div class="chmain">
+        <div class="chtitle"><label for="cb-ch15"><span class="chno">15</span>利率的期限结构</label><span class="chen">The Term Structure of Interest Rates</span></div>
+        <p class="chsum">收益率曲线、远期利率、倒挂为什么预示衰退——要点并入第 14 章。</p>
+      </div>
+      <div class="chside"><span class="badge b-merge">并入第 14 章</span><span class="act note">随第 14 章覆盖要点</span></div>
+    </li>
+    <li class="chrow" id="row-ch16">
+      <input type="checkbox" class="cb" id="cb-ch16" data-ch="ch16" aria-label="标记第 16 章已学完">
+      <div class="chmain">
+        <div class="chtitle"><label for="cb-ch16"><span class="chno">16</span>债券资产组合管理</label><span class="chen">Managing Bond Portfolios</span></div>
+        <p class="chsum">久期、凸性、免疫策略（硅谷银行案例的理论课）——概念要点并入第 14 章。</p>
+      </div>
+      <div class="chside"><span class="badge b-merge">并入第 14 章</span><span class="act note">随第 14 章覆盖要点</span></div>
+    </li>
+  </ul>
+</section>
+
+<!-- ============ PART V ============ -->
+<section class="part">
+  <h2><span class="pno">PART Ⅴ · 第五部分</span>证券分析<span class="pen">Security Analysis</span></h2>
+  <p class="prole">基本面视角：宏观 → 行业 → 公司估值 → 财报。核心是第 18 章——“一只股票到底值多少钱”。</p>
+  <ul class="chlist">
+    <li class="chrow" id="row-ch17">
+      <input type="checkbox" class="cb" id="cb-ch17" data-ch="ch17" aria-label="标记第 17 章已学完">
+      <div class="chmain">
+        <div class="chtitle"><label for="cb-ch17"><span class="chno">17</span>宏观经济分析与行业分析</label><span class="chen">Macroeconomic and Industry Analysis</span></div>
+        <p class="chsum">商业周期、行业生命周期、波特五力——框架性内容，略读即可。</p>
+      </div>
+      <div class="chside"><span class="badge b-opt">选学 · 略读</span><span class="act note">按需</span></div>
+    </li>
+    <li class="chrow" id="row-ch18">
+      <input type="checkbox" class="cb" id="cb-ch18" data-ch="ch18" aria-label="标记第 18 章已学完">
+      <div class="chmain">
+        <div class="chtitle"><label for="cb-ch18"><span class="chno">18</span>权益估值模型</label><span class="chen">Equity Valuation Models</span></div>
+        <p class="chsum">股利贴现（DDM）、戈登增长、P/E 的正确打开方式、增长机会的价值——估值直觉的来源。</p>
+      </div>
+      <div class="chside"><span class="badge b-std">应学 · 标准</span><span class="act todo">讲义待制作</span></div>
+    </li>
+    <li class="chrow" id="row-ch19">
+      <input type="checkbox" class="cb" id="cb-ch19" data-ch="ch19" aria-label="标记第 19 章已学完">
+      <div class="chmain">
+        <div class="chtitle"><label for="cb-ch19"><span class="chno">19</span>财务报表分析</label><span class="chen">Financial Statement Analysis</span></div>
+        <p class="chsum">ROE 杜邦分解、盈余质量、造假信号——走基本面路线时再深学。</p>
+      </div>
+      <div class="chside"><span class="badge b-opt">选学 · 按需</span><span class="act note">按需</span></div>
+    </li>
+  </ul>
+</section>
+
+<!-- ============ PART VI ============ -->
+<section class="part">
+  <h2><span class="pno">PART Ⅵ · 第六部分</span>期权、期货与其他衍生证券<span class="pen">Options, Futures, and Other Derivatives</span></h2>
+  <p class="prole">损益形状的工程学。主动交易路线下，期货与套保升入主干：第 23 章吸收第 22 章要点深做；期权两章（20–21）待你的系统真要用期权时再深学。</p>
+  <ul class="chlist">
+    <li class="chrow" id="row-ch20">
+      <input type="checkbox" class="cb" id="cb-ch20" data-ch="ch20" aria-label="标记第 20 章已学完">
+      <div class="chmain">
+        <div class="chtitle"><label for="cb-ch20"><span class="chno">20</span>期权市场介绍</label><span class="chen">Options Markets: Introduction</span></div>
+        <p class="chsum">期权策略组合（保护性看跌、备兑开仓）与损益图。</p>
+      </div>
+      <div class="chside"><span class="badge b-opt">选学</span><span class="act note">做期权时再学</span></div>
+    </li>
+    <li class="chrow" id="row-ch21">
+      <input type="checkbox" class="cb" id="cb-ch21" data-ch="ch21" aria-label="标记第 21 章已学完">
+      <div class="chmain">
+        <div class="chtitle"><label for="cb-ch21"><span class="chno">21</span>期权定价</label><span class="chen">Option Valuation</span></div>
+        <p class="chsum">二叉树、Black-Scholes、隐含波动率与希腊字母。</p>
+      </div>
+      <div class="chside"><span class="badge b-opt">选学</span><span class="act note">做期权时再学</span></div>
+    </li>
+    <li class="chrow" id="row-ch22">
+      <input type="checkbox" class="cb" id="cb-ch22" data-ch="ch22" aria-label="标记第 22 章已学完">
+      <div class="chmain">
+        <div class="chtitle"><label for="cb-ch22"><span class="chno">22</span>期货市场</label><span class="chen">Futures Markets</span></div>
+        <p class="chsum">期货定价（持有成本模型）、盯市与基差——要点并入第 23 章。</p>
+      </div>
+      <div class="chside"><span class="badge b-merge">并入第 23 章</span><span class="act note">随第 23 章覆盖要点</span></div>
+    </li>
+    <li class="chrow" id="row-ch23">
+      <input type="checkbox" class="cb" id="cb-ch23" data-ch="ch23" aria-label="标记第 23 章已学完">
+      <div class="chmain">
+        <div class="chtitle"><label for="cb-ch23"><span class="chno">23</span>期货、互换与风险管理</label><span class="chen">Futures, Swaps, and Risk Management</span></div>
+        <p class="chsum">用期货对冲市场 / 利率 / 汇率风险、套保比率与基差风险——主动交易的风控工具箱（附第 22 章要点：期货定价与盯市）。</p>
+      </div>
+      <div class="chside"><span class="badge b-std">应学 · 标准</span><span class="act todo">讲义待制作</span></div>
+    </li>
+  </ul>
+</section>
+
+<!-- ============ PART VII ============ -->
+<section class="part">
+  <h2><span class="pno">PART Ⅶ · 第七部分</span>应用投资组合管理<span class="pen">Applied Portfolio Management</span></h2>
+  <p class="prole">收官：怎么科学地评价成绩（对你日后验证交易系统是刚需）、全球配置与积极管理的边界。</p>
+  <ul class="chlist">
+    <li class="chrow" id="row-ch24">
+      <input type="checkbox" class="cb" id="cb-ch24" data-ch="ch24" aria-label="标记第 24 章已学完">
+      <div class="chmain">
+        <div class="chtitle"><label for="cb-ch24"><span class="chno">24</span>投资组合业绩评价</label><span class="chen">Portfolio Performance Evaluation</span></div>
+        <p class="chsum">Sharpe、Treynor、信息比率、业绩归因；怎么区分本事与运气——评判一切系统的标尺。</p>
+      </div>
+      <div class="chside"><span class="badge b-must">必学 · 深做</span><span class="act todo">讲义待制作</span></div>
+    </li>
+    <li class="chrow" id="row-ch25">
+      <input type="checkbox" class="cb" id="cb-ch25" data-ch="ch25" aria-label="标记第 25 章已学完">
+      <div class="chmain">
+        <div class="chtitle"><label for="cb-ch25"><span class="chno">25</span>投资的国际分散化</label><span class="chen">International Diversification</span></div>
+        <p class="chsum">汇率风险与全球配置的得失。</p>
+      </div>
+      <div class="chside"><span class="badge b-opt">选学 · 摘要</span><span class="act note">按需</span></div>
+    </li>
+    <li class="chrow" id="row-ch26">
+      <input type="checkbox" class="cb" id="cb-ch26" data-ch="ch26" aria-label="标记第 26 章已学完">
+      <div class="chmain">
+        <div class="chtitle"><label for="cb-ch26"><span class="chno">26</span>对冲基金</label><span class="chen">Hedge Funds</span></div>
+        <p class="chsum">策略分类、费后业绩的真相、幸存者偏差。</p>
+      </div>
+      <div class="chside"><span class="badge b-opt">选学 · 摘要</span><span class="act note">按需</span></div>
+    </li>
+    <li class="chrow" id="row-ch27">
+      <input type="checkbox" class="cb" id="cb-ch27" data-ch="ch27" aria-label="标记第 27 章已学完">
+      <div class="chmain">
+        <div class="chtitle"><label for="cb-ch27"><span class="chno">27</span>积极型投资组合管理理论</label><span class="chen">The Theory of Active Portfolio Management</span></div>
+        <p class="chsum">Treynor-Black 与 Black-Litterman：有观点时该下多大注——仓位管理的理论原型，衔接后续的 Kelly 公式学习。</p>
+      </div>
+      <div class="chside"><span class="badge b-std">应学 · 标准</span><span class="act todo">讲义待制作</span></div>
+    </li>
+    <li class="chrow" id="row-ch28">
+      <input type="checkbox" class="cb" id="cb-ch28" data-ch="ch28" aria-label="标记第 28 章已学完">
+      <div class="chmain">
+        <div class="chtitle"><label for="cb-ch28"><span class="chno">28</span>投资政策与 CFA 框架</label><span class="chen">Investment Policy and the Framework of the CFA Institute</span></div>
+        <p class="chsum">投资政策声明（IPS）：目标、约束、再平衡纪律——值得摘成一页清单。</p>
+      </div>
+      <div class="chside"><span class="badge b-opt">选学 · 摘一页</span><span class="act note">按需</span></div>
+    </li>
+  </ul>
+</section>
+
+<div class="outro">
+  <h2>走完 15 站之后</h2>
+  <p>这门课交付的是三样护栏：<strong>对风险的量化语言</strong>（波动率、β、回撤）、<strong>对有效市场的敬畏</strong>（任何策略先假设自己没有优势，再用证据推翻）、<strong>用 Sharpe 与回撤而非收益绝对值评判系统的纪律</strong>。</p>
+  <p>它不覆盖的——交易层的仓位规则、回测工程、执行系统——属于你计划中的“后续其他学习”；第 23、24、27 章是通往那一层的三座桥：套保给风控、业绩评价给回测评分、积极管理给仓位理论。</p>
+</div>
+
+<p class="foot">本页为依据 Bodie–Kane–Marcus《投资学》（Investments）目录整理的学习路线图；优先级为面向“建立投资认知”目标的个人定制，非教材官方划分。勾选进度仅存于本机浏览器。内容不构成任何投资建议。</p>
+
+</div>
+
+<script>
+(function(){
+  var PATH = ['ch1','ch2','ch3','ch4','ch5','ch6','ch7','ch9','ch11','ch12','ch14','ch18','ch23','ch24','ch27'];
+  var KEY = 'bkm-progress';
+
+  function load(){
+    try{ return JSON.parse(localStorage.getItem(KEY) || '{}'); }catch(e){ return {}; }
+  }
+  function save(state){
+    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){}
+  }
+
+  var state = load();
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('.cb[data-ch]'));
+
+  function refresh(){
+    var done = 0;
+    PATH.forEach(function(ch){ if(state[ch]) done++; });
+    var pc = document.getElementById('pcount');
+    var pf = document.getElementById('pfill');
+    if(pc) pc.textContent = done;
+    if(pf) pf.style.width = (done / PATH.length * 100) + '%';
+
+    var nextFound = false;
+    PATH.forEach(function(ch){
+      var st = document.querySelector('.rail .st[data-st="' + ch + '"]');
+      if(st){
+        st.classList.toggle('done', !!state[ch]);
+        var isNext = !state[ch] && !nextFound;
+        st.classList.toggle('next', isNext);
+        if(isNext) nextFound = true;
+      }
+    });
+
+    boxes.forEach(function(b){
+      var row = document.getElementById('row-' + b.getAttribute('data-ch'));
+      if(row) row.classList.toggle('checked', b.checked);
+    });
+  }
+
+  boxes.forEach(function(b){
+    var ch = b.getAttribute('data-ch');
+    b.checked = !!state[ch];
+    b.addEventListener('change', function(){
+      state[ch] = b.checked;
+      if(!b.checked) delete state[ch];
+      save(state);
+      refresh();
+    });
+  });
+
+  refresh();
+})();
+</script>
+</body>
+</html>

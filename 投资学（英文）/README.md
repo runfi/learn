@@ -1,3 +1,10 @@
 # 投资学（英文）
 
-此文件夹用于存放投资学（英文）相关的学习资料。
+《投资学》（Investments, Bodie · Kane · Marcus）学习手册。
+
+- `investments-index.html` — 学习地图（全书七部分 28 章的学习路线与进度打卡）
+- `investments-ch01.html` — 第 1 章 投资环境
+- `investments-ch02.html` — 第 2 章 资产类别与金融工具
+- `investments-ch03.html` — 第 3 章 证券是如何交易的
+
+从 `investments-index.html` 打开即可跳转各章讲义。

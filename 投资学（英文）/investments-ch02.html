@@ -1,0 +1,739 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>投资学 · 第2章 资产类别与金融工具</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700;900&family=Noto+Sans+SC:wght@400;500;700&display=swap">
+<style>
+/* 布局：双栏（212px 侧栏 + 正文），章导览 + 2.1–2.5 分节；宽图表置于横向滚动容器 */
+:root{
+  --bg:#f5f6f7;            /* 页面底色：冷调纸面 */
+  --surface:#ffffff;       /* 卡片/图表面 */
+  --ink:#171a20;           /* 正文墨色 */
+  --ink-2:#4a5160;         /* 次级文字 */
+  --muted:#858c9b;         /* 弱化说明 */
+  --line:#e2e5ea;          /* 细分隔线 */
+  --line-2:#c9ced6;        /* 坐标轴/实线 */
+  --accent:#1d5fad;        /* 主色：墨蓝 */
+  --accent-ink:#174e8f;    /* 墨蓝文字态 */
+  --accent-soft:#eaf1fa;   /* 墨蓝浅底 */
+  --series:#2a78d6;        /* 图表系列色 1（验证过的蓝） */
+  --series2:#eb6834;       /* 图表系列色 2（验证过的橙） */
+  --crit:#d03b3b;          /* 危机/警示（仅示警语义） */
+  --crit-soft:rgba(208,59,59,.07);
+  --serif:"Noto Serif SC","Songti SC",serif;
+  --sans:"Noto Sans SC","Microsoft YaHei",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#101215; --surface:#181b20; --ink:#eef0f3; --ink-2:#c0c5cf; --muted:#8a909d;
+    --line:#282c33; --line-2:#3a3f48;
+    --accent:#5a96e3; --accent-ink:#79abec; --accent-soft:#1c2a3d;
+    --series:#3987e5; --series2:#d95926; --crit:#e66767; --crit-soft:rgba(230,103,103,.10);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#101215; --surface:#181b20; --ink:#eef0f3; --ink-2:#c0c5cf; --muted:#8a909d;
+  --line:#282c33; --line-2:#3a3f48;
+  --accent:#5a96e3; --accent-ink:#79abec; --accent-soft:#1c2a3d;
+  --series:#3987e5; --series2:#d95926; --crit:#e66767; --crit-soft:rgba(230,103,103,.10);
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:var(--sans); font-size:15.5px; line-height:1.85;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1190px; margin:0 auto; padding-inline:20px; padding-block:0 72px}
+
+/* ———— 左侧小节导航 ———— */
+.layout{display:grid; grid-template-columns:212px minmax(0,1fr); gap:44px; align-items:start}
+.article{max-width:920px; min-width:0}
+.sidenav{
+  position:sticky; top:16px; max-height:calc(100vh - 32px); overflow-y:auto;
+  padding-block:40px 16px; font-size:13px;
+}
+.sidenav .sn-chap{
+  margin:0 0 10px; padding-left:13px; font-size:11.5px; letter-spacing:.14em;
+  color:var(--muted); font-weight:700;
+}
+.sidenav a{
+  display:block; color:var(--ink-2); text-decoration:none; line-height:1.55;
+  padding:6px 10px 6px 13px; border-left:2px solid var(--line);
+}
+.sidenav a:hover{color:var(--accent-ink)}
+.sidenav a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.sidenav a.active{
+  color:var(--accent-ink); border-left-color:var(--accent);
+  background:var(--accent-soft); font-weight:700;
+}
+.hero,section.ch{scroll-margin-top:10px}
+@media (max-width: 999px){
+  .sidenav{display:none}
+  .layout{display:block}
+}
+@media (min-width: 1000px){
+  nav.chapmap{display:none}
+}
+
+/* ———— 页眉 ———— */
+.masthead{
+  display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  padding-block:18px 14px; border-bottom:1px solid var(--line);
+}
+.masthead .book{font-family:var(--serif); font-weight:700; font-size:15px; letter-spacing:.02em}
+.masthead .part{font-size:12.5px; color:var(--muted); letter-spacing:.12em}
+
+/* ———— 章首 ———— */
+.hero{padding-block:44px 28px; border-bottom:1px solid var(--line)}
+.chap-no{
+  display:inline-flex; align-items:center; gap:10px;
+  font-size:12.5px; letter-spacing:.22em; color:var(--accent-ink); font-weight:700;
+}
+.chap-no::after{content:""; width:46px; height:1px; background:var(--accent)}
+.hero h1{
+  font-family:var(--serif); font-weight:900; font-size:clamp(30px,5vw,46px);
+  line-height:1.25; margin:10px 0 4px; letter-spacing:.02em; text-wrap:balance;
+}
+.hero .en{font-size:14px; color:var(--muted); letter-spacing:.08em; margin:0 0 18px}
+.hero .lede{max-width:46em; color:var(--ink-2); margin:0}
+.hero .lede strong{color:var(--ink)}
+.objectives{
+  margin-top:22px; padding:16px 20px; background:var(--surface);
+  border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:0 6px 6px 0;
+}
+.objectives h2{font-size:13px; letter-spacing:.18em; color:var(--accent-ink); margin:0 0 8px; font-weight:700}
+.objectives ul{margin:0; padding-left:1.3em; color:var(--ink-2)}
+.objectives li{margin:3px 0}
+.chapmap{display:flex; flex-wrap:wrap; gap:8px; margin-top:20px}
+.chapmap a{
+  font-size:13px; color:var(--ink-2); text-decoration:none;
+  border:1px solid var(--line-2); border-radius:999px; padding:4px 13px; background:var(--surface);
+}
+.chapmap a:hover{border-color:var(--accent); color:var(--accent-ink)}
+.chapmap a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+/* ———— 正文分节 ———— */
+section.ch{padding-block:40px 8px}
+section.ch + section.ch{border-top:1px solid var(--line)}
+h2.sec{
+  font-family:var(--serif); font-weight:700; font-size:clamp(22px,3.4vw,28px);
+  margin:0 0 2px; line-height:1.35; text-wrap:balance;
+}
+h2.sec .no{color:var(--accent-ink); margin-right:10px; font-feature-settings:"tnum"}
+p.sec-en{font-size:12.5px; letter-spacing:.1em; color:var(--muted); margin:0 0 18px}
+h3{font-size:16.5px; font-weight:700; margin:26px 0 8px}
+h3 .tag{color:var(--accent-ink)}
+p{margin:10px 0}
+.prose{max-width:46em}
+.prose .en-term{color:var(--muted); font-size:.88em}
+strong{font-weight:700}
+em{font-style:normal; font-weight:700; color:var(--accent-ink)}
+
+/* ———— 组件 ———— */
+.cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px; margin:16px 0}
+.card{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:16px 18px;
+}
+.card h4{margin:0 0 6px; font-size:15px}
+.card h4 .en-term{display:block; font-weight:400; font-size:12px; color:var(--muted); letter-spacing:.04em; margin-top:2px}
+.card p{margin:6px 0; font-size:14px; color:var(--ink-2)}
+.card ul{margin:6px 0 0; padding-left:1.2em; font-size:14px; color:var(--ink-2)}
+.card li{margin:3px 0}
+.chip{
+  display:inline-block; font-size:12.5px; color:var(--accent-ink); background:var(--accent-soft);
+  border-radius:4px; padding:1px 8px; margin:2px 4px 0 0;
+}
+
+.case{
+  margin:20px 0; padding:16px 20px 14px; background:var(--surface);
+  border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:0 8px 8px 0;
+}
+.case .label{font-size:12px; letter-spacing:.2em; color:var(--accent-ink); font-weight:700; display:block; margin-bottom:6px}
+.case h4{margin:0 0 6px; font-size:15.5px}
+.case p{margin:7px 0; font-size:14.5px; color:var(--ink-2)}
+.case p:last-child{margin-bottom:2px}
+.case .takeaway{color:var(--ink); font-weight:500}
+.case .takeaway::before{content:"▸ 教材对应 "; color:var(--accent-ink); font-weight:700; font-size:12.5px; letter-spacing:.05em}
+
+.pitfall{
+  margin:20px 0; padding:14px 20px; border:1px dashed var(--line-2); border-radius:8px; max-width:46em;
+}
+.pitfall .label{font-size:12px; letter-spacing:.2em; color:var(--crit); font-weight:700; display:block; margin-bottom:4px}
+.pitfall p{margin:4px 0; font-size:14.5px; color:var(--ink-2)}
+
+.formula{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px;
+  padding:12px 18px; margin:14px 0; max-width:46em; overflow-x:auto;
+  font-size:15px; line-height:2;
+}
+.formula .fx{white-space:nowrap}
+.formula sub,.formula sup{font-size:11px}
+.formula .note{font-size:12.5px; color:var(--muted)}
+
+table{border-collapse:collapse; width:100%; font-size:14px; font-variant-numeric:tabular-nums}
+.tablewrap{overflow-x:auto; margin:16px 0; border:1px solid var(--line); border-radius:8px; background:var(--surface)}
+.tablewrap table{min-width:560px}
+th,td{padding:9px 14px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top}
+th{font-size:12.5px; letter-spacing:.08em; color:var(--muted); font-weight:700; white-space:nowrap}
+tr:last-child td{border-bottom:none}
+td.num{white-space:nowrap}
+
+/* ———— 图 ———— */
+figure{margin:24px 0; background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:18px 18px 12px}
+figure .fig-scroll{overflow-x:auto}
+figure svg{display:block; max-width:100%; height:auto; color:var(--ink)}
+figure .fig-scroll svg{min-width:660px}
+figcaption{font-size:13px; color:var(--muted); margin-top:10px; line-height:1.7}
+figcaption b{color:var(--ink-2); font-weight:700}
+.fig-title{font-size:14px; font-weight:700; margin:0 0 12px}
+.fig-title .fno{color:var(--accent-ink); margin-right:8px}
+
+svg .node{fill:var(--bg); stroke:var(--line-2); stroke-width:1.2; rx:6}
+svg .node-hi{fill:var(--accent-soft); stroke:var(--accent)}
+svg .node-crit{fill:var(--crit-soft); stroke:var(--crit)}
+svg .nt{font:700 12.5px var(--sans); fill:var(--ink)}
+svg .nd{font:400 11px var(--sans); fill:var(--ink-2)}
+svg .edge{stroke:var(--ink-2); stroke-width:1.4; fill:none}
+svg .edge-soft{stroke:var(--muted); stroke-width:1.2; fill:none; stroke-dasharray:4 4}
+svg .elabel{font:400 11.5px var(--sans); fill:var(--muted)}
+svg .grid{stroke:var(--line); stroke-width:1}
+svg .axis{stroke:var(--line-2); stroke-width:1.2}
+svg .tick{font:400 11px var(--sans); fill:var(--muted)}
+svg .atitle{font:400 11.5px var(--sans); fill:var(--muted)}
+svg .pt{fill:var(--series); stroke:var(--surface); stroke-width:2}
+svg .pt2{fill:var(--series2); stroke:var(--surface); stroke-width:2}
+svg .pl{font:700 13px var(--sans); fill:var(--ink)}
+svg .pv{font:400 11.5px var(--sans); fill:var(--ink-2)}
+svg .ln1{stroke:var(--series); stroke-width:2.5; fill:none}
+svg .ln2{stroke:var(--series2); stroke-width:2.5; fill:none}
+svg .seg1{fill:var(--series)}
+svg .seg2{fill:var(--series2)}
+
+/* ———— 小结/术语/自测 ———— */
+.recap{margin-top:8px}
+.recap ol{margin:8px 0 0; padding-left:1.4em; max-width:46em; color:var(--ink-2)}
+.recap li{margin:7px 0}
+.recap li b{color:var(--ink)}
+details{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px;
+  padding:12px 18px; margin:10px 0; max-width:46em;
+}
+details summary{cursor:pointer; font-weight:500; color:var(--ink)}
+details summary:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+details[open] summary{color:var(--accent-ink)}
+details .ans{margin-top:8px; padding-top:8px; border-top:1px dashed var(--line); font-size:14.5px; color:var(--ink-2)}
+details .ans p{margin:6px 0}
+
+.next{
+  margin-top:48px; padding:18px 22px; border:1px solid var(--line); border-radius:8px;
+  background:var(--surface); display:flex; justify-content:space-between; align-items:center; gap:14px; flex-wrap:wrap;
+}
+.next .lbl{font-size:12px; letter-spacing:.18em; color:var(--muted)}
+.next .ttl{font-family:var(--serif); font-weight:700; font-size:18px; margin-top:2px}
+.foot{margin-top:26px; font-size:12.5px; color:var(--muted); line-height:1.8}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <span class="book">《投资学》学习手册 · Investments (Bodie · Kane · Marcus)</span>
+  <span class="part">第一部分 绪论</span>
+</header>
+
+<div class="layout">
+
+<nav class="sidenav" aria-label="小节导航">
+  <p class="sn-chap">第 2 章 · 资产类别与金融工具</p>
+  <a href="#top">章首 · 学习目标</a>
+  <a href="#s1">2.1 货币市场</a>
+  <a href="#s2">2.2 债券市场</a>
+  <a href="#s3">2.3 权益证券</a>
+  <a href="#s4">2.4 股票与债券市场指数</a>
+  <a href="#s5">2.5 衍生工具市场</a>
+  <a href="#recap">小结 · 术语 · 自测</a>
+</nav>
+
+<main class="article">
+
+<!-- ======================== 章首 ======================== -->
+<div class="hero" id="top">
+  <span class="chap-no">CHAPTER 2</span>
+  <h1>资产类别与金融工具</h1>
+  <p class="en">Asset Classes and Financial Instruments</p>
+  <p class="lede">第 1 章给了地图，这一章逐个打开工具箱：从“几乎等于现金”的货币市场工具，到国债、市政债、公司债，再到股票、市场指数与衍生品。它们是后面所有定价理论的<strong>原材料</strong>——第 14 章之后的每一个模型，定价的都是这里出现过的某样东西。</p>
+
+  <div class="objectives">
+    <h2>学习目标</h2>
+    <ul>
+      <li>认识主要货币市场工具，会换算国库券的两种收益率报价</li>
+      <li>掌握债券市场版图：国债、通胀保值债券、市政债（免税换算）、公司债与 MBS</li>
+      <li>区分普通股与优先股的权利结构，理解存托凭证</li>
+      <li>会计算价格加权与市值加权指数，看懂构造差异的真实后果</li>
+      <li>建立期权与期货的损益直觉：权利与义务的区别</li>
+    </ul>
+  </div>
+
+  <nav class="chapmap" aria-label="本章导览">
+    <a href="#s1">2.1 货币市场</a>
+    <a href="#s2">2.2 债券市场</a>
+    <a href="#s3">2.3 权益证券</a>
+    <a href="#s4">2.4 市场指数</a>
+    <a href="#s5">2.5 衍生工具</a>
+    <a href="#recap">小结与自测</a>
+  </nav>
+</div>
+
+<!-- ======================== 2.1 ======================== -->
+<section class="ch" id="s1">
+  <h2 class="sec"><span class="no">2.1</span>货币市场</h2>
+  <p class="sec-en">THE MONEY MARKET</p>
+
+  <div class="prose">
+    <p><strong>货币市场</strong>是固定收益市场里“最短的那一截”：期限一年以内、流动性极高、违约风险极低的短期债务工具。因为“几乎随时能按面值变现”，它们在实务中被当作<em>现金等价物</em>。个人投资者通常不直接买（单笔面额动辄十万、百万级），而是通过<strong>货币市场基金</strong>间接持有——余额宝就是一只货币基金。</p>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <h4>国库券 <span class="en-term">Treasury Bills</span></h4>
+      <p><strong>贴现发行</strong>：以低于面值的价格买入，到期按面值兑付，差价就是利息。期限 4–52 周，被视为最接近“无风险”的资产。</p>
+      <p><span class="chip">贴现国债</span><span class="chip">4 / 13 / 26 / 52 周</span></p>
+    </div>
+    <div class="card">
+      <h4>存单与商业票据 <span class="en-term">CDs &amp; Commercial Paper</span></h4>
+      <p><strong>大额可转让存单（CD）</strong>：银行的定期存款凭证，可在二级市场转手。<strong>商业票据（CP）</strong>：大企业发行的短期无担保借据。</p>
+      <p><span class="chip">同业存单</span><span class="chip">超短期融资券</span></p>
+    </div>
+    <div class="card">
+      <h4>回购协议 <span class="en-term">Repos</span></h4>
+      <p>“以券换钱、到期赎回”的超短期抵押借款（见图 2-1），是机构间资金融通的主干道，也是散户“国债逆回购”的本体。</p>
+      <p><span class="chip">隔夜 / 7 天</span><span class="chip">GC001 · R-001</span></p>
+    </div>
+    <div class="card">
+      <h4>政策与基准利率 <span class="en-term">Fed Funds · SOFR · Shibor</span></h4>
+      <p><strong>联邦基金利率</strong>是美联储的政策标靶。旧基准 <strong>LIBOR</strong> 因报价操纵丑闻退场，被基于真实回购成交的 <strong>SOFR</strong> 取代；中国对应的有 Shibor、DR007、LPR。</p>
+    </div>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 2-1</span>回购协议：一笔“以券换钱”的抵押借款</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 260" role="img" aria-label="回购协议机制：成交日融资方向融出方交付债券抵押并取得现金，到期日归还本金加利息并赎回债券">
+      <defs>
+        <marker id="ar1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/>
+        </marker>
+      </defs>
+      <rect class="node" x="20" y="40" width="190" height="180" rx="6"/>
+      <text class="nt" x="115" y="122" text-anchor="middle">资金融入方</text>
+      <text class="nd" x="115" y="144" text-anchor="middle">正回购方 · 持有债券</text>
+
+      <rect class="node" x="510" y="40" width="190" height="180" rx="6"/>
+      <text class="nt" x="605" y="122" text-anchor="middle">资金融出方</text>
+      <text class="nd" x="605" y="144" text-anchor="middle">逆回购方 · 持有现金</text>
+
+      <text class="elabel" x="360" y="62" text-anchor="middle">① T 日：交付债券（抵押品）</text>
+      <path class="edge" d="M214 70 H 504" marker-end="url(#ar1)"/>
+
+      <text class="elabel" x="360" y="97" text-anchor="middle">② T 日：取得资金（如 100 万）</text>
+      <path class="edge" d="M506 105 H 216" marker-end="url(#ar1)"/>
+
+      <text class="elabel" x="360" y="152" text-anchor="middle">③ 到期：归还 100 万 + 利息</text>
+      <path class="edge" d="M214 160 H 504" marker-end="url(#ar1)"/>
+
+      <text class="elabel" x="360" y="187" text-anchor="middle">④ 到期：拿回债券</text>
+      <path class="edge" d="M506 195 H 216" marker-end="url(#ar1)"/>
+
+      <text class="elabel" x="360" y="246" text-anchor="middle">回购利率 =（利息 ÷ 本金）年化；逆回购即站在右边赚利息，债券是押品</text>
+    </svg>
+    </div>
+    <figcaption><b>读图：</b>名字跟着“券”走——先卖出债券（承诺回购）的一方叫正回购方，是借钱的人；散户做“国债逆回购”，就是把闲钱借给机构、收下国债当押品，到期拿回本息。因为有押品、期限又短，回购利率通常是市场上最低的一档。</figcaption>
+  </figure>
+
+  <div class="prose">
+    <h3>国库券的两种收益率报价</h3>
+    <p>报纸上的国库券报价沿用一个历史惯例——<strong>银行贴现收益率</strong>：按 360 天一年、以<em>面值</em>为分母。它系统性低估了真实回报，换算成以<em>买入价</em>为分母、365 天一年的<strong>债券等价收益率</strong>才能和其他债券比较：</p>
+  </div>
+  <div class="formula">
+    <div class="fx">银行贴现收益率　r<sub>BD</sub> =（F − P）/ F × 360 / n</div>
+    <div class="fx">债券等价收益率　r<sub>BEY</sub> =（F − P）/ P × 365 / n</div>
+    <div class="note">F = 面值，P = 买入价，n = 剩余天数。例：182 天期、面值 100 的国库券卖 98 元：r<sub>BD</sub> = 2/100 × 360/182 ≈ 3.96%，r<sub>BEY</sub> = 2/98 × 365/182 ≈ 4.09%。</div>
+  </div>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>当 1 美元不再是 1 美元：货币基金的两次惊魂</h4>
+    <p>2008 年 9 月雷曼破产次日，美国老牌货币基金 Reserve Primary Fund 因持有雷曼商业票据，净值跌到 0.97 美元——“跌破 1 美元”（breaking the buck）。货币基金“永远不亏”的信仰瞬间崩塌，一周内机构赎回超 3000 亿美元，逼得财政部临时为全行业担保。</p>
+    <p>中国版的压力测试在 2013 年 6 月“钱荒”：银行间隔夜利率一度飙到 13% 以上，部分货币基金遭遇大额赎回、被迫亏本抛券。此后监管为货币基金加上了流动性资产比例、偏离度等一整套约束；规模一度全球第一的余额宝（天弘货币基金），正是在这套规则下运行的。</p>
+    <p class="takeaway">货币市场工具“低风险”是常态而非承诺——它的尾部风险恰恰在系统性危机时兑现，这呼应第 1 章的系统性风险。</p>
+  </div>
+
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p>“货币基金 = 存款。”——不是。存款有存款保险与银行资本兜底；货币基金只是份额净值“通常稳定”的投资产品，极端情形下会亏损、会限制赎回。收益略高的那几十个基点，就是这层差别的价格。</p>
+  </div>
+</section>
+
+<!-- ======================== 2.2 ======================== -->
+<section class="ch" id="s2">
+  <h2 class="sec"><span class="no">2.2</span>债券市场</h2>
+  <p class="sec-en">THE BOND MARKET</p>
+
+  <div class="prose">
+    <p>期限超过一年，就进入<strong>资本市场</strong>的固定收益部分。这里的工具都承诺一串现金流，差别在于<em>谁承诺</em>（信用）与<em>怎么付</em>（条款）。</p>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <tr><th>类型</th><th>发行人</th><th>关键特征</th><th>中国对应 / 备注</th></tr>
+      <tr><td>中长期国债</td><td>中央政府</td><td>半年付息一次，几乎无违约风险，收益率是全市场定价基准</td><td>记账式国债；“利率债”</td></tr>
+      <tr><td>通胀保值债券</td><td>中央政府</td><td>本金随 CPI 调整，票息按调整后本金计付，锁定<strong>实际</strong>收益率</td><td>美国 TIPS；国内尚无主流对应品种</td></tr>
+      <tr><td>市政债券</td><td>地方政府</td><td>美国市政债利息<strong>免联邦所得税</strong>，名义收益率因此偏低</td><td>地方政府债（利息同样免个税）；城投债属企业信用</td></tr>
+      <tr><td>公司债券</td><td>企业</td><td>信用风险定价核心；投资级（BBB− 及以上）与高收益（垃圾）债分层</td><td>公司债、中票；“信用债”</td></tr>
+      <tr><td>可赎回 / 可转换债</td><td>企业</td><td>可赎回：发行人有利，投资者要求<strong>更高</strong>收益率补偿；可转换：附换股权，票息<strong>更低</strong></td><td>A 股可转债市场活跃</td></tr>
+      <tr><td>抵押支持证券</td><td>资产池（SPV）</td><td>把房贷现金流“过手”给投资者；有提前偿付风险</td><td>MBS / ABS；第 1 章危机的主角</td></tr>
+      <tr><td>国际债券</td><td>跨境发行人</td><td>欧洲债券：在货币发行国<strong>境外</strong>发行的该币种债券；外国债券：扬基债、武士债</td><td>熊猫债（境外机构在华发人民币债）、点心债（离岸人民币）</td></tr>
+    </table>
+  </div>
+
+  <div class="prose">
+    <h3>市政债的免税数学</h3>
+    <p>免税工具不能直接和应税工具比收益率。税率为 t 的投资者，把免税收益率换算成<strong>等价应税收益率</strong>再比较：</p>
+  </div>
+  <div class="formula">
+    <div class="fx">等价应税收益率　r = r<sub>免税</sub> /（1 − t）</div>
+    <div class="note">例：免税市政债 4%，应税公司债 5.8%。税率 35% 的投资者：4% / 0.65 ≈ 6.15% &gt; 5.8%，选市政债；税率 20% 的投资者：4% / 0.8 = 5% &lt; 5.8%，选公司债。<strong>免税债天然属于高税率投资者。</strong></div>
+  </div>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>恒大美元债：收益率是风险的报价单</h4>
+    <p>2017–2020 年，中国恒大在离岸市场发行的美元债票面利率普遍在 8%–13%，远高于同期美国国债的 1%–3%。市场不是在“送钱”，而是在为违约概率定价。2021 年 12 月，评级机构将恒大认定为“限制性违约”，约 190 亿美元离岸债券进入重组，价格一度只剩面值的一到两成。</p>
+    <p>同一时期，20 年期以上美国国债 ETF（TLT）在 2022 年下跌约 31%——发行人分文未赖账，纯粹是利率从 1.5% 升到 4% 把存量债券价格砸了下来。</p>
+    <p class="takeaway">债券的两大风险源在此同框：<strong>信用风险</strong>（恒大）与<strong>利率风险</strong>（TLT），分别对应第 14 章与第 16 章。</p>
+  </div>
+
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p>“债券 = 保本稳健。”——持有到期且不违约才谈得上“锁定收益”；中途看市值，利率上行照样大亏（TLT 一年 −31%）。“稳健”描述的是现金流的<strong>承诺形式</strong>，不是价格的波动幅度。</p>
+  </div>
+</section>
+
+<!-- ======================== 2.3 ======================== -->
+<section class="ch" id="s3">
+  <h2 class="sec"><span class="no">2.3</span>权益证券</h2>
+  <p class="sec-en">EQUITY SECURITIES</p>
+
+  <div class="cards">
+    <div class="card">
+      <h4>普通股 <span class="en-term">Common Stock</span></h4>
+      <p>两个定义性特征：</p>
+      <ul>
+        <li><strong>剩余索取权</strong>：排在税务、员工、债权人之后，拿“剩下的全部”</li>
+        <li><strong>有限责任</strong>：最多亏掉投入的本金，公司破产不追到个人财产</li>
+      </ul>
+      <p>一股一票选董事会；股利由董事会决定，<strong>不发不算违约</strong>。</p>
+    </div>
+    <div class="card">
+      <h4>优先股 <span class="en-term">Preferred Stock</span></h4>
+      <p>“穿着股票外衣的债券”：承诺固定股利（通常可累积），无到期日、一般无投票权，清偿顺序在债券之后、普通股之前。</p>
+      <ul>
+        <li>股利可暂停而不构成违约——比债“软”</li>
+        <li>美国税法下公司投资者约半数股利免税，所以优先股多由机构持有</li>
+        <li>常附赎回条款，发行人利率下行时会“收回重发”</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>存托凭证 <span class="en-term">ADR / CDR</span></h4>
+      <p>把境外股票“打包”成本地凭证交易：阿里巴巴、京东早年以 <strong>ADR</strong> 在纽交所上市；中国对应制度是 CDR。另有 A/H 两地上市（同一公司、两个市场、常年价差）。</p>
+      <p><span class="chip">BABA（ADR）</span><span class="chip">小米-W（同股不同权）</span></p>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p>读一条股票行情只需三个量：<strong>股息率</strong>（每股年股利 ÷ 股价）、<strong>市盈率 P/E</strong>（股价 ÷ 每股盈利）、<strong>市值</strong>（股价 × 总股本）。前两个分别是“现金回报的下限预览”和“为 1 元盈利付的价格”，第 13、18 章会严肃地使用它们。另外注意投票权不一定平等：科创板与港股允许“同股不同权”，创始人用特别表决权股控制公司——小米股票代码后的“W”就是这个标记。</p>
+  </div>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>巴菲特的高盛优先股：债的安全垫，股的想象力</h4>
+    <p>2008 年 9 月危机最深处，伯克希尔向高盛注资 50 亿美元，买的不是普通股，而是<strong>股息率 10% 的永续优先股</strong>，外加按 115 美元行权的普通股认股权证。此后高盛每年固定支付 5 亿美元股息；2011 年高盛按条款以 10% 溢价赎回，伯克希尔仅股息与溢价就落袋约 20 亿美元，认股权证后来又换回一大笔高盛股票。</p>
+    <p class="takeaway">一笔交易用齐了本节工具：优先股的“类债券”现金流打底，认股权证（期权，见 2.5 节）保留股票的上行——这正是优先股在资本结构中的定位。</p>
+  </div>
+
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p>“优先股‘优先’，所以比普通股好。”——优先的只是<strong>清偿与分红的顺序</strong>，代价是基本放弃了成长的上行与投票权。牛市里优先股像债券一样原地踏步；它是风险偏好的另一个档位，不是普通股的升级版。</p>
+  </div>
+</section>
+
+<!-- ======================== 2.4 ======================== -->
+<section class="ch" id="s4">
+  <h2 class="sec"><span class="no">2.4</span>股票与债券市场指数</h2>
+  <p class="sec-en">STOCK AND BOND MARKET INDEXES</p>
+
+  <div class="prose">
+    <p>“大盘涨了没有”取决于你怎么把几千只股票合成一个数。合成规则只有三种，差别却大到能改变结论：</p>
+    <p>① <strong>价格加权</strong><span class="en-term">（price-weighted）</span>：把成分股<em>股价</em>相加除以一个除数——道琼斯工业指数（1896 年至今）、日经 225。谁股价数字大谁话语权大，<strong>与公司规模无关</strong>；拆股会凭空改变权重，只能靠调整除数打补丁。<br>
+    ② <strong>市值加权</strong><span class="en-term">（value-weighted）</span>：按<em>市值</em>（通常再按自由流通股本调整）加权——标普 500、沪深 300、MSCI 系列。指数涨跌等于成分股总市值的涨跌，买指数基金天然复制它，无需因拆股调仓。<br>
+    ③ <strong>等权重</strong>：每只股票同一权重，隐含“小盘股更重要”，需定期再平衡才能维持。</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 2-2</span>同样两只股票，两种加权，两个世界</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 240" role="img" aria-label="对比图：甲公司股价 100 元市值 100 亿，乙公司股价 20 元市值 400 亿。价格加权下甲占 83%，市值加权下甲只占 20%">
+      <!-- 图例 -->
+      <rect class="seg1" x="120" y="12" width="12" height="12" rx="2"/>
+      <text class="tick" x="138" y="22">甲：股价 100 元 · 市值 100 亿</text>
+      <rect class="seg2" x="420" y="12" width="12" height="12" rx="2"/>
+      <text class="tick" x="438" y="22">乙：股价 20 元 · 市值 400 亿</text>
+      <!-- 价格加权 -->
+      <text class="nt" x="16" y="80">价格加权</text>
+      <rect class="seg1" x="120" y="58" width="467" height="34" rx="3"/>
+      <rect class="seg2" x="589" y="58" width="91" height="34" rx="3"/>
+      <text class="pv" x="353" y="112" text-anchor="middle">甲 83%（100 ÷ 120）</text>
+      <text class="pv" x="634" y="112" text-anchor="middle">乙 17%</text>
+      <!-- 市值加权 -->
+      <text class="nt" x="16" y="162">市值加权</text>
+      <rect class="seg1" x="120" y="140" width="112" height="34" rx="3"/>
+      <rect class="seg2" x="234" y="140" width="446" height="34" rx="3"/>
+      <text class="pv" x="176" y="194" text-anchor="middle">甲 20%（100 ÷ 500）</text>
+      <text class="pv" x="457" y="194" text-anchor="middle">乙 80%</text>
+      <text class="elabel" x="400" y="226" text-anchor="middle">甲上涨 10% → 价格加权指数 +8.3%，市值加权指数仅 +2.0%</text>
+    </svg>
+    </div>
+    <figcaption><b>读图：</b>甲是“高价小公司”，乙是“低价大公司”。价格加权让小公司只因股价数字大而主导指数；市值加权还原了经济上的真实占比。2020 年苹果 1 拆 4 后，它在道指的权重从约 12% 骤降到 3%——公司没有任何变化，指数规则变了结论。</figcaption>
+  </figure>
+
+  <div class="tablewrap">
+    <table>
+      <tr><th>指数</th><th>加权方式</th><th>值得知道的细节</th></tr>
+      <tr><td>道琼斯工业（DJIA）</td><td>价格加权</td><td>仅 30 只成分股；拆股靠修改除数维持连续</td></tr>
+      <tr><td>标普 500</td><td>自由流通市值加权</td><td>美国大盘的事实基准，指数基金规模最大</td></tr>
+      <tr><td>日经 225</td><td>价格加权</td><td>亚洲最著名的“活化石”，与道指同病</td></tr>
+      <tr><td>沪深 300 / 中证 500</td><td>自由流通市值加权</td><td>A 股大盘 / 中盘基准，公募业绩比较的默认标尺</td></tr>
+      <tr><td>上证综指</td><td>总市值加权</td><td>含全部上交所股票、不含股息，2020 年修订纳入规则</td></tr>
+      <tr><td>德国 DAX</td><td>市值加权 · 全收益</td><td>默认把股息再投资计入——跨国比点位先看口径</td></tr>
+      <tr><td>彭博综合债券指数 / 中债指数</td><td>市值加权</td><td>债券流动性差，成分价格多靠第三方估值</td></tr>
+    </table>
+  </div>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>“十年 3000 点”里的指数构造问题</h4>
+    <p>上证综指常被用来证明“A 股十年不涨”。但它是<strong>价格指数</strong>——每年约 2% 的股息被直接丢弃；长期按总市值加权，大量不流通股扭曲权重；历史上新股上市次日即高位纳入，也长期拖累点位。换成<strong>沪深 300 全收益指数</strong>（含股息再投资），2005–2024 年的年化回报比“看点位”的直觉高出一截。指数没有说谎，但每个指数只回答它被设计来回答的那个问题。</p>
+    <p class="takeaway">比较任何业绩前，先问三件事：加权方式、是否含股息、成分如何进出——这也是第 24 章业绩评价的起点。</p>
+  </div>
+
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p>“道指 4 万点、上证 3000 点，美股是 A 股的 13 倍。”——点位绝对值毫无可比性：起始基数、编制年代、加权方式、是否含息全都不同。能比的只有同口径下的<strong>区间回报率</strong>。</p>
+  </div>
+</section>
+
+<!-- ======================== 2.5 ======================== -->
+<section class="ch" id="s5">
+  <h2 class="sec"><span class="no">2.5</span>衍生工具市场</h2>
+  <p class="sec-en">DERIVATIVE MARKETS</p>
+
+  <div class="prose">
+    <p>衍生品的价值“衍生”自标的资产的价格。本节只建立直觉，第六部分（第 20–23 章）才正式定价。核心只有一组对比：<strong>期权是权利，期货是义务</strong>。</p>
+    <p><strong>看涨期权</strong><span class="en-term">（call）</span>：支付权利金后，获得在到期日按执行价 K <em>买入</em>标的的权利——涨过 K 才值得行权。<strong>看跌期权</strong><span class="en-term">（put）</span>：按 K <em>卖出</em>的权利——跌破 K 才有价值。标的价高于执行价的 call 称为<strong>实值</strong>（in the money），反之为虚值。</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 2-3</span>期权买方的到期损益（执行价 K = 100，权利金 5 元）</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 280" role="img" aria-label="两幅到期损益图：买入看涨期权在股价超过 105 后盈利，最大亏损为权利金 5 元；买入看跌期权在股价低于 95 后盈利，最大亏损同为 5 元">
+      <!-- 左图：买入看涨 -->
+      <text class="nt" x="196" y="18" text-anchor="middle">买入看涨期权</text>
+      <line class="grid" x1="56" y1="24" x2="56" y2="206"/>
+      <line class="axis" x1="56" y1="154" x2="336" y2="154"/>
+      <line class="edge-soft" x1="196" y1="24" x2="196" y2="206"/>
+      <g text-anchor="end">
+        <text class="tick" x="48" y="28">+25</text>
+        <text class="tick" x="48" y="158">0</text>
+        <text class="tick" x="48" y="184">−5</text>
+      </g>
+      <g text-anchor="middle">
+        <text class="tick" x="56" y="224">70</text>
+        <text class="tick" x="196" y="224">K=100</text>
+        <text class="tick" x="336" y="224">130</text>
+      </g>
+      <polyline class="ln1" points="56,180 196,180 336,24"/>
+      <circle class="pt" cx="219" cy="154" r="5"><title>盈亏平衡点：股价 = 105</title></circle>
+      <text class="pv" x="226" y="142">盈亏平衡 105</text>
+      <text class="pv" x="120" y="200" text-anchor="middle">最大亏损 = 权利金 5</text>
+      <!-- 右图：买入看跌 -->
+      <text class="nt" x="560" y="18" text-anchor="middle">买入看跌期权</text>
+      <line class="grid" x1="420" y1="24" x2="420" y2="206"/>
+      <line class="axis" x1="420" y1="154" x2="700" y2="154"/>
+      <line class="edge-soft" x1="560" y1="24" x2="560" y2="206"/>
+      <g text-anchor="end">
+        <text class="tick" x="412" y="28">+25</text>
+        <text class="tick" x="412" y="158">0</text>
+        <text class="tick" x="412" y="184">−5</text>
+      </g>
+      <g text-anchor="middle">
+        <text class="tick" x="420" y="224">70</text>
+        <text class="tick" x="560" y="224">K=100</text>
+        <text class="tick" x="700" y="224">130</text>
+      </g>
+      <polyline class="ln2" points="420,24 560,180 700,180"/>
+      <circle class="pt2" cx="537" cy="154" r="5"><title>盈亏平衡点：股价 = 95</title></circle>
+      <text class="pv" x="530" y="142" text-anchor="end">盈亏平衡 95</text>
+      <text class="pv" x="636" y="200" text-anchor="middle">最大亏损 = 权利金 5</text>
+      <!-- 轴标题 -->
+      <text class="atitle" x="20" y="14" text-anchor="start">到期损益（元）</text>
+      <text class="atitle" x="378" y="252" text-anchor="middle">到期标的价格（元）</text>
+    </svg>
+    </div>
+    <figcaption><b>读图：</b>买方的损失被“焊死”在权利金上，盈利端敞开——这条折线是期权一切魅力与定价难度的来源。注意 103 元时行权仍是对的：挣回 3 元、净亏 2 元，好过白亏 5 元权利金；<b>是否行权只看到期时是否实值，与买入成本无关</b>。卖方的损益图恰好是把这条线上下翻转：收益封顶于权利金，亏损敞开。</figcaption>
+  </figure>
+
+  <div class="prose">
+    <p><strong>期货合约</strong>则是<em>义务</em>：多头承诺到期按约定价格买入，空头承诺卖出，双方都不付“权利金”，而是各自缴纳保证金并<strong>每日盯市结算</strong>。损益随价格线性变动，方向错了没有“弃权”可言。</p>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <tr><th></th><th>期权买方</th><th>期权卖方</th><th>期货多头 / 空头</th></tr>
+      <tr><td>权利 / 义务</td><td>权利（可放弃）</td><td>义务（被动履约）</td><td>双方均为义务</td></tr>
+      <tr><td>开仓现金流</td><td>支付权利金</td><td>收取权利金</td><td>缴纳保证金（押金性质）</td></tr>
+      <tr><td>最大亏损</td><td>权利金</td><td>可以很大</td><td>可以很大（随价格线性）</td></tr>
+      <tr><td>最大收益</td><td>可以很大</td><td>权利金</td><td>可以很大</td></tr>
+    </table>
+  </div>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>原油宝之夜：义务型工具的残酷教学</h4>
+    <p>2020 年 4 月 20 日，WTI 原油 5 月期货在到期前夕因存储爆满无人接货，结算价收于<strong>每桶 −37.63 美元</strong>——历史首次负油价。中国银行“原油宝”产品挂钩该合约并持有至最后交易日，按负价结算后，做多的客户不仅本金归零，理论上还“倒欠”银行钱；事件最终以银行承担大部分负价损失、与客户和解收场。</p>
+    <p>对照本节框架：若这是“买入看涨期权”，客户最多亏权利金；但期货多头是<strong>义务</strong>，价格跌到哪里，损益就线性跟到哪里——包括零以下。</p>
+    <p class="takeaway">衍生品本身中性，既能套保也能放大风险；工具的损益形态（图 2-3 的折线 vs 期货的直线）决定了最坏情形的边界。第 22–23 章详解期货与套保。</p>
+  </div>
+
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p>“卖期权天天收权利金，稳稳的幸福。”——卖方的收益封顶、亏损敞开，等于“捡硬币的路上有压路机”。长期看权利金确实包含风险补偿，但一次极端行情就可能吞掉多年积累——这正是风险—收益权衡（第 1 章）在衍生品上的版本。</p>
+  </div>
+</section>
+
+<!-- ======================== 小结 ======================== -->
+<section class="ch" id="recap">
+  <h2 class="sec"><span class="no">※</span>本章小结</h2>
+  <p class="sec-en">SUMMARY</p>
+
+  <div class="recap">
+    <ol>
+      <li><b>货币市场是“类现金”层：</b>国库券、存单、商业票据、回购，短期限 + 高流动 + 低违约；国库券的贴现报价要换算成债券等价收益率才可比。</li>
+      <li><b>债券市场按“谁承诺”分层：</b>国债（利率基准）→ 市政债（免税，用 r/(1−t) 换算）→ 公司债（信用定价，可赎回抬收益率、可转换压票息）→ MBS（现金流过手 + 提前偿付风险）。</li>
+      <li><b>普通股 = 剩余索取 + 有限责任；</b>优先股用固定股利换掉了上行与投票权，是“类债券”；存托凭证让股票跨境流通。</li>
+      <li><b>指数构造决定结论：</b>价格加权（道指、日经）让高价股主导；市值加权（标普、沪深 300）反映经济占比；比较指数先核对加权方式与是否含股息。</li>
+      <li><b>期权是权利、期货是义务：</b>期权买方亏损封顶于权利金、收益敞开；期货与期权卖方的亏损敞开。损益形态决定最坏情形。</li>
+    </ol>
+  </div>
+
+  <h3>核心术语（中英对照）</h3>
+  <div class="tablewrap">
+    <table>
+      <tr><th>中文</th><th>English</th><th>一句话定义</th></tr>
+      <tr><td>货币市场</td><td>money market</td><td>一年以内、高流动、低风险的短期债务市场</td></tr>
+      <tr><td>国库券</td><td>Treasury bills</td><td>政府贴现发行的短期借据</td></tr>
+      <tr><td>银行贴现收益率</td><td>bank discount yield</td><td>按 360 天、以面值为分母的报价惯例</td></tr>
+      <tr><td>债券等价收益率</td><td>bond equivalent yield</td><td>按 365 天、以价格为分母的可比收益率</td></tr>
+      <tr><td>商业票据</td><td>commercial paper</td><td>大企业发行的短期无担保债务</td></tr>
+      <tr><td>回购协议</td><td>repurchase agreement</td><td>以证券作抵押的超短期借款</td></tr>
+      <tr><td>货币市场基金</td><td>money market fund</td><td>散户参与货币市场的集合工具</td></tr>
+      <tr><td>通胀保值债券</td><td>inflation-protected bonds (TIPS)</td><td>本金随 CPI 调整、锁定实际收益的国债</td></tr>
+      <tr><td>市政债券</td><td>municipal bonds</td><td>地方政府发行、利息免税的债券</td></tr>
+      <tr><td>等价应税收益率</td><td>equivalent taxable yield</td><td>免税收益率 ÷（1 − 税率）</td></tr>
+      <tr><td>可赎回 / 可转换债券</td><td>callable / convertible bonds</td><td>发行人可提前赎回 / 持有人可转为股票</td></tr>
+      <tr><td>抵押支持证券</td><td>mortgage-backed security</td><td>把房贷现金流打包过手的证券</td></tr>
+      <tr><td>剩余索取权 / 有限责任</td><td>residual claim / limited liability</td><td>普通股的两大定义性特征</td></tr>
+      <tr><td>优先股</td><td>preferred stock</td><td>固定股利、无到期、清偿介于债股之间</td></tr>
+      <tr><td>存托凭证</td><td>ADR / CDR</td><td>境外股票的本地交易凭证</td></tr>
+      <tr><td>价格加权指数</td><td>price-weighted index</td><td>股价求和除以除数（道指、日经）</td></tr>
+      <tr><td>市值加权指数</td><td>value-weighted index</td><td>按（自由流通）市值加权（标普、沪深 300）</td></tr>
+      <tr><td>看涨 / 看跌期权</td><td>call / put option</td><td>按执行价买入 / 卖出标的的权利</td></tr>
+      <tr><td>期货合约</td><td>futures contract</td><td>到期按约定价格交易的双向义务</td></tr>
+    </table>
+  </div>
+
+  <h3>自测（先想后翻）</h3>
+  <details>
+    <summary>Q1 182 天期国库券，面值 100 元、现价 98 元：两种收益率各是多少？为什么债券等价收益率总是更高？</summary>
+    <div class="ans"><p>r<sub>BD</sub> = 2/100 × 360/182 ≈ 3.96%；r<sub>BEY</sub> = 2/98 × 365/182 ≈ 4.09%。后者更高有两个机械原因：分母用更小的买入价（98 &lt; 100），一年按更长的 365 天折算。所以拿贴现报价直接和存款利率比，会低估国库券的真实回报。</p></div>
+  </details>
+  <details>
+    <summary>Q2 免税市政债收益率 4%，应税公司债 5.8%（信用相近）。税率 35% 和 20% 的投资者各选哪个？</summary>
+    <div class="ans"><p>换算等价应税收益率：35% 税率者 4%/0.65 ≈ 6.15% &gt; 5.8%，选市政债；20% 税率者 4%/0.8 = 5% &lt; 5.8%，选公司债。结论可推广：免税品种的隐含补贴随税率上升而放大，所以免税债的自然买家是高税率人群——这也解释了为什么市政债收益率可以长期低于国债。</p></div>
+  </details>
+  <details>
+    <summary>Q3 价格加权指数含甲（100 元）、乙（20 元），除数为 2，指数 = 60。甲 2:1 拆股后指数怎么维持连续？拆股后甲的影响力如何变化？</summary>
+    <div class="ans"><p>拆股后甲股价 50 元，价格和从 120 变为 70。拆股不该改变指数，所以求新除数 d：70/d = 60 → d ≈ 1.167。之后甲的权重从 100/120 ≈ 83% 降到 50/70 ≈ 71%——公司基本面毫无变化，仅因股价数字变小，它对指数的影响力就永久下降。这就是价格加权的内在缺陷。</p></div>
+  </details>
+  <details>
+    <summary>Q4 优先股哪里“像债”，哪里“像股”？</summary>
+    <div class="ans"><p>像债：股利固定、金额上限锁死，无投票权，清偿先于普通股，对利率敏感。像股：股利由董事会决定、停发不构成违约（累积条款只是欠着）；没有到期日；清偿后于所有债权人；税法上按权益处理。正因为“债性收益、股性保护”，它的收益率通常高于同一公司的债券。</p></div>
+  </details>
+  <details>
+    <summary>Q5 花 5 元权利金买入 K=100 的看涨期权。到期股价 103 元，要不要行权？98 元呢？盈亏平衡点在哪？</summary>
+    <div class="ans"><p>103 元：行权，挣回 103 − 100 = 3 元，净亏 2 元——好过放弃白亏 5 元。权利金是沉没成本，<strong>是否行权只看到期时是否实值</strong>。98 元：不行权，亏 5 元权利金。盈亏平衡点 = K + 权利金 = 105 元。这也顺便解释了图 2-3 中折线为什么在 100 到 105 之间“负而上行”。</p></div>
+  </details>
+
+  <div class="next">
+    <div>
+      <div class="lbl">NEXT CHAPTER</div>
+      <div class="ttl">第 3 章 · 证券是如何交易的</div>
+    </div>
+    <div class="lbl">发行上市 → 交易机制 → 保证金交易 → 卖空</div>
+  </div>
+
+  <p class="foot">本页为依据 Bodie–Kane–Marcus《投资学》（Investments）框架整理的原创学习笔记，仅用于教学理解；收益率与案例数字为近似教学值，细节以公开报道为准。内容不构成任何投资建议。</p>
+</section>
+
+</main>
+</div>
+</div>
+
+<script>
+(function(){
+  var links = Array.prototype.slice.call(document.querySelectorAll('.sidenav a[href^="#"]'));
+  if(!links.length) return;
+  var map = [];
+  links.forEach(function(a){
+    var el = document.getElementById(a.getAttribute('href').slice(1));
+    if(el) map.push([el, a]);
+  });
+  function update(){
+    var y = window.scrollY + 150;
+    var cur = map[0][1];
+    for(var i = 0; i < map.length; i++){
+      if(map[i][0].offsetTop <= y) cur = map[i][1];
+    }
+    map.forEach(function(p){ p[1].classList.toggle('active', p[1] === cur); });
+  }
+  var tick = false;
+  window.addEventListener('scroll', function(){
+    if(!tick){
+      tick = true;
+      requestAnimationFrame(function(){ tick = false; update(); });
+    }
+  }, {passive:true});
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+</body>
+</html>

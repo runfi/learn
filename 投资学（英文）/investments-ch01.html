@@ -1,0 +1,869 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>投资学 · 第1章 投资环境</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700;900&family=Noto+Sans+SC:wght@400;500;700&display=swap">
+<style>
+/* 布局：双栏（212px 侧栏 + 正文），章导览 + 1.1–1.7 分节；宽图表置于横向滚动容器 */
+:root{
+  --bg:#f5f6f7;            /* 页面底色：冷调纸面 */
+  --surface:#ffffff;       /* 卡片/图表面 */
+  --ink:#171a20;           /* 正文墨色 */
+  --ink-2:#4a5160;         /* 次级文字 */
+  --muted:#858c9b;         /* 弱化说明 */
+  --line:#e2e5ea;          /* 细分隔线 */
+  --line-2:#c9ced6;        /* 坐标轴/实线 */
+  --accent:#1d5fad;        /* 主色：墨蓝 */
+  --accent-ink:#174e8f;    /* 墨蓝文字态 */
+  --accent-soft:#eaf1fa;   /* 墨蓝浅底 */
+  --series:#2a78d6;        /* 图表系列色（验证过的蓝） */
+  --crit:#d03b3b;          /* 危机/警示（仅示警语义） */
+  --crit-soft:rgba(208,59,59,.07);
+  --serif:"Noto Serif SC","Songti SC",serif;
+  --sans:"Noto Sans SC","Microsoft YaHei",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#101215; --surface:#181b20; --ink:#eef0f3; --ink-2:#c0c5cf; --muted:#8a909d;
+    --line:#282c33; --line-2:#3a3f48;
+    --accent:#5a96e3; --accent-ink:#79abec; --accent-soft:#1c2a3d;
+    --series:#3987e5; --crit:#e66767; --crit-soft:rgba(230,103,103,.10);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#101215; --surface:#181b20; --ink:#eef0f3; --ink-2:#c0c5cf; --muted:#8a909d;
+  --line:#282c33; --line-2:#3a3f48;
+  --accent:#5a96e3; --accent-ink:#79abec; --accent-soft:#1c2a3d;
+  --series:#3987e5; --crit:#e66767; --crit-soft:rgba(230,103,103,.10);
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:var(--sans); font-size:15.5px; line-height:1.85;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1190px; margin:0 auto; padding-inline:20px; padding-block:0 72px}
+
+/* ———— 左侧小节导航 ———— */
+.layout{display:grid; grid-template-columns:212px minmax(0,1fr); gap:44px; align-items:start}
+.article{max-width:920px; min-width:0}
+.sidenav{
+  position:sticky; top:16px; max-height:calc(100vh - 32px); overflow-y:auto;
+  padding-block:40px 16px; font-size:13px;
+}
+.sidenav .sn-chap{
+  margin:0 0 10px; padding-left:13px; font-size:11.5px; letter-spacing:.14em;
+  color:var(--muted); font-weight:700;
+}
+.sidenav a{
+  display:block; color:var(--ink-2); text-decoration:none; line-height:1.55;
+  padding:6px 10px 6px 13px; border-left:2px solid var(--line);
+}
+.sidenav a:hover{color:var(--accent-ink)}
+.sidenav a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.sidenav a.active{
+  color:var(--accent-ink); border-left-color:var(--accent);
+  background:var(--accent-soft); font-weight:700;
+}
+.hero,section.ch{scroll-margin-top:10px}
+@media (max-width: 999px){
+  .sidenav{display:none}
+  .layout{display:block}
+}
+@media (min-width: 1000px){
+  nav.chapmap{display:none}
+}
+
+/* ———— 页眉 ———— */
+.masthead{
+  display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  padding-block:18px 14px; border-bottom:1px solid var(--line);
+}
+.masthead .book{font-family:var(--serif); font-weight:700; font-size:15px; letter-spacing:.02em}
+.masthead .part{font-size:12.5px; color:var(--muted); letter-spacing:.12em}
+
+/* ———— 章首 ———— */
+.hero{padding-block:44px 28px; border-bottom:1px solid var(--line)}
+.chap-no{
+  display:inline-flex; align-items:center; gap:10px;
+  font-size:12.5px; letter-spacing:.22em; color:var(--accent-ink); font-weight:700;
+}
+.chap-no::after{content:""; width:46px; height:1px; background:var(--accent)}
+.hero h1{
+  font-family:var(--serif); font-weight:900; font-size:clamp(34px,6vw,52px);
+  line-height:1.2; margin:10px 0 4px; letter-spacing:.02em; text-wrap:balance;
+}
+.hero .en{font-size:14px; color:var(--muted); letter-spacing:.08em; margin:0 0 18px}
+.hero .lede{max-width:46em; color:var(--ink-2); margin:0}
+.hero .lede strong{color:var(--ink)}
+.objectives{
+  margin-top:22px; padding:16px 20px; background:var(--surface);
+  border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:0 6px 6px 0;
+}
+.objectives h2{font-size:13px; letter-spacing:.18em; color:var(--accent-ink); margin:0 0 8px; font-weight:700}
+.objectives ul{margin:0; padding-left:1.3em; color:var(--ink-2)}
+.objectives li{margin:3px 0}
+.chapmap{display:flex; flex-wrap:wrap; gap:8px; margin-top:20px}
+.chapmap a{
+  font-size:13px; color:var(--ink-2); text-decoration:none;
+  border:1px solid var(--line-2); border-radius:999px; padding:4px 13px; background:var(--surface);
+}
+.chapmap a:hover{border-color:var(--accent); color:var(--accent-ink)}
+.chapmap a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+/* ———— 正文分节 ———— */
+section.ch{padding-block:40px 8px}
+section.ch + section.ch{border-top:1px solid var(--line)}
+h2.sec{
+  font-family:var(--serif); font-weight:700; font-size:clamp(22px,3.4vw,28px);
+  margin:0 0 2px; line-height:1.35; text-wrap:balance;
+}
+h2.sec .no{color:var(--accent-ink); margin-right:10px; font-feature-settings:"tnum"}
+p.sec-en{font-size:12.5px; letter-spacing:.1em; color:var(--muted); margin:0 0 18px}
+h3{font-size:16.5px; font-weight:700; margin:26px 0 8px}
+h3 .tag{color:var(--accent-ink)}
+p{margin:10px 0}
+.prose{max-width:46em}
+.prose .en-term{color:var(--muted); font-size:.88em}
+strong{font-weight:700}
+em{font-style:normal; font-weight:700; color:var(--accent-ink)}
+
+/* ———— 组件 ———— */
+.cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px; margin:16px 0}
+.card{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:16px 18px;
+}
+.card h4{margin:0 0 6px; font-size:15px}
+.card h4 .en-term{display:block; font-weight:400; font-size:12px; color:var(--muted); letter-spacing:.04em; margin-top:2px}
+.card p{margin:6px 0; font-size:14px; color:var(--ink-2)}
+.card ul{margin:6px 0 0; padding-left:1.2em; font-size:14px; color:var(--ink-2)}
+.card li{margin:3px 0}
+.chip{
+  display:inline-block; font-size:12.5px; color:var(--accent-ink); background:var(--accent-soft);
+  border-radius:4px; padding:1px 8px; margin:2px 4px 0 0;
+}
+
+.case{
+  margin:20px 0; padding:16px 20px 14px; background:var(--surface);
+  border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:0 8px 8px 0;
+}
+.case .label{font-size:12px; letter-spacing:.2em; color:var(--accent-ink); font-weight:700; display:block; margin-bottom:6px}
+.case h4{margin:0 0 6px; font-size:15.5px}
+.case p{margin:7px 0; font-size:14.5px; color:var(--ink-2)}
+.case p:last-child{margin-bottom:2px}
+.case .takeaway{color:var(--ink); font-weight:500}
+.case .takeaway::before{content:"▸ 教材对应 "; color:var(--accent-ink); font-weight:700; font-size:12.5px; letter-spacing:.05em}
+
+.pitfall{
+  margin:20px 0; padding:14px 20px; border:1px dashed var(--line-2); border-radius:8px; max-width:46em;
+}
+.pitfall .label{font-size:12px; letter-spacing:.2em; color:var(--crit); font-weight:700; display:block; margin-bottom:4px}
+.pitfall p{margin:4px 0; font-size:14.5px; color:var(--ink-2)}
+
+table{border-collapse:collapse; width:100%; font-size:14px; font-variant-numeric:tabular-nums}
+.tablewrap{overflow-x:auto; margin:16px 0; border:1px solid var(--line); border-radius:8px; background:var(--surface)}
+.tablewrap table{min-width:560px}
+th,td{padding:9px 14px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top}
+th{font-size:12.5px; letter-spacing:.08em; color:var(--muted); font-weight:700; white-space:nowrap}
+tr:last-child td{border-bottom:none}
+td.num{white-space:nowrap}
+
+/* ———— 图 ———— */
+figure{margin:24px 0; background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:18px 18px 12px}
+figure .fig-scroll{overflow-x:auto}
+figure svg{display:block; max-width:100%; height:auto; color:var(--ink)}
+figure .fig-scroll svg{min-width:660px}
+figcaption{font-size:13px; color:var(--muted); margin-top:10px; line-height:1.7}
+figcaption b{color:var(--ink-2); font-weight:700}
+.fig-title{font-size:14px; font-weight:700; margin:0 0 12px}
+.fig-title .fno{color:var(--accent-ink); margin-right:8px}
+
+svg .node{fill:var(--bg); stroke:var(--line-2); stroke-width:1.2; rx:6}
+svg .node-hi{fill:var(--accent-soft); stroke:var(--accent)}
+svg .node-crit{fill:var(--crit-soft); stroke:var(--crit)}
+svg .nt{font:700 12.5px var(--sans); fill:var(--ink)}
+svg .nd{font:400 11px var(--sans); fill:var(--ink-2)}
+svg .edge{stroke:var(--ink-2); stroke-width:1.4; fill:none}
+svg .edge-soft{stroke:var(--muted); stroke-width:1.2; fill:none; stroke-dasharray:4 4}
+svg .elabel{font:400 11.5px var(--sans); fill:var(--muted)}
+svg .grid{stroke:var(--line); stroke-width:1}
+svg .axis{stroke:var(--line-2); stroke-width:1.2}
+svg .tick{font:400 11px var(--sans); fill:var(--muted)}
+svg .atitle{font:400 11.5px var(--sans); fill:var(--muted)}
+svg .pt{fill:var(--series); stroke:var(--surface); stroke-width:2}
+svg .pl{font:700 13px var(--sans); fill:var(--ink)}
+svg .pv{font:400 11.5px var(--sans); fill:var(--ink-2)}
+
+/* ———— 小结/术语/自测 ———— */
+.recap{margin-top:8px}
+.recap ol{margin:8px 0 0; padding-left:1.4em; max-width:46em; color:var(--ink-2)}
+.recap li{margin:7px 0}
+.recap li b{color:var(--ink)}
+details{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px;
+  padding:12px 18px; margin:10px 0; max-width:46em;
+}
+details summary{cursor:pointer; font-weight:500; color:var(--ink)}
+details summary:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+details[open] summary{color:var(--accent-ink)}
+details .ans{margin-top:8px; padding-top:8px; border-top:1px dashed var(--line); font-size:14.5px; color:var(--ink-2)}
+details .ans p{margin:6px 0}
+
+.next{
+  margin-top:48px; padding:18px 22px; border:1px solid var(--line); border-radius:8px;
+  background:var(--surface); display:flex; justify-content:space-between; align-items:center; gap:14px; flex-wrap:wrap;
+}
+.next .lbl{font-size:12px; letter-spacing:.18em; color:var(--muted)}
+.next .ttl{font-family:var(--serif); font-weight:700; font-size:18px; margin-top:2px}
+.foot{margin-top:26px; font-size:12.5px; color:var(--muted); line-height:1.8}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <span class="book">《投资学》学习手册 · Investments (Bodie · Kane · Marcus)</span>
+  <span class="part">第一部分 绪论</span>
+</header>
+
+<div class="layout">
+
+<nav class="sidenav" aria-label="小节导航">
+  <p class="sn-chap">第 1 章 · 投资环境</p>
+  <a href="#top">章首 · 学习目标</a>
+  <a href="#s1">1.1 实物资产与金融资产</a>
+  <a href="#s2">1.2 金融资产的分类</a>
+  <a href="#s3">1.3 金融市场与经济</a>
+  <a href="#s4">1.4 投资过程</a>
+  <a href="#s5">1.5 竞争性的市场</a>
+  <a href="#s6">1.6 市场参与者</a>
+  <a href="#s7">1.7 2008 年金融危机</a>
+  <a href="#recap">小结 · 术语 · 自测</a>
+</nav>
+
+<main class="article">
+
+<!-- ======================== 章首 ======================== -->
+<div class="hero" id="top">
+  <span class="chap-no">CHAPTER 1</span>
+  <h1>投资环境</h1>
+  <p class="en">The Investment Environment</p>
+  <p class="lede">投资，就是<strong>牺牲今天确定的消费，换取未来不确定的更多消费</strong>。这一章回答三个最基本的问题：我们投资的到底是什么（实物资产与金融资产）、金融市场为整个经济做了什么、以及这个市场里都有谁在参与。章末用 2008 年金融危机把所有概念串起来。</p>
+
+  <div class="objectives">
+    <h2>学习目标</h2>
+    <ul>
+      <li>区分实物资产与金融资产，理解“金融资产不直接创造财富，却让社会更富有”</li>
+      <li>掌握金融资产三大类：固定收益、权益、衍生品</li>
+      <li>理解金融市场的四大功能与代理问题</li>
+      <li>建立“资产配置 → 证券选择”的投资流程框架，理解风险—收益权衡</li>
+      <li>看懂 2008 年金融危机的传导链条，理解系统性风险</li>
+    </ul>
+  </div>
+
+  <nav class="chapmap" aria-label="本章导览">
+    <a href="#s1">1.1 实物资产与金融资产</a>
+    <a href="#s2">1.2 金融资产分类</a>
+    <a href="#s3">1.3 金融市场与经济</a>
+    <a href="#s4">1.4 投资过程</a>
+    <a href="#s5">1.5 竞争性的市场</a>
+    <a href="#s6">1.6 市场参与者</a>
+    <a href="#s7">1.7 2008 金融危机</a>
+    <a href="#recap">小结与自测</a>
+  </nav>
+</div>
+
+<!-- ======================== 1.1 ======================== -->
+<section class="ch" id="s1">
+  <h2 class="sec"><span class="no">1.1</span>实物资产与金融资产</h2>
+  <p class="sec-en">REAL ASSETS VERSUS FINANCIAL ASSETS</p>
+
+  <div class="prose">
+    <p>一个社会的财富，最终取决于它的<em>生产能力</em>——能造出多少商品和服务。决定生产能力的，是土地、厂房、设备、技术和人力资本，这些叫<strong>实物资产</strong><span class="en-term">（real assets）</span>。而股票、债券这些<strong>金融资产</strong><span class="en-term">（financial assets）</span>，本身不参与生产，它们只是一张张“凭证”——<strong>对实物资产所创造收入的索取权</strong>。</p>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <h4>实物资产 <span class="en-term">Real Assets · 创造财富</span></h4>
+      <ul>
+        <li>土地、厂房、机器设备、存货</li>
+        <li>专利、技术、品牌等无形资产</li>
+        <li>人力资本（受过训练的劳动力）</li>
+      </ul>
+      <p>决定一个经济体的<strong>产出能力</strong>，是收入的来源。</p>
+    </div>
+    <div class="card">
+      <h4>金融资产 <span class="en-term">Financial Assets · 分配财富</span></h4>
+      <ul>
+        <li>股票：对企业利润的剩余索取权</li>
+        <li>债券：对固定本息的索取权</li>
+        <li>银行存款、基金份额、衍生品合约</li>
+      </ul>
+      <p>定义实物资产产出的收入<strong>在投资者之间如何分配</strong>。</p>
+    </div>
+  </div>
+
+  <div class="prose">
+    <h3>一个关键的会计事实</h3>
+    <p>任何一份金融资产，必然同时是另一方的金融负债：你的银行存款，是银行的负债；你持有的公司债，是公司的负债。因此把全社会的资产负债表加总，<em>金融资产与金融负债恰好相互抵消</em>，剩下的只有实物资产——国民财富的总量只由实物资产决定。</p>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <tr><th>视角</th><th>房子</th><th>房贷</th><th>贵州茅台的酒窖与基酒</th><th>你持有的茅台股票</th></tr>
+      <tr><td>资产类型</td><td>实物资产</td><td>金融合约</td><td>实物资产</td><td>金融资产</td></tr>
+      <tr><td>对你（家庭）</td><td>资产</td><td>负债</td><td>——</td><td>资产</td></tr>
+      <tr><td>对对手方</td><td>——</td><td>银行的金融资产</td><td>——</td><td>公司的股东权益</td></tr>
+      <tr><td>全社会加总后</td><td>保留</td><td>抵消为零</td><td>保留</td><td>抵消为零</td></tr>
+    </table>
+  </div>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>买茅台股票的钱，去哪了？</h4>
+    <p>贵州茅台的赤水河畔厂房、窖藏基酒、酿造工艺，是创造利润的<strong>实物资产</strong>；你在券商账户里买到的“600519”，只是对这些利润的一份<strong>索取权</strong>。公司 IPO 或增发时，投资者的钱流入公司，被用来扩建产能——金融资产在这里充当了“把家庭储蓄变成企业实物投资”的管道。而你在二级市场上买入的股票，钱付给了上一位股东，公司一分钱没拿到——二级市场转移的只是索取权的归属。</p>
+    <p class="takeaway">金融资产不直接生产任何东西，但它让储蓄能够转化为生产性投资——这正是下文 1.3 节“金融市场的功能”。</p>
+  </div>
+
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p>“股市大涨，社会财富增加了。”——严格说，涨的是索取权的<strong>价格</strong>，它反映的是市场对未来实物产出的预期变化（或贴现率变化）。真正的财富增长，只能来自实物资产的积累与生产率提高。</p>
+  </div>
+</section>
+
+<!-- ======================== 1.2 ======================== -->
+<section class="ch" id="s2">
+  <h2 class="sec"><span class="no">1.2</span>金融资产的分类</h2>
+  <p class="sec-en">TAXONOMY OF FINANCIAL ASSETS</p>
+
+  <div class="prose">
+    <p>教材把金融资产分为三大类，这个分类是后面所有章节的目录：固定收益对应第四部分，权益对应第五部分，衍生品对应第六部分。</p>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <h4>① 固定收益证券 <span class="en-term">Fixed-income / Debt Securities</span></h4>
+      <p>承诺<strong>固定或按公式确定</strong>的现金流（利息 + 本金）。收益上限锁定，风险主要是违约与利率变动。</p>
+      <ul>
+        <li><strong>货币市场</strong>（短期、安全、高流动）：国库券、同业存单、回购</li>
+        <li><strong>资本市场</strong>（长期）：国债、地方债、公司债</li>
+      </ul>
+      <p><span class="chip">余额宝→货币基金</span><span class="chip">国债逆回购</span><span class="chip">10年期国债</span></p>
+    </div>
+    <div class="card">
+      <h4>② 权益 <span class="en-term">Equity · 普通股</span></h4>
+      <p>代表对企业的<strong>所有权份额</strong>，拿的是付完债权人之后的<strong>剩余索取权</strong>。公司经营好坏直接决定回报，没有任何承诺保底。</p>
+      <ul>
+        <li>回报 = 股息 + 资本利得</li>
+        <li>风险与收益都显著高于债权</li>
+      </ul>
+      <p><span class="chip">贵州茅台 600519</span><span class="chip">苹果 AAPL</span><span class="chip">沪深300指数基金</span></p>
+    </div>
+    <div class="card">
+      <h4>③ 衍生证券 <span class="en-term">Derivative Securities</span></h4>
+      <p>价值<strong>衍生</strong>于其他资产（股价、利率、商品）的合约，如期权、期货、互换。本意是<strong>转移风险（套保）</strong>，也常被用于投机。</p>
+      <ul>
+        <li>期权：权利而非义务</li>
+        <li>期货：双方都有义务</li>
+      </ul>
+      <p><span class="chip">上证50ETF期权</span><span class="chip">螺纹钢期货</span><span class="chip">利率互换</span></p>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p>此外还有投资者广泛参与的<strong>外汇市场</strong>与<strong>商品</strong>（黄金、原油），以及把以上资产打包的<strong>基金</strong>（第 4 章）。一个粗糙但有用的直觉：<em>债权人求“还钱”，股东求“赚钱”，衍生品玩家在“转移谁来承担涨跌”</em>。</p>
+  </div>
+</section>
+
+<!-- ======================== 1.3 ======================== -->
+<section class="ch" id="s3">
+  <h2 class="sec"><span class="no">1.3</span>金融市场与经济</h2>
+  <p class="sec-en">FINANCIAL MARKETS AND THE ECONOMY</p>
+
+  <div class="prose">
+    <p>既然金融资产只是“纸面索取权”，为什么每个现代经济体都离不开庞大的金融市场？教材给出四大功能：</p>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <h4>信息功能 <span class="en-term">The Informational Role</span></h4>
+      <p>股价是全市场投资者“用真金白银投票”形成的预期。前景好的公司股价高、融资易，<strong>资本被引导到回报最高的用途</strong>（价格发现）。2020 年后资本涌向新能源、AI 行业，正是这一机制在运转——哪怕其中也会出现泡沫与纠错。</p>
+    </div>
+    <div class="card">
+      <h4>消费时机 <span class="en-term">Consumption Timing</span></h4>
+      <p>高收入年份把盈余“存进”金融资产，退休或低收入期再卖出变现——金融资产让你把消费<strong>从收入高峰平移到收入低谷</strong>，不必“赚多少花多少”。养老金制度就是这件事的制度化版本。</p>
+    </div>
+    <div class="card">
+      <h4>风险分配 <span class="en-term">Allocation of Risk</span></h4>
+      <p>同一家公司，激进者买它的股票，保守者买它的债券——企业的经营风险被<strong>切成不同风险档位</strong>，卖给最愿意承担它的人。这反过来也降低了企业筹资的成本。</p>
+    </div>
+    <div class="card">
+      <h4>所有权与经营权分离 <span class="en-term">Separation of Ownership &amp; Management</span></h4>
+      <p>上市公司股东成千上万，不可能人人参与经营，于是雇佣职业经理人。好处是企业获得<strong>稳定性与专业化</strong>；代价是引出下面的“代理问题”。</p>
+    </div>
+  </div>
+
+  <div class="prose">
+    <h3><span class="tag">¶</span> 代理问题：经理人不一定为你打工</h3>
+    <p><strong>代理问题</strong><span class="en-term">（agency problem）</span>：管理层（代理人）可能追求自身利益——豪华办公楼、帝国式扩张、保住职位——而非股东（委托人）价值最大化。市场演化出了一整套约束机制：</p>
+    <p>① <strong>激励对齐</strong>：让高管薪酬与股价挂钩（股票、期权）——但设计不当会诱发财务造假；② <strong>董事会与审计监督</strong>；③ <strong>外部盯梢</strong>：证券分析师、基金等大股东的压力；④ <strong>接管威胁</strong>：业绩差→股价低→被收购→管理层换血，代理权之争（proxy contest）与敌意收购是最后的鞭子。</p>
+  </div>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>安然（Enron）：公司治理失灵的教科书样本</h4>
+    <p>2001 年，美国能源巨头安然被揭露用表外“特殊目的实体”隐藏巨额债务、虚增利润，股价从 90 美元跌到不足 1 美元，公司破产，为其审计的五大会计师事务所之一安达信随之解体。高管手握巨额期权，有强烈动机把短期股价“做”上去——激励机制反而成了造假的燃料。</p>
+    <p>国内的对照：2019 年康美药业被查出货币资金虚增约 300 亿元，2021 年法院判决公司及审计机构赔偿投资者约 24.6 亿元，独立董事也被判连带责任——“签字就要担责”自此成为 A 股治理的分水岭。</p>
+    <p class="takeaway">安然事件直接催生了 2002 年《萨班斯—奥克斯利法案》（SOX）：强制管理层对财报真实性个人签字担责，设立独立的上市公司会计监督委员会。</p>
+  </div>
+</section>
+
+<!-- ======================== 1.4 ======================== -->
+<section class="ch" id="s4">
+  <h2 class="sec"><span class="no">1.4</span>投资过程</h2>
+  <p class="sec-en">THE INVESTMENT PROCESS</p>
+
+  <div class="prose">
+    <p>构建一个投资组合，只有两类决策，层级分明：</p>
+    <p>① <strong>资产配置</strong><span class="en-term">（asset allocation）</span>：钱在<em>大类资产</em>之间怎么分——股票、债券、现金、不动产各占多少。<br>
+    ② <strong>证券选择</strong><span class="en-term">（security selection）</span>：每个大类<em>内部</em>买哪几只——茅台还是宁德，10 年国债还是 3 年信用债。</p>
+    <p>先定配置、再选证券，叫<strong>“自上而下”</strong>（top-down）；从“找好股票”出发倒推组合，叫<strong>“自下而上”</strong>（bottom-up）。教材的立场很明确：对绝大多数投资者，<em>资产配置才是业绩的主要决定因素</em>——先回答“股债比例”，再纠结“买哪只”。</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 1-1</span>自上而下的投资流程</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 196" role="img" aria-label="投资流程：目标与约束、资产配置、证券选择、执行、评估与再平衡，再平衡循环回到资产配置">
+      <defs>
+        <marker id="ar1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/>
+        </marker>
+      </defs>
+      <!-- 五个步骤 -->
+      <g>
+        <rect class="node" x="13"  y="46" width="118" height="64" rx="6"/>
+        <text class="nt" x="72"  y="73" text-anchor="middle">① 目标与约束</text>
+        <text class="nd" x="72"  y="93" text-anchor="middle">收益·风险·期限</text>
+        <rect class="node node-hi" x="157" y="46" width="118" height="64" rx="6"/>
+        <text class="nt" x="216" y="73" text-anchor="middle">② 资产配置</text>
+        <text class="nd" x="216" y="93" text-anchor="middle">股·债·现金比例</text>
+        <rect class="node" x="301" y="46" width="118" height="64" rx="6"/>
+        <text class="nt" x="360" y="73" text-anchor="middle">③ 证券选择</text>
+        <text class="nd" x="360" y="93" text-anchor="middle">类内挑选个券</text>
+        <rect class="node" x="445" y="46" width="118" height="64" rx="6"/>
+        <text class="nt" x="504" y="73" text-anchor="middle">④ 执行</text>
+        <text class="nd" x="504" y="93" text-anchor="middle">兼顾成本与税</text>
+        <rect class="node" x="589" y="46" width="118" height="64" rx="6"/>
+        <text class="nt" x="648" y="73" text-anchor="middle">⑤ 评估·再平衡</text>
+        <text class="nd" x="648" y="93" text-anchor="middle">偏离目标则调回</text>
+      </g>
+      <!-- 顺序箭头 -->
+      <path class="edge" d="M131 78 H 153" marker-end="url(#ar1)"/>
+      <path class="edge" d="M275 78 H 297" marker-end="url(#ar1)"/>
+      <path class="edge" d="M419 78 H 441" marker-end="url(#ar1)"/>
+      <path class="edge" d="M563 78 H 585" marker-end="url(#ar1)"/>
+      <!-- 顶部范围注释 -->
+      <text class="elabel" x="216" y="30" text-anchor="middle">对长期业绩贡献最大</text>
+      <path class="edge-soft" d="M216 34 V 42"/>
+      <!-- 循环箭头 -->
+      <path class="edge" d="M648 110 V 152 H 216 V 118" marker-end="url(#ar1)"/>
+      <text class="elabel" x="432" y="168" text-anchor="middle">定期循环（如每季 / 每年）</text>
+    </svg>
+    </div>
+    <figcaption><b>读图：</b>流程是层级式的——②在③之前。Brinson 等（1986/1991）对美国大型养老金的经典研究发现，组合收益<b>波动</b>的约 90% 可由资产配置方案解释，选股与择时的贡献远小于直觉。</figcaption>
+  </figure>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>同样的 100 万，两种命运</h4>
+    <p>2018 年初，甲、乙各有 100 万。甲全仓买入“精心挑选”的 A 股股票，乙做了 50% 沪深300 / 50% 中债的配置。2018 年熊市沪深300 下跌约 25%，甲亏约 25 万，乙亏约 10 万（债券当年上涨约 8%，对冲了一半股票跌幅）。决定两人差距的，不是谁选的股票更好，而是<strong>年初那个配置决定</strong>。</p>
+    <p class="takeaway">这也是第 6–7 章（资本配置、分散化）的全部出发点：组合层面的风险控制优先于个券层面的“眼光”。</p>
+  </div>
+</section>
+
+<!-- ======================== 1.5 ======================== -->
+<section class="ch" id="s5">
+  <h2 class="sec"><span class="no">1.5</span>竞争性的市场</h2>
+  <p class="sec-en">MARKETS ARE COMPETITIVE</p>
+
+  <div class="prose">
+    <p>金融市场竞争极其激烈：无数聪明人盯着同样的公开信息找便宜货。这推出两条贯穿全书的原理。</p>
+    <h3><span class="tag">原理一</span> 风险—收益权衡 <span class="en-term">（risk-return trade-off）</span></h3>
+    <p>如果某资产收益更高、风险却不更高，所有人都会抢购，价格被抬高，未来收益随之下降——直到“便宜”消失。所以均衡时，<em>更高的期望收益只能靠承担更高的风险换取</em>。历史数据是最直观的证据：</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 1-2</span>风险与收益同向而行：美国各大类资产，1926–2021（近似值）</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 420" role="img" aria-label="散点图：横轴为年化波动率，纵轴为年化平均收益。国库券风险收益最低，长期国债居中，大盘股更高，小盘股最高">
+      <!-- 网格 -->
+      <g>
+        <line class="grid" x1="64" y1="307" x2="696" y2="307"/>
+        <line class="grid" x1="64" y1="251" x2="696" y2="251"/>
+        <line class="grid" x1="64" y1="194" x2="696" y2="194"/>
+        <line class="grid" x1="64" y1="137" x2="696" y2="137"/>
+        <line class="grid" x1="64" y1="81"  x2="696" y2="81"/>
+        <line class="grid" x1="64" y1="24"  x2="696" y2="24"/>
+      </g>
+      <!-- 坐标轴 -->
+      <line class="axis" x1="64" y1="364" x2="696" y2="364"/>
+      <line class="axis" x1="64" y1="24"  x2="64"  y2="364"/>
+      <!-- 刻度：y -->
+      <g text-anchor="end">
+        <text class="tick" x="56" y="368">0</text>
+        <text class="tick" x="56" y="311">3</text>
+        <text class="tick" x="56" y="255">6</text>
+        <text class="tick" x="56" y="198">9</text>
+        <text class="tick" x="56" y="141">12</text>
+        <text class="tick" x="56" y="85">15</text>
+        <text class="tick" x="56" y="28">18</text>
+      </g>
+      <!-- 刻度：x -->
+      <g text-anchor="middle">
+        <text class="tick" x="64"  y="382">0</text>
+        <text class="tick" x="154" y="382">5</text>
+        <text class="tick" x="245" y="382">10</text>
+        <text class="tick" x="335" y="382">15</text>
+        <text class="tick" x="425" y="382">20</text>
+        <text class="tick" x="515" y="382">25</text>
+        <text class="tick" x="606" y="382">30</text>
+        <text class="tick" x="696" y="382">35</text>
+      </g>
+      <text class="atitle" x="380" y="408" text-anchor="middle">风险：年化标准差 %</text>
+      <text class="atitle" x="64" y="14" text-anchor="start">年化平均收益 %</text>
+      <!-- 数据点 -->
+      <g>
+        <circle class="pt" cx="120" cy="302" r="7"><title>国库券：年化收益约 3.3%，波动约 3.1%</title></circle>
+        <text class="pl" x="120" y="283" text-anchor="middle">国库券</text>
+        <text class="pv" x="120" y="325" text-anchor="middle">3.3% · 3.1%</text>
+
+        <circle class="pt" cx="241" cy="249" r="7"><title>长期国债：年化收益约 6.1%，波动约 9.8%</title></circle>
+        <text class="pl" x="241" y="230" text-anchor="middle">长期国债</text>
+        <text class="pv" x="241" y="272" text-anchor="middle">6.1% · 9.8%</text>
+
+        <circle class="pt" cx="431" cy="132" r="7"><title>大盘股：年化收益约 12.3%，波动约 20.3%</title></circle>
+        <text class="pl" x="431" y="113" text-anchor="middle">大盘股</text>
+        <text class="pv" x="431" y="155" text-anchor="middle">12.3% · 20.3%</text>
+
+        <circle class="pt" cx="636" cy="58" r="7"><title>小盘股：年化收益约 16.2%，波动约 31.7%</title></circle>
+        <text class="pl" x="636" y="39" text-anchor="middle">小盘股</text>
+        <text class="pv" x="636" y="81" text-anchor="middle">16.2% · 31.7%</text>
+      </g>
+    </svg>
+    </div>
+    <figcaption><b>读图：</b>每点为一类资产（名称下方为“年化算术平均收益 · 年化标准差”，美国市场 1926–2021 年的近似教学值）。小盘股近百年年化约 16%，但代价是单年跌幅可超过 50% 的波动；国库券几乎无波动，收益也仅勉强跑平通胀。<b>没有哪个点“又高又左”——这正是权衡的含义。</b></figcaption>
+  </figure>
+
+  <div class="prose">
+    <h3><span class="tag">原理二</span> 有效市场与主动 / 被动之争 <span class="en-term">（efficient markets）</span></h3>
+    <p><strong>有效市场假说</strong>认为：证券价格已大体反映全部可得信息，“捡漏”机会稀少且转瞬即逝。推论：若市场高度有效，与其花高费率请基金经理<strong>主动管理</strong>（选股、择时），不如<strong>被动</strong>持有低成本指数基金。现实中市场处于“近似有效”的灰色地带——正因为有人不信有效而拼命挖掘信息，价格才变得接近有效（第 11 章细讲）。</p>
+  </div>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>巴菲特的十年赌约（2008–2017）</h4>
+    <p>2008 年，巴菲特以 100 万美元设赌：未来十年，标普500 指数基金的业绩将跑赢任何一组精心挑选的对冲基金组合。对冲基金公司 Protégé Partners 应战，选了 5 只 FOF（覆盖 200 多只对冲基金）。十年后结果：<strong>指数基金年化约 7.1%，五只 FOF 年化最高约 6.5%、最低约 0.3%</strong>，全部落败。高额管理费（2% 管理费 + 20% 业绩提成）吃掉了主动管理可能存在的微弱优势。</p>
+    <p class="takeaway">这是“市场近似有效 + 成本至关重要”的最佳实证注脚；也解释了近二十年指数基金 / ETF 的爆发式增长。</p>
+  </div>
+
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p>“高风险 = 高收益。”——错。正确表述是：高<strong>期望</strong>收益必须以高风险为代价，但高风险不保证高收益（否则它就不叫风险了）。可以被分散掉的风险（个股黑天鹅）甚至不会获得任何补偿——这是第 7、9 章的核心。</p>
+  </div>
+</section>
+
+<!-- ======================== 1.6 ======================== -->
+<section class="ch" id="s6">
+  <h2 class="sec"><span class="no">1.6</span>市场参与者</h2>
+  <p class="sec-en">THE PLAYERS</p>
+
+  <div class="prose">
+    <p>资金的流动有一条主干道：<strong>家庭部门是净储蓄者，企业与政府是净资金需求者</strong>。两端如何对接？要么经过金融中介“转一道手”，要么通过金融市场直接对接。</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 1-3</span>资金如何从储蓄者流向用钱的人</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 760 340" role="img" aria-label="资金流转图：家庭通过金融中介（间接融资）或金融市场（直接融资）把资金提供给企业与政府">
+      <defs>
+        <marker id="ar2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/>
+        </marker>
+      </defs>
+      <!-- 通道标注 -->
+      <text class="elabel" x="380" y="16" text-anchor="middle">间接融资：中介自身的资产负债表隔在中间</text>
+      <text class="elabel" x="380" y="334" text-anchor="middle">直接融资：投资者直接持有企业发行的证券（一级市场）</text>
+      <!-- 节点 -->
+      <rect class="node" x="20" y="135" width="170" height="70" rx="6"/>
+      <text class="nt" x="105" y="165" text-anchor="middle">家庭 · 储蓄者</text>
+      <text class="nd" x="105" y="186" text-anchor="middle">资金盈余方</text>
+
+      <rect class="node node-hi" x="295" y="30" width="170" height="74" rx="6"/>
+      <text class="nt" x="380" y="58" text-anchor="middle">金融中介</text>
+      <text class="nd" x="380" y="79" text-anchor="middle">银行 · 基金 · 保险</text>
+
+      <rect class="node node-hi" x="295" y="236" width="170" height="74" rx="6"/>
+      <text class="nt" x="380" y="264" text-anchor="middle">金融市场</text>
+      <text class="nd" x="380" y="285" text-anchor="middle">股票 · 债券（投行承销）</text>
+
+      <rect class="node" x="570" y="135" width="170" height="70" rx="6"/>
+      <text class="nt" x="655" y="165" text-anchor="middle">企业 · 政府</text>
+      <text class="nd" x="655" y="186" text-anchor="middle">资金需求方</text>
+      <!-- 上路：间接融资 -->
+      <path class="edge" d="M105 135 V 67 H 289" marker-end="url(#ar2)"/>
+      <text class="elabel" x="190" y="58" text-anchor="middle">存款 · 申购基金</text>
+      <path class="edge" d="M465 67 H 655 V 129" marker-end="url(#ar2)"/>
+      <text class="elabel" x="562" y="58" text-anchor="middle">放贷 · 认购证券</text>
+      <!-- 下路：直接融资 -->
+      <path class="edge" d="M105 205 V 273 H 289" marker-end="url(#ar2)"/>
+      <text class="elabel" x="190" y="264" text-anchor="middle">出资买入证券</text>
+      <path class="edge" d="M465 273 H 655 V 211" marker-end="url(#ar2)"/>
+      <text class="elabel" x="562" y="264" text-anchor="middle">发行股票 / 债券</text>
+    </svg>
+    </div>
+    <figcaption><b>读图：</b>两条通道同时存在；利息、分红与本金沿箭头<b>反方向</b>回流。中介通道里，储户的债权对象是银行而非最终借款人——银行用自己的资产负债表吸收了违约风险。</figcaption>
+  </figure>
+
+  <div class="cards">
+    <div class="card">
+      <h4>金融中介 <span class="en-term">Financial Intermediaries</span></h4>
+      <p>银行、投资公司（基金）、保险公司、信用社。存在的理由：</p>
+      <ul>
+        <li><strong>汇聚小钱办大事</strong>：万千储户 → 一笔大额贷款</li>
+        <li><strong>分散化</strong>：单个储户无法把 1 万元分散到上千个借款人，银行可以</li>
+        <li><strong>专业评估</strong>：信贷审查的规模经济</li>
+      </ul>
+      <p>例：余额宝本质是货币市场基金——把零钱汇聚后投向同业存单等机构级资产，散户借此拿到了接近机构的利率。</p>
+    </div>
+    <div class="card">
+      <h4>投资银行 <span class="en-term">Investment Bankers</span></h4>
+      <p>专营证券<strong>发行承销</strong>：定价、路演、包销或代销，是“直接融资”通道的组织者。高盛、摩根士丹利、中金、中信建投都是典型。</p>
+      <ul>
+        <li><strong>一级市场</strong>：新证券首次出售给投资者（IPO、增发），钱进公司口袋</li>
+        <li><strong>二级市场</strong>：投资者之间互相转手，公司不再收到钱，但流动性让一级市场定价更高</li>
+      </ul>
+      <p>例：2018 年宁德时代创业板 IPO 由中信建投保荐承销，募资约 55 亿元投入产能建设——一级市场把储蓄变成了实物资产。</p>
+    </div>
+    <div class="card">
+      <h4>风投与私募 <span class="en-term">Venture Capital &amp; Private Equity</span></h4>
+      <p>没上市的公司拿不到公开市场的钱，靠 <strong>VC</strong>（投早期，通常附带参与管理）与 <strong>PE</strong>（投成熟 / 收购）供血。</p>
+      <p>例：红杉、高瓴对字节跳动、宁德时代的早期 / 成长期投资；退出通常靠 IPO 或并购。</p>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p>2008 年前后还活跃着一类“影子银行”——像银行一样借短贷长，却不受银行监管、没有存款保险（投行自营、货币基金、SIV 等）。它们正是下一节危机的主角之一。</p>
+  </div>
+</section>
+
+<!-- ======================== 1.7 ======================== -->
+<section class="ch" id="s7">
+  <h2 class="sec"><span class="no">1.7</span>2008 年金融危机</h2>
+  <p class="sec-en">THE FINANCIAL CRISIS OF 2008</p>
+
+  <div class="prose">
+    <p>这一节是全章概念的“综合演练”：实物资产（房子）、金融资产（房贷、MBS）、中介（银行与影子银行）、代理问题（发起—分销的激励扭曲）、风险分配（CDO 分层）全部登场——然后一起失灵。</p>
+    <h3>关键机制：证券化 <span class="en-term">（securitization）</span></h3>
+    <p>传统模式里，银行放出房贷就把它<em>留在自己账上</em>，所以审贷很谨慎。证券化改变了这一点：银行把成千上万笔房贷打包成<strong>抵押贷款支持证券（MBS）</strong>卖给全世界的投资者，再把 MBS 切层组装成 <strong>CDO</strong>，评级机构给最上层贴上 AAA。放贷者赚的是手续费，风险转手就走——这就是<strong>“发起—分销”</strong>（originate-to-distribute）模式。审贷标准随之崩坏：无收入证明的“次级贷款”（subprime）大量涌现，赌的只是房价继续涨。</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 1-4</span>危机传导链：从降息到全球衰退</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 760 312" role="img" aria-label="2008 金融危机传导流程：低利率、房价泡沫与次贷、证券化扩散、高杠杆期限错配、房价回落违约、机构崩塌、信贷冻结与全球衰退">
+      <defs>
+        <marker id="ar3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/>
+        </marker>
+      </defs>
+      <!-- 第一行 -->
+      <rect class="node" x="16" y="26" width="166" height="76" rx="6"/>
+      <text class="nt" x="99" y="50" text-anchor="middle">低利率 · 宽松信贷</text>
+      <text class="nd" x="99" y="70" text-anchor="middle">2001–04 年持续降息</text>
+      <text class="nd" x="99" y="88" text-anchor="middle">放贷标准不断放松</text>
+
+      <rect class="node" x="202" y="26" width="166" height="76" rx="6"/>
+      <text class="nt" x="285" y="50" text-anchor="middle">房价泡沫 · 次贷扩张</text>
+      <text class="nd" x="285" y="70" text-anchor="middle">“房价永远涨”的预期</text>
+      <text class="nd" x="285" y="88" text-anchor="middle">无证明贷款大量出现</text>
+
+      <rect class="node" x="388" y="26" width="166" height="76" rx="6"/>
+      <text class="nt" x="471" y="50" text-anchor="middle">证券化扩散风险</text>
+      <text class="nd" x="471" y="70" text-anchor="middle">房贷 → MBS → CDO</text>
+      <text class="nd" x="471" y="88" text-anchor="middle">发起—分销：风险转手</text>
+
+      <rect class="node" x="574" y="26" width="166" height="76" rx="6"/>
+      <text class="nt" x="657" y="50" text-anchor="middle">高杠杆 · 期限错配</text>
+      <text class="nd" x="657" y="70" text-anchor="middle">投行杠杆约 30 倍</text>
+      <text class="nd" x="657" y="88" text-anchor="middle">滚动短债支撑长期资产</text>
+
+      <path class="edge" d="M182 64 H 198" marker-end="url(#ar3)"/>
+      <path class="edge" d="M368 64 H 384" marker-end="url(#ar3)"/>
+      <path class="edge" d="M554 64 H 570" marker-end="url(#ar3)"/>
+      <!-- 转行 -->
+      <path class="edge" d="M657 102 V 174" marker-end="url(#ar3)"/>
+      <!-- 第二行（从右往左） -->
+      <rect class="node" x="574" y="178" width="166" height="76" rx="6"/>
+      <text class="nt" x="657" y="202" text-anchor="middle">房价回落 · 违约潮</text>
+      <text class="nd" x="657" y="222" text-anchor="middle">2006 年房价见顶转跌</text>
+      <text class="nd" x="657" y="240" text-anchor="middle">断供蔓延至优级贷款</text>
+
+      <rect class="node node-crit" x="388" y="178" width="166" height="76" rx="6"/>
+      <text class="nt" x="471" y="202" text-anchor="middle">机构接连崩塌</text>
+      <text class="nd" x="471" y="222" text-anchor="middle">贝尔斯登 · 两房 · 雷曼</text>
+      <text class="nd" x="471" y="240" text-anchor="middle">CDS 敞口拖垮 AIG</text>
+
+      <rect class="node" x="16" y="178" width="352" height="76" rx="6"/>
+      <text class="nt" x="192" y="202" text-anchor="middle">信贷冻结 → 全球实体衰退</text>
+      <text class="nd" x="192" y="222" text-anchor="middle">货币基金跌破面值，短期融资市场停摆</text>
+      <text class="nd" x="192" y="240" text-anchor="middle">催生《多德—弗兰克法案》等监管改革</text>
+
+      <path class="edge" d="M570 216 H 558" marker-end="url(#ar3)"/>
+      <path class="edge" d="M384 216 H 372" marker-end="url(#ar3)"/>
+      <!-- 底部注 -->
+      <text class="elabel" x="380" y="292" text-anchor="middle">每个环节单独看都“合理”，串在一起便是系统性风险</text>
+    </svg>
+    </div>
+    <figcaption><b>读图：</b>风险没有消失，只是被证券化<b>重新分配</b>到了看不见的角落；当作为抵押物的实物资产（房价）掉头向下，链条上每个靠短期融资续命的机构同时失血。</figcaption>
+  </figure>
+
+  <div class="tablewrap">
+    <table>
+      <tr><th>时间</th><th>事件</th><th>对应概念</th></tr>
+      <tr><td class="num">2006 年中</td><td>美国房价见顶回落，次贷违约率攀升</td><td>抵押物价值 ↓</td></tr>
+      <tr><td class="num">2007-08</td><td>法国巴黎银行冻结旗下次贷基金赎回，货币市场骤然紧张</td><td>流动性风险</td></tr>
+      <tr><td class="num">2008-03</td><td>贝尔斯登濒临倒闭，被摩根大通以极低价收购（美联储兜底）</td><td>期限错配挤兑</td></tr>
+      <tr><td class="num">2008-09-07</td><td>“两房”（房利美、房地美）被政府接管</td><td>隐性担保兑现</td></tr>
+      <tr><td class="num">2008-09-15</td><td><strong>雷曼兄弟破产</strong>——危机全面爆发的标志</td><td>系统性风险引爆</td></tr>
+      <tr><td class="num">2008-09-16</td><td>AIG 获 850 亿美元救助；一只老牌货币基金跌破 1 美元面值</td><td>CDS 连锁反应</td></tr>
+      <tr><td class="num">2008-10</td><td>国会通过 7000 亿美元问题资产救助计划（TARP）</td><td>政府最后兜底</td></tr>
+      <tr><td class="num">2010-07</td><td>《多德—弗兰克法案》：提高资本要求、设消费者金融保护局、沃尔克规则限制银行自营</td><td>监管重建</td></tr>
+    </table>
+  </div>
+
+  <div class="prose">
+    <h3>系统性风险 <span class="en-term">（systemic risk）</span></h3>
+    <p>指单个机构的倒闭通过<strong>相互持有的债权债务网络</strong>传染，引发整个金融体系瘫痪的风险。雷曼之所以致命，不在于它自身规模，而在于没人说得清“谁对雷曼有多少敞口”——于是所有机构互相不敢拆借，信贷市场整体冻结。这解释了“太大（太关联）而不能倒”的监管难题。</p>
+  </div>
+
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p>“危机是因为次贷规模太大。”——次贷本身只有约 1 万多亿美元，单独不足以掀翻全球。真正的放大器是<strong>杠杆</strong>（亏 3% 就资不抵债）、<strong>期限错配</strong>（短债随时可被抽走）与<strong>不透明的关联</strong>（CDS 网络）。小火源 + 满屋汽油，才是完整的事故报告。</p>
+  </div>
+</section>
+
+<!-- ======================== 小结 ======================== -->
+<section class="ch" id="recap">
+  <h2 class="sec"><span class="no">※</span>本章小结</h2>
+  <p class="sec-en">SUMMARY</p>
+
+  <div class="recap">
+    <ol>
+      <li><b>实物资产创造财富，金融资产分配财富。</b>金融资产是对实物资产收入的索取权，全社会加总后与金融负债抵消。</li>
+      <li><b>金融资产三大类：</b>固定收益（承诺现金流）、权益（剩余索取权）、衍生品（价值挂钩他物、用于转移风险）。</li>
+      <li><b>金融市场四大功能：</b>价格发现引导资本、平滑一生消费、按偏好分配风险、支撑所有权与经营权分离——代价是代理问题，需靠激励、监督与接管威胁约束。</li>
+      <li><b>投资流程自上而下：</b>资产配置先于证券选择，且是长期业绩的主要决定因素。</li>
+      <li><b>市场竞争推出两条铁律：</b>更高期望收益必付出更高风险；价格近似有效，使低成本被动投资成为强有力的基准。</li>
+      <li><b>2008 危机的教训：</b>证券化转移但不消灭风险；杠杆与期限错配是放大器；系统性风险来自关联与不透明。</li>
+    </ol>
+  </div>
+
+  <h3>核心术语（中英对照）</h3>
+  <div class="tablewrap">
+    <table>
+      <tr><th>中文</th><th>English</th><th>一句话定义</th></tr>
+      <tr><td>实物资产</td><td>real assets</td><td>直接参与生产、决定经济产出能力的资产</td></tr>
+      <tr><td>金融资产</td><td>financial assets</td><td>对实物资产所创造收入的索取权</td></tr>
+      <tr><td>固定收益证券</td><td>fixed-income securities</td><td>承诺固定或按公式确定现金流的证券</td></tr>
+      <tr><td>权益</td><td>equity</td><td>公司所有权份额，剩余索取权</td></tr>
+      <tr><td>衍生证券</td><td>derivative securities</td><td>价值由其他资产价格决定的合约</td></tr>
+      <tr><td>代理问题</td><td>agency problem</td><td>经理人利益与股东利益的偏离</td></tr>
+      <tr><td>资产配置</td><td>asset allocation</td><td>资金在大类资产间的分配决策</td></tr>
+      <tr><td>证券选择</td><td>security selection</td><td>在某类资产内部挑选具体证券</td></tr>
+      <tr><td>风险—收益权衡</td><td>risk-return trade-off</td><td>更高期望收益要求承担更高风险</td></tr>
+      <tr><td>有效市场假说</td><td>efficient market hypothesis</td><td>价格已大体反映全部可得信息</td></tr>
+      <tr><td>被动 / 主动管理</td><td>passive / active management</td><td>持有指数不择券 vs. 试图跑赢市场</td></tr>
+      <tr><td>金融中介</td><td>financial intermediaries</td><td>连接储蓄者与借款者的机构（银行、基金、保险）</td></tr>
+      <tr><td>投资银行</td><td>investment bankers</td><td>为证券发行提供承销服务的机构</td></tr>
+      <tr><td>一级 / 二级市场</td><td>primary / secondary market</td><td>新证券发行 vs. 存量证券转手</td></tr>
+      <tr><td>证券化</td><td>securitization</td><td>把贷款打包成可交易证券（如 MBS）</td></tr>
+      <tr><td>系统性风险</td><td>systemic risk</td><td>机构倒闭沿债权网络传染、拖垮整个体系的风险</td></tr>
+    </table>
+  </div>
+
+  <h3>自测（先想后翻）</h3>
+  <details>
+    <summary>Q1 为什么说“金融资产不增加社会财富，社会却因它更富有”？</summary>
+    <div class="ans"><p>金融资产加总后与负债抵消，不进入国民财富；但它完成了三件实物资产自己做不到的事：把分散的储蓄导向最有生产力的用途（信息 / 价格发现）、让个人跨时间平滑消费、把风险切给最能承担的人。这些功能提高了实物资产的形成效率与使用效率，社会因此更富有。</p></div>
+  </details>
+  <details>
+    <summary>Q2 你按揭买房：房子、房贷分别是谁的什么资产？</summary>
+    <div class="ans"><p>房子是你的实物资产；房贷对你是金融负债，对银行是金融资产。若银行把房贷证券化卖出，这笔索取权又变成 MBS 投资者的金融资产——1.7 节的链条就是从这里开始的。</p></div>
+  </details>
+  <details>
+    <summary>Q3 “我打算先研究挑哪几只牛股，再看看剩下的钱买点债。”这个流程有什么问题？</summary>
+    <div class="ans"><p>这是“自下而上”且本末倒置：组合的风险水平被选股的剩余决定，而不是被主动设计。正确顺序是先依据自身目标与风险承受力确定股 / 债 / 现金比例（资产配置），再在每类内部选券——配置才是长期业绩波动的主要来源（Brinson 约 90% 的证据）。</p></div>
+  </details>
+  <details>
+    <summary>Q4 一级市场与二级市场，哪一个“真正给公司输血”？二级市场是不是可有可无？</summary>
+    <div class="ans"><p>只有一级市场（IPO、增发）把投资者的钱交到公司手里。但二级市场绝非可有可无：它提供流动性与持续定价，投资者因为“随时能卖掉”才敢在一级市场出高价——二级市场的流动性直接降低了企业的融资成本。</p></div>
+  </details>
+  <details>
+    <summary>Q5 证券化本意是分散风险，为什么反而酿成系统性危机？</summary>
+    <div class="ans"><p>三个环节变质：① 发起—分销切断了“放贷者承担后果”的激励，审贷质量崩坏（代理问题）；② 风险没有消灭，只是转移到杠杆极高、依赖短期融资的机构手里（杠杆 + 期限错配放大）；③ 层层打包后无人能看清敞口分布，雷曼倒下时市场选择“不信任所有人”，信贷整体冻结（关联与不透明 → 系统性风险）。</p></div>
+  </details>
+
+  <div class="next">
+    <div>
+      <div class="lbl">NEXT CHAPTER</div>
+      <div class="ttl">第 2 章 · 资产类别与金融工具</div>
+    </div>
+    <div class="lbl">货币市场 → 债券 → 股票 → 股指 → 衍生品</div>
+  </div>
+
+  <p class="foot">本页为依据 Bodie–Kane–Marcus《投资学》（Investments）框架整理的原创学习笔记，仅用于教学理解；历史收益数据为近似教学值，案例细节以公开报道为准。内容不构成任何投资建议。</p>
+</section>
+
+</main>
+</div>
+</div>
+
+<script>
+(function(){
+  var links = Array.prototype.slice.call(document.querySelectorAll('.sidenav a[href^="#"]'));
+  if(!links.length) return;
+  var map = [];
+  links.forEach(function(a){
+    var el = document.getElementById(a.getAttribute('href').slice(1));
+    if(el) map.push([el, a]);
+  });
+  function update(){
+    var y = window.scrollY + 150;
+    var cur = map[0][1];
+    for(var i = 0; i < map.length; i++){
+      if(map[i][0].offsetTop <= y) cur = map[i][1];
+    }
+    map.forEach(function(p){ p[1].classList.toggle('active', p[1] === cur); });
+  }
+  var tick = false;
+  window.addEventListener('scroll', function(){
+    if(!tick){
+      tick = true;
+      requestAnimationFrame(function(){ tick = false; update(); });
+    }
+  }, {passive:true});
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,753 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>投资学 · 第3章 证券是如何交易的</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700;900&family=Noto+Sans+SC:wght@400;500;700&display=swap">
+<style>
+/* 布局：双栏（212px 侧栏 + 正文），章导览 + 3.1–3.7 分节；宽图表置于横向滚动容器 */
+:root{
+  --bg:#f5f6f7;            /* 页面底色：冷调纸面 */
+  --surface:#ffffff;       /* 卡片/图表面 */
+  --ink:#171a20;           /* 正文墨色 */
+  --ink-2:#4a5160;         /* 次级文字 */
+  --muted:#858c9b;         /* 弱化说明 */
+  --line:#e2e5ea;          /* 细分隔线 */
+  --line-2:#c9ced6;        /* 坐标轴/实线 */
+  --accent:#1d5fad;        /* 主色：墨蓝 */
+  --accent-ink:#174e8f;    /* 墨蓝文字态 */
+  --accent-soft:#eaf1fa;   /* 墨蓝浅底 */
+  --series:#2a78d6;        /* 图表系列色 1（验证过的蓝） */
+  --series2:#eb6834;       /* 图表系列色 2（验证过的橙） */
+  --crit:#d03b3b;          /* 危机/警示（仅示警语义） */
+  --crit-soft:rgba(208,59,59,.07);
+  --serif:"Noto Serif SC","Songti SC",serif;
+  --sans:"Noto Sans SC","Microsoft YaHei",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#101215; --surface:#181b20; --ink:#eef0f3; --ink-2:#c0c5cf; --muted:#8a909d;
+    --line:#282c33; --line-2:#3a3f48;
+    --accent:#5a96e3; --accent-ink:#79abec; --accent-soft:#1c2a3d;
+    --series:#3987e5; --series2:#d95926; --crit:#e66767; --crit-soft:rgba(230,103,103,.10);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#101215; --surface:#181b20; --ink:#eef0f3; --ink-2:#c0c5cf; --muted:#8a909d;
+  --line:#282c33; --line-2:#3a3f48;
+  --accent:#5a96e3; --accent-ink:#79abec; --accent-soft:#1c2a3d;
+  --series:#3987e5; --series2:#d95926; --crit:#e66767; --crit-soft:rgba(230,103,103,.10);
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:var(--sans); font-size:15.5px; line-height:1.85;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1190px; margin:0 auto; padding-inline:20px; padding-block:0 72px}
+
+/* ———— 左侧小节导航 ———— */
+.layout{display:grid; grid-template-columns:212px minmax(0,1fr); gap:44px; align-items:start}
+.article{max-width:920px; min-width:0}
+.sidenav{
+  position:sticky; top:16px; max-height:calc(100vh - 32px); overflow-y:auto;
+  padding-block:40px 16px; font-size:13px;
+}
+.sidenav .sn-chap{
+  margin:0 0 10px; padding-left:13px; font-size:11.5px; letter-spacing:.14em;
+  color:var(--muted); font-weight:700;
+}
+.sidenav a{
+  display:block; color:var(--ink-2); text-decoration:none; line-height:1.55;
+  padding:6px 10px 6px 13px; border-left:2px solid var(--line);
+}
+.sidenav a:hover{color:var(--accent-ink)}
+.sidenav a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.sidenav a.active{
+  color:var(--accent-ink); border-left-color:var(--accent);
+  background:var(--accent-soft); font-weight:700;
+}
+.hero,section.ch{scroll-margin-top:10px}
+@media (max-width: 999px){
+  .sidenav{display:none}
+  .layout{display:block}
+}
+@media (min-width: 1000px){
+  nav.chapmap{display:none}
+}
+
+/* ———— 页眉 ———— */
+.masthead{
+  display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  padding-block:18px 14px; border-bottom:1px solid var(--line);
+}
+.masthead .book{font-family:var(--serif); font-weight:700; font-size:15px; letter-spacing:.02em}
+.masthead .part{font-size:12.5px; color:var(--muted); letter-spacing:.12em}
+
+/* ———— 章首 ———— */
+.hero{padding-block:44px 28px; border-bottom:1px solid var(--line)}
+.chap-no{
+  display:inline-flex; align-items:center; gap:10px;
+  font-size:12.5px; letter-spacing:.22em; color:var(--accent-ink); font-weight:700;
+}
+.chap-no::after{content:""; width:46px; height:1px; background:var(--accent)}
+.hero h1{
+  font-family:var(--serif); font-weight:900; font-size:clamp(30px,5vw,46px);
+  line-height:1.25; margin:10px 0 4px; letter-spacing:.02em; text-wrap:balance;
+}
+.hero .en{font-size:14px; color:var(--muted); letter-spacing:.08em; margin:0 0 18px}
+.hero .lede{max-width:46em; color:var(--ink-2); margin:0}
+.hero .lede strong{color:var(--ink)}
+.objectives{
+  margin-top:22px; padding:16px 20px; background:var(--surface);
+  border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:0 6px 6px 0;
+}
+.objectives h2{font-size:13px; letter-spacing:.18em; color:var(--accent-ink); margin:0 0 8px; font-weight:700}
+.objectives ul{margin:0; padding-left:1.3em; color:var(--ink-2)}
+.objectives li{margin:3px 0}
+.chapmap{display:flex; flex-wrap:wrap; gap:8px; margin-top:20px}
+.chapmap a{
+  font-size:13px; color:var(--ink-2); text-decoration:none;
+  border:1px solid var(--line-2); border-radius:999px; padding:4px 13px; background:var(--surface);
+}
+.chapmap a:hover{border-color:var(--accent); color:var(--accent-ink)}
+.chapmap a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+/* ———— 正文分节 ———— */
+section.ch{padding-block:40px 8px}
+section.ch + section.ch{border-top:1px solid var(--line)}
+h2.sec{
+  font-family:var(--serif); font-weight:700; font-size:clamp(22px,3.4vw,28px);
+  margin:0 0 2px; line-height:1.35; text-wrap:balance;
+}
+h2.sec .no{color:var(--accent-ink); margin-right:10px; font-feature-settings:"tnum"}
+p.sec-en{font-size:12.5px; letter-spacing:.1em; color:var(--muted); margin:0 0 18px}
+h3{font-size:16.5px; font-weight:700; margin:26px 0 8px}
+h3 .tag{color:var(--accent-ink)}
+p{margin:10px 0}
+.prose{max-width:46em}
+.prose .en-term{color:var(--muted); font-size:.88em}
+strong{font-weight:700}
+em{font-style:normal; font-weight:700; color:var(--accent-ink)}
+
+/* ———— 组件 ———— */
+.cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px; margin:16px 0}
+.card{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:16px 18px;
+}
+.card h4{margin:0 0 6px; font-size:15px}
+.card h4 .en-term{display:block; font-weight:400; font-size:12px; color:var(--muted); letter-spacing:.04em; margin-top:2px}
+.card p{margin:6px 0; font-size:14px; color:var(--ink-2)}
+.card ul{margin:6px 0 0; padding-left:1.2em; font-size:14px; color:var(--ink-2)}
+.card li{margin:3px 0}
+.chip{
+  display:inline-block; font-size:12.5px; color:var(--accent-ink); background:var(--accent-soft);
+  border-radius:4px; padding:1px 8px; margin:2px 4px 0 0;
+}
+
+.case{
+  margin:20px 0; padding:16px 20px 14px; background:var(--surface);
+  border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:0 8px 8px 0;
+}
+.case .label{font-size:12px; letter-spacing:.2em; color:var(--accent-ink); font-weight:700; display:block; margin-bottom:6px}
+.case h4{margin:0 0 6px; font-size:15.5px}
+.case p{margin:7px 0; font-size:14.5px; color:var(--ink-2)}
+.case p:last-child{margin-bottom:2px}
+.case .takeaway{color:var(--ink); font-weight:500}
+.case .takeaway::before{content:"▸ 教材对应 "; color:var(--accent-ink); font-weight:700; font-size:12.5px; letter-spacing:.05em}
+
+.pitfall{
+  margin:20px 0; padding:14px 20px; border:1px dashed var(--line-2); border-radius:8px; max-width:46em;
+}
+.pitfall .label{font-size:12px; letter-spacing:.2em; color:var(--crit); font-weight:700; display:block; margin-bottom:4px}
+.pitfall p{margin:4px 0; font-size:14.5px; color:var(--ink-2)}
+
+.formula{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px;
+  padding:12px 18px; margin:14px 0; max-width:46em; overflow-x:auto;
+  font-size:15px; line-height:2;
+}
+.formula .fx{white-space:nowrap}
+.formula sub,.formula sup{font-size:11px}
+.formula .note{font-size:12.5px; color:var(--muted)}
+
+table{border-collapse:collapse; width:100%; font-size:14px; font-variant-numeric:tabular-nums}
+.tablewrap{overflow-x:auto; margin:16px 0; border:1px solid var(--line); border-radius:8px; background:var(--surface)}
+.tablewrap table{min-width:560px}
+th,td{padding:9px 14px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top}
+th{font-size:12.5px; letter-spacing:.08em; color:var(--muted); font-weight:700; white-space:nowrap}
+tr:last-child td{border-bottom:none}
+td.num{white-space:nowrap}
+
+/* ———— 图 ———— */
+figure{margin:24px 0; background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:18px 18px 12px}
+figure .fig-scroll{overflow-x:auto}
+figure svg{display:block; max-width:100%; height:auto; color:var(--ink)}
+figure .fig-scroll svg{min-width:660px}
+figcaption{font-size:13px; color:var(--muted); margin-top:10px; line-height:1.7}
+figcaption b{color:var(--ink-2); font-weight:700}
+.fig-title{font-size:14px; font-weight:700; margin:0 0 12px}
+.fig-title .fno{color:var(--accent-ink); margin-right:8px}
+
+svg .node{fill:var(--bg); stroke:var(--line-2); stroke-width:1.2; rx:6}
+svg .node-hi{fill:var(--accent-soft); stroke:var(--accent)}
+svg .node-crit{fill:var(--crit-soft); stroke:var(--crit)}
+svg .nt{font:700 12.5px var(--sans); fill:var(--ink)}
+svg .nd{font:400 11px var(--sans); fill:var(--ink-2)}
+svg .edge{stroke:var(--ink-2); stroke-width:1.4; fill:none}
+svg .edge-soft{stroke:var(--muted); stroke-width:1.2; fill:none; stroke-dasharray:4 4}
+svg .elabel{font:400 11.5px var(--sans); fill:var(--muted)}
+svg .grid{stroke:var(--line); stroke-width:1}
+svg .axis{stroke:var(--line-2); stroke-width:1.2}
+svg .tick{font:400 11px var(--sans); fill:var(--muted)}
+svg .atitle{font:400 11.5px var(--sans); fill:var(--muted)}
+svg .pt{fill:var(--series); stroke:var(--surface); stroke-width:2}
+svg .pt2{fill:var(--series2); stroke:var(--surface); stroke-width:2}
+svg .pl{font:700 13px var(--sans); fill:var(--ink)}
+svg .pv{font:400 11.5px var(--sans); fill:var(--ink-2)}
+svg .ln1{stroke:var(--series); stroke-width:2.5; fill:none}
+svg .ln2{stroke:var(--series2); stroke-width:2.5; fill:none}
+svg .seg1{fill:var(--series)}
+svg .seg2{fill:var(--series2)}
+
+/* ———— 小结/术语/自测 ———— */
+.recap{margin-top:8px}
+.recap ol{margin:8px 0 0; padding-left:1.4em; max-width:46em; color:var(--ink-2)}
+.recap li{margin:7px 0}
+.recap li b{color:var(--ink)}
+details{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px;
+  padding:12px 18px; margin:10px 0; max-width:46em;
+}
+details summary{cursor:pointer; font-weight:500; color:var(--ink)}
+details summary:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+details[open] summary{color:var(--accent-ink)}
+details .ans{margin-top:8px; padding-top:8px; border-top:1px dashed var(--line); font-size:14.5px; color:var(--ink-2)}
+details .ans p{margin:6px 0}
+
+.next{
+  margin-top:48px; padding:18px 22px; border:1px solid var(--line); border-radius:8px;
+  background:var(--surface); display:flex; justify-content:space-between; align-items:center; gap:14px; flex-wrap:wrap;
+}
+.next .lbl{font-size:12px; letter-spacing:.18em; color:var(--muted)}
+.next .ttl{font-family:var(--serif); font-weight:700; font-size:18px; margin-top:2px}
+.foot{margin-top:26px; font-size:12.5px; color:var(--muted); line-height:1.8}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <span class="book">《投资学》学习手册 · Investments (Bodie · Kane · Marcus)</span>
+  <span class="part">第一部分 绪论</span>
+</header>
+
+<div class="layout">
+
+<nav class="sidenav" aria-label="小节导航">
+  <p class="sn-chap">第 3 章 · 证券是如何交易的</p>
+  <a href="#top">章首 · 学习目标</a>
+  <a href="#s1">3.1 公司如何发行证券</a>
+  <a href="#s2">3.2 市场与订单</a>
+  <a href="#s3">3.3 电子化交易</a>
+  <a href="#s4">3.4 交易成本</a>
+  <a href="#s5">3.5 保证金交易</a>
+  <a href="#s6">3.6 卖空</a>
+  <a href="#s7">3.7 市场监管</a>
+  <a href="#recap">小结 · 术语 · 自测</a>
+</nav>
+
+<main class="article">
+
+<!-- ======================== 章首 ======================== -->
+<div class="hero" id="top">
+  <span class="chap-no">CHAPTER 3</span>
+  <h1>证券是如何交易的</h1>
+  <p class="en">How Securities Are Traded</p>
+  <p class="lede">上一章认识了“商品”，这一章看“商场”怎么运作：证券如何出生（发行上市）、在哪里成交、价格如何被撮合出来，以及两种给收益装上杠杆的机制——<strong>借钱做多（保证金交易）与借券做空（卖空）</strong>。交易制度不是背景板，它直接决定你的成交价格与风险边界。</p>
+
+  <div class="objectives">
+    <h2>学习目标</h2>
+    <ul>
+      <li>讲清一只股票从申报、询价到挂牌的发行链条，理解 IPO 抑价与“赢者诅咒”</li>
+      <li>分清四类市场与三类订单，会读限价订单簿与买卖价差</li>
+      <li>了解算法交易、高频与暗池，知道闪电崩盘与熔断机制的来龙去脉</li>
+      <li>看懂交易的显性与隐性成本，“零佣金”不等于零成本</li>
+      <li>会算保证金交易的收益放大与追保价格，会算卖空的损益与追保价格</li>
+      <li>知道监管保护的是什么：信息披露与交易公平，而不是投资盈亏</li>
+    </ul>
+  </div>
+
+  <nav class="chapmap" aria-label="本章导览">
+    <a href="#s1">3.1 发行</a>
+    <a href="#s2">3.2 市场与订单</a>
+    <a href="#s3">3.3 电子化交易</a>
+    <a href="#s4">3.4 交易成本</a>
+    <a href="#s5">3.5 保证金交易</a>
+    <a href="#s6">3.6 卖空</a>
+    <a href="#s7">3.7 监管</a>
+    <a href="#recap">小结与自测</a>
+  </nav>
+</div>
+
+<!-- ======================== 3.1 ======================== -->
+<section class="ch" id="s1">
+  <h2 class="sec"><span class="no">3.1</span>公司如何发行证券</h2>
+  <p class="sec-en">HOW FIRMS ISSUE SECURITIES</p>
+
+  <div class="prose">
+    <p>新证券的“出生”发生在一级市场。首次把股票卖给公众叫 <strong>IPO</strong>；已上市公司再发新股叫<strong>增发</strong><span class="en-term">（seasoned offering）</span>；不公开发售、直接卖给少数机构的叫<strong>私募</strong>——免去注册程序，但流动性差，只适合大机构。美国还有<strong>暂搁注册</strong><span class="en-term">（shelf registration）</span>：一次注册、三年内分批择机发行，把“发行权”变成了可以择时的期权。</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 3-1</span>IPO 的标准流程：投资银行带队闯关</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 175" role="img" aria-label="IPO 流程五步：聘请投行保荐、申报与注册、路演与询价、定价与配售、挂牌上市">
+      <defs>
+        <marker id="ar1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/>
+        </marker>
+      </defs>
+      <g>
+        <rect class="node" x="13"  y="36" width="118" height="64" rx="6"/>
+        <text class="nt" x="72"  y="63" text-anchor="middle">① 聘请投行</text>
+        <text class="nd" x="72"  y="83" text-anchor="middle">尽调 · 设计方案</text>
+        <rect class="node" x="157" y="36" width="118" height="64" rx="6"/>
+        <text class="nt" x="216" y="63" text-anchor="middle">② 申报注册</text>
+        <text class="nd" x="216" y="83" text-anchor="middle">招股书 · 监管问询</text>
+        <rect class="node node-hi" x="301" y="36" width="118" height="64" rx="6"/>
+        <text class="nt" x="360" y="63" text-anchor="middle">③ 路演询价</text>
+        <text class="nd" x="360" y="83" text-anchor="middle">机构累计投标</text>
+        <rect class="node" x="445" y="36" width="118" height="64" rx="6"/>
+        <text class="nt" x="504" y="63" text-anchor="middle">④ 定价配售</text>
+        <text class="nd" x="504" y="83" text-anchor="middle">确定发行价与对象</text>
+        <rect class="node" x="589" y="36" width="118" height="64" rx="6"/>
+        <text class="nt" x="648" y="63" text-anchor="middle">⑤ 挂牌上市</text>
+        <text class="nd" x="648" y="83" text-anchor="middle">首日表现 · 绿鞋</text>
+      </g>
+      <path class="edge" d="M131 68 H 153" marker-end="url(#ar1)"/>
+      <path class="edge" d="M275 68 H 297" marker-end="url(#ar1)"/>
+      <path class="edge" d="M419 68 H 441" marker-end="url(#ar1)"/>
+      <path class="edge" d="M563 68 H 585" marker-end="url(#ar1)"/>
+      <text class="elabel" x="360" y="130" text-anchor="middle">包销（firm commitment）：投行买断再转售，承担卖不掉的风险；代销（best efforts）：只代为推销、不兜底</text>
+      <text class="elabel" x="360" y="152" text-anchor="middle">“绿鞋”= 超额配售选择权，用于上市初期稳定股价</text>
+    </svg>
+    </div>
+    <figcaption><b>读图：</b>核心环节是③——承销商向机构投资者<b>累计投标询价</b>（bookbuilding），用机构的报价信息确定发行价。机构说真话的回报，就是下文的 IPO 抑价。此外也有绕开承销的路径：Spotify（2018）直接上市不发新股，2020–21 年 SPAC（借壳空壳公司上市）一度风行。</figcaption>
+  </figure>
+
+  <div class="prose">
+    <h3>IPO 抑价与“赢者诅咒”</h3>
+    <p>全球范围内，IPO 首日平均上涨约 15%–20%——发行价系统性定低了，这叫<strong>抑价</strong><span class="en-term">（underpricing）</span>。一种解释：承销商必须“留在桌上一些钱”回报参与询价的机构，否则没人愿意交出真实需求信息。但对打新散户，这不是免费午餐——<strong>赢者诅咒</strong><span class="en-term">（winner's curse）</span>：热门新股你中不了几签，而被你“全额申购成功”的，往往正是机构看不上的那只。</p>
+  </div>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>A 股打新：从“无风险彩票”到破发常态</h4>
+    <p>2014–2021 年核准制时代，A 股新股定价受市盈率不超过 23 倍的窗口指导，发行价被人为压低，上市后连续涨停成为常态——“中签如中奖”，抑价被制度放大到极致。注册制改革（科创板 2019、创业板 2020、2023 年全面推开）把定价交还给市场化询价后，2022 年新股上市首日破发比例一度达到约三成，“无脑打新”策略随之失效。</p>
+    <p class="takeaway">抑价的大小由<strong>定价机制</strong>决定：行政管价 → 巨额抑价；市场化询价 → 抑价收窄甚至破发。同一个市场，规则一变，“规律”就消失——这也是第 11 章有效市场的预演。</p>
+  </div>
+</section>
+
+<!-- ======================== 3.2 ======================== -->
+<section class="ch" id="s2">
+  <h2 class="sec"><span class="no">3.2</span>证券如何交易：市场与订单</h2>
+  <p class="sec-en">HOW SECURITIES ARE TRADED</p>
+
+  <div class="cards">
+    <div class="card">
+      <h4>直接搜寻市场 <span class="en-term">Direct Search</span></h4>
+      <p>买卖双方自己找对方，如同在闲鱼卖二手沙发。成本最高、效率最低，只适合低频非标资产。</p>
+    </div>
+    <div class="card">
+      <h4>经纪市场 <span class="en-term">Brokered Markets</span></h4>
+      <p>交易频繁到值得有人专职撮合：房产中介、一级市场的投行都是经纪人——<strong>只撮合，不垫自己的钱</strong>。</p>
+    </div>
+    <div class="card">
+      <h4>交易商市场 <span class="en-term">Dealer Markets</span></h4>
+      <p>做市商用自有资金持续挂出买价与卖价，赚<strong>买卖价差</strong>。债券与外汇柜台交易（OTC）、纳斯达克传统模式。</p>
+    </div>
+    <div class="card">
+      <h4>拍卖市场 <span class="en-term">Auction Markets</span></h4>
+      <p>所有订单汇集到一处集中竞价撮合，价格优先、时间优先——上交所、深交所、纽交所的连续竞价都是。</p>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p>向市场下达指令只有三种基本姿势：<strong>市价单</strong>要确定成交、放弃价格（按对手方最优价立即成交）；<strong>限价单</strong>要确定价格、放弃成交（挂进订单簿排队，可能永远不成交）；<strong>止损单</strong>平时潜伏、触价激活，用于保护已有仓位。全市场未成交的限价单汇成<strong>限价订单簿</strong>——就是行情软件里的“五档盘口”：</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 3-2</span>限价订单簿：五档盘口的真面目</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 330" role="img" aria-label="限价订单簿示意：上方五档卖单从 10.01 到 10.05 元，下方五档买单从 9.99 到 9.95 元，中间的空隙是 0.02 元的买卖价差">
+      <text class="tick" x="185" y="20" text-anchor="end">档位</text>
+      <text class="tick" x="230" y="20" text-anchor="middle">价格</text>
+      <text class="tick" x="290" y="20">挂单量（手）</text>
+      <!-- 卖盘（从上到下：卖5→卖1） -->
+      <g>
+        <text class="nd" x="185" y="46" text-anchor="end">卖五</text><text class="pv" x="230" y="46" text-anchor="middle">10.05</text>
+        <rect class="seg2" x="290" y="35" width="193" height="14" rx="2"/><text class="tick" x="491" y="46">2600</text>
+        <text class="nd" x="185" y="72" text-anchor="end">卖四</text><text class="pv" x="230" y="72" text-anchor="middle">10.04</text>
+        <rect class="seg2" x="290" y="61" width="141" height="14" rx="2"/><text class="tick" x="439" y="72">1900</text>
+        <text class="nd" x="185" y="98" text-anchor="end">卖三</text><text class="pv" x="230" y="98" text-anchor="middle">10.03</text>
+        <rect class="seg2" x="290" y="87" width="230" height="14" rx="2"/><text class="tick" x="528" y="98">3100</text>
+        <text class="nd" x="185" y="124" text-anchor="end">卖二</text><text class="pv" x="230" y="124" text-anchor="middle">10.02</text>
+        <rect class="seg2" x="290" y="113" width="89" height="14" rx="2"/><text class="tick" x="387" y="124">1200</text>
+        <text class="nd" x="185" y="150" text-anchor="end">卖一</text><text class="pv" x="230" y="150" text-anchor="middle">10.01</text>
+        <rect class="seg2" x="290" y="139" width="59" height="14" rx="2"/><text class="tick" x="357" y="150">800</text>
+      </g>
+      <!-- 价差区 -->
+      <line class="edge-soft" x1="160" y1="162" x2="540" y2="162"/>
+      <text class="pl" x="230" y="177" text-anchor="middle">价差 0.02</text>
+      <text class="elabel" x="290" y="177">最优买卖价之间的空隙 = 市价单的即时成本</text>
+      <line class="edge-soft" x1="160" y1="184" x2="540" y2="184"/>
+      <!-- 买盘（买1→买5） -->
+      <g>
+        <text class="nd" x="185" y="208" text-anchor="end">买一</text><text class="pv" x="230" y="208" text-anchor="middle">9.99</text>
+        <rect class="seg1" x="290" y="197" width="74" height="14" rx="2"/><text class="tick" x="372" y="208">1000</text>
+        <text class="nd" x="185" y="234" text-anchor="end">买二</text><text class="pv" x="230" y="234" text-anchor="middle">9.98</text>
+        <rect class="seg1" x="290" y="223" width="163" height="14" rx="2"/><text class="tick" x="461" y="234">2200</text>
+        <text class="nd" x="185" y="260" text-anchor="end">买三</text><text class="pv" x="230" y="260" text-anchor="middle">9.97</text>
+        <rect class="seg1" x="290" y="249" width="111" height="14" rx="2"/><text class="tick" x="409" y="260">1500</text>
+        <text class="nd" x="185" y="286" text-anchor="end">买四</text><text class="pv" x="230" y="286" text-anchor="middle">9.96</text>
+        <rect class="seg1" x="290" y="275" width="208" height="14" rx="2"/><text class="tick" x="506" y="286">2800</text>
+        <text class="nd" x="185" y="312" text-anchor="end">买五</text><text class="pv" x="230" y="312" text-anchor="middle">9.95</text>
+        <rect class="seg1" x="290" y="301" width="260" height="14" rx="2"/><text class="tick" x="558" y="312">3500</text>
+      </g>
+      <!-- 右侧注释 -->
+      <path class="edge-soft" d="M 548 146 H 420"/>
+      <text class="pv" x="556" y="141">市价买 1000 股：吃光卖一</text>
+      <text class="pv" x="556" y="156">800 股，再吃卖二 200 股</text>
+      <path class="edge-soft" d="M 548 203 H 412"/>
+      <text class="pv" x="556" y="203">限价买 10.00 元：挂入空隙，</text>
+      <text class="pv" x="556" y="218">成为新的买一排队等待</text>
+    </svg>
+    </div>
+    <figcaption><b>读图：</b>橙色是等着卖的（ask），蓝色是等着买的（bid），数字越靠中间越优先成交。市价单的代价看得见：想立即买 1000 股就得付 10.01–10.02 元，而不是“中间价”10.00；大单会一路“吃穿”多档——这就是 3.4 节的市场冲击。A 股的连续竞价正是这套机制，另有开盘集合竞价（9:15–9:25）一次性撮合出开盘价，涨跌停板（主板 ±10%）则是给价格装的限速器。</figcaption>
+  </figure>
+
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p>“止损单和限价单差不多，都是到价成交。”——方向正好相反。限价买单挂在<strong>现价之下</strong>（“跌到 10.00 我才买，图便宜”）；止损买单挂在<strong>现价之上</strong>（“涨破 10.50 说明我空头方向错了，赶紧买回认错”）。前者追求好价格，后者牺牲价格换保护，触发后通常变成市价单——极端行情里的成交价可能远差于触发价。</p>
+  </div>
+</section>
+
+<!-- ======================== 3.3 ======================== -->
+<section class="ch" id="s3">
+  <h2 class="sec"><span class="no">3.3</span>电子化浪潮：算法、高频与暗池</h2>
+  <p class="sec-en">THE RISE OF ELECTRONIC TRADING</p>
+
+  <div class="prose">
+    <p>2000 年前后，人工喊价的交易池让位于电子撮合，交易所从“会员俱乐部”变成互相竞争的上市公司，一笔订单可以被路由到十几个场所成交。三个新物种随之出现：</p>
+    <p>① <strong>算法交易</strong>：把机构大单切碎、按成交量分布慢慢执行（如 VWAP 策略），目的是<em>少惊动市场</em>；<br>
+    ② <strong>高频交易（HFT）</strong>：以微秒计的速度做市与套利，服务器直接托管在交易所机房（co-location）。它贡献了美股约一半成交量，平时把价差压得极窄，但它提供的流动性<em>可以瞬间撤走</em>；<br>
+    ③ <strong>暗池</strong>：不公开订单簿的撮合场所，机构在此互相成交大单而不暴露意图——代价是进一步分流了公开市场的透明度。IEX 交易所则反其道行之，用 350 微秒的“减速带”废掉速度优势，《Flash Boys》写的就是它。</p>
+  </div>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>2010 闪电崩盘与 2016 中国熔断：两次“刹车”实验</h4>
+    <p>2010 年 5 月 6 日下午，一只共同基金的算法卖单在流动性枯竭的市场里越卖越急，高频做市商集体撤单，道指几分钟内一度暴跌近 1000 点（约 9%）；宝洁等蓝筹瞬间打到荒谬价格，埃森哲成交过 1 美分的“占位报价”。20 多分钟后市场基本收复失地，但“流动性平时是海、极端时是水洼”从此写进教科书。此后美股引入了个股涨跌限制（Limit Up–Limit Down）。</p>
+    <p>中国在 2016 年 1 月试行指数熔断：沪深 300 跌 5% 暂停 15 分钟、跌 7% 提前收市。结果 1 月 4 日与 7 日两天四次触发，7 日全天实际交易约 15 分钟——阈值太近反而制造了“赶在熔断前抛售”的磁吸效应，机制实施四个交易日即叫停。涨跌停板与熔断都是“给市场降速”的工具，但参数错了，刹车本身会制造追尾。</p>
+    <p class="takeaway">电子化没有消灭波动，只是改变了波动的形态：平时更顺滑，尾部更陡峭。这是第 9 章流动性风险与第 11 章市场有效性的现实注脚。</p>
+  </div>
+</section>
+
+<!-- ======================== 3.4 ======================== -->
+<section class="ch" id="s4">
+  <h2 class="sec"><span class="no">3.4</span>交易成本</h2>
+  <p class="sec-en">TRADING COSTS</p>
+
+  <div class="tablewrap">
+    <table>
+      <tr><th>类型</th><th>项目</th><th>说明</th></tr>
+      <tr><td rowspan="2">显性成本</td><td>佣金</td><td>付给券商的手续费；美国零售端已普遍“零佣金”，A 股常见万 2.5 左右</td></tr>
+      <tr><td>税费</td><td>A 股印花税：卖出时 0.05%（2023 年减半后），另有极小额过户费</td></tr>
+      <tr><td rowspan="3">隐性成本</td><td>买卖价差</td><td>市价单立即付出半个价差；流动性越差价差越宽</td></tr>
+      <tr><td>市场冲击</td><td>大单吃穿多档盘口，把价格推向对自己不利的方向</td></tr>
+      <tr><td>机会成本</td><td>限价单图好价却没成交，行情跑了</td></tr>
+    </table>
+  </div>
+
+  <div class="prose">
+    <p>美国的“零佣金”另有账本：券商把客户订单打包卖给高频做市商执行，即<strong>订单流付费</strong><span class="en-term">（payment for order flow）</span>。做市商付钱买的是“与不知情散户交易”的权利，利润来自价差——佣金消失了，成本搬进了成交价。记住本节的度量习惯：<em>一笔交易的真实成本 ≈ 佣金 + 半个价差 + 市场冲击</em>，对频繁交易者，后两项远大于第一项。</p>
+  </div>
+</section>
+
+<!-- ======================== 3.5 ======================== -->
+<section class="ch" id="s5">
+  <h2 class="sec"><span class="no">3.5</span>保证金交易：借钱做多</h2>
+  <p class="sec-en">BUYING ON MARGIN</p>
+
+  <div class="prose">
+    <p>向券商借钱买证券，证券本身押在账户里，这就是<strong>保证金交易</strong>（A 股叫“融资”）。两条红线管着它：<strong>初始保证金</strong>——开仓时自有资金的最低占比（美国 Reg T 为 50%，中国融资保证金比例现为不低于 80%）；<strong>维持保证金</strong>——此后任何时刻权益占市值的最低比例（美国通常 25%–30%，中国用“维持担保比例”表述，130% 平仓线常见）。跌破维持线，券商发出<strong>追加保证金通知</strong>：限时补钱，否则强制平仓。</p>
+  </div>
+
+  <div class="formula">
+    <div class="fx">保证金比例 =（证券市值 − 借款）/ 证券市值</div>
+    <div class="fx">追保触发价　P* = 借款 / [ 股数 ×（1 − 维持保证金比例）]</div>
+    <div class="note">例：自有 5000 元 + 借款 5000 元，以 100 元买入 100 股。维持比例 30% 时：P* = 5000 / (100 × 0.7) ≈ 71.43 元——股价跌到 71.43 元就会收到追保电话。</div>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 3-3</span>杠杆是对称的放大器（含 8% 借款利息）</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 324" role="img" aria-label="柱状图：股价上涨 30% 时，全款买入收益 30%，两倍杠杆收益 52%；股价下跌 30% 时，全款亏损 30%，两倍杠杆亏损 68%">
+      <!-- 图例 -->
+      <rect class="seg1" x="56" y="10" width="12" height="12" rx="2"/>
+      <text class="tick" x="74" y="20">全款买入</text>
+      <rect class="seg2" x="180" y="10" width="12" height="12" rx="2"/>
+      <text class="tick" x="198" y="20">保证金买入（2 倍杠杆，借款利率 8%）</text>
+      <text class="atitle" x="56" y="42">自有资金收益率（%）</text>
+      <!-- 网格与轴 -->
+      <g text-anchor="end">
+        <text class="tick" x="48" y="88">+40</text>
+        <text class="tick" x="48" y="157">0</text>
+        <text class="tick" x="48" y="226">−40</text>
+        <text class="tick" x="48" y="294">−80</text>
+      </g>
+      <line class="grid" x1="56" y1="84" x2="700" y2="84"/>
+      <line class="grid" x1="56" y1="222" x2="700" y2="222"/>
+      <line class="grid" x1="56" y1="290" x2="700" y2="290"/>
+      <line class="axis" x1="56" y1="153" x2="700" y2="153"/>
+      <!-- 组1：上涨30% -->
+      <rect class="seg1" x="150" y="101.6" width="90" height="51.4" rx="3"/>
+      <text class="pl" x="195" y="95" text-anchor="middle">+30%</text>
+      <rect class="seg2" x="260" y="63.9" width="90" height="89.1" rx="3"/>
+      <text class="pl" x="305" y="58" text-anchor="middle">+52%</text>
+      <!-- 组2：下跌30% -->
+      <rect class="seg1" x="430" y="153" width="90" height="51.4" rx="3"/>
+      <text class="pl" x="475" y="220" text-anchor="middle">−30%</text>
+      <rect class="seg2" x="540" y="153" width="90" height="116.6" rx="3"/>
+      <text class="pl" x="585" y="285" text-anchor="middle">−68%</text>
+      <!-- 组标签 -->
+      <text class="atitle" x="250" y="316" text-anchor="middle">股价上涨 30%</text>
+      <text class="atitle" x="530" y="316" text-anchor="middle">股价下跌 30%</text>
+    </svg>
+    </div>
+    <figcaption><b>读图：</b>自有 1 万 + 借 1 万买 2 万元股票，年末还本付息 1.08 万。涨 30%：市值 2.6 万 − 1.08 万 = 1.52 万，收益 +52%；跌 30%：1.4 万 − 1.08 万 = 0.32 万，收益 −68%。<b>利息让放大不对称：上行不到 2 倍，下行超过 2 倍。</b>杠杆没有观点，它只是把你的对错都乘上系数。</figcaption>
+  </figure>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>2015 年的杠杆牛与强平螺旋</h4>
+    <p>2015 年上半年，场内两融余额冲上 2.2 万亿元峰值，场外配资更以 5–10 倍杠杆涌入。6 月中旬行情掉头，高杠杆账户最先触及平仓线，强制卖出压低股价，又把更多账户拖过平仓线——千股跌停与“流动性消失”反复出现，上证指数两个多月下跌约 45%。下跌的不是基本面，是杠杆链条本身。</p>
+    <p class="takeaway">图 3-3 的 −68% 只是个人账户视角；当全市场都在杠杆上，追保 → 强平 → 下跌 → 更多追保会形成系统级正反馈——第 1 章系统性风险的 A 股版本。</p>
+  </div>
+</section>
+
+<!-- ======================== 3.6 ======================== -->
+<section class="ch" id="s6">
+  <h2 class="sec"><span class="no">3.6</span>卖空：借券做空</h2>
+  <p class="sec-en">SHORT SALES</p>
+
+  <div class="prose">
+    <p>看跌一只股票时，可以<strong>先借来卖掉，等跌了再买回还券</strong>——赚的是“先高卖、后低买”的差价。卖出所得现金连同追加的保证金一起冻结在账户里；期间股票若分红，<em>卖空者要照额赔付给出借人</em>。中国的对应制度是融资融券里的“融券卖出”，券源有限、费率较高，规模远小于美国。</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 3-4</span>卖空的完整循环：借券 → 卖出 → 买回 → 还券</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 290" role="img" aria-label="卖空流程：从券商借入 1000 股，以 20 元卖出获得 2 万元冻结资金，之后以 15 元买回股票归还券商，赚取差价 5000 元">
+      <defs>
+        <marker id="ar2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/>
+        </marker>
+      </defs>
+      <rect class="node" x="20" y="40" width="150" height="190" rx="6"/>
+      <text class="nt" x="95" y="125" text-anchor="middle">券商 · 出借方</text>
+      <text class="nd" x="95" y="147" text-anchor="middle">融券池（他人持仓）</text>
+
+      <rect class="node node-hi" x="285" y="40" width="150" height="190" rx="6"/>
+      <text class="nt" x="360" y="125" text-anchor="middle">卖空投资者</text>
+      <text class="nd" x="360" y="147" text-anchor="middle">判断股价将下跌</text>
+
+      <rect class="node" x="550" y="40" width="150" height="190" rx="6"/>
+      <text class="nt" x="625" y="125" text-anchor="middle">市场</text>
+      <text class="nd" x="625" y="147" text-anchor="middle">其他买家与卖家</text>
+
+      <text class="elabel" x="227" y="86" text-anchor="middle">① 借入 1000 股</text>
+      <path class="edge" d="M 174 96 H 281" marker-end="url(#ar2)"/>
+      <text class="elabel" x="492" y="86" text-anchor="middle">② 以 20 元卖出</text>
+      <path class="edge" d="M 439 96 H 546" marker-end="url(#ar2)"/>
+      <text class="elabel" x="492" y="118" text-anchor="middle">所得 2 万元被冻结</text>
+
+      <text class="elabel" x="492" y="190" text-anchor="middle">③ 以 15 元买回</text>
+      <path class="edge" d="M 546 200 H 443" marker-end="url(#ar2)"/>
+      <text class="elabel" x="227" y="190" text-anchor="middle">④ 还券 · 赔付股息</text>
+      <path class="edge" d="M 281 200 H 178" marker-end="url(#ar2)"/>
+
+      <text class="elabel" x="360" y="258" text-anchor="middle">盈亏 =（卖出价 − 买回价）× 股数；本例赚（20 − 15）× 1000 = 5000 元</text>
+      <text class="elabel" x="360" y="278" text-anchor="middle">若股价不跌反涨，买回成本没有上限——亏损也没有上限</text>
+    </svg>
+    </div>
+    <figcaption><b>读图：</b>做多最多亏掉本金（价格到 0 为止），卖空的最大收益反而封顶于此，而亏损端敞开——损益结构与做多<b>镜像且不对称</b>。这决定了卖空必须配保证金与强平机制。</figcaption>
+  </figure>
+
+  <div class="formula">
+    <div class="fx">卖空保证金比例 =（账户总额 − 回补市值）/ 回补市值</div>
+    <div class="fx">追保触发价　P* = 账户总额 / [ 股数 ×（1 + 维持保证金比例）]</div>
+    <div class="note">例：以 20 元卖空 1000 股（得 2 万），另缴 50% 保证金 1 万，账户总额 3 万。维持比例 30% 时：P* = 30000 / (1000 × 1.3) ≈ 23.08 元——股价<strong>涨</strong>过 23.08 元触发追保，与做多方向相反。</div>
+  </div>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>GameStop（2021）：一场教科书级的轧空</h4>
+    <p>2021 年 1 月，游戏零售商 GameStop 的空头仓位超过流通股的 100%（同一股票被借出、卖出、再被借出）。Reddit 散户抱团买入股票与看涨期权，股价从约 18 美元最高冲到盘中 483 美元。空头每上涨一步就离追保更近：被迫买回还券的单子本身就是买压——<strong>轧空</strong>（short squeeze）的正反馈启动，对冲基金 Melvin Capital 单月亏损超过一半，需外部注资 27.5 亿美元续命。随后部分券商限制买入引发“规则为谁服务”的全国性争议。</p>
+    <p class="takeaway">卖空亏损无上限 + 追保强平的被动买入，是轧空的全部力学。注意事后结局：狂欢退潮后股价长期回落——卖空者的方向未必错，错的是对<strong>路径风险</strong>的承受力（凯恩斯：市场保持非理性的时间，可以长过你保持偿付能力的时间）。</p>
+  </div>
+
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p>“卖空者唱衰市场，是股价下跌的元凶。”——实证研究的结论相反：卖空把负面信息更快地压进价格，限制卖空的市场往往泡沫更大、崩得更狠（对应第 7 章“价格高估更难被纠正”的机制）。监管限制的通常是危机中的<strong>裸卖空</strong>与恶意传谣，而非卖空本身。</p>
+  </div>
+</section>
+
+<!-- ======================== 3.7 ======================== -->
+<section class="ch" id="s7">
+  <h2 class="sec"><span class="no">3.7</span>市场监管：保护的是什么</h2>
+  <p class="sec-en">REGULATION OF SECURITIES MARKETS</p>
+
+  <div class="cards">
+    <div class="card">
+      <h4>信息披露为核心 <span class="en-term">Disclosure, Not Endorsement</span></h4>
+      <p>美国 1933/1934 年证券法确立的原则：监管者只强制<strong>说真话</strong>（注册、定期报告、重大事项公告），不为证券质量背书。注册获批 ≠ 值得买。中国注册制改革正是向这一原则靠拢：审“真实性”，不审“好坏”。</p>
+    </div>
+    <div class="card">
+      <h4>禁止内幕交易与操纵 <span class="en-term">Fair Play</span></h4>
+      <p>利用未公开重大信息交易、虚假申报、对倒拉抬都是红线。执法依赖交易监控与举报（美国 SEC 的吹哨人最高可分罚款的 30%）。</p>
+    </div>
+    <div class="card">
+      <h4>投资者保护的边界 <span class="en-term">SIPC ≠ 保险箱</span></h4>
+      <p>美国 SIPC 在<strong>券商倒闭</strong>时赔付客户资产（上限 50 万美元）——保的是“托管风险”，<strong>绝不赔投资亏损</strong>。中国的投资者保护基金、适当性管理（风险测评匹配产品）逻辑相同：保程序公平，不保结果盈利。</p>
+    </div>
+    <div class="card">
+      <h4>自律与交易所规则 <span class="en-term">Self-Regulation</span></h4>
+      <p>FINRA 对券商与从业者的日常监管、交易所的上市与交易规则（涨跌停、熔断、退市标准）构成第一道防线。A 股退市常态化（财务、交易、规范、重大违法四类强退）是注册制的配套闸门。</p>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p>把本章串起来看：发行端管披露（3.1），交易端管公平与稳定（3.2–3.3），杠杆端管风险外溢（3.5–3.6）。监管目标始终是让<em>价格形成过程</em>可信，而不是让价格“好看”。</p>
+  </div>
+</section>
+
+<!-- ======================== 小结 ======================== -->
+<section class="ch" id="recap">
+  <h2 class="sec"><span class="no">※</span>本章小结</h2>
+  <p class="sec-en">SUMMARY</p>
+
+  <div class="recap">
+    <ol>
+      <li><b>发行：</b>一级市场由投行承销（包销担风险、代销不兜底），累计投标询价定价；IPO 系统性抑价约 15%–20%，“赢者诅咒”解释了打新为何不是免费午餐——抑价幅度由定价制度决定。</li>
+      <li><b>交易：</b>四类市场按组织化程度递进（搜寻 → 经纪 → 交易商 → 拍卖）；市价单买确定性、限价单买价格、止损单买保护；限价订单簿（五档盘口）是市场的即时地形图。</li>
+      <li><b>电子化：</b>算法拆单求隐身、高频做市求速度、暗池撮合求隐私；流动性平时深、极端时薄，闪电崩盘与熔断是同一问题的两次实验。</li>
+      <li><b>成本：</b>真实成本 ≈ 佣金 + 半个价差 + 市场冲击；“零佣金”把成本转移进了成交价（订单流付费）。</li>
+      <li><b>保证金交易：</b>杠杆对称放大盈亏（利息使下行更重）；追保价 P* = 借款 / [股数 ×（1 − 维持比例）]。</li>
+      <li><b>卖空：</b>收益封顶、亏损无限，分红要赔付；追保价 P* = 账户总额 / [股数 ×（1 + 维持比例）]；强平的被动买入是轧空的燃料。</li>
+    </ol>
+  </div>
+
+  <h3>核心术语（中英对照）</h3>
+  <div class="tablewrap">
+    <table>
+      <tr><th>中文</th><th>English</th><th>一句话定义</th></tr>
+      <tr><td>首次公开发行</td><td>initial public offering (IPO)</td><td>公司首次向公众出售股票</td></tr>
+      <tr><td>承销 / 包销 / 代销</td><td>underwriting / firm commitment / best efforts</td><td>投行组织发行；买断转售 vs 只代为推销</td></tr>
+      <tr><td>招股说明书</td><td>prospectus</td><td>发行前依法披露的详细信息文件</td></tr>
+      <tr><td>IPO 抑价</td><td>underpricing</td><td>发行价系统性低于首日市场价的现象</td></tr>
+      <tr><td>暂搁注册</td><td>shelf registration</td><td>一次注册、多次择机发行</td></tr>
+      <tr><td>私募</td><td>private placement</td><td>面向少数合格机构的非公开发行</td></tr>
+      <tr><td>做市商 / 交易商</td><td>dealer / market maker</td><td>用自有资金持续双边报价赚价差的机构</td></tr>
+      <tr><td>买卖价差</td><td>bid-ask spread</td><td>最优卖价与最优买价之差</td></tr>
+      <tr><td>限价订单簿</td><td>limit order book</td><td>全部未成交限价单按价格排队的集合</td></tr>
+      <tr><td>市价单 / 限价单 / 止损单</td><td>market / limit / stop order</td><td>要成交 / 要价格 / 要保护</td></tr>
+      <tr><td>算法交易</td><td>algorithmic trading</td><td>程序化拆分执行订单以降低冲击</td></tr>
+      <tr><td>高频交易</td><td>high-frequency trading</td><td>微秒级的自动化做市与套利</td></tr>
+      <tr><td>暗池</td><td>dark pools</td><td>不公开订单簿的大宗撮合场所</td></tr>
+      <tr><td>订单流付费</td><td>payment for order flow</td><td>做市商付费购买券商的零售订单</td></tr>
+      <tr><td>保证金交易 / 融资</td><td>buying on margin</td><td>向券商借钱买证券，证券作押</td></tr>
+      <tr><td>维持保证金</td><td>maintenance margin</td><td>权益占市值不得低于的比例红线</td></tr>
+      <tr><td>追加保证金通知</td><td>margin call</td><td>跌破红线后限时补资否则强平</td></tr>
+      <tr><td>卖空 / 融券</td><td>short sale</td><td>借券卖出、低价买回还券的做空机制</td></tr>
+      <tr><td>轧空</td><td>short squeeze</td><td>空头被迫回补形成的上涨正反馈</td></tr>
+      <tr><td>证券投资者保护公司</td><td>SIPC</td><td>券商倒闭时的客户资产保障，不保亏损</td></tr>
+    </table>
+  </div>
+
+  <h3>自测（先想后翻）</h3>
+  <details>
+    <summary>Q1 包销与代销，风险分别落在谁头上？IPO 为什么普遍抑价，散户“逢新必打”错在哪？</summary>
+    <div class="ans"><p>包销：投行按约定价买断全部新股再转售，卖不掉砸在自己手里——发行风险归投行；代销：投行尽力推销、卖多少算多少，风险留在发行人。抑价是承销商对询价机构“交出真实需求”的补偿，平均 15%–20%。但散户面对赢者诅咒：热门新股中签率极低，容易全额申购到的恰是机构冷落的票——配额被逆向选择污染，平均抑价不等于你的平均收益。</p></div>
+  </details>
+  <details>
+    <summary>Q2 现价 10.20 元。“限价买 10.00”和“止损买 10.50”各在什么场景用？触发后有何不同？</summary>
+    <div class="ans"><p>限价买 10.00：认为股票值得买但嫌贵，挂单等回调，成交价不会高于 10.00，但可能永远不成交。止损买 10.50：通常是空头的保护单——若涨破 10.50 说明判断错误，立即买回止损；触发后转为市价单，极端行情中实际成交价可能明显高于 10.50（跳空、流动性缺失）。一句话：限价单等好价，止损单认错离场。</p></div>
+  </details>
+  <details>
+    <summary>Q3 自有 6000 元、借 4000 元，以 50 元买入 200 股。维持保证金 25%：追保价是多少？若股价涨 20%（不计利息），收益率是多少？</summary>
+    <div class="ans"><p>追保价 P* = 4000 / [200 ×（1 − 0.25）] = 4000 / 150 ≈ 26.67 元。涨 20%：市值 10000 × 1.2 = 12000，权益 = 12000 − 4000 = 8000，收益率 =（8000 − 6000）/ 6000 ≈ +33.3%——1.67 倍杠杆把 20% 放大为 33%。对称地，跌 20% 时亏损也是 33.3%。</p></div>
+  </details>
+  <details>
+    <summary>Q4 以 20 元卖空 1000 股，另缴 50% 保证金。股价涨到 25 元时保证金比例还剩多少？维持 30% 的追保价是多少？</summary>
+    <div class="ans"><p>账户总额 = 20000（卖出所得）+ 10000（保证金）= 30000。股价 25 元时：权益 = 30000 − 25000 = 5000，比例 = 5000 / 25000 = 20%，已低于 30%，会收到追保通知。追保价 P* = 30000 / [1000 ×（1 + 0.3）] ≈ 23.08 元。注意卖空的危险方向是<strong>上涨</strong>，且理论最大亏损无上限。</p></div>
+  </details>
+  <details>
+    <summary>Q5 GameStop 事件里，空头“认错买回”为什么反而推高股价？空头仓位怎么可能超过流通股的 100%？</summary>
+    <div class="ans"><p>回补必须在市场上买入——每一笔止损单都是真实买压，推价上行又把更多空头推过追保线，强平接力形成正反馈螺旋，这就是轧空。仓位超 100%：A 借出股票给 B，B 卖给 C，C 的券商又把同一批股票借给 D 再卖出——同一股份在借贷链上被计入多次空头头寸，完全合规地突破 100%。链条越长，挤压时的买回需求越离谱。</p></div>
+  </details>
+
+  <div class="next">
+    <div>
+      <div class="lbl">NEXT CHAPTER</div>
+      <div class="ttl">第 4 章 · 共同基金与其他投资公司</div>
+    </div>
+    <div class="lbl">开放式与封闭式 → ETF → 费用 → 基金业绩</div>
+  </div>
+
+  <p class="foot">本页为依据 Bodie–Kane–Marcus《投资学》（Investments）框架整理的原创学习笔记，仅用于教学理解；制度参数与案例数字为近似教学值，细节以官方规则与公开报道为准。内容不构成任何投资建议。</p>
+</section>
+
+</main>
+</div>
+</div>
+
+<script>
+(function(){
+  var links = Array.prototype.slice.call(document.querySelectorAll('.sidenav a[href^="#"]'));
+  if(!links.length) return;
+  var map = [];
+  links.forEach(function(a){
+    var el = document.getElementById(a.getAttribute('href').slice(1));
+    if(el) map.push([el, a]);
+  });
+  function update(){
+    var y = window.scrollY + 150;
+    var cur = map[0][1];
+    for(var i = 0; i < map.length; i++){
+      if(map[i][0].offsetTop <= y) cur = map[i][1];
+    }
+    map.forEach(function(p){ p[1].classList.toggle('active', p[1] === cur); });
+  }
+  var tick = false;
+  window.addEventListener('scroll', function(){
+    if(!tick){
+      tick = true;
+      requestAnimationFrame(function(){ tick = false; update(); });
+    }
+  }, {passive:true});
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+</body>
+</html>
