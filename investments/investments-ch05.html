@@ -1,0 +1,730 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>投资学 · 第5章 风险与收益</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700;900&family=Noto+Sans+SC:wght@400;500;700&display=swap">
+<style>
+/* 布局：双栏（212px 侧栏 + 正文），章导览 + 5.1–5.7 分节；宽图表置于横向滚动容器 */
+:root{
+  --bg:#f5f6f7;
+  --surface:#ffffff;
+  --ink:#171a20;
+  --ink-2:#4a5160;
+  --muted:#858c9b;
+  --line:#e2e5ea;
+  --line-2:#c9ced6;
+  --accent:#1d5fad;
+  --accent-ink:#174e8f;
+  --accent-soft:#eaf1fa;
+  --series:#2a78d6;
+  --series2:#eb6834;
+  --series3:#1baf7a;
+  --crit:#d03b3b;
+  --crit-soft:rgba(208,59,59,.07);
+  --serif:"Noto Serif SC","Songti SC",serif;
+  --sans:"Noto Sans SC","Microsoft YaHei",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#101215; --surface:#181b20; --ink:#eef0f3; --ink-2:#c0c5cf; --muted:#8a909d;
+    --line:#282c33; --line-2:#3a3f48;
+    --accent:#5a96e3; --accent-ink:#79abec; --accent-soft:#1c2a3d;
+    --series:#3987e5; --series2:#d95926; --series3:#199e70; --crit:#e66767; --crit-soft:rgba(230,103,103,.10);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#101215; --surface:#181b20; --ink:#eef0f3; --ink-2:#c0c5cf; --muted:#8a909d;
+  --line:#282c33; --line-2:#3a3f48;
+  --accent:#5a96e3; --accent-ink:#79abec; --accent-soft:#1c2a3d;
+  --series:#3987e5; --series2:#d95926; --series3:#199e70; --crit:#e66767; --crit-soft:rgba(230,103,103,.10);
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:var(--sans); font-size:15.5px; line-height:1.85;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1190px; margin:0 auto; padding-inline:20px; padding-block:0 72px}
+
+/* ———— 左侧小节导航 ———— */
+.layout{display:grid; grid-template-columns:212px minmax(0,1fr); gap:44px; align-items:start}
+.article{max-width:920px; min-width:0}
+.sidenav{
+  position:sticky; top:16px; max-height:calc(100vh - 32px); overflow-y:auto;
+  padding-block:40px 16px; font-size:13px;
+}
+.sidenav .sn-chap{
+  margin:0 0 10px; padding-left:13px; font-size:11.5px; letter-spacing:.14em;
+  color:var(--muted); font-weight:700;
+}
+.sidenav a{
+  display:block; color:var(--ink-2); text-decoration:none; line-height:1.55;
+  padding:6px 10px 6px 13px; border-left:2px solid var(--line);
+}
+.sidenav a:hover{color:var(--accent-ink)}
+.sidenav a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.sidenav a.active{
+  color:var(--accent-ink); border-left-color:var(--accent);
+  background:var(--accent-soft); font-weight:700;
+}
+.hero,section.ch{scroll-margin-top:10px}
+@media (max-width: 999px){
+  .sidenav{display:none}
+  .layout{display:block}
+}
+@media (min-width: 1000px){
+  nav.chapmap{display:none}
+}
+
+/* ———— 页眉 ———— */
+.masthead{
+  display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  padding-block:18px 14px; border-bottom:1px solid var(--line);
+}
+.masthead .book{font-family:var(--serif); font-weight:700; font-size:15px; letter-spacing:.02em}
+.masthead .part{font-size:12.5px; color:var(--muted); letter-spacing:.12em}
+.masthead a{color:var(--accent-ink); text-decoration:none}
+.masthead a:hover{text-decoration:underline}
+.masthead a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+a.next{color:inherit; text-decoration:none}
+a.next:hover{border-color:var(--accent)}
+a.next:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+/* ———— 章首 ———— */
+.hero{padding-block:44px 28px; border-bottom:1px solid var(--line)}
+.chap-no{
+  display:inline-flex; align-items:center; gap:10px;
+  font-size:12.5px; letter-spacing:.22em; color:var(--accent-ink); font-weight:700;
+}
+.chap-no::after{content:""; width:46px; height:1px; background:var(--accent)}
+.hero h1{
+  font-family:var(--serif); font-weight:900; font-size:clamp(30px,5vw,46px);
+  line-height:1.25; margin:10px 0 4px; letter-spacing:.02em; text-wrap:balance;
+}
+.hero .en{font-size:14px; color:var(--muted); letter-spacing:.08em; margin:0 0 18px}
+.hero .lede{max-width:46em; color:var(--ink-2); margin:0}
+.hero .lede strong{color:var(--ink)}
+.objectives{
+  margin-top:22px; padding:16px 20px; background:var(--surface);
+  border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:0 6px 6px 0;
+}
+.objectives h2{font-size:13px; letter-spacing:.18em; color:var(--accent-ink); margin:0 0 8px; font-weight:700}
+.objectives ul{margin:0; padding-left:1.3em; color:var(--ink-2)}
+.objectives li{margin:3px 0}
+.chapmap{display:flex; flex-wrap:wrap; gap:8px; margin-top:20px}
+.chapmap a{
+  font-size:13px; color:var(--ink-2); text-decoration:none;
+  border:1px solid var(--line-2); border-radius:999px; padding:4px 13px; background:var(--surface);
+}
+.chapmap a:hover{border-color:var(--accent); color:var(--accent-ink)}
+.chapmap a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+/* ———— 正文分节 ———— */
+section.ch{padding-block:40px 8px}
+section.ch + section.ch{border-top:1px solid var(--line)}
+h2.sec{
+  font-family:var(--serif); font-weight:700; font-size:clamp(22px,3.4vw,28px);
+  margin:0 0 2px; line-height:1.35; text-wrap:balance;
+}
+h2.sec .no{color:var(--accent-ink); margin-right:10px; font-feature-settings:"tnum"}
+p.sec-en{font-size:12.5px; letter-spacing:.1em; color:var(--muted); margin:0 0 18px}
+h3{font-size:16.5px; font-weight:700; margin:26px 0 8px}
+h3 .tag{color:var(--accent-ink)}
+p{margin:10px 0}
+.prose{max-width:46em}
+.prose .en-term{color:var(--muted); font-size:.88em}
+strong{font-weight:700}
+em{font-style:normal; font-weight:700; color:var(--accent-ink)}
+
+/* ———— 组件 ———— */
+.cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px; margin:16px 0}
+.card{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:16px 18px;
+}
+.card h4{margin:0 0 6px; font-size:15px}
+.card h4 .en-term{display:block; font-weight:400; font-size:12px; color:var(--muted); letter-spacing:.04em; margin-top:2px}
+.card p{margin:6px 0; font-size:14px; color:var(--ink-2)}
+.card ul{margin:6px 0 0; padding-left:1.2em; font-size:14px; color:var(--ink-2)}
+.card li{margin:3px 0}
+.chip{
+  display:inline-block; font-size:12.5px; color:var(--accent-ink); background:var(--accent-soft);
+  border-radius:4px; padding:1px 8px; margin:2px 4px 0 0;
+}
+
+.case{
+  margin:20px 0; padding:16px 20px 14px; background:var(--surface);
+  border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:0 8px 8px 0;
+}
+.case .label{font-size:12px; letter-spacing:.2em; color:var(--accent-ink); font-weight:700; display:block; margin-bottom:6px}
+.case h4{margin:0 0 6px; font-size:15.5px}
+.case p{margin:7px 0; font-size:14.5px; color:var(--ink-2)}
+.case p:last-child{margin-bottom:2px}
+.case .takeaway{color:var(--ink); font-weight:500}
+.case .takeaway::before{content:"▸ 教材对应 "; color:var(--accent-ink); font-weight:700; font-size:12.5px; letter-spacing:.05em}
+
+.pitfall{
+  margin:20px 0; padding:14px 20px; border:1px dashed var(--line-2); border-radius:8px; max-width:46em;
+}
+.pitfall .label{font-size:12px; letter-spacing:.2em; color:var(--crit); font-weight:700; display:block; margin-bottom:4px}
+.pitfall p{margin:4px 0; font-size:14.5px; color:var(--ink-2)}
+
+.formula{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px;
+  padding:12px 18px; margin:14px 0; max-width:46em; overflow-x:auto;
+  font-size:15px; line-height:2;
+}
+.formula .fx{white-space:nowrap}
+.formula sub,.formula sup{font-size:11px}
+.formula .note{font-size:12.5px; color:var(--muted)}
+
+table{border-collapse:collapse; width:100%; font-size:14px; font-variant-numeric:tabular-nums}
+.tablewrap{overflow-x:auto; margin:16px 0; border:1px solid var(--line); border-radius:8px; background:var(--surface)}
+.tablewrap table{min-width:560px}
+th,td{padding:9px 14px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top}
+th{font-size:12.5px; letter-spacing:.08em; color:var(--muted); font-weight:700; white-space:nowrap}
+tr:last-child td{border-bottom:none}
+td.num{white-space:nowrap}
+
+/* ———— 图 ———— */
+figure{margin:24px 0; background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:18px 18px 12px}
+figure .fig-scroll{overflow-x:auto}
+figure svg{display:block; max-width:100%; height:auto; color:var(--ink)}
+figure .fig-scroll svg{min-width:660px}
+figcaption{font-size:13px; color:var(--muted); margin-top:10px; line-height:1.7}
+figcaption b{color:var(--ink-2); font-weight:700}
+.fig-title{font-size:14px; font-weight:700; margin:0 0 12px}
+.fig-title .fno{color:var(--accent-ink); margin-right:8px}
+
+svg .node{fill:var(--bg); stroke:var(--line-2); stroke-width:1.2; rx:6}
+svg .node-hi{fill:var(--accent-soft); stroke:var(--accent)}
+svg .nt{font:700 12.5px var(--sans); fill:var(--ink)}
+svg .nd{font:400 11px var(--sans); fill:var(--ink-2)}
+svg .edge{stroke:var(--ink-2); stroke-width:1.4; fill:none}
+svg .edge-soft{stroke:var(--muted); stroke-width:1.2; fill:none; stroke-dasharray:4 4}
+svg .elabel{font:400 11.5px var(--sans); fill:var(--muted)}
+svg .grid{stroke:var(--line); stroke-width:1}
+svg .axis{stroke:var(--line-2); stroke-width:1.2}
+svg .tick{font:400 11px var(--sans); fill:var(--muted)}
+svg .atitle{font:400 11.5px var(--sans); fill:var(--muted)}
+svg .pt{fill:var(--series); stroke:var(--surface); stroke-width:2}
+svg .pt2{fill:var(--series2); stroke:var(--surface); stroke-width:2}
+svg .ptc{fill:var(--crit); stroke:var(--surface); stroke-width:2}
+svg .pl{font:700 13px var(--sans); fill:var(--ink)}
+svg .pv{font:400 11.5px var(--sans); fill:var(--ink-2)}
+svg .ln1{stroke:var(--series); stroke-width:2.5; fill:none}
+svg .ln2{stroke:var(--series2); stroke-width:2.5; fill:none}
+svg .seg1{fill:var(--series)}
+svg .seg2{fill:var(--series2)}
+svg .range{fill:var(--accent-soft); stroke:var(--accent); stroke-width:1.2}
+svg .tail{fill:var(--crit-soft)}
+svg .vline{stroke:var(--crit); stroke-width:1.6; stroke-dasharray:5 4}
+
+/* ———— 小结/术语/自测 ———— */
+.recap{margin-top:8px}
+.recap ol{margin:8px 0 0; padding-left:1.4em; max-width:46em; color:var(--ink-2)}
+.recap li{margin:7px 0}
+.recap li b{color:var(--ink)}
+details{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px;
+  padding:12px 18px; margin:10px 0; max-width:46em;
+}
+details summary{cursor:pointer; font-weight:500; color:var(--ink)}
+details summary:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+details[open] summary{color:var(--accent-ink)}
+details .ans{margin-top:8px; padding-top:8px; border-top:1px dashed var(--line); font-size:14.5px; color:var(--ink-2)}
+details .ans p{margin:6px 0}
+
+.next{
+  margin-top:48px; padding:18px 22px; border:1px solid var(--line); border-radius:8px;
+  background:var(--surface); display:flex; justify-content:space-between; align-items:center; gap:14px; flex-wrap:wrap;
+}
+.next .lbl{font-size:12px; letter-spacing:.18em; color:var(--muted)}
+.next .ttl{font-family:var(--serif); font-weight:700; font-size:18px; margin-top:2px}
+.foot{margin-top:26px; font-size:12.5px; color:var(--muted); line-height:1.8}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <span class="book">《投资学》学习手册 · Investments (Bodie · Kane · Marcus)</span>
+  <span class="part"><a href="investments-index.html">学习地图</a> · 第二部分 资产组合理论与实践</span>
+</header>
+
+<div class="layout">
+
+<nav class="sidenav" aria-label="小节导航">
+  <p class="sn-chap">第 5 章 · 风险与收益</p>
+  <a href="#top">章首 · 学习目标</a>
+  <a href="#s1">5.1 收益率怎么算</a>
+  <a href="#s2">5.2 利率与通胀</a>
+  <a href="#s3">5.3 风险与风险溢价</a>
+  <a href="#s4">5.4 算术与几何平均</a>
+  <a href="#s5">5.5 正态与肥尾</a>
+  <a href="#s6">5.6 VaR 与尾部风险</a>
+  <a href="#s7">5.7 百年历史记录</a>
+  <a href="#recap">小结 · 术语 · 自测</a>
+</nav>
+
+<main class="article">
+
+<!-- ======================== 章首 ======================== -->
+<div class="hero" id="top">
+  <span class="chap-no">CHAPTER 5</span>
+  <h1>风险与收益入门及历史回顾</h1>
+  <p class="en">Risk, Return, and the Historical Record</p>
+  <p class="lede">从这一章起进入全书的心脏。做任何投资决定之前，先把语言学对：<strong>收益率怎么算才不骗自己，风险怎么度量才能互相比较</strong>。本章交付三套工具——复利与年化的口径、算术 / 几何平均的分工、一把风险标尺（σ、VaR、ES）——它们是第 6–9 章所有模型的输入，也是你未来评估任何策略的地基。</p>
+
+  <div class="objectives">
+    <h2>学习目标</h2>
+    <ul>
+      <li>会算持有期收益率，在 APR 与 EAR 之间换算，识破“年化”话术</li>
+      <li>用费雪方程换算实际收益，理解“现金的安全是名义的”</li>
+      <li>用情景法计算期望收益与标准差，理解风险溢价与夏普比率</li>
+      <li>分清算术平均与几何平均的用途，会算波动拖累（≈ σ²/2）</li>
+      <li>知道真实收益如何偏离正态（负偏、肥尾），会读 VaR 与期望损失 ES</li>
+      <li>记住百年历史记录的量级：股票溢价约 8%，波动约 20%</li>
+    </ul>
+  </div>
+
+  <nav class="chapmap" aria-label="本章导览">
+    <a href="#s1">5.1 收益率</a>
+    <a href="#s2">5.2 通胀</a>
+    <a href="#s3">5.3 风险溢价</a>
+    <a href="#s4">5.4 两种平均</a>
+    <a href="#s5">5.5 正态与肥尾</a>
+    <a href="#s6">5.6 VaR</a>
+    <a href="#s7">5.7 历史记录</a>
+    <a href="#recap">小结与自测</a>
+  </nav>
+</div>
+
+<!-- ======================== 5.1 ======================== -->
+<section class="ch" id="s1">
+  <h2 class="sec"><span class="no">5.1</span>收益率怎么算</h2>
+  <p class="sec-en">RATES OF RETURN</p>
+
+  <div class="formula">
+    <div class="fx">持有期收益率 HPR =（期末价 − 期初价 + 现金分红）/ 期初价</div>
+    <div class="note">例：30 元买入，期末 33 元，期间每股分红 1 元：HPR =（33 − 30 + 1）/ 30 = 13.3%。分红是收益的一部分——漏掉它是比较指数时最常见的口径错误（第 2 章“3000 点”案例）。</div>
+  </div>
+
+  <div class="prose">
+    <p>不同期限的收益要放到同一尺度才能比较，这就有了“年化”。年化有两种口径，差别在于<strong>利息是否再生利息</strong>：</p>
+  </div>
+
+  <div class="formula">
+    <div class="fx">年化百分比利率 APR = 每期利率 × 每年期数　（单利口径）</div>
+    <div class="fx">有效年利率 EAR =（1 + 每期利率）<sup>每年期数</sup> − 1　（复利口径）</div>
+    <div class="note">月利率 1%：APR = 12%，EAR = 1.01<sup>12</sup> − 1 = 12.68%。期数越多、利率越高，两者差距越大；连续复利是极限情形（e<sup>r</sup> − 1）。<strong>看到任何“年化”，先问是哪种口径、由多长的真实区间放大而来。</strong></div>
+  </div>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>分期“月费率 0.6%”的真实价格</h4>
+    <p>信用卡账单分期的话术：12 期，每期手续费只要 0.6%，“年化”似乎是 7.2%。陷阱在于手续费按<strong>原始本金</strong>收，而你的欠款每月都在减少——到最后一期，你实际只欠 1/12 的本金，却仍按全额交费。按现金流算内部收益率（IRR），真实年化约 <strong>13%</strong>，接近话术数字的两倍。同理，货币基金的“七日年化”只是把过去 7 天的收益放大 52 倍的快照，和你未来一年能拿到的收益是两回事。</p>
+    <p class="takeaway">收益率的三连问：含不含分红？单利还是复利？由多长的真实区间年化而来？——这三问贯穿第 24 章业绩评价。</p>
+  </div>
+</section>
+
+<!-- ======================== 5.2 ======================== -->
+<section class="ch" id="s2">
+  <h2 class="sec"><span class="no">5.2</span>利率与通胀：名义与实际</h2>
+  <p class="sec-en">INFLATION AND THE REAL RATE OF INTEREST</p>
+
+  <div class="prose">
+    <p>收益率最终要用<strong>购买力</strong>结账。名义收益剔除通胀后才是实际收益，关系由<strong>费雪方程</strong>给出：</p>
+  </div>
+
+  <div class="formula">
+    <div class="fx">1 + r<sub>实际</sub> =（1 + r<sub>名义</sub>）/（1 + 通胀率）　≈　r<sub>实际</sub> = r<sub>名义</sub> − 通胀率</div>
+    <div class="note">名义 8%、通胀 5%：精确实际收益 = 1.08 / 1.05 − 1 = 2.86%（近似式给 3%，通胀越高近似误差越大）。费雪假说进一步说：名义利率会随预期通胀同步抬升，所以国库券利率里本就打包了通胀预期。</div>
+  </div>
+
+  <div class="prose">
+    <p>历史数据给出一个冷峻事实：美国国库券 1926–2021 年均收益约 3.3%，同期通胀约 2.9%——“最安全的资产”的实际年收益只有约 0.4%，<em>现金的安全是名义的</em>。存款利率低于通胀的年份（中国近年并不罕见），持有现金就是在确定地变穷，只是账面数字看不出来。均衡的实际利率由储蓄供给、投资需求与财政赤字共同决定；央行直接操纵的是名义短端利率，但长期实际利率是全社会资金供需的价格。</p>
+  </div>
+</section>
+
+<!-- ======================== 5.3 ======================== -->
+<section class="ch" id="s3">
+  <h2 class="sec"><span class="no">5.3</span>风险与风险溢价</h2>
+  <p class="sec-en">RISK AND RISK PREMIUMS</p>
+
+  <div class="prose">
+    <p>未来的收益是一个<strong>分布</strong>，不是一个数。描述分布，最少需要两个量：中心在哪（期望收益），散得多开（标准差）。用情景法把它算出来：</p>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <tr><th>情景</th><th>概率 p</th><th>收益 r</th><th>偏差 r − E(r)</th></tr>
+      <tr><td>衰退</td><td class="num">0.25</td><td class="num">−20%</td><td class="num">−27.5%</td></tr>
+      <tr><td>正常</td><td class="num">0.50</td><td class="num">+10%</td><td class="num">+2.5%</td></tr>
+      <tr><td>繁荣</td><td class="num">0.25</td><td class="num">+30%</td><td class="num">+22.5%</td></tr>
+    </table>
+  </div>
+
+  <div class="formula">
+    <div class="fx">期望收益 E(r) = Σ p(s) × r(s) = 7.5%</div>
+    <div class="fx">方差 σ² = Σ p(s) × [r(s) − E(r)]² = 318.75　→　标准差 σ = 17.85%</div>
+    <div class="fx">风险溢价 = E(r) − r<sub>f</sub>；　夏普比率 =（E(r) − r<sub>f</sub>）/ σ</div>
+    <div class="note">若无风险利率 r<sub>f</sub> = 3%：风险溢价 = 4.5%，夏普比率 = 4.5 / 17.85 ≈ 0.25——每承担 1 个百分点的波动，换来 0.25 个百分点的超额收益。</div>
+  </div>
+
+  <div class="prose">
+    <p>三个措辞要分清：<strong>风险溢价</strong>是<em>事前</em>的期望超额收益（你要求的补偿）；<strong>超额收益</strong>是<em>事后</em>的实际差额（r − r<sub>f</sub>，可正可负）；<strong>夏普比率</strong>把超额收益除以波动，是“性价比”——它将在第 6 章成为资本配置线的斜率，在第 24 章成为业绩评价的头号标尺。风险厌恶的投资者只会为正的风险溢价承担风险，溢价要求的高低（系数 A）因人而异——这是下一章的起点。</p>
+  </div>
+</section>
+
+<!-- ======================== 5.4 ======================== -->
+<section class="ch" id="s4">
+  <h2 class="sec"><span class="no">5.4</span>算术平均与几何平均</h2>
+  <p class="sec-en">ARITHMETIC VERSUS GEOMETRIC AVERAGES</p>
+
+  <div class="prose">
+    <p>用历史数据说“平均收益”，有两种算法，答案可以差出很远。先看一个极端例子：</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 5-1</span>“平均 +25%”却一分没赚：两种平均的分岔</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 300" role="img" aria-label="财富路径：1 万元第一年涨 100% 到 2 万，第二年跌 50% 回到 1 万。算术平均收益 +25%，几何平均 0%">
+      <!-- 左：财富路径 -->
+      <g text-anchor="end">
+        <text class="tick" x="62" y="63">2 万</text>
+        <text class="tick" x="62" y="111">1.5 万</text>
+        <text class="tick" x="62" y="159">1 万</text>
+        <text class="tick" x="62" y="206">0.5 万</text>
+      </g>
+      <line class="grid" x1="70" y1="59" x2="490" y2="59"/>
+      <line class="grid" x1="70" y1="107" x2="490" y2="107"/>
+      <line class="grid" x1="70" y1="155" x2="490" y2="155"/>
+      <line class="grid" x1="70" y1="202" x2="490" y2="202"/>
+      <line class="axis" x1="70" y1="250" x2="490" y2="250"/>
+      <polyline class="ln1" points="80,155 280,59 480,155"/>
+      <circle class="pt" cx="80" cy="155" r="5.5"/>
+      <circle class="pt" cx="280" cy="59" r="5.5"/>
+      <circle class="pt" cx="480" cy="155" r="5.5"/>
+      <text class="pv" x="180" y="92" text-anchor="middle">第 1 年 +100%</text>
+      <text class="pv" x="384" y="92" text-anchor="middle">第 2 年 −50%</text>
+      <g text-anchor="middle">
+        <text class="tick" x="80"  y="270">第 0 年</text>
+        <text class="tick" x="280" y="270">第 1 年</text>
+        <text class="tick" x="480" y="270">第 2 年</text>
+      </g>
+      <!-- 右：两种平均 -->
+      <line class="edge-soft" x1="520" y1="46" x2="520" y2="250"/>
+      <text class="nt" x="536" y="70">算术平均</text>
+      <text class="pv" x="536" y="92">（+100% − 50%）/ 2</text>
+      <text class="pl" x="536" y="114">= +25% / 年</text>
+      <text class="nt" x="536" y="156">几何平均</text>
+      <text class="pv" x="536" y="178">√(2.0 × 0.5) − 1</text>
+      <text class="pl" x="536" y="200">= 0% / 年</text>
+      <text class="elabel" x="536" y="236">财富没变，几何才是真增速</text>
+      <!-- 底注 -->
+      <text class="elabel" x="380" y="292" text-anchor="middle">两者之差 ≈ σ² / 2，称为“波动拖累”——波动越大，复利被拖得越狠</text>
+    </svg>
+    </div>
+    <figcaption><b>读图：</b>算术平均把每年当作独立样本求均值，几何平均回答“财富实际按什么速度复利增长”。分工记死：<b>估计下一年的期望收益，用算术平均；描述一段历史的真实年化增速，用几何平均</b>。几何 ≈ 算术 − σ²/2，所以高波动资产的宣传材料偏爱算术口径。</figcaption>
+  </figure>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>杠杆 ETF 的“波动损耗”</h4>
+    <p>三倍做多半导体的 ETF（SOXL）2022 年下跌约 85%，而标的指数跌约 36%——“三倍”的直觉是 −108%，为什么是 −85%？又为什么横盘震荡时它也会亏？因为杠杆每日重置，吃的是复利路径：指数先涨 10% 再跌 9.09% 回到原点，三倍产品则是 +30% 后 −27.3%，净值只剩 0.945——指数没动，它亏了 5.5%。波动拖累 σ²/2 被杠杆平方倍放大，这正是图 5-1 的数学在真实产品里的样子。</p>
+    <p class="takeaway">看懂两种平均，你就能解释“为什么长期持有杠杆 ETF 多数是亏的”——不需要阴谋论，只需要几何平均。</p>
+  </div>
+
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p>“亏 50% 再涨 50% 就回本了。”——亏 50% 之后需要<strong>涨 100%</strong> 才回本；亏 90% 需要涨 900%。收益与亏损在复利尺度上不对称，这是“先保住本金”在数学上的来源，也是第 24 章用几何收益与最大回撤评价系统的原因。</p>
+  </div>
+</section>
+
+<!-- ======================== 5.5 ======================== -->
+<section class="ch" id="s5">
+  <h2 class="sec"><span class="no">5.5</span>正态分布与它的失灵</h2>
+  <p class="sec-en">THE NORMAL DISTRIBUTION AND ITS LIMITS</p>
+
+  <div class="prose">
+    <p>金融学偏爱正态分布，因为它只需两个参数（均值、标准差）就能完整描述，而且资产相加后仍是正态——第 6、7 章的全部数学都建立在这上面。正态世界的速查表：落在 ±1σ 内的概率约 68%，±2σ 约 95%，±3σ 约 99.7%。</p>
+    <p>但真实的股票收益在两处系统性“违规”：<strong>负偏度</strong>（左尾更长，暴跌比暴涨更极端）与<strong>超额峰度</strong>（肥尾，极端事件远比正态预测的常见）：</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 5-2</span>正态假设 vs 真实世界：差别全在尾巴上</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 310" role="img" aria-label="两条概率密度曲线对比：正态分布与肥尾分布中部接近，但肥尾分布在正负三倍标准差以外明显更高">
+      <rect class="seg1" x="80" y="12" width="12" height="12" rx="2"/>
+      <text class="tick" x="98" y="22">正态分布（模型假设）</text>
+      <rect class="seg2" x="280" y="12" width="12" height="12" rx="2"/>
+      <text class="tick" x="298" y="22">肥尾分布（更接近真实收益）</text>
+      <line class="axis" x1="70" y1="260" x2="650" y2="260"/>
+      <!-- 正态 -->
+      <polyline class="ln1" points="70,259.9 106,259.5 142.5,257.6 178.8,250.6 215,230.9 251.3,190.2 287.5,129.6 323.8,70.3 360,45 396.3,70.3 432.5,129.6 468.8,190.2 505,230.9 541.3,250.6 577.5,257.6 613.8,259.5 650,259.9"/>
+      <!-- 肥尾 -->
+      <polyline class="ln2" points="70,254.6 106,251.7 142.5,246.6 178.8,237.4 215,220.5 251.3,189.8 287.5,139.1 323.8,76.8 360,45 396.3,76.8 432.5,139.1 468.8,189.8 505,220.5 541.3,237.4 577.5,246.6 613.8,251.7 650,254.6"/>
+      <!-- 尾部标注 -->
+      <path class="edge-soft" d="M 596 225 V 248"/>
+      <text class="elabel" x="596" y="216" text-anchor="middle">尾部概率差出一个量级</text>
+      <path class="edge-soft" d="M 124 225 V 248"/>
+      <text class="elabel" x="124" y="216" text-anchor="middle">左尾（暴跌）更要命</text>
+      <g text-anchor="middle">
+        <text class="tick" x="142.5" y="280">−3σ</text>
+        <text class="tick" x="215" y="280">−2σ</text>
+        <text class="tick" x="287.5" y="280">−1σ</text>
+        <text class="tick" x="360" y="280">0</text>
+        <text class="tick" x="432.5" y="280">+1σ</text>
+        <text class="tick" x="505" y="280">+2σ</text>
+        <text class="tick" x="577.5" y="280">+3σ</text>
+      </g>
+      <text class="atitle" x="360" y="302" text-anchor="middle">收益（以标准差 σ 为单位）</text>
+    </svg>
+    </div>
+    <figcaption><b>读图：</b>两条曲线在中部几乎重合——平静年份里正态近似工作得很好，这正是它危险的原因。差别藏在 ±3σ 之外：正态说那里的概率只有 0.3%，真实市场里“三西格玛”级别的日子一年总会碰上几天。<b>度量偏离的两个统计量：偏度（对称性）与峰度（尾部厚度），股票月收益典型为负偏 + 肥尾。</b></figcaption>
+  </figure>
+</section>
+
+<!-- ======================== 5.6 ======================== -->
+<section class="ch" id="s6">
+  <h2 class="sec"><span class="no">5.6</span>VaR 与尾部风险度量</h2>
+  <p class="sec-en">VALUE AT RISK AND TAIL-RISK MEASURES</p>
+
+  <div class="prose">
+    <p>标准差对上下波动一视同仁，但投资者真正怕的只有左尾。于是有了专门盯住坏结果的度量：</p>
+    <p><strong>在险价值 VaR</strong><span class="en-term">（value at risk）</span>：分布的某个低分位数。“月度 5% VaR = −7%”的意思是：最坏的 5% 月份里，亏损至少 7%。<strong>期望损失 ES</strong><span class="en-term">（expected shortfall）</span>：既然掉进了最坏 5%，平均会亏多少——它回答了 VaR 不回答的“尾巴里面有多深”。</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 5-3</span>VaR 与 ES：给左尾画警戒线（示例：月均 1%、月 σ 5%）</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 310" role="img" aria-label="收益分布曲线，左侧 5% 尾部区域被标出：VaR 约为负 7%，尾部平均损失 ES 约为负 9%">
+      <!-- 尾部阴影 -->
+      <path class="tail" d="M 70 260 L 70 259.9 L 106 259.5 L 142.5 257.6 L 178.8 250.6 L 215 230.9 L 240.7 204.4 L 240.7 260 Z"/>
+      <line class="axis" x1="70" y1="260" x2="650" y2="260"/>
+      <polyline class="ln1" points="70,259.9 106,259.5 142.5,257.6 178.8,250.6 215,230.9 251.3,190.2 287.5,129.6 323.8,70.3 360,45 396.3,70.3 432.5,129.6 468.8,190.2 505,230.9 541.3,250.6 577.5,257.6 613.8,259.5 650,259.9"/>
+      <!-- VaR 线 -->
+      <line class="vline" x1="240.7" y1="56" x2="240.7" y2="260"/>
+      <text class="pl" x="240.7" y="46" text-anchor="middle">VaR(5%) ≈ −7%</text>
+      <!-- ES 点 -->
+      <circle class="ptc" cx="210.6" cy="260" r="5"/>
+      <g text-anchor="middle">
+        <text class="tick" x="142.5" y="296">−14%</text>
+        <text class="tick" x="215" y="296">−9%</text>
+        <text class="tick" x="287.5" y="296">−4%</text>
+        <text class="tick" x="360" y="296">+1%</text>
+        <text class="tick" x="432.5" y="296">+6%</text>
+        <text class="tick" x="505" y="296">+11%</text>
+      </g>
+      <text class="pv" x="118" y="278" text-anchor="middle">最坏 5% 区域</text>
+      <text class="pv" x="240" y="278" text-anchor="middle">⟵ ES ≈ −9%（尾部平均）</text>
+    </svg>
+    </div>
+    <figcaption><b>读图：</b>VaR 是警戒线的<b>位置</b>，ES 是越线之后的<b>平均深度</b>——监管在 2008 年后普遍从 VaR 转向 ES，就是因为前者对“线外有多惨”只字不提。同族工具还有只统计下行偏差的<b>下偏标准差</b>（与之配套的是索提诺比率），以及实务中最直观的<b>最大回撤</b>（教材之外的补充，第 24 章会正式使用）。</figcaption>
+  </figure>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>“25 个标准差的事件，连续来了好几天”</h4>
+    <p>2007 年 8 月量化基金集体崩盘时，高盛 CFO 对媒体解释：“我们目睹了 25 个标准差的变动，而且一连好几天。”在正态假设下，8σ 事件的概率已经小到宇宙年龄都等不来一次，25σ 连续数日的真正含义只有一个：<strong>模型的分布假设错了</strong>。同一剧本 1998 年在 LTCM 上演过——诺奖级模型测算的“万年一遇”，成立第五年就把基金打爆（第 26 章细讲）。</p>
+    <p>VaR 在 2008 年集体失灵的三个原因，值得抄进你未来的风控清单：① 用了正态假设，低估尾部；② 用平静期的短窗口估参数，σ 与相关性都被低估；③ 危机中各资产相关性趋同于 1，分散化在最需要时失效（第 7 章再会）。</p>
+    <p class="takeaway">尾部度量的正确用法：VaR / ES 当<strong>仪表盘</strong>而非保险单，配合压力测试（直接假设历史最坏情景重演）使用。</p>
+  </div>
+
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p>“95% VaR 没破，说明风险可控。”——VaR 天生对 5% 之外的世界保持沉默，而毁灭你的恰恰是那 5%。两条推论：永远追问 ES 与最大历史回撤；对任何“年化夏普很高、从不回撤”的策略保持警惕——它可能只是把风险搬进了你看不见的尾部（卖期权型策略的经典画像，第 26 章）。</p>
+  </div>
+</section>
+
+<!-- ======================== 5.7 ======================== -->
+<section class="ch" id="s7">
+  <h2 class="sec"><span class="no">5.7</span>百年历史记录</h2>
+  <p class="sec-en">THE HISTORICAL RECORD</p>
+
+  <div class="tablewrap">
+    <table>
+      <tr><th>资产（美国 1926–2021，近似）</th><th>年均收益（算术）</th><th>年化标准差</th><th>风险溢价</th><th>夏普比率</th></tr>
+      <tr><td>国库券</td><td class="num">3.3%</td><td class="num">3.1%</td><td class="num">——</td><td class="num">——</td></tr>
+      <tr><td>长期国债</td><td class="num">6.1%</td><td class="num">9.8%</td><td class="num">2.8%</td><td class="num">0.29</td></tr>
+      <tr><td>大盘股</td><td class="num">12.3%</td><td class="num">20.3%</td><td class="num">9.0%</td><td class="num">0.44</td></tr>
+      <tr><td>小盘股</td><td class="num">16.2%</td><td class="num">31.7%</td><td class="num">12.9%</td><td class="num">0.41</td></tr>
+    </table>
+  </div>
+
+  <div class="prose">
+    <p>这张表是全书引用率最高的数据：股票的风险溢价长期在 <strong>8%–9%</strong> 一带，代价是约 20% 的年化波动与图 5-4 那样的单年区间。中国市场的样本短得多：沪深 300 自 2005 年以来年化收益大致与美股同量级，但波动率明显更高（25% 以上），夏普比率更低——同样的溢价，更颠簸的路。</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 5-4</span>风险的体感：单年收益的历史区间（美国 1926–2021，近似）</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 270" role="img" aria-label="区间图：大盘股单年收益介于负 43% 与正 54% 之间，长期国债介于负 15% 与正 40% 之间，国库券介于 0 与正 15% 之间，均值分别为 12.3%、6.1%、3.3%">
+      <line class="grid" x1="134.5" y1="40" x2="134.5" y2="230"/>
+      <line class="grid" x1="243.6" y1="40" x2="243.6" y2="230"/>
+      <line class="axis" x1="352.7" y1="40" x2="352.7" y2="230"/>
+      <line class="grid" x1="461.8" y1="40" x2="461.8" y2="230"/>
+      <line class="grid" x1="570.9" y1="40" x2="570.9" y2="230"/>
+      <line class="grid" x1="680" y1="40" x2="680" y2="230"/>
+      <!-- 大盘股 -->
+      <text class="nd" x="108" y="74" text-anchor="end">大盘股</text>
+      <rect class="range" x="118.2" y="61" width="529.1" height="18" rx="9"/>
+      <circle class="pt" cx="419.8" cy="70" r="6"><title>大盘股：均值 12.3%</title></circle>
+      <text class="pv" x="118" y="98">最差 −43%</text>
+      <text class="pv" x="647" y="98" text-anchor="end">最好 +54%</text>
+      <text class="pv" x="419.8" y="52" text-anchor="middle">均值 12.3%</text>
+      <!-- 长期国债 -->
+      <text class="nd" x="108" y="144" text-anchor="end">长期国债</text>
+      <rect class="range" x="270.9" y="131" width="300" height="18" rx="9"/>
+      <circle class="pt" cx="386" cy="140" r="6"><title>长期国债：均值 6.1%</title></circle>
+      <text class="pv" x="271" y="168">−15%</text>
+      <text class="pv" x="571" y="168" text-anchor="end">+40%</text>
+      <text class="pv" x="386" y="122" text-anchor="middle">6.1%</text>
+      <!-- 国库券 -->
+      <text class="nd" x="108" y="214" text-anchor="end">国库券</text>
+      <rect class="range" x="352.7" y="201" width="81.8" height="18" rx="9"/>
+      <circle class="pt" cx="370.7" cy="210" r="6"><title>国库券：均值 3.3%</title></circle>
+      <text class="pv" x="344" y="214" text-anchor="end">0%</text>
+      <text class="pv" x="442" y="214">+15%</text>
+      <text class="pv" x="393" y="192" text-anchor="middle">3.3%</text>
+      <!-- 刻度 -->
+      <g text-anchor="middle">
+        <text class="tick" x="134.5" y="250">−40%</text>
+        <text class="tick" x="243.6" y="250">−20%</text>
+        <text class="tick" x="352.7" y="250">0</text>
+        <text class="tick" x="461.8" y="250">+20%</text>
+        <text class="tick" x="570.9" y="250">+40%</text>
+        <text class="tick" x="680" y="250">+60%</text>
+      </g>
+    </svg>
+    </div>
+    <figcaption><b>读图：</b>均值（圆点）告诉你为什么要买股票，区间的左端告诉你为什么拿不住。溢价不是赠品，是对“可能在某一年亏掉 43%”的事前补偿——第 1 章风险收益权衡的数据版。</figcaption>
+  </figure>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>日经 225 的 34 年：时间不会自动消灭风险</h4>
+    <p>“长期持有股票必赚”是对历史记录最流行的误读。反例只需一个：日经 225 指数 1989 年底见顶 38,916 点，此后泡沫破裂，<strong>直到 2024 年 2 月才重新站上这个点位——整整 34 年</strong>（含股息的全收益口径会提前一些，但同样以十年计）。拉长持有期确实降低了历史样本中“亏损年份的频率”，但极端路径的<strong>深度</strong>并不随时间收敛——在高估值的起点买入，时间只是把痛苦摊长。</p>
+    <p class="takeaway">正确表述是：长期提高了股票跑赢现金的历史概率，但“时间分散化”不是免费保险——起点的估值（第 18 章）与中途的路径（本章的回撤数学）都躲不开。这也是下一章“风险资产该配多少”必须因人而异的原因。</p>
+  </div>
+</section>
+
+<!-- ======================== 小结 ======================== -->
+<section class="ch" id="recap">
+  <h2 class="sec"><span class="no">※</span>本章小结</h2>
+  <p class="sec-en">SUMMARY</p>
+
+  <div class="recap">
+    <ol>
+      <li><b>收益率三连问：</b>含不含分红（HPR）？单利还是复利（APR vs EAR）？由多长真实区间年化而来？</li>
+      <li><b>实际收益 = 名义收益剔除通胀（费雪方程）：</b>国库券百年实际收益仅约 0.4%——现金的安全是名义的。</li>
+      <li><b>风险是分布的离散度：</b>情景法算 E(r) 与 σ；风险溢价 = E(r) − r<sub>f</sub>（事前），夏普比率 = 溢价 / σ——第 6 章资本配置线的斜率。</li>
+      <li><b>两种平均各司其职：</b>估下一期期望用算术，量历史真实增速用几何；几何 ≈ 算术 − σ²/2（波动拖累），杠杆按平方放大它；亏 50% 要涨 100% 才回本。</li>
+      <li><b>真实收益负偏 + 肥尾：</b>正态在中部好用、在尾部撒谎；VaR 给警戒线位置，ES 给线外深度，配合压力测试当仪表盘用，别当保险单。</li>
+      <li><b>百年记录的量级：</b>股票溢价约 8%–9%、波动约 20%、单年最深约 −43%；时间降低亏损频率但不消灭极端路径（日经 34 年）。</li>
+    </ol>
+  </div>
+
+  <h3>核心术语（中英对照）</h3>
+  <div class="tablewrap">
+    <table>
+      <tr><th>中文</th><th>English</th><th>一句话定义</th></tr>
+      <tr><td>持有期收益率</td><td>holding-period return (HPR)</td><td>（价差 + 分红）/ 期初价格</td></tr>
+      <tr><td>年化百分比利率</td><td>annual percentage rate (APR)</td><td>每期利率 × 期数的单利年化</td></tr>
+      <tr><td>有效年利率</td><td>effective annual rate (EAR)</td><td>计入复利的真实年化</td></tr>
+      <tr><td>名义 / 实际利率</td><td>nominal / real interest rate</td><td>票面收益 vs 剔除通胀后的购买力增速</td></tr>
+      <tr><td>费雪方程</td><td>Fisher equation</td><td>1 + r<sub>实</sub> =（1 + r<sub>名</sub>）/（1 + i）</td></tr>
+      <tr><td>期望收益</td><td>expected return</td><td>各情景收益的概率加权平均</td></tr>
+      <tr><td>方差 / 标准差</td><td>variance / standard deviation</td><td>收益对期望的平均偏离幅度</td></tr>
+      <tr><td>风险溢价</td><td>risk premium</td><td>期望收益超出无风险利率的部分（事前）</td></tr>
+      <tr><td>超额收益</td><td>excess return</td><td>实际收益减无风险利率（事后）</td></tr>
+      <tr><td>夏普比率</td><td>Sharpe ratio</td><td>每单位波动换到的超额收益</td></tr>
+      <tr><td>算术平均</td><td>arithmetic average</td><td>各期收益简单平均——用于估下一期期望</td></tr>
+      <tr><td>几何平均</td><td>geometric average</td><td>复利口径的真实年化增速（时间加权）</td></tr>
+      <tr><td>波动拖累</td><td>variance drain / volatility drag</td><td>几何落后算术约 σ²/2 的部分</td></tr>
+      <tr><td>偏度</td><td>skewness</td><td>分布不对称程度；股票收益典型为负偏</td></tr>
+      <tr><td>峰度 / 肥尾</td><td>kurtosis / fat tails</td><td>极端值比正态更常见的程度</td></tr>
+      <tr><td>在险价值</td><td>value at risk (VaR)</td><td>给定概率下的最低损失分位数</td></tr>
+      <tr><td>期望损失</td><td>expected shortfall (ES)</td><td>跌破 VaR 之后的平均亏损深度</td></tr>
+      <tr><td>下偏标准差 / 索提诺比率</td><td>lower partial SD / Sortino ratio</td><td>只统计下行波动的 σ 及其“夏普”</td></tr>
+      <tr><td>最大回撤</td><td>maximum drawdown</td><td>净值从峰到谷的最大跌幅（实务补充）</td></tr>
+      <tr><td>股权风险溢价</td><td>equity risk premium</td><td>股票对国库券的长期超额收益，约 8%–9%</td></tr>
+    </table>
+  </div>
+
+  <h3>自测（先想后翻）</h3>
+  <details>
+    <summary>Q1 30 元买入某股，一年后 33 元，期间分红 1 元：HPR 是多少？若某产品月利率 1%，APR 与 EAR 各是多少？</summary>
+    <div class="ans"><p>HPR =（33 − 30 + 1）/ 30 = 13.3%（漏掉分红会低估为 10%）。APR = 1% × 12 = 12%；EAR = 1.01<sup>12</sup> − 1 ≈ 12.68%。复利口径必然不低于单利口径，期数越密差距越大——所有收益比较先统一成 EAR。</p></div>
+  </details>
+  <details>
+    <summary>Q2 名义收益 8%、通胀 5%：实际收益是多少？为什么“把钱放着不动”也是一种有风险的仓位？</summary>
+    <div class="ans"><p>精确值：1.08 / 1.05 − 1 ≈ 2.86%（近似式 8% − 5% = 3% 略高估）。现金的名义本金无波动，但购买力承受通胀的全部冲击：通胀 5% 时持币一年确定地损失约 4.8% 的购买力。资产配置里“不配置”也是一个头寸——空仓就是做多现金、做空通胀保护。</p></div>
+  </details>
+  <details>
+    <summary>Q3 某基金三年收益 +40%、−30%、+10%：算术平均与几何平均各是多少？分别该在什么场合引用？</summary>
+    <div class="ans"><p>算术 =（40 − 30 + 10）/ 3 = 6.67%。几何 =（1.4 × 0.7 × 1.1）<sup>1/3</sup> − 1 =（1.078）<sup>1/3</sup> − 1 ≈ 2.5%。预测下一年的期望收益用算术平均（把每年视为独立抽样）；陈述“这三年实际赚了多少”必须用几何平均——宣传页若只给 6.67%，三年真实累计其实只有 7.8%。两者差约 σ²/2，本例波动大，差距接近 4 个百分点。</p></div>
+  </details>
+  <details>
+    <summary>Q4 组合 E(r) = 10%、σ = 20%，无风险利率 3%：夏普比率是多少？另一组合 E(r) = 7%、σ = 10%，哪个“性价比”更高？</summary>
+    <div class="ans"><p>组合一：（10 − 3）/ 20 = 0.35；组合二：（7 − 3）/ 10 = 0.40——组合二更高。这正是夏普比率的用途：比较不同波动水平的策略时，比“谁收益高”公平得多。而且低波动高夏普的组合可以通过加杠杆放大到同样的期望收益、却承担更少风险——这个思想将在第 6 章变成资本配置线。</p></div>
+  </details>
+  <details>
+    <summary>Q5 “本组合月度 5% VaR 为 −8%。”解释含义；VaR 没告诉你什么？2008 年 VaR 模型为何集体失灵？</summary>
+    <div class="ans"><p>含义：最坏的 5% 月份里亏损不少于 8%（等价：95% 的月份亏损不超过 8%）。它没说的：线外平均亏多深（要看 ES）、极端情形的最大深度（要看压力测试与历史最大回撤）。2008 年失灵三因：正态假设低估肥尾；用平静期短窗口估参数；危机中相关性趋同、分散化失效。风控启示：VaR 是仪表盘不是保险单，必须配 ES 与情景压力测试。</p></div>
+  </details>
+
+  <a class="next" href="investments-ch06.html">
+    <div>
+      <div class="lbl">NEXT CHAPTER</div>
+      <div class="ttl">第 6 章 · 风险资产配置</div>
+    </div>
+    <div class="lbl">风险厌恶 → 效用 → 资本配置线 → 最优仓位 y*</div>
+  </a>
+
+  <p class="foot">本页为依据 Bodie–Kane–Marcus《投资学》（Investments）框架整理的原创学习笔记，仅用于教学理解；历史统计与案例数字为近似教学值，以原始数据为准。内容不构成任何投资建议。</p>
+</section>
+
+</main>
+</div>
+</div>
+
+<script>
+(function(){
+  var links = Array.prototype.slice.call(document.querySelectorAll('.sidenav a[href^="#"]'));
+  if(!links.length) return;
+  var map = [];
+  links.forEach(function(a){
+    var el = document.getElementById(a.getAttribute('href').slice(1));
+    if(el) map.push([el, a]);
+  });
+  function update(){
+    var y = window.scrollY + 150;
+    var cur = map[0][1];
+    for(var i = 0; i < map.length; i++){
+      if(map[i][0].offsetTop <= y) cur = map[i][1];
+    }
+    map.forEach(function(p){ p[1].classList.toggle('active', p[1] === cur); });
+  }
+  var tick = false;
+  window.addEventListener('scroll', function(){
+    if(!tick){
+      tick = true;
+      requestAnimationFrame(function(){ tick = false; update(); });
+    }
+  }, {passive:true});
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+</body>
+</html>
