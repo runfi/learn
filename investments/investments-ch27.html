@@ -1,0 +1,538 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>投资学 · 第27章 积极组合管理理论</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700;900&family=Noto+Sans+SC:wght@400;500;700&display=swap">
+<style>
+/* 布局：双栏（212px 侧栏 + 正文），章导览 + 27.1–27.5 分节；宽图表置于横向滚动容器 */
+:root{
+  --bg:#f5f6f7;
+  --surface:#ffffff;
+  --ink:#171a20;
+  --ink-2:#4a5160;
+  --muted:#858c9b;
+  --line:#e2e5ea;
+  --line-2:#c9ced6;
+  --accent:#1d5fad;
+  --accent-ink:#174e8f;
+  --accent-soft:#eaf1fa;
+  --series:#2a78d6;
+  --series2:#eb6834;
+  --series3:#1baf7a;
+  --crit:#d03b3b;
+  --crit-soft:rgba(208,59,59,.07);
+  --serif:"Noto Serif SC","Songti SC",serif;
+  --sans:"Noto Sans SC","Microsoft YaHei",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#101215; --surface:#181b20; --ink:#eef0f3; --ink-2:#c0c5cf; --muted:#8a909d;
+    --line:#282c33; --line-2:#3a3f48;
+    --accent:#5a96e3; --accent-ink:#79abec; --accent-soft:#1c2a3d;
+    --series:#3987e5; --series2:#d95926; --series3:#199e70; --crit:#e66767; --crit-soft:rgba(230,103,103,.10);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#101215; --surface:#181b20; --ink:#eef0f3; --ink-2:#c0c5cf; --muted:#8a909d;
+  --line:#282c33; --line-2:#3a3f48;
+  --accent:#5a96e3; --accent-ink:#79abec; --accent-soft:#1c2a3d;
+  --series:#3987e5; --series2:#d95926; --series3:#199e70; --crit:#e66767; --crit-soft:rgba(230,103,103,.10);
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:var(--sans); font-size:15.5px; line-height:1.85;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1190px; margin:0 auto; padding-inline:20px; padding-block:0 72px}
+
+.layout{display:grid; grid-template-columns:212px minmax(0,1fr); gap:44px; align-items:start}
+.article{max-width:920px; min-width:0}
+.sidenav{
+  position:sticky; top:16px; max-height:calc(100vh - 32px); overflow-y:auto;
+  padding-block:40px 16px; font-size:13px;
+}
+.sidenav .sn-chap{
+  margin:0 0 10px; padding-left:13px; font-size:11.5px; letter-spacing:.14em;
+  color:var(--muted); font-weight:700;
+}
+.sidenav a{
+  display:block; color:var(--ink-2); text-decoration:none; line-height:1.55;
+  padding:6px 10px 6px 13px; border-left:2px solid var(--line);
+}
+.sidenav a:hover{color:var(--accent-ink)}
+.sidenav a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.sidenav a.active{
+  color:var(--accent-ink); border-left-color:var(--accent);
+  background:var(--accent-soft); font-weight:700;
+}
+.hero,section.ch{scroll-margin-top:10px}
+@media (max-width: 999px){
+  .sidenav{display:none}
+  .layout{display:block}
+}
+@media (min-width: 1000px){
+  nav.chapmap{display:none}
+}
+
+.masthead{
+  display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  padding-block:18px 14px; border-bottom:1px solid var(--line);
+}
+.masthead .book{font-family:var(--serif); font-weight:700; font-size:15px; letter-spacing:.02em}
+.masthead .part{font-size:12.5px; color:var(--muted); letter-spacing:.12em}
+.masthead a{color:var(--accent-ink); text-decoration:none}
+.masthead a:hover{text-decoration:underline}
+.masthead a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+a.next{color:inherit; text-decoration:none}
+a.next:hover{border-color:var(--accent)}
+a.next:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+.hero{padding-block:44px 28px; border-bottom:1px solid var(--line)}
+.chap-no{
+  display:inline-flex; align-items:center; gap:10px;
+  font-size:12.5px; letter-spacing:.22em; color:var(--accent-ink); font-weight:700;
+}
+.chap-no::after{content:""; width:46px; height:1px; background:var(--accent)}
+.hero h1{
+  font-family:var(--serif); font-weight:900; font-size:clamp(30px,5vw,46px);
+  line-height:1.25; margin:10px 0 4px; letter-spacing:.02em; text-wrap:balance;
+}
+.hero .en{font-size:14px; color:var(--muted); letter-spacing:.08em; margin:0 0 18px}
+.hero .lede{max-width:46em; color:var(--ink-2); margin:0}
+.hero .lede strong{color:var(--ink)}
+.objectives{
+  margin-top:22px; padding:16px 20px; background:var(--surface);
+  border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:0 6px 6px 0;
+}
+.objectives h2{font-size:13px; letter-spacing:.18em; color:var(--accent-ink); margin:0 0 8px; font-weight:700}
+.objectives ul{margin:0; padding-left:1.3em; color:var(--ink-2)}
+.objectives li{margin:3px 0}
+.chapmap{display:flex; flex-wrap:wrap; gap:8px; margin-top:20px}
+.chapmap a{
+  font-size:13px; color:var(--ink-2); text-decoration:none;
+  border:1px solid var(--line-2); border-radius:999px; padding:4px 13px; background:var(--surface);
+}
+.chapmap a:hover{border-color:var(--accent); color:var(--accent-ink)}
+.chapmap a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+section.ch{padding-block:40px 8px}
+section.ch + section.ch{border-top:1px solid var(--line)}
+h2.sec{
+  font-family:var(--serif); font-weight:700; font-size:clamp(22px,3.4vw,28px);
+  margin:0 0 2px; line-height:1.35; text-wrap:balance;
+}
+h2.sec .no{color:var(--accent-ink); margin-right:10px; font-feature-settings:"tnum"}
+p.sec-en{font-size:12.5px; letter-spacing:.1em; color:var(--muted); margin:0 0 18px}
+h3{font-size:16.5px; font-weight:700; margin:26px 0 8px}
+h3 .tag{color:var(--accent-ink)}
+p{margin:10px 0}
+.prose{max-width:46em}
+.prose .en-term{color:var(--muted); font-size:.88em}
+strong{font-weight:700}
+em{font-style:normal; font-weight:700; color:var(--accent-ink)}
+
+.cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px; margin:16px 0}
+.card{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:16px 18px;
+}
+.card h4{margin:0 0 6px; font-size:15px}
+.card h4 .en-term{display:block; font-weight:400; font-size:12px; color:var(--muted); letter-spacing:.04em; margin-top:2px}
+.card p{margin:6px 0; font-size:14px; color:var(--ink-2)}
+.card ul{margin:6px 0 0; padding-left:1.2em; font-size:14px; color:var(--ink-2)}
+.card li{margin:3px 0}
+
+.case{
+  margin:20px 0; padding:16px 20px 14px; background:var(--surface);
+  border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:0 8px 8px 0;
+}
+.case .label{font-size:12px; letter-spacing:.2em; color:var(--accent-ink); font-weight:700; display:block; margin-bottom:6px}
+.case h4{margin:0 0 6px; font-size:15.5px}
+.case p{margin:7px 0; font-size:14.5px; color:var(--ink-2)}
+.case p:last-child{margin-bottom:2px}
+.case .takeaway{color:var(--ink); font-weight:500}
+.case .takeaway::before{content:"▸ 教材对应 "; color:var(--accent-ink); font-weight:700; font-size:12.5px; letter-spacing:.05em}
+
+.pitfall{
+  margin:20px 0; padding:14px 20px; border:1px dashed var(--line-2); border-radius:8px; max-width:46em;
+}
+.pitfall .label{font-size:12px; letter-spacing:.2em; color:var(--crit); font-weight:700; display:block; margin-bottom:4px}
+.pitfall p{margin:4px 0; font-size:14.5px; color:var(--ink-2)}
+
+.formula{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px;
+  padding:12px 18px; margin:14px 0; max-width:46em; overflow-x:auto;
+  font-size:15px; line-height:2;
+}
+.formula .fx{white-space:nowrap}
+.formula sub,.formula sup{font-size:11px}
+.formula .note{font-size:12.5px; color:var(--muted)}
+
+table{border-collapse:collapse; width:100%; font-size:14px; font-variant-numeric:tabular-nums}
+.tablewrap{overflow-x:auto; margin:16px 0; border:1px solid var(--line); border-radius:8px; background:var(--surface)}
+.tablewrap table{min-width:560px}
+th,td{padding:9px 14px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top}
+th{font-size:12.5px; letter-spacing:.08em; color:var(--muted); font-weight:700; white-space:nowrap}
+tr:last-child td{border-bottom:none}
+td.num{white-space:nowrap}
+
+figure{margin:24px 0; background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:18px 18px 12px}
+figure .fig-scroll{overflow-x:auto}
+figure svg{display:block; max-width:100%; height:auto; color:var(--ink)}
+figure .fig-scroll svg{min-width:660px}
+figcaption{font-size:13px; color:var(--muted); margin-top:10px; line-height:1.7}
+figcaption b{color:var(--ink-2); font-weight:700}
+.fig-title{font-size:14px; font-weight:700; margin:0 0 12px}
+.fig-title .fno{color:var(--accent-ink); margin-right:8px}
+
+svg .node{fill:var(--bg); stroke:var(--line-2); stroke-width:1.2; rx:8}
+svg .node-hi{fill:var(--accent-soft); stroke:var(--accent)}
+svg .nt{font:700 12.5px var(--sans); fill:var(--ink)}
+svg .nd{font:400 11px var(--sans); fill:var(--ink-2)}
+svg .edge{stroke:var(--ink-2); stroke-width:1.4; fill:none}
+svg .edge-soft{stroke:var(--muted); stroke-width:1.2; fill:none; stroke-dasharray:4 4}
+svg .elabel{font:400 11.5px var(--sans); fill:var(--muted)}
+svg .grid{stroke:var(--line); stroke-width:1}
+svg .axis{stroke:var(--line-2); stroke-width:1.2}
+svg .tick{font:400 11px var(--sans); fill:var(--muted)}
+svg .atitle{font:400 11.5px var(--sans); fill:var(--muted)}
+svg .pl{font:700 13px var(--sans); fill:var(--ink)}
+svg .pv{font:400 11.5px var(--sans); fill:var(--ink-2)}
+svg .seg1{fill:var(--series)}
+svg .seg2{fill:var(--series2)}
+svg .seg3{fill:var(--series3)}
+
+.recap{margin-top:8px}
+.recap ol{margin:8px 0 0; padding-left:1.4em; max-width:46em; color:var(--ink-2)}
+.recap li{margin:7px 0}
+.recap li b{color:var(--ink)}
+details{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px;
+  padding:12px 18px; margin:10px 0; max-width:46em;
+}
+details summary{cursor:pointer; font-weight:500; color:var(--ink)}
+details summary:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+details[open] summary{color:var(--accent-ink)}
+details .ans{margin-top:8px; padding-top:8px; border-top:1px dashed var(--line); font-size:14.5px; color:var(--ink-2)}
+details .ans p{margin:6px 0}
+
+.next{
+  margin-top:48px; padding:18px 22px; border:1px solid var(--line); border-radius:8px;
+  background:var(--surface); display:flex; justify-content:space-between; align-items:center; gap:14px; flex-wrap:wrap;
+}
+.next .lbl{font-size:12px; letter-spacing:.18em; color:var(--muted)}
+.next .ttl{font-family:var(--serif); font-weight:700; font-size:18px; margin-top:2px}
+.foot{margin-top:26px; font-size:12.5px; color:var(--muted); line-height:1.8}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <span class="book">《投资学》学习手册 · Investments (Bodie · Kane · Marcus)</span>
+  <span class="part"><a href="investments-index.html">学习地图</a> · 第七部分 应用投资组合管理</span>
+</header>
+
+<div class="layout">
+
+<nav class="sidenav" aria-label="小节导航">
+  <p class="sn-chap">第 27 章 · 积极组合管理理论</p>
+  <a href="#top">章首 · 学习目标</a>
+  <a href="#s1">27.1 主动管理的目标</a>
+  <a href="#s2">27.2 Treynor-Black 模型</a>
+  <a href="#s3">27.3 基本定律：IC × √BR</a>
+  <a href="#s4">27.4 Black-Litterman</a>
+  <a href="#s5">27.5 通往 Kelly：交接棒</a>
+  <a href="#recap">小结 · 术语 · 自测</a>
+</nav>
+
+<main class="article">
+
+<!-- ======================== 章首 ======================== -->
+<div class="hero" id="top">
+  <span class="chap-no">CHAPTER 27 · HAPPY PATH 终点站</span>
+  <h1>积极型投资组合管理理论</h1>
+  <p class="en">The Theory of Active Portfolio Management</p>
+  <p class="lede">走到终点站，全书的立场可以摊牌了：前面章节反复劝你被动，不是因为主动不可能，而是因为主动必须<strong>配得上一套纪律</strong>。这一章就是那套纪律的理论：有观点时该下多大注（Treynor–Black）、超额收益由什么决定（基本定律 IR = IC × √BR）、怎么优雅地把观点揉进组合（Black–Litterman）——最后把全书三个仓位公式串成一条线，交棒给你下一阶段的 Kelly 学习。</p>
+
+  <div class="objectives">
+    <h2>学习目标</h2>
+    <ul>
+      <li>理解主动管理的目标函数：最大化信息比率，而不是最大化收益</li>
+      <li>掌握 Treynor–Black 直觉：仓位 ∝ α / σ²(e)——观点除以噪声</li>
+      <li>会用基本定律 IR ≈ IC × √BR 分析一切策略的收益来源与容量</li>
+      <li>理解 Black–Litterman：以市场均衡为锚、按置信度叠加观点</li>
+      <li>看清 y*、Treynor–Black、Kelly 的同构：仓位 = 优势 ÷ 方差</li>
+    </ul>
+  </div>
+
+  <nav class="chapmap" aria-label="本章导览">
+    <a href="#s1">27.1 目标</a>
+    <a href="#s2">27.2 TB 模型</a>
+    <a href="#s3">27.3 基本定律</a>
+    <a href="#s4">27.4 BL</a>
+    <a href="#s5">27.5 通往 Kelly</a>
+    <a href="#recap">小结与自测</a>
+  </nav>
+</div>
+
+<!-- ======================== 27.1 ======================== -->
+<section class="ch" id="s1">
+  <h2 class="sec"><span class="no">27.1</span>主动管理的目标函数</h2>
+  <p class="sec-en">THE OBJECTIVE OF ACTIVE MANAGEMENT</p>
+
+  <div class="prose">
+    <p>主动管理把组合拆成两层：<strong>被动底仓</strong>（市场组合 M，提供 β 收益）+ <strong>主动组合 A</strong>（押注你的 α 观点）。主动部分带来两样东西：主动收益 α 与主动风险 σ(e)（跟踪误差）。目标不是收益最大——那只要加杠杆就行——而是<strong>最大化信息比率 IR = α / σ(e)</strong>：每承担一单位“与市场无关的风险”，换到最多的超额。第 24 章用 IR 评价别人，本章用它设计自己。一个漂亮的数学事实把两章缝在一起：加入主动组合后，整体的最优夏普满足 <em>SR² = SR²<sub>M</sub> + IR²</em>——你的全部附加值，就是 IR 的平方。</p>
+  </div>
+</section>
+
+<!-- ======================== 27.2 ======================== -->
+<section class="ch" id="s2">
+  <h2 class="sec"><span class="no">27.2</span>Treynor–Black：观点除以噪声</h2>
+  <p class="sec-en">THE TREYNOR-BLACK MODEL</p>
+
+  <div class="formula">
+    <div class="fx">主动组合内，各信号的权重　w<sub>i</sub> ∝ α<sub>i</sub> / σ²(e<sub>i</sub>)</div>
+    <div class="fx">主动组合 vs 市场底仓的比例　∝ [α<sub>A</sub>/σ²(e<sub>A</sub>)] ÷ [E(R<sub>M</sub>)/σ²<sub>M</sub>]</div>
+    <div class="note">读法与第 6 章 y* 完全同构：<strong>分子是优势，分母是噪声的平方</strong>。α 相同的两个观点，残差波动大一倍的那个，仓位只配四分之一；α 为负的观点对应做空。市场底仓永远在——除非你的 IR 无穷大，否则永远不该 100% 主动。</div>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 27-1</span>同样的 α，不同的噪声：仓位按 σ² 惩罚（α 均为 2%/年）</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 250" role="img" aria-label="条形图：阿尔法同为 2% 时，残差波动 5% 的信号获得 8 份相对仓位，10% 的获得 2 份，20% 的只获得 0.5 份">
+      <line class="axis" x1="250" y1="36" x2="250" y2="216"/>
+      <text class="nd" x="240" y="64" text-anchor="end">信号 A：σ(e) = 5%</text>
+      <rect class="seg1" x="250" y="46" width="400" height="26" rx="3"/>
+      <text class="pl" x="658" y="64">×8</text>
+      <text class="nd" x="240" y="128" text-anchor="end">信号 B：σ(e) = 10%</text>
+      <rect class="seg1" x="250" y="110" width="100" height="26" rx="3"/>
+      <text class="pl" x="358" y="128">×2</text>
+      <text class="nd" x="240" y="192" text-anchor="end">信号 C：σ(e) = 20%</text>
+      <rect class="seg1" x="250" y="174" width="25" height="26" rx="3"/>
+      <text class="pl" x="283" y="192">×0.5</text>
+      <text class="elabel" x="360" y="238" text-anchor="middle">相对仓位 = α / σ²(e)：噪声翻倍，仓位除以四——“确定性”才是仓位的硬通货</text>
+    </svg>
+    </div>
+    <figcaption><b>读图：</b>三个观点的期望超额一样，仓位却差 16 倍——TB 模型惩罚的不是悲观，是<b>不确定</b>。实务上还要加一道“α 收缩”：你的预测 α 含有估计误差，按历史预测精度先打折（比如乘 0.3）再进公式——这与第 24 章“回测夏普先打折”是同一个谦卑动作。</figcaption>
+  </figure>
+</section>
+
+<!-- ======================== 27.3 ======================== -->
+<section class="ch" id="s3">
+  <h2 class="sec"><span class="no">27.3</span>基本定律：IR = IC × √BR</h2>
+  <p class="sec-en">THE FUNDAMENTAL LAW OF ACTIVE MANAGEMENT</p>
+
+  <div class="formula">
+    <div class="fx">信息比率　IR ≈ IC × √BR</div>
+    <div class="note">IC（信息系数）：每次判断与实际结果的相关性——你的<strong>准头</strong>；BR（宽度）：每年<strong>相互独立</strong>的判断次数。超额收益 = 准头 ×√次数：微弱的优势靠巨大的宽度可以堆成高 IR。</div>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 27-2</span>两条通往 IR 的路：深度派与广度派</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 210" role="img" aria-label="对比：深度派每年 12 个独立判断、信息系数 0.10，信息比率约 0.35；广度派每年 1000 个判断、信息系数 0.02，信息比率约 0.63">
+      <line class="axis" x1="250" y1="36" x2="250" y2="176"/>
+      <text class="nd" x="240" y="58" text-anchor="end">深度派（巴菲特式）</text>
+      <text class="elabel" x="240" y="76" text-anchor="end">IC = 0.10 × √12 次/年</text>
+      <rect class="seg1" x="250" y="46" width="300" height="26" rx="3"/>
+      <text class="pl" x="558" y="64">IR ≈ 0.35</text>
+      <text class="nd" x="240" y="128" text-anchor="end">广度派（量化式）</text>
+      <text class="elabel" x="240" y="146" text-anchor="end">IC = 0.02 × √1000 次/年</text>
+      <rect class="seg2" x="250" y="116" width="540" height="26" rx="3"/>
+      <text class="pl" x="700" y="166" text-anchor="end">IR ≈ 0.63</text>
+      <text class="elabel" x="400" y="196" text-anchor="middle">准头差五倍，靠 83 倍的独立宽度反超——前提是那 1000 次判断真的相互独立</text>
+    </svg>
+    </div>
+    <figcaption><b>读图：</b>定律的陷阱全在 BR 的“独立”二字：同一动量逻辑在 1000 只股票上开仓，彼此高度相关，有效 BR 可能只有个位数——<b>伪宽度</b>是量化回测虚胖的头号来源。真宽度来自低相关的维度：不同资产类、不同周期、不同机制的策略。这也解释了为什么“策略组合”优于“单一圣杯”。</figcaption>
+  </figure>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>大奖章：把 50.75% 的准头做成传奇</h4>
+    <p>文艺复兴科技的前高管这样解释大奖章基金：“我们只在大约 <strong>50.75%</strong> 的时间里是对的……但我们 100% 确定这一点。”准头只比抛硬币好万分之七十五，但乘上海量且相对独立的下注次数（全球多资产、高频到中频的几十万笔交易），再配上严格的执行与风控，堆出了费前年化约 66%、持续三十年的纪录——基本定律最极端的实证。光谱另一端是巴菲特：IC 高、BR 极小（一年几个大决定）、持有期以十年计。两条路都通，<strong>走不通的是中间那条：准头平庸、宽度又假的“勤奋散户”路线</strong>——高频率地重复同一种相关性极高的判断，BR 没堆起来，交易成本（第 3 章）与行为税（第 12 章）先把 IC 磨成负数。</p>
+    <p class="takeaway">评估任何策略（包括你自己的）先填这张表：IC 多少（有统计吗）？独立 BR 多少（扣除相关性后）？容量多大（IC 会不会被自己的冲击成本吃掉）？三个数填不出来，策略就还不存在。</p>
+  </div>
+</section>
+
+<!-- ======================== 27.4 ======================== -->
+<section class="ch" id="s4">
+  <h2 class="sec"><span class="no">27.4</span>Black–Litterman：给观点一个优雅的容器</h2>
+  <p class="sec-en">THE BLACK-LITTERMAN MODEL</p>
+
+  <div class="prose">
+    <p>第 7 章结尾的难题还没解决：均值—方差优化器是误差放大器，直接喂历史收益会输出疯狂权重。1992 年高盛的 Black 与 Litterman 给出的方案，是把贝叶斯思想搬进资产配置：</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 27-3</span>Black–Litterman 流程：均衡为锚，观点为偏</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 320" role="img" aria-label="流程图：市场均衡收益与带置信度的主观观点经贝叶斯混合得到后验期望收益，再经优化输出在市值权重基础上温和倾斜的组合">
+      <defs>
+        <marker id="ar1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/>
+        </marker>
+      </defs>
+      <rect class="node" x="60" y="30" width="250" height="72" rx="8"/>
+      <text class="nt" x="185" y="56" text-anchor="middle">锚：市场均衡收益</text>
+      <text class="nd" x="185" y="76" text-anchor="middle">从市值权重反推（无观点时的默认）</text>
+      <rect class="node" x="410" y="30" width="250" height="72" rx="8"/>
+      <text class="nt" x="535" y="56" text-anchor="middle">你的观点 + 置信度</text>
+      <text class="nd" x="535" y="76" text-anchor="middle">如“A 将跑赢 B 约 2%，中等信心”</text>
+      <path class="edge" d="M 185 102 V 140 H 236" marker-end="url(#ar1)"/>
+      <path class="edge" d="M 535 102 V 140 H 484" marker-end="url(#ar1)"/>
+      <rect class="node-hi" x="240" y="118" width="240" height="64" rx="8"/>
+      <text class="nt" x="360" y="144" text-anchor="middle">贝叶斯混合</text>
+      <text class="nd" x="360" y="164" text-anchor="middle">置信度越高，观点权重越大</text>
+      <path class="edge" d="M 360 182 V 212" marker-end="url(#ar1)"/>
+      <rect class="node" x="190" y="216" width="340" height="72" rx="8"/>
+      <text class="nt" x="360" y="242" text-anchor="middle">输出：市值权重 + 沿观点方向的温和倾斜</text>
+      <text class="nd" x="360" y="262" text-anchor="middle">没有极端权重；观点置信度为零时 = 持有指数</text>
+      <text class="elabel" x="360" y="310" text-anchor="middle">解决第 7 章的“误差放大”：估计噪声不再被优化器当成信息梭哈</text>
+    </svg>
+    </div>
+    <figcaption><b>读图：</b>BL 的两个设计极聪明：① <b>锚是均衡</b>——没有观点时你自动退回第 11 章的被动指数，主动是对默认值的偏离而非另起炉灶；② <b>观点带置信度</b>——半信半疑的观点只换来轻微倾斜，这正是 TB“α 收缩”的组合级版本。它因此成为机构资产配置的事实标准框架。</figcaption>
+  </figure>
+</section>
+
+<!-- ======================== 27.5 ======================== -->
+<section class="ch" id="s5">
+  <h2 class="sec"><span class="no">27.5</span>通往 Kelly：全书的交接棒</h2>
+  <p class="sec-en">FROM y* TO KELLY: PASSING THE BATON</p>
+
+  <div class="prose">
+    <p>把散落在三个章节的仓位公式排成一排，你会看到同一个基因：</p>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <tr><th>公式</th><th>出处</th><th>回答的问题</th><th>形状</th></tr>
+      <tr><td class="num">y* =（E(R<sub>p</sub>) − r<sub>f</sub>）/（A·σ²<sub>p</sub>）</td><td>第 6 章</td><td>风险资产整体配多少</td><td>优势 ÷（厌恶 × 方差）</td></tr>
+      <tr><td class="num">w<sub>i</sub> ∝ α<sub>i</sub> / σ²(e<sub>i</sub>)</td><td>本章 TB</td><td>单个观点下多大注</td><td>优势 ÷ 方差</td></tr>
+      <tr><td class="num">f* = μ<sub>超额</sub> / σ²</td><td>Kelly（教材外）</td><td>最大化长期复利增速的仓位</td><td>优势 ÷ 方差</td></tr>
+    </table>
+  </div>
+
+  <div class="prose">
+    <p><strong>仓位 = 优势 ÷ 方差</strong>——这就是现代仓位管理的全部骨架。Kelly 公式是把第 6 章效用函数换成“对数财富”（即最大化第 5 章的几何平均增速）后的特例：A = 1 的 y* 就是全仓 Kelly。而实践者几乎都用<strong>分数 Kelly</strong>（半凯利乃至四分之一），理由全在你学过的章节里：优势 μ 是估出来的且系统性偏乐观（第 24 章回测折减）、分布有肥尾（第 5 章）、而超过 Kelly 的仓位会同时降低增速并放大破产概率——宁可少赚，不可爆仓。你的下一阶段书单（Thorp 论 Kelly、López de Prado 论回测、Harris 论微观结构）将从这里接走。</p>
+    <p>最后用一张清单收束整条 happy path——一个合格的交易系统，每个模块都有教材出处：<em>信号与机制假设</em>（第 11 章三连问 + 第 12 章行为机制）→ <em>仓位</em>（本章：优势 ÷ 方差，打折执行）→ <em>风控</em>（第 5 章尾部度量 + 第 14 章久期 + 第 23 章对冲与保证金预案）→ <em>成本</em>（第 3 章）→ <em>评价与迭代</em>（第 24 章四步审查）→ <em>约束自己</em>（第 12 章制度化补丁）。教科书到此交卷，剩下的是工程与修行。</p>
+  </div>
+
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p>“算出 Kelly 仓位就满上。”——公式的输入 μ 与 σ 都是估计值：μ 高估一倍，全 Kelly 就变成两倍 Kelly——落在“增速下降 + 回撤爆炸”的区域。纪律：① 永远用收缩后的优势；② 默认半 Kelly 起步；③ 用第 24 章的实盘监控验证估计值，而不是用更大的仓位表达信心。仓位公式是限速器，不是油门。</p>
+  </div>
+</section>
+
+<!-- ======================== 小结 ======================== -->
+<section class="ch" id="recap">
+  <h2 class="sec"><span class="no">※</span>本章小结</h2>
+  <p class="sec-en">SUMMARY</p>
+
+  <div class="recap">
+    <ol>
+      <li><b>主动管理的目标是 IR 不是收益：</b>整体夏普满足 SR² = SR²<sub>M</sub> + IR²——你的附加值就是 IR²。</li>
+      <li><b>Treynor–Black：</b>信号仓位 ∝ α/σ²(e)——观点除以噪声，噪声翻倍仓位除以四；α 先按预测精度收缩；市场底仓永远保留。</li>
+      <li><b>基本定律 IR ≈ IC×√BR：</b>准头 × √独立次数；伪宽度（高相关下注）是回测虚胖主因；深度派与广度派都通，平庸准头 + 假宽度的中间路线不通。</li>
+      <li><b>Black–Litterman：</b>均衡为锚、观点按置信度贝叶斯混合——无观点即指数，解决 MVO 误差放大，机构配置的事实标准。</li>
+      <li><b>仓位的统一基因：</b>y*、TB、Kelly 全是“优势 ÷ 方差”；Kelly = 对数效用特例；实践用分数 Kelly 对冲参数误差与肥尾。</li>
+      <li><b>交卷清单：</b>机制（11/12）→ 仓位（6/27）→ 风控（5/14/23）→ 成本（3）→ 评价（24）→ 自我约束（12）——教材部分到此完成。</li>
+    </ol>
+  </div>
+
+  <h3>核心术语（中英对照）</h3>
+  <div class="tablewrap">
+    <table>
+      <tr><th>中文</th><th>English</th><th>一句话定义</th></tr>
+      <tr><td>主动收益 / 主动风险</td><td>active return / active risk</td><td>相对基准的 α 与跟踪误差</td></tr>
+      <tr><td>主动组合</td><td>active portfolio</td><td>按 α 观点构建、叠加在底仓上的部分</td></tr>
+      <tr><td>Treynor–Black 模型</td><td>Treynor-Black model</td><td>w ∝ α/σ²(e) 的观点加权框架</td></tr>
+      <tr><td>α 收缩</td><td>alpha shrinkage</td><td>按历史预测精度给预测 α 打折</td></tr>
+      <tr><td>信息系数</td><td>information coefficient (IC)</td><td>预测与实际结果的相关性——准头</td></tr>
+      <tr><td>宽度</td><td>breadth (BR)</td><td>每年相互独立的下注次数</td></tr>
+      <tr><td>基本定律</td><td>fundamental law of active management</td><td>IR ≈ IC × √BR</td></tr>
+      <tr><td>伪宽度</td><td>false breadth</td><td>高相关的重复下注冒充独立次数</td></tr>
+      <tr><td>Black–Litterman 模型</td><td>Black-Litterman model</td><td>均衡先验 + 置信度观点的贝叶斯配置</td></tr>
+      <tr><td>均衡（隐含）收益</td><td>implied equilibrium returns</td><td>从市值权重反推的先验期望收益</td></tr>
+      <tr><td>Kelly 公式</td><td>Kelly criterion</td><td>f* = 优势/方差，最大化长期对数增速</td></tr>
+      <tr><td>分数 Kelly</td><td>fractional Kelly</td><td>按比例缩减的 Kelly，对冲估计误差与肥尾</td></tr>
+      <tr><td>容量</td><td>capacity</td><td>策略在自身冲击成本下可承载的规模</td></tr>
+    </table>
+  </div>
+
+  <h3>自测（先想后翻）</h3>
+  <details>
+    <summary>Q1 三个信号：α = +1%（σe 5%）、+2%（σe 10%）、−1%（σe 10%）。TB 相对权重是多少？负的怎么处理？</summary>
+    <div class="ans"><p>w ∝ α/σ²(e)：0.01/0.0025 = 4；0.02/0.01 = 2；−0.01/0.01 = −1。相对权重 4 : 2 : −1——最高 α 的信号 B 仓位反而只有 A 的一半（噪声是 A 的四倍），而负 α 对应做空（或在不能做空时置零并记录机会成本）。TB 的精髓一句话：下注排序按 α/σ²，不按 α。</p></div>
+  </details>
+  <details>
+    <summary>Q2 你的信号 IC ≈ 0.05，每月做一次独立判断：IR 约多少？要达到 IR 0.5 需要多大的独立宽度？</summary>
+    <div class="ans"><p>IR ≈ 0.05 × √12 ≈ 0.17——有真优势但平庸。要 IR 0.5：BR =（0.5/0.05）² = 100 次独立判断/年。两条路：把 IC 从 0.05 磨到 0.15（难，研究深化），或把独立 BR 堆到 100（扩资产、扩策略、降相关）。顺带回看第 24 章：IR 0.17 需要约 (2/0.17)² ≈ 140 年才统计显著——这就是为什么弱信号必须堆宽度。</p></div>
+  </details>
+  <details>
+    <summary>Q3 “我每天交易 20 次，一年 5000 次，BR 巨大。”错在哪？怎么估真实宽度？</summary>
+    <div class="ans"><p>BR 要求<strong>独立</strong>：5000 笔交易若都来自同一套短线动量逻辑、作用在高度相关的标的上，彼此相关系数极高，有效独立次数可能只有“因子数 × 因子换手频率”——个位数到两位数。粗估法：把交易按“驱动逻辑 × 资产类 × 周期”分桶，桶间近似独立，有效 BR ≈ 桶数 × 各桶年独立决策数；或直接用策略日收益的自相关与截面相关折算。推论：提高宽度的正道是增加<strong>不相关的收益来源</strong>，不是提高换手——后者只放大第 3 章的成本和第 12 章的行为税。</p></div>
+  </details>
+  <details>
+    <summary>Q4 Black–Litterman 相比“把历史收益塞进优化器”解决了什么？它的“零观点默认值”为什么在哲学上重要？</summary>
+    <div class="ans"><p>解决第 7 章的误差放大：历史均值噪声大，MVO 会向被高估的资产疯狂集中；BL 用均衡收益当先验（噪声小、与市值自洽），观点只以其置信度允许的幅度拉动后验——输出永远是“指数 ± 温和倾斜”，没有 300% 做空。零观点默认值 = 市值指数，这在哲学上把第 11 章装进了框架：<strong>主动是需要证据支持的偏离，被动是无需辩护的原点</strong>——举证责任的方向从此正确。</p></div>
+  </details>
+  <details>
+    <summary>Q5 把 y*（第 6 章）、TB（本章）、Kelly 写成同一句话；再说明为什么实践中用半 Kelly。</summary>
+    <div class="ans"><p>同一句话：<strong>仓位与你的优势成正比，与结果的方差成反比</strong>——y* 的“优势”是市场风险溢价、刹车是个人风险厌恶 A；TB 的优势是单信号 α、刹车是残差方差；Kelly 把 A 固定为对数效用（最大化几何增速），f* = μ/σ²。用半 Kelly 的三个理由：① μ 是估计值且因回测偏差系统性偏高（第 24 章），仓位对高估的惩罚不对称——超过真实 Kelly 既降增速又增破产险；② 真实分布肥尾（第 5 章），σ² 低估尾部；③ 半 Kelly 牺牲约四分之一的长期增速，换取回撤近乎减半——在“活下来”这个约束下是便宜的保险。一句话收束全书：<strong>先保证不出局，再谈复利</strong>。</p></div>
+  </details>
+
+  <a class="next" href="investments-index.html">
+    <div>
+      <div class="lbl">HAPPY PATH · 15 / 15 完成</div>
+      <div class="ttl">返回学习地图 · 全程回顾与勾选进度</div>
+    </div>
+    <div class="lbl">下一阶段：Thorp（Kelly）→ López de Prado(回测）→ Harris（微观结构）</div>
+  </a>
+
+  <p class="foot">本页为依据 Bodie–Kane–Marcus《投资学》（Investments）框架整理的原创学习笔记，仅用于教学理解；数值为教学算例，案例为近似表述。内容不构成任何投资建议。</p>
+</section>
+
+</main>
+</div>
+</div>
+
+<script>
+(function(){
+  var links = Array.prototype.slice.call(document.querySelectorAll('.sidenav a[href^="#"]'));
+  if(!links.length) return;
+  var map = [];
+  links.forEach(function(a){
+    var el = document.getElementById(a.getAttribute('href').slice(1));
+    if(el) map.push([el, a]);
+  });
+  function update(){
+    var y = window.scrollY + 150;
+    var cur = map[0][1];
+    for(var i = 0; i < map.length; i++){
+      if(map[i][0].offsetTop <= y) cur = map[i][1];
+    }
+    map.forEach(function(p){ p[1].classList.toggle('active', p[1] === cur); });
+  }
+  var tick = false;
+  window.addEventListener('scroll', function(){
+    if(!tick){
+      tick = true;
+      requestAnimationFrame(function(){ tick = false; update(); });
+    }
+  }, {passive:true});
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+</body>
+</html>

@@ -9,7 +9,8 @@
 1. 放入 `investments/` 文件夹，去掉上传时的随机哈希前缀，恢复原始文件名 `investments-chXX.html`（学习地图的「打开讲义」链接依赖原名）。
 2. 同步更新 `investments/investments-index.html`：
    - 找到对应章节行（`id="row-chXX"`），把 `<span class="act todo">讲义待制作</span>` 替换为 `<a class="act" href="investments-chXX.html">打开讲义</a>`；
-   - 把进度说明文字「讲义已上线 N 章」的 N 加 1。
+   - 若进度说明文字是「讲义已上线 N 章」，把 N 加 1（Happy Path 15 份讲义已全部就绪，该处现为「15 份讲义全部就绪 ✓」，上传选学章节时无需改动）。
+   - 若用户同时上传了新版 `investments-index.html`，先与仓库版本 diff，确认改动符合预期后直接采用用户版本。
 3. 在 `investments/README.md` 的文件清单中追加该章。
 4. 提交并推送到当前开发分支，GitHub Pages 自动重新部署，无需手动操作。
 
