@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>学习书架 · Learn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@700;900&family=Noto+Sans+SC:wght@400;500;700&display=swap">
+<style>
+:root{
+  --bg:#f5f6f7; --surface:#ffffff; --ink:#171a20; --ink-2:#4a5160; --muted:#858c9b;
+  --line:#e2e5ea; --line-2:#c9ced6;
+  --accent:#1d5fad; --accent-ink:#174e8f; --accent-soft:#eaf1fa;
+  --serif:"Noto Serif SC","Songti SC",serif;
+  --sans:"Noto Sans SC","Microsoft YaHei",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#101215; --surface:#181b20; --ink:#eef0f3; --ink-2:#c0c5cf; --muted:#8a909d;
+    --line:#282c33; --line-2:#3a3f48;
+    --accent:#5a96e3; --accent-ink:#79abec; --accent-soft:#1c2a3d;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#101215; --surface:#181b20; --ink:#eef0f3; --ink-2:#c0c5cf; --muted:#8a909d;
+  --line:#282c33; --line-2:#3a3f48;
+  --accent:#5a96e3; --accent-ink:#79abec; --accent-soft:#1c2a3d;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:var(--sans); font-size:15.5px; line-height:1.8;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:760px; margin:0 auto; padding:0 20px 72px}
+.hero{padding:72px 0 36px; border-bottom:1px solid var(--line)}
+.kicker{
+  display:inline-flex; align-items:center; gap:10px;
+  font-size:12.5px; letter-spacing:.22em; color:var(--accent-ink); font-weight:700;
+}
+.kicker::after{content:""; width:46px; height:1px; background:var(--accent)}
+h1{
+  font-family:var(--serif); font-weight:900; font-size:clamp(32px,6vw,46px);
+  line-height:1.25; margin:10px 0 6px; letter-spacing:.02em;
+}
+.lede{color:var(--ink-2); margin:0; max-width:40em}
+.shelf{padding-top:28px}
+a.book{
+  display:block; background:var(--surface); border:1px solid var(--line);
+  border-left:3px solid var(--accent); border-radius:0 10px 10px 0;
+  padding:20px 24px; margin:16px 0; text-decoration:none; color:var(--ink);
+}
+a.book:hover{border-color:var(--accent); background:var(--accent-soft)}
+a.book:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+a.book .bt{font-family:var(--serif); font-weight:700; font-size:20px}
+a.book .ben{font-size:12.5px; color:var(--muted); letter-spacing:.06em; margin-top:2px}
+a.book .bd{font-size:14px; color:var(--ink-2); margin-top:8px}
+a.book .go{font-size:13px; color:var(--accent-ink); font-weight:700; margin-top:10px}
+.foot{margin-top:40px; font-size:12.5px; color:var(--muted); line-height:1.8}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <span class="kicker">LEARN</span>
+    <h1>学习书架</h1>
+    <p class="lede">个人学习讲义，按科目归档。每个科目有自己的学习地图与分章讲义，可直接在线阅读。</p>
+  </div>
+  <div class="shelf">
+    <a class="book" href="investments/investments-index.html">
+      <div class="bt">投资学</div>
+      <div class="ben">Investments · Bodie / Kane / Marcus</div>
+      <div class="bd">学习地图（28 章 · Happy Path 15 站）与分章讲义：图解、真实案例、常见误区、中英术语表与自测题。</div>
+      <div class="go">进入学习地图 →</div>
+    </a>
+  </div>
+  <p class="foot">原创学习笔记，仅用于教学理解，不构成任何投资建议。</p>
+</div>
+</body>
+</html>
