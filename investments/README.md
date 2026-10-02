@@ -6,5 +6,6 @@
 - `investments-ch01.html` — 第 1 章 投资环境
 - `investments-ch02.html` — 第 2 章 资产类别与金融工具
 - `investments-ch03.html` — 第 3 章 证券是如何交易的
+- `investments-ch04.html` — 第 4 章 共同基金与投资公司
 
 从 `investments-index.html` 打开即可跳转各章讲义。

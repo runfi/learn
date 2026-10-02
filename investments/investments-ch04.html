@@ -1,0 +1,734 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>投资学 · 第4章 共同基金与投资公司</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700;900&family=Noto+Sans+SC:wght@400;500;700&display=swap">
+<style>
+/* 布局：双栏（212px 侧栏 + 正文），章导览 + 4.1–4.6 分节；宽图表置于横向滚动容器 */
+:root{
+  --bg:#f5f6f7;
+  --surface:#ffffff;
+  --ink:#171a20;
+  --ink-2:#4a5160;
+  --muted:#858c9b;
+  --line:#e2e5ea;
+  --line-2:#c9ced6;
+  --accent:#1d5fad;
+  --accent-ink:#174e8f;
+  --accent-soft:#eaf1fa;
+  --series:#2a78d6;
+  --series2:#eb6834;
+  --series3:#1baf7a;
+  --crit:#d03b3b;
+  --crit-soft:rgba(208,59,59,.07);
+  --serif:"Noto Serif SC","Songti SC",serif;
+  --sans:"Noto Sans SC","Microsoft YaHei",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#101215; --surface:#181b20; --ink:#eef0f3; --ink-2:#c0c5cf; --muted:#8a909d;
+    --line:#282c33; --line-2:#3a3f48;
+    --accent:#5a96e3; --accent-ink:#79abec; --accent-soft:#1c2a3d;
+    --series:#3987e5; --series2:#d95926; --series3:#199e70; --crit:#e66767; --crit-soft:rgba(230,103,103,.10);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#101215; --surface:#181b20; --ink:#eef0f3; --ink-2:#c0c5cf; --muted:#8a909d;
+  --line:#282c33; --line-2:#3a3f48;
+  --accent:#5a96e3; --accent-ink:#79abec; --accent-soft:#1c2a3d;
+  --series:#3987e5; --series2:#d95926; --series3:#199e70; --crit:#e66767; --crit-soft:rgba(230,103,103,.10);
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:var(--sans); font-size:15.5px; line-height:1.85;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1190px; margin:0 auto; padding-inline:20px; padding-block:0 72px}
+
+/* ———— 左侧小节导航 ———— */
+.layout{display:grid; grid-template-columns:212px minmax(0,1fr); gap:44px; align-items:start}
+.article{max-width:920px; min-width:0}
+.sidenav{
+  position:sticky; top:16px; max-height:calc(100vh - 32px); overflow-y:auto;
+  padding-block:40px 16px; font-size:13px;
+}
+.sidenav .sn-chap{
+  margin:0 0 10px; padding-left:13px; font-size:11.5px; letter-spacing:.14em;
+  color:var(--muted); font-weight:700;
+}
+.sidenav a{
+  display:block; color:var(--ink-2); text-decoration:none; line-height:1.55;
+  padding:6px 10px 6px 13px; border-left:2px solid var(--line);
+}
+.sidenav a:hover{color:var(--accent-ink)}
+.sidenav a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.sidenav a.active{
+  color:var(--accent-ink); border-left-color:var(--accent);
+  background:var(--accent-soft); font-weight:700;
+}
+.hero,section.ch{scroll-margin-top:10px}
+@media (max-width: 999px){
+  .sidenav{display:none}
+  .layout{display:block}
+}
+@media (min-width: 1000px){
+  nav.chapmap{display:none}
+}
+
+/* ———— 页眉 ———— */
+.masthead{
+  display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  padding-block:18px 14px; border-bottom:1px solid var(--line);
+}
+.masthead .book{font-family:var(--serif); font-weight:700; font-size:15px; letter-spacing:.02em}
+.masthead .part{font-size:12.5px; color:var(--muted); letter-spacing:.12em}
+.masthead a{color:var(--accent-ink); text-decoration:none}
+.masthead a:hover{text-decoration:underline}
+.masthead a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+a.next{color:inherit; text-decoration:none}
+a.next:hover{border-color:var(--accent)}
+a.next:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+/* ———— 章首 ———— */
+.hero{padding-block:44px 28px; border-bottom:1px solid var(--line)}
+.chap-no{
+  display:inline-flex; align-items:center; gap:10px;
+  font-size:12.5px; letter-spacing:.22em; color:var(--accent-ink); font-weight:700;
+}
+.chap-no::after{content:""; width:46px; height:1px; background:var(--accent)}
+.hero h1{
+  font-family:var(--serif); font-weight:900; font-size:clamp(30px,5vw,46px);
+  line-height:1.25; margin:10px 0 4px; letter-spacing:.02em; text-wrap:balance;
+}
+.hero .en{font-size:14px; color:var(--muted); letter-spacing:.08em; margin:0 0 18px}
+.hero .lede{max-width:46em; color:var(--ink-2); margin:0}
+.hero .lede strong{color:var(--ink)}
+.objectives{
+  margin-top:22px; padding:16px 20px; background:var(--surface);
+  border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:0 6px 6px 0;
+}
+.objectives h2{font-size:13px; letter-spacing:.18em; color:var(--accent-ink); margin:0 0 8px; font-weight:700}
+.objectives ul{margin:0; padding-left:1.3em; color:var(--ink-2)}
+.objectives li{margin:3px 0}
+.chapmap{display:flex; flex-wrap:wrap; gap:8px; margin-top:20px}
+.chapmap a{
+  font-size:13px; color:var(--ink-2); text-decoration:none;
+  border:1px solid var(--line-2); border-radius:999px; padding:4px 13px; background:var(--surface);
+}
+.chapmap a:hover{border-color:var(--accent); color:var(--accent-ink)}
+.chapmap a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+/* ———— 正文分节 ———— */
+section.ch{padding-block:40px 8px}
+section.ch + section.ch{border-top:1px solid var(--line)}
+h2.sec{
+  font-family:var(--serif); font-weight:700; font-size:clamp(22px,3.4vw,28px);
+  margin:0 0 2px; line-height:1.35; text-wrap:balance;
+}
+h2.sec .no{color:var(--accent-ink); margin-right:10px; font-feature-settings:"tnum"}
+p.sec-en{font-size:12.5px; letter-spacing:.1em; color:var(--muted); margin:0 0 18px}
+h3{font-size:16.5px; font-weight:700; margin:26px 0 8px}
+h3 .tag{color:var(--accent-ink)}
+p{margin:10px 0}
+.prose{max-width:46em}
+.prose .en-term{color:var(--muted); font-size:.88em}
+strong{font-weight:700}
+em{font-style:normal; font-weight:700; color:var(--accent-ink)}
+
+/* ———— 组件 ———— */
+.cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px; margin:16px 0}
+.card{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:16px 18px;
+}
+.card h4{margin:0 0 6px; font-size:15px}
+.card h4 .en-term{display:block; font-weight:400; font-size:12px; color:var(--muted); letter-spacing:.04em; margin-top:2px}
+.card p{margin:6px 0; font-size:14px; color:var(--ink-2)}
+.card ul{margin:6px 0 0; padding-left:1.2em; font-size:14px; color:var(--ink-2)}
+.card li{margin:3px 0}
+.chip{
+  display:inline-block; font-size:12.5px; color:var(--accent-ink); background:var(--accent-soft);
+  border-radius:4px; padding:1px 8px; margin:2px 4px 0 0;
+}
+
+.case{
+  margin:20px 0; padding:16px 20px 14px; background:var(--surface);
+  border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:0 8px 8px 0;
+}
+.case .label{font-size:12px; letter-spacing:.2em; color:var(--accent-ink); font-weight:700; display:block; margin-bottom:6px}
+.case h4{margin:0 0 6px; font-size:15.5px}
+.case p{margin:7px 0; font-size:14.5px; color:var(--ink-2)}
+.case p:last-child{margin-bottom:2px}
+.case .takeaway{color:var(--ink); font-weight:500}
+.case .takeaway::before{content:"▸ 教材对应 "; color:var(--accent-ink); font-weight:700; font-size:12.5px; letter-spacing:.05em}
+
+.pitfall{
+  margin:20px 0; padding:14px 20px; border:1px dashed var(--line-2); border-radius:8px; max-width:46em;
+}
+.pitfall .label{font-size:12px; letter-spacing:.2em; color:var(--crit); font-weight:700; display:block; margin-bottom:4px}
+.pitfall p{margin:4px 0; font-size:14.5px; color:var(--ink-2)}
+
+.formula{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px;
+  padding:12px 18px; margin:14px 0; max-width:46em; overflow-x:auto;
+  font-size:15px; line-height:2;
+}
+.formula .fx{white-space:nowrap}
+.formula sub,.formula sup{font-size:11px}
+.formula .note{font-size:12.5px; color:var(--muted)}
+
+table{border-collapse:collapse; width:100%; font-size:14px; font-variant-numeric:tabular-nums}
+.tablewrap{overflow-x:auto; margin:16px 0; border:1px solid var(--line); border-radius:8px; background:var(--surface)}
+.tablewrap table{min-width:560px}
+th,td{padding:9px 14px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top}
+th{font-size:12.5px; letter-spacing:.08em; color:var(--muted); font-weight:700; white-space:nowrap}
+tr:last-child td{border-bottom:none}
+td.num{white-space:nowrap}
+
+/* ———— 图 ———— */
+figure{margin:24px 0; background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:18px 18px 12px}
+figure .fig-scroll{overflow-x:auto}
+figure svg{display:block; max-width:100%; height:auto; color:var(--ink)}
+figure .fig-scroll svg{min-width:660px}
+figcaption{font-size:13px; color:var(--muted); margin-top:10px; line-height:1.7}
+figcaption b{color:var(--ink-2); font-weight:700}
+.fig-title{font-size:14px; font-weight:700; margin:0 0 12px}
+.fig-title .fno{color:var(--accent-ink); margin-right:8px}
+
+svg .node{fill:var(--bg); stroke:var(--line-2); stroke-width:1.2; rx:6}
+svg .node-hi{fill:var(--accent-soft); stroke:var(--accent)}
+svg .nt{font:700 12.5px var(--sans); fill:var(--ink)}
+svg .nd{font:400 11px var(--sans); fill:var(--ink-2)}
+svg .edge{stroke:var(--ink-2); stroke-width:1.4; fill:none}
+svg .edge-soft{stroke:var(--muted); stroke-width:1.2; fill:none; stroke-dasharray:4 4}
+svg .elabel{font:400 11.5px var(--sans); fill:var(--muted)}
+svg .grid{stroke:var(--line); stroke-width:1}
+svg .axis{stroke:var(--line-2); stroke-width:1.2}
+svg .tick{font:400 11px var(--sans); fill:var(--muted)}
+svg .atitle{font:400 11.5px var(--sans); fill:var(--muted)}
+svg .pt{fill:var(--series); stroke:var(--surface); stroke-width:2}
+svg .pt2{fill:var(--series2); stroke:var(--surface); stroke-width:2}
+svg .pt3{fill:var(--series3); stroke:var(--surface); stroke-width:2}
+svg .pl{font:700 13px var(--sans); fill:var(--ink)}
+svg .pv{font:400 11.5px var(--sans); fill:var(--ink-2)}
+svg .ln1{stroke:var(--series); stroke-width:2.5; fill:none}
+svg .ln2{stroke:var(--series2); stroke-width:2.5; fill:none}
+svg .ln3{stroke:var(--series3); stroke-width:2.5; fill:none}
+svg .seg1{fill:var(--series)}
+svg .seg2{fill:var(--series2)}
+svg .seg3{fill:var(--series3)}
+
+/* ———— 小结/术语/自测 ———— */
+.recap{margin-top:8px}
+.recap ol{margin:8px 0 0; padding-left:1.4em; max-width:46em; color:var(--ink-2)}
+.recap li{margin:7px 0}
+.recap li b{color:var(--ink)}
+details{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px;
+  padding:12px 18px; margin:10px 0; max-width:46em;
+}
+details summary{cursor:pointer; font-weight:500; color:var(--ink)}
+details summary:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+details[open] summary{color:var(--accent-ink)}
+details .ans{margin-top:8px; padding-top:8px; border-top:1px dashed var(--line); font-size:14.5px; color:var(--ink-2)}
+details .ans p{margin:6px 0}
+
+.next{
+  margin-top:48px; padding:18px 22px; border:1px solid var(--line); border-radius:8px;
+  background:var(--surface); display:flex; justify-content:space-between; align-items:center; gap:14px; flex-wrap:wrap;
+}
+.next .lbl{font-size:12px; letter-spacing:.18em; color:var(--muted)}
+.next .ttl{font-family:var(--serif); font-weight:700; font-size:18px; margin-top:2px}
+.foot{margin-top:26px; font-size:12.5px; color:var(--muted); line-height:1.8}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <span class="book">《投资学》学习手册 · Investments (Bodie · Kane · Marcus)</span>
+  <span class="part"><a href="investments-index.html">学习地图</a> · 第一部分 绪论</span>
+</header>
+
+<div class="layout">
+
+<nav class="sidenav" aria-label="小节导航">
+  <p class="sn-chap">第 4 章 · 共同基金与投资公司</p>
+  <a href="#top">章首 · 学习目标</a>
+  <a href="#s1">4.1 投资公司与净值</a>
+  <a href="#s2">4.2 投资公司的类型</a>
+  <a href="#s3">4.3 共同基金全家福</a>
+  <a href="#s4">4.4 基金的费用</a>
+  <a href="#s5">4.5 ETF</a>
+  <a href="#s6">4.6 基金业绩初探</a>
+  <a href="#recap">小结 · 术语 · 自测</a>
+</nav>
+
+<main class="article">
+
+<!-- ======================== 章首 ======================== -->
+<div class="hero" id="top">
+  <span class="chap-no">CHAPTER 4</span>
+  <h1>共同基金与其他投资公司</h1>
+  <p class="en">Mutual Funds and Other Investment Companies</p>
+  <p class="lede">对绝大多数人来说，基金是参与市场的<strong>默认载体</strong>——你大概率不会直接买国库券或建一个 300 只股票的组合，但你会买余额宝和指数基金。这一章看懂三件事：基金这台机器怎么运转（净值与申赎）、<strong>费用怎样悄悄决定你的长期财富</strong>、以及一个让人不舒服但必须直面的事实：多数主动基金长期跑不赢指数。</p>
+
+  <div class="objectives">
+    <h2>学习目标</h2>
+    <ul>
+      <li>会算基金净值（NAV）与基金投资收益率</li>
+      <li>分清开放式、封闭式、ETF 三种形态的交易机制与价格行为</li>
+      <li>看懂费用结构（申购 / 赎回 / 管理 / 销售服务费），会算费用对长期复利的侵蚀</li>
+      <li>理解 ETF 的实物申赎与套利机制，知道套利失灵时溢价为何失控</li>
+      <li>了解主动基金的整体业绩证据与“基金赚钱、基民不赚钱”的行为缺口</li>
+    </ul>
+  </div>
+
+  <nav class="chapmap" aria-label="本章导览">
+    <a href="#s1">4.1 净值</a>
+    <a href="#s2">4.2 类型</a>
+    <a href="#s3">4.3 共同基金</a>
+    <a href="#s4">4.4 费用</a>
+    <a href="#s5">4.5 ETF</a>
+    <a href="#s6">4.6 业绩</a>
+    <a href="#recap">小结与自测</a>
+  </nav>
+</div>
+
+<!-- ======================== 4.1 ======================== -->
+<section class="ch" id="s1">
+  <h2 class="sec"><span class="no">4.1</span>投资公司与净值</h2>
+  <p class="sec-en">INVESTMENT COMPANIES AND NET ASSET VALUE</p>
+
+  <div class="prose">
+    <p><strong>投资公司</strong>把众多投资者的钱汇成一个池子、按统一策略投资，每人按出资比例持有份额。它存在的理由与第 1 章的金融中介一脉相承：<strong>集合记账</strong>（一个账户替你管几百只证券）、<strong>分散化</strong>（一千元也能买到一篮子）、<strong>专业管理</strong>与<strong>更低的交易成本</strong>（机构佣金费率）。代价同样熟悉——管理费，以及基金经理与持有人之间的代理问题。</p>
+    <p>整座大厦的报价基石只有一个数字：<strong>净值</strong>（NAV）。</p>
+  </div>
+
+  <div class="formula">
+    <div class="fx">每份净值 NAV =（资产市值 − 负债）/ 流通份额数</div>
+    <div class="fx">基金收益率 =（NAV<sub>1</sub> − NAV<sub>0</sub> + 期间分红）/ NAV<sub>0</sub></div>
+    <div class="note">例：某基金持仓市值 2.4 亿元、应付费用 0.04 亿元、份额 2 亿份：NAV =（2.4 − 0.04）/ 2 = 1.18 元。年初 NAV 1.50 元、年末 1.62 元、期间每份分红 0.05 元：收益率 =（1.62 − 1.50 + 0.05）/ 1.50 = 11.3%。</div>
+  </div>
+
+  <div class="prose">
+    <p>一个重要的交易细节：场外申赎按<strong>未知价法</strong>成交——你下单时并不知道成交净值，按当日收盘后计算的 NAV 执行（15:00 前申请算当日，之后算下一日）。这与股票“看着价格下单”的体验完全不同。</p>
+  </div>
+</section>
+
+<!-- ======================== 4.2 ======================== -->
+<section class="ch" id="s2">
+  <h2 class="sec"><span class="no">4.2</span>投资公司的类型</h2>
+  <p class="sec-en">TYPES OF INVESTMENT COMPANIES</p>
+
+  <div class="prose">
+    <p>按“份额能不能伸缩、在哪儿交易”，管理型投资公司分成两大形态，再加上一些亲戚：</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 4-1</span>开放式与封闭式：同样的资产池，两套交易机制</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 235" role="img" aria-label="对比图：开放式基金由投资者与基金公司按净值申购赎回，份额可伸缩；封闭式基金份额固定，投资者之间在交易所按市价转手，市价可偏离净值">
+      <defs>
+        <marker id="ar0" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/>
+        </marker>
+      </defs>
+      <line class="edge-soft" x1="360" y1="18" x2="360" y2="215"/>
+      <!-- 左：开放式 -->
+      <text class="nt" x="178" y="26" text-anchor="middle">开放式基金</text>
+      <rect class="node" x="16" y="56" width="122" height="56" rx="6"/>
+      <text class="nt" x="77" y="88" text-anchor="middle">投资者</text>
+      <rect class="node node-hi" x="218" y="56" width="122" height="56" rx="6"/>
+      <text class="nt" x="279" y="88" text-anchor="middle">基金公司</text>
+      <text class="elabel" x="178" y="66" text-anchor="middle">申购</text>
+      <path class="edge" d="M 142 74 H 214" marker-end="url(#ar0)"/>
+      <path class="edge" d="M 214 96 H 146" marker-end="url(#ar0)"/>
+      <text class="elabel" x="178" y="112" text-anchor="middle">赎回</text>
+      <text class="elabel" x="178" y="150" text-anchor="middle">按当日收盘 NAV 成交（未知价法）</text>
+      <text class="elabel" x="178" y="172" text-anchor="middle">份额随申赎伸缩，价格 ≡ NAV</text>
+      <!-- 右：封闭式 -->
+      <text class="nt" x="540" y="26" text-anchor="middle">封闭式基金</text>
+      <text class="elabel" x="550" y="48" text-anchor="middle">经交易所撮合</text>
+      <rect class="node" x="388" y="56" width="122" height="56" rx="6"/>
+      <text class="nt" x="449" y="88" text-anchor="middle">投资者 A</text>
+      <rect class="node" x="590" y="56" width="122" height="56" rx="6"/>
+      <text class="nt" x="651" y="88" text-anchor="middle">投资者 B</text>
+      <text class="elabel" x="550" y="66" text-anchor="middle">卖出</text>
+      <path class="edge" d="M 514 74 H 586" marker-end="url(#ar0)"/>
+      <path class="edge" d="M 586 96 H 518" marker-end="url(#ar0)"/>
+      <text class="elabel" x="550" y="112" text-anchor="middle">买入</text>
+      <text class="elabel" x="550" y="150" text-anchor="middle">份额固定，按市价在场内转手</text>
+      <text class="elabel" x="550" y="172" text-anchor="middle">市价由供需决定，可长期偏离 NAV（折价 / 溢价）</text>
+    </svg>
+    </div>
+    <figcaption><b>读图：</b>开放式基金的钱从基金公司进出——申购创造新份额、赎回注销份额，所以价格被机制“焊死”在 NAV 上；封闭式基金募集结束后大门关闭，你只能找下家接手，价格是谈出来的——于是出现了折价之谜。</figcaption>
+  </figure>
+
+  <div class="tablewrap">
+    <table>
+      <tr><th>形态</th><th>份额</th><th>交易方式</th><th>成交价格</th><th>典型代表</th></tr>
+      <tr><td>开放式基金</td><td>可伸缩</td><td>向基金公司申购 / 赎回（场外）</td><td>当日收盘 NAV</td><td>绝大多数公募、余额宝</td></tr>
+      <tr><td>封闭式基金</td><td>固定</td><td>投资者间场内转手</td><td>市价（常折价）</td><td>老封基、部分 REITs</td></tr>
+      <tr><td>ETF</td><td>可伸缩（大宗）</td><td>场内市价买卖 + AP 实物申赎</td><td>市价 ≈ NAV（套利钉住）</td><td>沪深300ETF、SPY</td></tr>
+      <tr><td>单位投资信托</td><td>固定</td><td>成立时买定、不再主动管理</td><td>按净值赎回</td><td>美国市政债信托（已式微）</td></tr>
+      <tr><td>其他亲戚</td><td>——</td><td>REITs（地产收租证券化）、对冲基金（私募、第 26 章）</td><td>——</td><td>——</td></tr>
+    </table>
+  </div>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>封闭式折价之谜与“封转开”套利</h4>
+    <p>中国 1998–2002 年发行的老封闭式基金，场内价格长期比 NAV 低 20%–40%——理论上花 7 毛钱就能买到 1 块钱的资产。折价为何能长期存在？因为你拿不到那 1 块钱：封闭期内无法赎回，只能等别人出更高价。2006–2008 年“封转开”改革给出了检验：封闭式转为开放式、恢复按 NAV 赎回的那一刻，折价迅速归零，提前埋伏的投资者赚到了制度变革的钱。美国市场的封闭式基金至今平均仍有约 5%–10% 的折价。</p>
+    <p class="takeaway">价格能否被套利机制锚定在价值上，取决于“把价格推回去”的通道是否畅通——这正是 4.5 节 ETF 套利与第 11 章有效市场的核心逻辑。</p>
+  </div>
+</section>
+
+<!-- ======================== 4.3 ======================== -->
+<section class="ch" id="s3">
+  <h2 class="sec"><span class="no">4.3</span>共同基金全家福</h2>
+  <p class="sec-en">MUTUAL FUNDS: INVESTMENT POLICIES</p>
+
+  <div class="prose">
+    <p><strong>共同基金</strong>（中国语境即“公募基金”）按投资政策分类，每类对应组合里的一个角色。选基金的第一个问题从来不是“哪只好”，而是“<em>我需要哪一类</em>”——这是第 1 章“资产配置先于证券选择”的直接应用：</p>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <tr><th>类型</th><th>投什么</th><th>组合里的角色</th><th>要点</th></tr>
+      <tr><td>货币市场基金</td><td>存单、短债、回购</td><td>现金管理</td><td>第 2 章主角；低风险 ≠ 无风险</td></tr>
+      <tr><td>债券基金</td><td>利率债 / 信用债</td><td>压舱石</td><td>久期与信用等级决定脾气</td></tr>
+      <tr><td>股票基金（主动）</td><td>股票，经理选股</td><td>进攻主力</td><td>费率高，业绩分化大（见 4.6）</td></tr>
+      <tr><td>指数基金 / ETF</td><td>复制指数</td><td>低成本仓位底座</td><td>费率是核心竞争力</td></tr>
+      <tr><td>混合 / 平衡基金</td><td>股债按比例</td><td>一站式配置</td><td>省事，但费率常高于自配</td></tr>
+      <tr><td>QDII 基金</td><td>境外资产</td><td>全球分散</td><td>有外汇额度约束（见 4.5 案例）</td></tr>
+      <tr><td>FOF / 养老目标基金</td><td>一篮子基金</td><td>定制化配置</td><td>双层收费，看穿底层再买</td></tr>
+    </table>
+  </div>
+
+  <div class="prose">
+    <p>销售渠道决定你付给谁：基金公司直销、银行 / 券商 / 三方平台代销（收取申购费分成与“尾随佣金”）、以及近年兴起的投顾模式（按保有规模收费，理论上激励与你一致）。同一只基金常拆成多种份额：<strong>A 类</strong>前端收申购费、<strong>C 类</strong>免申购费但按日计提销售服务费——粗略规则：<em>打算长拿选 A，短持选 C</em>，盈亏平衡点大致在一到三年（取决于两档费率）。</p>
+  </div>
+</section>
+
+<!-- ======================== 4.4 ======================== -->
+<section class="ch" id="s4">
+  <h2 class="sec"><span class="no">4.4</span>基金的费用：复利的隐形税</h2>
+  <p class="sec-en">COSTS OF INVESTING IN MUTUAL FUNDS</p>
+
+  <div class="tablewrap">
+    <table>
+      <tr><th>费用</th><th>怎么收</th><th>美国</th><th>中国</th></tr>
+      <tr><td>申购费（前端）</td><td>买入时一次性</td><td>最高曾达 5.75%</td><td>股基标准 1.5%，三方平台常打一折</td></tr>
+      <tr><td>赎回费（后端）</td><td>卖出时，随持有期递减</td><td>常见</td><td>持有不足 7 天惩罚性 1.5%</td></tr>
+      <tr><td>管理费</td><td>按日计提，藏在净值里</td><td>主动 0.5%–1%</td><td>主动权益上限 1.2%（2023 年改革后）</td></tr>
+      <tr><td>销售服务费</td><td>按日计提（C 类）</td><td>12b-1 费，上限 1%</td><td>常见约 0.4% / 年</td></tr>
+      <tr><td>隐性成本</td><td>组合换手的佣金与冲击</td><td colspan="2">不出现在费率表上，换手率越高越伤（呼应第 3 章）</td></tr>
+    </table>
+  </div>
+
+  <div class="formula">
+    <div class="fx">期末财富 = 本金 ×（1 + r<sub>毛</sub> − f）<sup>n</sup>　（f 为年化总费率）</div>
+    <div class="note">费用不是从收益里“减一点”，而是从复利的<strong>底数</strong>里扣——时间越长，侵蚀越凶。</div>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 4-2</span>三条费率，三种人生：1 万元、毛收益 7%、持有 30 年</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 400" role="img" aria-label="复利曲线：年费率 0.15% 的指数基金 30 年后约 7.3 万元，1.5% 的主动基金约 5.0 万元，2.5% 的高费基金约 3.7 万元">
+      <!-- 图例 -->
+      <rect class="seg1" x="64" y="10" width="12" height="12" rx="2"/>
+      <text class="tick" x="82" y="20">费率 0.15%（指数基金）</text>
+      <rect class="seg2" x="250" y="10" width="12" height="12" rx="2"/>
+      <text class="tick" x="268" y="20">1.5%（主动基金）</text>
+      <rect class="seg3" x="420" y="10" width="12" height="12" rx="2"/>
+      <text class="tick" x="438" y="20">2.5%（主动 + 高销售费用）</text>
+      <!-- 网格与轴 -->
+      <g text-anchor="end">
+        <text class="tick" x="56" y="356">0</text>
+        <text class="tick" x="56" y="274">2</text>
+        <text class="tick" x="56" y="192">4</text>
+        <text class="tick" x="56" y="110">6</text>
+        <text class="tick" x="56" y="28">8</text>
+      </g>
+      <line class="grid" x1="64" y1="270" x2="610" y2="270"/>
+      <line class="grid" x1="64" y1="188" x2="610" y2="188"/>
+      <line class="grid" x1="64" y1="106" x2="610" y2="106"/>
+      <line class="grid" x1="64" y1="24"  x2="610" y2="24"/>
+      <line class="axis" x1="64" y1="352" x2="610" y2="352"/>
+      <line class="axis" x1="64" y1="24"  x2="64" y2="352"/>
+      <text class="atitle" x="20" y="14">万元</text>
+      <g text-anchor="middle">
+        <text class="tick" x="64"  y="372">0</text>
+        <text class="tick" x="155" y="372">5</text>
+        <text class="tick" x="246" y="372">10</text>
+        <text class="tick" x="337" y="372">15</text>
+        <text class="tick" x="428" y="372">20</text>
+        <text class="tick" x="519" y="372">25</text>
+        <text class="tick" x="610" y="372">30</text>
+      </g>
+      <text class="atitle" x="337" y="394" text-anchor="middle">持有年数</text>
+      <!-- 曲线 -->
+      <polyline class="ln1" points="64,311 155,295 246,273 337,241 428,198 519,137 610,53"/>
+      <polyline class="ln2" points="64,311 155,298 246,282 337,261 428,232 519,196 610,148"/>
+      <polyline class="ln3" points="64,311 155,301 246,288 337,273 428,253 519,229 610,198"/>
+      <circle class="pt" cx="610" cy="53" r="4.5"><title>费率 0.15%：30 年后约 73,000 元</title></circle>
+      <circle class="pt2" cx="610" cy="148" r="4.5"><title>费率 1.5%：30 年后约 49,800 元</title></circle>
+      <circle class="pt3" cx="610" cy="198" r="4.5"><title>费率 2.5%：30 年后约 37,500 元</title></circle>
+      <text class="pv" x="618" y="57">7.3 万</text>
+      <text class="pv" x="618" y="152">5.0 万</text>
+      <text class="pv" x="618" y="202">3.7 万</text>
+    </svg>
+    </div>
+    <figcaption><b>读图：</b>三条曲线的毛收益完全相同，差别只有费率。2.35 个百分点的费率差，30 年后财富差了<b>近一倍</b>（7.3 万 vs 3.7 万）。费率是少数几个你<b>事前就能确定</b>的收益变量——这也是它成为基金业绩最可靠预测指标的原因（4.6 节）。</figcaption>
+  </figure>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>博格的“成本革命”与中国的费率改革</h4>
+    <p>1976 年，先锋集团的约翰·博格推出第一只面向大众的指数基金，当时被同行讥为“博格的蠢行”——不选股怎么好意思收钱？此后五十年，这个“蠢行”长成了几万亿美元的产业：美国指数基金费率一路压到 0.03%，2018 年富达甚至推出零费率基金，用规模与证券出借收入补贴。资金用脚投票的方向只有一个：便宜。</p>
+    <p>中国在走同一条路：2023 年公募费率改革把主动权益基金管理费上限降到 1.2%、托管费降到 0.2%，随后调降交易佣金与销售环节费用。对投资者的含义很直接：图 4-2 里那条橙线与蓝线的差距，正在被监管强行收窄。</p>
+    <p class="takeaway">费用之争不是抠门，是复利数学。博格的名言概括了本节：“在投资中，你得到的恰恰是你<strong>不付出</strong>的那部分。”</p>
+  </div>
+
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p>“净值 1 元的基金比净值 3 元的便宜，更划算。”——净值高低与贵贱<strong>毫无关系</strong>：1 万元买 1 元净值得 1 万份，买 3 元净值得 3333 份，此后组合涨 10% 你都赚 1000 元。便宜与否只看两样：费率，以及底层资产本身贵不贵（第 18 章估值）。“高费率 = 更好的经理”同样不成立——费率与超额收益在实证上大体<strong>负相关</strong>。</p>
+  </div>
+</section>
+
+<!-- ======================== 4.5 ======================== -->
+<section class="ch" id="s5">
+  <h2 class="sec"><span class="no">4.5</span>ETF：装上套利引擎的指数基金</h2>
+  <p class="sec-en">EXCHANGE-TRADED FUNDS</p>
+
+  <div class="prose">
+    <p><strong>ETF</strong>（交易型开放式指数基金）把两种形态的优点焊在一起：像封闭式一样<em>在场内随时按市价交易</em>，又像开放式一样<em>份额可以伸缩</em>。让市价不脱缰的关键，是一台由<strong>授权参与人</strong>（AP，通常是做市商与大机构）驱动的套利引擎：</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 4-3</span>ETF 的双层市场：AP 的套利把市价钉在净值上</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 292" role="img" aria-label="ETF 机制：授权参与人用一篮子成分股向基金公司换取 ETF 份额，再到二级市场按市价卖出收回现金；折溢价触发创设或赎回套利">
+      <defs>
+        <marker id="ar2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/>
+        </marker>
+      </defs>
+      <rect class="node" x="20" y="40" width="150" height="190" rx="6"/>
+      <text class="nt" x="95" y="125" text-anchor="middle">ETF 基金公司</text>
+      <text class="nd" x="95" y="147" text-anchor="middle">创设与赎回登记</text>
+
+      <rect class="node node-hi" x="285" y="40" width="150" height="190" rx="6"/>
+      <text class="nt" x="360" y="125" text-anchor="middle">授权参与人 AP</text>
+      <text class="nd" x="360" y="147" text-anchor="middle">做市商 · 大机构</text>
+
+      <rect class="node" x="550" y="40" width="150" height="190" rx="6"/>
+      <text class="nt" x="625" y="125" text-anchor="middle">二级市场</text>
+      <text class="nd" x="625" y="147" text-anchor="middle">交易所 · 普通投资者</text>
+
+      <text class="elabel" x="227" y="86" text-anchor="middle">① 交出一篮子股票</text>
+      <path class="edge" d="M 281 96 H 178" marker-end="url(#ar2)"/>
+      <text class="elabel" x="227" y="118" text-anchor="middle">② 换回 ETF 份额</text>
+      <path class="edge" d="M 174 128 H 281" marker-end="url(#ar2)"/>
+
+      <text class="elabel" x="492" y="86" text-anchor="middle">③ 按市价卖出份额</text>
+      <path class="edge" d="M 439 96 H 546" marker-end="url(#ar2)"/>
+      <text class="elabel" x="492" y="118" text-anchor="middle">④ 收回现金</text>
+      <path class="edge" d="M 546 128 H 443" marker-end="url(#ar2)"/>
+
+      <text class="elabel" x="360" y="258" text-anchor="middle">溢价（市价 &gt; NAV）：AP 如上创设并抛售，把价差打回去；折价则反向——买入份额赎回成股票</text>
+      <text class="elabel" x="360" y="278" text-anchor="middle">普通投资者只走右半边：像买股票一样交易 ETF；大宗申赎用实物交换，税负与冲击成本更低</text>
+    </svg>
+    </div>
+    <figcaption><b>读图：</b>只要 AP 的套利通道畅通，任何明显的折溢价都会被“搬砖”抹平，所以 ETF 市价通常紧贴 NAV（这把封闭式基金的折价之谜解决了）。实物申赎还有两个副产品：基金层面几乎不用为赎回卖股票（税负与冲击小），指数持仓又天然透明。</figcaption>
+  </figure>
+
+  <div class="prose">
+    <p>与场外指数基金相比，ETF 多了盘中交易、可挂限价单、可融资融券的灵活性；代价是要付佣金与价差，以及——对不擅长管住手的人——“太容易交易”本身就是成本（第 12 章会正式讨论）。</p>
+  </div>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>当套利引擎熄火：2024 年初的跨境 ETF 溢价潮</h4>
+    <p>2024 年 1 月，A 股资金涌向跟踪日经 225 等海外指数的跨境 ETF，部分产品场内价格比 NAV 高出 10%–20%，基金公司连发风险提示并盘中停牌。溢价为何没被套利抹平？因为创设通道堵住了：跨境 ETF 申购需要 QDII 外汇额度，额度用尽，AP 无法“交出一篮子（海外）股票换新份额”，图 4-3 的左半边停转，套利只剩单腿。追高买入的投资者此后即使日经指数继续上涨，也先要承受溢价回落的亏损。</p>
+    <p class="takeaway">ETF“市价 ≈ 净值”不是自然法则，而是套利机制运转的结果；机制被约束（额度、停牌、成分股停牌），锚就会脱落。买任何 ETF 前先看一眼<strong>溢价率</strong>（IOPV 对比），是这节课最实用的一条纪律。</p>
+  </div>
+</section>
+
+<!-- ======================== 4.6 ======================== -->
+<section class="ch" id="s6">
+  <h2 class="sec"><span class="no">4.6</span>基金业绩初探</h2>
+  <p class="sec-en">MUTUAL FUND PERFORMANCE: A FIRST LOOK</p>
+
+  <div class="prose">
+    <p>买主动基金的隐含假设是：经理的选股能力足以覆盖贵出来的费率。这个假设可以用数据检验——结论构成了第 11 章有效市场的最强证据之一：</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 4-4</span>跑输基准的美国大盘主动基金占比：时间越长，赢家越少</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 250" role="img" aria-label="条形图：跑输标普 500 的美国大盘主动基金比例，1 年期约 60%，5 年期约 78%，10 年期约 87%，15 年期约 90%">
+      <!-- 网格 -->
+      <line class="grid" x1="295" y1="36" x2="295" y2="210"/>
+      <line class="grid" x1="525" y1="36" x2="525" y2="210"/>
+      <line class="grid" x1="640" y1="36" x2="640" y2="210"/>
+      <path class="edge-soft" d="M 410 36 V 210"/>
+      <text class="elabel" x="410" y="28" text-anchor="middle">50%：抛硬币线</text>
+      <line class="axis" x1="180" y1="210" x2="640" y2="210"/>
+      <!-- 条形 -->
+      <text class="nd" x="170" y="66" text-anchor="end">1 年</text>
+      <rect class="seg1" x="180" y="50" width="276" height="24" rx="3"/>
+      <text class="pv" x="464" y="66">约 60%</text>
+      <text class="nd" x="170" y="108" text-anchor="end">5 年</text>
+      <rect class="seg1" x="180" y="92" width="359" height="24" rx="3"/>
+      <text class="pv" x="547" y="108">约 78%</text>
+      <text class="nd" x="170" y="150" text-anchor="end">10 年</text>
+      <rect class="seg1" x="180" y="134" width="400" height="24" rx="3"/>
+      <text class="pv" x="588" y="150">约 87%</text>
+      <text class="nd" x="170" y="192" text-anchor="end">15 年</text>
+      <rect class="seg1" x="180" y="176" width="414" height="24" rx="3"/>
+      <text class="pv" x="602" y="192">约 90%</text>
+      <!-- 刻度 -->
+      <g text-anchor="middle">
+        <text class="tick" x="180" y="228">0</text>
+        <text class="tick" x="295" y="228">25</text>
+        <text class="tick" x="410" y="228">50</text>
+        <text class="tick" x="525" y="228">75</text>
+        <text class="tick" x="640" y="228">100%</text>
+      </g>
+    </svg>
+    </div>
+    <figcaption><b>读图：</b>数据为 SPIVA 记分卡（美国大盘主动基金 vs 标普 500，截至 2023 年，近似值）。拉长到 15 年，约九成主动基金<b>费后</b>跑输指数；而且赢家名单不稳定——业绩<b>持续性</b>研究发现，过去的冠军在下一期大概率回归平庸（“冠军魔咒”）。费率反而是对未来业绩最可靠的预测变量：越低越好。A 股的主动基金在某些年份整体跑赢过沪深 300，但费后优势同样随时间与规模扩张而衰减——不要把阶段现象当永恒规律。</figcaption>
+  </figure>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>基金赚钱，基民不赚钱</h4>
+    <p>晨星的年度研究 Mind the Gap 持续发现：美国基金投资者的<strong>资金加权收益</strong>比基金本身的<strong>时间加权收益</strong>每年平均低 1 到 2 个百分点——差额来自追涨杀跌：净值创新高时蜂拥申购，回撤时割肉赎回。中国的版本更极端：偏股基金指数过去十几年年化收益相当可观，但多数基民的实际收益远低于此，“高位发行的爆款基金”是重灾区——规模最大的那批申购，恰好发生在行情最热的时点。</p>
+    <p class="takeaway">两个收益率的差额叫<strong>行为缺口</strong>，它由第 12 章的行为偏差制造，用第 24 章的资金加权收益率度量。对你未来的交易系统，这是第一条铁律的来源：<strong>系统的敌人不是市场，是操作系统的人</strong>。</p>
+  </div>
+
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p>“看五星评级 / 去年冠军买基金。”——晨星自己的研究都承认：星级衡量的是<strong>过去</strong>的风险调整收益，对未来几乎没有预测力；“冠军基金”次年排名大概率滑落（押中极端风格才能夺冠，而风格会轮动）。筛基金更可靠的次序：先定类型（4.3）→ 再比费率（4.4）→ 最后才看长期风险调整后业绩（第 24 章给工具）。</p>
+  </div>
+</section>
+
+<!-- ======================== 小结 ======================== -->
+<section class="ch" id="recap">
+  <h2 class="sec"><span class="no">※</span>本章小结</h2>
+  <p class="sec-en">SUMMARY</p>
+
+  <div class="recap">
+    <ol>
+      <li><b>投资公司 = 集合理财：</b>报价基石是净值 NAV =（资产 − 负债）/ 份额；收益率 =（ΔNAV + 分红）/ 期初 NAV；场外申赎按未知价法成交。</li>
+      <li><b>三种形态三套机制：</b>开放式按 NAV 申赎、份额伸缩；封闭式份额固定、场内市价成交、常现折价；ETF 双层市场，靠 AP 实物申赎套利把市价钉在 NAV。</li>
+      <li><b>费用从复利底数里扣：</b>期末财富 = 本金 ×（1 + r − f）<sup>n</sup>；2 个多百分点的费率差，30 年吃掉近一半财富。费率是事前唯一确定的收益变量。</li>
+      <li><b>ETF 的锚会脱落：</b>套利通道受阻（QDII 额度、停牌）时溢价失控；交易 ETF 先看溢价率。</li>
+      <li><b>主动基金的整体证据：</b>15 年期约九成费后跑输指数，业绩持续性弱，星级与冠军无预测力；低费率才有预测力。</li>
+      <li><b>行为缺口：</b>基民资金加权收益系统性低于基金时间加权收益——追涨杀跌的代价，为第 12、24 章埋线。</li>
+    </ol>
+  </div>
+
+  <h3>核心术语（中英对照）</h3>
+  <div class="tablewrap">
+    <table>
+      <tr><th>中文</th><th>English</th><th>一句话定义</th></tr>
+      <tr><td>投资公司</td><td>investment company</td><td>汇集资金、按份额分配收益的集合投资载体</td></tr>
+      <tr><td>净值</td><td>net asset value (NAV)</td><td>（资产市值 − 负债）÷ 份额数</td></tr>
+      <tr><td>开放式基金</td><td>open-end fund</td><td>按 NAV 向基金公司申购赎回、份额可变</td></tr>
+      <tr><td>封闭式基金</td><td>closed-end fund</td><td>份额固定、场内按市价转手</td></tr>
+      <tr><td>折价 / 溢价</td><td>discount / premium</td><td>市价低于 / 高于 NAV 的偏离</td></tr>
+      <tr><td>未知价法</td><td>forward pricing</td><td>按下单后首个收盘 NAV 成交</td></tr>
+      <tr><td>单位投资信托</td><td>unit investment trust</td><td>组合一次买定、不再主动管理的信托</td></tr>
+      <tr><td>共同基金 / 公募基金</td><td>mutual fund</td><td>面向公众的开放式管理型基金</td></tr>
+      <tr><td>指数基金</td><td>index fund</td><td>以最低成本复制指数的被动基金</td></tr>
+      <tr><td>申购费 / 赎回费</td><td>front-end / back-end load</td><td>买入 / 卖出时的一次性销售费用</td></tr>
+      <tr><td>管理费</td><td>management fee / expense ratio</td><td>按日计提、藏在净值里的持续费用</td></tr>
+      <tr><td>销售服务费</td><td>12b-1 fee</td><td>持续营销费（中国 C 类份额对应）</td></tr>
+      <tr><td>交易型开放式指数基金</td><td>exchange-traded fund (ETF)</td><td>场内交易 + 实物申赎的指数基金</td></tr>
+      <tr><td>授权参与人</td><td>authorized participant (AP)</td><td>有权用一篮子证券创设 / 赎回 ETF 的机构</td></tr>
+      <tr><td>实物申赎 / 创设单位</td><td>in-kind creation / creation unit</td><td>用成分股而非现金批量换取份额</td></tr>
+      <tr><td>跟踪误差</td><td>tracking error</td><td>基金收益与基准指数收益的偏离度</td></tr>
+      <tr><td>业绩持续性</td><td>performance persistence</td><td>过去赢家继续赢的程度——实证上很弱</td></tr>
+      <tr><td>行为缺口</td><td>behavior gap</td><td>基民资金加权收益低于基金收益的差额</td></tr>
+    </table>
+  </div>
+
+  <h3>自测（先想后翻）</h3>
+  <details>
+    <summary>Q1 某基金资产市值 2.4 亿元、应付管理费等负债 400 万元、份额 2 亿份：NAV 是多少？15:30 提交的申购按什么价格成交？</summary>
+    <div class="ans"><p>NAV =（24000 − 400）万 ÷ 20000 万份 = 1.18 元。15:00 之后提交，按<strong>下一个交易日</strong>收盘 NAV 成交（未知价法）——你永远在“盲买”，这正是开放式基金与股票交易体验的本质区别。</p></div>
+  </details>
+  <details>
+    <summary>Q2 封闭式基金为什么能长期折价 30% 而无人“捡钱”？开放式基金为什么不会出现同样的折价？</summary>
+    <div class="ans"><p>折价的本质是“你买到的 1 元资产拿不出来”：封闭期内不能按 NAV 赎回，只能指望下家出更高价，而下家同样面临这个问题——折价于是自我维持（还要补偿管理费与流动性）。开放式基金任何人都能按 NAV 赎回，价格一旦低于 NAV，申赎机制立刻把它拉回——锚定靠的是<strong>通道</strong>，不是道理。“封转开”一打开通道，折价应声归零。</p></div>
+  </details>
+  <details>
+    <summary>Q3 本金 10 万元，毛收益 7%，持有 20 年：总费率 0.5% 与 2% 的期末财富各是多少？</summary>
+    <div class="ans"><p>0.5%：10 ×（1.065）<sup>20</sup> ≈ 35.2 万；2%：10 ×（1.05）<sup>20</sup> ≈ 26.5 万。1.5 个百分点的费率差吃掉约 8.7 万，占低费方案终值的四分之一。注意费率是<strong>每年、按资产规模</strong>收的——资产越滚越大，同一费率抽走的绝对金额也越来越多。</p></div>
+  </details>
+  <details>
+    <summary>Q4 某 ETF 市价比 IOPV（实时净值）高 2%，AP 会怎么做？为什么 2024 年初跨境 ETF 溢价 20% 却没人套利？</summary>
+    <div class="ans"><p>正常情况：AP 买入一篮子成分股 → 向基金公司实物申购创设新份额 → 在场内按高出 2% 的市价卖出 → 价差入袋；创设增加了份额供给，溢价被压回。跨境 ETF 的例外：申购境外成分股需要 QDII 外汇额度，额度用尽则创设通道关闭，套利只剩“卖”这一条腿没有“造”的那条腿——溢价于是失控。结论：ETF 贴近净值是<strong>机制结果</strong>，通道一堵，锚就脱落。</p></div>
+  </details>
+  <details>
+    <summary>Q5 “某明星基金近三年年化 25%，果断买入”——用本章证据给出至少三条质疑。</summary>
+    <div class="ans"><p>① 持续性：冠军业绩大概率来自押中阶段性风格，下一期回归平庸是基准情形；② 费用：主动基金的高费率是确定的拖累，而超额收益是不确定的——15 年维度约九成费后跑输；③ 行为缺口：被高业绩吸引的申购往往发生在净值高位，你的资金加权收益大概率低于广告上的时间加权收益；④（加分）规模诅咒：业绩引来巨额申购后，策略容量被稀释，历史收益更难复制。更稳的次序：先定类型、再比费率、最后看长期风险调整后业绩。</p></div>
+  </details>
+
+  <div class="next">
+    <div>
+      <div class="lbl">NEXT CHAPTER</div>
+      <div class="ttl">第 5 章 · 风险与收益入门及历史回顾</div>
+    </div>
+    <div class="lbl">收益率的正确算法 → 风险溢价 → 波动率 → VaR</div>
+  </div>
+
+  <p class="foot">本页为依据 Bodie–Kane–Marcus《投资学》（Investments）框架整理的原创学习笔记，仅用于教学理解；费率、折溢价与业绩数据为近似教学值，以官方披露与原始研究为准。内容不构成任何投资建议。</p>
+</section>
+
+</main>
+</div>
+</div>
+
+<script>
+(function(){
+  var links = Array.prototype.slice.call(document.querySelectorAll('.sidenav a[href^="#"]'));
+  if(!links.length) return;
+  var map = [];
+  links.forEach(function(a){
+    var el = document.getElementById(a.getAttribute('href').slice(1));
+    if(el) map.push([el, a]);
+  });
+  function update(){
+    var y = window.scrollY + 150;
+    var cur = map[0][1];
+    for(var i = 0; i < map.length; i++){
+      if(map[i][0].offsetTop <= y) cur = map[i][1];
+    }
+    map.forEach(function(p){ p[1].classList.toggle('active', p[1] === cur); });
+  }
+  var tick = false;
+  window.addEventListener('scroll', function(){
+    if(!tick){
+      tick = true;
+      requestAnimationFrame(function(){ tick = false; update(); });
+    }
+  }, {passive:true});
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+</body>
+</html>
