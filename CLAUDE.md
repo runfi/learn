@@ -1,17 +1,30 @@
 # CLAUDE.md
 
-本仓库是个人学习讲义站点，通过 GitHub Pages 发布：`.github/workflows/pages.yml` 会在每次推送后自动把整个仓库部署到 https://runfi.github.io/learn/ 。
+本仓库是个人学习讲义站点，通过 GitHub Pages 发布：`.github/workflows/pages.yml` 会在每次推送后自动把整个仓库部署到 https://runfi.github.io/learn/ 。根目录 `index.html` 是书架首页，每本书一张卡片。
+
+## 书目与文件夹
+
+每本书一个英文命名的文件夹（彼此并列，讲义里用 `../其他文件夹/` 互相引用）：
+
+| 书 | 文件夹 | 学习地图 | 讲义文件名 | 未完成标记 | 计数文字 |
+|---|---|---|---|---|---|
+| 《投资学》Bodie–Kane–Marcus | `investments/` | `investments-index.html` | `investments-chXX.html` | `讲义待制作` | 已改为「15 份讲义全部就绪 ✓」 |
+| 《金融市场技术分析》Murphy | `technical-analysis/` | `ta-index.html` | 以上传文件的原名为准（去掉哈希前缀） | `讲义待生成` | 「讲义已上线 N / 14」 |
 
 ## 上传新章节讲义的固定流程
 
-用户上传新讲义文件（如 `investments-ch05.html`）后，必须一并完成以下步骤再推送：
+用户上传新讲义文件后，必须一并完成以下步骤再推送：
 
-1. 放入 `investments/` 文件夹，去掉上传时的随机哈希前缀，恢复原始文件名 `investments-chXX.html`（学习地图的「打开讲义」链接依赖原名）。
-2. 同步更新 `investments/investments-index.html`：
-   - 找到对应章节行（`id="row-chXX"`），把 `<span class="act todo">讲义待制作</span>` 替换为 `<a class="act" href="investments-chXX.html">打开讲义</a>`；
-   - 若进度说明文字是「讲义已上线 N 章」，把 N 加 1（Happy Path 15 份讲义已全部就绪，该处现为「15 份讲义全部就绪 ✓」，上传选学章节时无需改动）。
-   - 若用户同时上传了新版 `investments-index.html`，先与仓库版本 diff，确认改动符合预期后直接采用用户版本。
-3. 在 `investments/README.md` 的文件清单中追加该章。
+1. 按文件名判断属于哪本书，放入对应文件夹，去掉上传时的随机哈希前缀，恢复原始文件名（学习地图的「打开讲义」链接依赖原名）。
+2. 同步更新该书的学习地图：
+   - 找到对应章节行（`id="row-chX"`，附录为 `id="row-appX"`），把 `<span class="act todo">讲义待制作</span>` 或 `<span class="act todo">讲义待生成</span>` 替换为 `<a class="act" href="文件名">打开讲义</a>`；
+   - 若计数文字是「讲义已上线 N 章」或「讲义已上线 N / 总数」，把 N 加 1；已显示「全部就绪」的不用改。
+   - 若用户同时上传了新版学习地图，先与仓库版本 diff，确认改动符合预期后直接采用用户版本。
+3. 在该书文件夹的 `README.md` 文件清单中追加该章。
 4. 提交并推送到当前开发分支，GitHub Pages 自动重新部署，无需手动操作。
 
-注意：标注「并入他章」或「选学」的章节行没有「讲义待制作」标记，不适用上述替换。
+注意：标注「并入他章」或「选学」的章节行没有未完成标记，不适用上述替换。
+
+## 新增一本书
+
+用户上传新书的学习地图时：新建英文命名的文件夹（与已有书并列），放入学习地图并写 `README.md`，在根目录 `index.html` 书架上加一张卡片，并在上表登记该书的文件名规则与标记文字。

@@ -1,0 +1,562 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>技术分析 · 学习地图</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700;900&family=Noto+Sans+SC:wght@400;500;700&display=swap">
+<style>
+/* 布局：单栏地图页（980px）：进度条 + Happy Path 站点链 + 讲义规格 + 六个学习阶段章节清单 */
+:root{
+  --bg:#f5f6f7;
+  --surface:#ffffff;
+  --ink:#171a20;
+  --ink-2:#4a5160;
+  --muted:#858c9b;
+  --line:#e2e5ea;
+  --line-2:#c9ced6;
+  --accent:#1d5fad;
+  --accent-ink:#174e8f;
+  --accent-soft:#eaf1fa;
+  --ok:#006300;
+  --serif:"Noto Serif SC","Songti SC",serif;
+  --sans:"Noto Sans SC","Microsoft YaHei",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#101215; --surface:#181b20; --ink:#eef0f3; --ink-2:#c0c5cf; --muted:#8a909d;
+    --line:#282c33; --line-2:#3a3f48;
+    --accent:#5a96e3; --accent-ink:#79abec; --accent-soft:#1c2a3d;
+    --ok:#0ca30c;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#101215; --surface:#181b20; --ink:#eef0f3; --ink-2:#c0c5cf; --muted:#8a909d;
+  --line:#282c33; --line-2:#3a3f48;
+  --accent:#5a96e3; --accent-ink:#79abec; --accent-soft:#1c2a3d;
+  --ok:#0ca30c;
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:var(--sans); font-size:15.5px; line-height:1.8;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:980px; margin:0 auto; padding-inline:20px; padding-block:0 72px}
+
+.masthead{
+  display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  padding-block:18px 14px; border-bottom:1px solid var(--line);
+}
+.masthead .book{font-family:var(--serif); font-weight:700; font-size:15px; letter-spacing:.02em}
+.masthead .part{font-size:12.5px; color:var(--muted); letter-spacing:.12em}
+.masthead a{color:var(--accent-ink); text-decoration:none}
+.masthead a:hover{text-decoration:underline}
+.masthead a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+/* ———— 章首 ———— */
+.hero{padding-block:40px 30px; border-bottom:1px solid var(--line)}
+.chap-no{
+  display:inline-flex; align-items:center; gap:10px;
+  font-size:12.5px; letter-spacing:.22em; color:var(--accent-ink); font-weight:700;
+}
+.chap-no::after{content:""; width:46px; height:1px; background:var(--accent)}
+.hero h1{
+  font-family:var(--serif); font-weight:900; font-size:clamp(30px,5vw,44px);
+  line-height:1.25; margin:10px 0 4px; letter-spacing:.02em; text-wrap:balance;
+}
+.hero .en{font-size:14px; color:var(--muted); letter-spacing:.08em; margin:0 0 16px}
+.hero .lede{max-width:48em; color:var(--ink-2); margin:0}
+.hero .lede strong{color:var(--ink)}
+
+/* 进度 */
+.progress{
+  margin-top:24px; padding:16px 20px; background:var(--surface);
+  border:1px solid var(--line); border-radius:8px;
+}
+.progress .ptext{display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; font-size:13.5px; color:var(--ink-2); margin-bottom:10px}
+.progress .ptext b{color:var(--accent-ink); font-size:15px}
+.pbar{height:8px; background:var(--line); border-radius:999px; overflow:hidden}
+.pbar i{display:block; height:100%; width:0%; background:var(--accent); border-radius:999px; transition:width .3s}
+@media (prefers-reduced-motion: reduce){ .pbar i{transition:none} }
+
+/* Happy Path 站点链 */
+.railbox{margin-top:18px}
+.railbox .rl{font-size:12px; letter-spacing:.18em; color:var(--accent-ink); font-weight:700; margin-bottom:10px}
+.rail{display:flex; flex-wrap:wrap; gap:6px 4px; align-items:center}
+.rail .st{
+  padding:3px 11px; border-radius:999px; border:1px solid var(--line-2);
+  font-size:12.5px; background:var(--surface); color:var(--ink-2); white-space:nowrap;
+}
+.rail .st.done{background:var(--accent-soft); border-color:var(--accent); color:var(--accent-ink); font-weight:500}
+.rail .st.next{border-color:var(--accent); border-style:dashed; color:var(--accent-ink); font-weight:700}
+.rail .sep{color:var(--line-2); font-size:11px}
+.railnote{font-size:12.5px; color:var(--muted); margin-top:10px}
+
+/* 图例 */
+.legend{display:flex; flex-wrap:wrap; gap:8px; margin-top:16px; font-size:12.5px; color:var(--muted); align-items:center}
+
+/* 讲义规格：三个新栏目 */
+.spec{margin-top:18px}
+.spec .rl{font-size:12px; letter-spacing:.18em; color:var(--accent-ink); font-weight:700; margin-bottom:10px}
+.specgrid{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:10px}
+.speccard{
+  padding:12px 16px; background:var(--surface); border:1px solid var(--line);
+  border-top:3px solid var(--accent); border-radius:0 0 8px 8px;
+}
+.speccard h3{margin:0 0 4px; font-size:14.5px; font-weight:700; color:var(--ink)}
+.speccard p{margin:0; font-size:13.5px; color:var(--ink-2); line-height:1.7}
+.specnote{font-size:12.5px; color:var(--muted); margin-top:10px}
+
+/* ———— 徽标 ———— */
+.badge{
+  display:inline-block; font-size:12px; line-height:1; padding:5px 10px; border-radius:999px;
+  white-space:nowrap; font-weight:500;
+}
+.b-must{background:var(--accent-soft); border:1px solid var(--accent); color:var(--accent-ink); font-weight:700}
+.b-std{border:1px solid var(--accent); color:var(--accent-ink); background:transparent}
+.b-opt{border:1px solid var(--line-2); color:var(--muted); background:transparent}
+.b-merge{border:1px dashed var(--line-2); color:var(--muted); background:transparent}
+
+/* ———— 阶段与章节清单 ———— */
+section.part{padding-block:36px 6px}
+section.part + section.part{border-top:1px solid var(--line)}
+.part h2{
+  font-family:var(--serif); font-weight:700; font-size:clamp(20px,3vw,26px);
+  margin:0 0 2px; line-height:1.4;
+}
+.part h2 .pno{color:var(--accent-ink); font-size:13px; letter-spacing:.2em; display:block; margin-bottom:4px; font-family:var(--sans); font-weight:700}
+.part h2 .pen{color:var(--muted); font-size:13px; font-family:var(--sans); font-weight:400; letter-spacing:.06em; margin-left:10px}
+.prole{font-size:14px; color:var(--muted); margin:4px 0 14px; max-width:46em}
+
+ul.chlist{list-style:none; margin:0; padding:0}
+.chrow{
+  display:flex; gap:14px; align-items:flex-start; flex-wrap:wrap;
+  padding:14px 10px; border-top:1px solid var(--line);
+}
+.chrow:first-child{border-top:none}
+.chrow .cb{
+  width:18px; height:18px; margin-top:5px; flex-shrink:0;
+  accent-color:var(--accent); cursor:pointer;
+}
+.chmain{flex:1 1 300px; min-width:0}
+.chtitle label{font-weight:700; cursor:pointer}
+.chtitle .chno{color:var(--accent-ink); font-feature-settings:"tnum"; margin-right:8px}
+.chtitle .chen{display:block; font-size:12px; color:var(--muted); letter-spacing:.04em; margin-top:1px}
+.chsum{margin:5px 0 0; font-size:13.5px; color:var(--ink-2); max-width:40em}
+.chside{
+  margin-left:auto; display:flex; align-items:center; gap:8px; flex-shrink:0;
+  padding-top:3px; flex-wrap:wrap;
+}
+.act{font-size:13px; white-space:nowrap}
+a.act{
+  color:var(--accent-ink); text-decoration:none; font-weight:700;
+  border:1px solid var(--accent); border-radius:6px; padding:5px 12px;
+}
+a.act:hover{background:var(--accent-soft)}
+a.act:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.act.ok{color:var(--ok); font-weight:700; border:none; padding:0}
+.act.todo,.act.note{color:var(--muted); padding:0}
+.chrow.checked .chtitle label{color:var(--muted); text-decoration:line-through; text-decoration-thickness:1px}
+
+/* ———— 收尾 ———— */
+.outro{
+  margin-top:40px; padding:16px 20px; background:var(--surface);
+  border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:0 8px 8px 0;
+}
+.outro + .outro{margin-top:14px}
+.outro h2{font-size:13px; letter-spacing:.18em; color:var(--accent-ink); margin:0 0 8px; font-weight:700}
+.outro p{margin:6px 0; font-size:14px; color:var(--ink-2)}
+.outro ul{margin:6px 0; padding-left:1.2em; font-size:14px; color:var(--ink-2)}
+.outro li{margin:4px 0}
+.outro a{color:var(--accent-ink); font-weight:700; text-decoration:none; border-bottom:1px solid var(--accent-soft)}
+.outro a:hover{border-bottom-color:var(--accent)}
+.outro a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.foot{margin-top:24px; font-size:12.5px; color:var(--muted); line-height:1.8}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <span class="book">《金融市场技术分析》学习手册 · Technical Analysis of the Financial Markets (John J. Murphy)</span>
+  <span class="part"><a href="../investments/investments-index.html">← 上一本：投资学</a> · 学习地图 · HAPPY PATH</span>
+</header>
+
+<div class="hero">
+  <span class="chap-no">ROADMAP</span>
+  <h1>学习地图</h1>
+  <p class="en">The Happy Path through Technical Analysis</p>
+  <p class="lede">全书 19 章加 4 个附录。按你的目标（先掌握传统交易的完整语言，日后再把规则交给数据检验）分成三档：<strong>必学</strong>（深做讲义 + 自测）、<strong>应学</strong>（标准深度）、<strong>选学</strong>（摘要或按需）。下面的 14 站按<strong>学习顺序</strong>而非书序排列：先打地基，再学价格本身（趋势、形态、量、K 线），然后才是由价格算出来的指标，最后看大局，并把一切落成交易规则与资金管理。</p>
+
+  <div class="progress">
+    <div class="ptext">
+      <span>Happy Path 进度：<b id="pcount">0</b> / 14 站</span>
+      <span>讲义已上线 0 / 14 · 勾选每章前的方框记录你的学习进度</span>
+    </div>
+    <div class="pbar"><i id="pfill"></i></div>
+    <div class="railbox">
+      <div class="rl">THE 14 STATIONS · 传统交易版</div>
+      <div class="rail" id="rail">
+        <span class="st" data-st="ch1">1 理论基础</span><span class="sep">→</span>
+        <span class="st" data-st="ch2">2 道氏理论</span><span class="sep">→</span>
+        <span class="st" data-st="ch4">4 趋势</span><span class="sep">→</span>
+        <span class="st" data-st="ch5">5 反转形态</span><span class="sep">→</span>
+        <span class="st" data-st="ch6">6 持续形态</span><span class="sep">→</span>
+        <span class="st" data-st="ch7">7 量价</span><span class="sep">→</span>
+        <span class="st" data-st="ch12">12 蜡烛图</span><span class="sep">→</span>
+        <span class="st" data-st="ch9">9 均线</span><span class="sep">→</span>
+        <span class="st" data-st="ch10">10 摆动指标</span><span class="sep">→</span>
+        <span class="st" data-st="ch17">17 交叉市场</span><span class="sep">→</span>
+        <span class="st" data-st="ch18">18 市场宽度</span><span class="sep">→</span>
+        <span class="st" data-st="ch15">15 交易系统</span><span class="sep">→</span>
+        <span class="st" data-st="ch16">16 资金管理</span><span class="sep">→</span>
+        <span class="st" data-st="ch19">19 大会串</span>
+      </div>
+      <p class="railnote">两处调序：第 12 章蜡烛图提前到价格行为阶段，与形态、量价连着学；第 17、18 章（看大局）放在第 15、16 章（建系统、管资金）之前，先学完全部分析工具，再落成交易规则。进度保存在这台电脑的浏览器里，仅自己可见。虚线框是你的下一站。</p>
+    </div>
+    <div class="legend">
+      <span>优先级图例：</span>
+      <span class="badge b-must">必学 · 深做</span>
+      <span class="badge b-std">应学 · 标准</span>
+      <span class="badge b-merge">并入他章</span>
+      <span class="badge b-opt">选学 · 摘要</span>
+    </div>
+  </div>
+
+  <div class="spec">
+    <div class="rl">每份讲义新增的三个栏目</div>
+    <div class="specgrid">
+      <div class="speccard">
+        <h3>规则化</h3>
+        <p>把本章方法改写成“入场 / 出场 / 止损 / 仓位”四要素齐全的明确规则，为日后回测铺路。</p>
+      </div>
+      <div class="speccard">
+        <h3>证据与怀疑</h3>
+        <p>学术研究怎么看这个工具、它押注的是哪种行为规律、什么时候会失效，回扣《投资学》第 11、12 章。</p>
+      </div>
+      <div class="speccard">
+        <h3>A 股适配</h3>
+        <p>T+1、涨跌停、停牌、融券受限之下，这个工具会怎样变形，哪些信号需要打折。</p>
+      </div>
+    </div>
+    <p class="specnote">其余沿用《投资学》手册模板：分节卡片、真实案例、常见误区、SVG 图解、章末小结 / 中英术语表 / 折叠自测题。</p>
+  </div>
+</div>
+
+<!-- ============ STAGE I ============ -->
+<section class="part">
+  <h2><span class="pno">STAGE Ⅰ · 第一阶段</span>地基：理念与图表<span class="pen">Foundations</span></h2>
+  <p class="prole">技术分析凭什么成立、图怎么画、大方向怎么看。两站讲义并入两章要点，是后面一切的语言基础。</p>
+  <ul class="chlist">
+    <li class="chrow" id="row-ch1">
+      <input type="checkbox" class="cb" id="cb-ch1" data-ch="ch1" aria-label="标记第 1 章已学完">
+      <div class="chmain">
+        <div class="chtitle"><label for="cb-ch1"><span class="chno">01</span>技术分析的理论基础</label><span class="chen">Philosophy of Technical Analysis</span></div>
+        <p class="chsum">三大前提：市场行为包容消化一切、价格以趋势方式演变、历史会重演；技术分析与基本面分析之辨。用《投资学》的弱式有效市场审视这三条前提（含第 3 章要点：柱线、线图、K 线的画法，算术与对数刻度，日线、周线、月线）。</p>
+      </div>
+      <div class="chside"><span class="badge b-std">应学 · 标准</span><span class="act todo">讲义待生成</span></div>
+    </li>
+    <li class="chrow" id="row-ch3">
+      <input type="checkbox" class="cb" id="cb-ch3" data-ch="ch3" aria-label="标记第 3 章已学完">
+      <div class="chmain">
+        <div class="chtitle"><label for="cb-ch3"><span class="chno">03</span>图表简介</label><span class="chen">Chart Construction</span></div>
+        <p class="chsum">各类图表的作法、刻度选择、交易量与持仓量的记录方式：工具性内容，要点并入第 1 章。</p>
+      </div>
+      <div class="chside"><span class="badge b-merge">并入第 1 章</span><span class="act note">随第 1 章覆盖要点</span></div>
+    </li>
+    <li class="chrow" id="row-ch2">
+      <input type="checkbox" class="cb" id="cb-ch2" data-ch="ch2" aria-label="标记第 2 章已学完">
+      <div class="chmain">
+        <div class="chtitle"><label for="cb-ch2"><span class="chno">02</span>道氏理论</label><span class="chen">Dow Theory</span></div>
+        <p class="chsum">六条基本原则：指数包容一切、三种趋势、主要趋势的三个阶段、两种指数相互验证、成交量验证趋势、趋势持续到出现明确反转信号为止（含第 8 章要点：用周线、月线看主要趋势，自上而下的多周期分析）。</p>
+      </div>
+      <div class="chside"><span class="badge b-std">应学 · 标准</span><span class="act todo">讲义待生成</span></div>
+    </li>
+    <li class="chrow" id="row-ch8">
+      <input type="checkbox" class="cb" id="cb-ch8" data-ch="ch8" aria-label="标记第 8 章已学完">
+      <div class="chmain">
+        <div class="chtitle"><label for="cb-ch8"><span class="chno">08</span>长期图表</label><span class="chen">Long-Term Charts</span></div>
+        <p class="chsum">周线、月线图上的长期趋势视角：思路与道氏理论的“主要趋势”一脉相承，要点并入第 2 章。</p>
+      </div>
+      <div class="chside"><span class="badge b-merge">并入第 2 章</span><span class="act note">随第 2 章覆盖要点</span></div>
+    </li>
+  </ul>
+</section>
+
+<!-- ============ STAGE II ============ -->
+<section class="part">
+  <h2><span class="pno">STAGE Ⅱ · 第二阶段</span>价格行为：趋势、形态、量与 K 线<span class="pen">Price Action</span></h2>
+  <p class="prole">全书的心脏。先看懂价格本身：趋势、支撑阻力、形态、成交量与 K 线。后面的指标都是从这里算出来的二手信息。</p>
+  <ul class="chlist">
+    <li class="chrow" id="row-ch4">
+      <input type="checkbox" class="cb" id="cb-ch4" data-ch="ch4" aria-label="标记第 4 章已学完">
+      <div class="chmain">
+        <div class="chtitle"><label for="cb-ch4"><span class="chno">04</span>趋势的基本概念</label><span class="chen">Basic Concepts of Trend</span></div>
+        <p class="chsum">用峰谷定义趋势；支撑与阻力及其角色互换；趋势线、扇形原理、通道线；百分比回撤（三分之一、50%、三分之二）；反转日与四类缺口（含第 13 章要点：斐波那契回撤比例）。全书最重要的一章。</p>
+      </div>
+      <div class="chside"><span class="badge b-must">必学 · 深做</span><span class="act todo">讲义待生成</span></div>
+    </li>
+    <li class="chrow" id="row-ch5">
+      <input type="checkbox" class="cb" id="cb-ch5" data-ch="ch5" aria-label="标记第 5 章已学完">
+      <div class="chmain">
+        <div class="chtitle"><label for="cb-ch5"><span class="chno">05</span>主要反转形态</label><span class="chen">Major Reversal Patterns</span></div>
+        <p class="chsum">头肩顶 / 底、三重顶底、双重顶底（M 头、W 底）、圆形顶底、V 形反转；颈线突破、量度目标、回抽，以及成交量的确认作用。</p>
+      </div>
+      <div class="chside"><span class="badge b-must">必学 · 深做</span><span class="act todo">讲义待生成</span></div>
+    </li>
+    <li class="chrow" id="row-ch6">
+      <input type="checkbox" class="cb" id="cb-ch6" data-ch="ch6" aria-label="标记第 6 章已学完">
+      <div class="chmain">
+        <div class="chtitle"><label for="cb-ch6"><span class="chno">06</span>持续形态</label><span class="chen">Continuation Patterns</span></div>
+        <p class="chsum">对称 / 上升 / 下降三角形、扩散形、旗形与三角旗形、楔形、矩形、量度跳动；怎样区分“歇口气”与“要掉头”。</p>
+      </div>
+      <div class="chside"><span class="badge b-std">应学 · 标准</span><span class="act todo">讲义待生成</span></div>
+    </li>
+    <li class="chrow" id="row-ch7">
+      <input type="checkbox" class="cb" id="cb-ch7" data-ch="ch7" aria-label="标记第 7 章已学完">
+      <div class="chmain">
+        <div class="chtitle"><label for="cb-ch7"><span class="chno">07</span>交易量和持仓量</label><span class="chen">Volume and Open Interest</span></div>
+        <p class="chsum">量价配合原则、能量潮（OBV）等累积指标、放量高潮与缩量回调；期货持仓量的解读规则（股指期货、商品期货适用）。A 股最常用的“量价”语言的源头。</p>
+      </div>
+      <div class="chside"><span class="badge b-must">必学 · 深做</span><span class="act todo">讲义待生成</span></div>
+    </li>
+    <li class="chrow" id="row-ch12">
+      <input type="checkbox" class="cb" id="cb-ch12" data-ch="ch12" aria-label="标记第 12 章已学完">
+      <div class="chmain">
+        <div class="chtitle"><label for="cb-ch12"><span class="chno">12</span>日本蜡烛图</label><span class="chen">Japanese Candlesticks</span></div>
+        <p class="chsum">实体与影线；锤子线与上吊线、吞没形态、乌云盖顶与刺透、启明星与黄昏星、十字星；K 线信号必须放在趋势与支撑阻力的背景里读，并与西方工具互相印证。</p>
+      </div>
+      <div class="chside"><span class="badge b-std">应学 · 标准</span><span class="act todo">讲义待生成</span></div>
+    </li>
+    <li class="chrow" id="row-ch11">
+      <input type="checkbox" class="cb" id="cb-ch11" data-ch="ch11" aria-label="标记第 11 章已学完">
+      <div class="chmain">
+        <div class="chtitle"><label for="cb-ch11"><span class="chno">11</span>日内点数图</label><span class="chen">Point and Figure Charting</span></div>
+        <p class="chsum">只记价格、不记时间的作图法：格值、转向、计数法求目标。A 股少用，理解“过滤噪声”的思想即可。</p>
+      </div>
+      <div class="chside"><span class="badge b-opt">选学 · 摘要</span><span class="act note">按需</span></div>
+    </li>
+  </ul>
+</section>
+
+<!-- ============ STAGE III ============ -->
+<section class="part">
+  <h2><span class="pno">STAGE Ⅲ · 第三阶段</span>技术指标：把价格写成公式<span class="pen">Indicators</span></h2>
+  <p class="prole">均线定方向，摆动指标测动能与超买超卖。这两章最容易规则化，也最容易被过度优化，是日后通往量化的第一座桥。</p>
+  <ul class="chlist">
+    <li class="chrow" id="row-ch9">
+      <input type="checkbox" class="cb" id="cb-ch9" data-ch="ch9" aria-label="标记第 9 章已学完">
+      <div class="chmain">
+        <div class="chtitle"><label for="cb-ch9"><span class="chno">09</span>移动平均线</label><span class="chen">Moving Averages</span></div>
+        <p class="chsum">简单、加权、指数平均；单线、双线、三线交叉系统；均线作支撑阻力；包络线与布林带；周规则（四周突破，海龟法则的前身）；参数长短与滞后之间的取舍。</p>
+      </div>
+      <div class="chside"><span class="badge b-must">必学 · 深做</span><span class="act todo">讲义待生成</span></div>
+    </li>
+    <li class="chrow" id="row-ch10">
+      <input type="checkbox" class="cb" id="cb-ch10" data-ch="ch10" aria-label="标记第 10 章已学完">
+      <div class="chmain">
+        <div class="chtitle"><label for="cb-ch10"><span class="chno">10</span>摆动指数和相反意见理论</label><span class="chen">Oscillators and Contrary Opinion</span></div>
+        <p class="chsum">动量与变化率、RSI、随机指标 KD（A 股常用 KDJ 的源头）、威廉 %R、MACD 与柱状图；背离、超买超卖的正确用法；相反意见：情绪调查与看跌看涨比率。</p>
+      </div>
+      <div class="chside"><span class="badge b-must">必学 · 深做</span><span class="act todo">讲义待生成</span></div>
+    </li>
+  </ul>
+</section>
+
+<!-- ============ STAGE IV ============ -->
+<section class="part">
+  <h2><span class="pno">STAGE Ⅳ · 第四阶段</span>大局：跨市场与市场宽度<span class="pen">The Bigger Picture</span></h2>
+  <p class="prole">单张图之外的上下文：其他市场在说什么，大盘上涨是少数权重股拉动还是普涨。用来过滤个股或单一市场的信号。</p>
+  <ul class="chlist">
+    <li class="chrow" id="row-ch17">
+      <input type="checkbox" class="cb" id="cb-ch17" data-ch="ch17" aria-label="标记第 17 章已学完">
+      <div class="chmain">
+        <div class="chtitle"><label for="cb-ch17"><span class="chno">17</span>股票市场和期货市场的联系：交叉市场分析</label><span class="chen">The Link Between Stocks and Futures: Intermarket Analysis</span></div>
+        <p class="chsum">商品、债券、股票、美元四个市场的联动链条；利率对股市的领先作用；行业轮动与相对强度比率。A 股视角：人民币汇率、国债收益率、大宗商品与周期板块。</p>
+      </div>
+      <div class="chside"><span class="badge b-std">应学 · 标准</span><span class="act todo">讲义待生成</span></div>
+    </li>
+    <li class="chrow" id="row-ch18">
+      <input type="checkbox" class="cb" id="cb-ch18" data-ch="ch18" aria-label="标记第 18 章已学完">
+      <div class="chmain">
+        <div class="chtitle"><label for="cb-ch18"><span class="chno">18</span>股票市场指标</label><span class="chen">Stock Market Indicators</span></div>
+        <p class="chsum">市场宽度：腾落线、新高新低、McClellan 摆动指标、阿姆斯指数（TRIN）；用宽度验证指数是否“健康”。A 股对应：涨跌家数、涨停跌停家数。</p>
+      </div>
+      <div class="chside"><span class="badge b-std">应学 · 标准</span><span class="act todo">讲义待生成</span></div>
+    </li>
+  </ul>
+</section>
+
+<!-- ============ STAGE V ============ -->
+<section class="part">
+  <h2><span class="pno">STAGE Ⅴ · 第五阶段</span>从分析到交易<span class="pen">From Analysis to Trading</span></h2>
+  <p class="prole">会分析不等于会交易。这一段把工具变成系统，给每笔交易定下风险上限，最后用一张检查清单把全书串起来，并写出你的第一份成文交易计划。</p>
+  <ul class="chlist">
+    <li class="chrow" id="row-ch15">
+      <input type="checkbox" class="cb" id="cb-ch15" data-ch="ch15" aria-label="标记第 15 章已学完">
+      <div class="chmain">
+        <div class="chtitle"><label for="cb-ch15"><span class="chno">15</span>计算机和交易系统</label><span class="chen">Computers and Trading Systems</span></div>
+        <p class="chsum">方向运动指标（DMI / ADX，测趋势强度）、抛物线 SAR；系统交易的利弊、参数优化与过拟合风险（含附录 C 要点：一个交易系统的基本组成与检验）。</p>
+      </div>
+      <div class="chside"><span class="badge b-std">应学 · 标准</span><span class="act todo">讲义待生成</span></div>
+    </li>
+    <li class="chrow" id="row-appC">
+      <input type="checkbox" class="cb" id="cb-appC" data-ch="appC" aria-label="标记附录 C 已学完">
+      <div class="chmain">
+        <div class="chtitle"><label for="cb-appC"><span class="chno">C</span>附录 C：交易系统的基本要求</label><span class="chen">Appendix C: The Essentials of Building a Trading System</span></div>
+        <p class="chsum">系统由哪些部分组成、怎样检验：与第 15 章同一主题，要点并入。</p>
+      </div>
+      <div class="chside"><span class="badge b-merge">并入第 15 章</span><span class="act note">随第 15 章覆盖要点</span></div>
+    </li>
+    <li class="chrow" id="row-ch16">
+      <input type="checkbox" class="cb" id="cb-ch16" data-ch="ch16" aria-label="标记第 16 章已学完">
+      <div class="chmain">
+        <div class="chtitle"><label for="cb-ch16"><span class="chno">16</span>资金管理和交易策略</label><span class="chen">Money Management and Trading Tactics</span></div>
+        <p class="chsum">交易三要素：价格预测、时机、资金管理。单笔风险上限、报酬风险比、止损设置、盈利后加仓与亏损后减仓、突破与回调两种入场战术。决定你能不能活下来的一章。</p>
+      </div>
+      <div class="chside"><span class="badge b-must">必学 · 深做</span><span class="act todo">讲义待生成</span></div>
+    </li>
+    <li class="chrow" id="row-ch19">
+      <input type="checkbox" class="cb" id="cb-ch19" data-ch="ch19" aria-label="标记第 19 章已学完">
+      <div class="chmain">
+        <div class="chtitle"><label for="cb-ch19"><span class="chno">19</span>全书大会串</label><span class="chen">Pulling It All Together: A Checklist</span></div>
+        <p class="chsum">技术分析检查清单：自上而下、多周期，按趋势、形态、量、指标、宽度、跨市场的顺序逐项过。章末作业：写出你自己的第一份成文交易计划。</p>
+      </div>
+      <div class="chside"><span class="badge b-std">应学 · 标准</span><span class="act todo">讲义待生成</span></div>
+    </li>
+  </ul>
+</section>
+
+<!-- ============ STAGE VI ============ -->
+<section class="part">
+  <h2><span class="pno">STAGE Ⅵ · 选学专题</span>波浪、周期与工具附录<span class="pen">Optional Topics</span></h2>
+  <p class="prole">主观性强、难以证伪，或偏期货、偏工具书的内容。了解概念即可，需要时再回来深挖。</p>
+  <ul class="chlist">
+    <li class="chrow" id="row-ch13">
+      <input type="checkbox" class="cb" id="cb-ch13" data-ch="ch13" aria-label="标记第 13 章已学完">
+      <div class="chmain">
+        <div class="chtitle"><label for="cb-ch13"><span class="chno">13</span>艾略特波浪理论</label><span class="chen">Elliott Wave Theory</span></div>
+        <p class="chsum">五浪推动加三浪调整、斐波那契比例。数浪高度依赖主观判断，难以写成明确规则，与“日后量化”的目标冲突；斐波那契回撤要点随第 4 章讲。</p>
+      </div>
+      <div class="chside"><span class="badge b-opt">选学 · 摘要</span><span class="act note">斐波那契要点随第 4 章</span></div>
+    </li>
+    <li class="chrow" id="row-ch14">
+      <input type="checkbox" class="cb" id="cb-ch14" data-ch="ch14" aria-label="标记第 14 章已学完">
+      <div class="chmain">
+        <div class="chtitle"><label for="cb-ch14"><span class="chno">14</span>时间周期</label><span class="chen">Time Cycles</span></div>
+        <p class="chsum">周期的长度、振幅与相位，季节性规律。实证上稳健性弱，按需了解。</p>
+      </div>
+      <div class="chside"><span class="badge b-opt">选学 · 摘要</span><span class="act note">按需</span></div>
+    </li>
+    <li class="chrow" id="row-appA">
+      <input type="checkbox" class="cb" id="cb-appA" data-ch="appA" aria-label="标记附录 A 已学完">
+      <div class="chmain">
+        <div class="chtitle"><label for="cb-appA"><span class="chno">A</span>附录 A：高级技术指标</label><span class="chen">Appendix A: Advanced Technical Indicators</span></div>
+        <p class="chsum">更多指标的公式与用法，当工具书查阅即可。</p>
+      </div>
+      <div class="chside"><span class="badge b-opt">选学 · 查阅</span><span class="act note">按需</span></div>
+    </li>
+    <li class="chrow" id="row-appB">
+      <input type="checkbox" class="cb" id="cb-appB" data-ch="appB" aria-label="标记附录 B 已学完">
+      <div class="chmain">
+        <div class="chtitle"><label for="cb-appB"><span class="chno">B</span>附录 B：市场剖面图</label><span class="chen">Appendix B: Market Profile</span></div>
+        <p class="chsum">按价格统计成交时间分布的市场轮廓图，偏日内与期货交易者。</p>
+      </div>
+      <div class="chside"><span class="badge b-opt">选学 · 摘要</span><span class="act note">按需</span></div>
+    </li>
+    <li class="chrow" id="row-appD">
+      <input type="checkbox" class="cb" id="cb-appD" data-ch="appD" aria-label="标记附录 D 已学完">
+      <div class="chmain">
+        <div class="chtitle"><label for="cb-appD"><span class="chno">D</span>附录 D：连续期货合约</label><span class="chen">Appendix D: Continuous Futures Contracts</span></div>
+        <p class="chsum">怎样把一个个到期的期货合约拼成连续长期图。现在可略过，日后做期货回测时必须回来补。</p>
+      </div>
+      <div class="chside"><span class="badge b-opt">选学 · 按需</span><span class="act note">做期货回测时再学</span></div>
+    </li>
+  </ul>
+</section>
+
+<div class="outro">
+  <h2>与《投资学》的衔接</h2>
+  <p>技术分析在学术界一直饱受质疑，带着上一本书的怀疑来学，正是这套手册的用意：</p>
+  <ul>
+    <li><a href="../investments/investments-ch11.html">第 11 章 有效市场假说</a>：弱式有效正是“技术分析有没有用”的学术战场，每站的“证据与怀疑”栏都会回到这里。</li>
+    <li><a href="../investments/investments-ch12.html">第 12 章 行为金融与技术分析</a>：趋势与形态为什么可能存在（行为偏差），又为什么不容易被套利抹平。</li>
+    <li><a href="../investments/investments-ch03.html">第 3 章 证券是如何交易的</a>：止损单、限价单等订单类型，是第 16 章资金管理落地执行的基础。</li>
+    <li><a href="../investments/investments-ch24.html">第 24 章 投资组合业绩评价</a>：日后检验你的技术交易规则，用 Sharpe 与回撤，不看收益绝对值。</li>
+  </ul>
+</div>
+
+<div class="outro">
+  <h2>走完 14 站之后</h2>
+  <p>这本书交付三样东西：<strong>读图的完整语言</strong>（趋势、形态、量价、指标、宽度、跨市场）、<strong>每个工具背后的假设意识</strong>（它押注哪种行为规律，什么时候会失效），以及一份<strong>成文的交易计划</strong>（第 19 章的章末作业）。</p>
+  <p>接下来按约定路线走：Elder《以交易为生》补交易心理与资金管理 → Curtis Faith《海龟交易法则》看传统规则怎样长成完整系统 → Chan《量化交易》把你积累的规则交给数据检验。</p>
+</div>
+
+<p class="foot">本页依据约翰·墨菲《金融市场技术分析》（丁圣元译，地震出版社 2010 年版，对应英文 1999 年版 Technical Analysis of the Financial Markets）目录整理；旧版《期货市场技术分析》章号不同。优先级为面向“先学传统交易、日后量化”目标的个人定制，非教材官方划分。勾选进度仅存于本机浏览器。内容不构成任何投资建议。</p>
+
+</div>
+
+<script>
+(function(){
+  var PATH = ['ch1','ch2','ch4','ch5','ch6','ch7','ch12','ch9','ch10','ch17','ch18','ch15','ch16','ch19'];
+  var KEY = 'murphy-ta-progress';
+
+  function load(){
+    try{ return JSON.parse(localStorage.getItem(KEY) || '{}'); }catch(e){ return {}; }
+  }
+  function save(state){
+    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){}
+  }
+
+  var state = load();
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('.cb[data-ch]'));
+
+  function refresh(){
+    var done = 0;
+    PATH.forEach(function(ch){ if(state[ch]) done++; });
+    var pc = document.getElementById('pcount');
+    var pf = document.getElementById('pfill');
+    if(pc) pc.textContent = done;
+    if(pf) pf.style.width = (done / PATH.length * 100) + '%';
+
+    var nextFound = false;
+    PATH.forEach(function(ch){
+      var st = document.querySelector('.rail .st[data-st="' + ch + '"]');
+      if(st){
+        st.classList.toggle('done', !!state[ch]);
+        var isNext = !state[ch] && !nextFound;
+        st.classList.toggle('next', isNext);
+        if(isNext) nextFound = true;
+      }
+    });
+
+    boxes.forEach(function(b){
+      var row = document.getElementById('row-' + b.getAttribute('data-ch'));
+      if(row) row.classList.toggle('checked', b.checked);
+    });
+  }
+
+  boxes.forEach(function(b){
+    var ch = b.getAttribute('data-ch');
+    b.checked = !!state[ch];
+    b.addEventListener('change', function(){
+      state[ch] = b.checked;
+      if(!b.checked) delete state[ch];
+      save(state);
+      refresh();
+    });
+  });
+
+  refresh();
+})();
+</script>
+</body>
+</html>
