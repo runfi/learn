@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>币圈短线实战课 · 学习地图</title>
+<link rel="stylesheet" href="assets/ct.css">
+<style>
+/* 本页专用样式 */
+.intro-cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:12px; margin:22px 0 8px}
+.stage{margin-top:40px}
+.stage-head{display:flex; align-items:baseline; gap:14px; flex-wrap:wrap; margin-bottom:4px}
+.stage-head h2{font-family:var(--serif); font-weight:700; font-size:clamp(20px,3vw,25px); margin:0}
+.stage-head .sno{font-size:12.5px; letter-spacing:.2em; color:var(--accent-ink); font-weight:700}
+.stage-sub{font-size:14px; color:var(--muted); margin:0 0 14px}
+.lessons{display:grid; gap:10px}
+.lesson{
+  display:grid; grid-template-columns:auto minmax(0,1fr) auto; gap:14px; align-items:center;
+  background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:14px 18px;
+}
+.lesson .lno{
+  width:40px; height:40px; border-radius:10px; display:grid; place-items:center;
+  background:var(--accent-soft); color:var(--accent-ink); font-weight:800; font-size:16px;
+  font-variant-numeric:tabular-nums;
+}
+.lesson .ttl{font-weight:700; font-size:15.5px; line-height:1.5}
+.lesson .ttl .q{
+  display:inline-block; font-size:11.5px; font-weight:700; color:var(--accent-ink);
+  background:var(--accent-soft); border-radius:999px; padding:0 8px; margin-left:8px; vertical-align:1px;
+}
+.lesson .ttl .sysv{
+  display:inline-block; font-size:11.5px; font-weight:700; color:var(--up-ink);
+  border:1px solid var(--up); border-radius:999px; padding:0 8px; margin-left:6px; vertical-align:1px;
+}
+.lesson .desc{font-size:13.5px; color:var(--ink-2); margin-top:2px; line-height:1.7}
+.lesson .side{display:flex; flex-direction:column; align-items:flex-end; gap:6px}
+.lesson .act{font-size:13px; color:var(--accent-ink); text-decoration:none; font-weight:700; white-space:nowrap}
+.lesson .act:hover{text-decoration:underline}
+.lesson .act.todo{color:var(--muted); font-weight:400; cursor:default; pointer-events:none}
+@media (max-width:640px){
+  .lesson{grid-template-columns:auto minmax(0,1fr)}
+  .lesson .side{grid-column:1 / -1; flex-direction:row; justify-content:space-between; width:100%}
+}
+.loopcard{background:var(--surface); border:1px dashed var(--line-2); border-radius:10px; padding:16px 20px; margin-top:10px}
+.loopcard h4{margin:0 0 6px; font-size:15px}
+.loopcard p,.loopcard li{font-size:14px; color:var(--ink-2)}
+.loopcard ul{margin:6px 0; padding-left:1.3em}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <span class="book">币圈短线实战课</span>
+  <span class="part">BTC / ETH 永续合约 · 短波段 · 边学边模拟</span>
+  <span class="prefs">
+    <button id="btn-updown" type="button" title="切换涨跌配色"></button>
+    <button id="btn-theme" type="button" title="切换深浅主题"></button>
+  </span>
+</header>
+
+<main class="article" style="max-width:100%">
+
+<section class="hero">
+  <span class="chap-no">LEARNING MAP</span>
+  <h1>学习地图</h1>
+  <p class="en">A HANDS-ON COURSE FOR CRYPTO SWING TRADING</p>
+  <p class="lede">这门课不按书走，按<strong>问题</strong>走：每个指标按"它回答什么问题"归类，每学一课就往你自己的交易系统里加一个零件。从第 4 课起你就有一套能开模拟盘的最简系统（v0.1），之后一路升级到 v0.7，再把它组合成完整的交易计划。目标：<strong>单笔持仓不超过一周的指标驱动短波段</strong>，先模拟，达标后转 1 万元小资金实盘。</p>
+
+  <div class="intro-cards cards">
+    <div class="card"><h4>七个问题</h4><p>方向 · 环境 · 时机 · 波动 · 位置 · 量能 · 合约数据——每类指标只回答一个问题，组合时各司其职，不许两个指标抢同一个活。</p></div>
+    <div class="card"><h4>真实数据</h4><p>所有交互图用币安真实行情（BTC / ETH 2020 年至今），包括 2025-10-10 暴跌当天的 1 分钟线和标记价格——插针长什么样，自己缩放着看。</p></div>
+    <div class="card"><h4>边学边模拟</h4><p>每课末尾有本周模拟任务。模拟满 20–30 笔且基本按规则执行后，再转小资金实盘。评价标准是"有没有按计划做"，不是单笔盈亏。</p></div>
+    <div class="card"><h4>怎么读讲义</h4><p>正文里带虚线下划线和角标的词，点一下原地弹出解释，不用翻页尾。每个指标卡标了能否延伸到股票：<span class="fit fit-all">股票通用</span><span class="fit fit-adj">换着用</span><span class="fit fit-crypto">仅合约</span></p></div>
+  </div>
+
+  <p class="colorkey">本课默认<span class="up">绿涨</span>·<span class="dn">红跌</span>（币安、TradingView 国际惯例）；习惯 A 股配色可点右上角切成<b>红涨绿跌</b>，全站记住你的选择。</p>
+
+  <p class="colorkey" id="p-online">讲义已上线 0 / 16 课。</p>
+</section>
+
+<section class="stage">
+  <div class="stage-head"><span class="sno">阶段 0</span><h2>开盘前的底子</h2></div>
+  <p class="stage-sub">三课。学完你知道合约怎么运作、怎么不爆仓、一笔该下多大——这是碰任何行情之前的安全带。</p>
+  <div class="lessons">
+    <div class="lesson" data-l="l01">
+      <span class="lno">1</span>
+      <div><span class="ttl">合约怎么运作</span>
+        <p class="desc">永续合约 vs 现货、做多做空、保证金与杠杆、强平价、标记价格 vs 最新价（2025-10-10 插针实例）、加仓减仓补仓后的均价与强平价计算、资金费率、全仓 / 逐仓、下单类型与手续费。核心一课：<b>亏多少由仓位和止损决定，与杠杆倍数无关。</b></p></div>
+      <div class="side"><a class="act" href="ct-l01.html">打开讲义</a></div>
+    </div>
+    <div class="lesson" data-l="l02">
+      <span class="lno">2</span>
+      <div><span class="ttl">K 线与周期</span>
+        <p class="desc">一根 K 线在说什么、UTC 与北京时间、日线 / 4 小时 / 1 小时各自的用途（潮汐—波浪—涟漪）、一天的活跃时段心跳、怎么把交易所和 TradingView 调成工作台。</p></div>
+      <div class="side"><a class="act" href="ct-l02.html">打开讲义</a></div>
+    </div>
+    <div class="lesson" data-l="l03">
+      <span class="lno">3</span>
+      <div><span class="ttl">风险、仓位与事件日历</span>
+        <p class="desc">1% 风险规则（1 万本金 = 每笔最多亏 100 元）、仓位计算公式、盈亏比与期望值、用 R 记盈亏、Elder 的 2% / 6% 规则；加仓减仓的纪律：为什么逆势补仓摊平是散户第一大死因、金字塔加仓只加给赚钱的仓、分批减仓与移动止损、补仓扛单 vs 止损重开的期望值账；非农 / CPI / 美联储决议时间表与事件日仓位纪律。</p></div>
+      <div class="side"><a class="act" href="ct-l03.html">打开讲义</a></div>
+    </div>
+  </div>
+</section>
+
+<section class="stage">
+  <div class="stage-head"><span class="sno">阶段 1</span><h2>指标工具箱</h2></div>
+  <p class="stage-sub">七课对应七个问题。<b>第 4 课结束就开模拟盘</b>，之后每课给系统加一个零件：v0.1 → v0.7。</p>
+  <div class="lessons">
+    <div class="lesson" data-l="l04">
+      <span class="lno">4</span>
+      <div><span class="ttl">现在往哪走<span class="q">Q1 方向</span><span class="sysv">系统 v0.1</span></span>
+        <p class="desc">高低点结构、MA / EMA、MACD。学完组装最简系统：日线定方向 + 1 小时突破入场 + 结构位止损 + 1% 风险——<b>从这课起开模拟盘。</b></p></div>
+      <div class="side"><a class="act" href="ct-l04.html">打开讲义</a></div>
+    </div>
+    <div class="lesson" data-l="l05">
+      <span class="lno">5</span>
+      <div><span class="ttl">涨过头了吗<span class="q">Q3 时机</span><span class="sysv">v0.2</span></span>
+        <p class="desc">RSI、KDJ、背离；超买不等于要跌。把"4 小时回调进场"装进系统，凑成三重滤网雏形（模板 A：顺势回调）。</p></div>
+      <div class="side"><a class="act" href="ct-l05.html">打开讲义</a></div>
+    </div>
+    <div class="lesson" data-l="l06">
+      <span class="lno">6</span>
+      <div><span class="ttl">价格平时晃多大<span class="q">Q4 波动</span><span class="sysv">v0.3</span></span>
+        <p class="desc">ATR 与波动率；止损改用 1.5–2 倍 ATR，盖过"正常针长"，仓位随波动自动调整——防插针的核心一课。</p></div>
+      <div class="side"><a class="act" href="ct-l06.html">打开讲义</a></div>
+    </div>
+    <div class="lesson" data-l="l07">
+      <span class="lno">7</span>
+      <div><span class="ttl">趋势市还是震荡市<span class="q">Q2 环境</span><span class="sysv">v0.4</span></span>
+        <p class="desc">ADX、布林带与带宽收口。先判环境再选打法：加入模板 B（收口突破）和模板 C（区间高抛低吸）。</p></div>
+      <div class="side"><span class="act todo">待制作</span></div>
+    </div>
+    <div class="lesson" data-l="l08">
+      <span class="lno">8</span>
+      <div><span class="ttl">关键价位在哪<span class="q">Q5 位置</span><span class="sysv">v0.5</span></span>
+        <p class="desc">支撑阻力、整数关口、斐波那契回撤、成交量分布。入场点和目标位从"大概"变成具体价位。</p></div>
+      <div class="side"><span class="act todo">待制作</span></div>
+    </div>
+    <div class="lesson" data-l="l09">
+      <span class="lno">9</span>
+      <div><span class="ttl">有多少人在参与<span class="q">Q6 量能</span><span class="sysv">v0.6</span></span>
+        <p class="desc">成交量、VWAP、OBV；放量突破与缩量假突破。给模板 B 加上量能确认这道闸。</p></div>
+      <div class="side"><span class="act todo">待制作</span></div>
+    </div>
+    <div class="lesson" data-l="l10">
+      <span class="lno">10</span>
+      <div><span class="ttl">合约里的人在干什么<span class="q">Q7 合约数据</span><span class="sysv">v0.7</span></span>
+        <p class="desc">资金费率、持仓量 OI、多空比、清算图谱；价格 × OI 四象限（新钱进场还是空头回补）。加入模板 D：过热过滤，不在火药桶旁追多。</p></div>
+      <div class="side"><span class="act todo">待制作</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="stage">
+  <div class="stage-head"><span class="sno">阶段 2</span><h2>行情为什么发生</h2></div>
+  <p class="stage-sub">四课。回答你最初的问题："为什么涨、为什么跌、降息到底该涨还是跌"。全部用真实事件和真实数据复盘。</p>
+  <div class="lessons">
+    <div class="lesson" data-l="l11">
+      <span class="lno">11</span>
+      <div><span class="ttl">宏观链条：利率、美元与流动性</span>
+        <p class="desc">市场交易的是"意外"而不是事件本身；预防式降息 vs 救火式降息；非农 / CPI / PCE / FOMC 各是什么、怎么查预期（CME FedWatch）；美元指数、美债收益率、纳指与 BTC 的联动。</p></div>
+      <div class="side"><span class="act todo">待制作</span></div>
+    </div>
+    <div class="lesson" data-l="l12">
+      <span class="lno">12</span>
+      <div><span class="ttl">币圈自身的驱动</span>
+        <p class="desc">现货 ETF 资金流、减半、监管、交易所 / 项目暴雷、稳定币与 USDT 增发、代币解锁、BTC 市占率与山寨轮动、周末流动性。</p></div>
+      <div class="side"><span class="act todo">待制作</span></div>
+    </div>
+    <div class="lesson" data-l="l13">
+      <span class="lno">13</span>
+      <div><span class="ttl">宏观事件复盘</span>
+        <p class="desc">2020-03 新冠暴跌与零利率、2022 加息年（叠加 LUNA / FTX）、2023-03 硅谷银行、2024-08-05 日元套息平仓、2024-12 鹰派降息。每例都回答：如果当时拿着你的规则卡，会发生什么。</p></div>
+      <div class="side"><span class="act todo">待制作</span></div>
+    </div>
+    <div class="lesson" data-l="l14">
+      <span class="lno">14</span>
+      <div><span class="ttl">币圈事件与连环爆仓复盘</span>
+        <p class="desc">2024-01 ETF 获批"买预期卖事实"、2025-10-10 关税消息引发的史上最大清算（1 分钟线 + 标记价格 + OI 全程回放）。看懂插针是怎么长出来的。</p></div>
+      <div class="side"><span class="act todo">待制作</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="stage">
+  <div class="stage-head"><span class="sno">阶段 3</span><h2>组合成体系</h2></div>
+  <p class="stage-sub">两课。把零件拧成一台机器，再配上说明书。</p>
+  <div class="lessons">
+    <div class="lesson" data-l="l15">
+      <span class="lno">15</span>
+      <div><span class="ttl">组合原则与四套模板</span>
+        <p class="desc">每个指标只干一件事、多周期分工、冲突裁决、按环境切换。A 顺势回调 / B 收口突破 / C 区间往返 / D 过热过滤，四张完整规则卡 + 真实行情回放演练。</p></div>
+      <div class="side"><span class="act todo">待制作</span></div>
+    </div>
+    <div class="lesson" data-l="l16">
+      <span class="lno">16</span>
+      <div><span class="ttl">交易计划、日志与心理</span>
+        <p class="desc">交易计划书模板、交易日志模板、每周复盘方法；连亏怎么办、什么时候必须停手（6% 规则）、怎么看待亏损——亏损是成本，不是错误。</p></div>
+      <div class="side"><span class="act todo">待制作</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="stage">
+  <div class="stage-head"><span class="sno">阶段 4</span><h2>实战循环（持续进行）</h2></div>
+  <div class="loopcard">
+    <h4>模拟 → 达标 → 小资金实盘</h4>
+    <ul>
+      <li><b>转实盘门槛</b>：模拟满 20–30 笔，且绝大多数按规则执行（评过程，不评单笔盈亏）→ 转 1 万元实盘，每笔风险 100 元。</li>
+      <li><b>每周复盘一次</b>：对照交易日志，只问"有没有按计划做"。</li>
+      <li><b>按需补课</b>（遇到了再学）：止损总被扫 → 插针与流动性；突然暴跌 → 连环清算；连亏心态崩 → 期望值与交易心理；想做山寨 → 市占率与轮动。新的大行情随时加进第 13 / 14 课当新案例。</li>
+      <li><b>选读</b>：Douglas《交易心理分析》、Tharp《通向财务自由之路》。</li>
+    </ul>
+  </div>
+</section>
+
+<section class="stage">
+  <div class="stage-head"><span class="sno">阶段 5</span><h2>走向量化（下一程）</h2></div>
+  <div class="loopcard">
+    <h4>把规则卡变成代码</h4>
+    <ul>
+      <li>《海龟交易法则》——一套完整机械系统长什么样。</li>
+      <li>把你的规则卡写成代码、用历史数据回测：数据质量、前视偏差、过拟合、成本（手续费 / 滑点 / 资金费率）、风控、执行。</li>
+      <li>Chan《量化交易》。你在模拟盘日志里写下的每条规则，都是这一程的原材料。</li>
+    </ul>
+  </div>
+</section>
+
+<p class="foot">数据来源：币安公开历史数据（data.binance.vision），已全部本地化，页面可离线使用。图表组件：TradingView Lightweight Charts™（Apache-2.0）。本课仅为学习笔记，不构成投资建议；合约交易风险极高，请先确认当地法规与自身承受能力。<br>配套手册：《投资学》（BKM）与《金融市场技术分析》（Murphy）讲义在本仓库同级目录，课内引用处会标注。</p>
+
+</main>
+</div>
+
+<script src="assets/ct.js"></script>
+<script>
+/* 制作状态：数一下已上线的讲义链接 */
+(function(){
+  'use strict';
+  var online = document.querySelectorAll('.lesson .act:not(.todo)').length;
+  var total = document.querySelectorAll('.lesson').length;
+  document.getElementById('p-online').textContent = '讲义已上线 ' + online + ' / ' + total + ' 课。';
+})();
+</script>
+</body>
+</html>
