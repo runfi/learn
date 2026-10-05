@@ -1,0 +1,860 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>币圈短线课 · 第 4 课 现在往哪走</title>
+<link rel="stylesheet" href="assets/ct.css">
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <span class="book"><a href="ct-index.html">币圈短线实战课</a></span>
+  <span class="part"><a href="ct-index.html">学习地图</a> · 阶段 1 指标工具箱</span>
+  <span class="prefs">
+    <button id="btn-updown" type="button" title="切换涨跌配色"></button>
+    <button id="btn-theme" type="button" title="切换深浅主题"></button>
+  </span>
+</header>
+
+<div class="layout">
+
+<nav class="sidenav" aria-label="本课目录">
+  <p class="sn-chap">第 4 课 · 现在往哪走</p>
+  <a href="#top">课首</a>
+  <a href="#s1">4.1 高低点结构</a>
+  <a href="#s2">4.2 均线 MA / EMA</a>
+  <a href="#s3">4.3 MACD</a>
+  <a href="#s4">4.4 组装：方向三票制</a>
+  <a href="#s5">4.5 落地：系统 v0.1 上线</a>
+  <a href="#recap">小结 · 术语 · 自测</a>
+</nav>
+
+<main class="article">
+
+<section class="hero" id="top">
+  <span class="chap-no">LESSON 04 · 第 4 课 / 共 16 课</span>
+  <h1>现在往哪走</h1>
+  <p class="en">WHICH WAY IS THE MARKET GOING</p>
+  <p class="question">本课问题：趋势是什么方向？现在允许做多还是做空？</p>
+  <p class="lede">前三课把安全带系好了：你知道这台机器怎么咬人、该在哪个周期看图、一笔该下多大。从这一课起，课程开始回答交易里真正的问题——第一个就是最大的那个：<strong>往哪做？</strong>这一课给你三件判断方向的工具：最原始的高低点结构、最流行的均线、最经典的 MACD，再教你把它们拧成一个"三票制"方向判定器。课末组装出你的第一套完整系统 v0.1——<strong>学完今天的内容，你就正式开模拟盘</strong>。这是整门课的第一个里程碑。</p>
+  <div class="objectives">
+    <h2>学完你能做到</h2>
+    <ul>
+      <li>用高低点结构一眼判断趋势：HH＋HL＝上升、LH＋LL＝下降、互相打架＝震荡；</li>
+      <li>知道摆动点怎么认、毛刺怎么滤——别把每个小波动都数成一层结构；</li>
+      <li>说清 SMA 和 EMA 的区别，用 EMA20 / 60 读出市场的中期与长期平均成本；</li>
+      <li>解释金叉死叉为什么"趋势里好用、震荡里绞肉"，并拿 2025 年 9–10 月的真实绞肉段作证；</li>
+      <li>看懂 MACD 的 DIF、DEA 和柱体，用零轴和柱体确认方向与动能；</li>
+      <li>用三票制组装方向判定器：三票同向才给方向，缺一票就 flat 观望；</li>
+      <li>接受一个反直觉的事实：2026 年以来这套规则有约三分之二的日子不让你交易——这是功能，不是缺陷；</li>
+      <li>装好系统 v0.1，从今天起开模拟盘，只按规则卡下单。</li>
+    </ul>
+  </div>
+  <p class="colorkey">读图约定：本课默认<span class="up">绿涨</span>·<span class="dn">红跌</span>，可用右上角按钮切成红涨绿跌。带 <b>互动</b> 标签的图可以拖动、缩放、调参数；正文里带虚线下划线和角标的词，点一下原地弹出解释。图表时间轴按你设备的时区显示（北京时间 ＝ UTC+8）；正文里的日期如 2026-08-20 指币安日线的交易日（UTC 口径，收盘在北京时间次日早 8 点）。</p>
+  <nav class="chapmap" aria-label="本课小节">
+    <a href="#s1">高低点结构</a><a href="#s2">均线</a><a href="#s3">MACD</a><a href="#s4">三票制</a><a href="#s5">系统 v0.1</a><a href="#recap">小结</a>
+  </nav>
+</section>
+
+<!-- ================= 4.1 ================= -->
+<section class="ch" id="s1">
+  <h2 class="sec"><span class="no">4.1</span>高低点结构：趋势最原始的定义</h2>
+  <p class="sec-en">SWING STRUCTURE — THE OLDEST TREND DEFINITION</p>
+  <div class="cards">
+    <div class="card">
+      <h4>高低点结构<span class="en-term">Swing Structure</span><span class="fit fit-all">股票通用</span></h4>
+      <p><strong>一句话</strong>：看"浪尖和浪谷有没有逐级抬高或降低"，直接读出趋势方向——不需要任何计算的原始定义。</p>
+      <span class="k">本课约定：左右各 3 根 K 线 ＋ 3% 毛刺过滤（日线）</span>
+    </div>
+  </div>
+  <div class="prose">
+    <p>把所有指标都忘掉，趋势只有一个不需要任何计算的定义：看价格留下的<span class="nt" data-note="swing">摆动高低点</span>。上涨途中每一次回调的"浪尖"和"浪谷"，就是市场用真金白银画出来的脚印：</p>
+  </div>
+  <div class="cards">
+    <div class="card">
+      <h4>上升趋势<span class="en-term">HH + HL</span></h4>
+      <p>高点一个比一个高（Higher High），低点一个比一个高（Higher Low）。<strong>每次回调都有人等不及更低的价格就抢着买</strong>。</p>
+      <span class="k">只允许找做多机会</span>
+    </div>
+    <div class="card">
+      <h4>下降趋势<span class="en-term">LH + LL</span></h4>
+      <p>高点一个比一个低（Lower High），低点一个比一个低（Lower Low）。每次反弹都有人急着在更低的位置卖。</p>
+      <span class="k">只允许找做空机会</span>
+    </div>
+    <div class="card">
+      <h4>震荡（混乱）<span class="en-term">Range / Chop</span></h4>
+      <p>高点低点互相打架：一会儿 HH 一会儿 LL。多空都没有掌控力，方向工具集体失灵。</p>
+      <span class="k">观望，或等第 7 课的震荡打法</span>
+    </div>
+  </div>
+  <figure>
+    <p class="fig-title"><span class="fno">图 4-1</span>三种结构：价格的脚印怎么读<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+      <svg viewBox="0 0 720 250" role="img" aria-label="上升、下降、震荡三种高低点结构示意">
+        <text x="115" y="26" text-anchor="middle" class="ut">上升＝HH＋HL</text>
+        <polyline points="24,206 66,128 92,164 140,92 166,126 212,52" class="edge-up" fill="none"/>
+        <circle cx="66" cy="128" r="4" class="dot"/><circle cx="92" cy="164" r="4" class="dot"/>
+        <circle cx="140" cy="92" r="4" class="dot"/><circle cx="166" cy="126" r="4" class="dot"/>
+        <text x="66" y="116" text-anchor="middle" class="ut">高</text>
+        <text x="96" y="182" text-anchor="middle" class="ut">HL</text>
+        <text x="140" y="80" text-anchor="middle" class="ut">HH</text>
+        <text x="170" y="144" text-anchor="middle" class="ut">HL</text>
+        <text x="115" y="236" text-anchor="middle" class="nd">回调不破前低 → 多头掌控</text>
+        <text x="360" y="26" text-anchor="middle" class="dt">下降＝LH＋LL</text>
+        <polyline points="268,56 310,134 336,98 384,172 410,138 456,208" class="edge-dn" fill="none"/>
+        <circle cx="310" cy="134" r="4" class="dot"/><circle cx="336" cy="98" r="4" class="dot"/>
+        <circle cx="384" cy="172" r="4" class="dot"/><circle cx="410" cy="138" r="4" class="dot"/>
+        <text x="306" y="152" text-anchor="middle" class="dt">低</text>
+        <text x="336" y="86" text-anchor="middle" class="dt">LH</text>
+        <text x="388" y="190" text-anchor="middle" class="dt">LL</text>
+        <text x="414" y="126" text-anchor="middle" class="dt">LH</text>
+        <text x="360" y="236" text-anchor="middle" class="nd">反弹不过前高 → 空头掌控</text>
+        <text x="604" y="26" text-anchor="middle" class="wt">震荡＝结构打架</text>
+        <polyline points="512,128 544,70 572,178 606,86 636,196 668,100 700,150" class="edge-soft" fill="none"/>
+        <circle cx="544" cy="70" r="4" class="dot"/><circle cx="572" cy="178" r="4" class="dot"/>
+        <circle cx="606" cy="86" r="4" class="dot"/><circle cx="636" cy="196" r="4" class="dot"/>
+        <text x="544" y="58" text-anchor="middle" class="wt">高</text>
+        <text x="606" y="74" text-anchor="middle" class="wt">LH？</text>
+        <text x="640" y="214" text-anchor="middle" class="wt">LL？</text>
+        <text x="604" y="236" text-anchor="middle" class="nd">忽上忽下 → 不做方向判断</text>
+      </svg>
+    </div>
+    <figcaption><b>读图：</b>趋势的原始定义不需要任何指标，只需要数脚印：上升趋势里，<b>每一次回调的低点都比上一次高</b>——说明下方有人等着买、等不到更低就进场；下降趋势反过来。第三幅才是最常见也最危险的：高低点互相矛盾，说明多空都没有掌控力，这时任何"方向判断"都是硬猜。这套看法可以一路追溯到 19 世纪末：《华尔街日报》创始人之一查尔斯·道在社论里就是这样描述趋势的，后人把它整理成<span class="nt" data-note="dow">道氏理论</span>——技术分析的源头。</figcaption>
+  </figure>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>看潮水不要盯着每一朵浪花，要看<strong>浪头打到的位置和退潮退到的位置</strong>：涨潮时每个浪头都比上一个远、每次回退都比上一次浅——你不需要物理学就知道潮在涨。K 线图一样：单根 K 线是浪花（第 2 课说过它只是半句话），摆动高低点才是浪头和浪谷。<strong>数浪头，别数浪花。</strong></p>
+  </div>
+  <div class="prose">
+    <h3><span class="tag">① </span>摆动点怎么认：显著的才算，毛刺不算</h3>
+    <p>实操里最大的坑是把每个小波动都数成摆动点，数出一堆互相矛盾的"结构"。本课给一个可执行的土办法，后面所有图和系统 v0.1 都用它：</p>
+    <ul>
+      <li><strong>候选</strong>：某根 K 线的最高价比左右各 3 根都高，就是候选摆动高点；最低价比左右各 3 根都低，就是候选摆动低点。注意这意味着<em>摆动点要等 3 根 K 线之后才能确认</em>——结构判断天生慢半拍，这是确认的代价；</li>
+      <li><strong>滤毛刺</strong>：和上一个拐点相比，没走出至少 3%（日线口径）的候选点直接忽略。BTC 近期日均真实波幅约 2.7%（2026-09-30 的 ATR14 ≈ 2,291 U，第 6 课细讲这个指标）——<strong>一天的正常呼吸就有近 3%，比呼吸还小的回头不叫回调</strong>；</li>
+      <li>两个同向拐点相邻时，取更极端的那个（更高的高点、更低的低点）。</li>
+    </ul>
+    <p>门槛数字不神圣——3% 是给 BTC 日线用的经验值，1 小时图可以放宽到 1.5%。重要的是<strong>定一个标准并且一直用同一个</strong>，否则你的"结构"会跟着情绪变形。</p>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 4-2</span>结构实验台：真实 BTC 日线，摆动点自动标注<span class="real">真实数据</span><span class="ia">互动</span></p>
+    <div class="ctrls">
+      <div>
+        <span class="seg-label">行情段</span>
+        <span class="seg" id="sl-seg" role="group">
+          <button type="button" data-val="trend" aria-pressed="true">2026 年 8–9 月（趋势段）</button>
+          <button type="button" data-val="chop">2026 年 3 月前后（震荡段）</button>
+        </span>
+      </div>
+    </div>
+    <div class="lw" id="sl-chart"></div>
+    <div class="stats">
+      <div class="stat"><span class="k">最近两个摆动高点</span><span class="v" id="sl-hs">—</span><span class="s" id="sl-hs-s">—</span></div>
+      <div class="stat"><span class="k">最近两个摆动低点</span><span class="v" id="sl-ls">—</span><span class="s" id="sl-ls-s">—</span></div>
+      <div class="stat"><span class="k">结构判定</span><span class="v" id="sl-verdict">—</span><span class="s">按本节的认定规则</span></div>
+    </div>
+    <p class="lab-msg" id="sl-msg"></p>
+    <figcaption><b>读图：</b>标注由页面按 4.1 节的规则现场计算：左右各 3 根＋过滤不足 3% 的毛刺。趋势段里，高点 65,391 → 65,483 → 81,500 → 82,283 逐级抬高，低点 62,229 → 62,484 → 76,152 同样抬高——教科书式的 HH＋HL。切到震荡段看反面教材：前半段一度像上升（74,047 → 75,999 还在创新高），后半段高点掉头向下、低点忽上忽下，<b>结构开始自相矛盾，就是市场在告诉你"别猜方向"</b>。注意标注永远比行情慢 3 根 K 线出现——实时交易时你看到的结构就是这么滞后，习惯它。</figcaption>
+  </figure>
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>一成一败：结构带你吃到 8 月，也在 5 月骗过你</h4>
+    <p><strong>成功的一面</strong>：2026-08-14 低点 62,484 守住了 08-01 低点 62,229 之上（HL），08-19 起连续大阳线拔起，08-28 摆动高点 81,500 远超前高 65,483（HH）——多头结构确立，随后一个月行情从 62,000 区一路走到 9 月 21 日的 87,385。只用"数脚印"这一招，你就能稳稳站在正确的一边（9 月中旬 74,909 那次深回调曾让结构票短暂变脸，图 4-6 的判定器里可以逐日验证——结构谨慎，但大方向没冤枉你）。</p>
+    <p><strong>失败的一面</strong>：2026-05-06，BTC 冲出摆动高点 82,829，刷新了 4 月底的 79,455——标准的 HH，看起来上升结构完好。结果这是个<span class="nt" data-note="fakeout">假突破</span>：两周后 05-23 低点 74,204 跌破了前低 74,868，结构翻成 LL，随后 6 月一路崩到 58,030——距离那个"新高"跌去约 30%。<strong>结构不是预言，是现状描述：它翻脸的时候，你必须跟着翻</strong>，而不是抱着"上升趋势"的旧结论不放。</p>
+    <p class="takeaway">结构告诉你"现在谁掌控"，不保证"接下来谁掌控"。它的正确用法是持续更新，而不是一锤定音。</p>
+  </div>
+  <div class="prose">
+    <h3><span class="tag">② </span>信号规则 · 何时失灵 · 和谁搭配</h3>
+    <ul>
+      <li><strong>信号规则</strong>：HH＋HL → 方向＝多，只找做多入场；LH＋LL → 方向＝空；高低点打架 → 没有方向，观望。就这三句；</li>
+      <li><strong>何时失灵</strong>：震荡市里毛刺密集、结构反复翻脸（图 4-2 震荡段就是现场）；极端行情里一根 10·10 式的大阴线能一天击穿好几层结构，确认规则来不及反应；另外它天生滞后——拐点要 3 根 K 线才确认，抄不到最低点是设计使然，不是缺陷；</li>
+      <li><strong>和谁搭配</strong>：均线（下一节）。结构是"离散的脚印"，均线是"连续的平均成本"，两者原理不同、互为验证——这正是 4.4 节三票制的前两票。</li>
+    </ul>
+  </div>
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p><strong>把每个波动都数成结构，图上密密麻麻全是"HH""LL"。</strong>摆动点数得越细，结构翻脸越频繁，你就越像被市场牵着鼻子走。记住过滤规则的本意：<em>比 BTC 一天的正常呼吸（约 3%）还小的回头，不配叫回调</em>。另一个变种错误是跨周期乱数——在 1 小时图上数出"下降结构"就去反驳日线的上升结构。周期分工（第 2 课）在这里依然铁律：<strong>方向判断只用日线的结构</strong>，1 小时的结构只用来找入场点和挂止损（4.5 节）。</p>
+  </div>
+</section>
+
+<!-- ================= 4.2 ================= -->
+<section class="ch" id="s2">
+  <h2 class="sec"><span class="no">4.2</span>均线：全市场的平均成本线</h2>
+  <p class="sec-en">MOVING AVERAGES — MA AND EMA</p>
+  <div class="cards">
+    <div class="card">
+      <h4>均线 MA / EMA<span class="en-term">Moving Average</span><span class="fit fit-all">股票通用</span></h4>
+      <p><strong>一句话</strong>：把最近 n 天的收盘价揉成一条"平均成本线"，看价格站在全场平均成本的哪一边。</p>
+      <span class="k">本课参数：EMA20（中期）／ EMA60（长期）</span>
+    </div>
+  </div>
+  <div class="prose">
+    <p>第二件工具把"数脚印"变成一条连续的线。<span class="nt" data-note="sma">SMA</span>（简单移动平均）就是最近 n 天收盘价的平均值；<span class="nt" data-note="ema">EMA</span>（指数移动平均）给越近的日子越大的权重，反应更快。它们为什么有用？因为均线粗略地刻画了<strong>最近 n 天进场者的平均成本</strong>：价格在均线上方，这批人整体浮盈，回调时舍得加仓、愿意护盘；价格跌到均线下方，这批人整体被套，每次反弹都想解套卖出——<strong>均线的支撑和压力，背后是真实的持仓盈亏心理</strong>。</p>
+  </div>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>把 EMA20 想成一班车上最近 20 天上车乘客的<strong>平均票价</strong>。车价（现价）高于平均票价时，车上的人大多在赚钱，心态稳、拿得住，有人下车马上有人抢座；车价跌破平均票价，一车人都在亏，任何反弹到"回本价"附近都会挤出一批夺门而逃的——这就是为什么跌破均线后，均线从支撑变成压力。EMA 和 SMA 的区别只是算票价的方式：SMA 给 20 天里每一天同样的权重（各 5%），EMA 给最新一天约 9.5% 的权重、越往前越轻——<strong>更重视新上车的人</strong>，所以转弯更快。</p>
+  </div>
+  <div class="formula">
+    <p class="fx">SMA(n) ＝ 最近 n 天收盘价之和 ÷ n</p>
+    <p class="fx">EMA(n)<sub>今天</sub> ＝ 今天收盘 × k ＋ EMA<sub>昨天</sub> × ( 1 − k )，其中 k ＝ 2 ÷ ( n ＋ 1 )</p>
+    <p class="note">本课全部用 EMA，参数用 20 / 60。股票世界里 20 个交易日 ≈ 一个月、60 个 ≈ 一个季度，所以常叫"月线 / 季线"；币圈 7 × 24 无休，20 天就是三个星期、60 天约两个月——叫法随你，分工不变：<strong>EMA20 管中期成本（月线感），EMA60 管长期成本（季线感）</strong>。</p>
+  </div>
+  <div class="prose">
+    <h3><span class="tag">① </span>价格与均线的三种关系</h3>
+    <ul>
+      <li><strong>站稳上方</strong>：价格在 EMA20 上方运行、回调缩脚不破——多头环境，均线是支撑；</li>
+      <li><strong>跌破下方</strong>：价格在 EMA20 下方、反弹到线附近就被打回——空头环境，均线是压力；</li>
+      <li><strong>缠绕</strong>：价格像缝纫机一样在均线上下来回穿——震荡环境，<em>均线这件工具整个失效</em>，别硬用。2026 年 1 月到 9 月，BTC 收盘价穿越 EMA20 多达 30 次，平均 9 天一次——缠绕不是偶发，是常态的三分之一。</li>
+    </ul>
+    <p>周期越短，这条线越贴近价格、也越碎；越长越稳、也越钝。拖一拖下面的滑块，手感比文字直观：</p>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 4-3</span>EMA 周期实验台：从 5 拖到 120，看"贴"与"钝"的交换<span class="real">真实数据</span><span class="ia">互动</span></p>
+    <div class="ctrls">
+      <label class="rg"><span class="rg-top">EMA 周期<output>20</output></span>
+        <input type="range" id="em-n" min="5" max="120" step="1" value="20"></label>
+    </div>
+    <div class="lw" id="em-chart"></div>
+    <div class="lw-legend" id="em-legend"></div>
+    <div class="stats">
+      <div class="stat"><span class="k">EMA 最新值</span><span class="v" id="em-val">—</span><span class="s">2026-09-30 收盘 83,577</span></div>
+      <div class="stat"><span class="k">价格位置</span><span class="v" id="em-pos">—</span><span class="s" id="em-pos-s">—</span></div>
+      <div class="stat"><span class="k">2026 年被穿越次数</span><span class="v warn" id="em-cross">—</span><span class="s">收盘价上下穿的总数</span></div>
+    </div>
+    <p class="lab-msg" id="em-msg"></p>
+    <figcaption><b>读图：</b>图为币安 BTCUSDT 永续 2026 年以来的日线，均线按滑块周期实时重算。两个极端各拖一次：EMA5 在这九个月里被收盘价来回穿越 69 次——线贴得紧，但几乎每周都在发假信号；EMA120 只被穿越 5 次——信号干净，但每次转弯都慢半个月以上。<b>没有"最好"的周期，只有"贴得紧、噪音多"和"反应慢、信号稳"之间的交换</b>。本课选 20 / 60，是在短波段持仓节奏（几天到一周）下的折中，不是魔法数字。</figcaption>
+  </figure>
+  <div class="prose">
+    <h3><span class="tag">② </span>金叉死叉的真相：趋势里好用，震荡里绞肉</h3>
+    <p>EMA20 从下方穿过 EMA60 叫<span class="nt" data-note="cross">金叉</span>，反过来叫死叉——本质是"中期平均成本超过 / 跌破长期平均成本"，市场重心在换边。从 2025 年初到 2026 年 9 月，BTC 日线一共只出现 10 次交叉，两类结局都有，而且分布极其典型：</p>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 4-4</span>金叉死叉成败例：2025 年的绞肉段 vs 2026 年的大趋势<span class="real">真实数据</span><span class="ia">互动</span></p>
+    <div class="ctrls">
+      <div>
+        <span class="seg-label">视野</span>
+        <span class="seg" id="cx-seg" role="group">
+          <button type="button" data-val="all" aria-pressed="true">全程</button>
+          <button type="button" data-val="grind">放大绞肉段（2025-09 → 10）</button>
+          <button type="button" data-val="win">放大 2026 年 6–9 月</button>
+        </span>
+      </div>
+    </div>
+    <div class="lw h420" id="cx-chart"></div>
+    <div class="lw-legend" id="cx-legend"></div>
+    <div class="stats">
+      <div class="stat"><span class="k">绞肉段：33 天 4 次交叉</span><span class="v dn">3 笔连亏 −21.6%</span><span class="s">每次交叉就翻转跟单的结果</span></div>
+      <div class="stat"><span class="k">2026-06-01 死叉</span><span class="v up">24 天内 −18.7%</span><span class="s">死叉做空吃到 6 月瀑布</span></div>
+      <div class="stat"><span class="k">2026-08-20 金叉</span><span class="v up">至 9-21 高点 +19.7%</span><span class="s">金叉做多吃到 8 月主升</span></div>
+    </div>
+    <figcaption><b>读图：</b>币安 BTCUSDT 永续日线与 EMA20 / 60。绞肉段：2025-09-14 金叉（115,210）→ 09-26 死叉（109,589）→ 10-01 金叉（118,552）→ 10-17 死叉（106,379），33 天 4 次交叉，逢叉翻转跟单连亏三笔、累计约 −21.6%——其中 10-01 那次金叉 9 天后正好撞上 10·10 暴跌。而 2026-06-01 的死叉和 08-20 的金叉，各自吃到了一整段大行情。<b>同一个信号，震荡里是绞肉机，趋势里是印钞机</b>——所以它不能单独用，必须先回答"现在有没有趋势"。还有个安慰：10-17 那次死叉虽然看起来又是绞肉，却接住了随后的整轮熊市——趋势信号的宿命就是错很多次小的、对几次大的。</figcaption>
+  </figure>
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p><strong>把金叉当买入保证、死叉当卖出保证。</strong>均线是跟随价格的平均值，交叉永远发生在行情走出一段<em>之后</em>——它不预测，只确认。在 v0.1 里，金叉死叉的角色被严格限定为"环境切换的提示灯"：它只影响三票制里的一票，<strong>永远不直接触发下单</strong>。入场另有更快的扳机（1 小时结构突破，4.5 节），止损另有锚（结构位）。灯是灯，扳机是扳机。</p>
+  </div>
+  <div class="prose">
+    <h3><span class="tag">③ </span>信号规则 · 何时失灵 · 和谁搭配</h3>
+    <ul>
+      <li><strong>信号规则（本课用法）</strong>：EMA20 在 EMA60 上方＝中期重心偏多（一票）；收盘价在 EMA20 上方＝短期动能偏多（一票）。反之各给空头一票；</li>
+      <li><strong>何时失灵</strong>：缠绕段（见图 4-3 的穿越次数）；横盘收窄时两条均线黏在一起，金叉死叉密集出现全是噪音；参数本身也敏感——20 / 60 换成 10 / 30 会多一倍信号、换成 50 / 200 会慢得多，<em>没有一组参数在所有行情里都对</em>；</li>
+      <li><strong>和谁搭配</strong>：高低点结构（原理独立，互为验证）；MACD（注意：它和均线是<em>同一族</em>，详见下节结尾的提醒）。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= 4.3 ================= -->
+<section class="ch" id="s3">
+  <h2 class="sec"><span class="no">4.3</span>MACD：把两条均线的距离画出来</h2>
+  <p class="sec-en">MACD — DISTANCE BETWEEN TWO EMAS</p>
+  <div class="cards">
+    <div class="card">
+      <h4>MACD<span class="en-term">Moving Average Convergence Divergence</span><span class="fit fit-all">股票通用</span></h4>
+      <p><strong>一句话</strong>：把 EMA12 与 EMA26 的距离单独画成副图，看趋势是在加速还是在减速。</p>
+      <span class="k">参数：12 / 26 / 9（全市场默认，不建议改）</span>
+    </div>
+  </div>
+  <div class="prose">
+    <p>上一节你已经会看两条 EMA 的位置关系了。MACD 做的事情只有一件：<strong>把"两条 EMA 离得多远"单独画成一幅图</strong>，让你看清距离是在拉开还是在收拢——也就是趋势在加速还是在减速。</p>
+  </div>
+  <div class="formula">
+    <p class="fx"><span class="nt" data-note="difdea">DIF</span> ＝ EMA12 − EMA26　（快线：两条均线的距离）</p>
+    <p class="fx">DEA ＝ DIF 的 9 日 EMA　（慢线：距离的平均）</p>
+    <p class="fx">柱体 ＝ DIF − DEA　（距离变化的"加速度"）</p>
+    <p class="note">参数 12 / 26 / 9 是默认值，全市场通用，不建议改——它的价值恰恰在于所有人看的是同一幅图。有些国内软件把柱体乘 2 来画，形状不变。</p>
+  </div>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>DIF 是车速表的指针，柱体是<strong>油门的深浅</strong>。柱体一根比一根长：油门越踩越深，趋势在加速；柱体开始缩短：司机松油门了——注意，<strong>松油门不等于踩刹车，更不等于掉头</strong>，车还在往前开，只是劲头小了。而<span class="nt" data-note="zeroline">零轴</span>是整幅图的分水岭：DIF 在零轴上方，等价于 EMA12 还在 EMA26 上方——车头朝着多头方向；跌破零轴，车头已经调过去了。</p>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 4-5</span>MACD 实验台：2026 年 2 月以来的 BTC 日线与副图<span class="real">真实数据</span><span class="ia">互动</span></p>
+    <div class="lw h480" id="mc-chart"></div>
+    <div class="lw-legend" id="mc-legend"></div>
+    <div class="stats">
+      <div class="stat"><span class="k">6-27 → 7-01</span><span class="v dn">5 天 4 次金死叉</span><span class="s">零轴下方的拉锯＝纯噪音</span></div>
+      <div class="stat"><span class="k">7-15 → 8-19</span><span class="v warn">DIF 穿零轴 5 次</span><span class="s">贴着零轴来回＝没有方向</span></div>
+      <div class="stat"><span class="k">8-18 金叉 → 8-19 上穿零轴</span><span class="v up">两天连过两关</span><span class="s">收盘 64,694 → 69,310</span></div>
+      <div class="stat"><span class="k">8-24 柱体峰值</span><span class="v up">油门最深处</span><span class="s">金叉日收盘到 9-21 高点 +35%</span></div>
+    </div>
+    <figcaption><b>读图：</b>上为币安 BTCUSDT 永续日线（细线为 EMA12 / 26），下为 MACD 副图：DIF、DEA 与柱体，水平虚线是零轴。先看反面：6 月底 5 天里金叉死叉来回 4 次、7 月中到 8 月中 DIF 把零轴来回穿了 5 次——<b>贴着零轴的信号全是拉锯噪音</b>。再看正面：8-18 金叉、8-19 DIF 放量上穿零轴（当日大阳收 69,310），随后柱体连续放大到 8-24 的峰值——方向和动能同时确认，这波从金叉日收盘到 9-21 高点涨了 35%。注意 9 月初柱体明显缩短：油门松了，行情从主升转入拉锯——这个"减速提示"正是你该收紧止损、而不是加仓追高的时刻。</figcaption>
+  </figure>
+  <div class="prose">
+    <h3><span class="tag">① </span>本课怎么用它：只确认方向与动能</h3>
+    <ul>
+      <li><strong>零轴定多空</strong>：DIF 在零轴上方，只考虑做多；下方只考虑做空。贴着零轴反复穿——等于没方向，走开；</li>
+      <li><strong>柱体读动能</strong>：顺方向持仓时，柱体放大＝趋势健康，可以安心持有；柱体连续缩短＝减速提示，收紧防守；</li>
+      <li><strong>金叉死叉只做参考</strong>：和均线交叉同理，只当提示灯，不当扳机；</li>
+      <li><strong>背离先不讲</strong>：MACD 最有名的玩法——价格创新高而 DIF 不创新高的"背离"——留到第 5 课和 RSI 一起讲，那是"时机"问题，不是"方向"问题。先把方向用明白。</li>
+    </ul>
+    <h3><span class="tag">② </span>何时失灵 · 和谁搭配</h3>
+    <ul>
+      <li><strong>何时失灵</strong>：和一切均线系工具同一个死穴——震荡市（图 4-5 的 6–8 月就是现场）；极端单边里它也救不了滞后的命：10·10 那种一天 −17% 的行情，任何日线指标都来不及表态；</li>
+      <li><strong>和谁搭配</strong>：高低点结构。<strong>一个重要的诚实提醒：MACD 是用 EMA12 / 26 算出来的，它和 4.2 节的均线是一家人</strong>——两者同时看多不算"两个独立证据"，顶多算同一个证人说了两遍。这就是为什么下一节的三票制里，MACD 不单独投票：票数要来自<em>原理不同</em>的工具，重复计票是自欺。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= 4.4 ================= -->
+<section class="ch" id="s4">
+  <h2 class="sec"><span class="no">4.4</span>组装：方向三票制</h2>
+  <p class="sec-en">THE THREE-VOTE DIRECTION RULE</p>
+  <div class="prose">
+    <p>工具箱里有三件东西了，现在把它们拧成一台只回答一个问题的机器：<strong>今天允许做多、做空，还是不许做？</strong>规则是三票制，全部在日线上投：</p>
+  </div>
+  <div class="tablewrap narrow">
+    <table>
+      <thead><tr><th>票</th><th>投票人</th><th>投"多"的条件</th><th>投"空"的条件</th></tr></thead>
+      <tbody>
+        <tr><td><b>票 1</b></td><td>均线重心</td><td>EMA20 在 EMA60 上方</td><td>EMA20 在 EMA60 下方</td></tr>
+        <tr><td><b>票 2</b></td><td>价格动能</td><td>收盘价在 EMA20 上方</td><td>收盘价在 EMA20 下方</td></tr>
+        <tr><td><b>票 3</b></td><td>高低点结构</td><td>最近两高抬高 且 最近两低抬高</td><td>最近两高降低 且 最近两低降低</td></tr>
+        <tr class="hl"><td colspan="2"><b>判定</b></td><td colspan="2">三票全多 → 做多；三票全空 → 做空；<b>其余一切组合 → flat 观望</b>（票 3 高低点打架时弃权，弃权即 flat）</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>这是一个三人陪审团：均线重心是看长期账本的会计，价格动能是盯着今天盘面的交易员，高低点结构是只认脚印的老猎人。三个人背景不同、互相不商量，<strong>必须一致表决才定罪</strong>。任何一人反对或弃权，就是证据不足——证据不足时的正确动作不是"少数服从多数"，是<strong>放人（flat）</strong>。你会损失一些本来能赚的行情，但挡掉的是多得多的模糊行情。</p>
+  </div>
+  <div class="keypoint">
+    <span class="label">本课最重要的一句话</span>
+    <p><strong>三票同向才有方向；缺一票就是 flat。宁可错过，不可硬做。</strong></p>
+    <p>2026 年 1 月到 9 月的 273 天里，这套规则给 BTC 的判定是：做多 35 天、做空 54 天、<strong>flat 184 天（67%）</strong>；ETH 的 flat 占比 68%。三分之二的日子它都让你闲着——这不是机器坏了，是市场本来就只有三分之一的时间值得做方向。<em>不做，是系统输出的正式结论之一。</em></p>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 4-6</span>方向判定器：拖动日期，看三票怎么投<span class="real">真实数据</span><span class="ia">互动</span></p>
+    <div class="ctrls">
+      <div>
+        <span class="seg-label">标的</span>
+        <span class="seg" id="dj-sym" role="group">
+          <button type="button" data-val="BTCUSDT" aria-pressed="true">BTC</button>
+          <button type="button" data-val="ETHUSDT">ETH</button>
+        </span>
+      </div>
+      <label class="rg"><span class="rg-top">日期（2026-01-01 → 09-30）<output>—</output></span>
+        <input type="range" id="dj-day" min="0" max="272" step="1" value="272"></label>
+    </div>
+    <div class="lw h420" id="dj-chart"></div>
+    <div class="lw-legend" id="dj-legend"></div>
+    <div class="stats">
+      <div class="stat"><span class="k">票 1 · 均线重心</span><span class="v" id="dj-v1">—</span><span class="s" id="dj-v1-s">—</span></div>
+      <div class="stat"><span class="k">票 2 · 价格动能</span><span class="v" id="dj-v2">—</span><span class="s" id="dj-v2-s">—</span></div>
+      <div class="stat"><span class="k">票 3 · 结构</span><span class="v" id="dj-v3">—</span><span class="s" id="dj-v3-s">—</span></div>
+      <div class="stat"><span class="k">当日判定</span><span class="v" id="dj-verdict">—</span><span class="s" id="dj-verdict-s">—</span></div>
+    </div>
+    <p class="lab-msg" id="dj-msg"></p>
+    <figcaption><b>读图：</b>页面按 4.1–4.2 节的规则，对 2026 年以来的每个交易日现场计算三票（EMA 用全部历史数据推算，摆动点按"左右各 3 根＋3% 过滤"，且只用当日已确认的拐点——不偷看未来）。拖到几个关键日子感受一下：1-31 三票转空（收盘 78,707），六天后 BTC 见到 59,800；6-01 死叉当天三票齐空，吃到 6 月瀑布；8-20 金叉当天票 3 还没确认，直到 <b>8-31 三票才到齐</b>——比金叉晚 11 天，这就是"确认"的价格。再把标的切到 ETH：同一天（9-30）BTC 因为 9 月中旬那个更低的低点而 flat，ETH 却是三票全多——<b>同一套规则，不同标的各投各的票</b>。</figcaption>
+  </figure>
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p><strong>"两票到了，第三票迟早会到，先上车吧。"</strong>这叫偷票，是三票制最常见的死法。票 3（结构）几乎总是最慢的那张——它要等 3 根 K 线确认拐点。你偷票抢跑，等于把系统退化成"双均线策略"，而图 4-4 的绞肉段已经演示过双均线在震荡里的下场。另一个变种：<strong>把 flat 当成"系统没意见，我可以自由发挥"。</strong>恰恰相反，flat 是系统明确的输出："现在不做"。模拟期违反 flat 下的单，在日志里一律记为<em>违规单</em>，哪怕它赚钱。</p>
+  </div>
+  <div class="evidence">
+    <span class="label">证据与怀疑</span>
+    <h4>趋势跟随有学术底子，但均线系统不是圣杯</h4>
+    <p><strong>证据的一面</strong>：顺着近期方向做的思路有扎实的统计支撑。Moskowitz、Ooi 和 Pedersen 2012 年发表的<span class="nt" data-note="tsmom">时间序列动量</span>研究（"Time Series Momentum"，Journal of Financial Economics）考察了股指、债券、外汇、商品共 58 个期货品种、超过 25 年的数据，发现<strong>过去 12 个月在涨的品种，随后 1 到 12 个月平均继续上涨（反之亦然），且该现象在几乎所有品种上成立</strong>，约一年后动量逐渐衰减并部分反转。"趋势存在"不是技术分析者的一厢情愿。</p>
+    <p><strong>怀疑的一面</strong>：① 趋势存在不等于均线系统赚钱——本课自算的账摆在那里：2025-09 到 10 月，双均线 33 天连发 4 个假信号、逐叉跟单亏掉约 21.6%；2026 年三票制有 67% 的日子给不出方向。趋势策略的收益集中在少数大段行情里，<strong>其余时间都在小亏和等待</strong>，熬不住等待的人拿不到那几段大的；② 参数过拟合是深坑：20 / 60、3% 毛刺门槛、12 / 26 / 9……每个数字换一换，历史成绩就变——4.5 节那笔 4 月案例里，止损只差 0.3% 的余量，结局就从 +2R 翻成亏损。<strong>对在历史数据上调出来的"完美参数"保持怀疑，参数宁可普通而稳定，不要精致而脆弱。</strong></p>
+  </div>
+  <div class="stock">
+    <span class="label">股票上怎么对照</span>
+    <h4>这三件工具全部股票通用——差别在执行层</h4>
+    <ul>
+      <li><b>高低点结构</b>：道氏理论本来就诞生于股票市场，A 股 / 美股照用；注意股票有跳空（第 2 课讲过），向上跳空缺口本身常扮演"摆动低点"的角色；</li>
+      <li><b>均线</b>：A 股的"国民指标"，20 日线被散户叫作生命线——也因此在关键整数均线附近常有自我实现的买卖盘；股票按交易日计，20 / 60 对应月线 / 季线；</li>
+      <li><b>MACD</b>：参数 12 / 26 / 9 全球通用，用法完全一致；</li>
+      <li><b>执行层差异</b>：A 股 T+1、有涨跌停，"1 小时收盘突破入场＋结构位止损"这类日内执行要降级成"日线收盘确认、次日开盘执行"；美股可盘中执行但要防开盘跳空扫损；两边都没有资金费率，持仓成本结构更简单。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= 4.5 ================= -->
+<section class="ch" id="s5">
+  <h2 class="sec"><span class="no">4.5</span>落地：系统 v0.1 上线，今天开模拟盘</h2>
+  <p class="sec-en">SYSTEM v0.1 GOES LIVE</p>
+  <div class="keypoint">
+    <span class="label">里程碑</span>
+    <p><strong>今天是整门课的第一个里程碑：你的交易系统 v0.1 正式上线。</strong></p>
+    <p>它很简陋——方向三票制、突破入场、结构止损、2R 止盈、1% 风险——但它<strong>完整</strong>：从"做不做"到"亏多少"每一步都有规则可依，没有一个环节留给临场发挥。此前三课你只有安全带，从今天起你有了一台能开的车。接下来每一课给它换一个更好的零件：v0.1 → v0.7 → v1.0。<strong>先按卡开起来，升级在路上。</strong></p>
+  </div>
+  <div class="rulecard">
+    <div class="rc-head"><span class="label">规则卡</span><span class="rc-name">系统 v0.1（第一套完整可模拟系统）</span></div>
+    <dl>
+      <dt>标的与周期</dt><dd>BTC / ETH 的 U 本位永续；日线投三票定方向，1 小时执行入场；逐仓、杠杆 ≤ 5 倍，模拟盘</dd>
+      <dt>过滤条件</dt><dd>① 事件回避：重大数据与议息前后 30 分钟不开新仓（第 3 课日历）；② 方向三票制：三票同向才允许开仓，flat 一律不做——宁可错过</dd>
+      <dt>入场</dt><dd>判定为多：1 小时<strong>收盘价</strong>升破最近的显著摆动高点 → 顺方向进场；判定为空：1 小时收盘价跌破最近显著摆动低点 → 做空。1 小时摆动点同样"左右各 3 根"，显著性门槛放宽到 1.5%。等收盘确认，不见价就追——防假突破</dd>
+      <dt>止损</dt><dd>挂在入场结构的另一侧：做多设在最近显著摆动低点下方，做空设在摆动高点上方（止损市价单、标记价格触发——第 1 课）。暂用结构位，第 6 课升级成 ATR 定距</dd>
+      <dt>出场</dt><dd>止盈 TP ＝ 2R（两倍止损距离），或出现<strong>反向</strong>三票信号时市价离场；判定退回 flat 不强制平仓，持仓靠止损和止盈管理</dd>
+      <dt>仓位</dt><dd>第 3 课公式：数量 ＝ 100 U ÷（入场价 − 止损价），即单笔风险 ≤ 本金 1%；同时最多 2 个仓位</dd>
+    </dl>
+    <p class="rc-note"><strong>从今天起开模拟盘：每周 2–3 笔，只许按卡执行。</strong>评价标准从此变成一句话：这笔单是不是卡上写的？赚钱的违规单也是坏单，亏钱的合规单也是好单。模拟满 20–30 笔、绝大多数合规，才谈下一步。</p>
+  </div>
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>v0.1 的两笔真实回放：4 月 +2R，9 月 −1R</h4>
+    <p><strong>第一笔（2026 年 4 月，赢）</strong>：4-17 EMA 金叉先亮灯，4-20 日线收盘 75,790，三票到齐（信号在北京时间 4-21 早 8 点生效）。当天 1 小时图上最近的显著摆动高点是 76,531；北京时间 4-21 晚 18 点，1 小时收盘 76,702 突破确认——进场。止损挂在显著摆动低点 73,669 下方，R ＝ 3,033 U（3.95%）；按 1% 风险公式开 0.033 BTC（名义约 2,529 U，5 倍杠杆下占用保证金约 506 U）。5-06 北京时间 19 点，价格摸到 82,768 的 2R 止盈位离场，<span class="up-t">+200 U</span>。持仓 15 天——比课程"一周内"的目标节奏长，v0.1 还没有时间出场规则，这笔账先记下，后面的课会补这个零件。</p>
+    <p><strong>第二笔（2026 年 9 月，输）</strong>：8-20 金叉，但票 3 要等摆动点确认，<strong>8-31 三票才到齐</strong>（收盘 78,550）——系统让你完整错过了 8-21 单日 +7% 的主升段，这是确认的代价。9-03 北京时间 22 点，1 小时收盘 80,508 突破入场，止损挂在摆动低点 76,152（R ＝ 4,356 U，5.41%），止盈 89,221。价格最高只到 87,385，9-11 回落击穿止损，<span class="dn-t">−100 U</span>，一周后行情才重新涨回去。</p>
+    <p>还要交代一个让人出汗的细节：4 月那笔如果你把止损多留 0.3% 的余量，止盈位也会相应变远——历史数据里它就差那么一点打不到 2R，最后反而在 5 月底被扫损离场。<strong>同一套系统，一个 0.3% 的小参数就能把 +2R 翻成 −1R。</strong>这不是劝你调参数，恰恰是劝你别迷信参数：结构止损对"挂得多远"天生敏感，第 6 课的 ATR 止损就是来治这个病的。</p>
+    <p class="takeaway">单笔输赢是噪音：2R 盈亏比下，胜率超过三分之一就不亏钱。你唯一能完全控制的变量，是每一笔有没有按卡执行。</p>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 4-7</span>第一笔系统单解剖：2026 年 4 月那笔的 1 小时现场<span class="real">真实数据</span><span class="ia">互动</span></p>
+    <div class="lw h420" id="tr-chart"></div>
+    <div class="lw-legend" id="tr-legend"></div>
+    <div class="stats">
+      <div class="stat"><span class="k">止损距离 R</span><span class="v">3,033 U（3.95%）</span><span class="s">入场 76,702 − 止损 73,669</span></div>
+      <div class="stat"><span class="k">仓位（1% 风险）</span><span class="v">0.033 BTC</span><span class="s">名义约 2,529 U · 5 倍杠杆占用约 506 U</span></div>
+      <div class="stat"><span class="k">结果</span><span class="v up">+200 U（+2R）</span><span class="s">5-06 触及 82,768 止盈</span></div>
+      <div class="stat"><span class="k">持仓时间</span><span class="v">15 天</span><span class="s">4-21 进 → 5-06 出</span></div>
+    </div>
+    <figcaption><b>读图：</b>币安 BTCUSDT 永续 1 小时线（时间轴按你的时区显示）。完整流程五步全在图上：日线三票到齐（信号生效标记）→ 1 小时收盘突破最近摆动高点 76,531（入场标记）→ 止损挂在显著摆动低点 73,669 下方 → 止盈挂在 2R ＝ 82,768 → 价格两周后摸到止盈。注意进场后价格两次回踩到 75,000 下方（入场当天 74,778、4-29 又来一次 74,868），离止损都只剩一千多美元——<b>如果止损挂在"最近的小毛刺低点"而不是显著摆动低点，这笔单早就死了</b>；1.5% 的显著性门槛不是装饰，是这笔单活下来的原因。</figcaption>
+  </figure>
+  <div class="sysup">
+    <span class="label">系统升级</span>
+    <h4>你的交易系统：v0.1 清单</h4>
+    <p>继承自 v0.0：逐仓 ≤ 5 倍 · 单笔风险 ≤ 1%（100 U）· 下单即挂止损市价（标记价格触发）· 事件前后不开仓 · 成本先算后下单 · 三周期分工 · 看盘节律。<strong>本课新增</strong>：日线方向三票制（EMA20 vs 60 ／ 收盘 vs EMA20 ／ 高低点结构，三票同向才开仓）· 1 小时收盘突破显著摆动点入场 · 结构位止损 · TP 2R 或反向信号出场 · flat 天数占三分之二是常态。<strong>下一课（v0.2）解决本课最明显的毛病：突破入场经常买在局部高位——"追高进场"怎么治？答案是等回调，用 RSI / KDJ 找回调里的时机。</strong></p>
+  </div>
+  <div class="task">
+    <span class="label">本周模拟任务</span>
+    <h4>开盘：系统 v0.1 的第一周（全程模拟盘）</h4>
+    <ol>
+      <li><strong>今天就开模拟盘</strong>：沿用第 1 课的测试网账户，重置或记录当前净值，从本周起这个账户只跑 v0.1，规则卡抄一份贴在屏幕边；</li>
+      <li>每天日线收盘后（北京早 8 点后）花 5 分钟投三票：BTC、ETH 各记一行"票 1 / 票 2 / 票 3 → 判定"，和图 4-6 的判定器对一遍答案；</li>
+      <li>本周按卡开 <strong>2 笔顺势单</strong>（flat 期间就等，等待也算执行）：三票同向 → 1 小时收盘突破进场 → 止损挂结构位外侧 → TP 2R，仓位用 100 U ÷ 止损距离算；</li>
+      <li>日志每笔必记四样：进场当天的三票判定（截图或文字）、入场 / 止损 / 止盈三个价位、1% 仓位计算过程、结果；</li>
+      <li>周末复盘统计一个数：<strong>本周下的单里，百分之多少是严格按卡执行的？</strong>这是从今天起最重要的指标——比盈亏重要；</li>
+      <li>若本周三票一直不齐：一笔不下，在日志里写"本周 flat，共等待 X 天"——这也是合格的一周。</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ================= 小结 ================= -->
+<section class="ch recap" id="recap">
+  <h2 class="sec"><span class="no">★</span>本课小结</h2>
+  <p class="sec-en">RECAP</p>
+  <div class="prose">
+    <ol>
+      <li><b>趋势的原始定义不用指标</b>：HH＋HL＝上升、LH＋LL＝下降、互相打架＝震荡；只数显著摆动点（左右各 3 根＋3% 过滤），别数毛刺。</li>
+      <li><b>均线是平均成本线</b>：价格在上方＝持仓者整体赚钱（支撑），下方＝整体被套（压力）；EMA 比 SMA 更重视新进场的人；EMA20 管中期、EMA60 管长期。</li>
+      <li><b>缠绕段均线整体失效</b>：2026 年 BTC 收盘穿越 EMA20 达 30 次——先判断"有没有趋势"，再用趋势工具。</li>
+      <li><b>金叉死叉是提示灯不是扳机</b>：趋势里能吃大段（2026-06 死叉、08-20 金叉），震荡里连环打脸（2025-09 → 10 四叉三连亏 −21.6%）。</li>
+      <li><b>MACD ＝ 两条 EMA 的距离</b>：零轴分多空、柱体读油门；柱体缩短是减速不是掉头；它和均线同族，不算独立证据。</li>
+      <li><b>三票制：均线重心、价格动能、结构三票同向才有方向</b>；2026 年以来 67% 的日子 flat——不做是系统的正式输出。</li>
+      <li><b>v0.1 完整闭环</b>：三票定方向 → 1 小时收盘突破进场 → 结构位止损 → TP 2R 或反向信号 → 1% 风险仓位。从今天起开模拟盘。</li>
+      <li><b>评价标准换了</b>：4 月 +2R 和 9 月 −1R 都是好单，因为都按卡执行；2R 盈亏比下胜率过三分之一就不亏——你管执行，让概率管输赢。</li>
+    </ol>
+  </div>
+
+  <h3>术语一览（点击正文中的角标词可随时弹出）</h3>
+  <ol class="notes-list" id="notes-list"></ol>
+
+  <h3>自测</h3>
+  <details><summary>1. 某币日线最近的显著摆动点依次是：低 62,229、高 65,483、低 62,484、高 81,500。结构是什么？只允许哪个方向？若随后出现低点 76,152、再出现更低的 74,909，判定怎么变？</summary>
+    <div class="ans"><p>高点 65,483 → 81,500 抬高（HH），低点 62,229 → 62,484 抬高（HL）——上升结构，只允许找做多入场。随后低点 76,152 → 74,909 是 LL：低点开始降低而高点还在抬高，结构互相矛盾 → 票 3 弃权，三票制判定退回 flat，不开新仓（已有仓位交给止损止盈管理）。这正是 2026 年 8–9 月 BTC 的真实走法：9 月中旬那个 74,909 让系统在 87,385 的新高面前依然保持 flat——少赚一段，但这是规则，不是失误。</p></div>
+  </details>
+  <details><summary>2. 2025-09-14 到 10-17，BTC 日线上 EMA20 / 60 交叉了 4 次，逢叉翻转跟单连亏三笔共约 −21.6%。为什么会这样？怎么防？</summary>
+    <div class="ans"><p>那是典型的高位宽幅震荡：价格来回扫、两条均线黏在一起反复穿越，而均线是滞后的平均值——每次交叉确认时，那段小行情已经走完，下一段又反着走，于是逢叉必挨打。防法不是换参数（任何参数都有自己的绞肉区间），而是加入原理不同的证人：三票制里的结构票在震荡里会弃权、价格票会频繁变脸，三票很难凑齐——系统自动把你挡在绞肉机外面。代价是趋势初段进场变晚（8-20 金叉、8-31 三票才齐），这笔交换长期是划算的。</p></div>
+  </details>
+  <details><summary>3. 你持有多单，MACD 柱体连续五天缩短，但 DIF 仍在零轴上方。这说明什么？该做什么、不该做什么？</summary>
+    <div class="ans"><p>柱体缩短＝ DIF 和 DEA 在收拢＝上涨在减速——司机松了油门；DIF 还在零轴上方＝ EMA12 仍高于 EMA26，车头没有调向。正确动作：停止加仓、检查止损位置、提高警觉；可以按计划继续持有（v0.1 的出场只认 TP、止损和反向三票信号）。不该做的：把"减速"当"反转"直接反手做空——松油门不是踩刹车，多数减速之后是休整而不是掉头。价格创新高而 DIF 不创新高的"背离"是更强的警报，第 5 课专门讲。</p></div>
+  </details>
+  <details><summary>4. 2026-09-30 的 BTC：EMA20 ＝ 81,945，EMA60 ＝ 76,725，收盘 83,577，但最近两个显著低点是 76,152 → 74,909。三票各怎么投？判定是什么？</summary>
+    <div class="ans"><p>票 1：EMA20 在 EMA60 上方 → 多。票 2：收盘在 EMA20 上方 → 多。票 3：最近两高 82,283 → 87,385 在抬高，但最近两低 76,152 → 74,909 在降低——结构打架，弃权。判定：两多一弃权 ≠ 三票全多 → flat。哪怕价格看起来一片大好，系统也不开新多——三票制保守是设计出来的：它要的不是抓住每段行情，而是只在三个独立证人意见一致时出手。同一天的 ETH 三票全多（高低点都在抬高），可以开——各投各的票。</p></div>
+  </details>
+  <details><summary>5. v0.1 为什么要求"1 小时收盘价突破摆动高点"才入场，而不是三票到齐就市价追进去？</summary>
+    <div class="ans"><p>三个理由：① 防假突破——插针碰一下高点就回落的情况极多，等收盘确认能滤掉大部分（代价是进场价差一点）；② 结构突破给止损一个天然的锚：入场依据是"突破了这个结构"，那么跌回结构另一侧（显著摆动低点下方）就是依据失效，止损位不需要拍脑袋；③ 把执行从"情绪时刻"挪到"规则时刻"：追价是冲动的温床，等一根 K 线收盘是纪律的练习。注意配套细节：止损要挂在<b>显著</b>摆动低点（1.5% 门槛）下方——图 4-7 里那笔单如果用小毛刺低点当止损，早被回踩扫死了。</p></div>
+  </details>
+  <details><summary>6. 按 v0.1 实盘回放：4 月那笔 +2R（+200 U），9 月那笔 −1R（−100 U）。有人说"系统一半时间在亏，不靠谱"。怎么反驳？</summary>
+    <div class="ans"><p>算期望值：止盈 2R、止损 1R 的结构下，盈亏平衡胜率只要 1 ÷（1 ＋ 2）＝ 33.3%——三笔里对一笔就不亏钱。单笔结果几乎是噪音：同一套规则，4 月赢 9 月输，差别只在行情给不给脸。评估一套系统看三样：样本够不够多（所以要求模拟 20–30 笔）、期望值是否为正、执行有没有走样。而这三样里你唯一能完全控制的是执行——这就是为什么本周任务的核心指标是"按卡执行率"而不是盈亏。顺带：连亏时该怀疑的第一对象是"我有没有偷票、追价、乱动止损"，而不是急着给系统换参数。</p></div>
+  </details>
+
+  <nav class="pager" aria-label="课程导航">
+    <a class="pg" href="ct-l03.html"><span class="pg-dir">上一课</span><span class="pg-ttl">第 3 课 · 风险、仓位与事件日历</span></a>
+    <a class="pg pg-toc" href="ct-index.html"><span class="pg-dir">返回</span><span class="pg-ttl">学习地图</span></a>
+    <a class="pg pg-next" href="ct-l05.html"><span class="pg-dir">下一课</span><span class="pg-ttl">第 5 课 · 涨过头了吗</span></a>
+  </nav>
+
+  <p class="foot">数据：币安公开历史数据（data.binance.vision），BTCUSDT / ETHUSDT 永续，已本地化；文中所有日期、价格、涨跌幅与交叉次数均由本地真实数据计算（日线为 UTC 交易日口径）。图表组件：TradingView Lightweight Charts™（Apache-2.0）。本讲义仅为学习笔记，不构成投资建议；合约交易风险极高。</p>
+</section>
+
+</main>
+</div>
+
+<!-- ================= 术语弹注内容 ================= -->
+<div class="notes-src" hidden>
+  <section data-note-id="swing" data-title="摆动高低点" data-en="Swing High / Swing Low">
+    <p>行情回撤留下的局部"浪尖"和"浪谷"：比左右相邻若干根 K 线都高的高点、都低的低点。它们是画结构、判断趋势、挂结构止损的原材料。本课约定：左右各 3 根，且与上一个拐点的距离超过 3%（日线口径；1 小时图放宽到 1.5%），不足的算毛刺忽略。</p>
+  </section>
+  <section data-note-id="dow" data-title="道氏理论" data-en="Dow Theory">
+    <p>19 世纪末《华尔街日报》创始人之一查尔斯·道在社论中提出的市场观察，后人（汉密尔顿、雷亚）整理成理论：趋势分级别存在，上升趋势由依次抬高的高低点构成，趋势一经确立将延续到出现明确的反转信号为止。今天几乎所有趋势分析方法都是它的后代。</p>
+  </section>
+  <section data-note-id="sma" data-title="简单移动平均" data-en="SMA, Simple Moving Average">
+    <p>最近 n 根收盘价的算术平均，每根权重相同（n ＝ 20 时各占 5%）。平滑、稳重，但对新变化反应慢，而且最老的一根数据被移出窗口时数值会突然跳一下。</p>
+  </section>
+  <section data-note-id="ema" data-title="指数移动平均" data-en="EMA, Exponential Moving Average">
+    <p>加权移动平均：越近的收盘价权重越大，权重系数 k ＝ 2 ÷（n ＋ 1），EMA20 给最新一天约 9.5% 的权重。对新行情反应比同周期 SMA 快，是合约短线交易者的常用版本。本课的均线全部指 EMA。</p>
+  </section>
+  <section data-note-id="cross" data-title="金叉与死叉" data-en="Golden Cross / Death Cross">
+    <p>短周期均线从下方穿过长周期均线叫金叉（看涨提示），从上方跌破叫死叉（看跌提示）——本质是短期平均成本超过或跌破长期平均成本。趋势市里是不错的环境切换信号，震荡市里会密集发出假信号。本课只把它当提示灯，不当下单扳机。</p>
+  </section>
+  <section data-note-id="difdea" data-title="DIF 与 DEA" data-en="MACD Lines">
+    <p>MACD 的两条线。DIF ＝ EMA12 − EMA26，即两条均线之间的距离（快线）；DEA ＝ DIF 的 9 日 EMA，即距离的平均（慢线）。柱体 ＝ DIF − DEA，反映距离变化的加速度。有些国内软件把柱体乘 2 绘制，形状不变。</p>
+  </section>
+  <section data-note-id="zeroline" data-title="零轴" data-en="Zero Line">
+    <p>MACD 副图上的 0 水平线。DIF 大于 0 等价于 EMA12 在 EMA26 上方（短期成本高于长期成本，多头环境）；DIF 上穿或下穿零轴，相当于一组更灵敏的均线金叉死叉。DIF 贴着零轴反复穿越，说明市场没有方向。</p>
+  </section>
+  <section data-note-id="fakeout" data-title="假突破" data-en="False Breakout / Fakeout">
+    <p>价格突破关键价位（摆动高低点、区间边界）后很快掉头收回去的走势，震荡市的常客，也是突破型入场的头号风险。对策：用收盘价而不是最高价确认突破、给止损挂在结构另一侧、接受"确认会晚一点"的代价。</p>
+  </section>
+  <section data-note-id="tsmom" data-title="时间序列动量" data-en="Time Series Momentum">
+    <p>"过去一段时间在涨的资产，接下来一段时间平均还会涨"（反之亦然）的统计现象，只看资产自身的历史，区别于比较不同资产相对强弱的横截面动量。Moskowitz、Ooi、Pedersen 2012 年在 58 个期货品种、超过 25 年的数据上系统验证了它，是趋势跟随策略最常被引用的学术基石。</p>
+  </section>
+</div>
+
+<script src="assets/lightweight-charts.js"></script>
+<script src="assets/ct.js"></script>
+<script src="assets/ctchart.js"></script>
+<script src="assets/data/klines-BTCUSDT-1d.js"></script>
+<script src="assets/data/klines-ETHUSDT-1d.js"></script>
+<script src="assets/data/klines-BTCUSDT-1h.js"></script>
+<script>
+(function(){
+'use strict';
+var fmt = CT.fmtN;
+
+/* ========== 共用：摆动点算法（与正文 4.1 节规则一致） ========== */
+function rawSwings(rows, K){
+  var piv = [], i, j;
+  for(i = K; i < rows.length - K; i++){
+    var isH = true, isL = true;
+    for(j = i - K; j <= i + K; j++){
+      if(j === i) continue;
+      if(rows[j][2] >= rows[i][2]) isH = false;
+      if(rows[j][3] <= rows[i][3]) isL = false;
+    }
+    if(isH) piv.push({i: i, type: 'H', price: rows[i][2], confirmI: i + K});
+    if(isL) piv.push({i: i, type: 'L', price: rows[i][3], confirmI: i + K});
+  }
+  return piv;
+}
+function cleanSwings(piv, minPct){
+  var out = [];
+  for(var k = 0; k < piv.length; k++){
+    var p = piv[k];
+    if(!out.length){ out.push(p); continue; }
+    var last = out[out.length - 1];
+    if(p.type === last.type){
+      if(p.type === 'H' ? p.price > last.price : p.price < last.price) out[out.length - 1] = p;
+    }else{
+      if(Math.abs(p.price / last.price - 1) < minPct) continue;
+      out.push(p);
+    }
+  }
+  return out;
+}
+function emaArr(rows, n){
+  var k = 2 / (n + 1), e = null, out = [];
+  for(var i = 0; i < rows.length; i++){
+    var v = rows[i][4];
+    e = e === null ? v : v * k + e * (1 - k);
+    out.push(i >= n - 1 ? e : null);
+  }
+  return out;
+}
+
+/* ========== 图 4-2 结构实验台 ========== */
+(function(){
+  var all = CT.get('klines-BTCUSDT-1d');
+  var WIN = {
+    trend: {from: '2026-07-25', to: '2026-09-10',
+      msg: '高点 65,391 → 65,483 → 81,500 → 82,283 逐级抬高，低点 62,229 → 62,484 → 76,152 同样抬高——<b>HH＋HL，上升结构</b>，只允许找做多机会。注意 8-14 低点 62,484 只比前低 62,229 高一点点：结构判定不问"高多少"，只问"有没有更低"。'},
+    chop: {from: '2026-02-20', to: '2026-04-10',
+      msg: '前半段 74,047 → 75,999 还在创新高、像上升；后半段高点 72,000 → 69,288 掉头向下，低点 67,300 → 64,918 → 65,676 忽上忽下。<b>结构自相矛盾＝震荡市</b>——这正是震荡最骗人的地方：它的前半段永远长得像趋势。'}
+  };
+  var g = CT.makeChart('sl-chart');
+  var cs = null;
+  function show(which){
+    var w = WIN[which];
+    var rows = CT.slice(all, w.from, w.to);
+    if(cs){ g.chart.removeSeries(cs); g.series.length = 0; cs = null; }
+    cs = g.addCandles(rows);
+    var piv = cleanSwings(rawSwings(rows, 3), 0.03);
+    var ms = [], prevH = null, prevL = null;
+    piv.forEach(function(p){
+      var lbl, up;
+      if(p.type === 'H'){
+        lbl = prevH === null ? '高' : (p.price > prevH ? 'HH' : 'LH');
+        up = prevH === null ? null : p.price > prevH;
+        prevH = p.price;
+      }else{
+        lbl = prevL === null ? '低' : (p.price > prevL ? 'HL' : 'LL');
+        up = prevL === null ? null : p.price > prevL;
+        prevL = p.price;
+      }
+      ms.push({time: rows[p.i][0], position: p.type === 'H' ? 'aboveBar' : 'belowBar',
+        shape: 'circle', color: up === null ? 'muted' : (up ? 'up' : 'down'),
+        text: lbl + ' ' + fmt(p.price, 0)});
+    });
+    g.markers(cs, ms);
+    g.fit();
+    var hs = piv.filter(function(p){ return p.type === 'H'; }).slice(-2);
+    var ls = piv.filter(function(p){ return p.type === 'L'; }).slice(-2);
+    var hh = hs.length === 2 && hs[1].price > hs[0].price;
+    var hl = ls.length === 2 && ls[1].price > ls[0].price;
+    var lh = hs.length === 2 && hs[1].price < hs[0].price;
+    var ll = ls.length === 2 && ls[1].price < ls[0].price;
+    document.getElementById('sl-hs').textContent = hs.map(function(p){ return fmt(p.price, 0); }).join(' → ');
+    document.getElementById('sl-hs-s').textContent = hh ? '在抬高（HH）' : (lh ? '在降低（LH）' : '持平');
+    document.getElementById('sl-ls').textContent = ls.map(function(p){ return fmt(p.price, 0); }).join(' → ');
+    document.getElementById('sl-ls-s').textContent = hl ? '在抬高（HL）' : (ll ? '在降低（LL）' : '持平');
+    var vEl = document.getElementById('sl-verdict');
+    if(hh && hl){ vEl.textContent = '上升趋势'; vEl.className = 'v up'; }
+    else if(lh && ll){ vEl.textContent = '下降趋势'; vEl.className = 'v dn'; }
+    else{ vEl.textContent = '震荡（打架）'; vEl.className = 'v warn'; }
+    document.getElementById('sl-msg').innerHTML = w.msg;
+  }
+  CT.bindSeg('sl-seg', show);
+})();
+
+/* ========== 图 4-3 EMA 周期实验台 ========== */
+(function(){
+  var all = CT.get('klines-BTCUSDT-1d');
+  var FROM = '2026-01-01', TO = '2026-10-01';
+  var a = Date.parse(FROM) / 1000, b = Date.parse(TO) / 1000;
+  var win = CT.slice(all, FROM, TO);
+  var tsWin = CT.ts(a);
+  var i0 = -1;
+  for(var i = 0; i < all.length; i++){ if(all[i][0] >= a){ i0 = i; break; } }
+  var lastClose = win[win.length - 1][4];
+  var g = CT.makeChart('em-chart');
+  g.addCandles(win);
+  g.fit();
+  var line = null, base = g.series.length;
+  CT.legend('em-legend', [['series', 'EMA（周期随滑块变化）']]);
+  function crossCount(n){
+    var e = emaArr(all, n), cnt = 0;
+    for(var i = i0 + 1; i < all.length && all[i][0] < b; i++){
+      if(e[i - 1] === null) continue;
+      var p = all[i - 1][4] - e[i - 1], c = all[i][4] - e[i];
+      if(p <= 0 && c > 0 || p >= 0 && c < 0) cnt++;
+    }
+    return cnt;
+  }
+  CT.bindRange('em-n', function(n){
+    if(line){ g.chart.removeSeries(line); g.series.length = base; line = null; }
+    var data = CT.ind.ema(all, n).filter(function(pt){ return pt.time >= tsWin; });
+    line = g.addLine(data, 'series', {width: 2, title: 'EMA' + n});
+    var ev = data[data.length - 1].value;
+    var above = lastClose > ev;
+    var cnt = crossCount(n);
+    document.getElementById('em-val').textContent = fmt(ev, 0);
+    var posEl = document.getElementById('em-pos');
+    posEl.textContent = above ? '价格在上方' : '价格在下方';
+    posEl.className = 'v ' + (above ? 'up' : 'dn');
+    document.getElementById('em-pos-s').textContent = '相距 ' + fmt(Math.abs(lastClose / ev - 1) * 100, 1) + '%';
+    document.getElementById('em-cross').textContent = cnt + ' 次';
+    var msg;
+    if(n <= 12) msg = 'EMA' + n + '：贴得很紧、拐得飞快，但 2026 年被收盘价来回穿了 <b>' + cnt + ' 次</b>——几乎每根像样的 K 线都能让它变脸。拿它当方向票，等于把方向交给噪音。';
+    else if(n <= 35) msg = 'EMA' + n + '：中期成本线的量级。穿越 <b>' + cnt + ' 次</b>——仍然会在震荡段被反复穿越（缠绕），但趋势段里它能稳定托住回调。这是三票制里"价格动能票"的参照线。';
+    else if(n <= 80) msg = 'EMA' + n + '：长期重心的量级，2026 年只被穿越 <b>' + cnt + ' 次</b>。它不告诉你今天买不买，它告诉你这个季度市场的重心在哪边——三票制里和 EMA20 比位置用的就是这一类。';
+    else msg = 'EMA' + n + '：非常钝，九个月只被穿越 <b>' + cnt + ' 次</b>，信号干净但慢得要命——转弯确认时行情往往已走完一大段。周期再长，滞后的本质不变，只是把噪音换成了迟到。';
+    document.getElementById('em-msg').innerHTML = msg;
+  }, function(v){ return v; });
+})();
+
+/* ========== 图 4-4 金叉死叉成败例 ========== */
+(function(){
+  var all = CT.get('klines-BTCUSDT-1d');
+  var FROM = '2025-08-01', TO = '2026-10-01';
+  var win = CT.slice(all, FROM, TO);
+  var tsWin = CT.ts(Date.parse(FROM) / 1000);
+  var g = CT.makeChart('cx-chart', {minBarSpacing: 0.1});
+  var cs = g.addCandles(win);
+  g.addLine(CT.ind.ema(all, 20).filter(function(p){ return p.time >= tsWin; }), 'series', {width: 2, title: 'EMA20'});
+  g.addLine(CT.ind.ema(all, 60).filter(function(p){ return p.time >= tsWin; }), 'series2', {width: 2, title: 'EMA60'});
+  g.markers(cs, [
+    {time: Date.parse('2025-09-14') / 1000, position: 'belowBar', shape: 'arrowUp', color: 'up', text: '金叉 ① 115,210'},
+    {time: Date.parse('2025-09-26') / 1000, position: 'aboveBar', shape: 'arrowDown', color: 'down', text: '死叉 ② 109,589'},
+    {time: Date.parse('2025-10-01') / 1000, position: 'belowBar', shape: 'arrowUp', color: 'up', text: '金叉 ③ 118,552'},
+    {time: Date.parse('2025-10-17') / 1000, position: 'aboveBar', shape: 'arrowDown', color: 'down', text: '死叉 ④ 106,379'},
+    {time: Date.parse('2026-06-01') / 1000, position: 'aboveBar', shape: 'arrowDown', color: 'crit', text: '死叉 → 24 天 −18.7%'},
+    {time: Date.parse('2026-08-20') / 1000, position: 'belowBar', shape: 'arrowUp', color: 'accent', text: '金叉 72,999 → 主升'}
+  ]);
+  g.fit();
+  CT.legend('cx-legend', [['series', 'EMA20'], ['series2', 'EMA60'], ['up', '金叉'], ['down', '死叉']]);
+  CT.bindSeg('cx-seg', function(v){
+    if(v === 'grind') g.setRange('2025-08-20', '2025-11-10');
+    else if(v === 'win') g.setRange('2026-05-15', '2026-09-30');
+    else g.fit();
+  });
+})();
+
+/* ========== 图 4-5 MACD 实验台 ========== */
+(function(){
+  var all = CT.get('klines-BTCUSDT-1d');
+  var rows = CT.slice(all, '2026-02-01', '2026-10-01');
+  var g = CT.makeChart('mc-chart', {panes: [0.34], minBarSpacing: 0.1});
+  var cs = g.addCandles(rows);
+  g.addLine(CT.ind.ema(rows, 12), 'series3', {width: 1, title: 'EMA12'});
+  g.addLine(CT.ind.ema(rows, 26), 'series4', {width: 1, title: 'EMA26'});
+  var m = CT.ind.macd(rows, 12, 26, 9);
+  g.addHist(m.hist, 'ud', {pane: 1});
+  var dif = g.addLine(m.macd, 'series', {width: 2, pane: 1, title: 'DIF'});
+  g.addLine(m.signal, 'series2', {width: 2, pane: 1, dashed: true, title: 'DEA'});
+  g.priceLine(dif, 0, 'muted', '零轴', 2);
+  g.markers(cs, [
+    {time: Date.parse('2026-06-29') / 1000, position: 'belowBar', shape: 'circle', color: 'crit', text: '5 天 4 次金死叉'},
+    {time: Date.parse('2026-08-18') / 1000, position: 'belowBar', shape: 'arrowUp', color: 'up', text: '金叉 64,694'},
+    {time: Date.parse('2026-08-19') / 1000, position: 'aboveBar', shape: 'circle', color: 'accent', text: 'DIF 上穿零轴'},
+    {time: Date.parse('2026-08-24') / 1000, position: 'aboveBar', shape: 'circle', color: 'series2', text: '柱体峰值'}
+  ]);
+  g.fit();
+  CT.legend('mc-legend', [['series3', 'EMA12（上图细线）'], ['series4', 'EMA26'], ['series', 'DIF（下图快线）'], ['series2', 'DEA（慢线·虚线）'], ['up', '柱体为正'], ['down', '柱体为负']]);
+})();
+
+/* ========== 图 4-6 方向判定器 ========== */
+(function(){
+  var FROM = '2026-01-01', TO = '2026-10-01';
+  var a = Date.parse(FROM) / 1000, b = Date.parse(TO) / 1000;
+  var tsWin = CT.ts(a);
+  var DATA = {};
+  function prep(sym){
+    var rows = CT.get('klines-' + sym + '-1d');
+    var E20 = emaArr(rows, 20), E60 = emaArr(rows, 60);
+    var piv = rawSwings(rows, 3);
+    var votes = [], st = {long: 0, short: 0, flat: 0};
+    for(var i = 0; i < rows.length; i++){
+      var t = rows[i][0];
+      if(t < a || t >= b) continue;
+      var cl = cleanSwings(piv.filter(function(s){ return s.confirmI <= i; }), 0.03);
+      var hs = cl.filter(function(s){ return s.type === 'H'; }).slice(-2);
+      var ls = cl.filter(function(s){ return s.type === 'L'; }).slice(-2);
+      var v3 = 0;
+      if(hs.length === 2 && ls.length === 2){
+        var hh = hs[1].price > hs[0].price, hl = ls[1].price > ls[0].price;
+        v3 = hh && hl ? 1 : (!hh && !hl ? -1 : 0);
+      }
+      var v1 = E20[i] > E60[i] ? 1 : -1;
+      var v2 = rows[i][4] > E20[i] ? 1 : -1;
+      var verdict = (v1 === 1 && v2 === 1 && v3 === 1) ? 'long' : (v1 === -1 && v2 === -1 && v3 === -1) ? 'short' : 'flat';
+      st[verdict]++;
+      votes.push({t: t, dt: new Date(t * 1000).toISOString().slice(0, 10), close: rows[i][4],
+        e20: E20[i], e60: E60[i], v1: v1, v2: v2, v3: v3, verdict: verdict,
+        hs: hs.map(function(p){ return p.price; }), ls: ls.map(function(p){ return p.price; })});
+    }
+    DATA[sym] = {
+      win: CT.slice(rows, FROM, TO),
+      e20line: CT.ind.ema(rows, 20).filter(function(p){ return p.time >= tsWin; }),
+      e60line: CT.ind.ema(rows, 60).filter(function(p){ return p.time >= tsWin; }),
+      votes: votes, st: st
+    };
+  }
+  prep('BTCUSDT'); prep('ETHUSDT');
+  var g = CT.makeChart('dj-chart');
+  CT.legend('dj-legend', [['series', 'EMA20'], ['series2', 'EMA60'], ['accent', '当日收盘水平线']]);
+  var sym = 'BTCUSDT', idx = null, cs = null, pl = null, mkArr = [], mkApi = null;
+  var NAME = {BTCUSDT: 'BTC', ETHUSDT: 'ETH'};
+  function px(v){ return sym === 'BTCUSDT' ? fmt(v, 0) : fmt(v, 2); }
+  function build(){
+    g.series.forEach(function(it){ if(it.s){ g.chart.removeSeries(it.s); } });
+    g.series.length = 0;
+    var D = DATA[sym];
+    cs = g.addCandles(D.win);
+    g.addLine(D.e20line, 'series', {width: 2, title: 'EMA20'});
+    g.addLine(D.e60line, 'series2', {width: 2, title: 'EMA60'});
+    mkArr = [];
+    mkApi = g.markers(cs, mkArr);
+    pl = g.priceLine(cs, D.votes[D.votes.length - 1].close, 'accent', '当日收盘', 2);
+    g.fit();
+  }
+  function voteTxt(v){ return v === 1 ? '多' : v === -1 ? '空' : '弃权'; }
+  function voteCls(v){ return v === 1 ? 'v up' : v === -1 ? 'v dn' : 'v warn'; }
+  function paint(){
+    if(idx === null || !cs) return;
+    var D = DATA[sym];
+    var v = D.votes[Math.min(idx, D.votes.length - 1)];
+    pl.applyOptions({price: v.close});
+    mkArr.length = 0;
+    mkArr.push({time: v.t,
+      position: v.verdict === 'short' ? 'aboveBar' : 'belowBar',
+      shape: v.verdict === 'long' ? 'arrowUp' : v.verdict === 'short' ? 'arrowDown' : 'circle',
+      color: v.verdict === 'long' ? 'up' : v.verdict === 'short' ? 'down' : 'muted',
+      text: v.verdict === 'long' ? '多' : v.verdict === 'short' ? '空' : '观望'});
+    var p = CT.pal();
+    mkApi.setMarkers(mkArr.map(function(m){
+      return {time: CT.ts(m.time), position: m.position, shape: m.shape, color: p[m.color] || m.color, text: m.text, size: 1};
+    }));
+    var e1 = document.getElementById('dj-v1');
+    e1.textContent = voteTxt(v.v1); e1.className = voteCls(v.v1);
+    document.getElementById('dj-v1-s').textContent = 'EMA20 ' + px(v.e20) + (v.v1 === 1 ? ' ＞ ' : ' ＜ ') + 'EMA60 ' + px(v.e60);
+    var e2 = document.getElementById('dj-v2');
+    e2.textContent = voteTxt(v.v2); e2.className = voteCls(v.v2);
+    document.getElementById('dj-v2-s').textContent = '收盘 ' + px(v.close) + (v.v2 === 1 ? ' 在 EMA20 上方' : ' 在 EMA20 下方');
+    var e3 = document.getElementById('dj-v3');
+    e3.textContent = voteTxt(v.v3); e3.className = voteCls(v.v3);
+    document.getElementById('dj-v3-s').textContent = v.hs.length === 2
+      ? '两高 ' + px(v.hs[0]) + ' → ' + px(v.hs[1]) + '；两低 ' + px(v.ls[0]) + ' → ' + px(v.ls[1])
+      : '摆动点尚不足两对';
+    var ev = document.getElementById('dj-verdict');
+    ev.textContent = v.verdict === 'long' ? '做多' : v.verdict === 'short' ? '做空' : 'flat 观望';
+    ev.className = v.verdict === 'long' ? 'v up' : v.verdict === 'short' ? 'v dn' : 'v warn';
+    document.getElementById('dj-verdict-s').textContent = v.verdict === 'flat' ? '不开新仓' : '只允许顺这个方向找入场';
+    var why;
+    if(v.verdict === 'long') why = '三票全多：均线重心、价格动能、高低点结构一致看多——允许按 v0.1 找做多入场（1 小时收盘突破摆动高点）。';
+    else if(v.verdict === 'short') why = '三票全空：三个独立证人一致看空——允许按 v0.1 找做空入场。';
+    else if(v.v3 === 0) why = '票 1、票 2 投了' + voteTxt(v.v1) + '、' + voteTxt(v.v2) + '，但结构票弃权（高低点互相打架）——证据不足，flat。';
+    else why = '三票是 ' + voteTxt(v.v1) + ' / ' + voteTxt(v.v2) + ' / ' + voteTxt(v.v3) + '，没有凑成一致——flat，不做。';
+    var st = D.st, total = D.votes.length;
+    document.getElementById('dj-msg').innerHTML = '<b>' + NAME[sym] + ' · ' + v.dt + '</b>：' + why
+      + '　<em>2026 年至今 ' + total + ' 天：做多 ' + st.long + ' 天、做空 ' + st.short + ' 天、flat ' + st.flat + ' 天（' + Math.round(st.flat / total * 100) + '%）。</em>';
+  }
+  CT.bindSeg('dj-sym', function(v){ sym = v; build(); paint(); });
+  CT.bindRange('dj-day', function(v){ idx = v; paint(); }, function(v){
+    var D = DATA[sym];
+    return D.votes[Math.min(v, D.votes.length - 1)].dt;
+  });
+})();
+
+/* ========== 图 4-7 第一笔系统单解剖 ========== */
+(function(){
+  var rows = CT.slice(CT.get('klines-BTCUSDT-1h'), '2026-04-18T00:00:00Z', '2026-05-08T00:00:00Z');
+  var g = CT.makeChart('tr-chart', {timeVisible: true, minBarSpacing: 0.1});
+  var cs = g.addCandles(rows);
+  g.priceLine(cs, 76702, 'accent', '入场 76,702', 0);
+  g.priceLine(cs, 73669, 'crit', '止损 73,669', 2);
+  g.priceLine(cs, 82768, 'up', '止盈 2R 82,768', 2);
+  g.markers(cs, [
+    {time: Date.parse('2026-04-20T20:00:00Z') / 1000, position: 'aboveBar', shape: 'circle', color: 'muted', text: '最近摆动高点 76,531'},
+    {time: Date.parse('2026-04-21T00:00:00Z') / 1000, position: 'belowBar', shape: 'circle', color: 'series2', text: '三票到齐·信号生效'},
+    {time: Date.parse('2026-04-21T10:00:00Z') / 1000, position: 'belowBar', shape: 'arrowUp', color: 'up', text: '1h 收盘 76,702 入场'},
+    {time: Date.parse('2026-05-06T11:00:00Z') / 1000, position: 'aboveBar', shape: 'circle', color: 'accent', text: '触及 2R 止盈'}
+  ]);
+  g.fit();
+  CT.legend('tr-legend', [['accent', '入场价'], ['crit', '止损（显著摆动低点 73,669 下方）'], ['up', '止盈 2R']]);
+})();
+})();
+</script>
+</body>
+</html>

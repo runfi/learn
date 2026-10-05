@@ -1,0 +1,774 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>币圈短线课 · 第 3 课 风险、仓位与事件日历</title>
+<link rel="stylesheet" href="assets/ct.css">
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <span class="book"><a href="ct-index.html">币圈短线实战课</a></span>
+  <span class="part"><a href="ct-index.html">学习地图</a> · 阶段 0 开盘前的底子</span>
+  <span class="prefs">
+    <button id="btn-updown" type="button" title="切换涨跌配色"></button>
+    <button id="btn-theme" type="button" title="切换深浅主题"></button>
+  </span>
+</header>
+
+<div class="layout">
+
+<nav class="sidenav" aria-label="本课目录">
+  <p class="sn-chap">第 3 课 · 风险、仓位与事件日历</p>
+  <a href="#top">课首</a>
+  <a href="#s1">3.1 先学会亏钱</a>
+  <a href="#s2">3.2 1% 规则与仓位公式</a>
+  <a href="#s3">3.3 用 R 记账</a>
+  <a href="#s4">3.4 连亏、回撤与刹车</a>
+  <a href="#s5">3.5 加仓、减仓与补仓</a>
+  <a href="#s6">3.6 事件日历</a>
+  <a href="#s7">3.7 落地：风险操作系统</a>
+  <a href="#recap">小结 · 术语 · 自测</a>
+</nav>
+
+<main class="article">
+
+<section class="hero" id="top">
+  <span class="chap-no">LESSON 03 · 第 3 课 / 共 16 课</span>
+  <h1>风险、仓位与事件日历</h1>
+  <p class="en">RISK, POSITION SIZING AND THE EVENT CALENDAR</p>
+  <p class="question">本课问题：一笔该下多大？亏成什么样必须停？</p>
+  <p class="lede">前两课你认识了机器（合约怎么运作）和地图（K 线与周期）。这一课装的是刹车和安全气囊——也是整门课唯一一个"装好之后不再大改"的部分。它只回答两个问题：一笔该下多大？亏成什么样必须停？答案不靠感觉，靠四个零件：期望值、仓位公式、R 记账、事件日历。<strong>方向看错一次只是成本，仓位失控一次就是终点</strong>——先把"死不掉"做成工程，下一课才有资格谈"怎么赢"。</p>
+  <div class="objectives">
+    <h2>学完你能做到</h2>
+    <ul>
+      <li>用期望值公式判断一套打法长期是赚是亏，而不是看"最近几把的手感"；</li>
+      <li>30 秒算出任何一笔的仓位：名义 ＝ 单笔风险 ÷ 止损距离——从此仓位是算出来的，不是拍出来的；</li>
+      <li>把每笔盈亏折算成 R 记账，让不同价位、不同仓位的交易可以互相比较；</li>
+      <li>说出自己胜率下连亏 5 笔、8 笔的概率，遇到连亏不再怀疑人生（先怀疑规则有没有被执行）；</li>
+      <li>解释为什么亏 50% 要赚 100% 才回本，并给账户装上"月亏 6% 停手"的刹车；</li>
+      <li>给加仓、减仓、补仓三个动作发许可证：只给盈利的仓位加码，把逆势摊平从字典里删掉；</li>
+      <li>列出未来两周的事件日历，知道哪些时刻不开新仓、哪些日子要减仓。</li>
+    </ul>
+  </div>
+  <p class="colorkey">读图约定：本课默认<span class="up">绿涨</span>·<span class="dn">红跌</span>，可用右上角按钮切成红涨绿跌。带 <b>互动</b> 标签的图可以拖动、调参数；正文里带虚线下划线和角标的词，点一下原地弹出解释。本课出现的时刻一律为北京时间（＝UTC+8），美国冬令时（约 11 月初至次年 3 月中）的顺延在正文注明。</p>
+  <nav class="chapmap" aria-label="本课小节">
+    <a href="#s1">先学会亏钱</a><a href="#s2">1% 与仓位公式</a><a href="#s3">用 R 记账</a><a href="#s4">连亏与刹车</a><a href="#s5">加减仓纪律</a><a href="#s6">事件日历</a><a href="#s7">风险操作系统</a><a href="#recap">小结</a>
+  </nav>
+</section>
+
+<!-- ================= 3.1 ================= -->
+<section class="ch" id="s1">
+  <h2 class="sec"><span class="no">3.1</span>先学会亏钱：期望值与赌场思维</h2>
+  <p class="sec-en">EXPECTANCY: SIT ON THE HOUSE SIDE</p>
+  <div class="prose">
+    <p>新手进场问的是"这把能不能赢"；职业选手先问另一个问题——"这套打法重复一万次，是赚是亏？"回答它不需要预测行情，只需要三个数：胜率、平均盈利、平均亏损。它们拼出交易世界的第一公式：</p>
+  </div>
+  <div class="formula">
+    <p class="fx"><span class="nt" data-note="ev">期望值</span> / 笔 ＝ 胜率 × 平均盈利 − 败率 × 平均亏损</p>
+    <p class="note">例：胜率 45%，赢时平均 ＋200 U，亏时平均 −100 U → 期望值 ＝ 0.45 × 200 − 0.55 × 100 ＝ <b>＋35 U / 笔</b>。注意胜率不到一半，它照样是一台赚钱机器——下一笔的输赢依旧完全随机，但 100 笔之后，账面大概率聚拢在 ＋3,500 U 附近。</p>
+  </div>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>轮盘赌桌上每收一注，赌场的期望值约是 2.7%（欧式单零盘的抽水）。赌客当晚赢走几十万的大有人在，赌场毫不在意——它只需要两件事：<strong>期望值为正，局数足够多</strong>，大数定律自会把随机磨成必然。交易者的全部工作，就是从赌客那边换到赌场这边坐：先造出一套期望值为正的规则，然后像赌场一样冷血地重复它。<strong>单局是随机的，长期是必然的</strong>——这句话同时解释了两件事：一笔亏损不值得愧疚（赌场也经常"输一局"），一笔暴赚也不值得庆祝（赌客也经常"赢一局"）。</p>
+  </div>
+  <div class="prose">
+    <h3>胜率和盈亏比是一个跷跷板</h3>
+    <p>把期望值公式变个形：要不亏钱，胜率只需要达到 1 ÷（1 ＋ <span class="nt" data-note="rr">盈亏比</span>）。盈亏比越大，需要的胜率越低——两者可以互相补偿，这就是"跷跷板"。市场上所有能长期活着的打法，都是在这条曲线上方找到了自己的位置：</p>
+  </div>
+  <figure>
+    <p class="fig-title"><span class="fno">图 3-1</span>保本线：胜率与盈亏比的跷跷板<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+      <svg viewBox="0 0 720 320" role="img" aria-label="保本胜率随盈亏比下降的曲线，上方为赚钱区，下方为亏钱区">
+        <path d="M90 40 L104.8 61.8 L119.5 80 L134.3 95.4 L163.8 120 L200.6 142.9 L237.5 160 L274.4 173.3 L311.3 184 L385 200 L458.8 211.4 L532.5 220 L606.3 226.7 L680 232 L680 40 Z" class="zone-up"/>
+        <path d="M90 40 L104.8 61.8 L119.5 80 L134.3 95.4 L163.8 120 L200.6 142.9 L237.5 160 L274.4 173.3 L311.3 184 L385 200 L458.8 211.4 L532.5 220 L606.3 226.7 L680 232 L680 280 L90 280 Z" class="zone-dn"/>
+        <line x1="90" y1="120" x2="690" y2="120" class="grid"/>
+        <line x1="90" y1="160" x2="690" y2="160" class="grid"/>
+        <line x1="90" y1="200" x2="690" y2="200" class="grid"/>
+        <line x1="90" y1="220" x2="690" y2="220" class="grid"/>
+        <polyline points="90,40 104.8,61.8 119.5,80 134.3,95.4 163.8,120 200.6,142.9 237.5,160 274.4,173.3 311.3,184 385,200 458.8,211.4 532.5,220 606.3,226.7 680,232" fill="none" class="edge-acc"/>
+        <line x1="90" y1="280" x2="690" y2="280" class="axis"/>
+        <line x1="90" y1="30" x2="90" y2="280" class="axis"/>
+        <text x="330" y="66" class="ut">赚钱区：胜率在保本线上方（期望值 ＞ 0）</text>
+        <text x="170" y="255" class="dt">亏钱区（期望值 ＜ 0）</text>
+        <text x="250" y="150" class="pv">保本线（线上 ＝ 不赚不亏）</text>
+        <circle cx="163.8" cy="120" r="4.5" class="ar-fill"/>
+        <text x="185" y="106" class="pl">A 高胜率小赚型 · 盈亏比 0.5</text>
+        <text x="185" y="122" class="tick">保本胜率 66.7%</text>
+        <circle cx="385" cy="200" r="5.5" class="ar-acc"/>
+        <text x="398" y="176" class="hi">B 本课路线 · 盈亏比 ≥2</text>
+        <text x="398" y="192" class="tick">保本胜率 33.4%</text>
+        <circle cx="532.5" cy="220" r="4.5" class="ar-fill"/>
+        <text x="545" y="246" class="pl">C 趋势跟踪型 · 盈亏比 3</text>
+        <text x="545" y="262" class="tick">保本胜率 25%</text>
+        <text x="84" y="44" text-anchor="end" class="tick">100%</text>
+        <text x="84" y="124" text-anchor="end" class="tick">66.7%</text>
+        <text x="84" y="164" text-anchor="end" class="tick">50%</text>
+        <text x="84" y="204" text-anchor="end" class="tick">33.4%</text>
+        <text x="84" y="224" text-anchor="end" class="tick">25%</text>
+        <text x="28" y="34" class="tick">胜率</text>
+        <text x="163.8" y="298" text-anchor="middle" class="tick">0.5</text>
+        <text x="237.5" y="298" text-anchor="middle" class="tick">1</text>
+        <text x="385" y="298" text-anchor="middle" class="tick">2</text>
+        <text x="532.5" y="298" text-anchor="middle" class="tick">3</text>
+        <text x="680" y="298" text-anchor="middle" class="tick">4</text>
+        <text x="385" y="316" text-anchor="middle" class="tick">盈亏比（平均盈利 ÷ 平均亏损）</text>
+      </svg>
+    </div>
+    <figcaption><b>读图：</b>曲线是保本线：胜率 ＝ 1 ÷（1 ＋ 盈亏比）。A、B、C 三种流派都能活——做市商在 A 点靠高胜率小利润吃饭，海龟式趋势跟踪在 C 点靠 25% 的胜率照样暴赚，本课带你走的是 B 点：盈亏比 ≥2，胜率 40% 上下就已经盈利。死掉的从来不是某个流派，而是"胜率和盈亏比双低"的打法——<b>"赚一点就跑、亏了就扛"恰好把盈亏比主动做小，把你推进左下的亏钱区</b>。另外这条线还没算成本：第 1 课算过双边市价一个来回约 0.1%，手续费和资金费会把整条保本线再抬高一截。</figcaption>
+  </figure>
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p><strong>把胜率当成绩单。</strong>"胜率 90% 的大神"完全可以稳定破产：每次赚 0.3R、偶尔一次 −10R，就是典型的"卖保险式"亏法——<span class="nt" data-note="martingale">马丁格尔</span>是它的主动版本（3.4 节拆解）。反过来，胜率 35% 的趋势跟踪者靠一年里少数几笔大盈利养活全年。<em>胜率是情绪体验，期望值才是工资条。</em>下次有人晒胜率，先问他两个数：平均亏损多大？最大的那笔亏损多大？</p>
+  </div>
+</section>
+
+<!-- ================= 3.2 ================= -->
+<section class="ch" id="s2">
+  <h2 class="sec"><span class="no">3.2</span>1% 规则与仓位公式：先定亏多少，再算下多大</h2>
+  <p class="sec-en">THE 1% RULE AND THE POSITION SIZING FORMULA</p>
+  <div class="prose">
+    <p>期望值为正的系统去哪里找，是第 4 课以后的事。本课先解决一个更要命的问题：<strong>就算系统是正的，一笔下多大，才能保证你活到"长期"来临的那一天？</strong>想清楚一件事：入场之后，涨跌、消息、插针，没有一样归你管；你唯一 100% 说了算的，是"这笔最多亏多少"。职业和业余的分水岭就在这里——业余拿不能控制的东西赌，职业把能控制的东西焊死。</p>
+  </div>
+  <div class="keypoint">
+    <span class="label">本课最重要的一句话</span>
+    <p><strong>先定亏多少（账户的 1%），再由止损距离算出仓位，最后才轮到杠杆。</strong></p>
+    <p>仓位是风险的函数，不是胆量的函数。顺序一旦反过来——先凭感觉定仓位、再找地方放止损——1% 就变成了一句口号。</p>
+  </div>
+  <div class="formula">
+    <p class="fx">单笔风险 ＝ 账户 × 1% ＝ 10,000 × 1% ＝ 100 U</p>
+    <p class="fx">仓位名义 ＝ 单笔风险 ÷ 止损距离%　　数量 ＝ 名义 ÷ 入场价</p>
+    <p class="note">例：止损距离 2% → 名义 ＝ 100 ÷ 2% ＝ 5,000 U，按 83,500 的 BTC 算就是 0.0599 枚。止损放得越远，仓位自动越小——"距离换大小"的交换，公式替你完成，不需要意志力参与。</p>
+  </div>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>潜艇的设计者从不赌"船体不会漏水"，他们把船体隔成一个个<strong>独立的密封舱</strong>：任何一舱进水，都淹不沉整艘船。1% 就是你的舱壁——一笔交易是一个舱，进水了（打止损）就关舱门，损失被焊死在账户的 1%。连亏 8 笔？8 个舱进水，船体还剩 92%，照样能开。没有舱壁的船不叫船，叫赌注。</p>
+  </div>
+  <div class="prose">
+    <h3>为什么偏偏是 1%</h3>
+    <ul>
+      <li><strong>连亏扛得住：</strong>下一节会算，胜率 40% 的系统 100 笔内有 49% 的概率碰上 8 连亏——1% 风险下这只是 −8%，爬出来要 ＋8.7%；若每笔 5%，同样的霉运是 −34%，账户直接残废；</li>
+      <li><strong>心理上拿得稳：</strong>100 U 对 1 万本金是"一个数字"，不是"半个月房租"。手不抖，规则才执行得下去；</li>
+      <li><strong>比 Elder 的 2% 更紧：</strong>2% 是股票语境的经典上限（3.4 节讲他的两道防线），合约世界多了插针、滑点和资金费，我们收紧到 1%。</li>
+    </ul>
+    <h3>杠杆去哪了？——由仓位反推，它只剩押金效率</h3>
+    <p>注意公式里根本没有杠杆。名义 5,000 U 不代表要押 5,000：杠杆 2× 押 2,500，5× 押 1,000——第 1 课讲透了，<strong>亏损跟着名义价值走，和押金多少无关</strong>。所以在这套系统里，杠杆的唯一职责是决定押金占用多少、顺便把强平线推到止损距离的几十倍之外，让"强平"永远只是一个理论概念。先算仓位，再挑杠杆，用下面的计算器把这条流水线练熟：</p>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 3-2</span>仓位计算器：风险定仓位，仓位挑杠杆<span class="ia">互动</span></p>
+    <div class="ctrls">
+      <label class="rg"><span class="rg-top">账户（U）<output>10,000</output></span>
+        <input type="range" id="p-acct" min="2000" max="50000" step="1000" value="10000"></label>
+      <label class="rg"><span class="rg-top">单笔风险<output>1%</output></span>
+        <input type="range" id="p-risk" min="0.25" max="3" step="0.25" value="1"></label>
+      <label class="rg"><span class="rg-top">入场价<output>83,500</output></span>
+        <input type="range" id="p-entry" min="60000" max="120000" step="100" value="83500"></label>
+      <label class="rg"><span class="rg-top">止损价（低于入场＝做多，高于＝做空）<output>81,800</output></span>
+        <input type="range" id="p-stop" min="55000" max="125000" step="100" value="81800"></label>
+    </div>
+    <div class="stats">
+      <div class="stat"><span class="k">仓位名义</span><span class="v" id="p-notional">—</span><span class="s" id="p-notional-s">—</span></div>
+      <div class="stat"><span class="k">数量</span><span class="v" id="p-qty">—</span><span class="s">名义 ÷ 入场价</span></div>
+      <div class="stat"><span class="k">建议杠杆</span><span class="v" id="p-lev">—</span><span class="s" id="p-lev-s">—</span></div>
+      <div class="stat"><span class="k">这笔最多亏</span><span class="v dn" id="p-maxloss">—</span><span class="s" id="p-maxloss-s">—</span></div>
+    </div>
+    <p class="lab-msg" id="p-msg"></p>
+    <figcaption><b>读图：</b>这是本课的核心工具，之后每一笔模拟单都要先过它。试三件事：① 把止损价拉近入场价——仓位自动变大（距离小，同样 100 U 风险能撑更大名义）；拉远——仓位自动变小。② 把止损价拖到入场价上方，系统自动按做空算。③ 不论怎么拖，"这笔最多亏"那格纹丝不动——<b>风险是常数，仓位是变量</b>，这正是整套公式的灵魂。杠杆格只是告诉你押多少保证金合适：它改变不了亏损，只改变资金占用和强平距离。</figcaption>
+  </figure>
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p><strong>"1 万块每笔只肯亏 100，猴年马月才能翻身？"</strong>算两笔账。账一：若系统期望 ＋0.35R、一年做 100 笔，1% 风险下复利的中位结局约 <b>＋40%</b>——职业级的年度成绩，靠的是重复，不是重注。账二：把单笔风险开到 10%，纸面期望确实更高，但你对胜率的估计只要错 10 个百分点（以为 45%，其实 35%——模拟二三十笔根本测不准），中位结局就从暴赚翻转成 <b>−37%</b>；同样的估错在 1% 风险下，只是 ＋40% 变 ＋4% 的区别。<em>重仓放大的不是收益，是你估错参数的代价。</em>还有第三笔账，3.4 节算给你看：10% 风险碰上一次再平常不过的 5 连亏 ＝ −41%，要 ＋69% 才能回本。</p>
+  </div>
+</section>
+
+<!-- ================= 3.3 ================= -->
+<section class="ch" id="s3">
+  <h2 class="sec"><span class="no">3.3</span>用 R 记账：让所有交易说同一种语言</h2>
+  <p class="sec-en">MEASURING EVERYTHING IN R</p>
+  <div class="prose">
+    <p>定好了"一笔亏多少"，就顺手得到了一把万能的尺子。把每笔交易的盈亏除以这笔交易的<strong>计划风险</strong>，得到的倍数叫 <span class="nt" data-note="rmult">R</span>。在我们的体系里 1R ＝ 100 U，于是：赚 230 U ＝ ＋2.3R；亏 100 U ＝ −1R；亏 130 U ＝ −1.3R——最后这种要在日志里标红，它说明止损滑点超了或者你手动拖过止损，数字自己会报警。</p>
+  </div>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>上个月你做了三笔：83,500 的 BTC 多单、112,000 时代留下的 BTC 空单、一笔 ETH 多单，仓位大小还各不相同。直接比盈亏金额，就像拿一沓日元、几张美元、几枚英镑硬币<strong>数张数比谁富</strong>——毫无意义。先按汇率换算成同一种货币，账本才可读。R 就是那个汇率：所有交易，不论标的、价位、仓位大小，统一折算成"计划风险的倍数"。换算完你会发现有些"赚了钱"的单子其实只有 ＋0.3R——风险 100 才赚 30，下次不值得做。</p>
+  </div>
+  <div class="prose">
+    <h3>R 记账的三个用处</h3>
+    <ul>
+      <li><strong>不同行情可比：</strong>BTC 在 12 万和 8 万的两笔交易、牛市和震荡市的两笔交易，折成 R 后站上同一把尺——你终于能回答"我这个月到底打得好不好"；</li>
+      <li><strong>系统质量一目了然：</strong>平均每笔多少 R，就是期望值的 R 写法。翻出日志加总一下，系统是正是负、多正多负，立刻现形；</li>
+      <li><strong>给纪律测谎：</strong>按规则执行的交易，亏损只会是 −1R 上下；日志里反复出现 −1.5R、−2R，说明止损在被人为拖动——不用反省情绪，数字先把你供出来了。</li>
+    </ul>
+    <h3>盈亏比 ≥2 的真正含义</h3>
+    <p>安全守则 v0.0 里"止盈 ≥2 倍止损距离"这条，翻译成 R 语言就是：<strong>每笔的计划盈亏比 ≥2R : 1R</strong>。看一眼图 3-1 的 B 点：盈亏比 2 的保本胜率只有 33.4%，胜率 40% 就有 ＋0.2R / 笔，45% 就有 ＋0.35R。把赢面建立在"亏小赚大"上，而不是"猜得准"上——这是短线能长期活着的唯一等式。下面这台模拟器，让你亲眼看看这个等式跑 100 笔是什么样子：</p>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 3-3</span>期望值与资金曲线模拟器：同一套参数，一百种命运<span class="sch">示意</span><span class="ia">互动</span></p>
+    <div class="ctrls">
+      <label class="rg"><span class="rg-top">胜率<output>45%</output></span>
+        <input type="range" id="sim-p" min="20" max="80" step="1" value="45"></label>
+      <label class="rg"><span class="rg-top">盈亏比<output>2.0</output></span>
+        <input type="range" id="sim-rr" min="0.5" max="4" step="0.1" value="2"></label>
+      <label class="rg"><span class="rg-top">每笔风险<output>1%</output></span>
+        <input type="range" id="sim-f" min="0.25" max="3" step="0.25" value="1"></label>
+      <div>
+        <span class="seg-label">伪随机模拟</span>
+        <span class="seg" id="sim-run" role="group">
+          <button type="button" data-val="run" aria-pressed="true">再模拟 100 笔</button>
+        </span>
+      </div>
+    </div>
+    <div class="fig-scroll">
+      <svg id="sim-svg" viewBox="0 0 720 320" role="img" aria-label="同参数多轮模拟的资金曲线，展示运气造成的离散"></svg>
+    </div>
+    <div class="stats">
+      <div class="stat"><span class="k">期望值 / 笔</span><span class="v" id="sim-ev">—</span><span class="s" id="sim-ev-s">—</span></div>
+      <div class="stat"><span class="k">保本胜率</span><span class="v" id="sim-be">—</span><span class="s" id="sim-be-s">—</span></div>
+      <div class="stat"><span class="k">本次 100 笔终值</span><span class="v" id="sim-final">—</span><span class="s" id="sim-final-s">起始 10,000</span></div>
+      <div class="stat"><span class="k">本次最大连亏 / 回撤</span><span class="v warn" id="sim-worst">—</span><span class="s">这就是"正常霉运"</span></div>
+    </div>
+    <p class="lab-msg" id="sim-msg"></p>
+    <figcaption><b>读图：</b>每点一次按钮，就用伪随机数把"胜率 × 盈亏比 × 每笔风险"的系统重跑 100 笔（示意，非真实行情）。亮色是最新一轮，灰色是之前几轮。先用默认参数连点十次：<b>同一套正期望的规则，有的轮次一路高歌，有的轮次先跌两成再爬回来——散开的整个区间都是"运气"的正常幅度</b>，期望值要几百笔才显形，这就是为什么 20 笔的成绩说明不了任何事。再做两个实验：把胜率拉到 30% 看负期望的样子（每轮路径不同、结局方向相同）；把每笔风险拉到 3%，看曲线怎么同时变陡、变险。</figcaption>
+  </figure>
+</section>
+
+<!-- ================= 3.4 ================= -->
+<section class="ch" id="s4">
+  <h2 class="sec"><span class="no">3.4</span>连亏、回撤与刹车</h2>
+  <p class="sec-en">LOSING STREAKS, DRAWDOWNS AND CIRCUIT BREAKERS</p>
+  <div class="prose">
+    <p>模拟器里那些"先跌两成"的轮次不是意外，是数学日程表上的固定节目。这一节先给你打两针疫苗——连亏疫苗和回撤疫苗——再装上一脚刹车。</p>
+    <h3>疫苗一：连亏是必然日程，不是系统故障</h3>
+    <p>下表是精确计算（对所有可能的 100 笔序列做动态规划，不是模拟）：在 100 笔交易内，至少出现一次 N 连亏的概率。</p>
+  </div>
+  <div class="tablewrap narrow">
+    <table>
+      <thead><tr><th>胜率</th><th>连亏 ≥3 笔</th><th>连亏 ≥5 笔</th><th>连亏 ≥8 笔</th><th>最长连亏（中位数）</th></tr></thead>
+      <tbody>
+        <tr><td><b>40%</b></td><td>＞99.99%</td><td>97.6%</td><td>49.0%</td><td>7 笔</td></tr>
+        <tr><td><b>50%</b></td><td>99.97%</td><td>81.0%</td><td>17.0%</td><td>6 笔</td></tr>
+        <tr><td><b>60%</b></td><td>98.8%</td><td>45.9%</td><td>3.6%</td><td>4 笔</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="prose">
+    <p>人脑算的是另一笔账："从现在起连亏 5 笔"的概率，胜率 50% 时只有 0.5⁵ ＝ 3.1%，确实很小。但 100 笔里有近百个起点，"至少在某处出现一次"的概率就滚到了 81%——<strong>几乎必然</strong>。所以连亏 5 笔时，正确反应不是"系统坏了"，而是翻开这张表：这是你的胜率下每 100 笔都要经历一次的例行节目。胜率 40% 的系统（图 3-1 的 B 点完全可能落在这里），最惨一段的中位数是 <b>7 连亏</b>——1% 风险下是 −7%，5% 风险下是 −30%。这就引出第二针疫苗：</p>
+    <h3>疫苗二：回撤的数学不对称</h3>
+    <p>亏掉 X%，不是赚回 X% 就能复原——分母变小了。爬出 <span class="nt" data-note="drawdown">回撤</span>的坑需要 X ÷（1 − X）：</p>
+  </div>
+  <div class="tablewrap narrow">
+    <table>
+      <thead><tr><th>亏掉</th><th>−5%</th><th>−6%</th><th>−10%</th><th>−20%</th><th>−30%</th><th>−40%</th><th>−50%</th></tr></thead>
+      <tbody>
+        <tr><td><b>赚回需要</b></td><td>＋5.3%</td><td>＋6.4%</td><td>＋11.1%</td><td>＋25.0%</td><td>＋42.9%</td><td>＋66.7%</td><td>＋100.0%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>回撤像受伤：−10% 是感冒，休几天满血复活；−30% 是骨折，几个月起步，还得忍住不乱动；−50% 以上是大手术，数学上要求 ＋100% 才能回原点，而<strong>真正的杀伤在心理</strong>——躺在病床上的人最容易做的决定是"来一把大的直接出院"，于是重仓、于是摊平、于是坑底下还有坑。职业风控的全部目的，是把你永远按在"感冒区"里。</p>
+  </div>
+  <div class="prose">
+    <h3>刹车：单笔 1%，单月 6%</h3>
+    <p>Elder 在他的交易书系里给过两道经典防线，比喻也漂亮：单笔上限防<strong>鲨鱼</strong>（一口咬死），月度上限防<strong>食人鱼</strong>（一群小口咬死）。他的版本是单笔 2%、单月 6%；本课采用更紧的合约版——</p>
+    <ul>
+      <li><strong>单笔 ≤1%：</strong>防鲨鱼。上一节已经焊进仓位公式；</li>
+      <li><strong>月累计亏到 −6%：当月停止开新仓，只复盘，下月恢复。</strong>防食人鱼。为什么是 6%：它约等于"一个月的正常霉运预算"（中位 5–6 连亏 × 1%），坑深 6% 只需 ＋6.4% 就能爬出；更重要的是，它强制你在判断力被连亏腐蚀的时刻离场——连亏之后人最想做的事就是"找一笔大的翻本"，刹车防的正是这个。</li>
+    </ul>
+  </div>
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p><strong>马丁格尔："输了加倍，总会赢回来的。"</strong>翻倍链长这样：100 → 200 → 400 → 800 → 1,600 → 3,200——6 连亏后你已经输掉 6,300，第 7 注需要 6,400，而账户只剩 3,700，<em>链条当场断裂</em>。查上表：胜率 50% 时 100 笔内出现 ≥6 连亏的概率 54.6%（精确值）、≥5 连亏 81%，<strong>翻倍链断掉不是会不会的问题，是这 100 笔内哪一天的问题</strong>。数学上马丁格尔不改变期望值一丝一毫，它只是把结果的分布改写成"平时无数次小赢 ＋ 某一天一次毁灭"——赌场给这种客人免费送酒，交易所给他们准备了强平引擎。一切"亏损加码"的策略（包括下一节的逆势补仓）都是马丁格尔的亲戚。</p>
+  </div>
+  <div class="evidence">
+    <span class="label">证据与怀疑</span>
+    <h4>连亏是数学必然，不认亏是出厂设置</h4>
+    <p><b>证据一</b>：上面的连亏概率表是本课自算的精确值（动态规划遍历全部可能序列）——胜率 50% 的系统 100 笔内出现 5 连亏的概率是 81.0%，这个数字和"系统坏没坏"毫无关系。<b>证据二</b>：Odean（1998）研究了美国一家折扣券商上万个散户账户，发现散户兑现盈利的意愿显著高于兑现亏损（"处置效应"），而且他们死攥着不卖的亏损股，随后的表现比被他们早早卖掉的盈利股更差——<strong>"不止损"不是个别人的性格缺陷，是人类的出厂设置，所以刹车必须写成规则、交给挂单执行，不能指望临场的自己</strong>。要怀疑的地方：① 概率表假设每笔独立同分布，但真实行情有波动聚集，同一类策略还会在某种行情里成片失效——真实的连亏概率只会比表里更高，这张表是<em>乐观下限</em>；② 胜率本身不是常数，系统和行情失配的月份里它会整体下移，刹车要按"胜率比你以为的低"来设计；③ Odean 研究的是上世纪九十年代的美股现货散户，外推到 24 小时、带杠杆、有插针的币圈只能当方向性参考——而方向是：只会更糟。</p>
+  </div>
+</section>
+
+<!-- ================= 3.5 ================= -->
+<section class="ch" id="s5">
+  <h2 class="sec"><span class="no">3.5</span>加仓、减仓、补仓：给三个动作发许可证</h2>
+  <p class="sec-en">SCALING IN, SCALING OUT AND THE AVERAGING-DOWN TRAP</p>
+  <div class="prose">
+    <p>第 1 课图 1-6 已经把"账怎么变"算清楚了：加码之后均价移动、强平价移动、每再跌 1% 的亏损放大。<strong>算账的事你已经会了，这一节裁决"该不该"。</strong>三个动作，三张许可证：</p>
+  </div>
+  <div class="cards">
+    <div class="card">
+      <h4>加仓<span class="en-term">Scale-in</span></h4>
+      <p>给<strong>盈利中</strong>的仓位加码。条件苛刻：有浮盈、趋势结构确认、每次加量递减、整组止损同步上移。</p>
+      <span class="k">许可证：有条件批准</span>
+    </div>
+    <div class="card">
+      <h4>补仓（摊平）<span class="en-term">Averaging Down</span></h4>
+      <p>给<strong>亏损中</strong>的仓位加码。本质是亏损加码：单笔风险当场突破 1% 预算，且上不封顶。</p>
+      <span class="k">许可证：吊销——本系统永久禁止</span>
+    </div>
+    <div class="card">
+      <h4>减仓<span class="en-term">Scale-out</span></h4>
+      <p>认错和锁定的双用工具：分批止盈、异常行情先减半、看不懂先退一半。永远不需要充分理由。</p>
+      <span class="k">许可证：无条件，随时可用</span>
+    </div>
+  </div>
+  <div class="prose">
+    <h3>为什么逆势补仓是散户的第一大死因</h3>
+    <p>拆开看它干了两件事。<strong>数学上</strong>：你给一笔已经被证明"暂时错了"的交易追加名义价值——本来计划亏 100 U 的单，补一次变成 200 U 起步，再补变成 400 U 起步，1% 的风险预算被你亲手撕掉，而且没有新的上限来接替它。<strong>心理上</strong>：补仓是拒绝认错的化身。摊平的每一步都把"承认我错了"的成本抬得更高——亏 100 时认错很容易，补成浮亏 1,000 之后，认错等于承认前面每一次补仓都是错的，于是只能继续补。这正是 Odean 证据块里"出厂设置"的放大版：处置效应 ＋ 杠杆 ＋ 24 小时行情。</p>
+  </div>
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>10·10 之夜：同一笔单的两种死法（推演，价格取自第 1 课核实数据）</h4>
+    <p>2025-10-10，关税消息引爆史上最大连环爆仓：币安 BTCUSDT 永续日内从 122,497 砸到 101,517（−17%），全网 24 小时强平约 190 亿美元，币安 BTC 持仓量从 118 亿 USDT 缩到 80 亿。把一个 10,000 U 的账户放进这条真实价格路径：首仓做多 5,000 U @122,000。<b>路线 A（按守则）</b>：止损挂 −2%（119,560），消息落地后第一波下跌就被带走，亏 100 U（1R），睡觉。<b>路线 B（一路补仓）</b>：−5%（115,900）觉得"便宜了"补 5,000，−10%（109,800）觉得"腰斩价"再补 5,000——三笔合计名义 15,000 U，均价 115,686。砸到最低点 101,517 时浮亏约 1,837 U ＝ <b>18 个 R</b>；就算死扛到收盘等来 V 型反弹（收 112,715），仍亏约 385 U ＝ 近 4R。再看杠杆：5 倍下三笔押金共 3,000 U，最低点时只剩约 1,160，勉强没死；同样的操作用 10 倍，104,100 附近就被强平——<b>连后半夜的反弹都轮不到他看</b>。换成 519（2021-05-19，日内 −34%、收盘没拉回多少）的剧本，路线 B 连"只亏 4R"的结局都没有。</p>
+    <p class="takeaway">补仓不是摊低成本，是在下跌里亲手把轻仓补成重仓、把 1R 的计划亏损养成 18R 的灾难。瀑布行情的强平队列，就是这么排起来的。</p>
+  </div>
+  <div class="prose">
+    <h3>职业规则一：只给盈利中的仓位加码</h3>
+    <p>加码本身不是罪，方向错了才是。职业做法叫<span class="nt" data-note="pyramid">金字塔加仓</span>——只在仓位<strong>已经盈利</strong>且趋势结构确认时加码（具体信号第 4–8 课逐个交给你），而且：</p>
+  </div>
+  <div class="formula">
+    <p class="fx">首仓风险 1R　→　每次加仓风险减半（0.5R、0.25R…）　→　每次加仓同步上移整组止损</p>
+    <p class="note">目标：任何时刻，"假如现在整组打止损"的合计亏损 ≤1R。通常第一次加仓时就能把整组止损抬到保本线上方——从那一刻起这笔交易对账户是零风险的，你是在用市场的钱追趋势。形状像金字塔：底座（首仓）最大，越往上越小；摊平恰好倒过来，所以也叫倒金字塔——头重脚轻，一推就倒。</p>
+  </div>
+  <figure>
+    <p class="fig-title"><span class="fno">图 3-4</span>金字塔与倒金字塔：同是加码，两种命运<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+      <svg viewBox="0 0 720 360" role="img" aria-label="左侧为顺势金字塔加仓示意，右侧为逆势摊平的倒金字塔示意">
+        <defs>
+          <marker id="f34-au" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" style="fill:var(--up)"/></marker>
+          <marker id="f34-ad" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" style="fill:var(--down)"/></marker>
+        </defs>
+        <text x="180" y="30" text-anchor="middle" class="nt">职业做法：金字塔加仓</text>
+        <text x="180" y="48" text-anchor="middle" class="nd">只加给赚钱的仓，越加越少</text>
+        <path d="M44 322 L300 92" class="edge-up" marker-end="url(#f34-au)"/>
+        <rect x="60" y="246" width="130" height="44" rx="6" class="node-up"/>
+        <text x="125" y="264" text-anchor="middle" class="nd">首仓 5,000 U</text>
+        <text x="125" y="282" text-anchor="middle" class="nd">风险 1R</text>
+        <rect x="120" y="170" width="100" height="40" rx="6" class="node-up"/>
+        <text x="170" y="186" text-anchor="middle" class="nd">加仓 2,500 U</text>
+        <text x="170" y="204" text-anchor="middle" class="nd">风险 0.5R</text>
+        <rect x="175" y="100" width="80" height="38" rx="6" class="node-up"/>
+        <text x="215" y="116" text-anchor="middle" class="nd">加仓 1,250 U</text>
+        <text x="215" y="132" text-anchor="middle" class="nd">风险 0.25R</text>
+        <line x1="60" y1="310" x2="238" y2="310" class="edge-soft"/>
+        <text x="244" y="314" class="tick">止损 → 全组 −1R</text>
+        <line x1="120" y1="236" x2="278" y2="236" class="edge-soft"/>
+        <text x="284" y="240" class="tick">→ 全组保本</text>
+        <line x1="175" y1="150" x2="278" y2="150" class="edge-soft"/>
+        <text x="284" y="154" class="tick">→ 全组锁盈</text>
+        <text x="180" y="344" text-anchor="middle" class="hi">每次加码 → 止损跟着上移，组风险永远 ≤1R</text>
+        <line x1="365" y1="30" x2="365" y2="340" class="grid"/>
+        <text x="545" y="30" text-anchor="middle" class="nt">散户死法：逆势摊平</text>
+        <text x="545" y="48" text-anchor="middle" class="nd">越亏加越多，倒金字塔</text>
+        <path d="M424 80 L662 306" class="edge-dn" marker-end="url(#f34-ad)"/>
+        <rect x="400" y="90" width="110" height="36" rx="6" class="node"/>
+        <text x="455" y="105" text-anchor="middle" class="nd">首仓 5,000 U</text>
+        <text x="455" y="121" text-anchor="middle" class="nd">浮亏 → 不认</text>
+        <rect x="430" y="170" width="140" height="40" rx="6" class="node-warn"/>
+        <text x="500" y="186" text-anchor="middle" class="nd">补 5,000 U ·「便宜了」</text>
+        <text x="500" y="204" text-anchor="middle" class="nd">计划 1R 已变数倍</text>
+        <rect x="455" y="255" width="180" height="44" rx="6" class="node-dn"/>
+        <text x="545" y="272" text-anchor="middle" class="nd">再补 10,000 U ·「腰斩价」</text>
+        <text x="545" y="290" text-anchor="middle" class="nd">风险 10R ＋，杠杆被动抬高</text>
+        <text x="545" y="344" text-anchor="middle" class="wt">终点：强平或投降——10·10 当晚的真实剧本</text>
+      </svg>
+    </div>
+    <figcaption><b>读图：</b>左右两边都在"加码"，区别只有一个：<b>市场证明你对了才加，还是证明你错了才加</b>。左边每一次加码都伴随止损上移，整组风险从 −1R 一路改善到锁定盈利；右边没有任何一次加码带着止损，风险从 1R 滚向无底。注意左边的代价：加仓会抬高均价，回调容易把浮盈吐回去——所以金字塔只在趋势明确的行情里用（第 4 课给你判断工具），震荡市一次性进出更好。</figcaption>
+  </figure>
+  <div class="prose">
+    <h3>职业规则二：减仓是认错和锁定的工具</h3>
+    <ul>
+      <li><strong>分批止盈：</strong>到 ＋1R 先减一半、锁住利润，剩下的奔 ≥2R 甚至移动止损追趋势——或者全程拿到 2R 一次平。两种都对，<em>写进规则、固定执行</em>的那种最对；</li>
+      <li><strong>异常行情先减半：</strong>突发消息、看不懂的急拉急砸、事件窗口撞上持仓——先减一半，想明白再说。减仓永远不需要充分的理由，<strong>留仓才需要</strong>；</li>
+      <li><strong>减仓不改均价</strong>（第 1 课算过）：它只按比例锁定盈亏、释放保证金、降低敞口——是风险的音量旋钮。</li>
+    </ul>
+    <h3>最后一战：补仓扛单 vs 止损重开</h3>
+    <p>道理都懂，轮到自己浮亏时还是想扛。好，把两条路摆上台面用期望值算一次。场景：做多 5,000 U @100,000，没挂止损（这个局面本身就是违规的产物，但人人都遇得到），现在价格 96,000，浮亏 200 U ＝ 2R。你可以<b>补仓扛单</b>（再买 5,000 U，均价拉到 97,959，赌反弹回本），或者<b>止损重开</b>（现在认亏 200 U，之后按规则找新信号重新进场）。胜负手只有一个参数：反弹回到均价的概率 p——自己拖拖看：</p>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 3-5</span>补仓扛单 vs 止损重开：期望值对决<span class="ia">互动</span></p>
+    <div class="ctrls">
+      <div>
+        <span class="seg-label">看哪种策略的账</span>
+        <span class="seg" id="m-strat" role="group">
+          <button type="button" data-val="avg" aria-pressed="true">补仓扛单</button>
+          <button type="button" data-val="cut">止损重开</button>
+        </span>
+      </div>
+      <label class="rg"><span class="rg-top">反弹回本（回到均价 97,959）的概率<output>50%</output></span>
+        <input type="range" id="m-p" min="10" max="95" step="5" value="50"></label>
+      <label class="rg"><span class="rg-top">若不反弹，你会扛到再跌多少才认输<output>10%</output></span>
+        <input type="range" id="m-d" min="4" max="15" step="1" value="10"></label>
+    </div>
+    <div class="stats">
+      <div class="stat"><span class="k">补仓扛单 · 期望值</span><span class="v dn" id="m-eva">—</span><span class="s" id="m-eva-s">—</span></div>
+      <div class="stat"><span class="k">补仓扛单 · 最坏情况</span><span class="v dn" id="m-wa">—</span><span class="s">扛到认输点全平</span></div>
+      <div class="stat"><span class="k">止损重开 · 期望值</span><span class="v" id="m-evb">−200 U（−2R）</span><span class="s">新单期望按 0 计的保守算法</span></div>
+      <div class="stat"><span class="k">止损重开 · 最坏情况</span><span class="v" id="m-wb">−300 U（−3R）</span><span class="s">这单 −2R ＋ 新单再 −1R</span></div>
+    </div>
+    <p class="lab-msg" id="m-msg"></p>
+    <figcaption><b>读图：</b>把"反弹概率"拉到你认为单边下跌行情里现实的位置——30% 到 50% 已经算客气，然后看两件事：① 要让补仓的期望值追平止损重开，反弹概率通常要拖到 <b>70% 甚至 80% 以上</b>才行——而"会反弹"的信心来自哪里？"已经跌了很多"不是理由，价格没有记忆；② 右边两格的最坏情况：止损重开被封死在 −3R，补仓扛单随着"扛到多深才认"的滑块奔向 −10R、−15R——<b>期望值的差距要靠运气弥补，最坏情况的差距只能靠账户来埋单</b>。10·10 那晚，"再跌多少"是 17%。</figcaption>
+  </figure>
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p><strong>"浮亏不是亏，没卖就还有机会。"</strong>第 1 课讲过，账户按标记价格逐秒结算，保证金余额里扣的是真金白银——<em>市场不记得你的成本价，只有你记得</em>。"回本再走"的本质，是把去留的决策权交给"成本价"这个和未来行情毫无关系的数字。正确的问题永远只有一个：<strong>假如我现在空仓，按规则此刻会进这笔单吗？</strong>会，才配留着它；不会，它就该走。</p>
+  </div>
+</section>
+
+<!-- ================= 3.6 ================= -->
+<section class="ch" id="s6">
+  <h2 class="sec"><span class="no">3.6</span>事件日历：知道什么时候别交易</h2>
+  <p class="sec-en">THE EVENT CALENDAR</p>
+  <div class="prose">
+    <p>第 2 课看过市场的"心跳"——一天内的作息。这一节看"闹钟"：每个月有几个固定时刻，波动率会被拧到最大。短线为什么必须躲开它们？因为数据公布前后那几十分钟里：</p>
+    <ul>
+      <li><strong>流动性被抽走：</strong>做市商在数据前集体撤单避险，订单簿变薄，同样的单子砸出更深的坑（第 2 课清淡时段的加强版）；</li>
+      <li><strong>双向插针：</strong>公布瞬间常常先上后下、或先下后上，两边的止损都被扫一遍，然后才选真方向；</li>
+      <li><strong>你的工具集体失灵：</strong>指标、支撑阻力、形态，全部建立在"常态市场微观结构"之上——数据窗口里只剩掷硬币加滑点税。</li>
+    </ul>
+    <p>需要盯的闹钟不多，一张表装下。美国时刻一律是"夏令时数值"（约 3 月中至 11 月初），美国冬令时顺延 1 小时：</p>
+  </div>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>事件</th><th>频率与日期</th><th>北京时间</th><th>短线纪律</th></tr></thead>
+      <tbody>
+        <tr><td><b><span class="nt" data-note="nfp">非农</span>就业报告</b></td><td>每月第一个周五</td><td>20:30（冬令时 21:30）</td><td>前后 30 分钟不开新仓；已持仓先检查止损</td></tr>
+        <tr><td><b>美国 <span class="nt" data-note="cpi">CPI</span></b></td><td>每月中旬（约 10–15 日）</td><td>20:30（冬令时 21:30）</td><td>同上——对币圈经常比非农劲更大</td></tr>
+        <tr><td><b>美国 PCE 物价指数</b></td><td>每月下旬</td><td>20:30（冬令时 21:30）</td><td>美联储最看重的通胀口径，多数时候温和，仍按 30 分钟规则</td></tr>
+        <tr><td><b><span class="nt" data-note="fomc">FOMC</span> 决议 ＋ 记者会</b></td><td>每年 8 次（约六周一次）</td><td>决议凌晨 2:00、记者会 2:30（冬令时各 ＋1 小时）</td><td><b>当天仓位减半或清空</b>；决议夜不留带近止损的仓</td></tr>
+        <tr><td><b>资金费率结算</b></td><td>每天 3 次</td><td>8:00 / 16:00 / 24:00</td><td>跨结算持仓先看当期费率（第 1 课）</td></tr>
+        <tr><td><b>Deribit 期权月度交割</b></td><td>每月最后一个周五</td><td>16:00（UTC 8:00，以交易所公告为准）</td><td>交割周波动常放大，别满仓</td></tr>
+        <tr><td><b><span class="nt" data-note="unlock">代币解锁</span></b></td><td>各项目自有时间表</td><td>—</td><td>BTC / ETH 本身无解锁；大额解锁砸山寨、拖累全场情绪，当日谨慎</td></tr>
+        <tr><td><b>周末</b></td><td>每周六、日</td><td>—</td><td>活跃度仅为工作日的 46%（第 2 课实算）：<b>重仓不过周末</b></td></tr>
+        <tr><td><b>币安日线切日</b></td><td>每天</td><td>8:00</td><td>不是风险事件，但复盘与"收盘确认"以它为准（第 2 课）</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="prose">
+    <h3>事件日的三条铁律</h3>
+    <ul>
+      <li><strong>数据前后 30 分钟不开新仓</strong>（公布前 30 分钟到公布后 30 分钟）。已有持仓可以带着止损扛，但要明白：窗口内止损市价单的滑点可能远超平时；</li>
+      <li><strong>FOMC 当天仓位减半或清空。</strong>决议加记者会要折腾一个多小时，还在北京时间后半夜——你多半在睡觉。凌晨守不了盘的人，就不要让仓位替你守；</li>
+      <li><strong>重仓不过周末。</strong>10·10 那场史上最大连环爆仓，就发生在周五晚间的美盘时段、流动性正要进入周末真空的档口——第 1 课的案例配第 2 课的统计，结论自动跳出来。</li>
+    </ul>
+    <p>最后一步是把闹钟变成系统的一部分：每月初花 10 分钟，把当月的非农、CPI、PCE、FOMC 日期查出来写进手机日历，提醒语就写对应纪律（"今晚 20:30 非农——21:00 前不开新仓"）。<strong>写在日历里的是规则，记在脑子里的只是愿望。</strong></p>
+  </div>
+  <div class="stock">
+    <span class="label">股票上怎么对照</span>
+    <h4>事件风险的语法是通用的，只是换了几个单词</h4>
+    <ul>
+      <li><b>宏观时刻完全同源：</b>CPI、非农、FOMC 同样打击美股和 A 股情绪，只是股指波幅小、还有熔断和涨跌停兜底；币圈没有兜底，所以 1% 规则更不可妥协；</li>
+      <li><b>财报季 ＝ 个股的非农：</b>美股盘后发财报，隔夜跳空常达两位数——"财报前减仓"与"数据前不开仓"是同一条纪律；</li>
+      <li><b>四巫日 ≈ Deribit 交割：</b>美股每季第三个周五，股指期货、期权集中到期，尾盘成交和波动放大——衍生品集中交割引发异动，是全市场通病；</li>
+      <li><b>A 股的 T+1 和涨跌停</b>是另一种事件风险：利空落在休市时段，你想止损也动不了，只能吃跳空——第 2 课讲过，币圈把跳空换成了连续的垂直大 K 线，至少你的止损单还有机会成交；</li>
+      <li><b>月度 6% 刹车在股票上照用</b>：Elder 这套防线本来就是给股票交易者设计的。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= 3.7 ================= -->
+<section class="ch" id="s7">
+  <h2 class="sec"><span class="no">3.7</span>落地：风险操作系统 v0.0 完全体</h2>
+  <p class="sec-en">YOUR RISK OPERATING SYSTEM, COMPLETE</p>
+  <div class="prose">
+    <p>第 1 课的安全守则是一条安全带；加上本课的期望值、仓位公式、R 记账、刹车和事件日历，它升级成一套完整的<strong>风险操作系统</strong>。之后每一课学的指标和信号，都只是跑在这套操作系统上的应用程序——应用可以装、可以卸、可以换版本，操作系统不许绕过。</p>
+  </div>
+  <div class="rulecard">
+    <div class="rc-head"><span class="label">规则卡</span><span class="rc-name">风险操作系统 v0.0 完全体</span></div>
+    <dl>
+      <dt>标的与周期</dt><dd>只做 BTC / ETH 的 U 本位永续，只用模拟盘；日线定方向、4 小时找位置、1 小时扣扳机（第 2 课）</dd>
+      <dt>过滤条件</dt><dd><b>本课新增——事件回避：</b>非农 / CPI / PCE / FOMC 前后 30 分钟不开新仓；FOMC 当天仓位减半或清空；重仓不过周末</dd>
+      <dt>入场</dt><dd>暂仍限体验单（方向规则第 4 课装入）；逐仓，杠杆按计算器建议且 ≤5 倍</dd>
+      <dt>止损</dt><dd>下单即挂止损市价单、按标记价格触发（第 1 课）；暂按入场价 ∓2% 挂（第 6 课换成 ATR 定距）</dd>
+      <dt>出场</dt><dd>止盈 ≥2R（≥2 倍止损距离）；<b>本课新增：</b>异常行情（突发事件、看不懂的急动）先减半仓</dd>
+      <dt>仓位</dt><dd><b>本课升级：</b>名义 ＝ 单笔风险 ÷ 止损距离%，单笔风险 ≤1%（＝100 U）；月累计亏 6% 即停开新仓到下月；只给盈利仓位加码（金字塔：加量减半、整组止损上移、组风险 ≤1R），逆势补仓摊平永久禁止；同时最多 2 个仓位</dd>
+    </dl>
+    <p class="rc-note">这张卡从今天起不再大改。往后你每次手痒想"就这一次"绕过它，回来重读 3.5 节那笔 18R 的账——<strong>任何一笔需要绕过操作系统才能下的单，都不值得下</strong>。</p>
+  </div>
+  <div class="sysup">
+    <span class="label">系统升级</span>
+    <h4>你的交易系统：v0.0 安全带 → v0.0 完全体（风险操作系统）</h4>
+    <p>本课装进系统的零件：期望值思维（坐到赌场那一边）· 仓位公式（名义 ＝ 风险 ÷ 止损距离，杠杆只管押金）· R 记账 · 连亏疫苗与月亏 6% 刹车 · 加减仓纪律（只加盈利仓，减仓随时）· 事件日历与回避规则。至此，"怎么亏"的每一个环节都工程化完毕。下一课装第一个赚钱零件——方向——系统升级 v0.1，正式开始模拟盘。</p>
+  </div>
+  <div class="task">
+    <span class="label">本周模拟任务</span>
+    <h4>把公式练成反射（继续模拟盘，禁止实盘）</h4>
+    <ol>
+      <li><b>手算三道仓位题</b>，再用图 3-2 的计算器核对：① 账户 10,000、风险 1%、做多 @83,500、止损 81,000，名义和数量各是多少？② 做空 @83,500、止损 85,170 呢？③ 月中账户亏到 9,400、风险仍是 1%、止损距离 1.5%，名义是多少？（提示：1R 已经不是 100 U 了）；</li>
+      <li><b>列未来两周的事件日历：</b>查出非农、CPI、PCE、FOMC 的具体日期（任一财经日历网站都有），连同 Deribit 月度交割和周末，写进手机日历，提醒语直接写纪律原文；</li>
+      <li><b>从本周起，每笔模拟单的仓位一律先过公式</b>：下单前把"账户 × 1% ÷ 止损距离"写进日志，再下单；</li>
+      <li><b>日志新增两栏：</b>计划 R（这笔 1R ＝ 多少 U、止损价在哪）与实际 R（平仓后折算）。周末加总本周总 R，检查两件事：实际 R 有没有超出 −1R 的单（止损执行问题）？月内累计离 −6% 刹车线还有多远？</li>
+      <li><b>打一针预防针：</b>把图 3-3 模拟器调到你预估的胜率和盈亏比，连按十次，把最差一轮的回撤抄在日志扉页——下次真实连亏时，先翻这一页再做决定。</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ================= 小结 ================= -->
+<section class="ch recap" id="recap">
+  <h2 class="sec"><span class="no">★</span>本课小结</h2>
+  <p class="sec-en">RECAP</p>
+  <div class="prose">
+    <ol>
+      <li><b>期望值 ＝ 胜率 × 平均盈利 − 败率 × 平均亏损</b>：单局是随机的，长期是必然的；交易者的工作是坐到赌场那一边，然后冷血地重复。</li>
+      <li><b>胜率和盈亏比是跷跷板</b>：保本胜率 ＝ 1 ÷（1 ＋ 盈亏比）。盈亏比 ≥2 时，胜率 33.4% 保本、40% 盈利——赢面建在"亏小赚大"，不在"猜得准"。</li>
+      <li><b>仓位公式：名义 ＝ 单笔风险 ÷ 止损距离%</b>。先定亏多少（1% ＝ 100 U），再算下多大，最后才轮到杠杆——它只是押金效率（第 1 课）。</li>
+      <li><b>用 R 记账</b>：1R ＝ 计划亏损；所有交易折成 R 才可比，平均每笔 R 就是系统质量，−1.3R 这类数字是纪律的测谎仪。</li>
+      <li><b>连亏是日程不是故障</b>：胜率 50% 在 100 笔内碰上 5 连亏的概率 81%；连亏时先查执行，别急着换系统。</li>
+      <li><b>回撤不对称</b>：亏 X 要赚 X ÷（1 − X）才回本；单笔 1% 防鲨鱼、月亏 6% 停手防食人鱼，把自己永远按在"感冒区"。</li>
+      <li><b>只给盈利的仓位加码</b>（金字塔：加量减半、止损上移、组风险 ≤1R）；逆势摊平 ＝ 亏损加码 ＝ 马丁格尔的亲戚，10·10 之夜能把 1R 养成 18R；减仓是认错和锁定工具，随时可用。</li>
+      <li><b>事件日历</b>：数据前后 30 分钟不开新仓、FOMC 当天减半或清空、重仓不过周末；写进手机日历的才是规则。</li>
+    </ol>
+  </div>
+
+  <h3>术语一览（点击正文中的角标词可随时弹出）</h3>
+  <ol class="notes-list" id="notes-list"></ol>
+
+  <h3>自测</h3>
+  <details><summary>1. 一套系统胜率只有 35%，但平均盈利 2.5R、平均亏损 1R。它长期赚钱吗？用它交易前你还要确认哪两件事？</summary>
+    <div class="ans"><p>期望值 ＝ 0.35 × 2.5 − 0.65 × 1 ＝ ＋0.225R / 笔，长期是赚钱的。但还要确认：① 样本要够——0.225R 的优势在 20 笔里完全可能被运气淹没（图 3-3 模拟器一试便知），至少几十上百笔才显形；② 回撤要扛得住——35% 的胜率意味着比表里 40% 更长的连亏（中位最长连亏 7 笔往上），你的单笔风险和心理都要按这个霉运水平设计。期望值回答"值不值得做"，连亏和回撤回答"活不活得到兑现"。</p></div>
+  </details>
+  <details><summary>2. 账户 8,000 U、风险 1%，做多 @80,000、止损 77,600。算出止损距离、名义、数量；若用 2 倍杠杆，保证金多少？强平会比止损先到吗？</summary>
+    <div class="ans"><p>单笔风险 ＝ 80 U。止损距离 ＝（80,000 − 77,600）÷ 80,000 ＝ 3%。名义 ＝ 80 ÷ 3% ≈ 2,667 U；数量 ＝ 2,667 ÷ 80,000 ≈ 0.0333 枚。2 倍杠杆下保证金 ≈ 1,333 U。强平距离约 1 ÷ 2 − 0.5% ＝ 49.5%，是止损距离的十几倍——止损永远先触发，强平只是理论值。这正是"由仓位反推杠杆"的含义：杠杆不参与风险计算，只决定押金占用。</p></div>
+  </details>
+  <details><summary>3. 你按规则连亏了 6 笔，心态开始发毛。按本课的流程，接下来该做的三件事是什么？</summary>
+    <div class="ans"><p>① 逐笔核对执行：仓位是不是公式算的、止损是不是下单就挂、有没有撞事件窗口——执行走样就修执行，这和系统好坏无关；② 若全部合规，查连亏概率表：胜率 50% 的系统 100 笔内出现 5 连亏的概率 81%，6 连亏是中位数水平的"正常霉运"，不构成换系统的理由；③ 查月度账：累计亏损到 −6% 就停止开新仓、只复盘，到不了就继续按 1% 做。绝对禁止的反应：加大仓位翻本（那是马丁格尔）、降低标准硬找单做。</p></div>
+  </details>
+  <details><summary>4. 账户从 10,000 跌到 7,000。需要赚多少 % 才能回本？如果一直执行"单笔 1% ＋ 月亏 6% 刹车"，最坏情况下坑会有多深？</summary>
+    <div class="ans"><p>−30% 的坑需要 ＋42.9% 才能爬出（3,000 ÷ 7,000）——回撤是不对称的，坑越深，爬出来需要的涨幅不成比例地大。而带刹车的账户：单月最多 −6%（到线即停新仓），6% 的坑只需 ＋6.4% 就能回本，下月满血再来。两道防线的意义不只是数字：−30% 时人会想"来一把大的"，−6% 时人还能冷静复盘——刹车保护的既是本金，更是判断力。</p></div>
+  </details>
+  <details><summary>5. 浮亏 2R 的多单，补仓扛单要反弹概率多高才在期望上打平止损重开？为什么说"最坏情况"比期望值更重要？</summary>
+    <div class="ans"><p>按图 3-5 的场景（扛到再跌 10% 才认输），补仓扛单的期望要追平止损重开的 −200 U，反弹概率需要约 83%——单边行情里不存在的数字，而且这个概率是你"不想认错"的心虚构出来的，价格没有记忆。最坏情况更关键：止损重开被封死在 −3R（本单 −2R ＋ 新单 −1R），补仓扛单是 −12R 起步、上不封顶（扛得越深越大，极端日直接强平）。期望值管长期平均，最坏情况管你能不能活到长期——一次 −15R 的事故，需要之后几十笔完美交易来填。</p></div>
+  </details>
+  <details><summary>6. 周五晚 20:25，你看到一个完美的入场信号，20:30 公布非农。这单做不做？如果已经持仓呢？</summary>
+    <div class="ans"><p>不做。事件前后 30 分钟是禁入窗口：流动性被抽走、双向插针、指标失灵，"完美信号"在这种微观结构里不成立——21:00 以后行情选完方向，信号还在就按规则进，不在就放走（放走一笔交易的成本是零）。已持仓：不新开、不加码，确认止损市价单挂着、按标记价格触发，并接受窗口内滑点可能放大的现实；仓位重就先减半。另外看一眼日历：今天是周五——按"重仓不过周末"，收盘前还要再做一次减仓检查。</p></div>
+  </details>
+
+  <nav class="pager" aria-label="课程导航">
+    <a class="pg" href="ct-l02.html"><span class="pg-dir">上一课</span><span class="pg-ttl">第 2 课 · K 线与周期</span></a>
+    <a class="pg pg-toc" href="ct-index.html"><span class="pg-dir">返回</span><span class="pg-ttl">学习地图</span></a>
+    <a class="pg pg-next" href="ct-l04.html"><span class="pg-dir">下一课</span><span class="pg-ttl">第 4 课 · 现在往哪走</span></a>
+  </nav>
+
+  <p class="foot">数据与计算：连亏概率为动态规划精确值，资金曲线为伪随机模拟（标"示意"）；案例价格均引自第 1、2 课已核实的币安历史数据（data.binance.vision）。各经济数据与交易所时刻以官方公告为准。本讲义仅为学习笔记，不构成投资建议；合约交易风险极高。</p>
+</section>
+
+</main>
+</div>
+
+<!-- ================= 术语弹注内容 ================= -->
+<div class="notes-src" hidden>
+  <section data-note-id="ev" data-title="期望值" data-en="Expectancy">
+    <p>同一类决策无限次重复后的平均单次盈亏：期望值 ＝ 胜率 × 平均盈利 − 败率 × 平均亏损。它描述长期平均，所以单笔结果看不出它，几十上百笔才显形。交易系统的期望值常用 R 作单位（见"R"），正期望是系统值得执行的前提，但不是全部——还要能扛住路上的连亏和回撤。</p>
+  </section>
+  <section data-note-id="rr" data-title="盈亏比" data-en="Risk-Reward Ratio">
+    <p>平均盈利与平均亏损之比（计划层面 ＝ 止盈距离 ÷ 止损距离）。盈亏比 2 表示赢一次顶输两次。它和胜率是跷跷板：保本胜率 ＝ 1 ÷（1 ＋ 盈亏比）。本课系统要求计划盈亏比 ≥2，即每笔以 ≥2R 为目标。</p>
+  </section>
+  <section data-note-id="rmult" data-title="R（R 倍数）" data-en="R-Multiple">
+    <p>把一笔交易的盈亏除以它的计划风险（入场价到止损价的金额）得到的倍数，由交易心理学家 Van Tharp 推广。计划亏 100 U 的单，赚 250 ＝ ＋2.5R，亏 100 ＝ −1R。R 让不同价位、不同仓位、不同标的的交易可以直接比较，也让"止损执行走样"在日志里一眼可见（出现 −1.5R、−2R 就是警报）。</p>
+  </section>
+  <section data-note-id="drawdown" data-title="回撤" data-en="Drawdown">
+    <p>账户从最近高点回落的幅度；资金曲线上最深的那个坑叫最大回撤。回撤的恢复是不对称的：亏 X% 需要赚 X ÷（1 − X）才能回到原点——亏 20% 要赚 25%，亏 50% 要赚 100%。风控的核心任务就是把回撤深度控制在"可修复"区间。</p>
+  </section>
+  <section data-note-id="pyramid" data-title="金字塔加仓" data-en="Pyramiding">
+    <p>只给盈利中的仓位加码，且每次加的数量递减（底大顶小，像金字塔），同时上移整组止损，保证任何时刻全组合计风险不超过首仓的 1R。与之相反、越亏加越多的"倒金字塔"就是摊平——头重脚轻，一推就倒。</p>
+  </section>
+  <section data-note-id="martingale" data-title="马丁格尔" data-en="Martingale">
+    <p>源于 18 世纪欧洲赌场的下注法：每输一局赌注翻倍，指望一次赢回全部。它不改变期望值，只是把结果分布改写成"平时无数次小赢 ＋ 偶尔一次毁灭"——本金有限、仓位有上限，毁灭只是时间问题。一切"亏损加码"的交易行为（逆势补仓、输了加倍翻本）都是它的变体。</p>
+  </section>
+  <section data-note-id="nfp" data-title="非农" data-en="Non-Farm Payrolls">
+    <p>美国非农就业报告，每月第一个周五美东时间 8:30 发布（北京 20:30，美国冬令时 21:30）。衡量就业市场冷热，直接影响市场对美联储加降息的预期，是每月波动最剧烈的固定数据时刻之一，对币圈同样有效。</p>
+  </section>
+  <section data-note-id="cpi" data-title="CPI" data-en="Consumer Price Index">
+    <p>美国消费者价格指数，每月中旬发布，时刻同非农。通胀高于预期 → 加息预期升温 → 包括加密货币在内的风险资产承压；低于预期则反之。公布瞬间常见双向插针，等尘埃落定再动手。</p>
+  </section>
+  <section data-note-id="fomc" data-title="FOMC" data-en="Federal Open Market Committee">
+    <p>美联储公开市场委员会，每年召开 8 次会议决定利率政策。决议北京时间凌晨 2:00（美国冬令时 3:00）公布，30 分钟后主席记者会——记者会上的措辞经常比决议本身更能砸盘或点火。对币圈而言是全年级别最高的定期事件。</p>
+  </section>
+  <section data-note-id="unlock" data-title="代币解锁" data-en="Token Unlock">
+    <p>项目方、团队与早期投资人持有的代币按既定时间表分批解除锁定、进入流通。解锁日前后供给预期变化，常引发该币价格波动。BTC、ETH 没有解锁机制，但大额解锁引发的山寨币崩跌会拖累全市场情绪。</p>
+  </section>
+</div>
+
+<script src="assets/lightweight-charts.js"></script>
+<script src="assets/ct.js"></script>
+<script src="assets/ctchart.js"></script>
+<script>
+(function(){
+'use strict';
+var fmt = CT.fmtN;
+var MMR = 0.005;            // 维持保证金率（示意，同第 1 课）
+
+/* ---------- 图 3-2 仓位计算器 ---------- */
+(function(){
+  var acct = 10000, rp = 1, entry = 83500, stop = 81800;
+  function paint(){
+    var risk = acct * rp / 100;
+    var mEls = {
+      n: document.getElementById('p-notional'), ns: document.getElementById('p-notional-s'),
+      q: document.getElementById('p-qty'),
+      l: document.getElementById('p-lev'), ls: document.getElementById('p-lev-s'),
+      x: document.getElementById('p-maxloss'), xs: document.getElementById('p-maxloss-s'),
+      msg: document.getElementById('p-msg')
+    };
+    if(Math.abs(entry - stop) < 1){
+      mEls.n.textContent = '—'; mEls.q.textContent = '—'; mEls.l.textContent = '—';
+      mEls.x.textContent = '—'; mEls.ns.textContent = '—'; mEls.ls.textContent = '—'; mEls.xs.textContent = '—';
+      mEls.msg.innerHTML = '止损价和入场价重合——没有止损距离，公式就没法工作。先回答"错在哪里"（止损价），再谈"下多大"。';
+      return;
+    }
+    var isLong = stop < entry;
+    var dist = Math.abs(entry - stop) / entry;
+    var notional = risk / dist;
+    var qty = notional / entry;
+    var lev = Math.min(5, Math.max(1, Math.ceil(notional / (acct * 0.3))));
+    var margin = notional / lev;
+    var liqDist = 1 / lev - MMR;
+    mEls.n.textContent = fmt(notional, 0) + ' U';
+    mEls.ns.textContent = '＝ ' + fmt(risk, 0) + ' U ÷ ' + fmt(dist * 100, 2) + '%';
+    mEls.q.textContent = fmt(qty, 4) + ' 枚';
+    mEls.l.textContent = lev + '×';
+    mEls.ls.textContent = '保证金占用 ' + fmt(margin, 0) + ' U';
+    mEls.x.textContent = '−' + fmt(risk, 0) + ' U';
+    mEls.xs.textContent = '账户的 ' + rp + '%，雷打不动';
+    var base = (isLong
+      ? '止损价在入场价下方 → 按<b>做多</b>算。'
+      : '止损价在入场价上方 → 按<b>做空</b>算。')
+      + '止损距离 <b>' + fmt(dist * 100, 2) + '%</b>：打止损正好亏 ' + fmt(risk, 0) + ' U（账户的 ' + rp + '%）——这个数字在下单之前就已经锁死。';
+    if(notional / 5 > acct){
+      mEls.msg.innerHTML = base + '<b>但这笔单开不出来：</b>名义 ' + fmt(notional, 0) + ' U 超过了 5 倍杠杆下账户的上限（' + fmt(acct * 5, 0) + ' U）。止损距离小于"风险比例 ÷ 5"时就会这样——先把止损放到有结构意义的位置，再谈仓位。';
+      return;
+    }
+    var msg = base + '建议杠杆 ' + lev + '× 只管押金效率：保证金 ' + fmt(margin, 0) + ' U，强平距离约 ' + fmt(liqDist * 100, 1) + '%，是止损距离的 ' + fmt(liqDist / dist, 0) + ' 倍——<b>止损永远先于强平触发</b>（第 1 课）。';
+    if(dist < 0.005){
+      msg += ' <b>注意：</b>止损距离不足 0.5%，比凌晨清淡时段一根普通的针还浅（第 2 课）——仓位算得出来，但这笔单大概率死于噪音而不是方向。';
+    }else if(dist > 0.08){
+      msg += ' 另外：止损距离超过 8%，已经是日线以上级别的波段空间，和本课"单笔 ≤1 周"的节奏不匹配——检查一下止损价是不是随手拖的。';
+    }
+    mEls.msg.innerHTML = msg;
+  }
+  CT.bindRange('p-acct', function(v){ acct = v; paint(); }, function(v){ return fmt(v, 0); });
+  CT.bindRange('p-risk', function(v){ rp = v; paint(); }, function(v){ return v + '%'; });
+  CT.bindRange('p-entry', function(v){ entry = v; paint(); }, function(v){ return fmt(v, 0); });
+  CT.bindRange('p-stop', function(v){ stop = v; paint(); }, function(v){ return fmt(v, 0); });
+})();
+
+/* ---------- 图 3-3 期望值与资金曲线模拟器 ---------- */
+(function(){
+  var p = 45, rr = 2, f = 1;
+  var runs = [], finals = [];
+  var START = 10000, N = 100;
+  function reset(){ runs = []; finals = []; }
+  function simulate(){
+    var eq = START, arr = [eq], peak = eq, maxDD = 0, streak = 0, maxStreak = 0;
+    for(var i = 0; i < N; i++){
+      var win = Math.random() < p / 100;
+      eq = eq * (win ? 1 + f / 100 * rr : 1 - f / 100);
+      arr.push(eq);
+      if(win){ streak = 0; } else { streak++; if(streak > maxStreak) maxStreak = streak; }
+      if(eq > peak) peak = eq;
+      var dd = (peak - eq) / peak;
+      if(dd > maxDD) maxDD = dd;
+    }
+    runs.push({arr: arr, fin: eq, dd: maxDD, ls: maxStreak});
+    if(runs.length > 8) runs.shift();
+    finals.push(eq);
+    paint();
+  }
+  function paint(){
+    var lo = START, hi = START, i, j;
+    for(i = 0; i < runs.length; i++){
+      for(j = 0; j < runs[i].arr.length; j++){
+        var v = runs[i].arr[j];
+        if(v < lo) lo = v;
+        if(v > hi) hi = v;
+      }
+    }
+    var min = lo * 0.98, max = hi * 1.02;
+    if(max - min < 1) max = min + 1;
+    function X(k){ return 70 + k * 620 / N; }
+    function Y(v){ return 290 - (v - min) * 264 / (max - min); }
+    var s = '';
+    s += '<line x1="70" y1="20" x2="70" y2="290" class="axis"/>';
+    s += '<line x1="70" y1="290" x2="690" y2="290" class="axis"/>';
+    s += '<line x1="70" y1="' + Y(START).toFixed(1) + '" x2="690" y2="' + Y(START).toFixed(1) + '" class="edge-soft"/>';
+    s += '<text x="64" y="' + (Y(START) + 4).toFixed(1) + '" text-anchor="end" class="tick">10,000</text>';
+    if(hi > START * 1.02) s += '<text x="64" y="' + (Y(hi) + 4).toFixed(1) + '" text-anchor="end" class="tick">' + fmt(hi, 0) + '</text>';
+    if(lo < START * 0.98) s += '<text x="64" y="' + (Y(lo) + 4).toFixed(1) + '" text-anchor="end" class="tick">' + fmt(lo, 0) + '</text>';
+    s += '<text x="70" y="308" text-anchor="middle" class="tick">0 笔</text>';
+    s += '<text x="380" y="308" text-anchor="middle" class="tick">50 笔</text>';
+    s += '<text x="690" y="308" text-anchor="middle" class="tick">100 笔</text>';
+    for(i = 0; i < runs.length; i++){
+      var pts = '';
+      for(j = 0; j < runs[i].arr.length; j++){
+        pts += X(j).toFixed(1) + ',' + Y(runs[i].arr[j]).toFixed(1) + ' ';
+      }
+      var newest = i === runs.length - 1;
+      s += '<polyline points="' + pts + '" fill="none" stroke="' + (newest ? 'var(--accent)' : 'var(--muted)') + '" stroke-width="' + (newest ? 2.2 : 1.2) + '"' + (newest ? '' : ' stroke-opacity="0.45"') + '/>';
+    }
+    document.getElementById('sim-svg').innerHTML = s;
+    var ev = p / 100 * rr - (1 - p / 100);
+    var evEl = document.getElementById('sim-ev');
+    evEl.textContent = (ev >= 0 ? '+' : '−') + Math.abs(ev).toFixed(2) + 'R';
+    evEl.className = 'v ' + (ev > 0 ? 'up' : ev < 0 ? 'dn' : '');
+    document.getElementById('sim-ev-s').textContent = '首笔风险 ' + fmt(START * f / 100, 0) + ' U → 约 ' + (ev >= 0 ? '+' : '−') + fmt(Math.abs(ev) * START * f / 100, 0) + ' U / 笔';
+    document.getElementById('sim-be').textContent = (100 / (1 + rr)).toFixed(1) + '%';
+    document.getElementById('sim-be-s').textContent = '1 ÷（1 ＋ 盈亏比 ' + rr.toFixed(1) + '）';
+    var last = runs[runs.length - 1];
+    var finEl = document.getElementById('sim-final');
+    finEl.textContent = fmt(last.fin, 0) + ' U';
+    finEl.className = 'v ' + (last.fin >= START ? 'up' : 'dn');
+    document.getElementById('sim-final-s').textContent = (last.fin >= START ? '+' : '−') + fmt(Math.abs(last.fin / START - 1) * 100, 1) + '%（复利）';
+    document.getElementById('sim-worst').textContent = last.ls + ' 笔 / −' + fmt(last.dd * 100, 1) + '%';
+    var best = Math.max.apply(null, finals), worst = Math.min.apply(null, finals);
+    var advice;
+    if(ev > 0.02){
+      advice = '期望值为正，但 100 笔内的离散就是这么大——散开的整个区间都是运气。把"每笔风险"拉到 3% 再看：期望更高了，最差的轮次却开始出现让人弃疗的深坑。<b>风险参数放大的不是期望值，是你提前出局的概率。</b>';
+    }else if(ev < -0.02){
+      advice = '期望值为负——每一轮路径不同，结局方向相同：<b>模拟再多次，也只是在挑一种亏法。</b>负期望的系统没有仓位管理能救，先把胜率或盈亏比做正。';
+    }else{
+      advice = '期望值在零附近，这就是"没有优势"的样子：曲线漫无目的地漂。再算上手续费和资金费（第 1 课：双边市价一个来回约 0.1%），净期望立刻转负——系统必须先在纸面上算出正期望，再谈执行。';
+    }
+    document.getElementById('sim-msg').innerHTML = '同参数已模拟 <b>' + finals.length + '</b> 轮：终值最好 <b>' + fmt(best, 0) + '</b> · 最差 <b>' + fmt(worst, 0) + '</b> U。' + advice;
+  }
+  CT.bindRange('sim-p', function(v){ p = v; reset(); simulate(); }, function(v){ return v + '%'; });
+  CT.bindRange('sim-rr', function(v){ rr = v; reset(); simulate(); }, function(v){ return v.toFixed(1); });
+  CT.bindRange('sim-f', function(v){ f = v; reset(); simulate(); }, function(v){ return v + '%'; });
+  CT.bindSeg('sim-run', function(){ simulate(); });
+})();
+
+/* ---------- 图 3-5 补仓扛单 vs 止损重开 ---------- */
+(function(){
+  var P1 = 100000, P2 = 96000, N1 = 5000, N2 = 5000, R = 100;
+  var q1 = N1 / P1, q2 = N2 / P2, qty = q1 + q2;
+  var avg = (N1 + N2) / qty;                       // ≈ 97,959
+  var p = 50, d = 10, strat = 'avg';
+  function paint(){
+    var exit = P2 * (1 - d / 100);
+    var lossA = (avg - exit) * qty;                // 不反弹时补仓扛单的全额亏损
+    var evA = -(1 - p / 100) * lossA;
+    var pstar = (1 - 200 / lossA) * 100;
+    var evaEl = document.getElementById('m-eva');
+    evaEl.textContent = '−' + fmt(-evA, 0) + ' U（−' + fmt(-evA / R, 1) + 'R）';
+    document.getElementById('m-eva-s').textContent = '反弹概率按 ' + p + '% 计';
+    document.getElementById('m-wa').textContent = '−' + fmt(lossA, 0) + ' U（−' + fmt(lossA / R, 1) + 'R）';
+    var msg;
+    if(strat === 'avg'){
+      msg = '<b>补仓扛单的账：</b>赌"回到均价 ' + fmt(avg, 0) + '"这一件事，赌赢（概率 ' + p + '%）不亏不赚，赌输则扛到 ' + fmt(exit, 0) + ' 全部认掉，亏 ' + fmt(lossA, 0) + ' U。期望值 −' + fmt(-evA, 0) + ' U。要在期望上追平止损重开的 −200 U，反弹概率至少要 <b>' + fmt(pstar, 0) + '%</b>'
+        + (p >= pstar
+          ? '——你把滑块拉到了这条线上方。但问问自己：这个概率是行情给的，还是"已经亏了不想认"的心给的？价格没有记忆，不会因为跌过了就欠你一次反弹。'
+          : '，而你现在只给了 ' + p + '%——期望值和最坏情况双输，这笔补仓在数学上没有辩护律师。')
+        + '这还没算补仓翻倍的保证金占用、资金费，以及"赌赢也只是回本"的机会成本。';
+    }else{
+      msg = '<b>止损重开的账：</b>现在认亏 200 U（−2R），结局被封死在两档之间——最坏新单再亏 1R，合计 −3R；最好新单 ＋2R，净值回到原点甚至更高。它买到的不是更高的期望值，而是<b>最坏情况有底</b>，外加一个能按规则重新评估行情的头脑。注意我们还把新单的期望记成了 0——只要你的系统长期为正，这笔账对止损重开还算客气了。';
+    }
+    document.getElementById('m-msg').innerHTML = msg;
+  }
+  CT.bindSeg('m-strat', function(v){ strat = v; paint(); });
+  CT.bindRange('m-p', function(v){ p = v; paint(); }, function(v){ return v + '%'; });
+  CT.bindRange('m-d', function(v){ d = v; paint(); }, function(v){ return v + '%'; });
+})();
+})();
+</script>
+</body>
+</html>

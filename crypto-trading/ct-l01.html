@@ -1,0 +1,841 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>币圈短线课 · 第 1 课 合约怎么运作</title>
+<link rel="stylesheet" href="assets/ct.css">
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <span class="book"><a href="ct-index.html">币圈短线实战课</a></span>
+  <span class="part"><a href="ct-index.html">学习地图</a> · 阶段 0 开盘前的底子</span>
+  <span class="prefs">
+    <button id="btn-updown" type="button" title="切换涨跌配色"></button>
+    <button id="btn-theme" type="button" title="切换深浅主题"></button>
+  </span>
+</header>
+
+<div class="layout">
+
+<nav class="sidenav" aria-label="本课目录">
+  <p class="sn-chap">第 1 课 · 合约怎么运作</p>
+  <a href="#top">课首</a>
+  <a href="#s1">1.1 现货与永续</a>
+  <a href="#s2">1.2 保证金与杠杆</a>
+  <a href="#s3">1.3 强平：真正的死线</a>
+  <a href="#s4">1.4 标记价格与插针</a>
+  <a href="#s5">1.5 仓位与加减仓</a>
+  <a href="#s6">1.6 资金费率</a>
+  <a href="#s7">1.7 下单、仓位模式与成本</a>
+  <a href="#s8">1.8 落地：安全守则 v0.0</a>
+  <a href="#recap">小结 · 术语 · 自测</a>
+</nav>
+
+<main class="article">
+
+<section class="hero" id="top">
+  <span class="chap-no">LESSON 01 · 第 1 课 / 共 16 课</span>
+  <h1>合约怎么运作</h1>
+  <p class="en">HOW PERPETUAL FUTURES ACTUALLY WORK</p>
+  <p class="question">本课问题：这台机器怎么运转？哪里会夹到手？</p>
+  <p class="lede">永续合约是一台设计精巧、但处处带着夹子的机器。它让你用小额押金撬动大仓位、随时做多做空，也让每年几百万个账户在插针里瞬间归零。这一课把机器拆开给你看：钱怎么押、账怎么算、谁来判你爆仓、两笔单为什么会合成一笔、以及你每天在支付哪些看不见的成本。<strong>看懂这台机器，是碰任何策略之前的安全带。</strong></p>
+  <div class="objectives">
+    <h2>学完你能做到</h2>
+    <ul>
+      <li>说清现货和永续合约的区别，知道"没有到期日"靠什么机制实现；</li>
+      <li>算出任意一笔仓位的保证金、亏损和强平价——并理解<strong>亏多少与杠杆倍数无关</strong>；</li>
+      <li>解释强平的完整流水线：维持保证金 → 强平引擎 → 保险基金 → 自动减仓；</li>
+      <li>分清标记价格和最新价，解释"价格没到强平价为什么也会爆仓"；</li>
+      <li>算出加仓、补仓、减仓之后的新均价和新强平价，明白"分批下单不等于多条命"；</li>
+      <li>看懂资金费率：谁付给谁、什么时候扣、持仓一周到底花多少钱；</li>
+      <li>给自己的模拟账户配好安全守则（系统 v0.0），开出第一笔体验单。</li>
+    </ul>
+  </div>
+  <p class="colorkey">读图约定：本课默认<span class="up">绿涨</span>·<span class="dn">红跌</span>，可用右上角按钮切成红涨绿跌。带 <b>互动</b> 标签的图可以拖动、缩放、调参数；正文里带虚线下划线和角标的词，点一下原地弹出解释。图表时间轴按你设备的时区显示（北京时间 = UTC+8）。</p>
+  <nav class="chapmap" aria-label="本课小节">
+    <a href="#s1">现货与永续</a><a href="#s2">保证金与杠杆</a><a href="#s3">强平</a><a href="#s4">标记价格</a><a href="#s5">仓位与加减仓</a><a href="#s6">资金费率</a><a href="#s7">下单与成本</a><a href="#s8">安全守则</a><a href="#recap">小结</a>
+  </nav>
+</section>
+
+<!-- ================= 1.1 ================= -->
+<section class="ch" id="s1">
+  <h2 class="sec"><span class="no">1.1</span>现货与永续：你买的到底是什么</h2>
+  <p class="sec-en">SPOT VS PERPETUAL FUTURES</p>
+  <div class="prose">
+    <p>先把两样东西分干净：</p>
+  </div>
+  <div class="cards">
+    <div class="card">
+      <h4>现货<span class="en-term">Spot</span></h4>
+      <p>一手交钱、一手交币。你真的<strong>拥有</strong>这枚 BTC：可以提走、可以放十年，没有杠杆、没有强平，跌 99% 也只是浮亏。</p>
+      <span class="k">风险上限 = 本金</span>
+    </div>
+    <div class="card">
+      <h4>永续合约<span class="en-term">Perpetual Futures</span></h4>
+      <p>你和市场签了一份<strong>赌价格差的合同</strong>，手里并没有币。押一笔保证金，赌涨（做多）或赌跌（做空），平仓时按差价结算盈亏。</p>
+      <span class="k">风险上限 = 保证金（但亏得飞快）</span>
+    </div>
+  </div>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>现货像去金店买金条，拿回家放着；<span class="nt" data-note="perp">永续合约</span>像和金店老板签协议："明天金价每涨 1 元你给我 1 元，每跌 1 元我给你 1 元"，为表诚意你押下一笔定金。协议里根本不出现金条——<strong>你交易的是价格本身，不是资产本身</strong>。所以你也可以反着签（做空）：金价跌你赚、涨你赔。</p>
+  </div>
+  <div class="prose">
+    <h3>永续合约的三个关键设定</h3>
+    <ul>
+      <li><strong>没有到期日。</strong>传统期货到月底要交割结算，永续合约理论上可以一直持有——只要你付得起"租金"（资金费率，1.6 节细讲）、保证金没被打穿。</li>
+      <li><strong>双向。</strong>做空和做多一样方便，点一下就行。这是股票世界很难做到的（A 股融券门槛高、美股要借券付息）。</li>
+      <li><strong>结算单位。</strong>本课全部用 <span class="nt" data-note="usdm">U 本位合约</span>：保证金和盈亏都用 USDT 计，1 USDT ≈ 1 美元，算账直观。</li>
+    </ul>
+    <h3>既然没有交割，价格凭什么贴着现货走？</h3>
+    <p>传统期货靠"到期必须交割"这根绳子拴住现货价。永续合约没有到期日，就换了两根绳子：<strong>标记价格</strong>（用多家交易所现货算出的"公道价"，1.4 节）负责判定盈亏和强平，<strong>资金费率</strong>（1.6 节）负责在合约价偏离现货时，让偏离方向的人掏钱，把价格"租"回来。先看一张全景图，这两根绳子本课后面会逐一拆开。</p>
+  </div>
+  <figure>
+    <p class="fig-title"><span class="fno">图 1-1</span>永续合约的锚：两根绳子拴住现货价<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+      <svg viewBox="0 0 720 272" role="img" aria-label="指数价格、标记价格与资金费率如何把永续价格拴在现货价附近">
+        <defs>
+          <marker id="f11-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="ar-fill"/></marker>
+          <marker id="f11-ac" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="ar-acc"/></marker>
+        </defs>
+        <rect x="16" y="22" width="172" height="128" rx="8" class="node"/>
+        <text x="102" y="44" text-anchor="middle" class="nt">各大现货市场</text>
+        <rect x="32" y="58" width="140" height="24" rx="5" class="node"/><text x="102" y="74" text-anchor="middle" class="nd">币安现货 BTC/USDT</text>
+        <rect x="32" y="88" width="140" height="24" rx="5" class="node"/><text x="102" y="104" text-anchor="middle" class="nd">Coinbase · OKX …</text>
+        <text x="102" y="136" text-anchor="middle" class="nd">真金白银的成交价</text>
+        <path d="M188 86 L252 86" class="edge" marker-end="url(#f11-ar)"/>
+        <text x="220" y="78" text-anchor="middle" class="elabel">加权平均</text>
+        <rect x="252" y="56" width="130" height="60" rx="8" class="node-hi"/>
+        <text x="317" y="82" text-anchor="middle" class="nt">指数价格</text>
+        <text x="317" y="102" text-anchor="middle" class="nd">现货的"公道价"</text>
+        <path d="M382 86 L446 86" class="edge" marker-end="url(#f11-ar)"/>
+        <text x="414" y="78" text-anchor="middle" class="elabel">加限幅修正</text>
+        <rect x="446" y="56" width="130" height="60" rx="8" class="node-hi"/>
+        <text x="511" y="82" text-anchor="middle" class="nt">标记价格</text>
+        <text x="511" y="102" text-anchor="middle" class="nd">算浮盈 · 判强平</text>
+        <rect x="446" y="188" width="130" height="60" rx="8" class="node"/>
+        <text x="511" y="214" text-anchor="middle" class="nt">永续最新价</text>
+        <text x="511" y="234" text-anchor="middle" class="nd">合约盘里的撮合价</text>
+        <path d="M497 188 L497 120" class="edge-acc" marker-end="url(#f11-ac)"/>
+        <path d="M525 120 L525 188" class="edge-acc" marker-end="url(#f11-ac)"/>
+        <text x="511" y="160" text-anchor="middle" class="hi">资金费率来回拉</text>
+        <rect x="608" y="56" width="96" height="60" rx="8" class="node-up"/>
+        <text x="656" y="82" text-anchor="middle" class="nt">你的账户</text>
+        <text x="656" y="102" text-anchor="middle" class="nd">盈亏按它算</text>
+        <path d="M576 86 L608 86" class="edge" marker-end="url(#f11-ar)"/>
+        <text x="16" y="206" class="nd">永续价偏贵 → 多头付钱给空头，把价格压回去；</text>
+        <text x="16" y="228" class="nd">偏便宜 → 空头付钱给多头，把价格拉回来。</text>
+      </svg>
+    </div>
+    <figcaption><b>读图：</b>合约盘自己撮合出"最新价"，但决定你盈亏和生死的是右上角的<b>标记价格</b>——它从多家现货交易所加权而来，单一交易所的异常成交很难带歪它。资金费率像一根橡皮筋，专门惩罚把合约价拽离现货价的那一边。这两个机制分别在 1.4 和 1.6 节拆开细讲。</figcaption>
+  </figure>
+</section>
+
+<!-- ================= 1.2 ================= -->
+<section class="ch" id="s2">
+  <h2 class="sec"><span class="no">1.2</span>保证金与杠杆：杠杆决定押金，不决定亏损</h2>
+  <p class="sec-en">MARGIN AND LEVERAGE</p>
+  <div class="prose">
+    <p>开一笔合约仓位要回答三个数：<strong>开多大（名义价值）、押多少（保证金）、押金比例（杠杆）</strong>。它们的关系只有一条公式：</p>
+  </div>
+  <div class="formula">
+    <p class="fx">保证金占用 ＝ <span class="nt" data-note="notional">名义价值</span> ÷ 杠杆</p>
+    <p class="note">例：开 10,000 USDT 的 BTC 多单，10 倍杠杆 → 押 1,000 USDT；100 倍杠杆 → 押 100 USDT。</p>
+  </div>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>你去批发市场订 10 万元的货，老板说"交 10% 定金就行"。后来货价跌了 5%，你亏多少？<strong>亏 5,000 元——货值的 5%，不是定金的 5%。</strong>定金比例（杠杆）只决定你先掏多少钱占住这批货，亏损永远跟着货值（名义价值）走。合约账户一模一样：盈亏按名义价值算，保证金只是押在那里的担保品。</p>
+  </div>
+  <div class="keypoint">
+    <span class="label">本课最重要的一句话</span>
+    <p><strong>亏损 ＝ 名义价值 × 价格变动幅度，与杠杆倍数无关。</strong></p>
+    <p>杠杆改变的是两件别的事：押多少保证金（资金效率），以及强平线离你多近（容错空间）。危险的从来不是杠杆数字本身，而是人们用高杠杆<strong>顺手开出了大仓位</strong>。</p>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 1-2</span>仓位计算器：拖拖看，哪个数跟着杠杆动<span class="ia">互动</span></p>
+    <div class="ctrls">
+      <label class="rg"><span class="rg-top">名义价值（USDT）<output>10,000</output></span>
+        <input type="range" id="a-n" min="1000" max="50000" step="1000" value="10000"></label>
+      <label class="rg"><span class="rg-top">杠杆<output>10×</output></span>
+        <input type="range" id="a-l" min="1" max="100" step="1" value="10"></label>
+      <label class="rg"><span class="rg-top">价格跌幅<output>5%</output></span>
+        <input type="range" id="a-d" min="0.5" max="20" step="0.5" value="5"></label>
+    </div>
+    <div class="stats">
+      <div class="stat"><span class="k">保证金占用</span><span class="v" id="a-margin">—</span><span class="s">跟着杠杆变</span></div>
+      <div class="stat"><span class="k">这次下跌你亏</span><span class="v dn" id="a-loss">—</span><span class="s">只跟名义价值和跌幅有关</span></div>
+      <div class="stat"><span class="k">占 1 万本金</span><span class="v" id="a-pct">—</span><span class="s">设本金 10,000</span></div>
+      <div class="stat"><span class="k">强平距离（约）</span><span class="v warn" id="a-liq">—</span><span class="s">跟着杠杆变</span></div>
+    </div>
+    <p class="lab-msg" id="a-msg"></p>
+    <figcaption><b>读图：</b>固定名义价值，把杠杆从 10 拉到 100——"你亏多少"那一格纹丝不动，动的是保证金（越押越少）和强平距离（越来越近）。强平距离按逐仓简化公式 1 ÷ 杠杆 − 0.5% 估算，0.5% 是维持保证金率的示意值，1.3 节细讲。</figcaption>
+  </figure>
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p><strong>"我只开 0.5 倍杠杆，所以我很安全。"不一定；"100 倍杠杆必死。"也不一定。</strong>同样 10,000 USDT 名义仓位，1 倍和 100 倍亏得一样多，100 倍只是强平线贴得极近、几乎必然先被正常波动扫死。反过来，低杠杆配超大名义仓位照样重伤。正确的顺序是：<em>先按能承受的亏损倒推仓位大小（第 3 课），再让杠杆只决定押金效率。</em></p>
+  </div>
+</section>
+
+<!-- ================= 1.3 ================= -->
+<section class="ch" id="s3">
+  <h2 class="sec"><span class="no">1.3</span>强平：你的真正死线</h2>
+  <p class="sec-en">LIQUIDATION</p>
+  <div class="prose">
+    <p>浮亏不断吃掉保证金，吃到只剩一条底线——<span class="nt" data-note="mmr">维持保证金</span>——的那一刻，仓位就不再属于你了。交易所的强平引擎接管它，用<strong>市价单</strong>把它抛进订单簿，省下的押金残值归入<span class="nt" data-note="insurance">保险基金</span>。</p>
+  </div>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>合约交易所不是你的债主，是<strong>当铺</strong>。债主会打电话催你还钱（股票两融的追保电话），当铺不打电话：押品价值跌破死当线的瞬间，直接把东西拿去变卖，多退少不补。你唯一的通知，是手机上那条"您的仓位已被强制平仓"。</p>
+  </div>
+  <div class="formula">
+    <p class="fx">做多强平价 ≈ 开仓价 × ( 1 − 1 ÷ 杠杆 ＋ 维持保证金率 )</p>
+    <p class="fx">做空强平价 ≈ 开仓价 × ( 1 ＋ 1 ÷ 杠杆 − 维持保证金率 )</p>
+    <p class="note">逐仓简化公式，忽略手续费。维持保证金率按仓位大小分档，BTC 小仓位约 0.4%（本课示意取 0.5%，以交易所风险限额表为准）；<strong>仓位越大档位越高，强平线会比你想的更近</strong>。</p>
+  </div>
+  <figure>
+    <p class="fig-title"><span class="fno">图 1-3</span>强平的流水线：为什么一根针能引发踩踏<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+      <svg viewBox="0 0 720 268" role="img" aria-label="从价格下跌到连环强平的流程，以及保险基金与自动减仓的兜底顺序">
+        <defs>
+          <marker id="f13-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="ar-fill"/></marker>
+        </defs>
+        <rect x="14" y="28" width="150" height="56" rx="8" class="node"/>
+        <text x="89" y="52" text-anchor="middle" class="nt">价格向不利方向走</text>
+        <text x="89" y="70" text-anchor="middle" class="nd">浮亏吃保证金</text>
+        <path d="M164 56 L204 56" class="edge" marker-end="url(#f13-ar)"/>
+        <rect x="204" y="28" width="150" height="56" rx="8" class="node-warn"/>
+        <text x="279" y="52" text-anchor="middle" class="nt">跌破维持保证金线</text>
+        <text x="279" y="70" text-anchor="middle" class="nd">标记价格说了算</text>
+        <path d="M354 56 L394 56" class="edge" marker-end="url(#f13-ar)"/>
+        <rect x="394" y="28" width="150" height="56" rx="8" class="node-dn"/>
+        <text x="469" y="52" text-anchor="middle" class="nt">强平引擎接管仓位</text>
+        <text x="469" y="70" text-anchor="middle" class="nd">市价单砸进订单簿</text>
+        <path d="M544 56 L584 56" class="edge" marker-end="url(#f13-ar)"/>
+        <rect x="584" y="28" width="122" height="56" rx="8" class="node-dn"/>
+        <text x="645" y="52" text-anchor="middle" class="nt">订单簿被吃穿</text>
+        <text x="645" y="70" text-anchor="middle" class="nd">价格进一步下挫</text>
+        <path d="M645 84 C645 130 420 140 300 132 L289 130" class="edge-dn" marker-end="url(#f13-ar)"/>
+        <text x="470" y="152" text-anchor="middle" class="wt">更多多头到线 → 连环强平（踩踏循环）</text>
+        <path d="M469 84 L469 188" class="edge-soft" marker-end="url(#f13-ar)"/>
+        <rect x="394" y="188" width="150" height="56" rx="8" class="node-hi"/>
+        <text x="469" y="212" text-anchor="middle" class="nt">保险基金兜穿仓损失</text>
+        <text x="469" y="230" text-anchor="middle" class="nd">残值不够亏的部分</text>
+        <path d="M544 216 L584 216" class="edge-soft" marker-end="url(#f13-ar)"/>
+        <rect x="584" y="188" width="122" height="56" rx="8" class="node"/>
+        <text x="645" y="212" text-anchor="middle" class="nt">兜不住 → ADL</text>
+        <text x="645" y="230" text-anchor="middle" class="nd">对手盘被自动减仓</text>
+        <text x="20" y="212" class="nd">注意第 3、4 格：强平用的是市价单，</text>
+        <text x="20" y="232" class="nd">它不问价格，只求成交——这就是插针的燃料。</text>
+      </svg>
+    </div>
+    <figcaption><b>读图：</b>强平不是"你的仓位安静消失"，而是一张巨大的市价单砸进市场，把价格进一步推向同方向，点燃下一批强平——这个循环就是连环爆仓。保险基金兜底穿仓损失；基金也不够时触发<span class="nt" data-note="adl">自动减仓</span>，连赚钱的对手盘都会被拉来平仓。</figcaption>
+  </figure>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 1-4</span>强平线实验台：真实 BTC 日线上，你的死线画在哪<span class="real">真实数据</span><span class="ia">互动</span></p>
+    <div class="ctrls">
+      <div>
+        <span class="seg-label">方向</span>
+        <span class="seg" id="b-dir" role="group">
+          <button type="button" data-val="long" aria-pressed="true">做多</button>
+          <button type="button" data-val="short">做空</button>
+        </span>
+      </div>
+      <label class="rg"><span class="rg-top">杠杆<output>10×</output></span>
+        <input type="range" id="b-l" min="2" max="100" step="1" value="10"></label>
+    </div>
+    <div class="lw h360" id="b-chart"></div>
+    <div class="lw-legend" id="b-legend"></div>
+    <div class="stats">
+      <div class="stat"><span class="k">入场价（最近收盘）</span><span class="v" id="b-entry">—</span><span class="s">币安 BTCUSDT 永续</span></div>
+      <div class="stat"><span class="k">强平价</span><span class="v warn" id="b-liq">—</span><span class="s">逐仓简化公式</span></div>
+      <div class="stat"><span class="k">强平距离</span><span class="v" id="b-dist">—</span><span class="s">1÷杠杆 − 0.5%</span></div>
+      <div class="stat"><span class="k">几天正常波动就能碰到</span><span class="v dn" id="b-days">—</span><span class="s">按近期日均真实波幅</span></div>
+    </div>
+    <p class="lab-msg" id="b-msg"></p>
+    <figcaption><b>读图：</b>图中是币安 BTCUSDT 永续最近几个月的真实日线。拖动杠杆，看红色虚线（强平价）怎么逼近蓝色入场线：BTC 近期平均一天就要正常晃动 2% 以上，超过 20 倍杠杆后，<b>不需要任何"行情"，日常呼吸就能扫掉你</b>。这也是本课建议模拟期杠杆不超过 5 倍的原因。</figcaption>
+  </figure>
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>2021-05-19：一天 −34% 的屠宰场</h4>
+    <p>"519"是老币民的集体记忆：那天币安 BTCUSDT 永续从日内高点 43,616 USDT 一路砸到 28,688，<span class="dn-t">日内振幅 −34%</span>，收盘拉回 36,689。用上面的公式算：10 倍杠杆做多的强平距离约 9.5%，20 倍约 4.5%——<strong>当天任何 10 倍以上的多头，无论在哪个价位进场，几乎都活不到收盘拉回的那一刻</strong>。更残忍的是，许多人在下跌途中不断"抄底"加仓，死得更快（1.5 节算给你看为什么）。</p>
+    <p class="takeaway">强平距离必须用"日常波动的倍数"来度量，而不是用"我感觉跌不了那么多"。</p>
+  </div>
+</section>
+
+<!-- ================= 1.4 ================= -->
+<section class="ch" id="s4">
+  <h2 class="sec"><span class="no">1.4</span>标记价格与最新价：决定你生死的是哪个价
+  </h2>
+  <p class="sec-en">MARK PRICE VS LAST PRICE</p>
+  <div class="prose">
+    <p>每个永续合约同时有三个价格在跳：</p>
+    <ul>
+      <li><strong>最新价（Last Price）</strong>：本交易所合约盘刚刚撮合出的成交价——K 线图上画的就是它；</li>
+      <li><strong><span class="nt" data-note="index-price">指数价格</span></strong>：多家交易所<em>现货</em>价的加权平均；</li>
+      <li><strong>标记价格（Mark Price）</strong>：指数价格加上限幅修正——<strong>算你的浮动盈亏、判你强平的，是它</strong>。</li>
+    </ul>
+  </div>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>裁判量你的体温，不看你家那支可能被捂热的温度计（本所最新价），而是取<strong>多家医院会诊的结果</strong>（标记价格）。所以本所合约盘瞬间被砸出一根大针时，只要各家现货没跟着动，标记价格纹丝不动，你就不会因为这根"假针"被强平——这是保护。但反过来：<strong>现货真跌的时候，就算你所的合约价还没跌到你的强平价，标记价格到了，照样强平</strong>。</p>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 1-5</span>插针放大镜：2025-10-10 暴跌夜，ETH 的两个价格<span class="real">真实数据</span><span class="ia">互动</span></p>
+    <div class="ctrls">
+      <div>
+        <span class="seg-label">视野</span>
+        <span class="seg" id="c-range" role="group">
+          <button type="button" data-val="all" aria-pressed="true">暴跌全程</button>
+          <button type="button" data-val="zoom">放大最猛一小时</button>
+        </span>
+      </div>
+      <div>
+        <span class="seg-label">标记价格</span>
+        <span class="seg" id="c-mark" role="group">
+          <button type="button" data-val="on" aria-pressed="true">显示</button>
+          <button type="button" data-val="off">隐藏</button>
+        </span>
+      </div>
+    </div>
+    <div class="lw h420" id="c-chart"></div>
+    <div class="lw-legend" id="c-legend"></div>
+    <div class="stats">
+      <div class="stat"><span class="k">最新价最低</span><span class="v dn">3,400.0</span><span class="s">K 线上的针尖</span></div>
+      <div class="stat"><span class="k">标记价最低</span><span class="v">3,425.3</span><span class="s">强平按这条算</span></div>
+      <div class="stat"><span class="k">单分钟最大偏离</span><span class="v warn">−1.48%</span><span class="s">21:16 UTC：3,531 vs 3,584</span></div>
+    </div>
+    <figcaption><b>读图：</b>币安 ETHUSDT 永续 2025-10-10 暴跌时段的真实 1 分钟线（时间轴按你的时区显示，北京时间在 10-11 凌晨）。橙线是标记价格：大部分时间两条线重合，但在最猛烈的那几分钟，合约盘的针尖比标记价深得多——<b>最新价插到 3,400，而判定强平的标记价只到 3,425</b>。强平价设在 3,410 的多头活了下来；可如果你把止损市价单挂在 3,430，它却会被最新价触发、在针尖附近成交。这就是"止损被扫、仓位没爆"和"仓位爆了、图上没到价"两种困惑的共同答案：<b>两套价格，各管一摊</b>。</figcaption>
+  </figure>
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p><strong>"K 线明明没碰到我的强平价，为什么爆了？"</strong>两个原因最常见：① 你看的是最新价 K 线，强平看的是标记价格——去交易所把图切到 Mark Price 模式对照一下；② 你中途加了仓，仓位总值跳进了更高的维持保证金档位，强平线悄悄上移了（1.5 节）。</p>
+  </div>
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>2025-10-10：史上最大连环爆仓之夜</h4>
+    <p>美国时间周五晚间，关税升级的消息突然落地。币安 BTCUSDT 永续日内从 122,497 USDT 砸到 101,517（<span class="dn-t">−17%</span>），ETHUSDT 从 4,392 到 3,400（<span class="dn-t">−22.6%</span>）；全网 24 小时强平金额各家数据商统计约 190 亿美元，普遍认为是加密史上最大的一次。币安 BTCUSDT 的<span class="nt" data-note="oi-teaser">持仓量</span>从 118 亿 USDT 缩到 80 亿——<strong>三分之一的仓位在十几个小时里被强平或吓跑</strong>。注意图 1-5 里暴跌的形状：不是阴跌，是几根垂直的大阴线——那正是图 1-3 那个踩踏循环在高速运转：强平市价单砸穿订单簿 → 更低的价格点燃下一批强平。第 14 课我们会用持仓量和清算数据把这一夜完整回放。</p>
+    <p class="takeaway">周末与深夜流动性薄，同样的卖压能砸出深得多的坑——重仓过周末前，想想这张图。</p>
+  </div>
+</section>
+
+<!-- ================= 1.5 ================= -->
+<section class="ch" id="s5">
+  <h2 class="sec"><span class="no">1.5</span>订单与仓位：加仓、补仓、减仓后账怎么算</h2>
+  <p class="sec-en">ORDERS, POSITIONS AND AVERAGING</p>
+  <div class="prose">
+    <p>先分清两个词，很多困惑源于把它们混为一谈：</p>
+    <ul>
+      <li><strong>订单（Order）</strong>：你每一次下单的动作，可以有很多笔；</li>
+      <li><strong>仓位（Position）</strong>：同一合约、同一方向的所有成交，<strong>自动合并成一个仓位</strong>——一个均价、一份保证金、<em>一个强平价</em>。</li>
+    </ul>
+    <p>所以你分两单买入的 BTC 多头，在仓位列表里只显示一条。这不是显示问题，是计账方式：交易所根本不记得你是分几笔买的。</p>
+  </div>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>仓位是一只水缸，每笔订单是往里倒的一桶水。倒三桶还是一桶，缸里都只是"一缸水"，变的只有水位（均价）和总量（持仓量）。<strong>缸底裂了（到强平价），漏的是一整缸</strong>——不存在"先漏第一桶、保住后两桶"。</p>
+  </div>
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p><strong>"我分三批建仓，就算插针也是先爆第一批，还有两条命。"</strong>错。三批成交合并成一个仓位之后，只有一个强平价：针尖碰到它，<em>整缸一起没收</em>。分批建仓的真实作用是改善均价、降低择时压力——它不提供"多条命"。想真正隔离，只有：双向持仓模式下的多空两个仓位、不同合约（U 本位 / 币本位）、或者干脆分账户。另注意：<strong>逐仓隔离的是不同品种之间</strong>（BTC 仓爆掉不连累 ETH 仓），同一品种同方向的几笔单，它隔不开。</p>
+  </div>
+  <div class="prose">
+    <h3>三个动作，一套算法</h3>
+    <ul>
+      <li><strong>加仓</strong>：给<em>盈利中</em>的仓位加码（顺势）；<strong>补仓</strong>：给<em>亏损中</em>的仓位加码摊低均价（逆势）。市场不区分这两个词——<em>算法完全一样</em>，区别只在你的动机和纪律（第 3 课算这笔账）；</li>
+      <li><strong>减仓</strong>：平掉一部分。均价不变，按平掉的部分锁定已实现盈亏，保证金相应释放。</li>
+    </ul>
+  </div>
+  <div class="formula">
+    <p class="fx">新均价 ＝ ( 旧名义 ＋ 新名义 ) ÷ ( 旧数量 ＋ 新数量 )</p>
+    <p class="fx">新强平价 ≈ 新均价 × ( 1 − 1 ÷ 杠杆 ＋ 维持保证金率 )　（做多、逐仓、同杠杆追加保证金）</p>
+    <p class="note">注意两件事：① 补仓拉低了均价，强平价也跟着下移——看起来"更安全了"；② 但总持仓变大，<strong>每再跌 1% 的亏损同步放大</strong>，而且大仓位可能跳进更高的维持保证金档位。安全是幻觉，风险是实打实的。</p>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 1-6</span>加减仓计算器：补一笔，账变成什么样<span class="ia">互动</span></p>
+    <div class="ctrls">
+      <div>
+        <span class="seg-label">动作</span>
+        <span class="seg" id="f-op" role="group">
+          <button type="button" data-val="add" aria-pressed="true">补仓 / 加仓</button>
+          <button type="button" data-val="cut">减仓一半</button>
+          <button type="button" data-val="hold">不动</button>
+        </span>
+      </div>
+      <label class="rg"><span class="rg-top">首仓名义（USDT，开 @100,000）<output>5,000</output></span>
+        <input type="range" id="f-n1" min="2000" max="20000" step="1000" value="5000"></label>
+      <label class="rg"><span class="rg-top">现价跌到<output>94,000</output></span>
+        <input type="range" id="f-p2" min="88000" max="100000" step="500" value="94000"></label>
+      <label class="rg"><span class="rg-top">追加名义（USDT）<output>5,000</output></span>
+        <input type="range" id="f-n2" min="1000" max="20000" step="1000" value="5000"></label>
+      <label class="rg"><span class="rg-top">杠杆（逐仓，整仓同杠杆）<output>10×</output></span>
+        <input type="range" id="f-l" min="2" max="50" step="1" value="10"></label>
+    </div>
+    <div class="stats">
+      <div class="stat"><span class="k">持仓均价</span><span class="v" id="f-avg">—</span><span class="s" id="f-avg-s">—</span></div>
+      <div class="stat"><span class="k">当前浮动盈亏</span><span class="v dn" id="f-pnl">—</span><span class="s" id="f-pnl-s">—</span></div>
+      <div class="stat"><span class="k">强平价</span><span class="v warn" id="f-liq">—</span><span class="s" id="f-liq-s">—</span></div>
+      <div class="stat"><span class="k">再跌 3% 追加亏损</span><span class="v dn" id="f-more">—</span><span class="s" id="f-more-s">—</span></div>
+    </div>
+    <p class="lab-msg" id="f-msg"></p>
+    <figcaption><b>读图：</b>做多 @100,000 后价格下跌的场景。选"补仓"：均价和强平价确实下移了（感觉安全了），但看最后一格——<b>同样再跌 3%，亏损被放大了将近一倍</b>。选"减仓一半"：认掉一半亏损，换来风险敞口减半。这就是逆势补仓的本质：<b>用更大的赌注去赌"马上会反弹"</b>。它偶尔灵，灵的那几次会教会你在某一天把账户补到归零——"519"和"10·10"的清算名单上，最多的就是一路补仓的人。到底该补、该减、还是该止损重开，是纪律问题，第 3 课用期望值把这笔账算清楚。</figcaption>
+  </figure>
+</section>
+
+<!-- ================= 1.6 ================= -->
+<section class="ch" id="s6">
+  <h2 class="sec"><span class="no">1.6</span>资金费率：多空之间的租金</h2>
+  <p class="sec-en">FUNDING RATE</p>
+  <div class="prose">
+    <p>1.1 节说过，永续合约没有到期日，靠资金费率把价格拴回现货。机制很简单：</p>
+    <ul>
+      <li>大多数合约<strong>每 8 小时结算一次</strong>（UTC 0:00 / 8:00 / 16:00，即北京时间 8:00 / 16:00 / 24:00），部分品种 4 小时或 1 小时；</li>
+      <li>合约价高于现货（<span class="nt" data-note="basis">基差</span>为正、费率为正）→ <strong>多头付钱给空头</strong>；低于现货 → 空头付钱给多头；</li>
+      <li>费用 ＝ 名义价值 × 当期费率，<strong>按名义价值收，不是按保证金收</strong>——又一个"一切按名义价值算"的例子；</li>
+      <li>只有结算时刻持仓才收付；常态费率是 +0.01% / 期（年化约 11%），这是"基准租金"。</li>
+    </ul>
+  </div>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>把做多拥挤想象成演唱会门口的停车场：想停的车太多，停车费自然涨。费率就是<strong>拥挤定价</strong>——哪边人多，哪边交钱。所以它顺便成了一个免费的情绪温度计：费率飙高 = 多头舍得花大钱也要留在场内 = 人已经很挤了。挤到极致会发生什么，看下图 2021 年的那一段。</p>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 1-7</span>七年资金费率全景：牛市的租金和崩盘的恐慌<span class="real">真实数据</span><span class="ia">互动</span></p>
+    <div class="lw h480" id="d-chart"></div>
+    <div class="lw-legend" id="d-legend"></div>
+    <div class="stats">
+      <div class="stat"><span class="k">2021 年均费率</span><span class="v">0.084% / 天</span><span class="s">年化约 30.6%——做多一年租金三成</span></div>
+      <div class="stat"><span class="k">2025 年均费率</span><span class="v">0.014% / 天</span><span class="s">年化约 5.1%</span></div>
+      <div class="stat"><span class="k">最近一月均值</span><span class="v">0.005% / 期</span><span class="s">2026-09，年化约 5.5%</span></div>
+    </div>
+    <figcaption><b>读图：</b>上半是币安 BTCUSDT 永续 2020 年至今的价格，下半是每期资金费率（真实数据，7,395 期）。三个标注点值得记住：<b>2020-02-12</b> 费率顶到当时 +0.30% 的封顶值（BTC 约 10,340），一个月后的 3-13 跌到 3,622、费率反打到 −0.30% 封顶——<b>两头的极端都出现在转折附近</b>；<b>2021 年初</b>单期多次超过 0.2%（年化 200%+），狂热维持了一个多月才见顶，说明极端费率是"危险区"信号而非"立刻反转"信号；<b>2022-11-10</b> FTX 崩盘，费率 −0.12%，恐慌到空头愿付重金。把图缩放到任何你好奇的时段看看费率在干什么——这个指标第 10 课会升级成正式的过滤器。</figcaption>
+  </figure>
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p><strong>"0.01% 而已，忽略不计。"</strong>你的持仓周期是几天到一周，算一笔：10,000 USDT 名义仓位，+0.01% × 每天 3 期 × 7 天 ＝ 21 USDT。你的单笔风险预算（第 3 课）是 100 USDT——<strong>光租金就吃掉 21%</strong>。牛市狂热期费率 0.1% / 期时，一周租金 210 USDT，比止损还贵。短线玩家可以不预测费率，但不能不把它算进成本（下一节的计算器带上它）。</p>
+  </div>
+</section>
+
+<!-- ================= 1.7 ================= -->
+<section class="ch" id="s7">
+  <h2 class="sec"><span class="no">1.7</span>下单类型、仓位模式与持仓成本</h2>
+  <p class="sec-en">ORDER TYPES, MARGIN MODES AND COSTS</p>
+  <div class="prose">
+    <h3><span class="tag">① </span>你会用到的六种单</h3>
+  </div>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>类型</th><th>做什么</th><th>短线用途</th><th>注意</th></tr></thead>
+      <tbody>
+        <tr><td><b>限价单</b> Limit</td><td>指定价格或更好才成交</td><td>计划内的进场、止盈</td><td>可能不成交；通常按 <span class="nt" data-note="taker-maker">maker</span> 收费，更便宜</td></tr>
+        <tr><td><b>市价单</b> Market</td><td>立刻按对手价成交</td><td>必须马上进 / 出的时刻</td><td>按 taker 收费；行情剧烈时<span class="nt" data-note="slippage">滑点</span>可观</td></tr>
+        <tr><td><b>止损市价</b> Stop Market</td><td>触发价一到，变成市价单</td><td><b>保命止损，默认必挂</b></td><td>触发看得选：建议选标记价格，防假针误触</td></tr>
+        <tr><td><b>止损限价</b> Stop Limit</td><td>触发后挂限价单</td><td>想控制止损成交价时</td><td>暴跌中可能挂不进去，<b>形同没有止损</b>——新手慎用</td></tr>
+        <tr><td><b>止盈止损</b> <span class="nt" data-note="tpsl">TP/SL</span></td><td>开仓时一并设好两头</td><td>每笔单的标准配置</td><td>这是"计划写进系统"的物理形态</td></tr>
+        <tr><td><b>只减仓</b> Reduce-Only</td><td>只允许减少仓位</td><td>挂止盈时勾上</td><td>防止方向搞反、越挂越多</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="prose">
+    <h3><span class="tag">② </span>全仓还是逐仓</h3>
+  </div>
+  <div class="cards">
+    <div class="card">
+      <h4>逐仓<span class="en-term">Isolated</span></h4>
+      <p>每个仓位分配独立保证金，爆仓最多烧掉这一份，<strong>别的仓位和钱包余额无恙</strong>。</p>
+      <span class="k">本课阶段的标准答案</span>
+    </div>
+    <div class="card">
+      <h4>全仓<span class="en-term">Cross</span></h4>
+      <p>账户全部余额给所有仓位当共同缓冲。强平距离更远，但一个仓位的大浮亏会拖累所有仓位，极端行情下<strong>整个账户连环归零</strong>。</p>
+      <span class="k">等你有完整系统后再考虑</span>
+    </div>
+  </div>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>逐仓是每间房独立的防火门，一间烧了不殃及四邻；全仓是整栋楼共用一个大水池——平时每间房都更扛烧，可一旦一间房着大火抽干水池，<strong>全楼一起塌</strong>。另外提一句<span class="nt" data-note="hedge-mode">双向持仓</span>模式：多空可各持一个仓位，新手建议用默认的单向模式，省得方向下反。</p>
+  </div>
+  <div class="prose">
+    <h3><span class="tag">③ </span>每笔交易的真实成本</h3>
+    <p>短线是和成本赛跑的游戏。你每开平一个来回，要付：手续费（币安 U 本位 VIP0：maker 0.02%、taker 0.05%，以交易所页面为准）＋ 资金费率（持仓期间）＋ 滑点（市价单的隐形税）。用计算器感受一下它们吃掉多少：</p>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 1-8</span>持仓成本计算器：你还没赚钱，先欠市场多少<span class="ia">互动</span></p>
+    <div class="ctrls">
+      <div>
+        <span class="seg-label">进出方式</span>
+        <span class="seg" id="e-fee" role="group">
+          <button type="button" data-val="tt" aria-pressed="true">双边市价（taker）</button>
+          <button type="button" data-val="mt">限价进·市价出</button>
+          <button type="button" data-val="mm">双边限价（maker）</button>
+        </span>
+      </div>
+      <div>
+        <span class="seg-label">方向</span>
+        <span class="seg" id="e-dir" role="group">
+          <button type="button" data-val="long" aria-pressed="true">做多</button>
+          <button type="button" data-val="short">做空</button>
+        </span>
+      </div>
+      <label class="rg"><span class="rg-top">持仓天数<output>3</output></span>
+        <input type="range" id="e-days" min="0" max="7" step="1" value="3"></label>
+      <label class="rg"><span class="rg-top">资金费率 / 期<output>+0.010%</output></span>
+        <input type="range" id="e-rate" min="-0.05" max="0.05" step="0.005" value="0.01"></label>
+    </div>
+    <div class="stats">
+      <div class="stat"><span class="k">手续费来回</span><span class="v" id="e-f">—</span><span class="s">开仓 + 平仓</span></div>
+      <div class="stat"><span class="k">资金费</span><span class="v" id="e-fund">—</span><span class="s" id="e-fund-s">—</span></div>
+      <div class="stat"><span class="k">盈亏平衡需要价格走</span><span class="v warn" id="e-be">—</span><span class="s">还没算滑点</span></div>
+      <div class="stat"><span class="k">对 10,000 名义仓位</span><span class="v" id="e-usd">—</span><span class="s" id="e-usd-s">—</span></div>
+    </div>
+    <p class="lab-msg" id="e-msg"></p>
+    <figcaption><b>读图：</b>双边市价、持仓三天、常态费率：价格要先走约 0.19% 你才开始赚钱——对一个目标 2%、止损 1% 的短波段单，起跑线就被挪后了五分之一个止损。把进出方式换成"双边限价"看看省多少：这就是为什么有耐心的短线交易者尽量用限价单进出。负费率时做多反而<b>收</b>租金——有些行情里成本甚至是负的。</figcaption>
+  </figure>
+</section>
+
+<!-- ================= 1.8 ================= -->
+<section class="ch" id="s8">
+  <h2 class="sec"><span class="no">1.8</span>落地：安全守则 v0.0 与第一笔模拟单</h2>
+  <p class="sec-en">YOUR SAFETY RULES, VERSION 0.0</p>
+  <div class="keypoint">
+    <span class="label">本课立场</span>
+    <p>在这门课里，杠杆只是<strong>保证金效率工具</strong>：仓位大小永远由"单笔最多亏 1%"倒推出来（第 3 课给公式），杠杆倍数只决定押多少钱、留多宽的插针余量。模拟期一律 ≤ 5 倍、逐仓。你会发现这样做之后，<em>杠杆数字根本不重要了</em>——这正是目的。</p>
+  </div>
+  <div class="rulecard">
+    <div class="rc-head"><span class="label">规则卡</span><span class="rc-name">安全守则 v0.0（还不是策略，是安全带）</span></div>
+    <dl>
+      <dt>标的与周期</dt><dd>只做 BTC / ETH 的 U 本位永续；只用模拟盘</dd>
+      <dt>过滤条件</dt><dd>不懂的品种不碰；重大数据发布前后 30 分钟不开新仓（名单见第 3 课）</dd>
+      <dt>入场</dt><dd>仅限体验单：名义价值 ≤ 本金的 1 倍，杠杆 ≤ 5 倍，逐仓</dd>
+      <dt>止损</dt><dd><b>下单即挂止损市价单，无一例外</b>；暂按入场价 ∓2% 挂（第 6 课换成 ATR 定距）</dd>
+      <dt>出场</dt><dd>开仓同时设 <span class="nt" data-note="tpsl">TP/SL</span>；止盈暂按止损距离的 2 倍</dd>
+      <dt>仓位</dt><dd>单笔最大亏损 ≤ 本金 1%（按 10,000 记 ＝ 100）；同时最多持有 2 个仓位</dd>
+    </dl>
+    <p class="rc-note">这张卡的使命是让你在还没有策略的阶段<strong>死不掉</strong>。方向怎么选，第 4 课才开始回答；在那之前，你的全部任务是把下单、挂止损、看强平价、算成本这些动作练成肌肉记忆。</p>
+  </div>
+  <div class="sysup">
+    <span class="label">系统升级</span>
+    <h4>你的交易系统：v0.0 安全带已装好</h4>
+    <p>本课装进系统的零件：逐仓 ≤5 倍杠杆 · 单笔风险 ≤1% · 下单即挂止损市价（按标记价格触发）· 止盈 ≥2 倍止损距离 · 事件前后不开仓 · 成本先算后下单。之后每一课往这套系统里加新零件，版本号 +0.1。</p>
+  </div>
+  <div class="evidence">
+    <span class="label">证据与怀疑</span>
+    <h4>为什么先模拟：数据不站在冲动这边</h4>
+    <p>对散户高频短线最著名的大样本研究来自台湾股市：Barber、Lee、Liu、Odean 对 1992–2006 年<em>全部</em>日内交易者的追踪发现，扣除成本后长期稳定盈利者不足 1%，且多数亏损者亏在过度交易和不止损（Barber et al., "The Cross-Section of Speculator Skill", 2014 等系列论文）。加密合约比股票多了杠杆、资金费率和 24 小时不间断的插针，没有理由更仁慈。模拟盘不是胆小，是把学费从真钱换成时间——课程设定的转实盘门槛：<strong>模拟满 20–30 笔，且绝大多数按规则执行</strong>。</p>
+  </div>
+  <div class="stock">
+    <span class="label">股票上怎么对照</span>
+    <h4>这套机制搬到股票世界，哪些通用、哪些失效</h4>
+    <ul>
+      <li><b>保证金逻辑通用</b>：A 股两融、美股 Margin 账户本质也是"押金撬仓位"，只是杠杆低得多（约 1–2 倍）且券商靠<em>追保通知</em>而非瞬时强平（爆仓线一般有缓冲时间）；</li>
+      <li><b>"亏损跟名义走"完全通用</b>：这是全市场的铁律，股票上照样成立；</li>
+      <li><b>没有标记价格问题</b>：股票只在一个交易所撮合，没有"两套价格"；但 A 股有涨跌停和 T+1——跌停捂死卖不出，相当于另一种"想止损而不得"；</li>
+      <li><b>资金费率 ≈ 融资利息</b>：两融年化约 4–8%、固定；合约费率浮动且牛市贵得多；</li>
+      <li><b>做空难度天差地别</b>：合约点一下，A 股融券池常年无券可融，美股借券要付费。</li>
+    </ul>
+  </div>
+  <div class="task">
+    <span class="label">本周模拟任务</span>
+    <h4>把机器摸一遍（全程模拟盘，禁止实盘）</h4>
+    <ol>
+      <li>开通一个模拟环境：币安合约测试网（testnet.binancefuture.com）或 OKX 模拟盘均可；</li>
+      <li>按安全守则 v0.0 开 2 笔体验单（一多一空，名义 ≤ 本金 1 倍、逐仓 ≤5 倍），<b>每笔下单的同时挂好止损市价单和止盈单</b>；</li>
+      <li>开仓后找到并抄下来：均价、保证金占用、强平价、标记价格与最新价的当前差值；</li>
+      <li>给其中一笔追加一次小额加仓，验证：均价、强平价怎么动？和图 1-6 的计算器对得上吗？</li>
+      <li>持有跨过一个资金费率结算时刻（北京时间 8:00 / 16:00 / 24:00），在账单里找到那笔资金费；</li>
+      <li>记录每笔单：进场理由（这周可以写"体验单"）、止损价、结果、有没有按计划执行。格式用<a href="ct-journal.html">《交易日志模板 v0》</a>，复制就能填——这是你交易日志的第 0 页。</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ================= 小结 ================= -->
+<section class="ch recap" id="recap">
+  <h2 class="sec"><span class="no">★</span>本课小结</h2>
+  <p class="sec-en">RECAP</p>
+  <div class="prose">
+    <ol>
+      <li><b>合约是赌价格差的合同</b>：不拥有币、可做空、没有到期日；靠标记价格和资金费率拴住现货价。</li>
+      <li><b>亏损 ＝ 名义价值 × 波动幅度，与杠杆无关</b>；杠杆只决定保证金占用和强平距离。</li>
+      <li><b>强平是市价单</b>：它不问价格只求成交，所以每一次大跌都自带"踩踏加速器"；保险基金和 ADL 是最后两道兜底。</li>
+      <li><b>标记价格判生死，最新价画 K 线</b>：假针扫不爆你（保护），真跌躲不掉（现实）；止损触发价要选标记价格。</li>
+      <li><b>订单会合并成仓位</b>：一个均价、一个强平价；分批建仓改善均价，不提供"多条命"。</li>
+      <li><b>补仓 = 均价下移 + 风险放大</b>：每再跌 1% 亏得更多；该补、该减还是止损重开，第 3 课用期望值裁决。</li>
+      <li><b>资金费率是拥挤租金</b>：常态年化约 5–11%，狂热期年化可达 200%；按名义价值收，短线必须计入成本。</li>
+      <li><b>成本先行</b>：手续费 + 资金费 + 滑点决定你的起跑线位置；限价单是省钱的默认选择，止损市价单是保命的默认选择。</li>
+    </ol>
+  </div>
+
+  <h3>术语一览（点击正文中的角标词可随时弹出）</h3>
+  <ol class="notes-list" id="notes-list"></ol>
+
+  <h3>自测</h3>
+  <details><summary>1. 同样开 10,000 USDT 名义的 BTC 多单，甲用 5 倍杠杆、乙用 50 倍。价格跌 2% 时谁亏得多？谁离强平更近？</summary>
+    <div class="ans"><p>亏得一样多：都亏 10,000 × 2% ＝ 200 USDT——亏损只看名义价值和波动。但强平距离天差地别：甲约 1/5 − 0.5% ＝ 19.5%，乙约 1/50 − 0.5% ＝ 1.5%。BTC 日常一天就波动 2% 以上，乙基本活不过一天的正常呼吸。这题就是本课的中心思想：杠杆不改变亏损，只改变你离死线的距离。</p></div>
+  </details>
+  <details><summary>2. 你的多单强平价 3,410，交易所 K 线显示最低只跌到 3,431，仓位却被强平了。最可能的两个原因是什么？</summary>
+    <div class="ans"><p>① 你看的 K 线是最新价，而强平按标记价格判定——切到 Mark Price K 线可能会发现它跌破了 3,410；（也有相反情形：最新价插针破位而标记价没破，仓位反而安全，如图 1-5 的 3,400 vs 3,425。）② 你中途加过仓：仓位合并后均价、维持保证金档位和强平价都变了，你记住的还是旧强平价。两个原因都提醒你：盯仓位详情页的实时强平价，别靠心算和记忆。</p></div>
+  </details>
+  <details><summary>3. 多单 5,000 USDT @100,000，跌到 94,000 时又补 5,000 USDT。新均价多少？再跌 3%，比不补仓多亏多少？</summary>
+    <div class="ans"><p>数量：5,000/100,000 ＝ 0.05 枚；5,000/94,000 ≈ 0.0532 枚。新均价 ＝ 10,000 ÷ 0.1032 ≈ 96,900。再跌 3%（94,000 → 91,180）：不补仓亏 0.05 × 2,820 ＝ 141 USDT；补仓后亏 0.1032 × 2,820 ≈ 291 USDT——多亏约一倍。均价下移买到的"安全感"，代价是跌幅亏损加倍。用图 1-6 的计算器可以验证。</p></div>
+  </details>
+  <details><summary>4. 资金费率 +0.03% / 期时做多 10,000 USDT 名义、持仓 5 天，光租金多少？什么情况下做多反而收钱？</summary>
+    <div class="ans"><p>10,000 × 0.03% × 3 期 × 5 天 ＝ 45 USDT——几乎吃掉半个 100 USDT 的风险预算，这种拥挤期做多要么速战速决、要么别去。费率为负（合约价低于现货，空头拥挤）时，多头在每个结算时刻收钱：恐慌暴跌后的修复期常见这种"倒贴租金"的多单环境。</p></div>
+  </details>
+  <details><summary>5. 为什么强平会"连环"？复述一遍图 1-3 的循环，并说出两道兜底机制。</summary>
+    <div class="ans"><p>循环：价格下跌 → 一批多头跌破维持保证金 → 强平引擎用市价单抛售 → 市价单吃穿订单簿、价格进一步下挫 → 又一批多头到线……强平单本身就是砸盘的燃料，这就是插针和 10·10 那种垂直大阴线的来源。兜底：先由保险基金吸收穿仓损失；基金不够时触发自动减仓（ADL），按盈利和杠杆排序，强制平掉对手盘的仓位。</p></div>
+  </details>
+  <details><summary>6. 为什么本课建议：止损用"止损市价单"而不是"止损限价单"，触发价选标记价格而不是最新价？</summary>
+    <div class="ans"><p>止损的使命是"无论如何让我出去"，止损限价单在暴跌中可能挂不进去，形同裸奔；市价单虽有滑点，但保证离场——保命钱不省。触发价选标记价格，是因为它不易被单一交易所的假针带歪：用最新价触发，图 1-5 里 3,430 的止损会在针尖被扫掉，而标记价触发的同价位止损安然无恙。两个选择合起来是一句话：<b>触发要难骗，执行要坚决</b>。</p></div>
+  </details>
+
+  <nav class="pager" aria-label="课程导航">
+    <span class="pg is-off"><span class="pg-dir">上一课</span><span class="pg-ttl">这是第一课</span></span>
+    <a class="pg pg-toc" href="ct-index.html"><span class="pg-dir">返回</span><span class="pg-ttl">学习地图</span></a>
+    <a class="pg pg-next" href="ct-l02.html"><span class="pg-dir">下一课</span><span class="pg-ttl">第 2 课 · K 线与周期</span></a>
+  </nav>
+
+  <p class="foot">数据：币安公开历史数据（data.binance.vision），BTCUSDT / ETHUSDT 永续，已本地化；图表组件：TradingView Lightweight Charts™（Apache-2.0）。价格、费率等均为所引时点的真实数据，手续费率与维持保证金率以交易所当前页面为准。本讲义仅为学习笔记，不构成投资建议；合约交易风险极高。</p>
+</section>
+
+</main>
+</div>
+
+<!-- ================= 术语弹注内容 ================= -->
+<div class="notes-src" hidden>
+  <section data-note-id="perp" data-title="永续合约" data-en="Perpetual Futures">
+    <p>没有到期日的期货合约，2016 年由 BitMEX 发明，现在是加密市场成交量最大的品种。靠资金费率机制贴住现货价。你在币安、OKX 看到的"BTCUSDT 永续"就是它。</p>
+  </section>
+  <section data-note-id="usdm" data-title="U 本位合约" data-en="USDT-Margined Futures">
+    <p>用 USDT（或 USDC）做保证金、算盈亏的合约，账目直观：赚 100 就是赚 100 USDT。与之相对的"币本位"用 BTC 等币种做保证金，适合囤币者，账目更绕（币价跌时保证金也缩水），本课不用。</p>
+  </section>
+  <section data-note-id="notional" data-title="名义价值" data-en="Notional Value">
+    <p>仓位的总价值 ＝ 数量 × 价格，与押了多少保证金无关。<b>盈亏、资金费率、手续费全部按名义价值计算</b>——账户里真正"干活"的是它，保证金只是押金。</p>
+  </section>
+  <section data-note-id="mmr" data-title="维持保证金" data-en="Maintenance Margin">
+    <p>仓位允许存在的最低保证金水平，按仓位名义价值分档：BTC 小仓位约 0.4%，仓位越大档位越高（5%、10%……）。保证金余额（含浮亏）跌破它即触发强平。注意它远小于起始保证金——这就是为什么爆仓时还能"剩一点渣"或"倒欠一点"。</p>
+  </section>
+  <section data-note-id="insurance" data-title="保险基金" data-en="Insurance Fund">
+    <p>交易所从每笔强平的残值里抽存的基金，用来垫付"穿仓"（仓位平掉时亏损超过保证金）的窟窿，避免让赚钱的对手盘分摊损失。基金告急时就轮到下一道机制：自动减仓。</p>
+  </section>
+  <section data-note-id="adl" data-title="自动减仓" data-en="ADL, Auto-Deleveraging">
+    <p>保险基金兜不住时的最后手段：系统按"盈利 × 杠杆"排序，把对手方向上赚得最多、杠杆最高的仓位强制平掉一部分，用他们的利润填穿仓的窟窿。极端行情里<b>你赚钱的空单也可能被系统平掉</b>——仓位旁边的小灯（ADL 指示灯）满格时要当心。</p>
+  </section>
+  <section data-note-id="index-price" data-title="指数价格" data-en="Index Price">
+    <p>从多家主流交易所的<b>现货</b>价格加权平均得出，代表"全市场公道价"。某家交易所价格异常或断流时会被自动剔除。标记价格在它基础上加平滑和限幅修正。</p>
+  </section>
+  <section data-note-id="oi-teaser" data-title="持仓量" data-en="Open Interest, OI">
+    <p>全市场尚未平掉的合约总量——赌桌上还押着的筹码总数。它和成交量不同：对敲一买一卖，成交量涨、持仓量可能不变。价格和 OI 的配合是读懂合约市场的钥匙，第 10 课专门讲。</p>
+  </section>
+  <section data-note-id="basis" data-title="基差" data-en="Basis">
+    <p>合约价 − 现货价。正基差（合约贵）说明市场偏多，负基差说明偏空。永续合约的资金费率大体跟着基差走：基差正 → 费率正 → 多头交租。</p>
+  </section>
+  <section data-note-id="taker-maker" data-title="Taker 与 Maker" data-en="Taker / Maker">
+    <p>Maker（挂单方）把限价单挂进订单簿、给市场提供流动性，手续费便宜（币安 U 本位 VIP0 约 0.02%）；Taker（吃单方）用市价单立刻成交、消耗流动性，费率贵（约 0.05%）。同一笔往返，双边 taker 比双边 maker 贵 1.5 倍。</p>
+  </section>
+  <section data-note-id="slippage" data-title="滑点" data-en="Slippage">
+    <p>预期成交价和实际成交价的差。市价单吃穿订单簿的第一档后，会以越来越差的价格继续成交；行情越急、单子越大、流动性越薄（深夜 / 周末 / 山寨币），滑点越大。止损市价单在插针中触发时，滑点可能远超平时。</p>
+  </section>
+  <section data-note-id="tpsl" data-title="止盈止损单" data-en="TP/SL, Take Profit / Stop Loss">
+    <p>TP（Take Profit）＝止盈单，SL（Stop Loss）＝止损单。交易所下单面板里勾选"止盈/止损"，开仓的同时就挂上两张条件单：价格到止盈价自动平仓锁定利润，到止损价自动离场控制亏损——相当于把离场计划预先写进系统，省得盘中临时做决定。两张单都是只减仓性质，仓位平掉后自动失效；触发价类型建议都选<b>标记价格</b>，减少被插针误触（见 1.4 节）。设置界面各交易所略有差异，名字都叫 TP/SL。</p>
+  </section>
+  <section data-note-id="hedge-mode" data-title="双向持仓" data-en="Hedge Mode">
+    <p>允许同一合约同时持有一个多头仓位和一个空头仓位（各自独立计算均价和强平价）。与之相对的"单向持仓"（One-way）模式下，反方向下单会先抵消现有仓位。新手用单向即可——双向模式下忘了自己有两个仓位，是另一类经典事故。</p>
+  </section>
+</div>
+
+<script src="assets/lightweight-charts.js"></script>
+<script src="assets/ct.js"></script>
+<script src="assets/ctchart.js"></script>
+<script src="assets/data/klines-BTCUSDT-1d.js"></script>
+<script src="assets/data/funding-BTCUSDT.js"></script>
+<script src="assets/data/klines-ETHUSDT-1m.js"></script>
+<script src="assets/data/mark-ETHUSDT-1m.js"></script>
+<script>
+(function(){
+'use strict';
+var MMR = 0.005;           // 维持保证金率（示意）
+var fmt = CT.fmtN;
+
+/* ---------- 图 1-2 仓位计算器 ---------- */
+(function(){
+  var n = 10000, l = 10, d = 5;
+  function paint(){
+    var margin = n / l;
+    var loss = n * d / 100;
+    var dist = Math.max(1 / l - MMR, 0.002);
+    document.getElementById('a-margin').textContent = fmt(margin, 0) + ' U';
+    document.getElementById('a-loss').textContent = '−' + fmt(loss, 0) + ' U';
+    document.getElementById('a-pct').textContent = fmt(loss / 10000 * 100, 1) + '%';
+    document.getElementById('a-liq').textContent = fmt(dist * 100, 1) + '%';
+    var burst = loss >= margin;
+    document.getElementById('a-msg').innerHTML = burst
+      ? '<b>这笔跌幅已超过强平距离：仓位早在跌到 −' + fmt(dist * 100, 1) + '% 时就被强平了</b>，你最多亏掉全部保证金 ' + fmt(margin, 0) + ' U——顺便注意：它仍然约等于名义 × 强平距离，公式没有变。'
+      : '现在把<b>杠杆</b>滑块来回拉：左边两格（保证金、强平距离）在动，<b>"你亏多少"永远不动</b>。再把<b>名义价值</b>拉大一倍——亏损立刻翻倍。记住是谁在决定亏损。';
+  }
+  CT.bindRange('a-n', function(v){ n = v; paint(); }, function(v){ return fmt(v, 0); });
+  CT.bindRange('a-l', function(v){ l = v; paint(); }, function(v){ return v + '×'; });
+  CT.bindRange('a-d', function(v){ d = v; paint(); }, function(v){ return v + '%'; });
+})();
+
+/* ---------- 图 1-4 强平线实验台 ---------- */
+(function(){
+  var rows = CT.slice(CT.get('klines-BTCUSDT-1d'), '2026-03-01');
+  var all = CT.get('klines-BTCUSDT-1d');
+  var entry = rows[rows.length - 1][4];
+  var atrArr = CT.ind.atr(all, 14);
+  var atrPct = atrArr[atrArr.length - 1].value / entry;      // 日均真实波幅
+  var g = CT.makeChart('b-chart');
+  var cs = g.addCandles(rows);
+  var plEntry = g.priceLine(cs, entry, 'accent', '入场', 0);
+  var plLiq = g.priceLine(cs, entry * 0.9, 'crit', '强平', 2);
+  g.fit();
+  CT.legend('b-legend', [['accent', '入场价（最近收盘）'], ['crit', '强平价（随杠杆滑动）']]);
+  var dir = 'long', lev = 10;
+  function paint(){
+    var dist = Math.max(1 / lev - MMR, 0.002);
+    var liq = dir === 'long' ? entry * (1 - dist) : entry * (1 + dist);
+    plLiq.applyOptions({price: liq});
+    var days = dist / atrPct;
+    document.getElementById('b-entry').textContent = fmt(entry, 0);
+    document.getElementById('b-liq').textContent = fmt(liq, 0);
+    document.getElementById('b-dist').textContent = (dir === 'long' ? '−' : '+') + fmt(dist * 100, 1) + '%';
+    document.getElementById('b-days').textContent = days < 1 ? '不到 1 天' : '约 ' + fmt(days, 1) + ' 天';
+    document.getElementById('b-msg').innerHTML = 'BTC 近期日均真实波幅约 <b>' + fmt(atrPct * 100, 2) + '%</b>。'
+      + (days < 1.5
+        ? '<b>当前杠杆下，一天的正常波动就足以碰到强平线</b>——这不是"遇到行情会死"，是"没有行情也会死"。'
+        : days < 4
+          ? '当前杠杆下，几天的正常波动就可能碰线：任何一次普通回调都是致命的。'
+          : '当前杠杆下有 ' + fmt(days, 0) + ' 天左右的正常波动缓冲——这才是能拿过夜、拿一周的距离。');
+  }
+  CT.bindSeg('b-dir', function(v){ dir = v; paint(); });
+  CT.bindRange('b-l', function(v){ lev = v; paint(); }, function(v){ return v + '×'; });
+})();
+
+/* ---------- 图 1-5 插针放大镜 ---------- */
+(function(){
+  var k = CT.slice(CT.get('klines-ETHUSDT-1m'), '2025-10-10T17:30:00Z', '2025-10-11T00:00:00Z');
+  var m = CT.slice(CT.get('mark-ETHUSDT-1m'), '2025-10-10T17:30:00Z', '2025-10-11T00:00:00Z');
+  var g = CT.makeChart('c-chart', {timeVisible: true});
+  var cs = g.addCandles(k);
+  var markLine = g.addLine(m.map(function(r){ return {time: CT.ts(r[0]), value: r[4]}; }), 'series2', {width: 2, title: '标记价格'});
+  g.markers(cs, [
+    {time: Date.parse('2025-10-10T21:16:00Z') / 1000, position: 'belowBar', shape: 'arrowUp', color: 'crit', text: '偏离 1.48%'},
+    {time: Date.parse('2025-10-10T21:19:00Z') / 1000, position: 'belowBar', shape: 'circle', color: 'series2', text: '最深针 3,400'}
+  ]);
+  g.fit();
+  CT.legend('c-legend', [['series2', '标记价格（判强平）'], ['muted', 'K 线 = 最新价（画图、触发普通止损）']]);
+  CT.bindSeg('c-range', function(v){
+    if(v === 'zoom') g.setRange('2025-10-10T20:50:00Z', '2025-10-10T21:40:00Z');
+    else g.fit();
+  });
+  CT.bindSeg('c-mark', function(v){
+    markLine.applyOptions({visible: v === 'on'});
+  });
+})();
+
+/* ---------- 图 1-6 加减仓计算器 ---------- */
+(function(){
+  var P1 = 100000;
+  var op = 'add', n1 = 5000, p2 = 94000, n2 = 5000, lev = 10;
+  function paint(){
+    var q1 = n1 / P1;
+    var liq0 = P1 * (1 - Math.max(1 / lev - MMR, 0.002));
+    var avg, qty, pnl, liq, more, base = q1 * p2 * 0.03;
+    var msg, avgS, pnlS, liqS, moreS;
+    if(op === 'add'){
+      var q2 = n2 / p2;
+      qty = q1 + q2;
+      avg = (n1 + n2) / qty;
+      pnl = (p2 - P1) * q1;
+      liq = avg * (1 - Math.max(1 / lev - MMR, 0.002));
+      more = qty * p2 * 0.03;
+      avgS = '从 100,000 降到 ' + fmt(avg, 0) + '（−' + fmt((1 - avg / P1) * 100, 1) + '%）';
+      pnlS = '旧仓浮亏，新仓刚进场';
+      liqS = '原 ' + fmt(liq0, 0) + ' → 下移了，像是更安全';
+      moreS = '不补只亏 ' + fmt(base, 0) + ' U → 放大 ' + fmt(more / base, 1) + ' 倍';
+      msg = '补仓把均价拉低 ' + fmt((1 - avg / P1) * 100, 1) + '%、强平价下移到 ' + fmt(liq, 0) + '——<b>感觉</b>安全了。但持仓从 ' + fmt(q1, 4) + ' 枚变成 ' + fmt(qty, 4) + ' 枚：同样再跌 3%，亏损从 ' + fmt(base, 0) + ' U 变成 <b>' + fmt(more, 0) + ' U</b>。你押上了更多的钱，去赌"马上反弹"这一件事。';
+    }else if(op === 'cut'){
+      qty = q1 / 2;
+      avg = P1;
+      pnl = (p2 - P1) * q1 / 2;
+      liq = liq0;
+      more = qty * p2 * 0.03;
+      avgS = '减仓不改变均价';
+      pnlS = '已实现：认掉一半亏损';
+      liqS = '不变（同杠杆，保证金随仓位释放）';
+      moreS = '敞口减半，亏损速度也减半';
+      msg = '减仓一半：立刻认亏 ' + fmt(-pnl, 0) + ' U（已实现），但<b>剩余风险直接减半</b>——再跌 3% 只亏 ' + fmt(more, 0) + ' U。认小亏、保住判断力和本金，是职业选手的常规动作；它的进阶版叫"止损重开"：全平出场，等符合规则的新信号再进，第 3 课细讲。';
+    }else{
+      qty = q1; avg = P1; pnl = (p2 - P1) * q1; liq = liq0; more = base;
+      avgS = '维持 100,000'; pnlS = '浮亏挂在账上'; liqS = '维持原位'; moreS = '基准情形';
+      msg = '什么都不做：浮亏 ' + fmt(-pnl, 0) + ' U 挂在账上，祈祷反弹。注意"不动"也是一个决策——如果这笔单进场时就设好了止损（安全守则 v0.0），价格到 ' + fmt(P1 * 0.98, 0) + ' 时你早已自动离场，根本轮不到纠结补不补。';
+    }
+    document.getElementById('f-avg').textContent = fmt(avg, 0);
+    document.getElementById('f-avg-s').textContent = avgS;
+    var pnlEl = document.getElementById('f-pnl');
+    pnlEl.textContent = (pnl >= 0 ? '+' : '−') + fmt(Math.abs(pnl), 0) + ' U';
+    pnlEl.className = 'v ' + (pnl >= 0 ? 'up' : 'dn');
+    document.getElementById('f-pnl-s').textContent = pnlS;
+    document.getElementById('f-liq').textContent = fmt(liq, 0);
+    document.getElementById('f-liq-s').textContent = liqS;
+    document.getElementById('f-more').textContent = '−' + fmt(more, 0) + ' U';
+    document.getElementById('f-more-s').textContent = moreS;
+    document.getElementById('f-msg').innerHTML = msg;
+  }
+  CT.bindSeg('f-op', function(v){ op = v; paint(); });
+  CT.bindRange('f-n1', function(v){ n1 = v; paint(); }, function(v){ return fmt(v, 0); });
+  CT.bindRange('f-p2', function(v){ p2 = v; paint(); }, function(v){ return fmt(v, 0); });
+  CT.bindRange('f-n2', function(v){ n2 = v; paint(); }, function(v){ return fmt(v, 0); });
+  CT.bindRange('f-l', function(v){ lev = v; paint(); }, function(v){ return v + '×'; });
+})();
+
+/* ---------- 图 1-7 资金费率全景 ---------- */
+(function(){
+  var price = CT.get('klines-BTCUSDT-1d').map(function(r){ return {time: CT.ts(r[0]), value: r[4]}; });
+  var fund = CT.get('funding-BTCUSDT').map(function(r){ return {time: CT.ts(r[0]), value: r[1] * 100}; });
+  var g = CT.makeChart('d-chart', {panes: [0.38], minBarSpacing: 0.02});
+  var area = g.addArea(price, 'series', {});
+  g.addHist(fund, 'ud', {pane: 1});
+  g.markers(area, [
+    {time: Date.parse('2020-02-12') / 1000, position: 'aboveBar', shape: 'arrowDown', color: 'crit', text: '+0.30% 顶格'},
+    {time: Date.parse('2020-03-13') / 1000, position: 'belowBar', shape: 'arrowUp', color: 'series2', text: '−0.30% 顶格'},
+    {time: Date.parse('2021-02-08') / 1000, position: 'aboveBar', shape: 'arrowDown', color: 'crit', text: '0.249%/期 狂热'},
+    {time: Date.parse('2022-11-10') / 1000, position: 'belowBar', shape: 'arrowUp', color: 'series2', text: 'FTX −0.12%'}
+  ]);
+  g.fit();
+  CT.legend('d-legend', [['series', 'BTC 收盘价（上）'], ['up', '费率为正：多头付租'], ['down', '费率为负：空头付租']]);
+})();
+
+/* ---------- 图 1-8 成本计算器 ---------- */
+(function(){
+  var fees = {tt: 0.10, mt: 0.07, mm: 0.04};
+  var fee = 'tt', dir = 'long', days = 3, rate = 0.01;
+  function paint(){
+    var f = fees[fee];
+    var periods = days * 3;
+    var fundCost = rate * periods * (dir === 'long' ? 1 : -1);   // 正 = 支出
+    var total = f + fundCost;
+    var be = Math.max(total, 0);
+    document.getElementById('e-f').textContent = f.toFixed(2) + '%';
+    var fEl = document.getElementById('e-fund');
+    fEl.textContent = (fundCost >= 0 ? '支出 ' : '收入 ') + Math.abs(fundCost).toFixed(3) + '%';
+    fEl.className = 'v ' + (fundCost > 0 ? 'dn' : 'up');
+    document.getElementById('e-fund-s').textContent = periods + ' 个结算期 × ' + (rate >= 0 ? '+' : '') + rate.toFixed(3) + '%';
+    document.getElementById('e-be').textContent = total <= 0 ? '0%（倒贴）' : be.toFixed(2) + '%';
+    document.getElementById('e-usd').textContent = (total >= 0 ? '−' : '+') + fmt(Math.abs(total) * 100, 1) + ' U';
+    document.getElementById('e-usd-s').textContent = '占 100 U 风险预算的 ' + fmt(Math.abs(total) * 100, 0) + '%';
+    document.getElementById('e-msg').innerHTML = total <= 0
+      ? '费率收入盖过了手续费：这段持仓<b>市场在付你钱</b>。负费率环境下的顺势多单就有这种待遇——但别为了收租金而选方向，租金永远小于一次打止损。'
+      : '这笔单还没开始赚钱，先欠市场 <b>' + total.toFixed(2) + '%</b>。对目标 +2% / 止损 −1% 的短波段单，相当于起跑就让了 ' + fmt(total / 1 * 100, 0) + '% 个止损距离——进出方式和持仓时长，都是实打实的胜率。';
+  }
+  CT.bindSeg('e-fee', function(v){ fee = v; paint(); });
+  CT.bindSeg('e-dir', function(v){ dir = v; paint(); });
+  CT.bindRange('e-days', function(v){ days = v; paint(); });
+  CT.bindRange('e-rate', function(v){ rate = v; paint(); }, function(v){ return (v >= 0 ? '+' : '') + v.toFixed(3) + '%'; });
+})();
+})();
+</script>
+</body>
+</html>

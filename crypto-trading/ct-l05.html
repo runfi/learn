@@ -1,0 +1,846 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>币圈短线课 · 第 5 课 涨过头了吗</title>
+<link rel="stylesheet" href="assets/ct.css">
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <span class="book"><a href="ct-index.html">币圈短线实战课</a></span>
+  <span class="part"><a href="ct-index.html">学习地图</a> · 阶段 1 指标工具箱</span>
+  <span class="prefs">
+    <button id="btn-updown" type="button" title="切换涨跌配色"></button>
+    <button id="btn-theme" type="button" title="切换深浅主题"></button>
+  </span>
+</header>
+
+<div class="layout">
+
+<nav class="sidenav" aria-label="本课目录">
+  <p class="sn-chap">第 5 课 · 涨过头了吗</p>
+  <a href="#top">课首</a>
+  <a href="#s1">5.1 追高的数学</a>
+  <a href="#s2">5.2 RSI：力量对比表</a>
+  <a href="#s3">5.3 KDJ：更快也更吵</a>
+  <a href="#s4">5.4 背离：动能和价格吵架</a>
+  <a href="#s5">5.5 三重滤网组装</a>
+  <a href="#s6">5.6 落地：系统 v0.2</a>
+  <a href="#recap">小结 · 术语 · 自测</a>
+</nav>
+
+<main class="article">
+
+<section class="hero" id="top">
+  <span class="chap-no">LESSON 05 · 第 5 课 / 共 16 课</span>
+  <h1>涨过头了吗</h1>
+  <p class="en">ARE WE OVERBOUGHT YET?</p>
+  <p class="question">本课问题：方向有了，什么时候上车不追高？</p>
+  <p class="lede">第 4 课你有了方向法官（日线三票制），系统 v0.1 的入场却还很粗糙：1 小时一突破就进。这一课先用真实数据算清<strong>追高为什么贵</strong>——不是道德问题，是止损距离和仓位大小的数学问题；然后给工具箱装上第二类零件：回答"时机"的动能指标。RSI 怎么读、为什么超买可以一直超买、KDJ 为什么讲完就归档、背离到底是不是反转信号——最后把这些零件和前两层拧在一起，<strong>三重滤网正式成形</strong>，系统升级到 v0.2。</p>
+  <div class="objectives">
+    <h2>学完你能做到</h2>
+    <ul>
+      <li>算清追高的代价：同样 100 U 风险，止损距离决定仓位大小和盈亏比；</li>
+      <li>说出 RSI 的直觉含义和 70/30 的本意，解释<strong>钝化为什么是特性不是故障</strong>；</li>
+      <li>在上升趋势里用 RSI 回落到 40–50 区找位置，而不是傻等 30；</li>
+      <li>亲手用页内统计器检验一条 RSI 规则，并说出这种检验哪里靠不住；</li>
+      <li>看懂 KDJ 的快和假，说清它和 RSI 为什么只能二选一；</li>
+      <li>识别顶背离与底背离，记住"背离是减速警报，不是掉头命令"；</li>
+      <li>把三重滤网装进系统 v0.2，本周的模拟单全部按它执行。</li>
+    </ul>
+  </div>
+  <p class="colorkey">读图约定：默认<span class="up">绿涨</span>·<span class="dn">红跌</span>，右上角可切换。带 <b>互动</b> 标签的图可拖动调参；虚线下划线词点击弹出解释。图表时间轴按你设备的时区显示（北京时间 ＝ UTC+8）。</p>
+  <nav class="chapmap" aria-label="本课小节">
+    <a href="#s1">追高的数学</a><a href="#s2">RSI</a><a href="#s3">KDJ</a><a href="#s4">背离</a><a href="#s5">三重滤网</a><a href="#s6">系统 v0.2</a><a href="#recap">小结</a>
+  </nav>
+</section>
+
+<!-- ================= 5.1 ================= -->
+<section class="ch" id="s1">
+  <h2 class="sec"><span class="no">5.1</span>为什么顺势也会亏：追高的数学</h2>
+  <p class="sec-en">THE REAL COST OF CHASING</p>
+  <div class="prose">
+    <p>先回答一个委屈的问题：方向明明看对了，为什么还亏？第 4 课的 v0.1 说"日线向上、1 小时突破就进"，很多人照做之后的体验是：<strong>一买就回调，止损被扫，然后行情头也不回地涨上去了</strong>。这不是运气差，是突破点这个位置天生有两个毛病：</p>
+    <ul>
+      <li><strong>毛病一：回调随时来。</strong>用币安 BTCUSDT 永续 4 小时线实测（2026-04 至 09 共 1,098 根）：收盘创出 20 根新高的"突破"共 55 次，其中 <strong>47 次（85%）在三天内回踩到被突破的前高以下</strong>，突破价买入后三天内的最大回撤中位数 −2.7%。追高者几乎注定要先坐一轮过山车；</li>
+      <li><strong>毛病二：突破点离合理止损远。</strong>止损不能随手画，得挂在最近的<span class="nt" data-note="swing">摆动低点</span>之外——那是"看涨结构被破坏"的位置。而突破发生时，价格恰好离这个结构位<em>最远</em>。第 3 课的公式立刻给出后果：</li>
+    </ul>
+  </div>
+  <div class="formula">
+    <p class="fx">仓位名义价值 ＝ 单笔风险 100 U ÷ 止损距离%</p>
+    <p class="note">止损距离越远，同样 100 U 风险能开的仓位越小；仓位越小，同样一段行情赚得越少。<strong>追高不是胆子大，是用更贵的止损买同一段行情。</strong></p>
+  </div>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>行情像一班正在加速驶出站台的火车。<strong>追高是跳上已经加速的车</strong>——你得挂在车门外（止损远、仓位小），还大概率被下一个弯甩出去（85% 的回踩）；<strong>等回调是在下一站的站台上车</strong>——车总会进站减速（回调到位），你从容落座（止损近、仓位足），车重新加速时你在车厢里。两种坐法去的是同一个地方，付的是完全不同的票价。</p>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 5-1</span>同一段行情的两张票价：2026 年 4 月实例<span class="real">真实数据</span></p>
+    <div class="lw h420" id="p1-chart"></div>
+    <div class="lw-legend" id="p1-legend"></div>
+    <div class="stats">
+      <div class="stat"><span class="k">追高者 · 近止损</span><span class="v dn">−100 U</span><span class="s">止损距 3.2% → 仓位 3,150 U，被回踩扫掉</span></div>
+      <div class="stat"><span class="k">追高者 · 远止损</span><span class="v" >+200 U</span><span class="s">止损距 4.5% → 仓位 2,200 U，扛 −4.3% 浮亏熬 23 天到 2R</span></div>
+      <div class="stat"><span class="k">回调进场者</span><span class="v up">+200 U</span><span class="s">止损距 1.7% → 仓位 5,850 U，9 小时到 2R</span></div>
+      <div class="stat"><span class="k">突破后三天内回踩概率</span><span class="v warn">85%</span><span class="s">55 次突破中 47 次，中位回踩 −2.7%</span></div>
+    </div>
+    <figcaption><b>读图：</b>币安 BTCUSDT 永续 4 小时真实行情。4 月 12 日凌晨（北京时间）收盘 73,636，突破前高 73,450——追高者在这里上车：止损挂近一点（摆动低点 71,382 下方，距离 3.2%），两天后的回踩最低打到 70,458，<b>直接扫损 −100 U</b>；挂远一点（大摆动低点 70,428 下方，距离 4.5%），仓位缩到 2,200 U，回踩距离他的止损只剩 0.2%，侥幸活下来后还要熬 23 天才摸到 2R。而回调进场者等 4 小时 RSI 落回 42.9、13 日晚 21 点 1 小时线收复摆动高点 71,245 时在 71,623 上车：止损 70,400 只有 1.7% 远，仓位 5,850 U，<b>9 个小时后到达 2R 止盈</b>。三个人看对的是同一个方向。顺带交底：按 5.5 组装好的完整系统，那几天日线的结构票其实还没确认、滤网一并未放行——真实系统比这个例子还挑剔，这里先专心看两种上车姿势的几何差别。</figcaption>
+  </figure>
+  <div class="prose">
+    <p>这就是"时机"问题的本质：<strong>方向告诉你能不能做，时机决定你用多便宜的止损上车</strong>。顺着趋势等回调，等的不是更低的价格本身，而是"价格离结构位足够近"的那一刻——止损近了，仓位才能放足，盈亏比才算得过来。问题变成：回调到哪里算"到位"？靠感觉不行，我们需要一个量化"涨跌力量"的仪表。这正是本课两个指标的工作，也是<span class="nt" data-note="triple">三重滤网</span>的中间一层。</p>
+  </div>
+</section>
+
+<!-- ================= 5.2 ================= -->
+<section class="ch" id="s2">
+  <h2 class="sec"><span class="no">5.2</span>RSI：最近这段，多头赢了几成</h2>
+  <p class="sec-en">RSI, THE RELATIVE STRENGTH INDEX</p>
+  <div class="prose">
+    <p>RSI（<span class="nt" data-note="rsi">相对强弱指数</span>）是最经典的<span class="nt" data-note="momentum">动能</span>指标，一句话：<strong>最近 14 根 K 线里，上涨力量占总波动力量的百分比</strong>。涨跌各半时读数 50；涨幅远大于跌幅时逼近 100；反之逼近 0。</p>
+  </div>
+  <div class="formula">
+    <p class="fx">RSI ＝ 100 × 平均涨幅 ÷（平均涨幅 ＋ 平均跌幅）　（近 14 期，Wilder 平滑）</p>
+    <p class="note">直觉版：把最近 14 回合的拉锯摊开，多头赢下的"份额"就是 RSI。读数 42.9 的意思不是"跌了"，而是"这 14 根里空头略占上风"。50 是多空力量的分界线。</p>
+  </div>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>RSI 像拔河比赛的<strong>实时力量计</strong>：绳子中点往你这边偏得越多，读数越高。读数 70 说明你这队最近拉得很猛——但力量计从不回答"下一秒谁赢"。对面可能马上反扑（回调），也可能你这队就是壮得离谱，<strong>把 70 的读数维持一整个赛季</strong>。把力量计当终场哨，是对它最大的误读。</p>
+  </div>
+  <div class="prose">
+    <h3>70/30 的本意，和它最著名的失灵</h3>
+    <p>Wilder 在 1978 年给 RSI 配了两条参考线：70 以上叫<span class="nt" data-note="overbought">超买</span>，30 以下叫超卖，意思是"短期走得太急，容易歇一歇"。<strong>注意他说的是容易歇一歇，不是必须掉头</strong>。这套读法在震荡市里确实好用——价格来回晃，RSI 到 70 回落、到 30 反弹。但趋势一旦出现，它会以最昂贵的方式失灵：</p>
+  </div>
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>2023 年 10 月：超买了 25 天，涨了 23%</h4>
+    <p>2023-10-20 起，BTC 日线 RSI 站上 70 之后<strong>连续 25 个交易日没有跌回 70 以下</strong>（至 11-13），期间价格从 29,653 涨到 36,486（+23.0%），RSI 一度摸到 87.9（10-25）。如果你在"超买"第一天开空，接下来一个月每天都在加深套牢；更扎心的是，这波"超买"结束后 30 天，价格又涨了 17.5%（到 42,875）。类似的长钝化在 2023-01（19 天 +32.4%）、2024-11（19 天 +29.6%）、2020-11（18 天 +21.1%）反复出现——<strong>全是大行情的主升段</strong>。指标贴着极值区走平、失去区分度，这叫<span class="nt" data-note="saturation">钝化</span>。</p>
+    <p class="takeaway">强趋势里，超买是常态而不是警报——RSI 钝化恰恰说明趋势极强。它是特性，不是故障。</p>
+  </div>
+  <div class="keypoint">
+    <span class="label">本课最重要的一句话</span>
+    <p><strong>超买不是卖出信号，超卖不是买入信号——动能指标回答"现在的力量状态"，从不回答"接下来往哪走"。</strong></p>
+    <p>方向永远由大周期裁决（第 4 课）。动能指标在系统里只干一件事：在方向已定的前提下，告诉你回调走到哪一档了。</p>
+  </div>
+  <div class="prose">
+    <h3>顺势用法：等 40–50 区，而不是等 30</h3>
+    <p>上升趋势里怎么用 RSI？答案和直觉相反：<strong>别等超卖</strong>。健康的上升趋势回调很浅，4 小时 RSI 通常只回落到 40–50 一带就重新向上——2026 年 4 月初到 5 月中那段六周的上升趋势里，4 小时 RSI 最低只到过 38.2，<strong>等 30 的人一次车都没上过</strong>。反过来，RSI 真跌到 30 以下，多半意味着趋势本身出了问题——那不是打折，是瀑布。两次"同样读数、完全两命"的真实对照：</p>
+  </div>
+  <figure>
+    <p class="fig-title"><span class="fno">图 5-2</span>同一个 RSI 读数的两种命运：顺潮与逆潮<span class="real">真实数据</span></p>
+    <div class="lw h480" id="rx-chart"></div>
+    <div class="lw-legend" id="rx-legend"></div>
+    <figcaption><b>读图：</b>币安 BTCUSDT 永续 4 小时线与 RSI（14）副图，2026 年 4 月至 6 月中。<b>左边的成功</b>：4 月 29 日 RSI 回落到 40.5（当天下午还探了全段最深的 38.2），而第 4 课的三票制——均线重心、价格动能、高低点结构——<b>三票全多，滤网一放行</b>：顺着潮水的浅回调，按信号在下一根开盘 75,889 进场，五个交易日后收 79,826（+5.2%）；<b>右边的失败</b>：5 月 31 日 RSI 又到 41.1，数字几乎一样，但那时价格票和结构票已双双倒戈、系统判 <b>flat</b>（三天后三票齐空）——同样的读数出现在退潮里，五天后最低砸到 59,080（自入场 73,613 计 −19.7%）。RSI 自己长得一模一样，<b>决定生死的是它头顶的潮水方向</b>。这也是为什么 5.5 节要把方向滤网焊在动能滤网前面。</figcaption>
+  </figure>
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p><strong>"RSI 超买了，做空它！""跌到超卖了，抄底！"</strong>这是把力量计当成了反转按钮。上面的案例已经演示过两种死法：牛市里做空钝化（2023-10，被 23% 的主升段碾过）、瀑布里抄超卖（2026-05-31，接住一把还要再跌 20% 的飞刀）。动能指标单独使用没有任何方向含义——<em>先问潮水，再看力量计</em>。</p>
+  </div>
+  <div class="prose">
+    <h3>别信我，自己数：RSI 规则统计器</h3>
+    <p>"回调到 40–50 买入"听起来有道理，但有道理不等于有数据。下面这台统计器会当着你的面，把规则跑在真实的 1,098 根 4 小时线上：<strong>RSI 从上方跌破阈值 → 下一根开盘买入 → 持有 N 根后收盘卖出</strong>，统计笔数、平均收益、胜率，再和"同样持有期、随机任选入场点"的基准对比——跑赢随机，才算有点东西。</p>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 5-3</span>RSI 策略统计器：这条规则到底赚不赚钱<span class="real">真实数据</span><span class="ia">互动</span></p>
+    <div class="ctrls">
+      <label class="rg"><span class="rg-top">RSI 阈值（从上方跌破它＝信号）<output>40</output></span>
+        <input type="range" id="rs-t" min="20" max="55" step="5" value="40"></label>
+      <label class="rg"><span class="rg-top">持有期<output>12 根 ＝ 2 天</output></span>
+        <input type="range" id="rs-n" min="3" max="30" step="3" value="12"></label>
+    </div>
+    <div class="stats">
+      <div class="stat"><span class="k">信号笔数</span><span class="v" id="rs-cnt">—</span><span class="s">样本：2026-04 至 09，1,098 根 4h</span></div>
+      <div class="stat"><span class="k">平均每笔收益</span><span class="v" id="rs-avg">—</span><span class="s">跌破后下根开盘买入，持有到期</span></div>
+      <div class="stat"><span class="k">胜率</span><span class="v" id="rs-win">—</span><span class="s">收益大于 0 的占比</span></div>
+      <div class="stat"><span class="k">随机入场基准</span><span class="v" id="rs-base">—</span><span class="s" id="rs-base-s">同持有期 · 所有可能入场点的平均</span></div>
+    </div>
+    <p class="lab-msg" id="rs-msg"></p>
+    <figcaption><b>读图：</b>先看默认组合（阈值 40、持有 2 天）：55 笔、平均 +0.99%、胜率 65%，随机基准只有 +0.29%、53%——"趋势里的浅回调"在这段样本里确实有优势。再把阈值拉到 30 以下看看：信号骤减到个位数、平均收益转负——<b>深超卖大多出现在瀑布里，这就是"接飞刀"的统计学长相</b>。最后把阈值推到 50：优势基本消失，回调太浅等于没回调。玩五分钟你就会找到一组"完美参数"——下一个格子会告诉你为什么别高兴得太早。</figcaption>
+  </figure>
+  <div class="evidence">
+    <span class="label">证据与怀疑</span>
+    <h4>技术规则有没有用：九十年道指的证词，和它的反转</h4>
+    <p>学术界最著名的一次"统计器实验"：Brock、Lakonishok 与 LeBaron（1992，发表于 Journal of Finance）把 26 条简单技术规则（均线穿越、区间突破）跑在道琼斯指数 1897–1986 年的数据上，发现买入信号之后的收益显著高于卖出信号之后——简单规则看起来真的有效。但反转在后头：Sullivan、Timmermann 与 White（1999）指出，如果把"研究者同时试过成千上万条规则"这笔<span class="nt" data-note="overfit">过拟合</span>账（数据窥探）算进去，再看 1986 年之后的样本外表现，最优规则的优势基本消失。图 5-3 就是这两面的缩影：它既是你的 BLB 实验（规则确实可以被数据检验），也是你的数据窥探现场（你刚找到的"完美参数"只对这六个月负责——样本只有几十笔、只覆盖一种行情结构，换一段市场可能完全变脸）。所以 v0.2 只把 RSI 回调区当<strong>位置提醒</strong>，从不单独当成下单理由；真正保命的始终是止损和仓位公式。</p>
+  </div>
+  <div class="cards">
+    <div class="card">
+      <h4>RSI（14）<span class="en-term">Relative Strength Index</span><span class="fit fit-all">股票通用</span></h4>
+      <p><strong>回答</strong>：时机——回调走到哪一档了。<strong>顺势信号</strong>：上升趋势里回落到 40–50 区（做空镜像为反弹到 50–60 区）＝位置到了，等小周期触发。<strong>失灵</strong>：强趋势钝化（≥70 可挂一个月）；逆势使用（图 5-2 右）。<strong>搭配</strong>：上接日线三票定方向，下接 1 小时摆动点触发。</p>
+      <span class="k">进入系统 v0.2</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 5.3 ================= -->
+<section class="ch" id="s3">
+  <h2 class="sec"><span class="no">5.3</span>KDJ：更快、更吵的同类</h2>
+  <p class="sec-en">KDJ, THE STOCHASTIC OSCILLATOR</p>
+  <div class="prose">
+    <p>打开国内任何一个股票或币的 App，副图里默认躺着的大概率是 KDJ。它的底层是<span class="nt" data-note="stoch">随机指标</span>，一句话：<strong>收盘价站在近 9 根 K 线高低区间的什么位置</strong>。贴着区间顶，读数接近 100；贴着区间底，接近 0。</p>
+  </div>
+  <div class="formula">
+    <p class="fx">RSV ＝（收盘价 − 近 9 期最低）÷（近 9 期最高 − 近 9 期最低）× 100</p>
+    <p class="fx">K ＝ RSV 的 3 期平滑；D ＝ K 的 3 期平滑；J ＝ 3K − 2D</p>
+    <p class="note">K 快、D 慢，J 把两者的偏离放大三倍。常用读法：80 上方超买、20 下方超卖；K 上穿 D 叫金叉，下穿叫死叉。</p>
+  </div>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>RSI 和 KDJ 是同一个岗位的两位质检员。RSI 性子稳，看的是 14 天的<em>力量账本</em>；KDJ 性子急，拿游标卡尺量"你现在贴着 9 天箱子的顶还是底"，手一抖就喊。急性子的好处是报警早，坏处是<strong>一天喊八回，大多是虚惊</strong>。一个车间不需要两位质检员对同一件事各喊各的——听谁的？这就是"二选一"的由来。</p>
+  </div>
+  <figure>
+    <p class="fig-title"><span class="fno">图 5-4</span>KDJ 的快与假：61 天里交叉了 60 次<span class="real">真实数据</span></p>
+    <div class="lw h480" id="kd-chart"></div>
+    <div class="lw-legend" id="kd-legend"></div>
+    <figcaption><b>读图：</b>币安 BTCUSDT 永续 4 小时线与 KDJ（9,3,3）副图，2026 年 8 月至 9 月。这 61 天里 K 和 D 交叉了 <b>60 次</b>——平均一天一次；同期 RSI 跌破 45 只有 18 次。两个标注值得细看：<b>8 月 12 日</b>的低位金叉（K 27.4 上穿 D 22.6，价格 63,800）抓住了大底，12 天后日线收在 78,953（+23.7%）——这是它"快"的高光；<b>8 月 18 日</b>的高位死叉（K 81.3 下穿 D 81.9，价格 64,620）看起来是教科书式做空信号，结果两天后价格 +12.4%，<span class="nt" data-note="jline">J 线</span>顶着 100 上方连走四根 4 小时线——趋势启动时 KD 高位钝化，死叉全是假警报。<b>快和假是同一枚硬币的两面。</b></figcaption>
+  </figure>
+  <div class="prose">
+    <h3>为什么人人图上都有它，我们却不装它</h3>
+    <p>KDJ 在国内软件里是默认副图，群众基础深厚，看懂它是"行情语言听力"的一部分——别人喊"J 值都 100 了"你得知道在说什么。但进系统是另一回事：<strong>KDJ 和 RSI 是同类，都在回答"时机"这一个问题</strong>。同类指标一起上，只有两种结局：读数一致（信息重复，白占屏幕），读数打架（你不知道听谁的，犹豫到错过）。我们的原则从第一课贯穿到最后一课：<em>一个问题只雇一个指标</em>。本系统选 RSI——更稳、钝化行为更好读、和回调区打法天然契合。<strong>KDJ 到此为止：学会看懂即可，不进系统，归档。</strong></p>
+  </div>
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p><strong>"多装几个指标，互相确认，胜率更高。"</strong>如果装的是同类指标，这是幻觉：RSI 和 KDJ 都由同一串收盘价算出来，它们"互相确认"就像让同一个人换两件衣服投两票——票数多了，信息没多。真正的确认来自<em>不同问题</em>的指标：方向（第 4 课）、时机（本课）、波动（第 6 课）、量能（第 9 课）各投各的票。指标数量和胜率的关系，常常是负的。</p>
+  </div>
+  <div class="cards">
+    <div class="card">
+      <h4>KDJ（9,3,3）<span class="en-term">Stochastic Oscillator</span><span class="fit fit-all">股票通用</span></h4>
+      <p><strong>回答</strong>：时机——和 RSI 同类。<strong>特点</strong>：反应比 RSI 快、信号多、假信号也多；J 线放大波动，钝化时长期贴着 0 或 100。<strong>失灵</strong>：趋势行情里高位死叉／低位金叉连续骗人。<strong>结论</strong>：看懂即可，与 RSI 二选一——本系统选 RSI，KDJ 归档。</p>
+      <span class="k">看懂即可 · 不进系统</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 5.4 ================= -->
+<section class="ch" id="s4">
+  <h2 class="sec"><span class="no">5.4</span>背离：动能和价格吵架的时候</h2>
+  <p class="sec-en">DIVERGENCE, WHEN PRICE AND MOMENTUM DISAGREE</p>
+  <div class="prose">
+    <p>动能指标最有价值的一刻，不是读数本身，而是它和价格<strong>吵架</strong>的时候：价格创了新高，RSI（或 MACD）却没创新高——这叫顶<span class="nt" data-note="divergence">背离</span>；价格创新低而指标不再创新低，叫底背离。吵架的含义很具体：<strong>新高（低）是用更弱的力量推出来的</strong>。车还在往前开，但发动机转速掉下来了。</p>
+  </div>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>运动员冲刺时心率 180 很正常——这是钝化，强者的常态，不能因为读数高就断定他要倒下。真正值得担心的是另一幅画面：<strong>他明明还在往前冲、甚至又刷新了个人最好名次，心率和步频却一程比一程低</strong>——人还在前进，发动机在熄火。这就是背离。但注意：熄火的发动机也能靠惯性再滑很远，<em>减速不等于立刻掉头</em>。</p>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 5-5</span>两个真实背离：一个教科书，一个连环骗<span class="real">真实数据</span><span class="ia">互动</span></p>
+    <div class="ctrls">
+      <div>
+        <span class="seg-label">案例</span>
+        <span class="seg" id="dv-seg" role="group">
+          <button type="button" data-val="a" aria-pressed="true">A · 底背离成功（2026 夏）</button>
+          <button type="button" data-val="b">B · 顶背离连环失败（2024 冬）</button>
+        </span>
+      </div>
+    </div>
+    <div class="lw h480" id="dv-chart"></div>
+    <div class="lw-legend" id="dv-legend"></div>
+    <p class="lab-msg" id="dv-msg"></p>
+    <figcaption><b>读图：</b>两段都是币安 BTCUSDT 永续日线＋RSI（14）副图，连线把价格的两个极值点和 RSI 的对应点直接画了出来。<b>案例 A</b>：2026-06-05 低点 59,080 时 RSI 深至 15.6；三周后 07-01 价格再创新低 57,759（低 2.2%），RSI 却抬到 37.2——第二次探底的卖压明显衰竭，之后八周涨到 81,500（+41%）。它"教科书"的真正原因不只是背离本身：<b>它发生在 58,000 这个双底关键位，并且等到了价格转身的触发</b>。<b>案例 B</b>：2024-11-13 RSI 见顶 83.7（价格 93,421）后，价格又创了两轮新高——12-17 的 108,367（RSI 69.8）、01-20 的 110,000（RSI 58.6），背离喊了两个多月，价格多涨了 17.7%；每一次按背离做空的人都被抬走，真正的大跌 2025 年 2 月才来（78,200）。<b>背离可以连续背好几次——它是减速警报，不是掉头命令。</b></figcaption>
+  </figure>
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p><strong>"看见背离就反手。"</strong>案例 B 已经演示了代价。背离的正确地位是<strong>警报，不是信号</strong>：它告诉你趋势的发动机在降速，让你收紧止损、暂停顺势加仓、提高警觉——但<em>下单必须另外满足两个条件</em>：① 它发生在大级别关键位（前高前低、密集成交区，第 8 课细讲）；② 价格自己给出了触发（1 小时级别收盘转向，本课 5.5 的滤网三）。没有这两条，背离只是"故事讲完了一半"。</p>
+  </div>
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>把案例 A 拆成系统语言</h4>
+    <p>复盘 2026 年 6 月那次底背离，它恰好就是一次完整的"警报 → 条件 → 触发"流程：<strong>警报</strong>——07-01 价格新低、RSI 不新低，动能衰竭；<strong>位置</strong>——58,000 一带是 6 月初恐慌低点构成的关键支撑，两次下探构成双底；<strong>触发</strong>——7 月上旬价格重新站回短期摆动高点，日线三票随后逐票转多（结构票最慢，直到 8 月底才到齐——第 4 课讲过，这就是"确认"的价格）。三者齐了，背离才从"图上的一根斜线"变成"能下单的理由"。只有警报没有触发的反例就是案例 B 的 11 月和 12 月——警报响了，位置和触发从来没给过。</p>
+    <p class="takeaway">背离＝减速警报。可以让你松油门（收紧止损、停止加仓），但踩刹车换挡（反向开仓）必须等关键位和触发都到齐。</p>
+  </div>
+</section>
+
+<!-- ================= 5.5 ================= -->
+<section class="ch" id="s5">
+  <h2 class="sec"><span class="no">5.5</span>三重滤网组装：潮汐、波浪、涟漪各就各位</h2>
+  <p class="sec-en">ASSEMBLING THE TRIPLE SCREEN</p>
+  <div class="prose">
+    <p>现在把零件拧起来。第 2 课埋的伏笔——潮汐、波浪、涟漪——今天正式成形为 Elder 的三重滤网。三层各干一件事，<strong>上层对下层有一票否决权</strong>：</p>
+    <ul>
+      <li><strong>滤网一 · 潮汐（日线定方向）</strong>：第 4 课的三票制原样照搬——均线重心（EMA20 对 EMA60）、价格动能（收盘价对 EMA20）、高低点结构，<strong>三票同向才有方向，缺一票就是 flat</strong>（结构票还会弃权）。flat 不是"没意见"，是"不许做"；</li>
+      <li><strong>滤网二 · 波浪（4 小时找位置）</strong>：逆着潮水方向的那朵浪——看多时，等 4 小时 RSI 回落到 40–50 区；看空时，等它反弹到 50–60 区。<strong>回调不到位，就让行情自己走</strong>；</li>
+      <li><strong>滤网三 · 涟漪（1 小时扣扳机）</strong>：位置到了还不够，要等价格<em>自己转身</em>——1 小时收盘价重新站上短期摆动高点（做空为跌破摆动低点）。这一下确认"回调结束、主方向重启"，也顺手给了你挂止损的锚：触发 K 线下方最近的摆动低点外。</li>
+    </ul>
+  </div>
+  <figure>
+    <p class="fig-title"><span class="fno">图 5-6</span>三层漏斗：61 个交易日怎么被滤成 3 个<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+      <svg viewBox="0 0 720 330" role="img" aria-label="三重滤网把 61 个交易日层层过滤为 3 个可交易日的漏斗示意图">
+        <defs>
+          <marker id="f56-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="ar-fill"/></marker>
+        </defs>
+        <text x="20" y="42" class="nt">全部交易日</text>
+        <text x="20" y="60" class="nd">2026-08 → 09</text>
+        <rect x="238" y="24" width="427" height="40" rx="7" class="node"/>
+        <text x="452" y="49" text-anchor="middle" class="nt">61 天</text>
+        <path d="M252 64 L252 96" class="edge" marker-end="url(#f56-ar)"/>
+        <text x="282" y="86" class="wt">滤掉 49 天：三票不齐，flat</text>
+        <text x="20" y="118" class="nt">滤网一 · 日线三票同向</text>
+        <text x="20" y="136" class="nd">第 4 课的方向法官</text>
+        <rect x="238" y="100" width="84" height="40" rx="7" class="node-hi"/>
+        <text x="280" y="125" text-anchor="middle" class="nt">12 天</text>
+        <path d="M252 140 L252 172" class="edge" marker-end="url(#f56-ar)"/>
+        <text x="282" y="162" class="wt">滤掉 3 天：回调不到位</text>
+        <text x="20" y="194" class="nt">滤网二 · 4h RSI 回调区</text>
+        <text x="20" y="212" class="nd">多 40–50 · 空 50–60</text>
+        <rect x="238" y="176" width="63" height="40" rx="7" class="node-hi"/>
+        <text x="270" y="201" text-anchor="middle" class="nt">9 天</text>
+        <path d="M252 216 L252 248" class="edge" marker-end="url(#f56-ar)"/>
+        <text x="282" y="238" class="wt">滤掉 6 天：扳机没响</text>
+        <text x="20" y="270" class="nt">滤网三 · 1h 收复摆动点</text>
+        <text x="20" y="288" class="nd">价格自己转身才算数</text>
+        <rect x="238" y="252" width="30" height="40" rx="7" class="node-up"/>
+        <text x="253" y="277" text-anchor="middle" class="nt">3</text>
+        <text x="282" y="277" class="hi">9-03 · 9-09 · 9-12 三次出手</text>
+        <text x="20" y="320" class="nd">两个月 → 3 次出手。手痒的另外 58 天，是系统替你省下的止损。</text>
+      </svg>
+    </div>
+    <figcaption><b>读图：</b>数字来自下方图 5-7 的真实回放：61 个交易日里，三票同向的只有 <b>12 天</b>——和第 4 课"2026 年至今 67% 的日子 flat"的统计相合，<b>滤网一干的是最重的活</b>；叠加"4 小时 RSI 回到回调区"剩 9 天，再等到"1 小时触发"只剩 <b>3 天</b>。第一次看到这个漏斗的人都会问：机会这么少，怎么赚钱？反了——<b>机会少不是系统的缺陷，是系统的工作成果</b>。你的对手盘每天交易，付出每天的手续费和情绪损耗；你两个月精选 3 次，每次都带着最便宜的止损和完整的计划。耐心是系统的一部分。</figcaption>
+  </figure>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 5-7</span>三重滤网回放：拖动日期，看每一层亮没亮<span class="real">真实数据</span><span class="ia">互动</span></p>
+    <div class="ctrls">
+      <label class="rg"><span class="rg-top">日期（2026-08-01 → 09-30）<output>09-03</output></span>
+        <input type="range" id="ts-day" min="0" max="60" step="1" value="33"></label>
+    </div>
+    <div class="lw h360" id="ts-chart"></div>
+    <div class="lw-legend" id="ts-legend"></div>
+    <div class="stats">
+      <div class="stat"><span class="k">滤网一 · 日线方向</span><span class="v" id="ts-f1">—</span><span class="s" id="ts-f1-s">—</span></div>
+      <div class="stat"><span class="k">滤网二 · 4h RSI</span><span class="v" id="ts-f2">—</span><span class="s" id="ts-f2-s">—</span></div>
+      <div class="stat"><span class="k">滤网三 · 1h 触发</span><span class="v" id="ts-f3">—</span><span class="s" id="ts-f3-s">—</span></div>
+      <div class="stat"><span class="k">本日结论</span><span class="v" id="ts-go">—</span><span class="s" id="ts-go-s">—</span></div>
+    </div>
+    <p class="lab-msg" id="ts-msg"></p>
+    <figcaption><b>读图：</b>图上是 2026-08 至 09 的真实日线，箭头标出三层全过的 3 天（9-03、9-09、9-12，都是做多），圆点是你当前选中的日子。拖动滑块逐日走一遍，三盏灯会告诉你每层的实时状态：绝大多数日子死在滤网一——61 天里三票同向只有 12 天，8 月那波大涨的途中结构票迟迟未确认（第 4 课讲过"8-31 三票才到齐"的确认代价）。也别神化它：这 3 笔按"止损挂摆动点外、止盈 2R"管理的结果是 <b>+2R、−1R、−1R，两个月合计打平</b>——其中 9-12 那笔输在结构位止损只有 0.4% 远，一根普通的针就够了（下一课 ATR 专治这个）。三重滤网给的是"顺大势、止损近、价格已转身"的高质量出手点，<b>不是保票</b>；而同期被它拦下的 58 天里，藏着多少追高和抄底的 −1R，5.2 的统计器已经给过答案。</figcaption>
+  </figure>
+  <div class="keypoint">
+    <span class="label">本课最重要的一句话 · 之二</span>
+    <p><strong>大周期有一票否决权，小周期只有执行权；机会稀少是三重滤网的工作成果，不是它的缺陷。</strong></p>
+    <p>第 15 课会给这套"顺势回调"打法一个正式的名字——模板 A，并和它的三个兄弟（收口突破、区间往返、过热过滤）组成完整的模板库。你现在练的，就是未来模板库的第一块基石。</p>
+  </div>
+</section>
+
+<!-- ================= 5.6 ================= -->
+<section class="ch" id="s6">
+  <h2 class="sec"><span class="no">5.6</span>落地：系统 v0.2</h2>
+  <p class="sec-en">YOUR SYSTEM, VERSION 0.2</p>
+  <div class="rulecard">
+    <div class="rc-head"><span class="label">规则卡</span><span class="rc-name">交易系统 v0.2 · 三重滤网雏形</span></div>
+    <dl>
+      <dt>标的与周期</dt><dd>BTC / ETH 的 U 本位永续，模拟盘；日线定方向、4 小时找位置、1 小时扣扳机</dd>
+      <dt>过滤条件</dt><dd>① 事件回避：重大数据与议息前后 30 分钟不开新仓（第 3 课日历）；② 方向三票制（第 4 课）：三票同向才允许开仓，flat 一律不做——宁可错过</dd>
+      <dt>入场</dt><dd><b>【本课修改】</b>看多：4 小时 RSI（14）回落到 40–50 区后，1 小时收盘价重新站上短期摆动高点时进场；看空镜像：RSI 反弹到 50–60 区 ＋ 1 小时收盘跌破摆动低点。不再直接追 1 小时突破</dd>
+      <dt>止损</dt><dd>挂在触发 K 线下方最近摆动低点之外（做空为摆动高点之外），止损市价单、标记价格触发；暂按结构位定距，第 6 课升级为 ATR 定距</dd>
+      <dt>出场</dt><dd>开仓同时挂 TP ＝ 2R（两倍止损距离）；到价离场，不恋战、不临时改单</dd>
+      <dt>仓位</dt><dd>名义价值 ＝ 100 U ÷ 止损距离%（单笔风险 ≤ 本金 1%）；逐仓、杠杆 ≤5 倍；同时最多 2 个仓位</dd>
+    </dl>
+    <p class="rc-note">本课修改项只有一处：<strong>入场由"1 小时突破就进"改为"4 小时回调到位 ＋ 1 小时触发"</strong>。其余条款全部继承 v0.1。注意这个改动的连锁收益：止损从"离突破点很远的结构位"变成"就在触发 K 线脚下的摆动点"，同样 100 U 风险，仓位和盈亏比都改善了——这正是 5.1 节算过的那笔账。</p>
+  </div>
+  <div class="sysup">
+    <span class="label">系统升级</span>
+    <h4>你的交易系统：v0.1 → v0.2</h4>
+    <p>本课装进系统的零件：4 小时 RSI（14）回调区定位（多 40–50 / 空 50–60）· 1 小时摆动点触发 · 三重滤网结构（大周期一票否决）· 背离作为减速警报（收紧止损用，暂不触发交易）· KDJ 看懂并归档（同类二选一）。下一课解决一个你本周就会遇到的痛点：止损到底该离多远才不被"正常的针"扫掉——ATR 登场，系统升到 v0.3。</p>
+  </div>
+  <div class="stock">
+    <span class="label">股票上怎么对照</span>
+    <h4>这套时机工具搬到股票市场，哪些照用、哪些要改</h4>
+    <ul>
+      <li><b>RSI、KDJ 公式与读法完全通用</b>——它们本来就诞生在股票和商品市场；A 股日线用同样参数即可。KDJ 在国内股票软件里是默认副图，群众基础最深，但"同类二选一"的原则不变；</li>
+      <li><b>钝化与背离的语法全市场通用</b>：A 股主升段照样 RSI 钝化，Murphy 手册的振荡指标章节有系统展开，可当字典查；</li>
+      <li><b>三重滤网本来就是股票书里的发明</b>（Elder《以交易为生》）：股票上常用"周线定方向、日线找位置、60 分钟扣扳机"的对应档位；</li>
+      <li><b>扳机层要为 T+1 让步</b>：A 股买入当天不能卖，1 小时级触发的意义下降，通常退一档用日线收盘确认当触发；</li>
+      <li><b>追高的数学在 A 股更凶险</b>：涨停板上追入，次日低开时想止损都卖不出去——止损距离的不确定性比币圈更大，仓位公式更要保守。</li>
+    </ul>
+  </div>
+  <div class="task">
+    <span class="label">本周模拟任务</span>
+    <h4>让三重滤网替你管手（全程模拟盘）</h4>
+    <ol>
+      <li>把 v0.2 规则卡抄进交易日志扉页；本周开 2–3 笔模拟单，<b>一律走三重滤网流程</b>，不满足三层就不下单；</li>
+      <li>每笔开仓前先在日志里写满三行：滤网一（三票各投了什么）、滤网二（4 小时 RSI 读数）、滤网三（触发 K 线的时间与价格）——<b>三行写不全，禁止点下单按钮</b>；</li>
+      <li>止损挂触发 K 线下方最近摆动低点之外（止损市价、标记价格触发），止盈挂 2R，仓位用 100 U ÷ 止损距离% 现算；</li>
+      <li>日志里新开一页"被滤掉的冲动"：每次想追高、想抄底而被滤网拦下，就记一笔（日期 ＋ 当时想干什么 ＋ 哪一层拦的）。周末数一数，<b>这个数字就是系统本周替你省下的学费</b>；</li>
+      <li>把图表里的 KDJ 副图删掉（或换成 RSI），体验"一个活只让一个指标干"的清爽；</li>
+      <li>在图 5-3 的统计器里玩十分钟，找出一组"最好看"的参数，然后问自己：敢把真钱押上去吗？把答案和理由写进日志——这是你和过拟合的第一次正面交锋。</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ================= 小结 ================= -->
+<section class="ch recap" id="recap">
+  <h2 class="sec"><span class="no">★</span>本课小结</h2>
+  <p class="sec-en">RECAP</p>
+  <div class="prose">
+    <ol>
+      <li><b>追高贵在止损距离</b>：突破点离结构位最远，同样 100 U 风险只能开小仓；而且 85% 的突破三天内会回踩。时机问题的本质是"在趋势里等回调"。</li>
+      <li><b>RSI ＝ 近 14 期多头赢下的力量份额</b>：50 是多空分界；70/30 是震荡市的语言。</li>
+      <li><b>超买可以一直超买</b>：强趋势里 RSI 钝化是特性不是故障（2023-10 连续 25 天 ≥70、涨 23%）；动能指标只报告力量状态，从不预告方向。</li>
+      <li><b>顺势用法等 40–50 区，不等 30</b>：健康回调很浅（那六周最低只到 38.2）；深超卖多半是瀑布。统计器实测：阈值 40 跑赢随机基准，阈值 30 平均收益为负。</li>
+      <li><b>自己算的统计也要怀疑</b>：几十笔样本、单一行情结构，调出来的"完美参数"是过拟合的开始——参数检验既是 BLB 实验也是数据窥探现场。</li>
+      <li><b>KDJ 与 RSI 同类，二选一</b>：更快也更吵（61 天交叉 60 次），趋势里高位死叉连环骗人。看懂即可，不进系统。</li>
+      <li><b>背离是减速警报，不是掉头命令</b>：可以连续背离好几次（2024 冬连骗两个月 +17.7%）；只有叠加大级别关键位和 1 小时触发才有交易价值。</li>
+      <li><b>三重滤网成形，系统 v0.2</b>：日线三票定方向（flat 即否决）→ 4 小时 RSI 回调区 → 1 小时摆动点触发。真实回放：61 天只放行 3 次——机会稀少是工作成果，耐心是系统的一部分。</li>
+    </ol>
+  </div>
+
+  <h3>术语一览（点击正文中的角标词可随时弹出）</h3>
+  <ol class="notes-list" id="notes-list"></ol>
+
+  <h3>自测</h3>
+  <details><summary>1. 2026 年 4 月那段行情里，甲在 73,636 追突破（止损 71,300），乙等回调在 71,623 进场（止损 70,400），都只肯亏 100 U。价格涨到 74,069 时，两人各赚多少？这说明什么？</summary>
+    <div class="ans"><p>甲：止损距离 3.2%，仓位 100 ÷ 3.2% ≈ 3,150 U；涨到 74,069 只有 +0.59%，赚约 19 U——才 0.2R。乙：止损距离 1.7%，仓位约 5,850 U；+3.4% 正好是他的 2R，赚约 200 U。同一段行情、同一笔风险预算，收益差了十倍——而且实际走势里甲的止损先被 70,458 的回踩扫掉了。这就是 5.1 的全部要点：<b>入场位置决定止损距离，止损距离决定仓位，仓位决定同一段行情值多少钱</b>。</p></div>
+  </details>
+  <details><summary>2. BTC 日线 RSI 已经在 70 上方待了两周，你的朋友说"超买这么久，必跌，我重仓开空了"。用本课的数据劝他。</summary>
+    <div class="ans"><p>先给他看 2023-10 的记录：RSI 连续 25 个交易日 ≥70，期间涨 23%，结束后 30 天又涨 17.5%；2023-01、2024-11 各有 19 天的同款（+32%、+30%）。长时间钝化恰恰是强趋势的指纹——主升段里天天"超买"。动能指标描述力量状态，不预告方向；方向的裁决权在日线三票。他这笔空单是逆着一致看多的潮水、仅凭一个"状态描述"下的重注——两个否决权都被他跳过了。</p></div>
+  </details>
+  <details><summary>3. 上升趋势里，为什么本课教你等 RSI 回到 40–50 就准备进场，而不是等 30 以下"更便宜"？</summary>
+    <div class="ans"><p>两个理由。经验上：健康上升趋势的回调很浅，2026 年 4 月到 5 月中那六周 4 小时 RSI 最低只到 38.2——等 30 的人整段行情零出手。统计上：图 5-3 实测，阈值 40（持有 2 天）55 笔、平均 +0.99%、胜率 65%，明显好于随机基准；阈值压到 30 以下，信号只剩个位数且平均收益转负——因为 4 小时 RSI 能跌破 30 的时刻，大多发生在趋势已坏的瀑布里（5 月 31 日那次就是，后面还有 −19.7%）。"更便宜"的价格往往是另一个市场状态的开始，不是同一个趋势的折扣。</p></div>
+  </details>
+  <details><summary>4. KDJ 比 RSI 反应更快，为什么 v0.2 反而选了慢的 RSI？什么情况下 KDJ 的死叉最不可信？</summary>
+    <div class="ans"><p>快的代价是吵：2026-08 至 09 的 61 天里 KD 交叉了 60 次，而 RSI 跌破 45 只有 18 次——信号多意味着假信号更多、手续费和情绪损耗也更多。我们的入场本来就有三层确认（方向、位置、触发），不缺一个更灵敏的警报器，缺的是更少的误报。KDJ 死叉最不可信的场景是趋势刚启动时的高位钝化：8 月 18 日 K 81.3 死叉 D 81.9，教科书式卖出信号，两天后价格 +12.4%，J 线顶着 100 连走四根 4 小时线。另外记住原理：KDJ 和 RSI 同源（都是收盘价的函数），两个一起装不是双重确认，是同一票投两次。</p></div>
+  </details>
+  <details><summary>5. "价格创新高、RSI 没创新高，这是顶背离，赶紧反手做空"——这句话错在哪？背离要怎么用才对？</summary>
+    <div class="ans"><p>错在把警报当信号。2024-11 到 2025-01 的真实记录：RSI 从 83.7 一路下台阶（69.8 → 58.6），价格却从 93,421 涨到 110,000（+17.7%），背离连续"喊狼来了"两个多月，每一批按背离做空的人都被抬走——真正的下跌 2025 年 2 月才来。背离的正确地位：动能在减速的<b>警报</b>——收紧止损、暂停顺势加仓；要把它变成能下单的理由，还需要两个条件：发生在大级别关键位（如案例 A 的 58,000 双底），并且等到价格自己的触发（1 小时收盘转向）。减速的车靠惯性还能滑很远。</p></div>
+  </details>
+  <details><summary>6. 三重滤网的三层各回答什么问题？为什么"两个月只有 4 天能交易"不是系统的缺陷？</summary>
+    <div class="ans"><p>滤网一（日线，潮汐）：方向能不能做——第 4 课的三票制，三票同向才有方向，flat 就是否决；滤网二（4 小时，波浪）：位置到没到——RSI 回落到 40–50（空为 50–60）；滤网三（1 小时，涟漪）：此刻进不进——收盘价收复/跌破短期摆动点，同时给出挂止损的锚。回放数据：61 天 → 三票同向 12 天 → 回调到位 9 天 → 触发 3 天；三票里结构票最慢（要等 3 根 K 线确认拐点），所以滤网一干的活最重。这 3 天的共同特征是"顺大势 ＋ 止损近 ＋ 价格已转身"——滤掉的 58 天里藏着的，正是追高、抄底、逆势这些最贵的冲动。系统的产出不只是进场信号，还有"不许进场"的日子；省下的止损也是利润。但它不是保票：那 3 笔的管理结果是 +2R、−1R、−1R，风险控制靠的始终是止损和仓位公式。</p></div>
+  </details>
+
+  <nav class="pager" aria-label="课程导航">
+    <a class="pg" href="ct-l04.html"><span class="pg-dir">上一课</span><span class="pg-ttl">第 4 课 · 现在往哪走</span></a>
+    <a class="pg pg-toc" href="ct-index.html"><span class="pg-dir">返回</span><span class="pg-ttl">学习地图</span></a>
+    <a class="pg pg-next" href="ct-l06.html"><span class="pg-dir">下一课</span><span class="pg-ttl">第 6 课 · 价格平时晃多大</span></a>
+  </nav>
+
+  <p class="foot">数据：币安公开历史数据（data.binance.vision），BTCUSDT 永续日线 / 4 小时 / 1 小时，已本地化；统计器与三重滤网回放均为页内对真实数据的实时计算。图表组件：TradingView Lightweight Charts™（Apache-2.0）。本讲义仅为学习笔记，不构成投资建议；合约交易风险极高。</p>
+</section>
+
+</main>
+</div>
+
+<!-- ================= 术语弹注内容 ================= -->
+<div class="notes-src" hidden>
+  <section data-note-id="momentum" data-title="动能" data-en="Momentum">
+    <p>价格变化的速度与力度。动能类指标（RSI、KDJ、MACD 柱等）衡量"最近涨跌得有多用力"，在系统里负责回答时机问题。"动能先于价格衰竭"是背离分析的理论根基：趋势反转前，推动它的力量往往先减速。</p>
+  </section>
+  <section data-note-id="rsi" data-title="相对强弱指数" data-en="RSI, Relative Strength Index">
+    <p>Wilder 于 1978 年提出。取近 n 期（默认 14）的平均涨幅与平均跌幅，RSI ＝ 100 × 平均涨幅 ÷（平均涨幅＋平均跌幅），在 0–100 之间摆动：50 为多空力量分界，传统上 70 以上称超买、30 以下称超卖。注意"相对强弱"指的是这只标的自己最近涨与跌的相对力量，不是和别的标的比强弱。</p>
+  </section>
+  <section data-note-id="overbought" data-title="超买与超卖" data-en="Overbought / Oversold">
+    <p>动能指标读数超过上阈值（如 RSI 70）叫超买，低于下阈值（如 30）叫超卖，本意是"短期走得太急，容易歇一歇"。它描述的是状态，不构成买卖指令：震荡市里常对应短期转折，趋势市里却可以长期维持（见"钝化"）。把超买当卖出信号，是动能指标最昂贵的误用。</p>
+  </section>
+  <section data-note-id="saturation" data-title="钝化" data-en="Saturation / Embedded Reading">
+    <p>指标长时间贴着极值区走平、失去区分度。RSI 连续数周 ≥70（顶部钝化）说明趋势极强，而不是即将反转——2023-10 的 BTC 日线曾连续 25 个交易日超买并上涨 23%。钝化是动能指标在趋势行情里的固有特性：公式决定了单边行情会把读数推到边界并按在那里。</p>
+  </section>
+  <section data-note-id="stoch" data-title="随机指标" data-en="Stochastic Oscillator">
+    <p>George Lane 在 1950 年代推广的动能指标。核心是 RSV：收盘价在近 n 期最高价与最低价构成的区间里所处的百分位。%K 是 RSV 的平滑，%D 是 %K 的再平滑。国内软件在 KD 基础上加了 J 线，合称 KDJ。它比 RSI 更灵敏，信号更密、噪音也更多。</p>
+  </section>
+  <section data-note-id="jline" data-title="J 线" data-en="J Line">
+    <p>KDJ 里的第三条线：J ＝ 3K − 2D，把 K 偏离 D 的程度放大三倍，是三条线里反应最快的，也是唯一经常冲出 0–100 范围的。J 值长期贴着 100 上方（或 0 下方）即钝化，说明单边力量极强——此时反向信号基本失效。</p>
+  </section>
+  <section data-note-id="divergence" data-title="背离" data-en="Divergence">
+    <p>价格与动能指标方向不一致：价格创新高而指标高点一个比一个低，叫顶背离；价格创新低而指标低点抬高，叫底背离。含义是"新极值由更弱的力量推出"——趋势在减速。注意它只是警报：背离可以连续出现多次而趋势继续，必须叠加关键价位与价格自身的触发才有交易价值。</p>
+  </section>
+  <section data-note-id="triple" data-title="三重滤网" data-en="Triple Screen">
+    <p>Elder 提出、在《以交易为生》中系统阐述的多周期交易框架：用大周期判断趋势方向，用中周期找逆势回调的位置，用小周期等顺势触发；上层对下层有一票否决权。本课的实现：日线三票定方向 → 4 小时 RSI 回调区 → 1 小时摆动点触发。</p>
+  </section>
+  <section data-note-id="swing" data-title="摆动点" data-en="Swing High / Swing Low">
+    <p>局部的高点或低点：比左右两侧若干根 K 线都高（低）的那根 K 线的极值。摆动点是市场结构的关节——"收盘重新站上摆动高点"说明回调结束、买方夺回主动权；止损挂在最近摆动低点之外，则是"结构被破坏才认输"的物理形态。</p>
+  </section>
+  <section data-note-id="overfit" data-title="过拟合" data-en="Overfitting / Curve Fitting">
+    <p>把规则参数调到在历史样本上表现最好——本质是把样本里的噪音也背了下来，换一段数据就失效。样本越少、试的参数组合越多、规则越复杂，过拟合越严重。对抗手段：保持规则简单、检查相邻参数是否同样有效（稳健性）、留出样本外数据做最终检验。</p>
+  </section>
+</div>
+
+<script src="assets/lightweight-charts.js"></script>
+<script src="assets/ct.js"></script>
+<script src="assets/ctchart.js"></script>
+<script src="assets/data/klines-BTCUSDT-1d.js"></script>
+<script src="assets/data/klines-BTCUSDT-4h.js"></script>
+<script src="assets/data/klines-BTCUSDT-1h.js"></script>
+<script>
+(function(){
+'use strict';
+var fmt = CT.fmtN;
+
+/* ---------- 共用：按行数组计算的原始指标（与 node 预演逐位一致） ---------- */
+function rawRSI(rows, n){
+  /* 返回与 rows 对齐的数组：V[i] 为第 i 根的 RSI，i < n 时为 null */
+  var V = [], up = 0, dn = 0, i, ch, u, d;
+  V[0] = null;
+  for(i = 1; i < rows.length; i++){
+    ch = rows[i][4] - rows[i - 1][4];
+    u = Math.max(ch, 0); d = Math.max(-ch, 0);
+    if(i <= n){ up += u / n; dn += d / n; }
+    else{ up = (up * (n - 1) + u) / n; dn = (dn * (n - 1) + d) / n; }
+    V[i] = i >= n ? (dn === 0 ? 100 : 100 - 100 / (1 + up / dn)) : null;
+  }
+  return V;
+}
+/* 与第 4 课方向判定器逐位一致的三件工具 */
+function emaArr(rows, n){
+  var k = 2 / (n + 1), e = null, out = [], i, v;
+  for(i = 0; i < rows.length; i++){
+    v = rows[i][4];
+    e = e === null ? v : v * k + e * (1 - k);
+    out.push(i >= n - 1 ? e : null);
+  }
+  return out;
+}
+function rawSwings(rows, K){
+  var piv = [], i, j;
+  for(i = K; i < rows.length - K; i++){
+    var isH = true, isL = true;
+    for(j = i - K; j <= i + K; j++){
+      if(j === i) continue;
+      if(rows[j][2] >= rows[i][2]) isH = false;
+      if(rows[j][3] <= rows[i][3]) isL = false;
+    }
+    if(isH) piv.push({i: i, type: 'H', price: rows[i][2], confirmI: i + K});
+    if(isL) piv.push({i: i, type: 'L', price: rows[i][3], confirmI: i + K});
+  }
+  return piv;
+}
+function cleanSwings(piv, minPct){
+  var out = [];
+  for(var k = 0; k < piv.length; k++){
+    var p = piv[k];
+    if(!out.length){ out.push(p); continue; }
+    var last = out[out.length - 1];
+    if(p.type === last.type){
+      if(p.type === 'H' ? p.price > last.price : p.price < last.price) out[out.length - 1] = p;
+    }else{
+      if(Math.abs(p.price / last.price - 1) < minPct) continue;
+      out.push(p);
+    }
+  }
+  return out;
+}
+function dISO(t){ return new Date(t * 1000).toISOString().slice(0, 10); }
+
+/* ---------- 图 5-1 两张票价 ---------- */
+(function(){
+  var rows = CT.slice(CT.get('klines-BTCUSDT-4h'), '2026-04-08', '2026-04-17');
+  var g = CT.makeChart('p1-chart', {timeVisible: true});
+  var cs = g.addCandles(rows);
+  g.priceLine(cs, 73450, 'muted', '被突破的前高', 2);
+  g.priceLine(cs, 73636, 'crit', '追高入场', 0);
+  g.priceLine(cs, 71300, 'crit', '追高者近止损', 2);
+  g.priceLine(cs, 71623, 'accent', '回调入场', 0);
+  g.priceLine(cs, 70400, 'accent', '回调者止损', 2);
+  g.markers(cs, [
+    {time: Date.parse('2026-04-11T16:00:00Z') / 1000, position: 'aboveBar', shape: 'arrowDown', color: 'crit', text: '追高点 73,636'},
+    {time: Date.parse('2026-04-12T20:00:00Z') / 1000, position: 'belowBar', shape: 'circle', color: 'crit', text: '回踩 70,458 扫掉近止损'},
+    {time: Date.parse('2026-04-13T12:00:00Z') / 1000, position: 'belowBar', shape: 'arrowUp', color: 'up', text: '1h 触发 71,623'},
+    {time: Date.parse('2026-04-13T20:00:00Z') / 1000, position: 'aboveBar', shape: 'circle', color: 'up', text: '9 小时到 2R'}
+  ]);
+  g.fit();
+  CT.legend('p1-legend', [['crit', '追高者：入场 73,636 / 止损 71,300'], ['accent', '回调者：入场 71,623 / 止损 70,400'], ['muted', '被突破的前高 73,450']]);
+})();
+
+/* ---------- 图 5-2 同一个读数的两种命运 ---------- */
+(function(){
+  var warm = CT.slice(CT.get('klines-BTCUSDT-4h'), '2026-02-01', '2026-06-20');
+  var disp0 = Date.parse('2026-04-01T00:00:00Z') / 1000;
+  var dispRows = warm.filter(function(r){ return r[0] >= disp0; });
+  var g = CT.makeChart('rx-chart', {panes: [0.32], timeVisible: true, minBarSpacing: 0.1});
+  var cs = g.addCandles(dispRows);
+  var rsiAll = CT.ind.rsi(warm, 14);
+  var t0 = CT.ts(disp0);
+  var rsiLine = g.addLine(rsiAll.filter(function(p){ return p.time >= t0; }), 'series', {pane: 1, width: 2, title: 'RSI14'});
+  g.priceLine(rsiLine, 70, 'muted', '70', 2);
+  g.priceLine(rsiLine, 50, 'muted', '50', 3);
+  g.priceLine(rsiLine, 40, 'accent', '40', 2);
+  g.priceLine(rsiLine, 30, 'muted', '30', 2);
+  g.markers(cs, [
+    {time: Date.parse('2026-04-29T12:00:00Z') / 1000, position: 'belowBar', shape: 'arrowUp', color: 'up', text: 'RSI 40.5 · 三票全多放行'},
+    {time: Date.parse('2026-05-04T00:00:00Z') / 1000, position: 'aboveBar', shape: 'circle', color: 'up', text: '五天后 79,826'},
+    {time: Date.parse('2026-05-31T12:00:00Z') / 1000, position: 'belowBar', shape: 'arrowUp', color: 'crit', text: 'RSI 41.1 · 但系统已 flat'},
+    {time: Date.parse('2026-06-05T16:00:00Z') / 1000, position: 'belowBar', shape: 'circle', color: 'crit', text: '五天后 59,080'}
+  ]);
+  g.fit();
+  CT.legend('rx-legend', [['series', 'RSI（14），下方副图'], ['accent', '40 线：顺势回调区的下沿'], ['up', '放行日的 40.5'], ['crit', 'flat 日的 41.1']]);
+})();
+
+/* ---------- 图 5-3 RSI 策略统计器 ---------- */
+(function(){
+  var rows = CT.slice(CT.get('klines-BTCUSDT-4h'), '2026-04-01', '2026-10-01');
+  var V = rawRSI(rows, 14);
+  var T = 40, N = 12;
+  function run(){
+    var trades = [], base = [], i;
+    for(i = 15; i < rows.length; i++){
+      if(V[i - 1] !== null && V[i - 1] >= T && V[i] < T && i + N < rows.length){
+        trades.push((rows[i + N][4] / rows[i + 1][1] - 1) * 100);
+      }
+    }
+    for(i = 15; i + N < rows.length; i++){
+      base.push((rows[i + N][4] / rows[i + 1][1] - 1) * 100);
+    }
+    var avg = function(a){ var s = 0; a.forEach(function(x){ s += x; }); return a.length ? s / a.length : 0; };
+    var win = function(a){ return a.length ? a.filter(function(x){ return x > 0; }).length / a.length * 100 : 0; };
+    var tAvg = avg(trades), tWin = win(trades), bAvg = avg(base), bWin = win(base);
+    document.getElementById('rs-cnt').textContent = trades.length + ' 笔';
+    var avgEl = document.getElementById('rs-avg');
+    avgEl.textContent = trades.length ? (tAvg >= 0 ? '+' : '−') + Math.abs(tAvg).toFixed(2) + '%' : '—';
+    avgEl.className = 'v ' + (tAvg >= 0 ? 'up' : 'dn');
+    document.getElementById('rs-win').textContent = trades.length ? tWin.toFixed(0) + '%' : '—';
+    document.getElementById('rs-base').textContent = (bAvg >= 0 ? '+' : '−') + Math.abs(bAvg).toFixed(2) + '%';
+    document.getElementById('rs-base-s').textContent = '随机胜率 ' + bWin.toFixed(0) + '%　（' + fmt(base.length, 0) + ' 个入场点）';
+    var msg;
+    if(trades.length === 0){
+      msg = '这组参数在整个样本里<b>一次信号都没有</b>——阈值太极端。规则没信号，再漂亮也只是摆设。';
+    }else if(trades.length < 10){
+      msg = '只有 ' + trades.length + ' 笔信号：<b>样本太少，平均数基本是运气</b>。一两笔极端行情就能把结论整个翻过来——这种格子里的数字，看看就好，别当证据。';
+    }else{
+      var edge = tAvg - bAvg;
+      if(edge > 0.3){
+        msg = '这组参数样本内跑赢随机基准 <b>' + edge.toFixed(2) + '%</b>/笔。先别激动：这是 ' + trades.length + ' 笔的后视统计，只覆盖 2026-04 至 09 这一种行情结构；你调参数的每一下，都在向过拟合靠近。另外双边市价一来回手续费约 0.1%——平均收益先扣掉它再看。';
+      }else if(edge < -0.3){
+        msg = '这组参数<b>还不如闭着眼随机进场</b>。' + (T <= 30 ? '阈值 ' + T + ' 意味着只在深超卖时买——4 小时 RSI 能跌到这里的时刻，多半已经是瀑布，这就是"接飞刀"的统计学长相。' : '回调条件和行情节奏不匹配，信号质量差。');
+      }else{
+        msg = '和随机基准打平：这组参数没有提供真正的优势。' + (T >= 50 ? '阈值 ' + T + ' 几乎等于"稍微歇口气就买"——回调太浅，和随机进场区别不大。' : '试试把阈值放在 35–45 一带对比看看。');
+      }
+      msg += '　记住它测的只是"买入后拿满 ' + N + ' 根"——真实系统还有方向滤网、止损和 2R 止盈，统计器是放大镜，不是整台系统。';
+    }
+    document.getElementById('rs-msg').innerHTML = msg;
+  }
+  CT.bindRange('rs-t', function(v){ T = v; run(); });
+  CT.bindRange('rs-n', function(v){ N = v; run(); }, function(v){ return v % 6 === 0 ? v + ' 根 ＝ ' + (v / 6) + ' 天' : v + ' 根 ＝ ' + v * 4 + ' 小时'; });
+})();
+
+/* ---------- 图 5-4 KDJ 的快与假 ---------- */
+(function(){
+  var warm = CT.slice(CT.get('klines-BTCUSDT-4h'), '2026-06-01', '2026-10-01');
+  var disp0 = Date.parse('2026-08-01T00:00:00Z') / 1000;
+  var dispRows = warm.filter(function(r){ return r[0] >= disp0; });
+  var g = CT.makeChart('kd-chart', {panes: [0.34], timeVisible: true, minBarSpacing: 0.1});
+  var cs = g.addCandles(dispRows);
+  var kd = CT.ind.kdj(warm, 9, 3, 3);
+  var t0 = CT.ts(disp0);
+  var cut = function(a){ return a.filter(function(p){ return p.time >= t0; }); };
+  var kLine = g.addLine(cut(kd.k), 'series', {pane: 1, width: 2, title: 'K'});
+  g.addLine(cut(kd.d), 'series2', {pane: 1, width: 2, title: 'D'});
+  g.addLine(cut(kd.j), 'series4', {pane: 1, width: 1, dashed: true, title: 'J'});
+  g.priceLine(kLine, 80, 'muted', '80', 2);
+  g.priceLine(kLine, 20, 'muted', '20', 2);
+  g.markers(cs, [
+    {time: Date.parse('2026-08-12T00:00:00Z') / 1000, position: 'belowBar', shape: 'arrowUp', color: 'up', text: '低位金叉 63,800 → 12 天 +23.7%'},
+    {time: Date.parse('2026-08-18T16:00:00Z') / 1000, position: 'aboveBar', shape: 'arrowDown', color: 'crit', text: '高位死叉 64,620 → 两天 +12.4%'}
+  ]);
+  g.fit();
+  CT.legend('kd-legend', [['series', 'K（快线）'], ['series2', 'D（慢线）'], ['series4', 'J ＝ 3K − 2D（虚线）']]);
+})();
+
+/* ---------- 图 5-5 两个真实背离 ---------- */
+(function(){
+  var d1 = CT.get('klines-BTCUSDT-1d');
+  var CASES = {
+    a: {
+      warmFrom: '2026-01-01', warmTo: '2026-09-01',
+      dispFrom: '2026-05-10', dispTo: '2026-09-01',
+      conP: [['2026-06-05', 59080], ['2026-07-01', 57759]],
+      conR: [['2026-06-05', 15.6], ['2026-07-01', 37.2]],
+      markers: [
+        {t: '2026-06-05', position: 'belowBar', shape: 'circle', color: 'crit', text: '低点 59,080 · RSI 15.6'},
+        {t: '2026-07-01', position: 'belowBar', shape: 'circle', color: 'up', text: '更低 57,759 · RSI 37.2'},
+        {t: '2026-08-28', position: 'aboveBar', shape: 'circle', color: 'up', text: '81,500（+41%）'}
+      ],
+      msg: '<b>案例 A · 底背离成功</b>：价格第二次探底更低（−2.2%），RSI 却从 15.6 抬到 37.2——卖方力量衰竭。注意它成功的完整配方：背离 ＋ 58,000 双底关键位 ＋ 之后价格自己转身触发，三者缺一不可。'
+    },
+    b: {
+      warmFrom: '2024-03-01', warmTo: '2025-03-10',
+      dispFrom: '2024-09-15', dispTo: '2025-03-05',
+      conP: [['2024-11-13', 93421], ['2024-12-17', 108367], ['2025-01-20', 110000]],
+      conR: [['2024-11-13', 83.7], ['2024-12-17', 69.8], ['2025-01-20', 58.6]],
+      markers: [
+        {t: '2024-11-13', position: 'aboveBar', shape: 'circle', color: 'crit', text: '93,421 · RSI 83.7'},
+        {t: '2024-12-17', position: 'aboveBar', shape: 'circle', color: 'crit', text: '108,367 · RSI 69.8'},
+        {t: '2025-01-20', position: 'aboveBar', shape: 'circle', color: 'crit', text: '110,000 · RSI 58.6'},
+        {t: '2025-02-28', position: 'belowBar', shape: 'circle', color: 'down', text: '两个多月后才跌：78,200'}
+      ],
+      msg: '<b>案例 B · 顶背离连环失败</b>：RSI 高点一级级走低（83.7 → 69.8 → 58.6），价格却一路新高（+17.7%）。背离连喊两个多月"狼来了"，每一批做空的人都被抬走——减速的车靠惯性还能滑很远，大跌直到 2025-02 才来。'
+    }
+  };
+  var g = CT.makeChart('dv-chart', {panes: [0.32], minBarSpacing: 0.1});
+  var cur = [];   /* 本图当前的全部系列引用 */
+  function toLine(arr){
+    return arr.map(function(p){ return {time: CT.ts(Date.parse(p[0] + 'T00:00:00Z') / 1000), value: p[1]}; });
+  }
+  function show(id){
+    var c = CASES[id];
+    cur.forEach(function(s){ g.chart.removeSeries(s); g.series = g.series.filter(function(it){ return it.s !== s; }); });
+    g.series = g.series.filter(function(it){ return it.kind !== 'priceline' && it.kind !== 'markers'; });
+    cur = [];
+    var warm = CT.slice(d1, c.warmFrom, c.warmTo);
+    var disp0 = Date.parse(c.dispFrom + 'T00:00:00Z') / 1000;
+    var dispEnd = Date.parse(c.dispTo + 'T00:00:00Z') / 1000;
+    var dispRows = warm.filter(function(r){ return r[0] >= disp0 && r[0] < dispEnd; });
+    var cs = g.addCandles(dispRows);
+    var rsiAll = CT.ind.rsi(warm, 14);
+    var t0 = CT.ts(disp0), t1 = CT.ts(dispEnd);
+    var rsiLine = g.addLine(rsiAll.filter(function(p){ return p.time >= t0 && p.time < t1; }), 'series', {pane: 1, width: 2, title: 'RSI14'});
+    g.priceLine(rsiLine, 70, 'muted', '70', 2);
+    g.priceLine(rsiLine, 30, 'muted', '30', 2);
+    var conP = g.addLine(toLine(c.conP), 'accent', {width: 2, marker: false});
+    var conR = g.addLine(toLine(c.conR), 'accent', {pane: 1, width: 2, marker: false});
+    g.markers(cs, c.markers.map(function(m){
+      return {time: Date.parse(m.t + 'T00:00:00Z') / 1000, position: m.position, shape: m.shape, color: m.color, text: m.text};
+    }));
+    cur = [cs, rsiLine, conP, conR];
+    g.fit();
+    document.getElementById('dv-msg').innerHTML = c.msg;
+  }
+  CT.bindSeg('dv-seg', show);
+  CT.legend('dv-legend', [['accent', '背离连线（价格极值 vs RSI 对应点）'], ['series', 'RSI（14），下方副图']]);
+})();
+
+/* ---------- 图 5-7 三重滤网回放 ---------- */
+(function(){
+  var DAY0 = Date.parse('2026-08-01T00:00:00Z') / 1000;
+  var NDAYS = 61;
+  /* 滤网一：第 4 课三票制原样照搬（EMA 用全部历史推算，摆动点左右各 3 根＋3% 过滤、只用已确认拐点） */
+  var dW = CT.get('klines-BTCUSDT-1d');
+  var E20 = emaArr(dW, 20), E60 = emaArr(dW, 60);
+  var pivD = rawSwings(dW, 3);
+  var dayIdx = {};
+  dW.forEach(function(r, i){ dayIdx[dISO(r[0])] = i; });
+  function verdictAt(i){
+    var cl = cleanSwings(pivD.filter(function(s){ return s.confirmI <= i; }), 0.03);
+    var hs = cl.filter(function(s){ return s.type === 'H'; }).slice(-2);
+    var ls = cl.filter(function(s){ return s.type === 'L'; }).slice(-2);
+    var v3 = 0;
+    if(hs.length === 2 && ls.length === 2){
+      var hh = hs[1].price > hs[0].price, hl = ls[1].price > ls[0].price;
+      v3 = hh && hl ? 1 : (!hh && !hl ? -1 : 0);
+    }
+    var v1 = E20[i] > E60[i] ? 1 : -1;
+    var v2 = dW[i][4] > E20[i] ? 1 : -1;
+    var dir = (v1 === 1 && v2 === 1 && v3 === 1) ? 1 : (v1 === -1 && v2 === -1 && v3 === -1) ? -1 : 0;
+    return {v1: v1, v2: v2, v3: v3, dir: dir};
+  }
+  /* 滤网二：4h RSI */
+  var h4w = CT.slice(CT.get('klines-BTCUSDT-4h'), '2026-01-01', '2026-10-01');
+  var V4 = rawRSI(h4w, 14);
+  var rsiBy = {};
+  h4w.forEach(function(r, i){ if(V4[i] !== null) rsiBy[r[0]] = V4[i]; });
+  /* 滤网三：1h 摆动点触发 */
+  var h1w = CT.slice(CT.get('klines-BTCUSDT-1h'), '2026-04-01', '2026-10-01');
+  var h1idx = {};
+  h1w.forEach(function(r, i){ h1idx[r[0]] = i; });
+
+  var days = [];
+  var passList = [];
+  var t, k, x, b;
+  for(var di = 0; di < NDAYS; di++){
+    t = DAY0 + di * 86400;
+    var iPrev = dayIdx[dISO(t - 86400)];
+    var vd = verdictAt(iPrev);
+    var dir = vd.dir;
+    var rMin = null, rMax = null, f2 = false, f2v = null;
+    for(b = t; b < t + 86400; b += 14400){
+      var rv = rsiBy[b];
+      if(rv === undefined) continue;
+      if(rMin === null || rv < rMin) rMin = rv;
+      if(rMax === null || rv > rMax) rMax = rv;
+      if(dir === 1 && rv >= 40 && rv <= 50 && !f2){ f2 = true; f2v = rv; }
+      if(dir === -1 && rv >= 50 && rv <= 60 && !f2){ f2 = true; f2v = rv; }
+    }
+    var f3t = null, f3c = null;
+    if(dir !== 0 && f2){
+      var i0 = h1idx[t];
+      for(k = Math.max(i0, 12); k < i0 + 24 && k < h1w.length; k++){
+        var hh = -Infinity, ll = Infinity;
+        for(x = k - 12; x < k; x++){
+          if(h1w[x][2] > hh) hh = h1w[x][2];
+          if(h1w[x][3] < ll) ll = h1w[x][3];
+        }
+        if(dir === 1 && h1w[k][4] > hh){ f3t = h1w[k][0]; f3c = h1w[k][4]; break; }
+        if(dir === -1 && h1w[k][4] < ll){ f3t = h1w[k][0]; f3c = h1w[k][4]; break; }
+      }
+    }
+    var pass = dir !== 0 && f2 && f3t !== null;
+    days.push({t: t, dir: dir, votes: [vd.v1, vd.v2, vd.v3], rMin: rMin, rMax: rMax, f2: f2, f2v: f2v, f3t: f3t, f3c: f3c, pass: pass});
+    if(pass) passList.push(days[days.length - 1]);
+  }
+
+  var AFTER = {
+    '2026-09-03': '事后看：触发价 77,783，止损挂摆动低点 76,703 外（距离 1.4%），当天北京 22 点就摸到 2R 止盈 79,945——教科书的一笔，+200 U。',
+    '2026-09-09': '事后看：触发价 79,136，当天行情掉头打损 −1R（−100 U）。顺大势、位置好、有触发，照样会亏——三重滤网给的是概率，不是保票。',
+    '2026-09-12': '事后看：这次触发 K 线脚下的摆动低点只有 0.4% 远，一根普通的针就把它扫掉了（−1R）。结构位止损贴得太近——这正是下一课 ATR 定距要修的痛点。'
+  };
+
+  var rows = CT.slice(CT.get('klines-BTCUSDT-1d'), '2026-08-01', '2026-10-01');
+  var g = CT.makeChart('ts-chart');
+  var cs = g.addCandles(rows);
+  var mApi = LightweightCharts.createSeriesMarkers(cs, []);
+  var curIdx = 33;
+  function paintMarkers(){
+    var p = CT.pal();
+    var list = passList.map(function(d){
+      return d.dir === 1
+        ? {time: CT.ts(d.t), position: 'belowBar', shape: 'arrowUp', color: p.up, text: '多', size: 1}
+        : {time: CT.ts(d.t), position: 'aboveBar', shape: 'arrowDown', color: p.down, text: '空', size: 1};
+    });
+    list.push({time: CT.ts(DAY0 + curIdx * 86400), position: 'aboveBar', shape: 'circle', color: p.accent, text: '', size: 1});
+    list.sort(function(a, b){ return a.time - b.time; });
+    mApi.setMarkers(list);
+  }
+  g.onRestyle(paintMarkers);
+  g.fit();
+  CT.legend('ts-legend', [['up', '三层全过的出手日（本窗口 3 次，都是做多）'], ['accent', '当前选中的日子']]);
+
+  function put(id, txt, cls, sub){
+    var el = document.getElementById(id);
+    el.textContent = txt;
+    el.className = 'v' + (cls ? ' ' + cls : '');
+    document.getElementById(id + '-s').textContent = sub;
+  }
+  function paint(){
+    var d = days[curIdx];
+    var vn = ['均线', '价格', '结构'];
+    var voteTxt = d.votes.map(function(v, i){ return vn[i] + ' ' + (v === 1 ? '多' : v === -1 ? '空' : '弃权'); }).join(' · ');
+    if(d.dir === 1) put('ts-f1', '看多', 'up', '三票：' + voteTxt);
+    else if(d.dir === -1) put('ts-f1', '看空', 'dn', '三票：' + voteTxt);
+    else put('ts-f1', 'flat 观望', 'warn', '三票：' + voteTxt + '（不齐）');
+    var range = d.rMin === null ? '—' : d.rMin.toFixed(0) + ' – ' + d.rMax.toFixed(0);
+    if(d.dir === 0) put('ts-f2', '—', '', '当日 4h RSI ' + range + '（方向未定，不评判）');
+    else if(d.f2) put('ts-f2', '到位 ' + d.f2v.toFixed(1), d.dir === 1 ? 'up' : 'dn', '当日 4h RSI ' + range + '，踏入' + (d.dir === 1 ? ' 40–50 ' : ' 50–60 ') + '回调区');
+    else put('ts-f2', '未到位', 'warn', '当日 4h RSI ' + range + '，没碰' + (d.dir === 1 ? ' 40–50 ' : ' 50–60 ') + '区');
+    if(d.f3t !== null){
+      var bj = (Math.floor(d.f3t / 3600) % 24 + 8) % 24;
+      put('ts-f3', '北京 ' + bj + ' 点触发', d.dir === 1 ? 'up' : 'dn', '1h 收盘 ' + fmt(d.f3c, 0) + '，收复摆动点');
+    }else if(d.dir !== 0 && d.f2){
+      put('ts-f3', '未触发', 'warn', '1h 收盘价全天没能收复摆动点');
+    }else{
+      put('ts-f3', '—', '', '前面的滤网没过，不看扳机');
+    }
+    if(d.pass){
+      put('ts-go', d.dir === 1 ? '开多' : '开空', d.dir === 1 ? 'up' : 'dn', '61 天里仅有的 3 个全过日之一');
+    }else{
+      var why = d.dir === 0 ? '滤网一拦下' : (!d.f2 ? '滤网二拦下' : '滤网三拦下');
+      put('ts-go', '不开', '', why + '——观望也是指令');
+    }
+    var msg;
+    if(d.pass){
+      msg = '三层全亮。' + (d.dir === 1 ? '在触发 K 线处进多，止损挂它下方最近摆动低点之外' : '在触发 K 线处进空，止损挂摆动高点之外') + '，止盈 2R，仓位 ＝ 100 U ÷ 止损距离。　' + (AFTER[dISO(d.t)] || '');
+    }else if(d.dir === 0){
+      msg = '日线三票（' + voteTxt + '）没凑成一致，判定 flat——<b>滤网一就把今天关在门外</b>。第 4 课说过：flat 不是"系统没意见"，是"现在不做"的明确指令。这种日子做的每一单，都是在和潮水赌硬币。';
+    }else if(!d.f2){
+      msg = '方向' + (d.dir === 1 ? '看多' : '看空') + '，但 4 小时 RSI（' + range + '）没回到回调区——<b>价格还悬在半空</b>。追进去就是 5.1 算过的那张贵票。等。';
+    }else{
+      msg = '位置到了，扳机没响：1 小时始终没能' + (d.dir === 1 ? '收复摆动高点' : '跌破摆动低点') + '——回调可能还没走完，<b>先到场的是耐心，后到场的才是订单</b>。';
+    }
+    document.getElementById('ts-msg').innerHTML = msg;
+    paintMarkers();
+  }
+  CT.bindRange('ts-day', function(v){ curIdx = v; paint(); }, function(v){
+    return dISO(DAY0 + v * 86400).slice(5);
+  });
+})();
+})();
+</script>
+</body>
+</html>

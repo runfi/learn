@@ -1,0 +1,519 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>币圈短线课 · 第 2 课 K 线与周期</title>
+<link rel="stylesheet" href="assets/ct.css">
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <span class="book"><a href="ct-index.html">币圈短线实战课</a></span>
+  <span class="part"><a href="ct-index.html">学习地图</a> · 阶段 0 开盘前的底子</span>
+  <span class="prefs">
+    <button id="btn-updown" type="button" title="切换涨跌配色"></button>
+    <button id="btn-theme" type="button" title="切换深浅主题"></button>
+  </span>
+</header>
+
+<div class="layout">
+
+<nav class="sidenav" aria-label="本课目录">
+  <p class="sn-chap">第 2 课 · K 线与周期</p>
+  <a href="#top">课首</a>
+  <a href="#s1">2.1 一根 K 线在说什么</a>
+  <a href="#s2">2.2 影线与实体的读法</a>
+  <a href="#s3">2.3 周期：潮汐·波浪·涟漪</a>
+  <a href="#s4">2.4 币圈的钟表与心跳</a>
+  <a href="#s5">2.5 把图表调成工作台</a>
+  <a href="#s6">2.6 落地：看盘节律</a>
+  <a href="#recap">小结 · 术语 · 自测</a>
+</nav>
+
+<main class="article">
+
+<section class="hero" id="top">
+  <span class="chap-no">LESSON 02 · 第 2 课 / 共 16 课</span>
+  <h1>K 线与周期</h1>
+  <p class="en">CANDLESTICKS AND TIMEFRAMES</p>
+  <p class="question">本课问题：一根 K 线在说什么？你该在哪个周期上生活？</p>
+  <p class="lede">接下来十几课要看的所有图，原材料都是 K 线。它不是什么神秘符号，而是<strong>一段时间内多空拉锯的战报</strong>：谁进攻过、打到哪里、最后谁守住了阵地。这一课先教你把单根战报读顺，再解决一个更重要的问题——同一场战争在日线、4 小时、1 小时三张地图上长得完全不同，<strong>你的每个决策该看哪张图</strong>。最后用真实数据回答一个很实际的问题：币圈 24 小时不停，你一个要上班的人，几点看盘才不亏待自己。</p>
+  <div class="objectives">
+    <h2>学完你能做到</h2>
+    <ul>
+      <li>看一眼 K 线就说出：这段时间谁占优、攻防发生在哪里；</li>
+      <li>解释影线和实体的含义，并知道<strong>单根 K 线为什么不能当信号</strong>；</li>
+      <li>给日线、4 小时、1 小时分好工：定方向、找位置、扣扳机；</li>
+      <li>说出币安日线的切日时间（北京早上 8 点），复盘不再错位；</li>
+      <li>用真实统计说出一天内的活跃时段和清淡时段，安排自己的看盘节律；</li>
+      <li>把交易所 / TradingView 的图表调成趁手的工作台（标记价格、警报、画线）。</li>
+    </ul>
+  </div>
+  <p class="colorkey">读图约定：默认<span class="up">绿涨</span>·<span class="dn">红跌</span>，右上角可切换。带 <b>互动</b> 标签的图可拖动调参；虚线下划线词点击弹出解释。图表时间轴按你设备的时区显示（北京时间 ＝ UTC+8）。</p>
+  <nav class="chapmap" aria-label="本课小节">
+    <a href="#s1">一根 K 线</a><a href="#s2">影线与实体</a><a href="#s3">三个周期</a><a href="#s4">钟表与心跳</a><a href="#s5">图表工作台</a><a href="#s6">看盘节律</a><a href="#recap">小结</a>
+  </nav>
+</section>
+
+<!-- ================= 2.1 ================= -->
+<section class="ch" id="s1">
+  <h2 class="sec"><span class="no">2.1</span>一根 K 线在说什么</h2>
+  <p class="sec-en">ANATOMY OF A CANDLESTICK</p>
+  <div class="prose">
+    <p>一根 K 线只记录四个价格——<span class="nt" data-note="ohlc">开、高、低、收</span>——却把一段时间的攻防浓缩成了一个形状：</p>
+    <ul>
+      <li><strong>实体</strong>（开盘价到收盘价的粗柱）：这段时间的<em>净战果</em>。收在开上方是阳线（多头赢），收在开下方是阴线（空头赢）；</li>
+      <li><strong><span class="nt" data-note="shadow">影线</span></strong>（实体上下的细线）：<em>被收复的失地</em>。上影线说明价格冲上去过、被卖压打了回来；下影线说明砸下去过、被买盘接了回来；</li>
+      <li><strong>颜色只看开收关系</strong>，和昨天比涨没涨无关——今天高开低走收阴线，哪怕仍比昨天收盘高。</li>
+    </ul>
+  </div>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>K 线是一场攻防战的<strong>战报</strong>：最高价是进攻方打到的最远位置，最低价是防守方被压到的最深处，实体是终场时真正守住的领土，影线则是"去过但没守住"的地方。读 K 线不是认符号，是读战报：<em>谁进攻了？打到哪？谁笑到最后？</em></p>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 2-1</span>捏一根 K 线：拖动开收位置，看战局怎么变<span class="ia">互动</span></p>
+    <div class="ctrls">
+      <label class="rg"><span class="rg-top">开盘价位置（0 ＝ 最低点，100 ＝ 最高点）<output>30</output></span>
+        <input type="range" id="k-o" min="2" max="98" step="1" value="30"></label>
+      <label class="rg"><span class="rg-top">收盘价位置<output>75</output></span>
+        <input type="range" id="k-c" min="2" max="98" step="1" value="75"></label>
+    </div>
+    <div class="fig-scroll narrow">
+      <svg id="k-svg" viewBox="0 0 720 300" role="img" aria-label="可调节的 K 线解剖图">
+        <line x1="200" y1="30" x2="200" y2="270" class="wu" id="k-wick"/>
+        <rect x="178" y="80" width="44" height="100" class="cu" id="k-body" rx="2"/>
+        <line x1="160" y1="30" x2="240" y2="30" class="sr"/>
+        <line x1="160" y1="270" x2="240" y2="270" class="sr"/>
+        <text x="152" y="34" text-anchor="end" class="tick">最高价</text>
+        <text x="152" y="274" text-anchor="end" class="tick">最低价</text>
+        <text x="256" y="0" class="pv" id="k-lbl-o">开</text>
+        <text x="256" y="0" class="pv" id="k-lbl-c">收</text>
+        <text x="420" y="78" class="pl" id="k-name">大阳线</text>
+        <text x="420" y="108" class="nd" id="k-desc1"></text>
+        <text x="420" y="130" class="nd" id="k-desc2"></text>
+        <text x="420" y="152" class="nd" id="k-desc3"></text>
+        <text x="420" y="196" class="hi" id="k-up-note"></text>
+        <text x="420" y="218" class="hi" id="k-dn-note"></text>
+      </svg>
+    </div>
+    <p class="lab-msg" id="k-msg"></p>
+    <figcaption><b>读图：</b>把两个滑块都拉到接近 100，你会得到光头大阳线（多头碾压全场）；把收盘拉回开盘附近，就成了<span class="nt" data-note="doji">十字星</span>（打了一整天，谁也没占到便宜）；开低收低、留着长长的上影线，是"冲高被闷头打回"。先把形状和战局的对应关系捏熟，<b>但别急着拿单根形状当信号</b>——同样的形状出现在不同位置，含义完全不同（第 8 课），单根 K 线永远只是半句话。</figcaption>
+  </figure>
+  <div class="prose">
+    <h3>周期切换的本质：同一场战争的不同总结粒度</h3>
+    <p>1 根日线 ＝ 6 根 4 小时线的浓缩 ＝ 24 根 1 小时线的浓缩。切周期不是换数据，是换<strong>总结的粒度</strong>。来看一个你已经熟悉的例子——第 1 课那根著名的日线，拆开是什么样：</p>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 2-2</span>一根日线的内部：2025-10-10 暴跌日的 24 根小时线<span class="real">真实数据</span></p>
+    <div class="stats">
+      <div class="stat"><span class="k">这根日线 · 开</span><span class="v">121,579</span><span class="s">币安 BTCUSDT 永续</span></div>
+      <div class="stat"><span class="k">高 / 低</span><span class="v">122,497 / 101,517</span><span class="s">振幅 −17%</span></div>
+      <div class="stat"><span class="k">收</span><span class="v dn">112,715</span><span class="s">大阴线</span></div>
+      <div class="stat"><span class="k">下影线</span><span class="v">9.9%</span><span class="s">比实体（7.9%）还长</span></div>
+    </div>
+    <div class="lw h360" id="h24-chart"></div>
+    <figcaption><b>读图：</b>日线上只看到"长下影大阴线"五个字，拆成小时线才看到故事：白天还在横盘，消息落地后连续数根大阴线垂直坠落，最猛一根（北京时间凌晨 5 点）下探 101,517，随后两小时被买盘拉回 11,000 多美元——这段"去过又收回"的部分，在日线上就压缩成了那根 9.9% 的下影线。<b>影线 ＝ 被压缩掉的故事</b>。想看故事细节就下沉周期，想看结论就上浮周期。</figcaption>
+  </figure>
+</section>
+
+<!-- ================= 2.2 ================= -->
+<section class="ch" id="s2">
+  <h2 class="sec"><span class="no">2.2</span>影线与实体的读法：谁赢了这段时间</h2>
+  <p class="sec-en">READING SHADOWS AND BODIES</p>
+  <div class="cards">
+    <div class="card">
+      <h4>长实体、短影线</h4>
+      <p>一边倒的碾压。<span class="nt" data-note="marubozu">光头光脚</span>大阳 / 大阴是最强的单日表态，往往出现在趋势加速段或突破时。</p>
+      <span class="k">力量：单边强</span>
+    </div>
+    <div class="card">
+      <h4>长下影、小实体</h4>
+      <p>砸下去、被接回来——下方<strong>有人愿意花真钱买</strong>。出现在支撑位附近时值得多看一眼（但要等确认，第 8 课）。</p>
+      <span class="k">力量：买方护盘</span>
+    </div>
+    <div class="card">
+      <h4>长上影、小实体</h4>
+      <p>冲上去、被打回来——上方<strong>堆着真实的卖压</strong>。连续出现在高位时，是多头进攻乏力的征兆。</p>
+      <span class="k">力量：卖方压顶</span>
+    </div>
+    <div class="card">
+      <h4>十字星</h4>
+      <p>开收几乎同价，多空打平。它本身不指方向，只说"拉锯中"——方向要看它出现的位置和之后那根怎么走。</p>
+      <span class="k">力量：僵持</span>
+    </div>
+  </div>
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p><strong>把单根 K 线当买卖信号。</strong>"出现长下影就抄底"是亏钱教程：下跌途中的长下影十有八九只是反弹一下接着跌（2025-10-10 之后第二天又创了新低）。单根 K 线只回答"刚才谁占优"，<em>不回答"接下来谁会赢"</em>。它要和位置（第 8 课）、趋势（第 4 课）、量能（第 9 课）拼在一起才成为信号——这正是这门课后面要一件件给你的零件。蜡烛图的形态命名学（锤子线、吞没、启明星……）我们不展开背诵，Murphy 手册第 7 站有完整一章，等你需要时当字典查。</p>
+  </div>
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p><strong>在 1 分钟图上找"趋势"。</strong>周期越小，随机噪音占比越高，而你的成本是固定的：第 1 课算过，双边市价一个来回 0.1%——1 分钟图上的"行情"经常整段都不够付手续费。你的持仓节奏是几天到一周，<em>1 小时图就是你的最小作战单位</em>，分钟图只在进出场那几分钟用来找更好的成交价。</p>
+  </div>
+</section>
+
+<!-- ================= 2.3 ================= -->
+<section class="ch" id="s3">
+  <h2 class="sec"><span class="no">2.3</span>周期：潮汐、波浪、涟漪</h2>
+  <p class="sec-en">THREE TIMEFRAMES, THREE JOBS</p>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>开车去陌生城市，你会用三张地图：<strong>全国图</strong>定大方向（走哪条高速）、<strong>城市图</strong>找路口（在哪下高速）、<strong>街景</strong>找门牌（停在哪个入口）。拿着街景图决定走哪条高速，或者拿着全国图找门牌号，都会把自己搞疯——<em>大部分新手亏钱的根源之一，就是拿错地图做决定</em>：在 1 小时图上被一根阳线说服"趋势来了"，殊不知日线还在瀑布里。</p>
+  </div>
+  <div class="tablewrap narrow">
+    <table>
+      <thead><tr><th>周期</th><th>角色</th><th>它回答的问题</th><th>你在上面做的事</th></tr></thead>
+      <tbody>
+        <tr><td><b>日线</b>（潮汐）</td><td>方向法官</td><td>现在是涨势、跌势还是震荡？</td><td>定方向：只顺着它做（第 4 课）</td></tr>
+        <tr><td><b>4 小时</b>（波浪）</td><td>位置侦察兵</td><td>顺方向的回调到哪了？</td><td>找位置：等回调、画支撑阻力（第 5、8 课）</td></tr>
+        <tr><td><b>1 小时</b>（涟漪）</td><td>扳机手</td><td>现在进场还是再等等？</td><td>扣扳机：入场、挂止损止盈</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="prose">
+    <p>这套"三张地图"的分工来自 Elder 的三重滤网，是整门课交易系统的骨架：<strong>大周期有否决权，小周期只有执行权</strong>。冲突时永远听大的——1 小时图再漂亮，日线向下就不做多。感受一下同一段行情在三张地图上的样子：</p>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 2-3</span>同一段行情，三张地图：切换周期看"性格"变化<span class="real">真实数据</span><span class="ia">互动</span></p>
+    <div class="ctrls">
+      <div>
+        <span class="seg-label">周期</span>
+        <span class="seg" id="tf-seg" role="group">
+          <button type="button" data-val="1d" aria-pressed="true">日线</button>
+          <button type="button" data-val="4h">4 小时</button>
+          <button type="button" data-val="1h">1 小时</button>
+        </span>
+      </div>
+    </div>
+    <div class="lw h360" id="tf-chart"></div>
+    <p class="lab-msg" id="tf-msg"></p>
+    <figcaption><b>读图：</b>币安 BTCUSDT 永续最近六周的同一段真实行情。日线上它是干净的几根阴阳交替；4 小时开始看到每天的攻防；1 小时则是上蹿下跳的锯齿——<b>行情没变，变的是总结粒度</b>。注意你的情绪跟着周期变：日线让人冷静，1 小时让人手痒。这正是分工的意义：用日线做判断，用 1 小时做执行，让每张地图只回答它该回答的问题。</figcaption>
+  </figure>
+</section>
+
+<!-- ================= 2.4 ================= -->
+<section class="ch" id="s4">
+  <h2 class="sec"><span class="no">2.4</span>币圈的钟表与一天的心跳</h2>
+  <p class="sec-en">THE CRYPTO CLOCK</p>
+  <div class="prose">
+    <h3>先对表：三个必须记住的时刻</h3>
+    <ul>
+      <li><strong>切日：北京早上 8 点。</strong>币安等交易所的日线按 UTC 0:00 开收——所以"今天的日线"要到明早 8 点才算收盘。复盘、算"昨日涨跌"都以它为准，别用北京零点；</li>
+      <li><strong>资金费率结算：北京 8:00 / 16:00 / 24:00</strong>（第 1 课讲过，跨过这三个时刻持仓才收付）；</li>
+      <li><strong>美国经济数据：多在北京 20:30（冬令时 21:30）发布</strong>，美联储决议在凌晨 2:00（冬令时 3:00）——第 3 课给完整日历，先记住晚上 8 点半这个"炸点"。</li>
+    </ul>
+    <h3>币圈不休市，但它有作息</h3>
+    <p>24 小时连轴转不等于每小时都一样——资金和消息跟着<span class="nt" data-note="session">亚盘、欧盘、美盘</span>的时区上下班。把最近半年每个小时的真实成交额叠起来，你会看到这个市场清晰的心跳：</p>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 2-4</span>一天的心跳：各时段平均成交额（北京时间）<span class="real">真实数据</span></p>
+    <div class="bars" id="hb-bars"></div>
+    <div class="stats">
+      <div class="stat"><span class="k">最活跃</span><span class="v" id="hb-peak">—</span><span class="s">美盘前半场</span></div>
+      <div class="stat"><span class="k">最清淡</span><span class="v" id="hb-low">—</span><span class="s">美国人睡了、亚洲还没醒透</span></div>
+      <div class="stat"><span class="k">周末活跃度</span><span class="v warn" id="hb-wkd">—</span><span class="s">相对工作日</span></div>
+    </div>
+    <figcaption><b>读图：</b>币安 BTCUSDT 永续近半年（2026-04 至 09）每个时段的平均成交额。心跳非常规律：<b>北京 20:30 美国数据落地后陡增，21–23 点美盘前半场是全天峰值</b>（约为清晨谷值的 3 倍多），凌晨 4–7 点最清淡。两个实战含义：① 你想要流动性好、行情"讲道理"的时段，就是晚上 8 点到凌晨 1 点——对上班族刚好；② 清淡时段和周末，同样大小的单子会砸出更深的坑（第 1 课 10·10 案例就发生在周五晚），<b>挂远离现价的止损单过清淡时段要多留余量</b>。</figcaption>
+  </figure>
+  <div class="evidence">
+    <span class="label">证据与怀疑</span>
+    <h4>这张心跳图的证据等级</h4>
+    <p>图 2-4 不是从哪本书抄的规律，是本课用你电脑里这份数据<em>现算</em>的统计——这是它可信的一面。要怀疑的一面：样本只有六个月；市场结构会漂移（美国现货 ETF 上线前后、不同监管时期的心跳都不一样）；均值会被 10·10 这类极端日拉高。所以把它当"当前的作息表"用，别当物理定律供——以后你学会跑数据了（阶段 5），第一个练手项目就可以是用最新数据重算这张图，看看心跳变了没有。</p>
+  </div>
+  <div class="stock">
+    <span class="label">股票上怎么对照</span>
+    <h4>连续市场 vs 有开有收的市场</h4>
+    <ul>
+      <li><b>跳空</b>：A 股 / 美股每天休市，隔夜消息积攒成开盘<span class="nt" data-note="gap">跳空</span>，缺口本身是重要信息（Murphy 手册里有专门讲法）；币圈 24 小时连续交易，几乎没有跳空——同样的消息不是跳过去，而是<em>用几根垂直大 K 线当场走完</em>，这就是为什么币圈的"插针"多而股票的"缺口"多；</li>
+      <li><b>时段</b>：A 股集中在 9:30–15:00，没有"深夜清淡时段"的问题；美股有盘前盘后，流动性薄、点差大，和币圈凌晨时段的性质类似；</li>
+      <li><b>切日</b>：股票按交易日自然切日，没有 UTC 错位问题；</li>
+      <li><b>K 线读法本身完全通用</b>——战报的语法是全市场一样的，A 股记得把红绿反过来。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= 2.5 ================= -->
+<section class="ch" id="s5">
+  <h2 class="sec"><span class="no">2.5</span>把图表调成工作台</h2>
+  <p class="sec-en">SETTING UP YOUR CHARTS</p>
+  <div class="prose">
+    <p>工具不用多，但要一次调顺手。对照下面的清单把交易所 App / 网页和 TradingView（免费版够用）各调一遍：</p>
+    <ul>
+      <li><strong>K 线价格源</strong>：交易所合约图默认画最新价，找到切换项看一眼<strong>标记价格</strong>模式长什么样（第 1 课讲过谁判生死）。日常看最新价没问题，但强平价相关的事永远核对标记价格；</li>
+      <li><strong>周期收藏</strong>：把 1 小时、4 小时、日线设为常用三键，别的先藏起来——减少手痒切 1 分钟图的机会；</li>
+      <li><strong>画线工具</strong>：你只需要两样——水平线（标支撑阻力，第 8 课大量用）和趋势线。画得花里胡哨不加分；</li>
+      <li><strong>价格警报</strong>：学会设"价格到 X 提醒我"。<em>警报是替你盯盘的实习生</em>：设好关键位，人该干嘛干嘛，比一直盯着图优雅得多，也不容易手痒乱做单；</li>
+      <li><strong>副图指标先留空</strong>。从第 4 课开始我们一件一件往上加，每加一件都知道它是干什么的——比一上来糊八个指标强得多。</li>
+    </ul>
+  </div>
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p><strong>复盘时间错位。</strong>两个高发事故：① 用"北京昨天零点到今天零点"去对币安日线——错位 8 小时，K 线对不上数；② TradingView 图表时区没设对，和交易所的小时线差了几根。入门第一周就把 TradingView 右下角时区设成 UTC+8，和本课讲义一致。</p>
+  </div>
+</section>
+
+<!-- ================= 2.6 ================= -->
+<section class="ch" id="s6">
+  <h2 class="sec"><span class="no">2.6</span>落地：看盘节律</h2>
+  <p class="sec-en">YOUR SCREEN-TIME ROUTINE</p>
+  <div class="prose">
+    <p>短线最隐蔽的成本不是手续费，是<strong>注意力</strong>。24 小时市场会无限索取它——除非你先定好规矩。结合你的作息和图 2-4 的心跳，这是本课给系统打的补丁：</p>
+  </div>
+  <div class="rulecard">
+    <div class="rc-head"><span class="label">规则卡</span><span class="rc-name">看盘节律 v0.0（系统补丁）</span></div>
+    <dl>
+      <dt>周期分工</dt><dd>日线定方向 · 4 小时找位置 · 1 小时扣扳机；分钟图只用于进出场那几分钟</dd>
+      <dt>每日看盘</dt><dd>固定两次：早 8 点后（日线收盘，10 分钟复盘）＋ 晚 20–23 点（美盘活跃段，做决策、执行）</dd>
+      <dt>警报替代盯盘</dt><dd>关键价位一律设警报；警报不响不看盘，响了再按规则办</dd>
+      <dt>事件时刻</dt><dd>北京 20:30 数据、凌晨 2:00 美联储（冬令时各推迟 1 小时）；8 / 16 / 24 点费率结算</dd>
+      <dt>禁止</dt><dd>凌晨 4–7 点清淡时段不做新决策；睡前必须确认每个仓位都带着止损</dd>
+    </dl>
+    <p class="rc-note">这张卡保护的是你的睡眠和判断力。持仓焦虑到想半夜爬起来看盘，不是勤奋，是仓位开大了——回去读第 1 课的安全守则。</p>
+  </div>
+  <div class="sysup">
+    <span class="label">系统升级</span>
+    <h4>你的交易系统：v0.0 ＋ 周期骨架</h4>
+    <p>本课装进系统的零件：三周期分工（日线判断 / 4 小时侦察 / 1 小时执行，大周期有否决权）· 切日与事件时刻表 · 看盘节律与警报工作流。下一课补上最后一块底子——风险与仓位的算术——然后第 4 课就开始搭 v0.1、开模拟盘。</p>
+  </div>
+  <div class="task">
+    <span class="label">本周模拟任务</span>
+    <h4>读战报、对地图（继续在模拟环境，不开新类型的仓）</h4>
+    <ol>
+      <li>把 TradingView / 交易所时区设为 UTC+8，常用周期设为 1h / 4h / 1d；</li>
+      <li><b>读 K 练习</b>：在 BTC 日线上随便翻历史，挑 5 根显眼的 K 线（大实体、长影线、十字星各来一根），每根写一句话战报："谁进攻、打到哪、谁守住了"；</li>
+      <li><b>对地图练习</b>：选最近一周行情，分别在日线、4 小时、1 小时各看一遍，写下三句话："日线说___，4 小时说___，1 小时说___"——体会三张地图讲的是同一件事的不同层次；</li>
+      <li>设 2 个价格警报（比如 BTC 向上 / 向下各 3% 处），体验"警报替你盯盘"的工作流；</li>
+      <li>继续维护第 1 课的两笔体验仓（或按安全守则换新的），日志里补记一项：<b>这笔单我分别看过哪几个周期、各得出什么结论</b>。</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ================= 小结 ================= -->
+<section class="ch recap" id="recap">
+  <h2 class="sec"><span class="no">★</span>本课小结</h2>
+  <p class="sec-en">RECAP</p>
+  <div class="prose">
+    <ol>
+      <li><b>K 线是战报</b>：实体 ＝ 净战果，影线 ＝ 去过但没守住的失地；颜色只看开收关系。</li>
+      <li><b>影线是被压缩的故事</b>：下沉周期看细节，上浮周期看结论——1 根日线 ＝ 24 根小时线。</li>
+      <li><b>单根 K 线不是信号</b>：它只说"刚才谁占优"，要和位置、趋势、量能拼在一起才有交易价值。</li>
+      <li><b>三张地图各司其职</b>：日线定方向、4 小时找位置、1 小时扣扳机；冲突时大周期有否决权。</li>
+      <li><b>小周期 ＝ 高噪音 ＋ 高成本</b>：1 小时是你的最小作战单位，分钟图只管进出场。</li>
+      <li><b>币安日线北京早 8 点才收盘</b>；费率 8 / 16 / 24 点结算；数据炸点在 20:30。</li>
+      <li><b>市场有心跳</b>：美盘前半场（北京 21–23 点）最活跃，凌晨 4–7 点和周末清淡——清淡时段的针更深。</li>
+      <li><b>警报替代盯盘</b>：注意力是短线最贵的成本，用看盘节律保护它。</li>
+    </ol>
+  </div>
+
+  <h3>术语一览（点击正文中的角标词可随时弹出）</h3>
+  <ol class="notes-list" id="notes-list"></ol>
+
+  <h3>自测</h3>
+  <details><summary>1. 北京时间周三晚 11 点，你想复盘"今天的日线"。这根日线收盘了吗？它涵盖的是什么时间段？</summary>
+    <div class="ans"><p>没收盘。币安日线按 UTC 0:00 切日，这根"周三日线"从北京周三早 8 点走到周四早 8 点，晚 11 点它才走了一半多。你看到的开高低收都是进行中的数字，长相还会变——用没收盘的 K 线做"收盘确认"类判断（第 4 课会有很多）是经典错位事故。</p></div>
+  </details>
+  <details><summary>2. BTC 在下跌途中砸出一根长下影线。"下方有人接盘，可以抄底了"——这句话对在哪、错在哪？</summary>
+    <div class="ans"><p>对的部分：长下影确实说明那个价位出现过真实买盘，这是有信息量的。错的部分：它只描述<b>过去一根 K 线里</b>谁占优，不预测下一根。下跌趋势里的长下影大多只是反弹一下继续跌（10·10 的次日就再创新低）。要把它变成可交易的信号，至少还缺：它出现的位置是不是重要支撑（第 8 课）、大周期方向允不允许做多（第 4 课）、有没有量能配合（第 9 课）、以及触发和止损怎么定。单根 K 线永远是半句话。</p></div>
+  </details>
+  <details><summary>3. 你按节奏持仓 3 天。三张地图各自回答什么问题？1 小时图上出现漂亮的上涨结构、但日线还在下跌趋势里，做不做多？</summary>
+    <div class="ans"><p>日线定方向（能不能做多）、4 小时找位置（回调到哪了）、1 小时扣扳机（现在进还是等）。冲突时大周期有否决权：日线向下，1 小时的上涨结构大概率只是下跌里的反弹，不做多——要么等日线转向，要么这笔放弃。"小周期服从大周期"写进系统后会反复用到（第 4、15 课）。</p></div>
+  </details>
+  <details><summary>4. 为什么币圈 K 线几乎没有跳空、A 股却常见？消失的跳空去了哪里？</summary>
+    <div class="ans"><p>跳空需要"闭市"：休市期间积累的消息在开盘瞬间一次性反映，价格直接跳过一段。币圈 24 小时连续交易，消息随到随消化，没有"开盘"这个时刻——同样的信息冲击不是跳过去，而是当场用几根垂直大 K 线走完（配合强平踩踏就成了插针）。所以股票技术分析里关于缺口的讲法，在币圈要翻译成"急速长 K 线段"来理解。</p></div>
+  </details>
+  <details><summary>5. 根据图 2-4，你要挂一张离现价较近的止损单过夜（北京凌晨）。有什么要注意的？</summary>
+    <div class="ans"><p>凌晨 4–7 点是全天最清淡的时段，成交额只有美盘峰值的三分之一左右：订单簿薄，同样的卖压能砸出更深的瞬时针。贴得太近的止损容易被这种"清淡针"扫掉后价格又回去。对策：① 止损距离留足余量（第 6 课用 ATR 定量化这件事）；② 或者干脆避免让仓位带着太近的止损过清淡时段；③ 止损触发价用标记价格，减少被单所假针误触（第 1 课）。</p></div>
+  </details>
+  <details><summary>6. "多看盘 ＝ 多赚钱"对不对？本课的看盘节律是怎么安排的，为什么？</summary>
+    <div class="ans"><p>不对，常常相反：盯盘时间越长，越容易被 1 小时以下的噪音勾出计划外交易（过度交易正是散户亏损研究里的头号死因，见第 1 课证据块）。本课节律：早 8 点后复盘日线 10 分钟 ＋ 晚 20–23 点活跃段做决策执行，其余时间交给价格警报。市场心跳（图 2-4）恰好让这个安排对上班族很友好：全天最有信息量的时段就在你下班后。</p></div>
+  </details>
+
+  <nav class="pager" aria-label="课程导航">
+    <a class="pg" href="ct-l01.html"><span class="pg-dir">上一课</span><span class="pg-ttl">第 1 课 · 合约怎么运作</span></a>
+    <a class="pg pg-toc" href="ct-index.html"><span class="pg-dir">返回</span><span class="pg-ttl">学习地图</span></a>
+    <a class="pg pg-next" href="ct-l03.html"><span class="pg-dir">下一课</span><span class="pg-ttl">第 3 课 · 风险、仓位与事件日历</span></a>
+  </nav>
+
+  <p class="foot">数据：币安公开历史数据（data.binance.vision），BTCUSDT 永续，已本地化；心跳图为 2026-04 至 2026-09 的实际统计。图表组件：TradingView Lightweight Charts™（Apache-2.0）。本讲义仅为学习笔记，不构成投资建议。</p>
+</section>
+
+</main>
+</div>
+
+<!-- ================= 术语弹注内容 ================= -->
+<div class="notes-src" hidden>
+  <section data-note-id="ohlc" data-title="开高低收" data-en="OHLC">
+    <p>一根 K 线的四要素：开盘价（这段时间第一笔成交）、最高价、最低价、收盘价（最后一笔成交）。K 线、美国线、收盘线等所有图表画法，底层都是这四个数加成交量。</p>
+  </section>
+  <section data-note-id="shadow" data-title="影线" data-en="Shadow / Wick">
+    <p>实体上下的细线，也叫"针"。上影线 ＝ 最高价到实体顶部的距离（冲高未守住），下影线 ＝ 实体底部到最低价（下探被接回）。影线越长，说明那个方向的试探被打回得越彻底。</p>
+  </section>
+  <section data-note-id="doji" data-title="十字星" data-en="Doji">
+    <p>开盘价与收盘价几乎相同、实体缩成一条横线的 K 线。表示多空力量暂时均衡。它常出现在趋势休整处，也可能出现在转折处——方向要看位置和后续确认，它自己不投票。</p>
+  </section>
+  <section data-note-id="marubozu" data-title="光头光脚" data-en="Marubozu">
+    <p>几乎没有上下影线、整根都是实体的 K 线（"光头"无上影、"光脚"无下影）。表示一方从头碾压到尾、对手毫无还手——单根 K 线里最强的表态。</p>
+  </section>
+  <section data-note-id="gap" data-title="跳空" data-en="Gap">
+    <p>相邻两根 K 线之间的价格断层：今天最低价高于昨天最高价（向上跳空）或反之。由休市期间的信息积累造成，常被当作支撑阻力参考。币圈现货与永续几乎不跳空；CME 的比特币期货周末休市，"CME 缺口"是币圈人常聊的话题。</p>
+  </section>
+  <section data-note-id="session" data-title="交易时段" data-en="Trading Sessions">
+    <p>按全球主要金融中心的工作时间把一天分为亚盘（东京 / 香港 / 新加坡，约北京 7–15 点）、欧盘（伦敦，约 15–21 点）、美盘（纽约，约 21 点—次日 5 点）。币圈不休市，但资金和消息的供给跟着这些时区走，所以活跃度呈现图 2-4 的心跳。</p>
+  </section>
+</div>
+
+<script src="assets/lightweight-charts.js"></script>
+<script src="assets/ct.js"></script>
+<script src="assets/ctchart.js"></script>
+<script src="assets/data/klines-BTCUSDT-1d.js"></script>
+<script src="assets/data/klines-BTCUSDT-4h.js"></script>
+<script src="assets/data/klines-BTCUSDT-1h.js"></script>
+<script>
+(function(){
+'use strict';
+var fmt = CT.fmtN;
+
+/* ---------- 图 2-1 捏 K 线 ---------- */
+(function(){
+  var TOP = 30, BOT = 270, W = 44, X = 178;    // SVG 坐标
+  var o = 30, c = 75;
+  function y(p){ return BOT - (BOT - TOP) * p / 100; }
+  function paint(){
+    var hi = Math.max(o, c), lo = Math.min(o, c);
+    var body = document.getElementById('k-body');
+    var up = c >= o;
+    body.setAttribute('y', y(hi));
+    body.setAttribute('height', Math.max(BOT - TOP ? (hi - lo) * (BOT - TOP) / 100 : 2, 2));
+    body.setAttribute('class', up ? 'cu' : 'cd');
+    document.getElementById('k-wick').setAttribute('class', up ? 'wu' : 'wd');
+    var lo_ = document.getElementById('k-lbl-o'), lc = document.getElementById('k-lbl-c');
+    var yo = y(o) + 4, yc = y(c) + 4;
+    if(Math.abs(yo - yc) < 15){
+      var mid = (yo + yc) / 2, a = mid - 8, b = mid + 8;
+      if(a < TOP + 10){ a = TOP + 10; b = a + 16; }
+      if(b > BOT){ b = BOT; a = b - 16; }
+      if(yo <= yc){ yo = a; yc = b; } else { yc = a; yo = b; }
+    }
+    lo_.setAttribute('y', yo); lo_.textContent = '← 开盘';
+    lc.setAttribute('y', yc); lc.textContent = '← 收盘';
+    var bodyPct = Math.abs(c - o), upper = 100 - hi, lower = lo;
+    var name, d1, d2, d3, msg;
+    if(bodyPct < 8){
+      name = '十字星'; d1 = '开收几乎同价：多空打了个平手。';
+      d2 = '它不指方向，只说"拉锯中"。'; d3 = '方向看位置和下一根。';
+      msg = '实体 ' + bodyPct.toFixed(0) + '%：谁也没赢。十字星出现在趋势休整处很常见，出现在长期高低点附近才值得警觉。';
+    }else if(bodyPct > 60 && upper < 12 && lower < 12){
+      name = up ? '光头光脚大阳线' : '光头光脚大阴线';
+      d1 = (up ? '多头' : '空头') + '从头碾压到尾，';
+      d2 = '对手几乎没有还手。'; d3 = '常见于趋势加速或突破时。';
+      msg = '实体占比 ' + bodyPct.toFixed(0) + '%、影线极短：单根 K 线里最强的表态。但注意——越是人人看得懂的强，越要问一句"它出现在什么位置"（第 8 课）。';
+    }else if(upper > 32 && bodyPct < 40){
+      name = '长上影线（流星形）';
+      d1 = '价格冲上去过（上影 ' + upper.toFixed(0) + '%），';
+      d2 = '但被卖压结结实实打了回来。'; d3 = '出现在高位时是多头乏力征兆。';
+      msg = '上影线 ' + upper.toFixed(0) + '% vs 实体 ' + bodyPct.toFixed(0) + '%：进攻方去过天花板但没守住。连续出现在上涨末端时，意味着上方的卖压是真实的。';
+    }else if(lower > 32 && bodyPct < 40){
+      name = '长下影线（锤子形）';
+      d1 = '价格被砸下去过（下影 ' + lower.toFixed(0) + '%），';
+      d2 = '但下方有人用真金白银接了回来。'; d3 = '位置对了才有意义（第 8 课）。';
+      msg = '下影线 ' + lower.toFixed(0) + '%：有人护盘。但记住 2.2 节的警告——下跌途中的长下影，大多数只是反弹一下继续跌，单根不抄底。';
+    }else{
+      name = up ? '普通阳线' : '普通阴线';
+      d1 = (up ? '多头' : '空头') + '赢了这段时间（实体 ' + bodyPct.toFixed(0) + '%），';
+      d2 = '双方都有试探（上影 ' + upper.toFixed(0) + '% / 下影 ' + lower.toFixed(0) + '%）。';
+      d3 = '中规中矩的一根战报。';
+      msg = '一根中性战报：' + (up ? '多头小胜' : '空头小胜') + '。它需要前后文（趋势、位置、量能）才能变成有用的信息。';
+    }
+    document.getElementById('k-name').textContent = name;
+    document.getElementById('k-desc1').textContent = d1;
+    document.getElementById('k-desc2').textContent = d2;
+    document.getElementById('k-desc3').textContent = d3;
+    document.getElementById('k-up-note').textContent = '上影线 ' + upper.toFixed(0) + '%　实体 ' + bodyPct.toFixed(0) + '%';
+    document.getElementById('k-dn-note').textContent = '下影线 ' + lower.toFixed(0) + '%';
+    document.getElementById('k-msg').textContent = msg;
+  }
+  CT.bindRange('k-o', function(v){ o = v; paint(); });
+  CT.bindRange('k-c', function(v){ c = v; paint(); });
+  window.addEventListener('ct-restyle', paint);
+})();
+
+/* ---------- 图 2-2 一根日线的内部 ---------- */
+(function(){
+  var rows = CT.slice(CT.get('klines-BTCUSDT-1h'), '2025-10-10T00:00:00Z', '2025-10-11T00:00:00Z');
+  var g = CT.makeChart('h24-chart', {timeVisible: true});
+  var cs = g.addCandles(rows);
+  g.markers(cs, [
+    {time: Date.parse('2025-10-10T13:00:00Z') / 1000, position: 'aboveBar', shape: 'arrowDown', color: 'crit', text: '消息落地，跳水开始'},
+    {time: Date.parse('2025-10-10T21:00:00Z') / 1000, position: 'belowBar', shape: 'arrowUp', color: 'series2', text: '最深 101,517'},
+    {time: Date.parse('2025-10-10T23:00:00Z') / 1000, position: 'aboveBar', shape: 'circle', color: 'accent', text: '被接回 → 日线下影'}
+  ]);
+  g.fit();
+})();
+
+/* ---------- 图 2-3 同窗三周期 ---------- */
+(function(){
+  var FROM = '2026-08-16', TO = '2026-10-01';
+  var src = {
+    '1d': CT.slice(CT.get('klines-BTCUSDT-1d'), FROM, TO),
+    '4h': CT.slice(CT.get('klines-BTCUSDT-4h'), FROM, TO),
+    '1h': CT.slice(CT.get('klines-BTCUSDT-1h'), FROM, TO)
+  };
+  var label = {'1d': '日线', '4h': '4 小时', '1h': '1 小时'};
+  var note = {
+    '1d': '日线视角：六周行情浓缩成 46 根，结构一目了然——这是"法官"看的图，情绪最少。',
+    '4h': '4 小时视角：同一段路放大 6 倍，每天的攻防开始显形——"侦察兵"在这里找回调的落点。',
+    '1h': '1 小时视角：锯齿和毛刺全出来了，手开始痒了吗？记住它只有执行权：扣扳机用它，做判断回日线。'
+  };
+  var g = CT.makeChart('tf-chart');
+  var cs = null;
+  function show(tf){
+    if(cs){ g.chart.removeSeries(cs); g.series = g.series.filter(function(it){ return it.s !== cs; }); }
+    cs = g.addCandles(src[tf]);
+    g.fit();
+    document.getElementById('tf-msg').innerHTML = '<b>' + label[tf] + '</b>（' + src[tf].length + ' 根）：' + note[tf];
+  }
+  CT.bindSeg('tf-seg', show);
+})();
+
+/* ---------- 图 2-4 一天的心跳 ---------- */
+(function(){
+  var rows = CT.slice(CT.get('klines-BTCUSDT-1h'), '2026-04-01', '2026-10-01');
+  var sum = [], cnt = [], i;
+  for(i = 0; i < 24; i++){ sum.push(0); cnt.push(0); }
+  var wkSum = 0, wkCnt = 0, wdSum = 0, wdCnt = 0;
+  rows.forEach(function(r){
+    var hr = Math.floor(r[0] / 3600) % 24;
+    sum[hr] += r[6]; cnt[hr]++;
+    var day = new Date(r[0] * 1000).getUTCDay();
+    if(day === 0 || day === 6){ wkSum += r[6]; wkCnt++; } else { wdSum += r[6]; wdCnt++; }
+  });
+  var avg = sum.map(function(s, j){ return s / cnt[j] / 1e6; });
+  var max = Math.max.apply(null, avg), min = Math.min.apply(null, avg);
+  var peakUtc = avg.indexOf(max), lowUtc = avg.indexOf(min);
+  var box = document.getElementById('hb-bars');
+  var html = '';
+  /* 按北京时间 0–23 排序展示 */
+  for(i = 0; i < 24; i++){
+    var utc = (i - 8 + 24) % 24;
+    var v = avg[utc];
+    var cls = v === max ? 'up' : (v === min ? 'dn' : '');
+    var tags = '';
+    if(i === 20) tags = '　← 20:30 数据炸点';
+    if(utc === peakUtc) tags = '　← 全天峰值';
+    if(utc === lowUtc) tags = '　← 全天谷值';
+    html += '<div class="bar"><span>北京 ' + String(i).padStart(2, '0') + ' 点</span>'
+      + '<span class="track"><span class="fill ' + cls + '" style="width:' + (v / max * 100).toFixed(1) + '%"></span></span>'
+      + '<span class="val">' + fmt(v, 0) + ' M' + tags + '</span></div>';
+  }
+  box.innerHTML = html;
+  document.getElementById('hb-peak').textContent = '北京 ' + ((peakUtc + 8) % 24) + ' 点 · ' + fmt(max, 0) + ' M';
+  document.getElementById('hb-low').textContent = '北京 ' + ((lowUtc + 8) % 24) + ' 点 · ' + fmt(min, 0) + ' M';
+  document.getElementById('hb-wkd').textContent = fmt((wkSum / wkCnt) / (wdSum / wdCnt) * 100, 0) + '%';
+})();
+})();
+</script>
+</body>
+</html>
