@@ -1,0 +1,648 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>币圈短线课 · 第 12 课 币圈自身的驱动</title>
+<link rel="stylesheet" href="assets/ct.css">
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <span class="book"><a href="ct-index.html">币圈短线实战课</a></span>
+  <span class="part"><a href="ct-index.html">学习地图</a> · 阶段 2 行情为什么发生</span>
+  <span class="prefs">
+    <button id="btn-updown" type="button" title="切换涨跌配色"></button>
+    <button id="btn-theme" type="button" title="切换深浅主题"></button>
+  </span>
+</header>
+
+<div class="layout">
+
+<nav class="sidenav" aria-label="本课目录">
+  <p class="sn-chap">第 12 课 · 币圈自身的驱动</p>
+  <a href="#top">课首</a>
+  <a href="#s1">12.1 币圈的独有日历</a>
+  <a href="#s2">12.2 减半：叙事之王</a>
+  <a href="#s3">12.3 ETF 与机构管道</a>
+  <a href="#s4">12.4 稳定币与场内弹药</a>
+  <a href="#s5">12.5 解锁与供给冲击</a>
+  <a href="#s6">12.6 轮动与 ETHBTC</a>
+  <a href="#s7">12.7 交易所与对手风险</a>
+  <a href="#s8">12.8 落地：事件滤镜卡</a>
+  <a href="#recap">小结 · 术语 · 自测</a>
+</nav>
+
+<main class="article">
+
+<section class="hero" id="top">
+  <span class="chap-no">LESSON 12 · 第 12 课 / 共 16 课</span>
+  <h1>币圈自身的驱动</h1>
+  <p class="en">CRYPTO-NATIVE MARKET DRIVERS</p>
+  <p class="question">本课问题：除了宏观，还有哪些币圈自己的力量在推动价格？</p>
+  <p class="lede">上一课你学会了看水位：利率、美元和全球流动性决定所有风险资产的大环境。但只盯宏观，你解释不了币圈的很多大日子——减半那天、ETF 获批那天、某个币解锁那天、FTX 停止提现那天。这一课把币圈自己的发动机拆开：哪些力量在<strong>改故事</strong>（减半、ETF、监管、轮动叙事），哪些力量在<strong>改筹码</strong>（解锁、稳定币增发、清算结构），它们各自怎么作用到价格、你该去哪里盯它们。最后把这一切拧成一张"币圈事件滤镜卡"，和宏观滤镜一起挂在系统 v0.7 前面——<strong>事件不是你的信号，事件决定你这周的功率</strong>。</p>
+  <div class="objectives">
+    <h2>学完你能做到</h2>
+    <ul>
+      <li>把币圈驱动力分成两类：改故事的（减半、ETF、监管）与改筹码的（解锁、稳定币、清算），说清各自怎么作用到价格；</li>
+      <li>60 秒讲清减半机制，并说出"四年周期"叙事的三个统计漏洞——小样本、宏观混杂、提前抢跑；</li>
+      <li>知道现货 ETF 把谁的钱接进了币圈、每天去哪看资金净流入，以及 ETF 化为什么把极端费率压平了；</li>
+      <li>用稳定币总市值读"场内弹药"的水位，知道脱锚是什么级别的警报、该做什么；</li>
+      <li>看懂代币解锁表（线性与悬崖），解释为什么解锁对山寨是重磅、对 BTC / ETH 几乎是耳旁风；</li>
+      <li>用第 4 课的 EMA 方法在 ETHBTC 上判轮动方向，把"双币仓位 BTC 优先还是 ETH 加大"变成一条可执行规则；</li>
+      <li>装好交易所暴雷的防身术（分散、API 最小化、提现测试），把币圈事件滤镜挂进系统 v0.7。</li>
+    </ul>
+  </div>
+  <p class="colorkey">读图约定：本课默认<span class="up">绿涨</span>·<span class="dn">红跌</span>，可用右上角按钮切成红涨绿跌。带 <b>互动</b> 标签的图可以拖动、缩放、调参数；正文里带虚线下划线和角标的词，点一下原地弹出解释。图表时间轴按你设备的时区显示（北京时间 ＝ UTC+8）；正文里的日期如 2024-04-20 指币安日线的交易日（UTC 口径，收盘在北京时间次日早 8 点）。</p>
+  <nav class="chapmap" aria-label="本课小节">
+    <a href="#s1">两类驱动</a><a href="#s2">减半</a><a href="#s3">ETF 管道</a><a href="#s4">稳定币</a><a href="#s5">解锁</a><a href="#s6">轮动与 ETHBTC</a><a href="#s7">对手风险</a><a href="#s8">事件滤镜卡</a><a href="#recap">小结</a>
+  </nav>
+</section>
+
+<!-- ================= 12.1 ================= -->
+<section class="ch" id="s1">
+  <h2 class="sec"><span class="no">12.1</span>币圈的独有日历：两类力量，一张地图</h2>
+  <p class="sec-en">THE CRYPTO-NATIVE CALENDAR</p>
+  <div class="prose">
+    <p>第 11 课的结论先放在桌面上：<strong>宏观定水位</strong>——钱多钱少、风险偏好高低，决定币价能漂多高。但水位相同的两周，行情可以完全不同，因为币圈还有自己的日历和自己的水管。把本课要讲的力量分成两类，你会发现它们作用于价格的方式根本不同：</p>
+  </div>
+  <div class="cards">
+    <div class="card">
+      <h4>周期叙事类<span class="en-term">Narrative Drivers</span></h4>
+      <p><span class="nt" data-note="halving">减半</span>、<span class="nt" data-note="spot-etf">现货 ETF</span>、监管松紧、轮动剧本。它们改变的是<strong>故事</strong>——大家愿意为同一枚币出的价。生效慢、极易被抢跑、极易事后归因。</p>
+      <span class="k">改变"愿意出的价"</span>
+    </div>
+    <div class="card">
+      <h4>供需机械类<span class="en-term">Mechanical Drivers</span></h4>
+      <p><span class="nt" data-note="unlock">代币解锁</span>、<span class="nt" data-note="stablecoin">稳定币</span>增发与赎回、清算结构（第 14 课）。它们改变的是<strong>筹码</strong>——场内实际有多少币、多少钱。生效硬、可以提前查到日期。</p>
+      <span class="k">改变"真实的买卖"</span>
+    </div>
+  </div>
+  <figure>
+    <p class="fig-title"><span class="fno">图 12-1</span>币圈驱动力地图：宏观定水位，币圈因素定浪<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+      <svg viewBox="0 0 720 326" role="img" aria-label="宏观水位与两类币圈驱动力如何共同作用到币价">
+        <defs>
+          <marker id="f121-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="ar-fill"/></marker>
+          <marker id="f121-ac" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="ar-acc"/></marker>
+        </defs>
+        <rect x="240" y="14" width="240" height="56" rx="8" class="node-hi"/>
+        <text x="360" y="38" text-anchor="middle" class="nt">宏观水位（第 11 课）</text>
+        <text x="360" y="58" text-anchor="middle" class="nd">利率 · 美元 · 全球流动性</text>
+        <path d="M360 70 L360 116" class="edge-acc" marker-end="url(#f121-ac)"/>
+        <text x="370" y="98" class="elabel">定水位：能漂多高</text>
+        <rect x="280" y="118" width="160" height="56" rx="8" class="node-up"/>
+        <text x="360" y="142" text-anchor="middle" class="nt">BTC / ETH 币价</text>
+        <text x="360" y="162" text-anchor="middle" class="nd">浪往哪打、打多猛</text>
+        <text x="116" y="106" text-anchor="middle" class="ut">周期叙事类——改故事</text>
+        <rect x="16" y="118" width="200" height="48" rx="8" class="node"/>
+        <text x="116" y="138" text-anchor="middle" class="nt">减半</text>
+        <text x="116" y="156" text-anchor="middle" class="nd">四年一次的供给叙事</text>
+        <rect x="16" y="178" width="200" height="48" rx="8" class="node"/>
+        <text x="116" y="198" text-anchor="middle" class="nt">ETF 与监管</text>
+        <text x="116" y="216" text-anchor="middle" class="nd">传统资金管道的开与关</text>
+        <rect x="16" y="238" width="200" height="48" rx="8" class="node"/>
+        <text x="116" y="258" text-anchor="middle" class="nt">轮动叙事</text>
+        <text x="116" y="276" text-anchor="middle" class="nd">"该轮到山寨了"的剧本</text>
+        <path d="M216 142 L278 138" class="edge" marker-end="url(#f121-ar)"/>
+        <path d="M216 202 L278 152" class="edge" marker-end="url(#f121-ar)"/>
+        <path d="M216 262 L278 168" class="edge" marker-end="url(#f121-ar)"/>
+        <text x="604" y="106" text-anchor="middle" class="wt">供需机械类——改筹码</text>
+        <rect x="504" y="118" width="200" height="48" rx="8" class="node"/>
+        <text x="604" y="138" text-anchor="middle" class="nt">代币解锁</text>
+        <text x="604" y="156" text-anchor="middle" class="nd">流通量阶梯式增加</text>
+        <rect x="504" y="178" width="200" height="48" rx="8" class="node"/>
+        <text x="604" y="198" text-anchor="middle" class="nt">稳定币增发与赎回</text>
+        <text x="604" y="216" text-anchor="middle" class="nd">场内弹药的水位计</text>
+        <rect x="504" y="238" width="200" height="48" rx="8" class="node-warn"/>
+        <text x="604" y="258" text-anchor="middle" class="nt">清算结构</text>
+        <text x="604" y="276" text-anchor="middle" class="nd">强制买卖（第 14 课拆解）</text>
+        <path d="M504 142 L442 138" class="edge" marker-end="url(#f121-ar)"/>
+        <path d="M504 202 L442 152" class="edge" marker-end="url(#f121-ar)"/>
+        <path d="M504 262 L442 168" class="edge" marker-end="url(#f121-ar)"/>
+        <text x="360" y="310" text-anchor="middle" class="hi">左列改变"大家愿意出的价"，右列改变"场内实际的币和钱"</text>
+      </svg>
+    </div>
+    <figcaption><b>读图：</b>上方是第 11 课讲过的宏观水位，它决定风险资产整体的高度；左右两列是本课的主角。左列是叙事：减半、ETF、监管本身不直接搬动一分钱，它们改变的是人们讲给自己听的故事，所以<b>生效时间飘忽、还经常被提前买完</b>（预期差，第 11 课）。右列是机械供需：解锁日那天真的会多出一批能卖的币，稳定币增发真的代表有新钱换成了筹码——日期和数量都能提前查到。读本课时请始终带着这个问题：<b>我看到的这个"利好"，是改了故事，还是改了筹码？</b></figcaption>
+  </figure>
+  <div class="keypoint">
+    <span class="label">本课最重要的一句话</span>
+    <p><strong>宏观定水位，币圈因素定浪——而你的指标系统只负责冲浪。</strong></p>
+    <p>这些驱动力没有一个会出现在你的下单依据里：方向还是三票制投，入场还是 1 小时扳机扣。它们的正确位置在系统<em>前面</em>——像第 3 课的事件日历、第 11 课的宏观滤镜一样，决定你这周是全功率运转、降档，还是干脆拔掉电源。</p>
+  </div>
+</section>
+
+<!-- ================= 12.2 ================= -->
+<section class="ch" id="s2">
+  <h2 class="sec"><span class="no">12.2</span>减半：供给叙事之王与它的统计漏洞</h2>
+  <p class="sec-en">THE HALVING — KING OF NARRATIVES</p>
+  <div class="prose">
+    <h3><span class="tag">① </span>机制 60 秒讲清</h3>
+    <p>比特币写死在代码里的规则：矿工每挖出一个区块，获得一笔<span class="nt" data-note="block-reward">区块奖励</span>——这是新 BTC 进入世界的唯一通道。每 21 万个区块（约四年），这笔奖励自动砍半：50 → 25 → 12.5 → 6.25（2020-05-11）→ 3.125（2024-04-20），下一次约在 2028 年，直到总量逼近 2,100 万枚的上限。换算成人话：<strong>2024-04-20 之后，全网每天新挖出的 BTC 从约 900 枚降到约 450 枚——新增供给一夜之间减半</strong>。需求不变、供给变慢，教科书说价格该涨。这就是币圈最老、最深入人心的"四年周期"叙事。</p>
+  </div>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>全球唯一的金矿宣布：明天起产量砍半。金价会涨吗？先别急——地面上已经流通的金条（存量）远比矿里每天新挖的（增量）多：按减半② 当天的价格算，每天 450 枚新 BTC 约值 2,900 万美元，而光币安 BTCUSDT 永续在美盘高峰<em>一个小时</em>就能成交 9 亿多美元（第 2 课的心跳图）。<strong>减半对当天供需的物理冲击，小到可以忽略；它真正巨大的，是给了所有人一个敢讲四年的故事。</strong>矿难改变金价，靠的从来不是少挖的那点金子，是矿难上了头条。</p>
+  </div>
+  <div class="prose">
+    <h3><span class="tag">② </span>"四年周期"叙事，和它的三个统计漏洞</h3>
+    <ul>
+      <li><strong>样本太小。</strong>减半一共发生过四次（2012、2016、2020、2024），本课数据覆盖其中两次。用 3–4 个样本总结"规律"，统计上和抛三次硬币总结"这枚硬币爱出正面"是一个性质；</li>
+      <li><strong>宏观混杂。</strong>每次减半叠加的水位完全不同：2020 年减半赶上全球零利率大放水，之后一年 BTC 涨了 562%；2024 年减半赶上高利率但 ETF 管道刚开通，之后一年只涨 31%——同一个剧本，涨幅差了一个数量级。功劳到底记在减半头上，还是记在美联储和 ETF 头上？<em>这笔账永远算不清，而算不清的账不能当交易依据</em>；</li>
+      <li><strong>市场会抢跑。</strong>第 11 课的预期差在这里现形：减半日期全世界提前四年就知道。2024-03-14，减半还有五周<em>才到</em>，BTC 就创出了 73,881 的历史新高——四次减半里头一回新高出现在减半<em>之前</em>。人人都知道的利好，早被买进价格里了。</li>
+    </ul>
+    <p>把两次减半放在同一张真实走势图上，自己缩放着看：</p>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 12-2</span>减半对照实验台：BTC 日线全史与两条减半竖线<span class="real">真实数据</span><span class="ia">互动</span></p>
+    <div class="ctrls">
+      <div>
+        <span class="seg-label">视野</span>
+        <span class="seg" id="hv-seg" role="group">
+          <button type="button" data-val="all" aria-pressed="true">全程（对数坐标）</button>
+          <button type="button" data-val="h1">减半① 后一年</button>
+          <button type="button" data-val="h2">减半② 后一年</button>
+        </span>
+      </div>
+    </div>
+    <div class="lw h420" id="hv-chart"></div>
+    <div class="lw-legend" id="hv-legend"></div>
+    <div class="stats">
+      <div class="stat"><span class="k">减半①（2020-05-11）</span><span class="v up">一年 +562%</span><span class="s">收 8,561 → 56,710</span></div>
+      <div class="stat"><span class="k">减半②（2024-04-20）</span><span class="v up">一年 +31%</span><span class="s">收 64,897 → 85,139</span></div>
+      <div class="stat"><span class="k">减半② 前五周</span><span class="v warn">新高 73,881</span><span class="s">2024-03-14，史上首次提前破顶</span></div>
+      <div class="stat"><span class="k">下一次减半</span><span class="v">约 2028 年</span><span class="s">写进事件日历，仅此而已</span></div>
+    </div>
+    <p class="lab-msg" id="hv-msg"></p>
+    <figcaption><b>读图：</b>币安 BTCUSDT 永续 2020 年至今的全部日线（对数坐标，不然 2020 年会被压成一条直线），两个箭头是两次减半日。请诚实地读它：第一，这里只有<b>两个样本</b>，两次"减半后一年"都涨，推不出"减半后必涨"——样本量二的结论连硬币都不如；第二，<b>幸存者偏差</b>——你今天还愿意研究减半，正是因为 BTC 活下来且涨了，无数供给同样"稀缺"却归零的小币没机会出现在这张图上；第三，两段涨幅差了一个数量级，说明真正的变量恐怕在图外——水位（第 11 课）和管道（下一节）。减半的正确用法只有一个：<b>作为日历项写进第 3 课的事件清单</b>，提醒你那段时间叙事盘情绪高、波动大。</figcaption>
+  </figure>
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p><strong>"减半 ＝ 必涨，提前囤到减半后一年卖"——这是刻舟求剑。</strong>三个漏洞刚讲过：样本小、宏观混杂、提前抢跑。更实际的问题是：这个"策略"四年才给你一次样本，一辈子最多验证十几次，你根本活不到统计显著的那天。你的系统是按天和周工作的（三票制、回调、扳机），不需要预测四年后的事。<em>减半值得你做的全部动作：在日历上标一笔，到时候把仓位放小一点、把故事当故事听。</em></p>
+  </div>
+</section>
+
+<!-- ================= 12.3 ================= -->
+<section class="ch" id="s3">
+  <h2 class="sec"><span class="no">12.3</span>ETF 与机构管道：传统资金接进来之后</h2>
+  <p class="sec-en">ETFS AND THE INSTITUTIONAL PIPELINE</p>
+  <div class="prose">
+    <h3><span class="tag">① </span>管道是怎么接通的</h3>
+    <p>2024-01-10，美国 SEC 批准了现货 BTC ETF，次日开始交易；2024 年 7 月，现货 ETH ETF 也挂牌了。这件事的分量不在"利好"两个字，而在<strong>管道</strong>：在此之前，一个美国退休账户、一只家族信托想配置 BTC，要么开交易所账户自管私钥（合规部门直接否决），要么绕道场外产品（贵且折价）。现货 ETF 之后，<strong>在券商 App 里点一下，和买一只股票没有任何区别</strong>——理财顾问、养老金、上市公司财务部的钱，第一次有了合规的大门。这是把需求端的闸门整个换了口径，和减半那种"故事"不在一个量级。</p>
+    <h3><span class="tag">② </span>从此多了一个盯盘项：ETF 资金流向</h3>
+    <p>ETF 每天公布申购赎回，于是市场多了一个每日更新的<span class="nt" data-note="netflow">资金净流入</span>数字：净流入 ＝ 管道在进水，净流出 ＝ 在抽水。去哪看：<strong>Farside Investors、SoSoValue</strong> 这类网站每天汇总成一张表（搜名字就能找到，不用记网址）。用法记三条：</p>
+    <ul>
+      <li><strong>看连续，不看单日</strong>——单日几千万美元的进出是噪音，连续一两周的同向大额流动才是管道状态变了；</li>
+      <li><strong>它是滞后数据</strong>——美股收盘后才公布，等你看到数字，币价早就动过了，所以它当不了扳机；</li>
+      <li><strong>它是环境变量</strong>——写进滤镜：ETF 连续大幅净流出的周，多头单笔风险减半（12.8 节落卡）。</li>
+    </ul>
+    <h3><span class="tag">③ </span>ETF 化的结构后果：市场的"性格"变了</h3>
+    <ul>
+      <li><strong>与纳指联动加深。</strong>买 ETF 的是同一批管理风险资产的钱，宏观一变脸，科技股和 BTC 一起被卖——第 11 课看到的联动，在 ETF 之后只会更紧；</li>
+      <li><strong>周末更"孤独"。</strong>ETF 只在美股时段申赎，周末币圈失去这部分买盘，第 2 课讲的周末清淡叠加了新原因；</li>
+      <li><strong>极端费率被压平。</strong>机构进场带来了专业套利盘：现货端买入（现货或 ETF），永续端同时做空，价格涨跌两头对冲，净赚资金费率。费率一抬头，这种钱就涌进来把它压回去。证据就在你已经很熟的费率数据里——下图。</li>
+    </ul>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 12-3</span>费率的地板一年比一年低：BTC 资金费率年化（2020 → 2026）<span class="real">真实数据</span></p>
+    <div class="bars" id="fr-bars"></div>
+    <div class="stats">
+      <div class="stat"><span class="k">2021 狂热顶</span><span class="v dn">年化 30.6%</span><span class="s">日均 0.084%——做多一年租金三成</span></div>
+      <div class="stat"><span class="k">2024 ETF 元年</span><span class="v">年化 11.9%</span><span class="s">牛市重来，费率却只有 2021 的四成</span></div>
+      <div class="stat"><span class="k">2025 → 2026 前三季</span><span class="v up">5.1% → 2.9%</span><span class="s">1 万 U 名义多仓的年租金：3,060 U → 约 300 U</span></div>
+    </div>
+    <figcaption><b>读图：</b>把币安 BTCUSDT 永续每一期资金费率按年加总折成年化（页面用全量真实数据现算，7 年约 7,400 期）。台阶清晰：2021 年化 30.6%，2024 年 11.9%，2025 年 5.1%，2026 年前三季只剩 2.9%。注意 2024 并不是熊市——有行情、有狂热，但 2021 式"单期 0.2%、年化 200%" 的极端费率再没出现过：<b>费率刚冒头，套利资金就把它吃平了</b>。对你的意义有两层：持仓成本确实便宜了；但第 10 课那个"极端费率 ＝ 过热"的滤镜，阈值也得跟着时代走——用 2021 的标准等 2026 的信号，会一直等不到。</figcaption>
+  </figure>
+  <div class="evidence">
+    <span class="label">证据与怀疑</span>
+    <h4>"ETF 化改变了市场结构"——证据在哪，哪里靠不住</h4>
+    <p><strong>证据的一面</strong>：上图的费率下台阶是本课用本地真实数据自算的：2021 年化 30.6% → 2024（ETF 元年）11.9% → 2025 5.1% → 2026 前三季 2.9%。机制也说得通：套利资金的体量决定极端费率能活多久，管道开通后这类钱多了一个数量级的入口。</p>
+    <p><strong>怀疑的一面</strong>：① <strong>归因不唯一</strong>——2022 年（ETF 还没影）年化就只有 4.2%，熊市本身就压费率；市场逐年成熟、无风险利率的高低（利率高时套利资金要求更高的费率才肯进场）都能解释同一张图。"ETF 压平了费率"是个合理故事，不是被证明的因果；② <strong>叙事类驱动极易事后归因</strong>——涨的日子媒体写"ETF 流入推动"，跌的日子写"ETF 流出拖累"，同一份流向表永远配得上任何行情。你该做的是把它当环境变量（连续流出 → 降功率），永远别当预测器。顺带：获批那一刻市场怎么走——2024-01 经典的"买预期、卖事实"——第 14 课用分钟级数据完整复盘。</p>
+  </div>
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p><strong>"今天 ETF 净流入几亿美元，明天肯定涨。"</strong>三个问题：数字是美股收盘后才公布的<em>昨天的事</em>；单日流向和次日涨跌的关系弱得可怜（何况你看到时价格早反应完了）；大额流入经常恰好出现在行情<em>最热</em>的时候——那往往离短期顶更近，而不是更远。流向表是气象记录，不是天气预报。<em>用法只有降功率一种：连续大幅流出时把多头风险减半，其余时间让它闭嘴。</em></p>
+  </div>
+</section>
+
+<!-- ================= 12.4 ================= -->
+<section class="ch" id="s4">
+  <h2 class="sec"><span class="no">12.4</span>稳定币与场内弹药</h2>
+  <p class="sec-en">STABLECOINS — THE AMMO GAUGE</p>
+  <div class="prose">
+    <p>USDT、USDC 是币圈事实上的"场内美元"：保证金用它、现货计价用它、避险趴账上还是它。于是它们的总市值就成了一个独特的仪表——<strong>场内购买力的水位</strong>：总市值上升，说明有新钱换成了筹码进场（增发对应真实的美元流入发行方）；总市值下降，说明筹码被换回美元、钱在离场。去哪看：<strong>DefiLlama 的 stablecoins 页面</strong>，总市值、各币种份额、每日增减一目了然。</p>
+  </div>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>你站在赌场门口，看不清每张桌子的输赢，但兑换处的账目是公开的：今天净发出了多少筹码。<strong>筹码总量在涨，说明进场的钱在变多——但筹码揣在口袋里不等于已经押上桌。</strong>这就是稳定币指标的用法和局限：它告诉你弹药库的水位，不告诉你什么时候开枪。水位连涨数周而币价还没动，往往是行情的燃料在堆积；水位持续下降的"上涨"，则要多一分怀疑——那是存量资金在互相倒手。</p>
+  </div>
+  <div class="prose">
+    <p>三条局限，一条红线：</p>
+    <ul>
+      <li><strong>慢变量</strong>——按周看才有意义，日内和它无关；</li>
+      <li><strong>增发 ≠ 马上买币</strong>——新筹码可能趴在账上做市、吃利息，水位领先行情的时间不固定；</li>
+      <li><strong>口径噪音</strong>——跨链迁移、单日大额申赎会扰动数字，别对单日变化过度解读；</li>
+      <li><strong>红线：<span class="nt" data-note="depeg">脱锚</span>。</strong>稳定币的一切价值建立在"1 ＝ 1"上。2023 年 3 月，USDC 因部分储备存在倒闭的硅谷银行，周末两天一度跌到 0.88 美元附近，随后才恢复锚定（完整案例第 13 课展开）。<strong>主流稳定币明显脱锚 ＝ 场内美元本身着火 ＝ 系统性火警</strong>——这不是"行情机会"，是全体撤离的信号，12.8 节写进滤镜卡。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= 12.5 ================= -->
+<section class="ch" id="s5">
+  <h2 class="sec"><span class="no">12.5</span>解锁与供给冲击：山寨币的隐藏日历</h2>
+  <p class="sec-en">TOKEN UNLOCKS AND SUPPLY SHOCKS</p>
+  <div class="prose">
+    <p>一个新项目发币，蛋糕通常这么切：一部分公开流通，一大块分给团队、早期投资人、基金会和生态激励——但这些份额上市时是<strong>锁仓</strong>的，之后按白皮书里的时间表逐步解锁进入流通。两种典型节奏：</p>
+  </div>
+  <figure>
+    <p class="fig-title"><span class="fno">图 12-4</span>两种解锁节奏：线性 vs 悬崖<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+      <svg viewBox="0 0 720 280" role="img" aria-label="线性解锁与悬崖解锁的流通量曲线对比">
+        <text x="184" y="28" text-anchor="middle" class="ut">线性解锁</text>
+        <line x1="44" y1="44" x2="44" y2="232" class="axis"/>
+        <line x1="44" y1="232" x2="330" y2="232" class="axis"/>
+        <text x="52" y="56" class="nd">流通量</text>
+        <text x="318" y="250" text-anchor="end" class="nd">时间</text>
+        <polyline points="44,222 76,215 108,208 140,201 172,194 204,187 236,180 268,173 300,166 324,160" class="edge-up" fill="none"/>
+        <text x="184" y="266" text-anchor="middle" class="nd">每天或每月匀速放出——市场有时间慢慢消化</text>
+        <text x="544" y="28" text-anchor="middle" class="dt">悬崖解锁</text>
+        <line x1="404" y1="44" x2="404" y2="232" class="axis"/>
+        <line x1="404" y1="232" x2="690" y2="232" class="axis"/>
+        <rect x="508" y="56" width="24" height="176" class="zone"/>
+        <text x="520" y="48" text-anchor="middle" class="wt">悬崖日</text>
+        <polyline points="404,222 520,222 520,144 604,144 604,94 684,94" class="edge-dn" fill="none"/>
+        <text x="470" y="206" text-anchor="middle" class="hi">解锁前：有人抢跑先卖</text>
+        <text x="610" y="130" text-anchor="middle" class="hi">解锁后：看谁接盘</text>
+        <text x="544" y="266" text-anchor="middle" class="nd">锁仓期一到，一大块同时可卖——供给冲击</text>
+      </svg>
+    </div>
+    <figcaption><b>读图：</b>左边是线性解锁：份额每天或每月匀速滴进流通盘，像细水长流，市场一般消化得动。右边是悬崖解锁（<span class="nt" data-note="cliff">悬崖解锁</span>）：锁仓期（常见一年）一到，百分之几甚至百分之十几的流通量在同一天变成"可卖"——这就是真正的供给冲击。注意图上两行小字：悬崖日前常见<b>抢跑下跌</b>（怕被砸的人先跑），悬崖日后有时反而<b>利空出尽反弹</b>（人人都知道的解锁早被定价，又是第 11 课的预期差）。到底走哪个剧本，要看解锁的是谁：团队和基金会的份额未必马上卖，做市商和早期基金的份额经常真卖。</figcaption>
+  </figure>
+  <div class="prose">
+    <p>三个要点，把这节钉牢：</p>
+    <ul>
+      <li><strong>对小币是重磅。</strong>小市值币种流通盘薄，一次悬崖解锁放出流通量的 5–10% 并不罕见——相当于在小水池里倒进一卡车水；</li>
+      <li><strong>对 BTC / ETH 几乎免疫。</strong>BTC 根本没有"团队份额"，新增供给只有矿工奖励（上一节算过，量小且匀速）；ETH 的增发销毁由协议规则决定，量级同样小。<em>这正是你现阶段只做 BTC / ETH 的又一个理由：少一整类要盯的雷</em>；</li>
+      <li><strong>日期可以提前查。</strong>Tokenomist、CryptoRank 等网站列着每个币未来的解锁日历——机械类驱动的好处就是有日历。</li>
+    </ul>
+    <p><strong>这节对你是预防针，不是当下的作业</strong>：将来你想碰任何山寨币，第一件事就是查它的解锁表——解锁周不碰，是滤镜卡上提前为未来写好的一条（12.8 节）。</p>
+  </div>
+</section>
+
+<!-- ================= 12.6 ================= -->
+<section class="ch" id="s6">
+  <h2 class="sec"><span class="no">12.6</span>轮动与 ETHBTC：谁在跑赢，规则说了算</h2>
+  <p class="sec-en">ROTATION AND THE ETHBTC RATIO</p>
+  <div class="prose">
+    <p>币圈每轮牛市都流传同一个剧本：BTC 先涨（新钱只敢买龙头）→ ETH 补涨 → 大市值山寨跟上 → meme 和小币鸡犬升天——最后这段叫<span class="nt" data-note="altseason">山寨季</span>。盯这个剧本的人常看<span class="nt" data-note="dominance">BTC 主导率</span>，而对只做 BTC / ETH 的你，有一个更直接的仪表：<strong>ETHBTC——用 BTC 给 ETH 标价的汇率</strong>。它向上，说明 ETH 在跑赢、钱在往外溢；它向下，说明 BTC 在吸血。你那两个标的之间怎么分配仓位，看它就够了。先看七年全景：</p>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 12-5</span>ETHBTC 七年全景：山寨季之巅与漫长的回落<span class="real">真实数据</span><span class="ia">互动</span></p>
+    <div class="ctrls">
+      <div>
+        <span class="seg-label">时段</span>
+        <span class="seg" id="rb-seg" role="group">
+          <button type="button" data-val="all" aria-pressed="true">全程七年</button>
+          <button type="button" data-val="alt">山寨季（2020-10 → 2022-01）</button>
+          <button type="button" data-val="fall">长回落（2022 → 2025）</button>
+          <button type="button" data-val="recent">最近一年</button>
+        </span>
+      </div>
+      <div>
+        <span class="seg-label">EMA20 / 60</span>
+        <span class="seg" id="rb-ema" role="group">
+          <button type="button" data-val="on" aria-pressed="true">显示</button>
+          <button type="button" data-val="off">隐藏</button>
+        </span>
+      </div>
+    </div>
+    <div class="lw h420" id="rb-chart"></div>
+    <div class="lw-legend" id="rb-legend"></div>
+    <div class="stats">
+      <div class="stat"><span class="k">山寨季之巅</span><span class="v">0.0884</span><span class="s">2021-12-09——两年里比值 ×5.2</span></div>
+      <div class="stat"><span class="k">其后最深</span><span class="v dn">0.0177（−80%）</span><span class="s">2025-04-22，几乎跌回 2020 年起点</span></div>
+      <div class="stat"><span class="k">数据末端（2026-08-31）</span><span class="v">0.0314</span><span class="s">仍比顶部低 64.5%</span></div>
+      <div class="stat"><span class="k">当前方向票（第 4 课方法）</span><span class="v" id="rb-d">—</span><span class="s" id="rb-d-s">—</span></div>
+    </div>
+    <p class="lab-msg" id="rb-msg"></p>
+    <figcaption><b>读图：</b>币安现货 ETHBTC 真实日线（2020-01 → 2026-08，注意这是现货比值，不是合约）。左边两年是 ETH 的黄金时代：0.0170 一路抬到 0.0884；右边近五年是教科书级的下降结构——每年的反弹高点逐级走低（0.0856 → 0.0779 → 0.0612 → 0.0433，标准的 LH 阶梯，第 4 课的结构语言在比值图上照样管用），最深跌到 0.0177，<b>把五倍涨幅几乎吐了回去</b>。两条 EMA 是第 4 课的 20 / 60 原样搬来：2022 年以后三分之二的日子 EMA20 都压在 EMA60 下面——<b>"BTC 优先"在过去五年里多数时候是正确答案</b>。切到"最近一年"看个新鲜的：2026-07-13 出现金叉、末端收盘站上两线——规则翻回"ETH 可加大"的一侧（2022 年以来只有约三分之一的日子在这一侧）。坑也标好了：别在比值图上找"便宜"，0.0884 跌到 0.044 时看着已经腰斩够惨，后面还有一个腰斩在等着。</figcaption>
+  </figure>
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>2021-12：山寨季之巅，和晚一步接刀的人</h4>
+    <p>复盘那个冬天的剧本。2020 到 2021，DeFi、NFT、新公链轮番讲故事，ETHBTC 从 0.0170 涨到 0.0884，比值两年翻了五倍——"轮动剧本"的前半场完美上演，于是所有人都在等下半场：BTC 2021-11-10 见顶 69,199 后，剧本说"接下来钱会轮到 ETH 和山寨"。表面上也像：<strong>BTC 都开始跌了，ETHBTC 还在涨</strong>（11-10 比值 0.0714，12-09 冲到 0.0884，大盘见顶后比值又涨了 24%）。无数人按剧本把 BTC 换成 ETH 和山寨，等"轮动下半场"。</p>
+    <p>然后，没有下半场。比值从 0.0884 开始跌，此后每一年的反弹高点都比上一年低：2022-09 合并（Merge）叙事只顶回 0.0856，2023 年初 0.0779，2024 年初只剩 0.0612——教科书式的 LH 阶梯；2024-01 BTC 现货 ETF 获批，吸血加速；<strong>2024-07 连 ETH 自己的 ETF 上市都没能拐头</strong>（当月末 0.0500，年底 0.0357）；最终 2025-04-22 跌到 0.0177，距顶 −80%，几乎回到 2020 年的起点。四年里每一次"这回该轮到 ETH 了"的呼声，都是接刀的邀请。</p>
+    <p class="takeaway">轮动是事后叙事：钱确实会流动，但不按剧本的章节顺序。"该轮到它了"不是理由，比值图上的趋势规则（下面这条）才是。</p>
+  </div>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>轮动像涨潮：浪头确实会从深水区一路推向沙滩——先打湿礁石（BTC），再漫过沙滩（ETH、大市值），最后冲到最远的凉棚（meme 币）。但两件事剧本不会告诉你：<strong>有的潮根本漫不到凉棚</strong>（2021-12 之后的四年就是半场潮）；<strong>退潮没有广播</strong>——凉棚最先干死，而站在凉棚边的人总以为那只是浪的间歇。ETHBTC 就是你的潮位计：别听沙滩上的人喊"大浪要来了"，看刻度。</p>
+  </div>
+  <div class="prose">
+    <h3>把它写成一条可执行的观察规则</h3>
+    <p>不需要任何新工具——第 4 课的方法直接搬到 ETHBTC 日线上（EMA20 对 EMA60 的位置 ＋ 收盘价的位置，两票够用，不必凑三票）：</p>
+    <ul>
+      <li><strong>EMA20 在 EMA60 下方（或收盘在两线之下）</strong>：BTC 在吸血——双币仓位里 <strong>BTC 优先</strong>，ETH 的单子照系统做但不加大敞口；</li>
+      <li><strong>EMA20 上穿 EMA60 且收盘站稳其上</strong>：钱在向 ETH 外溢——<strong>ETH 才值得拿更大敞口</strong>（比如把"同时最多 2 仓"里的第二仓优先给 ETH）；</li>
+      <li><strong>每周判一次</strong>，写进周检查清单（12.8 节任务），和宏观、ETF 流向放在同一页。</li>
+    </ul>
+    <p>按这条规则读数据末端的状态：2026-07-13 金叉、EMA20 ＝ 0.0310 高于 EMA60 ＝ 0.0299、收盘 0.0314 站在两线上方——2022 年以来只有约三分之一的日子处在这一侧。规则当然会错（2022 年以来这对均线交叉过 28 次，震荡里打脸是常态），<strong>但它让你错得有纪律、翻多翻空有依据</strong>——比"感觉该轮到 ETH 了"强一个时代。</p>
+  </div>
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p><strong>"ETHBTC 都跌了 60% 了，够便宜了，抄底比值。"</strong>比值没有"便宜"一说。它不是一家公司的股票，没有净资产和分红给你托底：它是两个波动资产的汇率，可以从 0.088 跌到 0.044（腰斩，"够惨了吧"），再跌到 0.022（又腰斩），再到 0.0177——每一层都有人喊便宜，每一层都是半山腰。而且比值做错了两头亏：你拿着 ETH 等它跑赢，结果 ETH 既跑输 BTC、绝对价格还在跌。<em>方向用规则判（EMA 位置），仓位侧重跟着规则走，"跌多了"三个字永远不出现在依据栏里。</em></p>
+  </div>
+</section>
+
+<!-- ================= 12.7 ================= -->
+<section class="ch" id="s7">
+  <h2 class="sec"><span class="no">12.7</span>交易所与对手风险：防身术</h2>
+  <p class="sec-en">EXCHANGE AND COUNTERPARTY RISK</p>
+  <div class="prose">
+    <p>股票账户里的资产由第三方存管，券商倒了你的股票还在。币圈不是：<strong>你在交易所的币和保证金，本质上是这家公司数据库里欠你的一笔账</strong>。公司没了，账就没了。这不是吓唬新人的假设——它在 2022 年 11 月真实上演过一次，主角还是当时全球数一数二的交易所。</p>
+  </div>
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>FTX：从"大而不倒"到提现按钮变灰，只用了一周</h4>
+    <p>时间线值得背下来：2022-11-02，媒体曝光 FTX 关联公司的资产负债表大量押在自家平台币上；11-06，竞争对手宣布清仓该平台币，挤兑开始；<strong>11-08，FTX 暂停提现</strong>——那一刻起，用户账户里的数字变成了纯粹的数字；11-11，申请破产。市场的反应你在第 1 课的费率图上见过：BTC 从 11-07 收盘 20,579 两天砸到 15,905（−22.7%），当月最低 15,443，资金费率打到 −0.112%——空头愿意付重金的恐慌。至于它为什么恰好死在 2022 年（加息抽水的大背景），第 13 课把宏观和暴雷叠在一起复盘。</p>
+    <p>对你最重要的细节有两个：① 暴雷前几天，征兆全是公开的——平台币闪崩、提现变慢、高管声明含糊，<strong>每一个都在喊"先提现再求证"</strong>，但多数用户等了"官方辟谣"；② 买了 FTX"理财"（把币存给平台吃收益）的用户，和合约用户一起排进了破产债权人名单——<strong>所谓"理财"，法律上是你把币借给了它</strong>。</p>
+    <p class="takeaway">交易所不是银行，没有存款保险；提现是你唯一的投票权。征兆出现时先撤资再围观，宁可撤错十次，不可留错一次。</p>
+  </div>
+  <div class="prose">
+    <h3><span class="tag">① </span>防身术清单（实盘后逐条执行，模拟期先养习惯）</h3>
+    <ul>
+      <li><strong>资金不全放一个所</strong>：主力交易所之外留一个备用所；长期不动的币放自管钱包，和交易保证金分开；</li>
+      <li><strong>API 权限最小化</strong>：将来跑量化只开"交易"权限，<em>永远不开"提现"权限</em>——API 密钥泄露时这是最后的闸门；</li>
+      <li><strong>定期提现测试</strong>：每月小额提一次，确认通道通畅——提现是生命线，别等需要时才第一次用；</li>
+      <li><strong>"理财 / 赚币"单独记账</strong>：收益几个点、赌上的是本金，参加前问一句"它拿我的币去干嘛了"；</li>
+      <li><strong>征兆清单</strong>：提现变慢或限额、平台币异常下跌、储备证明含糊、高管推特疯狂辟谣——任意两条同时出现，先撤。</li>
+    </ul>
+    <h3><span class="tag">② </span>监管事件的类型学：不是所有"监管"都一个走法</h3>
+  </div>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>类型</th><th>典型例子</th><th>典型市场反应</th><th>对你的动作</th></tr></thead>
+      <tbody>
+        <tr><td><b>禁令类</b></td><td>中国 2021-09 全面清退交易与挖矿</td><td>短促重挫，随后用户与算力迁移、市场照常运转</td><td>事件窗口回避（第 3 课规矩），不猜底</td></tr>
+        <tr><td><b>诉讼类</b></td><td>美 SEC 2023-06 起诉两大交易所</td><td>拉锯数年、反复拿出来炒；判决落地反而常"利空出尽"</td><td>当长期背景噪音，开庭 / 判决日进事件日历</td></tr>
+        <tr><td><b>批准类</b></td><td>2024-01 现货 BTC ETF 获批</td><td>预期先涨、靴子落地震荡——买预期卖事实（第 14 课复盘）</td><td>决定日视同重大数据日：前后不开新仓</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="stock">
+    <span class="label">股票上怎么对照</span>
+    <h4>每个币圈驱动，股票世界几乎都有个远房亲戚</h4>
+    <ul>
+      <li><b>减半 ≈ 供给侧收缩 / 大额回购注销</b>——同样是"流通盘变相缩小"的故事，股票上同样常被提前定价；</li>
+      <li><b>现货 ETF ≈ 纳入 MSCI / 标普指数</b>——被动资金管道接通，成分股获得持续买盘，这是股票市场研究很充分的"指数效应"；</li>
+      <li><b>代币解锁 ≈ A 股限售股解禁</b>——几乎一模一样：大小非解禁日历人人可查，解禁前抢跑、解禁日利空出尽的博弈剧本都通用；</li>
+      <li><b>稳定币市值 ≈ 两融余额 / 客户保证金余额</b>——都是"场内弹药水位"类指标，同样是慢变量、同样不能当扳机；</li>
+      <li><b>交易所暴雷</b>——股票世界反而罕见：第三方存管 + 投资者保护基金把券商倒闭和你的资产隔开了。这条风险是币圈独有的，防身术没有股票版可抄。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= 12.8 ================= -->
+<section class="ch" id="s8">
+  <h2 class="sec"><span class="no">12.8</span>落地：币圈事件滤镜卡</h2>
+  <p class="sec-en">THE CRYPTO EVENT FILTER</p>
+  <div class="prose">
+    <p>收口。本课讲的所有东西——减半、ETF 流向、稳定币、解锁、轮动、暴雷——没有一个会变成买卖信号，它们统一安装成系统 v0.7 前面的<strong>第二层保险丝</strong>（第一层是第 11 课的宏观滤镜）：回答"这周系统允许全功率运转，还是降档、停机，甚至拔电源"。</p>
+  </div>
+  <div class="rulecard">
+    <div class="rc-head"><span class="label">规则卡</span><span class="rc-name">币圈事件滤镜卡（挂在系统 v0.7 之前，不改动 v0.7 本体）</span></div>
+    <dl>
+      <dt>标的与周期</dt><dd>BTC / ETH 的 U 本位永续，模拟盘；日线定方向、4 小时找位置、1 小时扣扳机（分工不变）。山寨币现阶段一律不碰——将来要碰，先过 12.5 与 12.6 两关</dd>
+      <dt>过滤条件</dt><dd><b>【本课新增 · 币圈日历】</b>① 已知币圈大事（ETF 审批决定日、重大监管判决与听证、减半、所持币种的悬崖解锁日）视同第 3 课的重大事件：窗口前后不开新仓；② <b>ETF 流向降档</b>：BTC / ETH 现货 ETF 连续一周明显净流出 → 多头单笔风险减半为 0.5%；③ <b>ETHBTC 侧重</b>：按 12.6 规则每周判一次，EMA20 在 EMA60 下方则双币仓位 BTC 优先，上穿站稳才允许 ETH 拿更大敞口；④ <b>（预留）解锁</b>：将来做山寨，解锁日前后各 3 天不碰该币</dd>
+      <dt>入场</dt><dd>维持 v0.7 不变：日线三票定方向（第 4 课）→ 环境与位置许可（第 7、8 课）→ 回调时机与量能确认（第 5、9 课）→ 1 小时收盘突破扣扳机；合约数据过热滤镜照常生效（第 10 课）</dd>
+      <dt>止损</dt><dd>维持 v0.3 以来的规矩：结构位外侧与 1.5×ATR 取更远者，事件窗口与周末持仓用 2×ATR；止损市价单、标记价格触发（第 1 课）</dd>
+      <dt>出场</dt><dd>止盈 ≥2R 与移动出场维持 v0.7；<b>【本课新增 · 两条无条件离场】</b>① 主流稳定币（USDT / USDC）对 1 美元偏离约 1% 且持续扩大 → 不等止损，全部仓位市价撤出，资金换回法币或撤到自管钱包，等重新锚定再回来；② 所用交易所出现暴雷征兆（提现变慢或暂停、平台币闪崩、挤兑发酵）→ 无条件清仓并提离该所</dd>
+      <dt>仓位</dt><dd>单笔风险 ≤1%（高波动期或滤镜降档时 0.5%）；逐仓 ≤5 倍；同时 ≤2 个仓位；<b>【本课新增 · 实盘后生效】</b>资金分散到至少 2 家交易所，单所不超过总资金六成；API 只开交易权限</dd>
+    </dl>
+    <p class="rc-note">这张卡一个信号都不产生。它的全部产出是每周一行字：<strong>"本周功率：全速 / 降档（原因）/ 停机（原因）/ 撤离（原因）"</strong>。写不出这行字，说明你这周没看仪表盘；写出来了，系统 v0.7 该怎么跑还怎么跑。</p>
+  </div>
+  <div class="sysup">
+    <span class="label">系统升级</span>
+    <h4>你的交易系统：v0.7 ＋ 币圈事件滤镜</h4>
+    <p>本课没有动 v0.7 的任何交易零件，而是在它前面（第 11 课宏观滤镜旁）再挂一层币圈滤镜：<strong>币圈日历项进事件清单（减半、ETF 决定日、监管日、解锁日）· ETF 流向连续流出 → 降档 · 稳定币锚定巡检 → 火警全撤 · 交易所征兆 → 无条件撤离 · ETHBTC 周判 → 双币侧重</strong>。至此，"行情为什么发生"的两块拼图（宏观水位 ＋ 币圈内因）都装好了。下一课把它们放回真实历史：2020-03 新冠、2022 加息年叠加 LUNA 与 FTX、2023-03 硅谷银行、2024-08 日元套息平仓、2024-12 鹰派降息——每一场都回答同一个问题：<em>如果当时拿着你这套规则卡，会发生什么。</em></p>
+  </div>
+  <div class="task">
+    <span class="label">本周模拟任务</span>
+    <h4>把仪表盘装上墙（全程模拟盘，系统 v0.7 照常跑）</h4>
+    <ol>
+      <li><strong>建立周检查清单</strong>：把三个盯盘项写进每周日晚的固定流程——ETF 流向（Farside Investors 或 SoSoValue）、稳定币总市值（DefiLlama 的 stablecoins 页）、解锁日历（Tokenomist，现阶段只围观山寨的雷怎么排）；各看一眼，在日志记一行"管道 / 弹药 / 雷"；</li>
+      <li>查出下一个已知的币圈日历项（最近的 ETF 审批或监管日程、下一次减半约 2028），把日期写进第 3 课的事件日历；</li>
+      <li><strong>给 ETHBTC 判一次方向</strong>：打开 ETHBTC 日线，套第 4 课方法（EMA20 对 EMA60 ＋ 收盘位置），把结论和"本周双币侧重 BTC 还是 ETH"写进<a href="ct-journal.html">交易日志</a>，和图 12-5 的判定对一遍；</li>
+      <li>对照滤镜卡自查本周的模拟单：有没有撞上日历项？如果撞上了，补写一句"按卡应该怎么做"；</li>
+      <li><strong>交易所防身体检</strong>：找到你所用交易所的 API 权限页和提现页，熟悉流程（模拟盘阶段不必真转账）；给自己写下实盘后的资金分布计划（哪两家所、比例、冷存放什么）；</li>
+      <li>周末复盘照旧统计按卡执行率，另加一个新栏目：<strong>本周功率（全速 / 降档 / 停机）及原因</strong>——从本周起，这行字和执行率一样每周必写。</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ================= 小结 ================= -->
+<section class="ch recap" id="recap">
+  <h2 class="sec"><span class="no">★</span>本课小结</h2>
+  <p class="sec-en">RECAP</p>
+  <div class="prose">
+    <ol>
+      <li><b>两类驱动</b>：叙事类（减半、ETF、监管、轮动）改变"愿意出的价"，机械类（解锁、稳定币、清算）改变"场内的币和钱"；宏观定水位，币圈因素定浪，你的系统只负责冲浪。</li>
+      <li><b>减半是叙事之王</b>：机制一句话（区块奖励砍半 ＝ 新增供给减半），但"四年必涨"有三个漏洞——样本只有 3–4 次、宏观混杂（+562% vs +31%）、提前抢跑（2024-03-14 减半前五周就创新高 73,881）。它只配进日历，不配进依据。</li>
+      <li><b>ETF 是管道不是故事</b>：传统资金从券商账户直接进场；每天盯 Farside / SoSoValue 的资金净流入——看连续不看单日，当滤镜不当扳机。</li>
+      <li><b>ETF 化改了市场性格</b>：与纳指联动加深、周末更清淡、极端费率被套利盘压平（年化 30.6% → 11.9% → 5.1% → 2.9%）——第 10 课的过热阈值要跟着时代走。</li>
+      <li><b>稳定币总市值 ＝ 场内弹药水位</b>：慢变量、按周看；主流稳定币脱锚是系统性火警——全部撤离，不是行情机会。</li>
+      <li><b>解锁是山寨的隐藏日历</b>：线性如细水、悬崖如倒水；对 BTC / ETH 几乎免疫，将来碰山寨先查 Tokenomist，解锁周不碰。</li>
+      <li><b>轮动是事后叙事</b>：2021-12 的 ETHBTC 之巅（0.0884）之后四年跌掉 80%，连 ETH 自家 ETF 都没能拐头；双币侧重用规则判——ETHBTC 的 EMA20 在 EMA60 下方 BTC 优先，上穿站稳 ETH 才加大。</li>
+      <li><b>交易所是对手方不是保管箱</b>：FTX 一周归零；分散、API 最小化、提现测试、"理财"单独记账；征兆出现先撤再围观。事件滤镜卡每周产出一行字：本周功率。</li>
+    </ol>
+  </div>
+
+  <h3>术语一览（点击正文中的角标词可随时弹出）</h3>
+  <ol class="notes-list" id="notes-list"></ol>
+
+  <h3>自测</h3>
+  <details><summary>1. 朋友说："下次减半在 2028 年，提前一年全仓囤币，减半后一年卖，历史证明必赚。"用本课的三个统计漏洞回应他，再补一句你的系统会怎么对待减半。</summary>
+    <div class="ans"><p>① 样本太小：减半只发生过四次，"每次都涨"在统计上和抛三四次硬币全是正面一样，什么也证明不了；② 宏观混杂：2020 年减半后一年 +562%，背后是全球零利率大放水；2024 年减半后一年只有 +31%——同一剧本涨幅差一个数量级，说明真正的变量（水位、ETF 管道）在剧本外面；③ 提前抢跑：日期人人提前四年知道，2024-03-14 减半前五周 BTC 就创了 73,881 的新高——预期差原理，人人都知道的利好不是利好。系统的做法：减半只作为日历项进第 3 课的事件清单（情绪高、波动大的时段，注意仓位），方向照样由三票制每天投票决定。</p></div>
+  </details>
+  <details><summary>2. ETF 资金流向数据去哪看？为什么它不能当日内交易的扳机？滤镜卡里它对应哪条动作？</summary>
+    <div class="ans"><p>看 Farside Investors、SoSoValue 这类每日汇总页。不能当扳机的三个理由：它是美股收盘后才公布的"昨天的事"，你看到时价格早已反应；单日流向是噪音，和次日涨跌关系很弱；大额流入常出现在行情最热时，离短期顶可能更近。滤镜卡动作只有降档一条：BTC / ETH 现货 ETF 连续一周明显净流出 → 多头单笔风险从 1% 减半到 0.5%。其余时间让它闭嘴——它是气象记录，不是天气预报。</p></div>
+  </details>
+  <details><summary>3. 稳定币总市值连续一个月上升，意味着什么、不意味着什么？如果某天 USDC 跌到 0.97 美元且还在往下走，按滤镜卡你该做什么？</summary>
+    <div class="ans"><p>意味着：有新钱换成了场内筹码，弹药水位在升高——行情的燃料在堆积，是偏多的环境变量。不意味着：马上会涨（筹码可能趴在账上）、某天某小时会涨（它是周级慢变量）。USDC 跌到 0.97 且持续扩大：这超过了滤镜卡"偏离约 1% 且在扩大"的红线——脱锚是场内美元本身着火的系统性火警，动作是无条件的：不开任何新仓，已有仓位全部市价撤出，等重新锚定再回来。2023-03 USDC 一度跌到 0.88 美元附近，当时"抄底稳定币"的人赌的是整个储备体系——那不是你该用交易仓位去赌的东西（完整案例第 13 课）。</p></div>
+  </details>
+  <details><summary>4. 将来你想做某山寨币，查到它下周三有一次占流通量 12% 的悬崖解锁（示意数字），而它这周已经跌了 10%。"利空出尽，解锁当天抄底"靠谱吗？</summary>
+    <div class="ans"><p>不靠谱——因为两个剧本都真实存在：一是抢跑后利空出尽反弹（解锁早被定价，砸不动了）；二是解锁的持有方（尤其做市商、早期基金）真的在解锁后持续出货，跌势延长数周。提前分不清走哪个剧本，关键变量（解锁方是谁、成本多低、有没有场外协议转让）你都查不到。所以滤镜卡的规则是躲，不是赌：解锁日前后各 3 天不碰该币——你的优势从来不在"赌对博弈"，在"不参加没有优势的博弈"。顺带复习：这件事对 BTC / ETH 不存在——BTC 没有团队份额，ETH 增发由协议决定，这正是现阶段只做双币的好处之一。</p></div>
+  </details>
+  <details><summary>5. ETHBTC 日线上 EMA20 ＝ 0.0310、EMA60 ＝ 0.0299、最新收盘 0.0314。按 12.6 的规则，双币仓位该怎么侧重？如果三个数字反过来呢？为什么不能用"ETHBTC 已经跌了 60%，够便宜"来决定？</summary>
+    <div class="ans"><p>EMA20 在 EMA60 上方、收盘站在两线之上——ETH 在跑赢，按规则 ETH 可以拿更大敞口（比如第二个仓位优先给 ETH）。反过来（EMA20 在 EMA60 下方、收盘其下）则 BTC 优先，ETH 照系统做但不加大。不能用"跌了 60% 够便宜"，因为比值没有估值锚：它是两个波动资产的汇率，没有净资产或分红托底，0.0884 → 0.044 已经腰斩，之后还能再腰斩到 0.0177——真实数据里每一层"便宜"都是半山腰。规则的价值不是更常猜对，而是让你翻多翻空有依据、错了能复盘——"该轮到它了"和"够便宜了"都复盘不了。</p></div>
+  </details>
+  <details><summary>6. 列出至少三条交易所防身术，并解释：为什么交易所"理财"的风险要和交易风险分开记账？</summary>
+    <div class="ans"><p>防身术任选三条：资金分散到至少两家所、单所不超总资金六成；长期不动的币放自管钱包；API 只开交易权限、永不开提现；每月小额提现测试通道；出现征兆（提现变慢、平台币闪崩、储备证明含糊）先撤再围观。"理财"要分开记账，因为它改变了法律关系：交易保证金是你放在交易所的担保品，而"理财 / 赚币"是你把币借给平台去运作——收益上限是那几个点的年化，损失下限是全部本金，FTX 破产时理财用户和其他债权人一起排队。拿全部本金的风险去赚存款级的收益，这笔期望值的账（第 3 课的算法）怎么算都不划算。</p></div>
+  </details>
+
+  <nav class="pager" aria-label="课程导航">
+    <a class="pg" href="ct-l11.html"><span class="pg-dir">上一课</span><span class="pg-ttl">第 11 课 · 宏观链条：利率、美元与流动性</span></a>
+    <a class="pg pg-toc" href="ct-index.html"><span class="pg-dir">返回</span><span class="pg-ttl">学习地图</span></a>
+    <a class="pg pg-next" href="ct-l13.html"><span class="pg-dir">下一课</span><span class="pg-ttl">第 13 课 · 宏观事件复盘</span></a>
+  </nav>
+
+  <p class="foot">数据：币安公开历史数据（data.binance.vision），BTCUSDT 永续与 ETHBTC 现货日线、BTCUSDT 永续资金费率，均已本地化；文中价格、比值、涨跌幅与费率年化均由本地真实数据计算（日线为 UTC 交易日口径）。ETF、稳定币、解锁与监管事件为公开报道的月份级事实，细节以原始公告为准。图表组件：TradingView Lightweight Charts™（Apache-2.0）。本讲义仅为学习笔记，不构成投资建议；合约交易风险极高。</p>
+</section>
+
+</main>
+</div>
+
+<!-- ================= 术语弹注内容 ================= -->
+<div class="notes-src" hidden>
+  <section data-note-id="halving" data-title="减半" data-en="Halving">
+    <p>比特币协议内置的事件：每 21 万个区块（约四年）把矿工的区块奖励自动砍半，新增供给速度随之减半。已发生四次（2012、2016、2020-05-11、2024-04-20），下一次约 2028 年。注意它只改变"新币产生的速度"，不改变已流通 BTC 的数量——对日常供需的物理影响很小，叙事影响很大。</p>
+  </section>
+  <section data-note-id="block-reward" data-title="区块奖励" data-en="Block Reward / Subsidy">
+    <p>矿工每挖出一个区块获得的新发行 BTC（另加区块内交易的手续费）。从 2009 年的 50 枚起步，经历届减半降到 2024-04 之后的 3.125 枚；这是新 BTC 进入流通的唯一通道，总量最终停在 2,100 万枚附近。按每天约 144 个区块算，当前每天新增约 450 枚。</p>
+  </section>
+  <section data-note-id="spot-etf" data-title="现货 ETF" data-en="Spot ETF">
+    <p>直接持有现货 BTC 或 ETH 的交易所交易基金：在券商账户买它的份额，等于间接持币，不用碰交易所和私钥。美国 2024-01-10 批准现货 BTC ETF，2024 年 7 月现货 ETH ETF 上市——传统资金（退休账户、顾问管理的钱）第一次有了合规入口。与之相对的期货 ETF（2021 年就有）持有的是 CME 期货合约，有展期损耗。</p>
+  </section>
+  <section data-note-id="netflow" data-title="资金净流入" data-en="Net Inflow / Outflow">
+    <p>一天里 ETF 的申购金额减去赎回金额：正数表示管道在往市场里进钱，负数表示在抽水。各基金每日公布，Farside Investors、SoSoValue 等网站汇总成表。使用要点：看连续数日的方向而非单日数字；它在美股收盘后才公布，是滞后的环境变量，不是交易信号。</p>
+  </section>
+  <section data-note-id="stablecoin" data-title="稳定币" data-en="Stablecoin">
+    <p>锚定 1 美元的加密代币（USDT、USDC 为主），由发行方持有的储备资产（现金、短期国债等）背书，是币圈事实上的"场内美元"：合约保证金、现货计价、避险停泊大多用它。全部稳定币的总市值因此成了场内购买力的水位计，可在 DefiLlama 的 stablecoins 页查看。</p>
+  </section>
+  <section data-note-id="depeg" data-title="脱锚" data-en="Depeg">
+    <p>稳定币价格明显偏离 1 美元。瞬间的零点几个百分点偏离属于做市摩擦，常见且无害；持续扩大的偏离说明市场怀疑储备资产出了问题——2023-03 USDC 因部分储备存在倒闭的硅谷银行，一度跌到 0.88 美元附近（周末两天，随后恢复）。主流稳定币脱锚是系统性风险信号：场内的"美元"本身在着火。</p>
+  </section>
+  <section data-note-id="unlock" data-title="代币解锁" data-en="Token Unlock">
+    <p>项目方、团队、早期投资人被锁定的代币份额按预定时间表进入流通。解锁不等于必卖，但"能卖的币"实打实变多了，对流通盘薄的小市值币种常构成显著供给压力。每个币的解锁日历可在 Tokenomist、CryptoRank 等网站提前查到——这是少数能提前知道日期的行情驱动。</p>
+  </section>
+  <section data-note-id="cliff" data-title="悬崖解锁" data-en="Cliff Unlock">
+    <p>锁仓期满后一次性解锁一大块份额（区别于每日匀速的线性解锁），常见设计是"锁一年，然后一次放出百分之几到百分之十几"。悬崖日前后是典型博弈场：解锁前的抢跑抛售与解锁后的"利空出尽"都可能上演，走哪个剧本取决于解锁方是谁、成本多低——外人很难提前判断，所以规则是回避而不是预测。</p>
+  </section>
+  <section data-note-id="altseason" data-title="山寨季" data-en="Altseason">
+    <p>资金从 BTC 外溢、山寨币普涨且大幅跑赢 BTC 的阶段。流行剧本是"BTC → ETH → 大市值 → meme 小币"的接力，但剧本不保证上演、更不保证演完——2021-12 之后的四年就停在了半场。判断轮动用比值图的趋势规则（如 ETHBTC 的均线方向），不用"该轮到谁了"的直觉。</p>
+  </section>
+  <section data-note-id="dominance" data-title="BTC 主导率" data-en="BTC Dominance">
+    <p>BTC 市值占全部加密货币总市值的比例。主导率上升 ＝ 资金收缩回龙头（避险或"吸血"），下降 ＝ 资金向山寨外溢（山寨季的温度计）。对只做 BTC / ETH 的交易者，ETHBTC 比值是它的"双币简化版"，信息更直接、数据更干净。</p>
+  </section>
+</div>
+
+<script src="assets/lightweight-charts.js"></script>
+<script src="assets/ct.js"></script>
+<script src="assets/ctchart.js"></script>
+<script src="assets/data/klines-BTCUSDT-1d.js"></script>
+<script src="assets/data/klines-ETHBTC-1d-spot.js"></script>
+<script src="assets/data/funding-BTCUSDT.js"></script>
+<script>
+(function(){
+'use strict';
+var fmt = CT.fmtN;
+
+/* ---------- 图 12-2 减半对照实验台 ---------- */
+(function(){
+  var all = CT.get('klines-BTCUSDT-1d');
+  var g = CT.makeChart('hv-chart', {minBarSpacing: 0.02});
+  g.chart.priceScale('right').applyOptions({mode: 1});   // 对数坐标
+  var cs = g.addCandles(all);
+  g.markers(cs, [
+    {time: Date.parse('2020-05-11') / 1000, position: 'belowBar', shape: 'arrowUp', color: 'accent', text: '减半① 8,561'},
+    {time: Date.parse('2024-03-14') / 1000, position: 'aboveBar', shape: 'circle', color: 'crit', text: '减半前新高 73,881'},
+    {time: Date.parse('2024-04-20') / 1000, position: 'belowBar', shape: 'arrowUp', color: 'accent', text: '减半② 64,897'}
+  ]);
+  g.fit();
+  CT.legend('hv-legend', [['accent', '减半日'], ['crit', '减半② 前五周的历史新高'], ['muted', 'BTCUSDT 永续日线（对数坐标）']]);
+  var MSG = {
+    all: '全程七年，对数坐标：两个箭头把图切成三段。先别急着总结"规律"——分别放大两段"减半后一年"，再想想各自叠加了什么宏观水位（第 11 课）。',
+    h1: '减半① 后一年：8,561 → 56,710（<b>+562%</b>）。是减半的胜利吗？同一年美联储降到零利率、全球大放水，股市和商品一起飞——减半和放水谁的功劳大，这笔账永远算不清，而算不清的账不能当交易依据。',
+    h2: '减半② 后一年：64,897 → 85,139（<b>+31%</b>）——同一个"四年剧本"，涨幅差了一个数量级。且历史新高 73,881 出现在减半前五周：ETF 的钱提前把利好买完了。人人都知道的利好，不是利好（第 11 课预期差）。'
+  };
+  CT.bindSeg('hv-seg', function(v){
+    if(v === 'h1') g.setRange('2020-04-10', '2021-05-25');
+    else if(v === 'h2') g.setRange('2024-03-20', '2025-05-05');
+    else g.fit();
+    document.getElementById('hv-msg').innerHTML = MSG[v];
+  });
+})();
+
+/* ---------- 图 12-3 费率年化下台阶 ---------- */
+(function(){
+  var fu = CT.get('funding-BTCUSDT');
+  var yr = {};
+  fu.forEach(function(r){
+    var y = new Date(r[0] * 1000).getUTCFullYear();
+    if(!yr[y]){ yr[y] = {sum: 0, days: {}}; }
+    yr[y].sum += r[1];
+    yr[y].days[Math.floor(r[0] / 86400)] = 1;
+  });
+  var years = Object.keys(yr).sort();
+  var vals = years.map(function(y){
+    var o = yr[y];
+    return o.sum / Object.keys(o.days).length * 365 * 100;
+  });
+  var max = Math.max.apply(null, vals), min = Math.min.apply(null, vals);
+  var TAG = {2021: '　← 山寨季狂热：极端费率的时代', 2024: '　← ETF 元年：有牛市，没有极端费率', 2026: '　← 新地板'};
+  var html = '';
+  years.forEach(function(y, i){
+    var v = vals[i];
+    var cls = v === max ? 'dn' : (v === min ? 'up' : '');
+    var label = y + (y === '2026' ? ' 前三季' : ' 年');
+    html += '<div class="bar"><span>' + label + '</span>'
+      + '<span class="track"><span class="fill ' + cls + '" style="width:' + (v / max * 100).toFixed(1) + '%"></span></span>'
+      + '<span class="val">年化 ' + v.toFixed(1) + '%' + (TAG[y] || '') + '</span></div>';
+  });
+  document.getElementById('fr-bars').innerHTML = html;
+})();
+
+/* ---------- 图 12-5 ETHBTC 七年全景 ---------- */
+(function(){
+  var all = CT.get('klines-ETHBTC-1d-spot');
+  var PF = {priceFormat: {type: 'price', precision: 4, minMove: 0.0001}};
+  var g = CT.makeChart('rb-chart', {minBarSpacing: 0.02});
+  var cs = g.addCandles(all, {opts: PF});
+  var e20data = CT.ind.ema(all, 20), e60data = CT.ind.ema(all, 60);
+  var l20 = g.addLine(e20data, 'series', {width: 2, title: 'EMA20', opts: PF});
+  var l60 = g.addLine(e60data, 'series2', {width: 2, title: 'EMA60', opts: PF});
+  g.markers(cs, [
+    {time: Date.parse('2020-01-08') / 1000, position: 'belowBar', shape: 'arrowUp', color: 'series2', text: '起点低位 0.0170'},
+    {time: Date.parse('2021-11-10') / 1000, position: 'aboveBar', shape: 'circle', color: 'muted', text: 'BTC 见顶，比值仍在涨'},
+    {time: Date.parse('2021-12-09') / 1000, position: 'aboveBar', shape: 'arrowDown', color: 'crit', text: '山寨季之巅 0.0884'},
+    {time: Date.parse('2022-09-07') / 1000, position: 'aboveBar', shape: 'circle', color: 'down', text: 'Merge 反弹 0.0856（LH）'},
+    {time: Date.parse('2024-01-10') / 1000, position: 'aboveBar', shape: 'circle', color: 'series2', text: 'BTC ETF 获批'},
+    {time: Date.parse('2024-07-23') / 1000, position: 'aboveBar', shape: 'circle', color: 'series2', text: 'ETH ETF 上市'},
+    {time: Date.parse('2025-04-22') / 1000, position: 'belowBar', shape: 'arrowUp', color: 'series2', text: '最深 0.0177（−80%）'},
+    {time: Date.parse('2026-07-13') / 1000, position: 'belowBar', shape: 'circle', color: 'up', text: 'EMA 金叉'}
+  ]);
+  g.fit();
+  CT.legend('rb-legend', [['series', 'EMA20'], ['series2', 'EMA60'], ['muted', 'ETHBTC 现货日线（ETH 用 BTC 计价）']]);
+  /* 当前方向票：按 12.6 规则现算 */
+  var v20 = e20data[e20data.length - 1].value;
+  var v60 = e60data[e60data.length - 1].value;
+  var lastClose = all[all.length - 1][4];
+  var bull = v20 > v60 && lastClose > v20;
+  var dEl = document.getElementById('rb-d');
+  dEl.textContent = bull ? 'ETH 可加大敞口' : 'BTC 优先';
+  dEl.className = 'v ' + (bull ? 'up' : 'dn');
+  document.getElementById('rb-d-s').textContent = 'EMA20 ' + fmt(v20, 4) + (v20 > v60 ? ' ＞ ' : ' ＜ ') + 'EMA60 ' + fmt(v60, 4);
+  var MSG = {
+    all: '七年全景：左边两年是 ETH 的黄金时代（0.0170 → 0.0884，比值 ×5.2），右边近五年是漫长的回落与筑底（最深 0.0177）。两条 EMA 就是第 4 课的方法原样搬来——<b>2022 年以后三分之二的日子 EMA20 压在 EMA60 下面，"BTC 优先"多数时候是正确答案</b>。',
+    alt: '2020-10 → 2022-01：DeFi、NFT、新公链轮番讲故事，比值一路抬高，这段里约三分之二的日子（64%）EMA20 在 EMA60 上方——按规则拿更多 ETH 大体是对的。注意 2021-11-10 BTC 见顶之后，比值还又涨了 24% 到 12-09 的 0.0884：<b>山寨的最后狂欢常发生在大盘见顶之后</b>，这正是接刀高发区。',
+    fall: '2022 → 2025：顶部之后每年的反弹高点逐级走低——0.0856（2022-09，Merge）→ 0.0779（2023 年初）→ 0.0612（2024 年初），标准的 LH 阶梯（第 4 课的结构语言）；期间两针"强心剂"——2024-01 BTC ETF 获批、2024-07 ETH 自家 ETF 上市——都没能拐头，比值最终跌到 0.0177，距顶 <b>−80%</b>。叙事救不了趋势：这段回落里 73% 的日子 EMA20 在 EMA60 下方，规则会让你大部分时间 BTC 优先。',
+    recent: '最近一年：2025-04 的 0.0177 见底后曾报复性反弹到 0.0433（2025-08），本窗口里先回落到 0.0253（2026-06），再于 2026-07-13 走出 EMA20 上穿 EMA60 的金叉，数据末端收盘 0.0314 站在两线上方——按 12.6 的规则进入"ETH 可加大敞口"状态，而 2022 年以来只有约三分之一的日子处在这一侧。规则在震荡里会翻脸，<b>但它让你翻多翻空有依据、错了能复盘</b>——每周重判一次，别一劳永逸。'
+  };
+  CT.bindSeg('rb-seg', function(v){
+    if(v === 'alt') g.setRange('2020-10-01', '2022-01-15');
+    else if(v === 'fall') g.setRange('2021-12-01', '2025-07-01');
+    else if(v === 'recent') g.setRange('2025-09-01', '2026-09-01');
+    else g.fit();
+    document.getElementById('rb-msg').innerHTML = MSG[v];
+  });
+  CT.bindSeg('rb-ema', function(v){
+    var vis = v === 'on';
+    l20.applyOptions({visible: vis});
+    l60.applyOptions({visible: vis});
+  });
+})();
+})();
+</script>
+</body>
+</html>

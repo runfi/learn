@@ -1,0 +1,927 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>币圈短线课 · 第 7 课 趋势市还是震荡市</title>
+<link rel="stylesheet" href="assets/ct.css">
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <span class="book"><a href="ct-index.html">币圈短线实战课</a></span>
+  <span class="part"><a href="ct-index.html">学习地图</a> · 阶段 1 指标工具箱</span>
+  <span class="prefs">
+    <button id="btn-updown" type="button" title="切换涨跌配色"></button>
+    <button id="btn-theme" type="button" title="切换深浅主题"></button>
+  </span>
+</header>
+
+<div class="layout">
+
+<nav class="sidenav" aria-label="本课目录">
+  <p class="sn-chap">第 7 课 · 趋势市还是震荡市</p>
+  <a href="#top">课首</a>
+  <a href="#s1">7.1 为什么先判环境</a>
+  <a href="#s2">7.2 ADX：只测力度</a>
+  <a href="#s3">7.3 布林带宽与收口</a>
+  <a href="#s4">7.4 组装：环境开关</a>
+  <a href="#s5">7.5 模板 B 与 C 的雏形</a>
+  <a href="#s6">7.6 落地：系统 v0.4</a>
+  <a href="#recap">小结 · 术语 · 自测</a>
+</nav>
+
+<main class="article">
+
+<section class="hero" id="top">
+  <span class="chap-no">LESSON 07 · 第 7 课 / 共 16 课</span>
+  <h1>趋势市还是震荡市</h1>
+  <p class="en">TRENDING OR RANGING — READ THE REGIME FIRST</p>
+  <p class="question">本课问题：现在该用哪套武器？</p>
+  <p class="lede">到上一课为止，你的系统有了方向（v0.1）、时机（v0.2）、尺度（v0.3）。但它有个没说出口的前提：<em>市场得有势可顺</em>。第 4 课的数据早就提醒过——三分之二的日子根本没有方向。同一套金叉死叉，2026 年 8 月是印钞机，2025 年 9 月是绞肉机；工具没变，变的是<strong>环境</strong>。这一课给系统装上"环境开关"：用 ADX 量力度、用布林带宽量松紧，把每一天分成<strong>趋势态、压缩待爆态、震荡态</strong>三种状态——然后给后两种状态配上它们自己的武器：模板 B（收口突破）和模板 C（区间往返）的雏形。<strong>先判环境，再开武器库，这是 v0.4 的全部内容。</strong></p>
+  <div class="objectives">
+    <h2>学完你能做到</h2>
+    <ul>
+      <li>一眼把市场分成三种状态：趋势、压缩待爆、震荡——并说出每种状态里该用哪套打法；</li>
+      <li>读懂 ADX：＜20 无趋势、＞25 有趋势、<strong>拐头比绝对值重要</strong>——以及它为什么注定慢半拍；</li>
+      <li>不再把"ADX 上行"错当"该做多"：方向在 ±DI 和价格，ADX 只管力度；</li>
+      <li>会算布林带宽＝（上轨 − 下轨）÷ 中轨，用历史分位数读它；知道收口＝能量积蓄，但爆发方向不可知；</li>
+      <li>组装环境开关：ADX 趋势票 ＋ 带宽压缩票 → 三种状态，每天收盘后一分钟判完；</li>
+      <li>用自算数据接受一个事实：同一套顺势策略，趋势态里的平均收益约是震荡态的十倍——也看清这个统计哪里靠不住；</li>
+      <li>拿到模板 B（收口突破）与模板 C（区间往返）的可用雏形，明白 C 为什么必须半仓、事件日禁用；</li>
+      <li>把系统升到 v0.4：第 0 步先判环境，<strong>环境开关优先于一切入场信号</strong>。</li>
+    </ul>
+  </div>
+  <p class="colorkey">读图约定：本课默认<span class="up">绿涨</span>·<span class="dn">红跌</span>，可用右上角按钮切成红涨绿跌。带 <b>互动</b> 标签的图可以拖动、缩放、调参数；正文里带虚线下划线和角标的词，点一下原地弹出解释。图表时间轴按你设备的时区显示（北京时间 ＝ UTC+8）；正文里的日期如 2026-08-19 指币安日线的交易日（UTC 口径，收盘在北京时间次日早 8 点）。</p>
+  <nav class="chapmap" aria-label="本课小节">
+    <a href="#s1">为什么先判环境</a><a href="#s2">ADX</a><a href="#s3">带宽与收口</a><a href="#s4">环境开关</a><a href="#s5">模板 B 与 C</a><a href="#s6">系统 v0.4</a><a href="#recap">小结</a>
+  </nav>
+</section>
+
+<!-- ================= 7.1 ================= -->
+<section class="ch" id="s1">
+  <h2 class="sec"><span class="no">7.1</span>为什么先判环境：工具没有好坏，只有用错地方</h2>
+  <p class="sec-en">WHY REGIME COMES FIRST</p>
+  <div class="prose">
+    <p>把第 4 课图 4-4 的两组数字再并排放一次，这是全课程最贵的一组对照：</p>
+    <ul>
+      <li><strong>2025-09-14 → 10-17</strong>：33 天里 EMA20 / 60 交叉 4 次，逢叉翻转跟单连亏三笔，累计约 <span class="dn-t">−21.6%</span>；</li>
+      <li><strong>2026-08-20</strong>：同一个金叉（72,999），到 9-21 高点 87,385，<span class="up-t">+19.7%</span>。</li>
+    </ul>
+    <p>同一套工具、同一组参数、同一个市场，两种命运。差别只有一个：前者发生在高位宽幅震荡里，后者发生在一轮真趋势的起点。<strong>趋势工具在震荡市里被来回绞肉，震荡工具在趋势市里天天接飞刀</strong>——先搞清楚"现在是什么地形"，比研究任何一件武器都优先。</p>
+  </div>
+  <figure>
+    <p class="fig-title"><span class="fno">图 7-1</span>武器 × 地形：用错组合的代价<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+      <svg viewBox="0 0 720 300" role="img" aria-label="趋势工具与震荡工具在趋势市与震荡市中的四种组合结局">
+        <text x="250" y="30" text-anchor="middle" class="nt">趋势市</text>
+        <text x="540" y="30" text-anchor="middle" class="nt">震荡市</text>
+        <text x="20" y="92" class="nd">趋势工具</text>
+        <text x="20" y="110" class="nd">均线 · MACD</text>
+        <text x="20" y="128" class="nd">三重滤网 A · 突破</text>
+        <text x="20" y="210" class="nd">震荡工具</text>
+        <text x="20" y="228" class="nd">区间高抛低吸</text>
+        <text x="20" y="246" class="nd">超买超卖反转</text>
+        <rect x="130" y="52" width="240" height="96" rx="10" class="node-up"/>
+        <text x="250" y="86" text-anchor="middle" class="ut">印钞模式</text>
+        <text x="250" y="110" text-anchor="middle" class="nd">2026-08-20 金叉 → +19.7%</text>
+        <text x="250" y="130" text-anchor="middle" class="nd">回调是上车点，持有有回报</text>
+        <rect x="420" y="52" width="240" height="96" rx="10" class="node-dn"/>
+        <text x="540" y="86" text-anchor="middle" class="dt">绞肉机</text>
+        <text x="540" y="110" text-anchor="middle" class="nd">2025-09→10 四叉连亏 −21.6%</text>
+        <text x="540" y="130" text-anchor="middle" class="nd">每次确认都是这段的尽头</text>
+        <rect x="130" y="170" width="240" height="96" rx="10" class="node-dn"/>
+        <text x="250" y="204" text-anchor="middle" class="dt">接飞刀</text>
+        <text x="250" y="228" text-anchor="middle" class="nd">趋势里每个"超买"都被碾过去</text>
+        <text x="250" y="248" text-anchor="middle" class="nd">第 5 课：RSI 钝化 25 天 +23%</text>
+        <rect x="420" y="170" width="240" height="96" rx="10" class="node-up"/>
+        <text x="540" y="204" text-anchor="middle" class="ut">如鱼得水</text>
+        <text x="540" y="228" text-anchor="middle" class="nd">下沿买、上沿卖，各得其所</text>
+        <text x="540" y="248" text-anchor="middle" class="nd">本课模板 C 的主场</text>
+        <text x="360" y="290" text-anchor="middle" class="hi">第 0 步：先判地形，再开武器库</text>
+      </svg>
+    </div>
+    <figcaption><b>读图：</b>四个格子里，亏钱的两个不是因为工具差，而是因为工具被拿进了错误的地形。注意对角线：趋势工具配趋势市、震荡工具配震荡市，都是好生意。多数新手的实际操作是反着来的——在震荡里追突破（右上格）、在主升里摸顶（左下格），因为这两种错<em>在直觉上最舒服</em>：震荡里的突破看起来"马上要走了"，主升里的高位看起来"太贵了该跌了"。环境判断就是用规则压住这两种直觉。</figcaption>
+  </figure>
+  <div class="keypoint">
+    <span class="label">本课最重要的一句话 · 之一</span>
+    <p><strong>环境判断不预测方向，只回答"现在的行情有没有性格"。</strong></p>
+    <p>有性格（单边倾向明显）就用顺势武器，没性格就收起它们——换区间武器或者观望。它和第 4 课三票制分工明确：<em>三票制投的是"往哪边"，环境开关判的是"值不值得投"</em>。先有环境，后有方向。</p>
+  </div>
+  <div class="prose">
+    <p>要把"有没有性格"变成可执行的规则，需要两件测量工具：一件量<strong>力度</strong>（行情是不是在单向走），一件量<strong>松紧</strong>（波动是被压缩还是在释放）。它们就是本课的两个指标：ADX 和布林带宽。</p>
+  </div>
+</section>
+
+<!-- ================= 7.2 ================= -->
+<section class="ch" id="s2">
+  <h2 class="sec"><span class="no">7.2</span>ADX：只测力度，不指方向</h2>
+  <p class="sec-en">ADX — STRENGTH WITHOUT DIRECTION</p>
+  <div class="cards">
+    <div class="card">
+      <h4>ADX 平均趋向指数<span class="en-term">Average Directional Index</span><span class="fit fit-all">股票通用</span></h4>
+      <p><strong>一句话</strong>：把最近 14 天行情的"单向程度"压成一个 0–100 的数——走得越一边倒数值越高，来回拉锯数值越低，<strong>涨和跌不区分</strong>。</p>
+      <span class="k">参数：<span class="nt" data-note="adx">ADX</span>（14）；经验读法：＜20 无趋势 · ＞25 有趋势</span>
+    </div>
+  </div>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>傍晚的地铁换乘大厅和演唱会散场，单位时间里都有一万人在走动——"活动量"（波动）一样大。区别在<strong>齐不齐</strong>：散场人流齐刷刷涌向同一个出口，大厅人流却互相对冲、谁也去不了远处。ADX 量的就是这个"齐"：<em>净位移占总活动量的比例</em>。所以暴涨和暴跌都能把它推高（人流向哪个口不重要，齐就行），而上蹿下跳的大波动反而压低它——<strong>它跟波动大小是两回事，跟方向更是两回事</strong>。</p>
+  </div>
+  <div class="formula">
+    <p class="fx">+DI ＝ 近 14 天"向上突进"吃掉的波幅份额　　−DI ＝ 向下的份额</p>
+    <p class="fx">ADX ＝ ｜+DI − −DI｜÷（+DI ＋ −DI）× 100，再做平滑</p>
+    <p class="note"><span class="nt" data-note="dmi">+DI 与 −DI</span> 一句话带过：它们是 ADX 的两条腿，+DI＞−DI 偏多、反之偏空——方向信息在 DI 和价格上，<strong>ADX 本体只保留"两腿差距有多大"</strong>。Wilder 1978 年提出，和 RSI（第 5 课）、ATR（第 6 课）同出一本书。</p>
+  </div>
+  <div class="prose">
+    <h3><span class="tag">① </span>信号规则：三句话 ＋ 一句更重要的</h3>
+    <ul>
+      <li><strong>ADX ＜ 20</strong>：无趋势区。趋势类信号（金叉死叉、突破、三重滤网 A）一律降级为"仅供参考"；</li>
+      <li><strong>ADX ＞ 25</strong>：有趋势区。顺势工具恢复全效，回调是机会而不是逃命窗口；</li>
+      <li><strong>20–25</strong>：灰区，宁可当无趋势处理；</li>
+      <li><strong>拐头比绝对值重要</strong>：ADX 从低位掉头向上，说明"性格"正在生成——这比"它现在是 28 还是 32"有用得多。反过来，高位的 ADX 掉头向下，说明趋势在降温，哪怕读数还挂在 40。</li>
+    </ul>
+    <p>还有一笔必须先讲清的账：<strong>滞后税</strong>。ADX 是对 14 天行情的平滑统计，趋势出生时它还趴着——2026-08-20 金叉当天它只有 18.1，等它爬过 25（08-22），价格距离 8-14 低点 62,484 已经走了 +23.4%。它确认的从来不是"趋势要来"，而是"趋势已经在了"。这不是缺陷，是它作为<em>确认工具</em>的本分；想抢在确认之前，就要靠下一节的带宽。</p>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 7-2</span>ADX 实验台：绞肉段与趋势段，同一把尺子两种读数<span class="real">真实数据</span><span class="ia">互动</span></p>
+    <div class="ctrls">
+      <div>
+        <span class="seg-label">视野</span>
+        <span class="seg" id="ax-seg" role="group">
+          <button type="button" data-val="all" aria-pressed="true">全程</button>
+          <button type="button" data-val="grind">放大绞肉段（2025-09 → 10）</button>
+          <button type="button" data-val="trend">放大 2026 年 7–9 月</button>
+        </span>
+      </div>
+    </div>
+    <div class="lw h420" id="ax-chart"></div>
+    <div class="lw-legend" id="ax-legend"></div>
+    <div class="stats">
+      <div class="stat"><span class="k">绞肉段前三叉的 ADX</span><span class="v dn">16.6 → 18.7 → 18.6</span><span class="s">全部趴在 20 下方＝无趋势区</span></div>
+      <div class="stat"><span class="k">10-17 死叉的 ADX</span><span class="v up">33.1</span><span class="s">四叉中唯一在"有趋势"里的，接住整轮熊市</span></div>
+      <div class="stat"><span class="k">08-22 ADX 终于破 25</span><span class="v warn">价格已 +23.4%</span><span class="s">距 8-14 低点 62,484——这就是滞后税</span></div>
+      <div class="stat"><span class="k">窗口内 ADX＞25 占比</span><span class="v" id="ax-share">—</span><span class="s" id="ax-share-s">—</span></div>
+    </div>
+    <p class="lab-msg" id="ax-msg"></p>
+    <figcaption><b>读图：</b>上为币安 BTCUSDT 永续日线（细线 EMA20 / 60），下为 ADX（14）与 +DI / −DI 副图，两条虚线是 20 / 25。先看绞肉段：2025 年 9 月到 10 月中，价格上蹿下跳，ADX 却趴在 16–19——<b>大波动不等于有趋势</b>，这里的三次交叉全是陷阱；直到 10·10 暴跌把 ADX 拉上 25，第四个叉（10-17 死叉、ADX 33.1）才是真的，它接住了随后的整轮熊市。再看 2026 年 8 月：金叉当天 ADX 才 18.1，08-22 破 25 时行情已走掉 23%，但此后 ADX 一路上行到 9-7 的峰值 47.8——破 25 之后的一个多月才是模板 A 回调单的黄金期。最后看右端：9 月底 ADX 还挂在 42，却已掉头向下——<b>高读数 ＋ 拐头向下 ＝ 趋势降温</b>，这正是"拐头比绝对值重要"的现场。</figcaption>
+  </figure>
+  <div class="prose">
+    <h3><span class="tag">② </span>什么时候失灵 · 和谁搭配</h3>
+    <ul>
+      <li><strong>何时失灵</strong>：① 趋势出生的头两周（滞后税，上面算过）；② 10·10 式的单日巨变——它要好几天才消化完一根大阴线的含义；③ V 形反转里会严重误导：跌出来的高 ADX 遇到急涨，读数先降后升，中间一段"假降温"；</li>
+      <li><strong>和谁搭配</strong>：布林带宽（下一节）。ADX 管"趋势已确认"，带宽管"趋势可能即将出生"——一个看后视镜，一个看油表，合起来才是完整的环境开关（7.4 节）。</li>
+    </ul>
+  </div>
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p><strong>"ADX 在涨，赶紧做多。"</strong>ADX 不认识多空。2026-01-30 它站上 26.2 并且连日上行，但当时 −DI＝37.6 远大于 +DI＝14.9——它确认的是一轮<em>下跌</em>趋势：1-31 收盘 78,707，六天后 BTC 见到 59,800（第 4 课回放过这段）。把"ADX 上行"读成"该做多"的人，正好在瀑布口排队。正确的分工：<strong>ADX 决定"趋势工具开不开机"，方向永远由第 4 课的三票制投出来</strong>。</p>
+  </div>
+</section>
+
+<!-- ================= 7.3 ================= -->
+<section class="ch" id="s3">
+  <h2 class="sec"><span class="no">7.3</span>布林带宽与收口：压缩的弹簧</h2>
+  <p class="sec-en">BOLLINGER BANDWIDTH AND THE SQUEEZE</p>
+  <div class="cards">
+    <div class="card">
+      <h4>布林带与带宽<span class="en-term">Bollinger Bands / BandWidth</span><span class="fit fit-all">股票通用</span></h4>
+      <p><strong>一句话</strong>：给价格套一条"正常波动走廊"（均线 ±2 倍标准差），再把走廊的开口度压成一个数——<strong>带宽</strong>，专门量市场的松紧。</p>
+      <span class="k">参数：<span class="nt" data-note="boll">布林带</span>（20，±2σ）；读法用<span class="nt" data-note="pctile">分位数</span>，不用绝对值</span>
+    </div>
+  </div>
+  <div class="formula">
+    <p class="fx">中轨 ＝ 20 日简单均线　　上 / 下轨 ＝ 中轨 ± 2 × 标准差</p>
+    <p class="fx"><span class="nt" data-note="bandwidth">带宽</span> ＝（上轨 − 下轨）÷ 中轨</p>
+    <p class="note">标准差量的是最近 20 天收盘价离均值的离散程度：行情安静，上下轨向中间收拢；行情狂暴，喇叭口张开。带宽就是这个喇叭口的开度，百分比表示，跨价位可比。</p>
+  </div>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>带宽收窄像一根被持续拧紧的弹簧。市场层面正在发生的事是：价格越盘越窄，多空都不愿在区间里动手，于是<strong>两侧越积越多的突破单和止损单，全都挂在越来越近的两条边界外面</strong>。区间越窄、挂单堆得越密，哪天价格捅破一侧，两边的单子同向引爆——空头止损变成追涨买盘、突破客蜂拥而入——弹簧"啪"地弹开。所以<span class="nt" data-note="squeeze">收口</span>＝能量积蓄这件事有微观结构的道理，不是玄学。但注意：<strong>弹簧知道自己要弹，不知道往哪边弹</strong>——方向是突破那一刻才揭晓的。</p>
+  </div>
+  <div class="prose">
+    <h3><span class="tag">① </span>怎么读：分位数，别背绝对值</h3>
+    <p>带宽的绝对值会随市场年代漂移：2026-02-12（1 月瀑布之后）BTC 日线带宽高达 44.6%，8 月 15 日只有 4.2%——同一年里差了十倍。所以一切阈值都用历史分位：<strong>带宽跌破近一年 20 分位 ＝ 收口成立</strong>。第 6 课在 ATR 上用过同样的思路（90 分位风险减半线），分位数让规则自动跟着市场校准。</p>
+    <h3><span class="tag">② </span>信号规则：三句话</h3>
+    <ul>
+      <li><strong>收口（带宽 ≤ 近一年 20 分位）</strong>：波动被压到历史低位，一轮放量行情在酝酿——进入"压缩待爆"状态，开始画盘整区、准备模板 B；</li>
+      <li><strong>爆口（带宽从低位急速张开）</strong>：行情已经选边，顺突破方向处理，别逆着喇叭口接飞刀；</li>
+      <li><strong>方向永远不猜</strong>：收口只给"快了"，不给"往哪"。用收盘价站上 / 跌破盘整区边界来裁决方向（7.5 节模板 B）。</li>
+    </ul>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 7-3</span>带宽实验台：拖 N 和 k，看"收口"怎么认定<span class="real">真实数据</span><span class="ia">互动</span></p>
+    <div class="ctrls">
+      <label class="rg"><span class="rg-top">均线周期 N<output>20</output></span>
+        <input type="range" id="bw-n" min="10" max="40" step="1" value="20"></label>
+      <label class="rg"><span class="rg-top">轨道宽度 k（倍标准差）<output>2.00σ</output></span>
+        <input type="range" id="bw-k" min="1" max="3" step="0.25" value="2"></label>
+    </div>
+    <div class="lw h480" id="bw-chart"></div>
+    <div class="lw-legend" id="bw-legend"></div>
+    <div class="stats">
+      <div class="stat"><span class="k">2026 年最窄收口</span><span class="v" id="bw-min">—</span><span class="s" id="bw-min-s">—</span></div>
+      <div class="stat"><span class="k">真突破：08-19 收盘 69,310</span><span class="v up">15 天 +18.7%</span><span class="s">收口 31 天后向上爆开，直奔 87,385</span></div>
+      <div class="stat"><span class="k">假突破：05-06 冲高 82,829</span><span class="v dn">6 月见 58,030（−29.9%）</span><span class="s">收口后先向上虚晃，真行情在下面</span></div>
+      <div class="stat"><span class="k">收口日之后 20 天带宽</span><span class="v warn" id="bw-exp">—</span><span class="s" id="bw-exp-s">—</span></div>
+    </div>
+    <p class="lab-msg" id="bw-msg"></p>
+    <figcaption><b>读图：</b>上图是 2026 年以来的 BTC 日线与布林带（参数随滑块重算），下图是带宽，红色虚线是<b>滚动的近一年 20 分位</b>——带宽钻到它下面就算收口。默认参数下看三个标注：2 月中带宽 44.6% 是 1 月瀑布的余波（爆开之后总要慢慢泄气）；7-20 → 8-19 带宽连续 31 天压在 20 分位下方、8-15 摸到年内最窄 4.21%，8-19 一根大阳收盘 69,310 捅破箱体，弹簧向上弹开；而 5 月那次收口（最窄 7.75%）先向上虚晃出 82,829 的新高，随后 6 月一路崩到 58,030。两次收口、两个方向、一真一假——<b>收口管"快了"，不管"往哪"</b>。再把 k 从 2 拖到 3：轨道变宽、带宽数值整体变大，但哪些日子算收口<b>一天都不变</b>——分位数比较里 k 被约掉了；真正改变收口认定的是 N。这就是"参数宁可普通而稳定"的又一个版本。</figcaption>
+  </figure>
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>同一个收口剧本，2026 年演了一真一假</h4>
+    <p><strong>真的那次（7–8 月）</strong>：6 月瀑布之后，BTC 在 62,000–65,500 的箱体里躺了一个多月，日线带宽从 7 月 20 日起连续 31 天压在近一年 20 分位下方，8-15 收到年内最窄的 4.21%——弹簧拧到极限。8-19，日线收盘 69,310，同时捅破箱体上沿 65,483 和布林上轨 66,895，当天带宽从 4.65% 跳到 8.68%——爆口。随后 15 天 +18.7%，趋势一路延伸到 9-21 的 87,385。注意时间线：<strong>8-19 突破当天，ADX 才 15.0</strong>——等 ADX 确认（08-22）再追，起步价贵了 11%。收口突破，就是为了在 ADX 还没睡醒时接住趋势的出生。</p>
+    <p><strong>假的那次（5 月）</strong>：4 月下旬行情放缓，5-02 → 5-05 带宽压到 20 分位下方（最窄 7.75%）。5-05、5-06 连续两天收在布林上轨外，5-06 盘中冲出 82,829 的<span class="nt" data-note="fakeout">假突破</span>新高——看起来弹簧向上弹了。结果当天收长上影 81,390，次日跌回轨内，5-22 收盘 75,513 反手向下破位，6-25 见 58,030——距离那个"新高"跌去 29.9%。这就是 Bollinger 本人警告过的"假动作"：<strong>收口末端的第一次突破，可能是真行情前的反向虚晃</strong>。</p>
+    <p class="takeaway">两次收口都兑现了"能量释放"，但方向一上一下、第一下还可能是假的。所以模板 B 必须等收盘确认、必须带止损——弹簧的能量是真的，你的方向判断永远可能是假的。</p>
+  </div>
+  <div class="prose">
+    <h3><span class="tag">③ </span>什么时候失灵 · 和谁搭配</h3>
+    <ul>
+      <li><strong>何时失灵</strong>：① 假动作（上面 5 月就是现场）——对策是等收盘、挂止损、必要时等回踩再上；② 事件驱动的爆口没有预告：收口可以憋好几周，也可以被一条新闻当天引爆，它给的是"易燃状态"，不是倒计时；③ 爆开之后它就没用了——带宽张开的途中别再拿"带宽很高"当看空理由，泄气可以泄很久；</li>
+      <li><strong>和谁搭配</strong>：ADX（接力关系：带宽管出生，ADX 管确认）；盘整区边界（第 8 课教你画得更讲究）；量能确认（第 9 课补上"真突破该放量"这一票）。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= 7.4 ================= -->
+<section class="ch" id="s4">
+  <h2 class="sec"><span class="no">7.4</span>组装：环境开关——两票定三态</h2>
+  <p class="sec-en">THE REGIME SWITCH — TWO VOTES, THREE STATES</p>
+  <div class="prose">
+    <p>两件工具到手，现在拧成一台每天只花一分钟的机器。它和三票制一样只在<strong>日线</strong>上投票：</p>
+  </div>
+  <div class="tablewrap narrow">
+    <table>
+      <thead><tr><th>票</th><th>条件</th><th>它在说什么</th></tr></thead>
+      <tbody>
+        <tr><td><b>趋势票</b></td><td>ADX（14）＞25，且高于 3 天前（上行）</td><td>单向程度已确认、还在增强</td></tr>
+        <tr><td><b>压缩票</b></td><td>带宽 ≤ 近一年 20 分位</td><td>波动压到历史低位，能量在积蓄</td></tr>
+        <tr class="hl"><td colspan="2"><b>判定</b></td><td>趋势票亮 → <b>趋势态</b>；只亮压缩票 → <b>压缩待爆态</b>；都不亮 → <b>震荡态</b></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>这是系统的<strong>天气预报</strong>：出门前先看天，再决定穿什么——晴天（趋势态）穿顺势三件套，阴云压城（压缩待爆）带好雨具等雨点（挂突破计划单），毛毛雨下个不停（震荡态）要么穿雨衣做区间，要么干脆不出门。没有人用同一套衣服应付所有天气，<em>但几乎所有新手都用同一套打法应付所有行情</em>。注意天气预报的局限也一并继承了：它报的是"现在的天"，不保证两小时后不变脸。</p>
+  </div>
+  <div class="keypoint">
+    <span class="label">本课最重要的一句话 · 之二</span>
+    <p><strong>先问环境，再选武器：环境开关优先于一切入场信号。</strong></p>
+    <p>三票制再齐、滤网再漂亮，开关说"震荡态"，模板 A 就不许开机。宁可错过一段行情，不把趋势武器带进绞肉机——第 4 课"宁可错过，不可硬做"的升级版。</p>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 7-4</span>环境时间轴：2026 年每一天的状态，拖动日期看两票怎么投<span class="real">真实数据</span><span class="ia">互动</span></p>
+    <div class="ctrls">
+      <label class="rg"><span class="rg-top">日期（2026-01-01 → 09-30）<output>—</output></span>
+        <input type="range" id="es-day" min="0" max="272" step="1" value="272"></label>
+    </div>
+    <div class="lw h420" id="es-chart"></div>
+    <div class="lw-legend" id="es-legend"></div>
+    <div class="stats">
+      <div class="stat"><span class="k">趋势票</span><span class="v" id="es-v1">—</span><span class="s" id="es-v1-s">—</span></div>
+      <div class="stat"><span class="k">压缩票</span><span class="v" id="es-v2">—</span><span class="s" id="es-v2-s">—</span></div>
+      <div class="stat"><span class="k">当日状态</span><span class="v" id="es-st">—</span><span class="s" id="es-st-s">—</span></div>
+      <div class="stat"><span class="k">同一策略两种命运</span><span class="v" id="es-cmp">—</span><span class="s" id="es-cmp-s">—</span></div>
+    </div>
+    <p class="lab-msg" id="es-msg"></p>
+    <figcaption><b>读图：</b>下方彩条是页面按上表规则对 2026 年每个交易日现场算出的状态：<b>绿＝趋势态、橙＝压缩待爆、灰＝震荡态</b>。拖到几个关键段落走一遍：1 月底到 2 月下旬的趋势态是<b>向下</b>的（−DI 远大于 +DI），开关只说"有性格"，方向是三票制的事；7-20 → 8-19 连续 31 天压缩待爆——模板 B 的猎场；8-20、8-21 两天开关"失语"（带宽已炸开、ADX 还没过 25），<b>突破单必须在压缩态里就挂好，等开关表态就晚了</b>；8-22 → 9-8 趋势态全程绿灯，正是模板 A 吃回调的黄金期；9 月中旬趋势途中二次收口（中继旗形），9 月底 ADX 从 47.8 掉头、退回震荡态——同几天，第 4 课的三票制也因为结构票打架而 flat，两套独立的仪表盘指向同一个结论：行情在降温。</figcaption>
+  </figure>
+  <div class="evidence">
+    <span class="label">证据与怀疑</span>
+    <h4>同一策略分环境结算：十倍差距是真的，但别把开关当圣杯</h4>
+    <p><strong>证据的一面</strong>（全部由本页用你电脑里的真实数据现算，可在图 7-4 的统计瓦片里核对）：拿一个最朴素的顺势策略——"收盘价在 EMA20 上方就做多、下方就做空，持有 5 天"——从 2020 年 7 月到 2026 年 9 月逐日结算，按当天状态分组：<strong>趋势态平均 +0.94%（670 个样本，胜率 52%），震荡态只有 +0.09%（1,111 个样本），压缩态 +0.22%</strong>；把持有期拉到 10 天，差距更狠：趋势态 +1.70%，压缩态干脆转负（−0.02%）。同一套规则，换个环境判若两人——这就是"第 0 步先判环境"的全部理由。</p>
+    <p><strong>怀疑的一面</strong>：① 阈值是后验挑的——25、20 分位、"3 天上行"都是看着历史顺眼才定的数，换成 20 / 30 分位结论强弱会变，这是第 5 课讲过的数据窥探；② 单年样本会翻脸：只看 2026 年，震荡态的同策略平均收益（+1.12%）反而<em>高于</em>趋势态（+0.38%）——因为 4 月大涨期间 ADX 迟迟趴在 25 下方，整段被记成"震荡"，而 5 月初趋势票亮灯时正撞上假突破的顶。<strong>开关慢半拍是结构性的，样本一短就现形</strong>；③ 市场制度会漂移（ETF、监管、波动台阶下移，第 6 课讲过），分位窗口要跟着滚动；④ 以上分组收益没扣手续费与滑点，它论证的是"环境分层有效"，不是"这个策略能跑"。</p>
+  </div>
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p><strong>把环境开关当预测器。</strong>它是现状描述仪：2026-05-03 → 05-13 它判了趋势态，随后迎来的却是假突破和 6 月瀑布——开关被骗了，而且这类被骗<em>无法根除</em>，因为任何"确认"都要先看到一段事实，而事实可以反悔。正确预期是：<strong>它把你用错武器的天数大幅压缩，但不把它们清零</strong>。所以状态判定之后，止损、仓位公式、事件日历一条都不许省——开关选武器，保命的还是第 1、3、6 课那套底盘。另一个变种：状态一天一变就跟着一天一换仓。状态是给"新开仓"选模板用的，<em>已有仓位交给它自己的止损止盈管理</em>（第 4 课讲过同样的规矩）。</p>
+  </div>
+</section>
+
+<!-- ================= 7.5 ================= -->
+<section class="ch" id="s5">
+  <h2 class="sec"><span class="no">7.5</span>模板 B 与模板 C 的雏形：给另外两种天气配武器</h2>
+  <p class="sec-en">TEMPLATE B AND TEMPLATE C, FIRST DRAFTS</p>
+  <div class="prose">
+    <p>第 5 课结尾预告过：你的"顺势回调"打法将来叫<strong>模板 A</strong>，它还有三个兄弟。今天先把其中两个的雏形装进系统——正式归档和打磨要等第 15 课，但从本周起它们就是可以模拟执行的规则。</p>
+  </div>
+  <figure>
+    <p class="fig-title"><span class="fno">图 7-5</span>模板 B 与模板 C 解剖图<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+      <svg viewBox="0 0 720 330" role="img" aria-label="模板 B 收口突破与模板 C 区间往返的入场、止损、目标位置示意">
+        <defs>
+          <marker id="f75-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="ar-fill"/></marker>
+        </defs>
+        <text x="180" y="26" text-anchor="middle" class="nt">模板 B · 收口突破（压缩待爆态）</text>
+        <rect x="40" y="120" width="180" height="70" rx="4" class="zone"/>
+        <polyline points="40,100 90,132 130,116 170,142 200,124 220,138" class="edge-soft" fill="none"/>
+        <polyline points="40,214 90,176 130,196 170,168 200,186 220,172" class="edge-soft" fill="none"/>
+        <polyline points="48,160 76,138 100,176 128,146 152,182 180,150 206,170 220,128 244,96 268,70" class="edge-up" fill="none"/>
+        <line x1="40" y1="120" x2="300" y2="120" class="sr"/>
+        <text x="306" y="124" class="nd">箱体上沿</text>
+        <line x1="40" y1="155" x2="300" y2="155" class="sr"/>
+        <text x="306" y="159" class="wt">止损①箱体中轨</text>
+        <circle cx="232" cy="110" r="5" class="dot"/>
+        <text x="186" y="94" class="ut">收盘站上边界 → 进</text>
+        <line x1="222" y1="206" x2="300" y2="206" class="sr"/>
+        <text x="306" y="210" class="wt">止损②入场 −1.5×ATR</text>
+        <path d="M268 70 L268 46" class="edge-up" marker-end="url(#f75-ar)"/>
+        <text x="268" y="38" text-anchor="middle" class="ut">目标 ≥2R</text>
+        <text x="180" y="252" text-anchor="middle" class="nd">两条收拢的虚线＝布林带收口</text>
+        <text x="180" y="272" text-anchor="middle" class="nd">止损①与②取更近者；量能确认第 9 课补</text>
+        <text x="540" y="26" text-anchor="middle" class="nt">模板 C · 区间往返（震荡态）</text>
+        <line x1="420" y1="70" x2="700" y2="70" class="sr"/>
+        <text x="648" y="62" class="nd">区间上沿＝目标②</text>
+        <line x1="420" y1="130" x2="700" y2="130" class="sr"/>
+        <text x="648" y="124" class="nd">中轨＝目标①减半</text>
+        <line x1="420" y1="190" x2="700" y2="190" class="sr"/>
+        <text x="648" y="206" class="nd">区间下沿</text>
+        <polyline points="420,96 450,182 478,84 508,176 534,92 560,186 588,100 614,180" class="edge-soft" fill="none"/>
+        <circle cx="614" cy="180" r="5" class="dot"/>
+        <text x="614" y="166" text-anchor="middle" class="ut">触下沿 ＋ 4h RSI＜35 → 做多</text>
+        <line x1="420" y1="232" x2="700" y2="232" class="sr"/>
+        <text x="540" y="226" text-anchor="middle" class="wt">止损：下沿外 1×ATR</text>
+        <text x="560" y="252" text-anchor="middle" class="nd">触上沿 ＋ RSI＞65 镜像做空</text>
+        <text x="560" y="272" text-anchor="middle" class="wt">逆势打法：仓位减半 · 事件日禁用</text>
+        <text x="360" y="312" text-anchor="middle" class="hi">B 等市场开口说方向，C 赌市场继续不说——所以 C 永远更小心</text>
+      </svg>
+    </div>
+    <figcaption><b>读图：</b>左边模板 B：收口（虚线收拢）＋ 箱体（底色区域）里不动手，<b>等日线或 4 小时收盘价站上边界才进</b>——买的是"弹簧已经弹了"这个事实，不是预测；止损取"跌回箱体中轨"与"入场 −1.5×ATR"两者更近的一个——跌回箱体深处，突破这个理由就证伪了。右边模板 C：在确认的震荡态里，价格触到区间下沿、同时 4 小时 RSI＜35（第 5 课的尺子换了个用法：震荡市里 30 / 70 的语言恢复有效），反向做多，到中轨减半、到对沿清仓，止损挂区间外 1×ATR。<b>两个模板最大的区别是姿态</b>：B 顺着爆发方向、可以吃大段；C 逆着当下动能、赚的是"弹回去"的小段——所以 C 仓位必须减半，消息能瞬间掀翻区间，事件日禁用。</figcaption>
+  </figure>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th></th><th>模板 B · 收口突破</th><th>模板 C · 区间往返</th></tr></thead>
+      <tbody>
+        <tr><td><b>环境</b></td><td>压缩待爆态（带宽 ≤ 20 分位）</td><td>震荡态，且<span class="nt" data-note="consol">盘整区</span>边界清晰、至少被各碰过两次</td></tr>
+        <tr><td><b>入场</b></td><td>日线或 4 小时<b>收盘价</b>突破盘整区边界，顺方向进；不见收盘不动手（防假动作）</td><td>触区间下沿（或布林下轨）且 4h RSI＜35 → 做多；触上沿且 RSI＞65 → 做空</td></tr>
+        <tr><td><b>止损</b></td><td>盘整区中轨与入场 ∓1.5×ATR（4h）取更近者</td><td>区间边沿外 1×ATR（4h）</td></tr>
+        <tr><td><b>目标</b></td><td>≥2R，或趋势成型后交给吊灯式移动止损（第 6 课）</td><td>中轨减半、对侧边沿清仓——不恋战</td></tr>
+        <tr><td><b>仓位</b></td><td>标准公式（单笔风险 1%）</td><td><b>减半（0.5%）</b>——逆势打法的强制折扣</td></tr>
+        <tr><td><b>禁忌</b></td><td>量能未确认前别重仓（第 9 课补这一票）；突破当天追高不如等回踩</td><td><b>事件日禁用</b>；压缩待爆态禁用（弹簧随时弹开）；连输两笔说明区间已死，停</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>模板 C 现场：2026 年 3 月，区间下沿的一笔逆势多单</h4>
+    <p>2 月底到 4 月是教科书式的震荡段（第 4 课图 4-2 的"反面教材"窗口，环境开关全程无趋势票）：上沿 74,047 / 75,999，下沿 65,569 一带。3-21、3-22 日 4 小时 RSI 两次跌破 35，但价格还在 68,500——<strong>只有超卖、没到位置，不是 C 的入场</strong>。3-27 北京时间下午 4 点收盘的 4 小时线：收 66,663，最低 66,175，踩进下沿区，RSI 29.7——位置和超卖同时到齐，按卡做多。止损＝下沿 65,569 − 1×ATR（当时 4h ATR＝1,154）＝ 64,415，风险 3.4%，半份风险（0.5% ＝ 50 U）→ 名义约 1,480 U。</p>
+    <p>然后是逆势单的标准剧情：3-29 价格最深插到 64,918——跌破了下沿，<strong>离止损只剩 500 U</strong>，浮亏一度 −2.6%。区间外 1×ATR 的缓冲就是为这一下准备的：挂在下沿贴脸的止损，这里已经出局。随后<span class="nt" data-note="meanrev">均值回归</span>的逻辑兑现：4-6 摸到布林中轨一带，4-7 晚冲过区间中轨 70,784——到目标①，+6.2% ≈ +1.8R，减半或清仓都算完整执行。整笔持有 11 天，半仓风险赚约 0.9% 账户——<strong>C 模板的收益就是这种量级，它是震荡期的"别手痒基金"，不是暴富工具</strong>。</p>
+    <p class="takeaway">C 的三要素一个都不能少：确认的震荡态（环境）、碰到边沿（位置）、RSI 超卖超买（时机）。少一个就是接飞刀；全到齐，也还要半仓 ＋ 区间外止损来兜着。</p>
+  </div>
+  <figure>
+    <p class="fig-title"><span class="fno">图 7-6</span>那笔 C 单的 4 小时现场：先挨一针，再到中轨<span class="real">真实数据</span></p>
+    <div class="lw h420" id="tc-chart"></div>
+    <div class="lw-legend" id="tc-legend"></div>
+    <figcaption><b>读图：</b>币安 BTCUSDT 永续 4 小时线（2026-03 → 04，时间轴按你的时区显示），下副图是 4 小时 RSI（14）与 35 水平线。五个要素全在图上：入场（3-27 收盘 66,663、RSI 29.7）→ 止损 64,415（下沿 65,569 外 1×ATR）→ 3-29 的针（64,918，距止损 500 U）→ 4-7 到区间中轨 70,784 止盈。注意 RSI 在 3-27 之后最低到过 27.2——<b>超卖之后永远可以更超卖</b>，所以 C 的止损锚在区间结构上，不锚在"RSI 不会再低了"这种幻觉上。</figcaption>
+  </figure>
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p><strong>在压缩待爆态里做区间往返。</strong>"价格到箱体下沿了、RSI 也超卖了，按 C 做多"——如果此时带宽正压在 20 分位下面，这笔单等于<em>在拧到极限的弹簧旁边打盹</em>：收口末端随时可能向任意一边爆开，向下爆开时你的"下沿"一文不值（5 月那次向上假突破的镜像剧本）。压缩待爆态里只有一件事可做：画好箱体，挂模板 B 的计划单，等市场开口。<strong>C 只属于"确认的震荡态"：带宽不在极端低位、区间边界已被两边各验证过</strong>。</p>
+  </div>
+  <div class="stock">
+    <span class="label">股票上怎么对照</span>
+    <h4>环境判断全市场通用，模板 B / C 要按股票规则改装</h4>
+    <ul>
+      <li><b>ADX 与布林带都是股票世界的原生工具</b>：ADX 出自 Wilder 1978（为商品期货设计，股票照用），布林带是 John Bollinger 为股票发明的——参数 14 / 20±2σ 全球通用。A 股大量时间在存量资金震荡里，"先判环境"在股票上只会更重要；</li>
+      <li><b>收口在个股上常对应消息真空期</b>：财报前、重组停牌前经常缩量收口——但注意爆口往往以<em>跳空</em>形式兑现（第 2 课讲过股票的跳空），模板 B 的"收盘突破进场"可能直接高开 5% 起步，止损也可能被跳空越过，仓位要按最坏跳空算；</li>
+      <li><b>模板 C 在 A 股要过三道关</b>：T+1 买入当天不能卖，区间下沿接飞刀没有当日逃生门；跌停板会把"下沿"直接击穿且卖不出去；两融做空门槛高，"触上沿做空"基本只对美股可行；</li>
+      <li><b>环境开关的日线口径无缝迁移</b>：A 股 / 美股按交易日算 ADX 和带宽分位即可，阈值同样别背死数字、用分位数自校准。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= 7.6 ================= -->
+<section class="ch" id="s6">
+  <h2 class="sec"><span class="no">7.6</span>落地：系统 v0.4——装上环境开关</h2>
+  <p class="sec-en">SYSTEM v0.4</p>
+  <div class="prose">
+    <p>把本课零件拧进系统。从今天起，你每天收盘后的流程多了一个排在所有判断之前的"第 0 步"：</p>
+  </div>
+  <figure>
+    <p class="fig-title"><span class="fno">图 7-7</span>v0.4 的每日决策流：第 0 步先判环境<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+      <svg viewBox="0 0 720 300" role="img" aria-label="每日收盘后：先判环境，再按趋势态、压缩待爆态、震荡态分流到模板 A、B、C">
+        <defs>
+          <marker id="f77-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="ar-fill"/></marker>
+        </defs>
+        <rect x="16" y="106" width="140" height="64" rx="8" class="node"/>
+        <text x="86" y="132" text-anchor="middle" class="nt">日线收盘</text>
+        <text x="86" y="152" text-anchor="middle" class="nd">北京早 8 点后</text>
+        <path d="M156 138 L196 138" class="edge" marker-end="url(#f77-ar)"/>
+        <rect x="196" y="98" width="168" height="80" rx="8" class="node-hi"/>
+        <text x="280" y="124" text-anchor="middle" class="nt">第 0 步 · 环境开关</text>
+        <text x="280" y="144" text-anchor="middle" class="nd">趋势票：ADX＞25 且上行</text>
+        <text x="280" y="162" text-anchor="middle" class="nd">压缩票：带宽 ≤ 20 分位</text>
+        <path d="M364 118 C410 92 430 66 456 52" class="edge-up" marker-end="url(#f77-ar)"/>
+        <path d="M364 138 L456 138" class="edge-acc" marker-end="url(#f77-ar)"/>
+        <path d="M364 158 C410 184 430 210 456 224" class="edge-soft" marker-end="url(#f77-ar)"/>
+        <rect x="456" y="22" width="248" height="62" rx="8" class="node-up"/>
+        <text x="580" y="46" text-anchor="middle" class="ut">趋势态 → 模板 A</text>
+        <text x="580" y="66" text-anchor="middle" class="nd">三票制定方向 → 三重滤网（第 4、5 课）</text>
+        <rect x="456" y="108" width="248" height="62" rx="8" class="node-hi"/>
+        <text x="580" y="132" text-anchor="middle" class="hi">压缩待爆态 → 挂模板 B</text>
+        <text x="580" y="152" text-anchor="middle" class="nd">画盘整区 · 写好突破计划单 · 等爆口</text>
+        <rect x="456" y="194" width="248" height="62" rx="8" class="node"/>
+        <text x="580" y="218" text-anchor="middle" class="nt">震荡态 → 模板 C 或观望</text>
+        <text x="580" y="238" text-anchor="middle" class="nd">半仓 · 事件日禁用 · 拿不准就不做</text>
+        <text x="360" y="290" text-anchor="middle" class="wt">冲突裁决：环境开关 ＞ 任何入场信号；三套模板共用止损纪律与仓位公式</text>
+      </svg>
+    </div>
+    <figcaption><b>读图：</b>v0.4 之后，"今天做不做、用哪套做"在看任何信号之前就已经定了。三条分支共用同一个底盘：事件日历（第 3 课）、ATR 止损与仓位公式（第 6 课）、下单即挂止损（第 1 课）。开关只负责把你分流到正确的武器前面——它不替任何武器扣扳机。</figcaption>
+  </figure>
+  <div class="rulecard">
+    <div class="rc-head"><span class="label">规则卡</span><span class="rc-name">短波段系统 v0.4（在 v0.3 之上新增"第 0 步"与两个模板雏形）</span></div>
+    <dl>
+      <dt>标的与周期</dt><dd>BTC / ETH 的 U 本位永续，模拟盘；日线定方向、4 小时找位置、1 小时扣扳机（不变）</dd>
+      <dt>过滤条件</dt><dd>① 事件回避：重大数据与议息前后 30 分钟不开新仓（第 3 课）；② 日线 ATR% 超近一年 90 分位 → 单笔风险减半（第 6 课）；<b>【本课新增】③ 第 0 步先判环境：日线 ADX 趋势票 ＋ 带宽压缩票 → 趋势态 / 压缩待爆态 / 震荡态——状态决定今天允许用哪套模板</b></dd>
+      <dt>入场</dt><dd><b>【本课修改】按状态分流</b>——趋势态：模板 A 三重滤网（三票制定方向 → 4h RSI 回调区 → 1h 触发，第 4、5 课规则不变）；压缩待爆态：模板 B——日线或 4 小时<b>收盘</b>突破盘整区边界，顺方向进（量能确认第 9 课补）；震荡态：模板 C——触区间下沿且 4h RSI＜35 做多（触上沿且 RSI＞65 镜像做空），或观望</dd>
+      <dt>止损</dt><dd>A 维持 v0.3：结构位外侧与入场 ∓1.5×ATR（4h）取更远者；<b>【本课新增】B：盘整区中轨与入场 ∓1.5×ATR 取更近者；C：区间边沿外 1×ATR</b>；一律止损市价单、标记价格触发（第 1 课）</dd>
+      <dt>出场</dt><dd>A / B：止盈 ≥2R，趋势单可转吊灯式 3×ATR（第 6 课）；<b>【本课新增】C：到区间中轨减半、到对侧边沿清仓——逆势单不恋战</b></dd>
+      <dt>仓位</dt><dd>公式不变：名义 ＝ 单笔风险额 ÷ 止损距离%；<b>【本课新增】模板 C 一律半份风险（0.5%），事件日禁用 C，压缩待爆态禁用 C</b>；逐仓 ≤5 倍；同时 ≤2 个仓位</dd>
+    </dl>
+    <p class="rc-note">冲突裁决只有一条：<strong>环境开关优先于一切入场信号</strong>。震荡态里出现"完美的"三重滤网信号？不做——那是绞肉机门口的香味。压缩待爆态里下沿超卖想抄一把？不做——弹簧旁边不打盹。状态是每天收盘后定一次，盘中不改判；已有仓位不受当日状态变化影响，交给自己的止损止盈管理。</p>
+  </div>
+  <div class="sysup">
+    <span class="label">系统升级</span>
+    <h4>你的交易系统：v0.3 → v0.4</h4>
+    <p>本课装进系统的零件：环境开关（ADX 趋势票 ＋ 带宽压缩票 → 三态，每天收盘后一分钟）· 模板 B 收口突破雏形 · 模板 C 区间往返雏形（半仓 ＋ 事件日禁用）· 冲突裁决规则（环境 ＞ 信号）。至此 v0.1 定方向、v0.2 定时机、v0.3 定尺度、v0.4 定环境——系统第一次对"所有天气"都有预案。下一课补一块你本周就会抱怨的短板：模板 B 的"盘整区边界"和模板 C 的"区间上下沿"，现在全靠肉眼毛估——<strong>第 8 课《关键价位在哪》给出画边界的章法（支撑阻力、整数关口、斐波那契、成交量分布），系统升 v0.5</strong>。</p>
+  </div>
+  <div class="task">
+    <span class="label">本周模拟任务</span>
+    <h4>让环境开关先跑一周（全程模拟盘）</h4>
+    <ol>
+      <li><b>每天收盘后记环境</b>：北京早 8 点后，在日志加一行——ADX 读数与 3 天前的比较、带宽与近一年 20 分位的比较、三态结论；记完和图 7-4 的判定器对答案，连错两天就回 7.4 节重读规则；</li>
+      <li>本周按 v0.4 开 <b>2 笔模拟单</b>：趋势态（若出现）用模板 A 做一笔；震荡态里用模板 C 做一笔（半仓、事件日禁用）——<b>每笔日志第一行写当天的环境状态</b>；</li>
+      <li>若整周是压缩待爆态：画出盘整区，把模板 B 的计划单完整写进日志（边界价、止损价、目标价、仓位算式），等触发——没触发也算一次完整执行；</li>
+      <li>周末统计本周最重要的一个数：<b>有没有在震荡态里手痒跑了模板 A？有没有在压缩态末端做了区间往返？</b>有一笔算一笔，标"违规单"——违规且赚钱的单最危险，单独加粗；</li>
+      <li>把图 7-3 的 N 和 k 各拖一遍，用自己的话在日志里回答：为什么 k 不改变收口判定、N 会？（提示：分位数比较里谁被约掉了。）</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ================= 小结 ================= -->
+<section class="ch recap" id="recap">
+  <h2 class="sec"><span class="no">★</span>本课小结</h2>
+  <p class="sec-en">RECAP</p>
+  <div class="prose">
+    <ol>
+      <li><b>工具没有好坏，只有用错地形</b>：同一套金叉，震荡里 −21.6%、趋势里 +19.7%；环境判断不预测方向，只回答"行情有没有性格"。</li>
+      <li><b>ADX 只测力度</b>：＜20 无趋势、＞25 有趋势、拐头比绝对值重要；涨跌都能推高它——方向在 ±DI 和三票制，不在 ADX。</li>
+      <li><b>ADX 注定慢半拍</b>：08-20 金叉时它才 18.1，破 25 时价格已 +23.4%——它是确认工具，不是闹钟；高位拐头向下＝趋势降温，哪怕读数还在 40。</li>
+      <li><b>带宽 ＝（上轨 − 下轨）÷ 中轨，用分位数读</b>：绝对值同年内能差十倍（44.6% vs 4.2%）；跌破近一年 20 分位＝收口＝能量积蓄，方向不可知。</li>
+      <li><b>收口的兑现一真一假都见过了</b>：7–8 月压缩 31 天向上爆开 +18.7%；5 月先向上虚晃 82,829、6 月真跌 −29.9%——所以模板 B 必须等收盘确认、必须带止损。</li>
+      <li><b>环境开关：两票定三态</b>：趋势票（ADX＞25 且上行）→ 趋势态跑 A；压缩票（带宽 ≤ 20 分位）→ 压缩待爆挂 B；都不亮 → 震荡态做 C 或观望。2026 年三态占比约 33% / 18% / 49%。</li>
+      <li><b>分环境结算，十倍差距</b>：顺 EMA20 持 5 天，全史趋势态平均 +0.94%、震荡态 +0.09%——但 2026 单年会翻脸、阈值是后验的：开关压缩错误，不消灭错误。</li>
+      <li><b>v0.4 ＝ 第 0 步先判环境</b>：环境开关优先于一切入场信号；C 永远半仓、事件日禁用、压缩态禁用；三套模板共用止损纪律和仓位公式。</li>
+    </ol>
+  </div>
+
+  <h3>术语一览（点击正文中的角标词可随时弹出）</h3>
+  <ol class="notes-list" id="notes-list"></ol>
+
+  <h3>自测</h3>
+  <details><summary>1. 2026-01-30，BTC 日线 ADX 升到 26.2 且连日上行。朋友说"趋势指标走强，可以进多了"。他犯了什么错？当时的正确读法是什么？</summary>
+    <div class="ans"><p>他把力度当成了方向。ADX 只量"单向程度"，涨跌不分：当天 −DI＝37.6 远大于 +DI＝14.9，ADX 确认的是一轮下跌趋势正在增强——1-31 收盘 78,707，六天后 59,800。正确流程：环境开关读出"趋势态"→ 方向交给第 4 课三票制（当时三票齐空）→ 结论是顺势<b>做空</b>或空仓回避，无论如何不是做多。记住分工：ADX 决定趋势工具开不开机，方向永远另有投票人。</p></div>
+  </details>
+  <details><summary>2. 2025 年 9–10 月的四次 EMA 交叉里，前三次 ADX 分别是 16.6、18.7、18.6，第四次是 33.1。环境开关怎么改造"逢叉跟单"？08-20 金叉（ADX 18.1）这个反例说明什么？</summary>
+    <div class="ans"><p>改造：交叉信号只在"有趋势"环境里才有全效——前三叉发生在 ADX＜20 的无趋势区，按 v0.4 它们连入场资格都没有（三笔连亏 −21.6% 被整体过滤）；10-17 死叉发生在 ADX 33.1 的趋势区，是四叉里唯一的真信号，接住了整轮熊市。反例：08-20 金叉时 ADX 也只有 18.1，单靠 ADX 过滤会把最好的一笔也滤掉——但环境开关是两票的：当时带宽已连续压缩一个月（压缩待爆态），系统走的是模板 B 的收口突破，8-19 收盘 69,310 突破箱体时就该进场了，根本不等金叉。<b>ADX 票管趋势的确认，压缩票管趋势的出生</b>——两票互补，才敢说"错过的少"。</p></div>
+  </details>
+  <details><summary>3. 8-15 带宽收到 4.21%（年内最窄）。这说明什么、不说明什么？5 月那次收口的结局给模板 B 加了哪两条保险？</summary>
+    <div class="ans"><p>说明：波动被压到历史极限，突破单和止损单在窄区间两侧越堆越密，一轮放量行情在酝酿——该画箱体、挂突破计划了。不说明：方向（弹簧不知道往哪弹）、时间（可以当天爆也可以再憋两周）。5 月的教训：收口后 5-05、5-06 连续收在上轨外、冲出 82,829 新高，看起来向上爆开，实际是假动作，6 月真行情向下 −29.9%。两条保险由此而来：① 必须等<b>收盘价</b>突破箱体边界才进（盘中冲高不算）；② 止损挂"跌回箱体中轨"或"入场 −1.5×ATR"取更近——突破失败的证据一出现就走人。保险不能把假动作变没，只能把它变便宜。</p></div>
+  </details>
+  <details><summary>4. 2026-09-30：ADX 41.9（3 天前 44.2），带宽 17.7%，近一年 20 分位 9.0%，收盘 83,577 在 EMA20 上方。环境开关怎么判？这和"价格明明还强"矛盾吗？</summary>
+    <div class="ans"><p>逐票投：趋势票——ADX 41.9＞25 但低于 3 天前的 44.2，拐头向下，不亮；压缩票——带宽 17.7% 远高于 20 分位 9.0%，不亮。两票皆灭 → 震荡态：不开新的模板 A 单，已有仓位交给止损止盈。不矛盾——"价格在 EMA20 上方"只是方向线索，开关量的是性格：ADX 从 47.8 的峰值掉头，说明单向力度在衰减。有意思的是同几天第 4 课的三票制也因为结构票（76,152 → 74,909 的 LL）打架而 flat——两套原理不同的仪表盘同时转谨慎，这种一致本身就是信息。</p></div>
+  </details>
+  <details><summary>5. 为什么模板 C 必须半仓、事件日禁用、压缩待爆态禁用？用 3 月那笔真实 C 单说明"区间外 1×ATR 止损"买到了什么。</summary>
+    <div class="ans"><p>因为 C 是逆势打法：进场那一刻你在跟当下的动能对着干，赚的只是"弹回中轨"的小段，错的时候却可能撞上区间破位的大段——盈亏天然不对称，所以仓位先打五折；消息可以瞬间把区间作废，事件日禁用；压缩待爆态里弹簧随时爆开，"下沿"随时失效，同样禁用。3 月那笔：3-27 入场 66,663，止损挂下沿 65,569 外 1×ATR（64,415）；3-29 价格插到 64,918——跌破了下沿但没碰到止损，随后弹回中轨 +1.8R。那 1×ATR 的缓冲买到的就是这一下：<b>区间下沿被针刺穿是常态，不是区间失效</b>——止损要挂在"连缓冲都救不回"的地方，而不是边界贴脸。</p></div>
+  </details>
+  <details><summary>6. v0.4 之后，你每天收盘的完整流程是什么？"环境开关优先于一切入场信号"在实战里是什么意思？</summary>
+    <div class="ans"><p>流程：① 第 0 步判环境（ADX 票、带宽票 → 三态，一分钟）；② 按状态开对应武器：趋势态才跑三票制 ＋ 三重滤网 A；压缩待爆态画箱体、挂模板 B 计划单；震荡态看有没有够格的 C 机会，没有就观望；③ 无论哪条分支，事件日历、ATR 止损、仓位公式、下单即挂止损照旧。"优先于一切入场信号"的意思：信号再漂亮也要先过环境这道门——震荡态里三票齐了也不做 A（绞肉机门口的香味），压缩态里超卖到家也不做 C（弹簧旁边不打盹）。系统的输出从"做多 / 做空 / 不做"升级成了"用 A / 挂 B / 做 C / 观望"——但"观望"依然是最常见、也最正经的那个输出。</p></div>
+  </details>
+
+  <nav class="pager" aria-label="课程导航">
+    <a class="pg" href="ct-l06.html"><span class="pg-dir">上一课</span><span class="pg-ttl">第 6 课 · 价格平时晃多大</span></a>
+    <a class="pg pg-toc" href="ct-index.html"><span class="pg-dir">返回</span><span class="pg-ttl">学习地图</span></a>
+    <a class="pg pg-next" href="ct-l08.html"><span class="pg-dir">下一课</span><span class="pg-ttl">第 8 课 · 关键价位在哪</span></a>
+  </nav>
+
+  <p class="foot">数据：币安公开历史数据（data.binance.vision），BTCUSDT 永续，已本地化；文中所有日期、价格、ADX 与带宽读数、状态占比及分组收益统计均由本地真实数据计算（日线为 UTC 交易日口径，图 7-4 与证据块的统计由页面现场重算）。图表组件：TradingView Lightweight Charts™（Apache-2.0）。本讲义仅为学习笔记，不构成投资建议；合约交易风险极高。</p>
+</section>
+
+</main>
+</div>
+
+<!-- ================= 术语弹注内容 ================= -->
+<div class="notes-src" hidden>
+  <section data-note-id="adx" data-title="ADX 平均趋向指数" data-en="Average Directional Index">
+    <p>Wilder 1978 年在《New Concepts in Technical Trading Systems》中提出的趋势力度指标，同书还贡献了 RSI（第 5 课）和 ATR（第 6 课）。取值 0–100，衡量近 14 天行情的"单向程度"，不区分涨跌。经验读法：＜20 无趋势、＞25 有趋势、20–25 灰区；比绝对值更重要的是拐头方向——低位掉头向上＝性格在生成，高位掉头向下＝趋势在降温。</p>
+  </section>
+  <section data-note-id="dmi" data-title="+DI 与 −DI" data-en="Directional Indicators">
+    <p>ADX 的两条腿：+DI 衡量近 14 天"向上突进"吃掉的波幅份额，−DI 衡量向下突进的份额。ADX 就是两者差距占两者之和的比例再做平滑。+DI＞−DI 偏多、反之偏空——方向信息在 DI 上，力度信息才在 ADX 上，很多软件把三条线画在同一副图里。</p>
+  </section>
+  <section data-note-id="boll" data-title="布林带" data-en="Bollinger Bands">
+    <p>John Bollinger 1980 年代初发明的波动走廊：中轨＝20 日简单均线，上下轨＝中轨 ±2 倍标准差。统计上大约九成的收盘价落在带内，所以"贴上轨"描述强势、"贴下轨"描述弱势——它描述价格的相对位置和波动的松紧，本身不直接给买卖信号。</p>
+  </section>
+  <section data-note-id="bandwidth" data-title="带宽" data-en="Bollinger BandWidth">
+    <p>（上轨 − 下轨）÷ 中轨，把布林带的开口度压成一个百分数，专门量市场波动的松紧。绝对值会随市场年代漂移（BTC 日线 2026 年内就从 44.6% 到 4.2%），所以一律用历史分位数读它，别背死数字。</p>
+  </section>
+  <section data-note-id="squeeze" data-title="收口 · Squeeze" data-en="The Squeeze">
+    <p>Bollinger 对"带宽收到历史低位"的称呼：波动压缩到极限，窄区间两侧堆满突破单和止损单，往往预示一轮放量行情。他同时警告了配套的"假动作"（head fake）：爆发可能先往一边虚晃、再反向走出真行情——所以收口只回答"快了"，方向要等收盘突破来裁决。</p>
+  </section>
+  <section data-note-id="pctile" data-title="分位数" data-en="Percentile">
+    <p>把样本从小到大排队后按位置取值：20 分位就是"只有两成样本比它小"的那个值。用分位数当阈值的好处：绝对数字会随市场变大变钝而过时，排队位置不会——规则自动跟着近一年的新常态校准。第 6 课的 ATR 90 分位风险减半线用的是同一招。</p>
+  </section>
+  <section data-note-id="consol" data-title="盘整区" data-en="Consolidation / Trading Box">
+    <p>价格被夹在上下两条大致水平的边界之间来回、高低点走平的一段区域，也叫箱体。本质是多空在等待下一个共识：边界被收盘价突破＝共识出现。画法这课先用肉眼（最近几次摆动高低点连水平线），第 8 课给正式章法。</p>
+  </section>
+  <section data-note-id="fakeout" data-title="假突破" data-en="False Breakout">
+    <p>价格突破关键边界后迅速掉头收回去的走势。收口末端的第一次突破尤其高发（Squeeze 的"假动作"），2026-05-06 冲出 82,829 后反身向下就是本课的现场。对策：等收盘价确认、止损挂在"突破理由证伪"的位置、接受确认晚一点的代价。</p>
+  </section>
+  <section data-note-id="meanrev" data-title="均值回归" data-en="Mean Reversion">
+    <p>"价格围绕一个中枢上下摆、离中枢越远越倾向弹回去"的统计现象，是区间打法（模板 C）的理论地基。注意它的适用前提是"没有趋势"：趋势一来，中枢自己会跑，逆势等回归的人会被一路拖走——所以 C 只许在确认的震荡态里用。</p>
+  </section>
+</div>
+
+<script src="assets/lightweight-charts.js"></script>
+<script src="assets/ct.js"></script>
+<script src="assets/ctchart.js"></script>
+<script src="assets/data/klines-BTCUSDT-1d.js"></script>
+<script src="assets/data/klines-BTCUSDT-4h.js"></script>
+<script>
+(function(){
+'use strict';
+var fmt = CT.fmtN;
+
+/* ========== 共用：指标与环境开关（按行索引对齐；画图时再包 CT.ts） ========== */
+function adxRows(rows, n){
+  var out = new Array(rows.length).fill(null);
+  var atrW = null, pW = null, mW = null, adxW = null;
+  for(var i = 1; i < rows.length; i++){
+    var h = rows[i][2], l = rows[i][3], pc = rows[i - 1][4];
+    var tr = Math.max(h - l, Math.abs(h - pc), Math.abs(l - pc));
+    var upM = rows[i][2] - rows[i - 1][2];
+    var dnM = rows[i - 1][3] - rows[i][3];
+    var pdm = (upM > dnM && upM > 0) ? upM : 0;
+    var mdm = (dnM > upM && dnM > 0) ? dnM : 0;
+    if(i <= n){
+      atrW = (atrW === null ? 0 : atrW) + tr / n;
+      pW = (pW === null ? 0 : pW) + pdm / n;
+      mW = (mW === null ? 0 : mW) + mdm / n;
+    }else{
+      atrW = (atrW * (n - 1) + tr) / n;
+      pW = (pW * (n - 1) + pdm) / n;
+      mW = (mW * (n - 1) + mdm) / n;
+    }
+    if(i < n) continue;
+    var p = atrW ? 100 * pW / atrW : 0, m = atrW ? 100 * mW / atrW : 0;
+    var dx = (p + m) ? 100 * Math.abs(p - m) / (p + m) : 0;
+    if(i < 2 * n){ adxW = (adxW === null ? 0 : adxW) + dx / n; }
+    else{ adxW = (adxW * (n - 1) + dx) / n; }
+    out[i] = {adx: i >= 2 * n - 1 ? adxW : null, pdi: p, mdi: m};
+  }
+  return out;
+}
+function bollRows(rows, n, k){
+  var out = new Array(rows.length).fill(null);
+  for(var i = n - 1; i < rows.length; i++){
+    var sum = 0, j;
+    for(j = i - n + 1; j <= i; j++) sum += rows[j][4];
+    var m = sum / n, sq = 0;
+    for(j = i - n + 1; j <= i; j++) sq += Math.pow(rows[j][4] - m, 2);
+    var sd = Math.sqrt(sq / n);
+    out[i] = {mid: m, up: m + k * sd, dn: m - k * sd, w: m ? (2 * k * sd) / m * 100 : 0};
+  }
+  return out;
+}
+function emaRows(rows, n){
+  var k = 2 / (n + 1), e = null, out = new Array(rows.length).fill(null);
+  for(var i = 0; i < rows.length; i++){
+    var v = rows[i][4];
+    e = e === null ? v : v * k + e * (1 - k);
+    if(i >= n - 1) out[i] = e;
+  }
+  return out;
+}
+function rsiRows(rows, n){
+  var up = 0, dn = 0, out = new Array(rows.length).fill(null);
+  for(var i = 1; i < rows.length; i++){
+    var ch = rows[i][4] - rows[i - 1][4], u = Math.max(ch, 0), d = Math.max(-ch, 0);
+    if(i <= n){ up += u / n; dn += d / n; }
+    else{ up = (up * (n - 1) + u) / n; dn = (dn * (n - 1) + d) / n; }
+    if(i >= n) out[i] = dn === 0 ? 100 : 100 - 100 / (1 + up / dn);
+  }
+  return out;
+}
+/* 近一年（365 个有效值、含当日）带宽 20 分位，分位取法与第 6 课一致 */
+function p20Rows(bolls){
+  var out = new Array(bolls.length).fill(null), first = -1, i, j;
+  for(i = 0; i < bolls.length; i++){ if(bolls[i]){ first = i; break; } }
+  for(i = first; i < bolls.length; i++){
+    var lo = Math.max(first, i - 364), vals = [];
+    for(j = lo; j <= i; j++) vals.push(bolls[j].w);
+    vals.sort(function(a, b){ return a - b; });
+    out[i] = vals[Math.floor(vals.length * 0.2)];
+  }
+  return out;
+}
+
+var ALL = CT.get('klines-BTCUSDT-1d');
+var ADX = adxRows(ALL, 14);
+var BOLL = bollRows(ALL, 20, 2);
+var P20 = p20Rows(BOLL);
+var E20A = emaRows(ALL, 20);
+
+/* 环境开关：趋势票＝ADX＞25 且高于 3 天前；压缩票＝带宽 ≤ 近一年 20 分位 */
+function stateAt(i){
+  var a = ADX[i], b = BOLL[i];
+  if(!a || a.adx === null || !b || P20[i] === null) return null;
+  var a3 = ADX[i - 3];
+  var trend = a.adx > 25 && a3 && a3.adx !== null && a.adx > a3.adx;
+  var squeeze = b.w <= P20[i];
+  return trend ? 'T' : (squeeze ? 'S' : 'R');
+}
+var STATE = ALL.map(function(r, i){ return stateAt(i); });
+
+/* 条件收益：顺 EMA20 方向持 hz 天，按状态分组 */
+function condStats(fromISO, toISO, hz){
+  var a = Date.parse(fromISO) / 1000, b = Date.parse(toISO) / 1000;
+  var acc = {T: [0, 0, 0], S: [0, 0, 0], R: [0, 0, 0]};
+  for(var i = 0; i < ALL.length; i++){
+    var t = ALL[i][0];
+    if(t < a || t >= b) continue;
+    if(i + hz >= ALL.length) continue;
+    if(E20A[i] === null) continue;
+    var st = STATE[i]; if(!st) continue;
+    var dir = ALL[i][4] > E20A[i] ? 1 : -1;
+    var ret = dir * (ALL[i + hz][4] / ALL[i][4] - 1);
+    acc[st][0] += ret; acc[st][1]++; if(ret > 0) acc[st][2]++;
+  }
+  var out = {};
+  ['T', 'S', 'R'].forEach(function(k){
+    out[k] = {n: acc[k][1], avg: acc[k][0] / acc[k][1] * 100, win: acc[k][2] / acc[k][1] * 100};
+  });
+  return out;
+}
+
+/* ========== 图 7-2 ADX 实验台 ========== */
+(function(){
+  var FROM = '2025-08-01', TO = '2026-10-01';
+  var a = Date.parse(FROM) / 1000, b = Date.parse(TO) / 1000;
+  var win = CT.slice(ALL, FROM, TO);
+  var tsWin = CT.ts(a);
+  var g = CT.makeChart('ax-chart', {panes: [0.34], minBarSpacing: 0.1});
+  var cs = g.addCandles(win);
+  g.addLine(CT.ind.ema(ALL, 20).filter(function(p){ return p.time >= tsWin; }), 'series3', {width: 1, title: 'EMA20'});
+  g.addLine(CT.ind.ema(ALL, 60).filter(function(p){ return p.time >= tsWin; }), 'series4', {width: 1, title: 'EMA60'});
+  function pane1(key){
+    var out = [];
+    for(var i = 0; i < ALL.length; i++){
+      var t = ALL[i][0];
+      if(t < a || t >= b || !ADX[i]) continue;
+      var v = key === 'adx' ? ADX[i].adx : ADX[i][key];
+      if(v === null) continue;
+      out.push({time: CT.ts(t), value: v});
+    }
+    return out;
+  }
+  var adxLine = g.addLine(pane1('adx'), 'series', {pane: 1, width: 2, title: 'ADX14'});
+  g.addLine(pane1('pdi'), 'up', {pane: 1, width: 1, title: '+DI'});
+  g.addLine(pane1('mdi'), 'down', {pane: 1, width: 1, title: '−DI'});
+  g.priceLine(adxLine, 25, 'crit', '25 有趋势', 2);
+  g.priceLine(adxLine, 20, 'muted', '20 无趋势', 2);
+  g.markers(cs, [
+    {time: Date.parse('2025-09-14') / 1000, position: 'belowBar', shape: 'arrowUp', color: 'up', text: '金叉 ADX 16.6'},
+    {time: Date.parse('2025-09-26') / 1000, position: 'aboveBar', shape: 'arrowDown', color: 'down', text: '死叉 18.7'},
+    {time: Date.parse('2025-10-01') / 1000, position: 'belowBar', shape: 'arrowUp', color: 'up', text: '金叉 18.6'},
+    {time: Date.parse('2025-10-17') / 1000, position: 'aboveBar', shape: 'arrowDown', color: 'crit', text: '死叉 ADX 33.1 → 接住熊市'},
+    {time: Date.parse('2026-08-20') / 1000, position: 'belowBar', shape: 'arrowUp', color: 'accent', text: '金叉 ADX 仅 18.1'},
+    {time: Date.parse('2026-08-22') / 1000, position: 'aboveBar', shape: 'circle', color: 'crit', text: 'ADX 破 25（收 77,085）'},
+    {time: Date.parse('2026-09-07') / 1000, position: 'aboveBar', shape: 'circle', color: 'series2', text: 'ADX 峰值 47.8'}
+  ]);
+  g.fit();
+  CT.legend('ax-legend', [['series3', 'EMA20（上图细线）'], ['series4', 'EMA60'], ['series', 'ADX14（下图）'], ['up', '+DI'], ['down', '−DI'], ['crit', '25 线 / 关键标注']]);
+  /* 统计瓦片：窗口内 ADX＞25 占比（页面现算） */
+  var n = 0, gt = 0, rising = 0;
+  for(var i = 0; i < ALL.length; i++){
+    var t = ALL[i][0];
+    if(t < a || t >= b || !ADX[i] || ADX[i].adx === null) continue;
+    n++;
+    if(ADX[i].adx > 25){
+      gt++;
+      var a3 = ADX[i - 3];
+      if(a3 && a3.adx !== null && ADX[i].adx > a3.adx) rising++;
+    }
+  }
+  document.getElementById('ax-share').textContent = (gt / n * 100).toFixed(1) + '%';
+  document.getElementById('ax-share-s').textContent = gt + ' / ' + n + ' 天；"且上行"仅 ' + (rising / n * 100).toFixed(0) + '%——拐头比绝对值重要';
+  var MSG = {
+    all: '全程视角：ADX 像潮位计——绞肉段它一直趴着，趋势段它爬坡。注意它经常在趋势<b>走完之后</b>仍然高挂（读数在下坡但仍大于 25），所以单看"大于 25"会把很多下坡天也算成趋势态，环境开关才要求"且高于 3 天前"。',
+    grind: '绞肉段放大：价格 10 万上下来回甩、看起来热闹，ADX 却压着 20 下方——<b>大波动 ≠ 有趋势</b>。三次交叉（9-14、9-26、10-01）全部发生在无趋势区，按 v0.4 连入场资格都没有；10-10 暴跌把 ADX 拉过 25，10-17 的死叉才是有环境背书的信号。',
+    trend: '2026 年 7–9 月放大：7 月 ADX 趴在低位（压缩期），8-19 突破当天它才 15.0——趋势出生时它还在睡；8-22 破 25 后一路爬到 9-7 的 47.8，这一个多月是模板 A 的黄金期；9 月底它从高位掉头，开关退回震荡态——<b>高位拐头＝降温信号</b>，和读数多高无关。'
+  };
+  document.getElementById('ax-msg').innerHTML = MSG.all;
+  CT.bindSeg('ax-seg', function(v){
+    if(v === 'grind') g.setRange('2025-08-20', '2025-11-10');
+    else if(v === 'trend') g.setRange('2026-07-01', '2026-09-30');
+    else g.fit();
+    document.getElementById('ax-msg').innerHTML = MSG[v];
+  });
+})();
+
+/* ========== 图 7-3 带宽实验台 ========== */
+(function(){
+  var FROM = '2026-01-01', TO = '2026-10-01';
+  var a = Date.parse(FROM) / 1000, b = Date.parse(TO) / 1000;
+  var win = CT.slice(ALL, FROM, TO);
+  var g = CT.makeChart('bw-chart', {panes: [0.32], minBarSpacing: 0.1});
+  var cs = g.addCandles(win);
+  g.markers(cs, [
+    {time: Date.parse('2026-02-12') / 1000, position: 'aboveBar', shape: 'circle', color: 'muted', text: '带宽 44.6%＝1 月爆口余波'},
+    {time: Date.parse('2026-05-06') / 1000, position: 'aboveBar', shape: 'arrowDown', color: 'crit', text: '假突破 82,829'},
+    {time: Date.parse('2026-08-15') / 1000, position: 'belowBar', shape: 'circle', color: 'series2', text: '年内最窄 4.21%'},
+    {time: Date.parse('2026-08-19') / 1000, position: 'belowBar', shape: 'arrowUp', color: 'up', text: '真突破 收 69,310'}
+  ]);
+  CT.legend('bw-legend', [['accent', '布林上 / 下轨'], ['muted', '中轨'], ['series2', '带宽%（下图）'], ['crit', '近一年 20 分位（滚动）']]);
+  var dyn = [];
+  function clearDyn(){
+    dyn.forEach(function(s){
+      g.chart.removeSeries(s);
+      g.series = g.series.filter(function(it){ return it.s !== s; });
+    });
+    dyn = [];
+  }
+  var N = 20, K = 2;
+  function rebuild(){
+    clearDyn();
+    var bl = bollRows(ALL, N, K);
+    var first = -1, i, j;
+    for(i = 0; i < bl.length; i++){ if(bl[i]){ first = i; break; } }
+    var up = [], mid = [], dn = [], wline = [], pline = [];
+    var minW = 1e9, minT = 0, sqN = 0, total = 0;
+    for(i = 0; i < ALL.length; i++){
+      var t = ALL[i][0];
+      if(t < a || t >= b || !bl[i]) continue;
+      var ts = CT.ts(t);
+      up.push({time: ts, value: bl[i].up});
+      mid.push({time: ts, value: bl[i].mid});
+      dn.push({time: ts, value: bl[i].dn});
+      wline.push({time: ts, value: bl[i].w});
+      /* 当日的近一年 20 分位（含当日） */
+      var lo = Math.max(first, i - 364), vals = [];
+      for(j = lo; j <= i; j++) vals.push(bl[j].w);
+      vals.sort(function(x, y){ return x - y; });
+      var p20 = vals[Math.floor(vals.length * 0.2)];
+      pline.push({time: ts, value: p20});
+      total++;
+      if(bl[i].w <= p20) sqN++;
+      if(bl[i].w < minW){ minW = bl[i].w; minT = t; }
+    }
+    dyn.push(g.addLine(up, 'accent', {width: 1, title: '上轨'}));
+    dyn.push(g.addLine(mid, 'muted', {width: 1, dashed: true, title: '中轨'}));
+    dyn.push(g.addLine(dn, 'accent', {width: 1, title: '下轨'}));
+    dyn.push(g.addLine(wline, 'series2', {pane: 1, width: 2, title: '带宽%'}));
+    dyn.push(g.addLine(pline, 'crit', {pane: 1, width: 1, dashed: true, title: '20 分位'}));
+    g.fit();
+    var minD = new Date(minT * 1000).toISOString().slice(5, 10).replace('-', '-');
+    document.getElementById('bw-min').textContent = minW.toFixed(2) + '%';
+    document.getElementById('bw-min-s').textContent = '出现在 ' + minD + '（随参数变，默认参数为 08-15 的 4.21%）';
+    document.getElementById('bw-msg').innerHTML = '按 N＝' + N + '、k＝' + K.toFixed(2) + 'σ：2026 年共 <b>' + sqN + ' 个收口日</b>（占 ' + (sqN / total * 100).toFixed(0) + '%）。拖 k 试试——轨道宽窄和带宽数值都变了，收口日却一天不变：<b>分位数比较把 k 约掉了</b>；再拖 N：窗口变短收口变碎、变长收口变钝——真正需要你做选择的参数只有 N，而 20 是全市场的默认语言。';
+  }
+  CT.bindRange('bw-n', function(v){ N = v; rebuild(); });
+  CT.bindRange('bw-k', function(v){ K = v; rebuild(); }, function(v){ return (+v).toFixed(2) + 'σ'; });
+  rebuild();
+  /* 静态瓦片：收口日之后 20 天带宽扩张（2021 年起，默认参数，页面现算） */
+  var s1 = 0, n1 = 0, s0 = 0, n0 = 0, e1 = 0, e0 = 0;
+  var c21 = Date.parse('2021-01-01') / 1000;
+  for(var i = 0; i < ALL.length; i++){
+    if(!BOLL[i] || P20[i] === null) continue;
+    if(ALL[i][0] < c21) continue;
+    if(i + 20 >= ALL.length || !BOLL[i + 20]) continue;
+    var absret = Math.abs(ALL[i + 20][4] / ALL[i][4] - 1);
+    var exp = BOLL[i + 20].w / BOLL[i].w;
+    if(BOLL[i].w <= P20[i]){ s1 += absret; n1++; e1 += exp; }
+    else{ s0 += absret; n0++; e0 += exp; }
+  }
+  document.getElementById('bw-exp').textContent = '平均扩张到 ' + (e1 / n1).toFixed(2) + '×';
+  document.getElementById('bw-exp-s').textContent = '非收口日仅 ' + (e0 / n0).toFixed(2) + '×；但 20 天 |收益| 只略高（' + (s1 / n1 * 100).toFixed(1) + '% vs ' + (s0 / n0 * 100).toFixed(1) + '%）——能量必泄，方向与时点不保证';
+})();
+
+/* ========== 图 7-4 环境时间轴 ========== */
+(function(){
+  var FROM = '2026-01-01', TO = '2026-10-01';
+  var a = Date.parse(FROM) / 1000, b = Date.parse(TO) / 1000;
+  var tsWin = CT.ts(a);
+  var win = CT.slice(ALL, FROM, TO);
+  var days = [];
+  for(var i = 0; i < ALL.length; i++){
+    var t = ALL[i][0];
+    if(t < a || t >= b) continue;
+    days.push({i: i, t: t, dt: new Date(t * 1000).toISOString().slice(0, 10), st: STATE[i]});
+  }
+  var cnt = {T: 0, S: 0, R: 0};
+  days.forEach(function(d){ if(d.st) cnt[d.st]++; });
+  var g = CT.makeChart('es-chart', {panes: [0.14]});
+  var cs = g.addCandles(win);
+  g.addLine(CT.ind.ema(ALL, 20).filter(function(p){ return p.time >= tsWin; }), 'series', {width: 1, title: 'EMA20'});
+  function strip(code, color){
+    g.addHist(days.filter(function(d){ return d.st === code; })
+      .map(function(d){ return {time: CT.ts(d.t), value: 1}; }), color, {pane: 1});
+  }
+  strip('T', 'up'); strip('S', 'series2'); strip('R', 'muted');
+  g.fit();
+  CT.legend('es-legend', [['series', 'EMA20（方向参考）'], ['up', '趋势态'], ['series2', '压缩待爆态'], ['muted', '震荡态']]);
+  var mkApi = g.markers(cs, []);
+  /* 全史对比瓦片（页面现算，与证据块同一算法） */
+  var full = condStats('2020-07-01', '2026-10-01', 5);
+  document.getElementById('es-cmp').textContent = '+' + full.T.avg.toFixed(2) + '% vs +' + full.R.avg.toFixed(2) + '%';
+  document.getElementById('es-cmp-s').textContent = '顺 EMA20 持 5 天：趋势态（' + full.T.n + ' 天）vs 震荡态（' + full.R.n + ' 天），2020-07 起全史';
+  var NAME = {T: '趋势态', S: '压缩待爆', R: '震荡态'};
+  var CLS = {T: 'v up', S: 'v warn', R: 'v'};
+  function between(dt, x, y){ return dt >= x && dt <= y; }
+  function special(d){
+    if(between(d.dt, '2026-01-12', '2026-02-21') && d.st === 'T')
+      return '注意：这段趋势态是<b>向下</b>的——−DI 远大于 +DI。开关只说"有性格"，方向是三票制的事：1-31 三票齐空（收盘 78,707），六天后 59,800。趋势态 ＋ 三票空 ＝ 顺势做空的环境。';
+    if(between(d.dt, '2026-05-03', '2026-05-13'))
+      return '开关被骗的现场：趋势票在假突破的顶部亮灯（5-06 ADX 29.4 且上行），随后就是 6 月瀑布。任何确认式工具都会在这种转折点上当——所以状态只选武器，保命靠止损和仓位。';
+    if(between(d.dt, '2026-07-20', '2026-08-19'))
+      return '连续 31 天压缩待爆——模板 B 的猎场：画好 62,229 / 65,483 的箱体，把突破计划单写进日志，然后<b>等</b>。8-19 收盘 69,310 爆口时，准备好的人只是执行，没准备的人在追价。';
+    if(d.dt === '2026-08-20' || d.dt === '2026-08-21')
+      return '开关的"失语期"：带宽已经炸开（压缩票灭），ADX 还没爬过 25（趋势票未亮）——突破后两天状态退回震荡态。这就是为什么 B 的单必须在压缩态里挂好：<b>等开关表态，起步价贵 11%</b>。';
+    if(between(d.dt, '2026-08-22', '2026-09-08') && d.st === 'T')
+      return 'ADX 从 25.5 一路爬到 47.8，趋势态全程绿灯——模板 A 吃回调的黄金期，第 5 课回放过的 9-03 / 9-09 两笔单都落在这段里。';
+    if(between(d.dt, '2026-09-09', '2026-09-18') && d.st === 'S')
+      return '趋势途中的二次收口：9 月中旬回调把带宽重新压到 20 分位下（5.50%）——中继旗形的形状。随后 9-21 向上再冲 87,385。趋势里的压缩态，突破方向顺大势的概率更高（但依然要等收盘确认）。';
+    if(d.dt >= '2026-09-25')
+      return 'ADX 从 47.8 掉头向下、带宽也早已张开——退回震荡态：不开新 A 单。同几天第 4 课的三票制也因结构票（76,152 → 74,909 的 LL）打架而 flat——两套独立仪表盘同时转谨慎。';
+    return null;
+  }
+  var idx = days.length - 1;
+  function paint(){
+    var d = days[Math.min(idx, days.length - 1)];
+    var aD = ADX[d.i], bD = BOLL[d.i], a3 = ADX[d.i - 3];
+    var rising = a3 && a3.adx !== null && aD.adx > a3.adx;
+    var v1 = aD.adx > 25 && rising;
+    var v2 = bD.w <= P20[d.i];
+    var e1 = document.getElementById('es-v1');
+    e1.textContent = v1 ? '亮' : '不亮';
+    e1.className = v1 ? 'v up' : 'v';
+    document.getElementById('es-v1-s').textContent = 'ADX ' + aD.adx.toFixed(1) + (rising ? '，高于' : '，低于') + ' 3 天前 ' + (a3 && a3.adx !== null ? a3.adx.toFixed(1) : '—') + (aD.adx > 25 ? '' : '；未过 25');
+    var e2 = document.getElementById('es-v2');
+    e2.textContent = v2 ? '亮' : '不亮';
+    e2.className = v2 ? 'v warn' : 'v';
+    document.getElementById('es-v2-s').textContent = '带宽 ' + bD.w.toFixed(2) + '%，20 分位 ' + P20[d.i].toFixed(2) + '%';
+    var eS = document.getElementById('es-st');
+    eS.textContent = NAME[d.st];
+    eS.className = CLS[d.st];
+    document.getElementById('es-st-s').textContent = d.st === 'T' ? '模板 A 开机（方向问三票制）' : d.st === 'S' ? '画箱体、挂模板 B 计划单' : '模板 C 或观望';
+    var p = CT.pal();
+    var mcolor = d.st === 'T' ? 'up' : d.st === 'S' ? 'series2' : 'muted';
+    mkApi.setMarkers([{time: CT.ts(d.t), position: 'aboveBar', shape: 'circle', color: p[mcolor], text: NAME[d.st], size: 1}]);
+    var sp = special(d);
+    var base = '<b>' + d.dt + ' · ' + NAME[d.st] + '</b>：' + (sp || (d.st === 'T' ? '趋势票亮：顺势武器开机，回调找模板 A 的入场。' : d.st === 'S' ? '只亮压缩票：波动压在历史低位，画箱体、等爆口——别在弹簧旁边做区间。' : '两票皆灭：没性格的行情，要么按模板 C 的三要素找区间机会，要么观望。'));
+    document.getElementById('es-msg').innerHTML = base
+      + '　<em>2026 年至今 ' + days.length + ' 天：趋势态 ' + cnt.T + ' 天（' + Math.round(cnt.T / days.length * 100) + '%）、压缩待爆 ' + cnt.S + ' 天（' + Math.round(cnt.S / days.length * 100) + '%）、震荡态 ' + cnt.R + ' 天（' + Math.round(cnt.R / days.length * 100) + '%）。</em>';
+  }
+  CT.bindRange('es-day', function(v){ idx = v; paint(); }, function(v){
+    return days[Math.min(v, days.length - 1)].dt;
+  });
+  paint();
+})();
+
+/* ========== 图 7-6 模板 C 现场（4 小时） ========== */
+(function(){
+  var H4 = CT.get('klines-BTCUSDT-4h');
+  var base = CT.slice(H4, '2026-02-01', '2026-04-20');          /* RSI 预热用 */
+  var rsi = rsiRows(base, 14);
+  var a = Date.parse('2026-03-05') / 1000, b = Date.parse('2026-04-12') / 1000;
+  var win = base.filter(function(r){ return r[0] >= a && r[0] < b; });
+  var g = CT.makeChart('tc-chart', {panes: [0.28], timeVisible: true, minBarSpacing: 0.1});
+  var cs = g.addCandles(win);
+  var rline = [];
+  for(var i = 0; i < base.length; i++){
+    if(rsi[i] === null) continue;
+    var t = base[i][0];
+    if(t < a || t >= b) continue;
+    rline.push({time: CT.ts(t), value: rsi[i]});
+  }
+  var rs = g.addLine(rline, 'series2', {pane: 1, width: 2, title: '4h RSI14'});
+  g.priceLine(rs, 35, 'muted', '35', 2);
+  g.priceLine(cs, 66663, 'accent', '入场 66,663', 0);
+  g.priceLine(cs, 65569, 'muted', '区间下沿 65,569', 2);
+  g.priceLine(cs, 64415, 'crit', '止损 64,415（下沿 −1×ATR）', 2);
+  g.priceLine(cs, 70784, 'up', '目标①区间中轨 70,784', 2);
+  g.markers(cs, [
+    {time: Date.parse('2026-03-21T20:00:00Z') / 1000, position: 'belowBar', shape: 'circle', color: 'muted', text: 'RSI＜35 但价在 68,500——位置未到'},
+    {time: Date.parse('2026-03-27T08:00:00Z') / 1000, position: 'belowBar', shape: 'arrowUp', color: 'up', text: '收 66,663 · RSI 29.7 入场'},
+    {time: Date.parse('2026-03-29T20:00:00Z') / 1000, position: 'belowBar', shape: 'circle', color: 'crit', text: '针至 64,918——距止损 500 U'},
+    {time: Date.parse('2026-04-07T20:00:00Z') / 1000, position: 'aboveBar', shape: 'circle', color: 'accent', text: '到中轨 +1.8R 离场'}
+  ]);
+  g.fit();
+  CT.legend('tc-legend', [['accent', '入场价'], ['crit', '止损（区间外 1×ATR）'], ['up', '目标①中轨'], ['series2', '4h RSI14（下图）']]);
+})();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,732 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>币圈短线课 · 第 11 课 宏观链条</title>
+<link rel="stylesheet" href="assets/ct.css">
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <span class="book"><a href="ct-index.html">币圈短线实战课</a></span>
+  <span class="part"><a href="ct-index.html">学习地图</a> · 阶段 2 行情为什么发生</span>
+  <span class="prefs">
+    <button id="btn-updown" type="button" title="切换涨跌配色"></button>
+    <button id="btn-theme" type="button" title="切换深浅主题"></button>
+  </span>
+</header>
+
+<div class="layout">
+
+<nav class="sidenav" aria-label="本课目录">
+  <p class="sn-chap">第 11 课 · 宏观链条</p>
+  <a href="#top">课首</a>
+  <a href="#s1">11.1 利率是钱的价格</a>
+  <a href="#s2">11.2 数据家族认门</a>
+  <a href="#s3">11.3 七年利率周期与 BTC</a>
+  <a href="#s4">11.4 同一数据，两种剧本</a>
+  <a href="#s5">11.5 美元、美债与纳指</a>
+  <a href="#s6">11.6 落地：事件应对手册</a>
+  <a href="#recap">小结 · 术语 · 自测</a>
+</nav>
+
+<main class="article">
+
+<section class="hero" id="top">
+  <span class="chap-no">LESSON 11 · 第 11 课 / 共 16 课</span>
+  <h1>宏观链条：利率、美元与流动性</h1>
+  <p class="en">THE MACRO CHAIN — RATES, THE DOLLAR AND LIQUIDITY</p>
+  <p class="question">本课问题：非农、CPI、美联储到底怎么影响币价？降息到底该涨还是跌？</p>
+  <p class="lede">你一定遇到过这种夜晚：晚上八点半一个数字跳出来，十几秒内 BTC 直上直下几百美元——明明新闻说是"利好"，它偏偏往下砸。阶段 1 给你装满了指标工具箱，从这一课起回答另一半问题：<strong>行情为什么发生</strong>。本课把那台看不见的机器拆开：钱有价格（利率），价格由预期定（财经日历与 FedWatch），而行情只对意外付钱（预期差）。看懂这条链，你就明白降息为什么可能暴跌、非农为什么能让币圈半夜翻脸，也明白宏观在你的短线系统里该坐哪个位置——<strong>副驾驶，不是方向盘</strong>。</p>
+  <div class="objectives">
+    <h2>学完你能做到</h2>
+    <ul>
+      <li>画出传导链：经济数据 → 政策预期 → 利率与流动性 → 全部风险资产 → BTC（高波动末端放大器）；</li>
+      <li>解释"降息了为什么还跌"：市场交易的是预期差和利率路径，不是事件本身；</li>
+      <li>认全数据家族：非农、CPI / PCE、FOMC 各回答什么问题、几点公布（回扣第 3 课日历）；</li>
+      <li>会查预期：财经日历的"前值 / 预期 / 公布"三列、CME FedWatch 的概率各怎么读；</li>
+      <li>用三个线索判断市场当下最怕什么，分清"好消息是坏消息"的两种剧本，分清预防式与救火式降息；</li>
+      <li>看懂美元指数、美债收益率、纳指三块仪表盘，会<em>查</em> BTC 与纳指的当前相关状态而不是背旧口诀；</li>
+      <li>给系统 v0.7 套上宏观滤镜：事件周操作卡 ＋ 预判卡练习。</li>
+    </ul>
+  </div>
+  <p class="colorkey">读图约定：本课默认<span class="up">绿涨</span>·<span class="dn">红跌</span>，可用右上角按钮切成红涨绿跌。带 <b>互动</b> 标签的图可以拖动、缩放、调参数；正文里带虚线下划线和角标的词，点一下原地弹出解释。图表时间轴按你设备的时区显示（北京时间 ＝ UTC+8）；正文里的日期如 2024-12-18 指币安日线的交易日（UTC 口径，收盘在北京时间次日早 8 点）。</p>
+  <nav class="chapmap" aria-label="本课小节">
+    <a href="#s1">利率是钱的价格</a><a href="#s2">数据家族</a><a href="#s3">七年对照</a><a href="#s4">两种剧本</a><a href="#s5">美元美债纳指</a><a href="#s6">事件手册</a><a href="#recap">小结</a>
+  </nav>
+</section>
+
+<!-- ================= 11.1 ================= -->
+<section class="ch" id="s1">
+  <h2 class="sec"><span class="no">11.1</span>利率是钱的价格：一条传导链</h2>
+  <p class="sec-en">THE PRICE OF MONEY AND THE TRANSMISSION CHAIN</p>
+  <div class="prose">
+    <p>先把"利率"说成人话：<strong>利率是钱的价格</strong>——借钱要付的租金、存钱能收的报酬。美联储直接定的只有一个最短端的隔夜利率（联邦基金利率），但它像自来水厂的总闸：房贷、企业债、美债收益率这些"水管"里的压力，全从它传导出去。对交易者来说，它从两条路挤压到币价：</p>
+    <ul>
+      <li><strong>第一条路：<span class="nt" data-note="oppcost">机会成本</span>。</strong>美债稳拿 5% 的年代，持有不生息的 BTC 等于每年放弃 5% 的无风险收益——风险资产必须"便宜到值得冒险"才有人接。无风险利率越高，所有资产头顶的估值引力越大；对冷暖更敏感的是扣掉通胀的<span class="nt" data-note="realrate">实际利率</span>：2021 年名义利率贴零而通胀同比 7%，拿现金等于被罚款——那正是万物疯涨的土壤。</li>
+      <li><strong>第二条路：<span class="nt" data-note="liquidity">流动性</span>。</strong>利率低、美元弱 → 全球的钱便宜且敢冒险，加杠杆的成本低；利率高、美元强 → 钱变贵、回流美元资产，最先被抽干的永远是风险曲线最远端。而 BTC 恰好站在最远端：24 小时全球统一市场、自带杠杆文化——宏观潮水的方向不由它定，但<strong>潮水的每次涨落都会在它身上被放大</strong>。</li>
+    </ul>
+  </div>
+  <figure>
+    <p class="fig-title"><span class="fno">图 11-1</span>宏观传导链：从一份数据到你的仓位<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+      <svg viewBox="0 0 720 330" role="img" aria-label="经济数据经由政策预期、利率与流动性传导到风险资产与 BTC 的链条示意">
+        <defs>
+          <marker id="f111-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="ar-fill"/></marker>
+          <marker id="f111-ac" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="ar-acc"/></marker>
+        </defs>
+        <rect x="16" y="36" width="158" height="68" rx="8" class="node"/>
+        <text x="95" y="62" text-anchor="middle" class="nt">经济数据</text>
+        <text x="95" y="84" text-anchor="middle" class="nd">非农 · CPI · PCE</text>
+        <path d="M174 70 L206 70" class="edge" marker-end="url(#f111-ar)"/>
+        <rect x="206" y="36" width="158" height="68" rx="8" class="node"/>
+        <text x="285" y="58" text-anchor="middle" class="nt">政策预期</text>
+        <text x="285" y="78" text-anchor="middle" class="nd">加息 / 降息路径</text>
+        <text x="285" y="96" text-anchor="middle" class="nd">FedWatch 实时定价</text>
+        <path d="M364 70 L396 70" class="edge" marker-end="url(#f111-ar)"/>
+        <rect x="396" y="36" width="170" height="68" rx="8" class="node-hi"/>
+        <text x="481" y="62" text-anchor="middle" class="nt">利率 · 美元 · 流动性</text>
+        <text x="481" y="84" text-anchor="middle" class="nd">钱的价格与松紧</text>
+        <path d="M481 104 C481 150 400 166 390 192" class="edge" marker-end="url(#f111-ar)"/>
+        <rect x="286" y="196" width="200" height="68" rx="8" class="node"/>
+        <text x="386" y="222" text-anchor="middle" class="nt">全部风险资产重新定价</text>
+        <text x="386" y="244" text-anchor="middle" class="nd">美债 → 美股 → 黄金 → 币</text>
+        <path d="M486 230 L518 230" class="edge" marker-end="url(#f111-ar)"/>
+        <rect x="518" y="196" width="186" height="68" rx="8" class="node-warn"/>
+        <text x="611" y="222" text-anchor="middle" class="nt">BTC：高波动放大器</text>
+        <text x="611" y="244" text-anchor="middle" class="nd">链条末端 · 全天候 · 自带杠杆</text>
+        <path d="M95 104 C95 180 200 214 286 228" class="edge-acc" marker-end="url(#f111-ac)"/>
+        <text x="128" y="170" class="hi">预期差＝公布值 − 共识</text>
+        <text x="128" y="190" class="hi">意外的部分直接引爆行情</text>
+        <text x="16" y="298" class="nd">共识早已写进价格：数据"符合预期"时，整条链经常纹丝不动；</text>
+        <text x="16" y="318" class="nd">真正走完链条、掀起行情的，只有"意外"的那一部分。</text>
+      </svg>
+    </div>
+    <figcaption><b>读图：</b>从左上到右下是教科书式的传导：数据改变市场对美联储的预期，预期改变利率、美元与流动性，所有风险资产按新的资金成本重新定价，BTC 站在链条最远端把波动放大。但真正值钱的是那条橙色捷径：<b>共识预期早已被几万亿美元的仓位买进价格</b>，公布值里只有"超出或不及共识"的部分需要重新定价——这就是为什么有时数据很差、行情却不动，有时数据不错、币价却崩。</figcaption>
+  </figure>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>把全球利率环境想成水库水位，各类资产是泊位深浅不同的船。央行降息＝往水库放水：水位抬升，所有船一起浮——最先有感觉、浮得最夸张的，是泊位最浅、船身最轻的那条小艇（BTC）；加息＝开闸抽水，小艇也最先搁浅。<strong>船长的手艺决定船与船的差别，水位决定所有船的高度。</strong>做短线不必预报水位，但至少要知道现在是在放水还是抽水——别在抽水期责怪自己的船不浮。</p>
+  </div>
+  <div class="prose">
+    <h3>为什么"利好落地"反而跌：市场交易的是意外</h3>
+    <p>链条还缺最关键的一节。价格不是等数据公布才开始反应的——<strong>公布之前，大资金早就按"共识预期"站好了队</strong>。公布值出来，市场比的不是"好不好"，是"和已经押注的预期差多少"，这就是<span class="nt" data-note="surprise">预期差</span>。降息 25 个基点、会前概率九成五——落地那一刻几乎没有新信息，先跑的反而可能是"赚到预期"的那批人：这就是老话<strong>"买预期、卖事实"</strong>的机制原型。</p>
+  </div>
+  <div class="keypoint">
+    <span class="label">本课最重要的一句话</span>
+    <p><strong>市场交易的是意外，不是事件。共识早在价格里，预期差才是行情的燃料。</strong></p>
+    <p>三个推论：① 判断事件行情之前，先问"市场原本赌什么"（下一节教你去哪查）；② "利好大跌、利空大涨"不是市场疯了，是你没看见它赌的是什么；③ 数据符合预期时大概率只是抖一抖——没有意外，就没有燃料。</p>
+  </div>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>孩子考了 95 分回家挨骂，邻居孩子考 61 分被请吃大餐——因为前者爸妈赌的是满分，后者全家赌的是不及格。<strong>分数是公布值，家长心里的分数线是共识预期，饭桌上的气氛是行情。</strong>财经日历上那列"预期值"，就是全市场提前写好的分数线；行情从来不理分数本身，只理"分数减分数线"。</p>
+  </div>
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p><strong>把"降息 ＝ 利好、加息 ＝ 利空"当物理定律。</strong>这条口诀缺了两个维度：一是预期差——这次降息是不是早被定价？2024-12-18 降了 25 个基点，BTC 三天 −15%（11.3 节案例）；二是剧本——这次降息是奖励还是抢救？2020 年 3 月连续急降的那几周，正是 BTC 砸到 3,622 的那几周（11.4 节）。口诀只记了反应，链条才记了原因——短线账户经不起用口诀下单。</p>
+  </div>
+</section>
+
+<!-- ================= 11.2 ================= -->
+<section class="ch" id="s2">
+  <h2 class="sec"><span class="no">11.2</span>数据家族认门：谁回答什么问题</h2>
+  <p class="sec-en">MEET THE DATA FAMILY</p>
+  <div class="prose">
+    <p>链条的第一环是数据。你不用变成宏观学家，只需要认门——知道每个名字回答什么问题、几点来敲门。时间规矩第 3 课的日历立过，这里补上"它们各自是谁"：</p>
+  </div>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>数据</th><th>它回答什么</th><th>节奏与时间（北京）</th><th>对币圈的脾气</th></tr></thead>
+      <tbody>
+        <tr><td><b><span class="nt" data-note="nfp">非农</span></b>（就业报告）</td><td>经济是热是冷：新增就业、失业率、时薪</td><td>每月第一个周五 20:30（冬令时 21:30）</td><td>每月第一个大炸点；怕衰退的年代权重最高</td></tr>
+        <tr><td><b>CPI</b>（消费者物价）</td><td>通胀离 2% 目标还有多远</td><td>每月中旬 20:30（冬令时 21:30）</td><td>2021 年以来经常比非农劲更大（第 3 课提醒过）</td></tr>
+        <tr><td><b><span class="nt" data-note="pce">PCE</span></b>（美联储口径通胀）</td><td>官方盯住 2% 用的那把尺</td><td>每月底 20:30（冬令时 21:30）</td><td>多数温和——CPI 两周前已剧透大半</td></tr>
+        <tr><td><b>FOMC</b> 决议 ＋ <span class="nt" data-note="dotplot">点阵图</span> ＋ 发布会</td><td>政策路径本身</td><td>一年 8 次；决议凌晨 2:00、发布会 2:30（冬令时各推迟 1 小时）</td><td>最大单日波动源之一；决议和发布会经常各走一个方向</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="prose">
+    <h3>第二步：先知道市场赌什么，再谈"超没超预期"</h3>
+    <p>认完门还不够——<strong>没有预期值，公布值毫无意义</strong>。两个免费工具就够用一辈子：</p>
+    <ul>
+      <li><strong>财经日历的三列</strong>：任何财经日历对每个数据都给三个数——前值、预期值（机构共识）、公布值。<strong>行情只对"公布值 − 预期值"反应</strong>，前值只是背景板。事件前把预期值抄进预判卡（11.6 节），事件后你一眼就知道这算不算意外；</li>
+      <li><strong><span class="nt" data-note="fedwatch">CME FedWatch</span></strong>：对"美联储下一步"这个最大的预期，市场有一个用真钱投票的赔率盘——联邦基金期货。期货价格 ≈ 100 − 市场预期的当月平均利率，FedWatch 把它换算成"下次会议加 / 降 25 个<span class="nt" data-note="bp">基点</span>的概率"。会前看一眼：如果"降息概率 95%"，降息本身早已被买进价格——<em>真降了不是利好，不降才是巨震</em>。</li>
+    </ul>
+  </div>
+  <figure>
+    <p class="fig-title"><span class="fno">图 11-2</span>查预期的两件工具：三列读法与 FedWatch 原理<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+      <svg viewBox="0 0 720 300" role="img" aria-label="财经日历三列与 CME FedWatch 原理示意">
+        <defs>
+          <marker id="f112-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="ar-fill"/></marker>
+          <marker id="f112-ac" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="ar-acc"/></marker>
+        </defs>
+        <text x="16" y="26" class="nt">第一步 · 财经日历的三列（以某月非农为例）</text>
+        <rect x="16" y="44" width="100" height="56" rx="7" class="node"/>
+        <text x="66" y="66" text-anchor="middle" class="nd">前值</text>
+        <text x="66" y="88" text-anchor="middle" class="nt">20 万</text>
+        <rect x="128" y="44" width="100" height="56" rx="7" class="node-hi"/>
+        <text x="178" y="66" text-anchor="middle" class="nd">预期（共识）</text>
+        <text x="178" y="88" text-anchor="middle" class="nt">18 万</text>
+        <rect x="240" y="44" width="100" height="56" rx="7" class="node-warn"/>
+        <text x="290" y="66" text-anchor="middle" class="nd">公布</text>
+        <text x="290" y="88" text-anchor="middle" class="nt">11 万</text>
+        <path d="M290 100 C290 128 240 140 214 146" class="edge-acc" marker-end="url(#f112-ac)"/>
+        <text x="36" y="166" class="hi">预期差＝11 − 18＝−7 万 → 大幅不及</text>
+        <text x="16" y="200" class="nd">行情只认"公布 − 预期"这一列差值，</text>
+        <text x="16" y="220" class="nd">前值只是背景板。</text>
+        <text x="390" y="26" class="nt">第二步 · FedWatch 的原理</text>
+        <rect x="390" y="44" width="148" height="56" rx="7" class="node"/>
+        <text x="464" y="66" text-anchor="middle" class="nd">联邦基金期货价格</text>
+        <text x="464" y="88" text-anchor="middle" class="nt">95.88</text>
+        <path d="M538 72 L566 72" class="edge" marker-end="url(#f112-ar)"/>
+        <rect x="566" y="44" width="138" height="56" rx="7" class="node-hi"/>
+        <text x="635" y="66" text-anchor="middle" class="nd">隐含利率</text>
+        <text x="635" y="88" text-anchor="middle" class="nt">100 − 95.88＝4.12</text>
+        <path d="M635 100 C635 124 600 134 584 140" class="edge" marker-end="url(#f112-ar)"/>
+        <rect x="430" y="144" width="238" height="52" rx="7" class="node-up"/>
+        <text x="549" y="166" text-anchor="middle" class="nd">对比当前利率区间 → 市场定价</text>
+        <text x="549" y="186" text-anchor="middle" class="nt">下次会议降 25bp 概率约八成</text>
+        <text x="390" y="222" class="nd">期货价是真金白银押出来的概率表，</text>
+        <text x="390" y="242" class="nd">决议只需和它对照，就知道是不是意外。</text>
+        <text x="360" y="284" text-anchor="middle" class="wt">先知道市场赌什么，才能判断公布值是不是意外。</text>
+      </svg>
+    </div>
+    <figcaption><b>读图：</b>左边是三列读法：公布 11 万看着是个大新闻，但真正进入定价的是"11 − 18 ＝ −7 万"这个预期差——如果共识本来就是 11 万，同一个数字连水花都没有（数字为教学示意）。右边是 FedWatch 的机关：联邦基金期货价格天然等于"100 − 市场预期利率"，把期货价倒推回来，就得到市场用真钱押出的加降息概率。两个工具都免费，事件前各看一眼，一共花不了三分钟。</figcaption>
+  </figure>
+  <div class="prose">
+    <p>FOMC 的季度会议（3、6、9、12 月）还附带点阵图：19 位委员每人一点，画出自己认为合适的未来几年利率。市场的玩法是<strong>拿点阵图（官方剧本）和 FedWatch（市场定价）对表</strong>——两者差多少，行情就有多少课要补。2024-12-18 那一夜的大跌，补的就是这堂课（下一节案例）。</p>
+  </div>
+</section>
+
+<!-- ================= 11.3 ================= -->
+<section class="ch" id="s3">
+  <h2 class="sec"><span class="no">11.3</span>七年利率周期与 BTC：把三层摆在一张图上</h2>
+  <p class="sec-en">SEVEN YEARS OF RATES, INFLATION AND BTC</p>
+  <div class="prose">
+    <p>认完门、会查预期，现在把近七年的大图摆出来：BTC、政策利率、通胀同比，三层叠在同一条时间轴上。这是本课的招牌图，值得多拖几分钟：</p>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 11-3</span>三层对照：BTC × 利率 × 通胀（2020 → 2026）<span class="real">真实数据</span><span class="ia">互动</span></p>
+    <div class="ctrls">
+      <div>
+        <span class="seg-label">中层显示</span>
+        <span class="seg" id="mx-seg" role="group">
+          <button type="button" data-val="FEDFUNDS" aria-pressed="true">联邦基金利率</button>
+          <button type="button" data-val="DGS10">10 年美债收益率</button>
+          <button type="button" data-val="DTWEXBGS">广义美元指数</button>
+        </span>
+      </div>
+    </div>
+    <div class="lw h480" id="mx-chart"></div>
+    <div class="lw-legend" id="mx-legend"></div>
+    <div class="stats">
+      <div class="stat"><span class="k">大放水 2020</span><span class="v up">1.58% → 0.05%</span><span class="s">两个月砍到零 · BTC 3,622 → 69,199（20 个月）</span></div>
+      <div class="stat"><span class="k">加息年 2022</span><span class="v dn">0.08% → 4.10%</span><span class="s">次年到 5.33% · BTC 69,199 → 15,443（−78%）</span></div>
+      <div class="stat"><span class="k">利率高原</span><span class="v">5.33% × 13 个月</span><span class="s">2023-08 → 2024-08 按兵不动</span></div>
+      <div class="stat"><span class="k">制作时点 2026-09</span><span class="v warn">3.75% ＋ CPI 3.4%</span><span class="s">月均利率不降反升 · 10 年美债 5.29%</span></div>
+    </div>
+    <p class="lab-msg" id="mx-msg"></p>
+    <figcaption><b>读图：</b>上层 BTC 日线收盘（对数轴——不然 2020 年的 3,622 会被压成地平线），中层默认联邦基金月均利率的阶梯（可切成 10 年美债收益率、广义美元指数），下层 CPI 同比由页面按日历月对齐现算（2025-10 缺一格是数据源缺报）。沿着标注走一遍七年：2020-03 危机急降与其后的零利率，对上 BTC 从 3,622 到 69,199 的大放水牛市；2022 年利率从 0.08% 拔到年末 4.10%，对上 69,199 → 15,443 的熊市；2023-08 起 13 个月高原，行情震荡筑底；2024-09 首降、2024-12 鹰派降息三天 −15%；2026 年通胀回升、利率掉头。<b>每个标注都只是"同期发生"：利率与币价之间隔着预期、流动性、杠杆和无数其他变量，相关不是因果。</b>这张图的正确用法是记住每段大行情的宏观底色，不是"看到降息就买"。</figcaption>
+  </figure>
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>2024-12-18：降了息，BTC 三天 −15%</h4>
+    <p>北京时间 2024-12-19 凌晨 3 点（冬令时），美联储宣布降息 25 个基点——会前 FedWatch 里这次降息已接近定局，按口诀这是"利好落地"。但同场发布的点阵图，把 2025 年的预期降息次数从 9 月版的四次砍到两次，发布会口风也明显转谨慎——动作在降，嘴在泼冷水，这就是教科书级的<span class="nt" data-note="hawkdove">鹰派降息</span>。市场连夜重新定价整条路径：纳指当天 −3.6%，BTC 从前一日高点 108,367 USDT 跌到 12-20 最低 92,273，<span class="dn-t">三天 −15%</span>；当月联邦基金月均利率 4.48%。</p>
+    <p>注意跌的不是"降息"这件事，是"明年少降两次"这个意外。<strong>市场交易的从来不是这一次会议，而是从现在到明年的整条利率路径</strong>——路径预期被砍，满仓"降息剧本"的多头集体夺门。这一夜的持仓量与清算细节，第 13 课宏观事件复盘会完整回放。</p>
+    <p class="takeaway">决议公布那一刻，"降没降"早已不值钱；值钱的是"和市场赌的差多少"。会前不看 FedWatch 和点阵图，等于闭眼进考场。</p>
+  </div>
+</section>
+
+<!-- ================= 11.4 ================= -->
+<section class="ch" id="s4">
+  <h2 class="sec"><span class="no">11.4</span>同一个数据，两种剧本</h2>
+  <p class="sec-en">ONE NUMBER, TWO PLAYBOOKS</p>
+  <div class="prose">
+    <p>预期差决定行情的"大小"，但方向还差一层：<strong>同一个意外，在不同年代会被翻译成相反的方向</strong>。2022 年 CPI 同比 9.0% 见顶的那个夏天，一份强劲的经济数据意味着"美联储要加得更狠"——好消息是坏消息；2024 年 8 月通胀已回落到 3% 附近，市场的心病换成了衰退——坏消息就是坏消息，而且更坏。先看数据怎么说：</p>
+  </div>
+  <figure>
+    <p class="fig-title"><span class="fno">图 11-4</span>好消息坏消息翻译器：两本词典<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+      <svg viewBox="0 0 720 290" role="img" aria-label="怕通胀与怕衰退两种市场状态下，强弱数据的不同解读">
+        <defs>
+          <marker id="f114-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="ar-fill"/></marker>
+        </defs>
+        <text x="360" y="24" text-anchor="middle" class="nt">同一份数据，两本翻译词典</text>
+        <line x1="360" y1="40" x2="360" y2="246" class="axis"/>
+        <text x="178" y="52" text-anchor="middle" class="dt">词典 A · 怕通胀的年代（例：2022）</text>
+        <rect x="30" y="70" width="92" height="40" rx="7" class="node"/>
+        <text x="76" y="95" text-anchor="middle" class="nt">强数据</text>
+        <path d="M122 90 L226 90" class="edge" marker-end="url(#f114-ar)"/>
+        <text x="174" y="82" text-anchor="middle" class="elabel">加息预期升温</text>
+        <rect x="226" y="70" width="102" height="40" rx="7" class="node-dn"/>
+        <text x="277" y="95" text-anchor="middle" class="nt">跌</text>
+        <rect x="30" y="140" width="92" height="40" rx="7" class="node"/>
+        <text x="76" y="165" text-anchor="middle" class="nt">弱数据</text>
+        <path d="M122 160 L226 160" class="edge" marker-end="url(#f114-ar)"/>
+        <text x="174" y="152" text-anchor="middle" class="elabel">加息预期降温</text>
+        <rect x="226" y="140" width="102" height="40" rx="7" class="node-up"/>
+        <text x="277" y="165" text-anchor="middle" class="nt">涨</text>
+        <text x="178" y="216" text-anchor="middle" class="nd">好消息是坏消息，</text>
+        <text x="178" y="236" text-anchor="middle" class="nd">坏消息是好消息。</text>
+        <text x="542" y="52" text-anchor="middle" class="wt">词典 B · 怕衰退的年代（例：2024-08）</text>
+        <rect x="394" y="70" width="92" height="40" rx="7" class="node"/>
+        <text x="440" y="95" text-anchor="middle" class="nt">强数据</text>
+        <path d="M486 90 L590 90" class="edge" marker-end="url(#f114-ar)"/>
+        <text x="538" y="82" text-anchor="middle" class="elabel">衰退担忧退潮</text>
+        <rect x="590" y="70" width="102" height="40" rx="7" class="node-up"/>
+        <text x="641" y="95" text-anchor="middle" class="nt">涨</text>
+        <rect x="394" y="140" width="92" height="40" rx="7" class="node"/>
+        <text x="440" y="165" text-anchor="middle" class="nt">弱数据</text>
+        <path d="M486 160 L590 160" class="edge" marker-end="url(#f114-ar)"/>
+        <text x="538" y="152" text-anchor="middle" class="elabel">衰退被坐实</text>
+        <rect x="590" y="140" width="102" height="40" rx="7" class="node-dn"/>
+        <text x="641" y="165" text-anchor="middle" class="nt">更跌</text>
+        <text x="542" y="216" text-anchor="middle" class="nd">好消息就是好消息，</text>
+        <text x="542" y="236" text-anchor="middle" class="nd">坏消息就是坏消息。</text>
+        <text x="360" y="276" text-anchor="middle" class="hi">用哪本词典，由"市场当下最怕什么"决定——三个线索见下文。</text>
+      </svg>
+    </div>
+    <figcaption><b>读图：</b>左边是通胀恐惧主导的翻译法：数据越热，市场越担心"美联储要加得更狠、更久"，于是强非农、强零售都往下砸——2022 年全年基本按这本词典走。右边是衰退恐惧主导的翻译法：弱数据不再是"要降息了"的喜讯，而是"经济真的在坏、降息是去救火"的警报。<b>两本词典会在一年之内切换</b>，先判断市场在怕什么，再读数据。</figcaption>
+  </figure>
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>2024-08-02 → 08-05：弱非农没带来降息狂欢，带来恐慌</h4>
+    <p>北京时间 2024-08-02 晚 20:30，7 月非农公布：新增就业约 11.4 万、远低于市场预期的约 17.5 万，失业率升到 4.3%。按"弱数据 → 降息预期升温 → 利好"的口诀这该涨——实际 BTC 当天收跌 5.9%（65,329 → 61,484）；周末恐慌继续发酵，叠加日元套息交易平仓的全球踩踏，8-05 最低砸到 48,888，<span class="dn-t">从 8-01 收盘算最大回撤约 −25%</span>。</p>
+    <p>为什么？当时 CPI 同比已经回落到 3% 附近，市场的注意力早从物价换防到就业——这份弱非农被读出来的不是"要降息了"，是"衰退要来了、美联储可能已经落后于形势"。<strong>市场怕的从来不是利率高，是"降息是因为出事了"。</strong>日元套息那条线，第 13 课细讲。</p>
+    <p class="takeaway">弱数据等于涨还是跌，取决于市场在怕什么。先判断剧本，再读数据——顺序反了，方向就反了。</p>
+  </div>
+  <div class="prose">
+    <p>把两个年代并排放一起，差别一目了然：</p>
+  </div>
+  <div class="tablewrap narrow">
+    <table>
+      <thead><tr><th>对照维度</th><th>怕通胀的年代（2022）</th><th>怕衰退的年代（2024-08）</th></tr></thead>
+      <tbody>
+        <tr><td><b>市场的心病</b></td><td>通胀失控：CPI 同比一度 9.0%</td><td>经济失速：失业率抬头、非农转弱</td></tr>
+        <tr><td><b>通胀位置</b></td><td>远离 2% 目标</td><td>已回落到 3% 附近</td></tr>
+        <tr><td><b>强数据被读成</b></td><td>"还要加得更狠" → 跌</td><td>"衰退没那么近" → 涨</td></tr>
+        <tr><td><b>弱数据被读成</b></td><td>"可以少加一点" → 涨</td><td>"衰退要坐实了" → 更跌</td></tr>
+        <tr><td><b>"降息"听起来像</b></td><td>奖励——通胀投降了才会降</td><td>警报——出了事才会降</td></tr>
+        <tr><td><b>代表行情</b></td><td>全年 69,199 → 15,443（−78%）</td><td>08-02 → 08-05：65,329 → 48,888（约 −25%）</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="prose">
+    <h3>怎么判断"市场当下最怕什么"：三个线索</h3>
+  </div>
+  <div class="cards">
+    <div class="card">
+      <h4>线索一 · CPI 离 2% 多远</h4>
+      <p>通胀离目标越远，市场越把每个数据当"加息风险"读——2022 年 CPI 同比 9% 时，连好消息都是坏消息；回到 2% 到 3% 的区间后，这根弦才松下来。</p>
+      <span class="k">看最近一期 CPI / PCE 同比</span>
+    </div>
+    <div class="card">
+      <h4>线索二 · 就业的边际变化</h4>
+      <p>失业率连续抬头、非农连续不及预期，市场就换防到"怕衰退"——2024-08 的词典切换，只用了一份非农的功夫。</p>
+      <span class="k">看非农与失业率近三期的方向</span>
+    </div>
+    <div class="card">
+      <h4>线索三 · 美联储最近的嘴</h4>
+      <p>声明、点阵图和发布会在反复强调物价还是就业？官方的担忧重心就是市场的剧本封面——2024-12 点阵图一转鹰，"降息剧本"当场作废。</p>
+      <span class="k">看最近一次 FOMC 的声明与点阵图</span>
+    </div>
+  </div>
+  <div class="prose">
+    <h3>降息分两型：奖励，还是抢救</h3>
+  </div>
+  <div class="cards">
+    <div class="card">
+      <h4>预防式降息<span class="en-term">Insurance Cut</span></h4>
+      <p>经济还站着、通胀可控，央行提前松一点当保险——1995 年与 2019 年是教科书样本，降息后风险资产总体走得舒服；2024-09 的首降也更接近这一型。</p>
+      <span class="k">市场读法：奖励——钱来了，经济还没坏</span>
+    </div>
+    <div class="card">
+      <h4>救火式降息<span class="en-term">Emergency Cut</span></h4>
+      <p>危机已经爆发，利率急砍——2020 年 3 月两次紧急降息、月均利率两个月从 1.58% 到 0.05%。降息当下往往伴随暴跌（BTC 同月砸到 3,622），药效要等恐慌退潮才显现：随后的大放水托出 2020 到 2021 的全面牛市。</p>
+      <span class="k">市场读法：警报——降息是因为出事了</span>
+    </div>
+  </div>
+  <div class="prose">
+    <p>把三个线索用在制作本课的时点（2026 年 10 月），只陈述数据：CPI 同比从 2025-04 的 2.3% 一路回升到 2026-05 的 4.2%，8 月仍有 3.4%——线索一说"离 2% 又远了"；联邦基金月均利率在 3.63% 的平台趴了大半年之后，2026-09 不降反升到 3.75%，10 年期美债收益率 9 月底报 5.29%、高过 2023-10 的前高 4.98%——资金价格在往"更紧"的方向走。这组数字拼出的语境，更接近左边那本"怕通胀"的词典：<strong>强数据大概率被当坏消息读</strong>。这不是预测，是给预判卡用的"当前剧本"快照——剧本随时会被新数据改写，所以它需要每月重估。</p>
+  </div>
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p><strong>用昨天的剧本读今天的数据。</strong>剧本不是常量：仅 2024 一年就完成了一次换防——上半年市场还在纠结"通胀黏不黏"（强数据偏空），8 月一份弱非农之后主角换成衰退（弱数据更空），12 月点阵图一转鹰又变回利率剧本。你在 2022 年学会的"好消息是坏消息"，照搬到 2024-08 就会死在最危险的那一格。<em>每次事件前重判一次剧本，是预判卡的第一行。</em></p>
+  </div>
+</section>
+
+<!-- ================= 11.5 ================= -->
+<section class="ch" id="s5">
+  <h2 class="sec"><span class="no">11.5</span>美元、美债、纳指与 BTC：三块仪表盘</h2>
+  <p class="sec-en">THE DOLLAR, TREASURIES, NASDAQ AND BTC</p>
+  <div class="prose">
+    <p>除了利率和通胀，日常盯盘还有三块仪表盘，各配一句话版本：</p>
+    <ul>
+      <li><strong>美元指数</strong>（图 11-3 中层可切换的广义美元指数）：美元是全球借贷的母货币，<strong>强美元 ＝ 全球流动性抽水</strong>。注意两种强法：恐慌抢美元（2020-03-23 冲到 126.1，与 BTC 砸到 3,622 同月）和利差吸美元（加息周期一路走强，2025-01-13 见顶 130.0）。制作时点报 120.3；</li>
+      <li><strong>10 年期美债收益率</strong>（DGS10）：市场自己交易出来的<strong>"无风险锚"</strong>，一切资产估值的分母。它比政策利率更快、更诚实地反映预期：2020-08 低到 0.52%，2023-10 摸 4.98%，2026-09-30 已经 5.29%——分母七年抬了十倍，这就是 11.1 节"估值引力"的刻度；</li>
+      <li><strong>纳指</strong>：全球风险偏好的带头大哥。BTC 常被叫作"纳指的高波动影子"——这话对一半：联动是真的，<strong>但联动的强度会漂移</strong>。漂到什么程度，下面用你电脑里的数据现算给你看。</li>
+    </ul>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 11-5</span>BTC × 纳指：滚动相关系数（2020 → 2026）<span class="real">真实数据</span><span class="ia">互动</span></p>
+    <div class="ctrls">
+      <div>
+        <span class="seg-label">滚动窗口</span>
+        <span class="seg" id="cr-seg" role="group">
+          <button type="button" data-val="30">30 天</button>
+          <button type="button" data-val="90" aria-pressed="true">90 天</button>
+          <button type="button" data-val="180">180 天</button>
+        </span>
+      </div>
+    </div>
+    <div class="lw h420" id="cr-chart"></div>
+    <div class="lw-legend" id="cr-legend"></div>
+    <div class="stats">
+      <div class="stat"><span class="k">加息年 2022</span><span class="v">年均相关 0.56</span><span class="s">90 天口径 · 峰值 0.67——同涨同跌</span></div>
+      <div class="stat"><span class="k">ETF 元年 2024</span><span class="v warn">年均 0.25</span><span class="s">3 月一度 −0.02——各走各的</span></div>
+      <div class="stat"><span class="k">制作时点 2026-09-30</span><span class="v">0.40</span><span class="s">中等偏高，别当定律</span></div>
+    </div>
+    <p class="lab-msg" id="cr-msg"></p>
+    <figcaption><b>读图：</b>上层是 BTC 日线收盘（对数轴），下层是页面现算的 BTC × 纳指滚动相关系数：先把两个序列按<b>共同交易日</b>对齐（纳指周末与假日不开盘，直接取日期交集），再对日收益率算相关。几个预先用 node 核过的锚点（90 天口径）：2022-05-12 摸到峰值 0.67——加息抽水的年份里两者是一对难兄难弟；2024-03-04 低到 −0.02——ETF 元年 BTC 走自己的牛市，和纳指几乎无关；2026-09-30 读数 0.40。<b>相关状态是"查"出来的，不是"背"出来的</b>——把"BTC 跟纳指"当常识的人，2024 年会错得很惨。切换窗口感受统计口径的弹性：窗口越短越灵敏、也越毛躁，和均线的"贴与钝"是同一笔交换（第 4 课）。</figcaption>
+  </figure>
+  <div class="evidence">
+    <span class="label">证据与怀疑</span>
+    <h4>滚动相关是自家现算的——它哪里可信，哪里靠不住</h4>
+    <p><strong>证据的一面</strong>：图 11-5 的每个点都来自真实共同交易日的收益率，不是从哪篇文章抄的结论。按年平均（90 天口径）：2020 年 0.42、2021 年 0.25、2022 年 0.56、2023 年 0.27、2024 年 0.25、2025 年 0.46、2026 年至今 0.50——<strong>联动是真的，漂移也是真的</strong>，"BTC 与美股的关系"本身就是一个会变的变量。</p>
+    <p><strong>怀疑的一面</strong>：① <strong>相关不是因果</strong>——BTC 和纳指谁也不"带动"谁，更可能是同一个第三者（美元流动性）同时推两者；把相关读成因果，就会犯"纳指涨了 BTC 必补涨"的错；② 口径敏感——窗口取 30、90 还是 180 天，画面明显不同（图上切一下就知道），收盘口径（UTC 日 vs 美股收盘）也会挪动数值，这类统计永远存在"制作自由度"；③ <strong>宏观因子解释的是周线和月线的底色，解释不了你日内和本周的单子</strong>——对持仓几天的短线来说，入场点、止损、仓位的贡献远大于宏观判断。<strong>摆正位置：短线盈亏的发动机是系统（阶段 1），宏观是避雷针——帮你躲开事件雷、别站错剧本，但它不选入场点。</strong></p>
+  </div>
+  <div class="stock">
+    <span class="label">股票上怎么对照</span>
+    <h4>这条链在股票世界是主干道</h4>
+    <ul>
+      <li><b>美股</b>：纳指本身就是链条的上一环——利率抬升时，久期最长的成长股最先挨打；本课链条几乎原样适用，而且股市还多一个币圈没有的节拍器：<b>财报季</b>（第 3 课说过，财报是个股的非农）；</li>
+      <li><b>A 股</b>：另有一台自己的政策钟摆——国内降准降息、产业政策经常盖过美联储；美联储的影响主要通过人民币汇率和外资流向间接传导，所以 A 股对非农、FOMC 的即时反应远小于币圈；</li>
+      <li><b>通用结论</b>：无风险利率是所有资产的地心引力（巴菲特的著名比喻）；而币圈没有财报、没有停牌，7 × 24 全球统一定价——所以宏观数据落地的瞬间，<b>币价往往是全世界最先反应的那个价格</b>。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= 11.6 ================= -->
+<section class="ch" id="s6">
+  <h2 class="sec"><span class="no">11.6</span>落地：事件应对手册</h2>
+  <p class="sec-en">YOUR EVENT PLAYBOOK</p>
+  <div class="keypoint">
+    <span class="label">本课立场</span>
+    <p><strong>宏观是滤镜，不是扳机。</strong></p>
+    <p>短线盈亏的发动机，是阶段 1 装好的那套系统；宏观滤镜负责的只有三件事：<strong>哪天不做（日历）、做多大（事件周仓位）、往哪边偏（剧本）</strong>。宏观判断全对但乱做单照样亏，宏观一窍不通但纪律完美反而能活——顺序不要搞反。</p>
+  </div>
+  <div class="prose">
+    <p>先把"预期差 × 剧本"拼成一张速查矩阵——它不产生信号，只告诉你事件落地后，大概率站在哪种局面里：</p>
+  </div>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>公布值 vs 预期</th><th>怕通胀的年代</th><th>怕衰退的年代</th><th>你的动作（两种年代通用）</th></tr></thead>
+      <tbody>
+        <tr><td><b>明显更热</b>（超预期）</td><td>加息 / 缓降恐惧 → 大概率跌</td><td>衰退担忧退潮 → 大概率涨（但常涨得犹豫）</td><td>不追第一根大 K；等 1 小时二次确认再按系统做；与持仓冲突先减半</td></tr>
+        <tr><td><b>基本符合</b></td><td colspan="2">没有意外就没有燃料：常见"抖一下回原路"，偶见"买预期卖事实"的反转盘</td><td>无新信息就无新动作——防"事件总得做点什么"的手痒</td></tr>
+        <tr><td><b>明显更冷</b>（不及预期）</td><td>降息预期升温 → 大概率涨</td><td>衰退被坐实 → 大概率更跌</td><td>同第一行；记住 2024-08——冷数据落在怕衰退的年代，是全表最危险的一格</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="prose">
+    <p>矩阵给的是"大概率剧本"，不是保证——用它校准预判卡，别拿它直接下单。真正的执行规则压缩成一张卡：</p>
+  </div>
+  <div class="rulecard">
+    <div class="rc-head"><span class="label">规则卡</span><span class="rc-name">事件周操作卡（宏观滤镜 · 挂在系统 v0.7 外侧）</span></div>
+    <dl>
+      <dt>标的与周期</dt><dd>BTC / ETH 的 U 本位永续，模拟盘；主系统 v0.7 照常运转，本卡仅在<b>事件周</b>——当周含非农 / CPI / FOMC——叠加生效</dd>
+      <dt>过滤条件</dt><dd>数据公布前后 30 分钟不开新仓（第 3 课）；FOMC 从决议到发布会结束不开新仓、当天仓位减半或清空（第 3 课）；<b>本课新增</b>：事件前一晚必须写完预判卡——没写完，当天不交易</dd>
+      <dt>入场</dt><dd>事件落地后<b>不追第一根大 K</b>；等 1 小时收盘的二次确认（突破后回踩不破，或插针被收回）再按主系统信号进场</dd>
+      <dt>止损</dt><dd>二选一：止损改用 2×ATR 口径放宽（第 6 课事件日规则），或止损距离不变、仓位减半——<b>两头都不让步就是违规</b></dd>
+      <dt>出场</dt><dd>预判卡里预写两套剧本：顺预期 → 按主系统持有与止盈；反预期 → 第一时间减半，收盘跌回事件前关键位则清仓</dd>
+      <dt>仓位</dt><dd>事件周单笔风险减半（≤0.5% ＝ 50 U）；重仓不过 FOMC、不过周末（第 3 课旧规不变）</dd>
+    </dl>
+    <p class="rc-note">这张卡不产生任何买卖信号。它做的事只有三件：该闪开的时候闪开、该缩小的时候缩小、意外来了不临场发明动作。<strong>短线的发动机永远是你的系统，宏观滤镜只是挡风玻璃上的雨刷。</strong></p>
+  </div>
+  <div class="sysup">
+    <span class="label">系统升级</span>
+    <h4>你的交易系统：v0.7 ＋ 宏观滤镜（版本号不变）</h4>
+    <p>本课不往系统里加指标，加的是一层外部滤镜，三个零件：① <b>日历</b>——第 3 课的事件日历升级为"事件周"视角，整周按事件周操作卡运行；② <b>预期差三件套</b>——财经日历三列 · FedWatch 概率 · 点阵图路径，先知道市场赌什么；③ <b>剧本判断</b>——CPI 离 2% 多远、就业边际变化、美联储的嘴，先知道市场怕什么。下一课把镜头转回币圈内部：减半、ETF 资金流与稳定币——宏观是外部天气，第 12 课讲地形。</p>
+  </div>
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p><strong>学了宏观就想用宏观开单。</strong>最常见的走样是非农夜提前埋伏方向单——这是把滤镜当扳机。数据公布前的方向是掷硬币，公布瞬间的滑点和双向插针却是确定的税（第 3 课的禁入窗口就是为此设的）。宏观滤镜的全部工作都在事件之外：定仓位档位、定剧本、定哪天不做。<em>入场信号永远来自系统，不来自新闻。</em></p>
+  </div>
+  <div class="task">
+    <span class="label">本周模拟任务</span>
+    <h4>事件周演习：你的第一张预判卡（阶段 2 的核心练习）</h4>
+    <ol>
+      <li>打开任一财经日历，列出未来两周的非农 / CPI / PCE / FOMC 时间（北京时间）写进手机日历——第 3 课的老动作，这次每项多抄一列：<b>市场预期值</b>；</li>
+      <li>打开 CME FedWatch，抄下下次 FOMC 各档位概率，用一句话写出"市场赌什么"（例：按兵不动概率八成）；</li>
+      <li><b>下一个 CPI 或 FOMC 的前一晚，在日志里写预判卡</b>，固定四行：市场预期什么 / 超预期我怎么办 / 不及预期我怎么办 / 当下市场最怕什么（三个线索各一句）；</li>
+      <li>事件落地后 24 小时内对照打分：方向猜对了吗？更重要的是——两套剧本是否都提前写了、动作是否照卡执行？<b>预判对错不计分，剧本齐不齐、执行走不走样才计分</b>；</li>
+      <li>用图 11-5 查一眼当前 BTC × 纳指的 90 天相关，把数值记进周报，连续记 4 周，亲眼看它漂移；</li>
+      <li>事件周若有持仓：核对止损是否按 2×ATR 放宽或仓位减半（第 6 课），FOMC 当天是否减半或清空（第 3 课）。</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ================= 小结 ================= -->
+<section class="ch recap" id="recap">
+  <h2 class="sec"><span class="no">★</span>本课小结</h2>
+  <p class="sec-en">RECAP</p>
+  <div class="prose">
+    <ol>
+      <li><b>利率是钱的价格</b>，经两条路挤压币价：机会成本（无风险收益越高，不生息资产越难卖贵）与流动性（钱的松紧决定风险偏好）；BTC 站在链条最远端，是放大器。</li>
+      <li><b>市场交易的是意外，不是事件</b>：共识早在价格里，预期差才是燃料；"买预期、卖事实"。</li>
+      <li><b>数据家族分工</b>：非农问就业、CPI / PCE 问通胀、FOMC 定路径；先查预期（日历三列 ＋ FedWatch ＋ 点阵图），再谈超没超。</li>
+      <li><b>七年对照</b>：1.58% → 0.05% 的大放水对上 3,622 → 69,199；0.08% → 5.33% 的加息年对上 69,199 → 15,443；13 个月高原对上震荡筑底——同期发生，互为底色，<b>相关不是因果</b>。</li>
+      <li><b>同一个数据，两种剧本</b>：怕通胀年代强数据＝跌，怕衰退年代弱数据＝更跌；三个线索定剧本——CPI 离 2% 多远、就业边际、美联储的嘴。</li>
+      <li><b>降息分两型</b>：预防式（1995、2019、2024-09）是奖励，救火式（2020-03）是警报；见"降息"先问哪一型。</li>
+      <li><b>三块仪表盘</b>：强美元＝抽水；10 年美债是无风险锚（0.52% → 5.29%）；BTC 与纳指的相关会漂移（2022 年均 0.56 → 2024 年 0.25 → 当前 0.40）——查状态，别背口诀。</li>
+      <li><b>宏观是滤镜不是扳机</b>：它管哪天不做、做多大、往哪边偏；入场信号永远来自系统。落地三件套：事件周操作卡 ＋ 预期差矩阵 ＋ 预判卡。</li>
+    </ol>
+  </div>
+
+  <h3>术语一览（点击正文中的角标词可随时弹出）</h3>
+  <ol class="notes-list" id="notes-list"></ol>
+
+  <h3>自测</h3>
+  <details><summary>1. 2024-12-18 美联储明明降了 25 个基点，BTC 却三天 −15%。用本课的框架解释这件事。</summary>
+    <div class="ans"><p>两步：① 这次降息会前在 FedWatch 里已接近定局——被定价的事件落地时没有新信息，谈不上利好；② 真正的新信息是点阵图把 2025 年预期降息从四次砍到两次——市场交易的是从现在到明年的整条利率路径，路径被砍，所有按"宽松剧本"站队的仓位集体重新定价。一句话：跌的不是"降息"，是"少降两次"这个意外。这也是"鹰派降息"的标准定义：动作在降，路径在收。</p></div>
+  </details>
+  <details><summary>2. 周五 20:30 非农公布 11 万，远低于预期的 17.5 万。放在 2022 年年中和 2024 年 8 月，市场可能各怎么反应？为什么？</summary>
+    <div class="ans"><p>2022 年中：CPI 同比 9%，市场满脑子都是"还要加多狠"——弱数据意味着加息压力缓解，大概率被当好消息（坏消息是好消息）。2024-08：通胀已回 3% 附近、失业率连续抬头，市场的心病是衰退——同样的弱数据被读成"衰退坐实、降息是去救火"，真实结局是 BTC 三个交易日最大回撤约 −25%。同一个数字、相反的方向，差别只在"市场当下最怕什么"。判断用三个线索：CPI 离 2% 多远、就业边际变化、美联储最近的嘴。</p></div>
+  </details>
+  <details><summary>3. FedWatch 显示下次会议降 25 个基点的概率 95%。决议真降了 25 个基点，行情大概率怎么走？如果不降呢？</summary>
+    <div class="ans"><p>真降了：这是被 95% 定价的结果，几乎没有预期差——大概率只是波动一下，甚至出现"买预期卖事实"的回落；方向要看同场的点阵图和发布会给没给路径上的意外。不降：这是 5% 概率的事件成真，预期差巨大——重新定价会非常剧烈，而且方向是向"更紧"修正，风险资产大概率重挫。这题的要点：<b>行情的大小由预期差决定，不由事件本身决定</b>——所以会前必看 FedWatch，知道哪边是意外。</p></div>
+  </details>
+  <details><summary>4. 10 年期美债收益率从 4% 升到 5.3%。对 BTC 的估值压力在逻辑上是怎么传导的？</summary>
+    <div class="ans"><p>两条路。机会成本：无风险资产稳拿 5.3% 时，持有不生息的 BTC 每年隐含放弃 5.3% 的确定收益，风险资产必须便宜到"值得冒这个险"才有人接——分母变大，一切估值被往下拽。流动性：长端利率走高通常伴随美元走强、全球融资成本上升，加杠杆的钱变贵变少，风险曲线最远端（币圈）最先被抽干。注意这描述的是"引力方向"，不是逐日对应关系——2026 年的 5.29% 与 BTC 的震荡同期发生，相关不是因果，引力也可能被币圈自身因素（第 12 课）阶段性盖过。</p></div>
+  </details>
+  <details><summary>5. 有人说"BTC 就是三倍杠杆的纳指，看纳指做币就行"。用 11.5 节的数据反驳，并给出正确做法。</summary>
+    <div class="ans"><p>数据不支持"恒等式"：90 天滚动相关 2022 年年均 0.56（峰值 0.67，确实像影子），但 2024 年年均只有 0.25，3 月一度 −0.02——ETF 元年 BTC 走自己的行情，跟纳指几乎无关；2026-09-30 读数 0.40，中等偏高而已。相关是一个会漂移的状态变量，不是常数；而且即使高相关，也多半是美元流动性这个第三者同时推两者，不是纳指"带动"BTC。正确做法：把"查当前相关状态"当成例行动作（本课任务就要求连记 4 周），高相关期把纳指当风险情绪参考，低相关期果断把这块仪表盘调暗。</p></div>
+  </details>
+  <details><summary>6. 事件周，你持有一笔多单，周四凌晨 2 点 FOMC。按事件周操作卡，周三晚上你该做完哪几件事？</summary>
+    <div class="ans"><p>清单：① 写预判卡——FedWatch 现在赌什么、点阵图可能动哪里、超预期和不及预期各怎么办（两套剧本）；② 仓位检查——FOMC 当天仓位减半或清空（第 3 课），事件周单笔风险本来就该是 0.5%；③ 止损检查——按 2×ATR 口径放宽（第 6 课），触发用标记价格、止损市价单（第 1 课）；④ 纪律预设——决议到发布会结束的窗口不开新仓，落地后不追第一根大 K，等 1 小时收盘二次确认。做完这四件，无论凌晨发生什么，你都只剩"照卡执行"一件事。</p></div>
+  </details>
+
+  <nav class="pager" aria-label="课程导航">
+    <a class="pg" href="ct-l10.html"><span class="pg-dir">上一课</span><span class="pg-ttl">第 10 课 · 合约里的人在干什么</span></a>
+    <a class="pg pg-toc" href="ct-index.html"><span class="pg-dir">返回</span><span class="pg-ttl">学习地图</span></a>
+    <a class="pg pg-next" href="ct-l12.html"><span class="pg-dir">下一课</span><span class="pg-ttl">第 12 课 · 币圈自身的驱动</span></a>
+  </nav>
+
+  <p class="foot">数据：币安公开历史数据（data.binance.vision，BTCUSDT 永续）与圣路易斯联储 FRED（FEDFUNDS / CPIAUCSL / DGS10 / DTWEXBGS / NASDAQCOM），均已本地化；CPI 同比与滚动相关系数由页面用本地数据现算。图表组件：TradingView Lightweight Charts™（Apache-2.0）。本讲义仅为学习笔记，不构成投资建议；合约交易风险极高。</p>
+</section>
+
+</main>
+</div>
+
+<!-- ================= 术语弹注内容 ================= -->
+<div class="notes-src" hidden>
+  <section data-note-id="bp" data-title="基点" data-en="Basis Point, bp">
+    <p>0.01%，央行语言的最小刻度：降 25 个基点 ＝ 降 0.25%。25bp 是一次"标准步伐"，50bp 以上就算大动作——2020-03-15 一次砍 100bp，是"救火"级别的信号。</p>
+  </section>
+  <section data-note-id="dotplot" data-title="点阵图" data-en="Dot Plot">
+    <p>FOMC 每季度一次（3、6、9、12 月会议）发布：19 位委员各自画点，标出自己认为未来几年年底的合适利率。市场盯的是<b>中位数的移动</b>——它是官方给出的利率路径剧透，经常比当次决议本身更能引爆行情，2024-12-18 就是例子。</p>
+  </section>
+  <section data-note-id="fedwatch" data-title="CME FedWatch" data-en="CME FedWatch Tool">
+    <p>芝商所的免费工具，用 30 天联邦基金期货的市场价格，反推下次及未来数次 FOMC 会议各利率档位的概率。原理：期货价格 ≈ 100 − 市场预期的当月平均利率。期货价是真金白银押出来的，比任何分析师的观点都诚实。搜"CME FedWatch"即可使用。</p>
+  </section>
+  <section data-note-id="surprise" data-title="预期差" data-en="Surprise">
+    <p>公布值 − 市场共识预期值。行情的真正燃料：共识早已被仓位交易进价格，只有"意外"的部分需要重新定价。同一个"好数据"，在预期更高时照样跌——读数据永远要配着预期值一起读。</p>
+  </section>
+  <section data-note-id="liquidity" data-title="流动性" data-en="Liquidity">
+    <p>本课语境指全球金融体系里"便宜钱"的多少：利率低、美元弱 → 钱多且敢冒险，风险资产水涨船高；利率高、美元强 → 钱贵且回流美元资产，风险曲线最远端最先被抽干。注意与第 2 课"订单簿流动性"（盘口深度）同词不同义。</p>
+  </section>
+  <section data-note-id="oppcost" data-title="机会成本" data-en="Opportunity Cost">
+    <p>把钱放进 A，就放弃了 B 的收益。美债收益率 5% 时，持有不生息的 BTC 每年隐含放弃 5% 的无风险收益——无风险利率越高，风险资产必须"便宜到值得冒险"才有人买。这是利率影响一切估值的第一条通道。</p>
+  </section>
+  <section data-note-id="hawkdove" data-title="鹰派与鸽派" data-en="Hawkish / Dovish">
+    <p>鹰派＝更怕通胀，倾向加息或维持高利率；鸽派＝更怕衰退失业，倾向降息放水。"鹰派降息"＝动作在降、但点阵图和发布会在收紧预期——2024-12-18 是标准案例；反过来"鸽派加息"＝边加边暗示快结束了。市场听的是预期的边际变化，不是动作本身。</p>
+  </section>
+  <section data-note-id="realrate" data-title="实际利率" data-en="Real Interest Rate">
+    <p>名义利率减去通胀。决定"拿着现金到底亏不亏购买力"的是它：2021 年名义利率贴零而通胀 7%，实际利率约 −7%，持币（法币）等于被罚款——那是风险资产最舒服的土壤；实际利率转正越多，囤现金越划算，风险资产越难受。</p>
+  </section>
+  <section data-note-id="nfp" data-title="非农" data-en="Nonfarm Payrolls, NFP">
+    <p>美国非农就业报告，每月第一个周五发布：新增非农就业人数、失业率、时薪增速。就业是消费和衰退判断的核心，所以它是每个月第一个大炸点；在"怕衰退"的年代，它的权重超过一切数据。</p>
+  </section>
+  <section data-note-id="pce" data-title="PCE 物价指数" data-en="PCE Price Index">
+    <p>美联储官方用来盯 2% 目标的通胀口径（尤其核心 PCE），覆盖比 CPI 广、权重随消费行为调整。每月底发布；因为 CPI 两周前已经出炉，PCE 多数时候"被剧透过了"，市场反应通常温和——但官方讲话引用的都是它。</p>
+  </section>
+</div>
+
+<script src="assets/lightweight-charts.js"></script>
+<script src="assets/ct.js"></script>
+<script src="assets/ctchart.js"></script>
+<script src="assets/data/klines-BTCUSDT-1d.js"></script>
+<script src="assets/data/fred-FEDFUNDS.js"></script>
+<script src="assets/data/fred-CPIAUCSL.js"></script>
+<script src="assets/data/fred-NASDAQCOM.js"></script>
+<script src="assets/data/fred-DGS10.js"></script>
+<script src="assets/data/fred-DTWEXBGS.js"></script>
+<script>
+(function(){
+'use strict';
+var fmt = CT.fmtN;
+
+/* ---------- 共用：CPI 同比（按日历月对齐，容忍缺月：2025-10 数据源缺报） ---------- */
+var CPI_YOY = (function(){
+  var rows = CT.get('fred-CPIAUCSL');
+  var by = {};
+  rows.forEach(function(r){
+    var d = new Date(r[0] * 1000);
+    by[d.getUTCFullYear() * 12 + d.getUTCMonth()] = r[1];
+  });
+  var out = [];
+  rows.forEach(function(r){
+    var d = new Date(r[0] * 1000);
+    var k = d.getUTCFullYear() * 12 + d.getUTCMonth();
+    if(by[k - 12] != null) out.push({t: r[0], v: (r[1] / by[k - 12] - 1) * 100});
+  });
+  return out;
+})();
+
+/* ---------- 图 11-3 三层对照实验台 ---------- */
+(function(){
+  var FROM = '2020-01-01';
+  var a = Date.parse(FROM) / 1000;
+  var btc = CT.slice(CT.get('klines-BTCUSDT-1d'), FROM);
+  var g = CT.makeChart('mx-chart', {panes: [0.26, 0.2], minBarSpacing: 0.02});
+  var ps = g.addLine(btc.map(function(r){ return {time: CT.ts(r[0]), value: r[4]}; }), 'series', {width: 2, title: 'BTC'});
+  ps.priceScale().applyOptions({mode: 1});   /* 对数轴 */
+
+  var MID = {
+    FEDFUNDS: {
+      title: '联邦基金利率 月均%', step: true,
+      msg: '<b>联邦基金利率</b>：美联储的油门与刹车本体，月频阶梯。看三段台阶：2020 年两个月从 1.58% 砍到 0.05%（救火），2022 年一年从 0.08% 拔到 4.10%（追通胀），2023-08 起 5.33% 高原趴了 13 个月。注意 2026-09 的小抬头：月均 3.75%，在通胀回升的背景下资金价格不降反升——这正是"当下市场最怕什么"要每月重估的原因。'
+    },
+    DGS10: {
+      title: '10 年美债收益率 %', step: false,
+      msg: '<b>10 年期美债收益率</b>：市场自己交易出来的"无风险锚"，比政策利率更快反映预期——它每天都在投票。三个刻度：2020-08 低到 0.52%，2023-10 摸 4.98%，2026-09-30 已到 5.29%。全球一切资产的估值分母，七年抬了十倍。'
+    },
+    DTWEXBGS: {
+      title: '广义美元指数', step: false,
+      msg: '<b>广义美元指数</b>：强美元＝全球流动性抽水。两种强法都见过：2020-03-23 恐慌抢美元冲到 126.1（和 BTC 砸 3,622 同月），加息年利差吸美元一路走强、2025-01-13 见顶 130.0。它与 BTC 常呈反向，但不是机械反向——留意 2024 年底两者一度同涨。'
+    }
+  };
+  var midLine = null;
+  function showMid(key){
+    if(midLine){
+      g.chart.removeSeries(midLine);
+      g.series = g.series.filter(function(it){ return it.s !== midLine; });
+      midLine = null;
+    }
+    var cfg = MID[key];
+    var data = CT.slice(CT.get('fred-' + key), FROM).map(function(r){ return {time: CT.ts(r[0]), value: r[1]}; });
+    midLine = g.addLine(data, 'series2', {pane: 1, width: 2, title: cfg.title, opts: cfg.step ? {lineType: 1} : {}});
+    document.getElementById('mx-msg').innerHTML = cfg.msg;
+  }
+  CT.bindSeg('mx-seg', showMid);
+
+  var yoy = CPI_YOY.filter(function(p){ return p.t >= a; })
+    .map(function(p){ return {time: CT.ts(p.t), value: p.v}; });
+  var cpiLine = g.addLine(yoy, 'series3', {pane: 2, width: 2, title: 'CPI 同比%'});
+  g.priceLine(cpiLine, 2, 'muted', '2% 目标', 2);
+
+  g.markers(ps, [
+    {time: Date.parse('2020-03-13') / 1000, position: 'belowBar', shape: 'arrowUp', color: 'crit', text: '疫情恐慌 3,622 · 利率两月砍到 0.05%'},
+    {time: Date.parse('2021-11-10') / 1000, position: 'aboveBar', shape: 'arrowDown', color: 'muted', text: '周期顶 69,199 · 通胀 6.9% 加息在望'},
+    {time: Date.parse('2022-06-15') / 1000, position: 'belowBar', shape: 'circle', color: 'crit', text: '加息最急段 · CPI 同比 9.0% 见顶'},
+    {time: Date.parse('2023-08-15') / 1000, position: 'aboveBar', shape: 'circle', color: 'series2', text: '5.33% 高原开始'},
+    {time: Date.parse('2024-09-18') / 1000, position: 'belowBar', shape: 'arrowUp', color: 'up', text: '首次降息'},
+    {time: Date.parse('2024-12-18') / 1000, position: 'aboveBar', shape: 'arrowDown', color: 'crit', text: '鹰派降息 · 三天 −15%'},
+    {time: Date.parse('2026-05-01') / 1000, position: 'belowBar', shape: 'circle', color: 'series3', text: '通胀回升 4.2%'}
+  ]);
+  g.fit();
+  CT.legend('mx-legend', [
+    ['series', 'BTC 收盘 · 上层 · 对数轴'],
+    ['series2', '中层 · 可切换：利率 / 美债 / 美元'],
+    ['series3', 'CPI 同比% · 下层'],
+    ['muted', '2% 通胀目标线']
+  ]);
+})();
+
+/* ---------- 图 11-5 BTC × 纳指滚动相关实验台 ---------- */
+(function(){
+  var btcAll = CT.get('klines-BTCUSDT-1d');
+  var bm = {};
+  btcAll.forEach(function(r){ bm[r[0]] = r[4]; });
+  var start = Date.parse('2019-12-01') / 1000;
+  var pairs = [];
+  CT.get('fred-NASDAQCOM').forEach(function(r){
+    if(r[0] >= start && bm[r[0]] !== undefined) pairs.push([r[0], bm[r[0]], r[1]]);
+  });
+  var rets = [];
+  for(var i = 1; i < pairs.length; i++){
+    rets.push([pairs[i][0], pairs[i][1] / pairs[i - 1][1] - 1, pairs[i][2] / pairs[i - 1][2] - 1]);
+  }
+  /* 滚动皮尔逊相关：前缀和滑窗，O(n) */
+  function calc(N){
+    var sx = 0, sy = 0, sxx = 0, syy = 0, sxy = 0;
+    var pts = [], raw = [];
+    for(var i = 0; i < rets.length; i++){
+      var x = rets[i][1], y = rets[i][2];
+      sx += x; sy += y; sxx += x * x; syy += y * y; sxy += x * y;
+      if(i >= N){
+        var x0 = rets[i - N][1], y0 = rets[i - N][2];
+        sx -= x0; sy -= y0; sxx -= x0 * x0; syy -= y0 * y0; sxy -= x0 * y0;
+      }
+      if(i >= N - 1){
+        var cov = sxy - sx * sy / N;
+        var vx = sxx - sx * sx / N, vy = syy - sy * sy / N;
+        pts.push({time: CT.ts(rets[i][0]), value: cov / Math.sqrt(vx * vy)});
+        raw.push(rets[i][0]);
+      }
+    }
+    return {pts: pts, raw: raw};
+  }
+  var g = CT.makeChart('cr-chart', {panes: [0.42], minBarSpacing: 0.02});
+  var ps = g.addLine(CT.slice(btcAll, '2020-01-01').map(function(r){ return {time: CT.ts(r[0]), value: r[4]}; }),
+    'series', {width: 2, title: 'BTC'});
+  ps.priceScale().applyOptions({mode: 1});
+  /* 零相关参考线：用最长的 30 天序列铺满时间轴，换窗口时不重建 */
+  var zero = g.addLine(calc(30).pts.map(function(p){ return {time: p.time, value: 0}; }),
+    'muted', {pane: 1, width: 1, dashed: true, marker: false});
+  var line = null;
+  function cv(v){ return (v < 0 ? '−' : '') + Math.abs(v).toFixed(2); }
+  function dstr(t){ return new Date(t * 1000).toISOString().slice(0, 10); }
+  function show(nv){
+    var N = +nv;
+    if(line){
+      g.chart.removeSeries(line);
+      g.series = g.series.filter(function(it){ return it.s !== line; });
+      line = null;
+    }
+    var S = calc(N);
+    line = g.addLine(S.pts, 'series2', {pane: 1, width: 2, title: '相关 ' + N + ' 天'});
+    var li = S.pts.length - 1, mxI = 0, mnI = 0;
+    S.pts.forEach(function(p, j){
+      if(p.value > S.pts[mxI].value) mxI = j;
+      if(p.value < S.pts[mnI].value) mnI = j;
+    });
+    var tail = N <= 30
+      ? '短窗口贴得紧、变得快，但毛刺也最多——适合感受"最近一个月谁在主导"，不适合下结论。'
+      : (N >= 180
+        ? '长窗口最稳，但换挡要半年——2024 年的脱钩在它嘴里要晚几个月才承认。'
+        : '90 天是看"当前状态"的常用折中——本课统计口径都用它。');
+    document.getElementById('cr-msg').innerHTML = '<b>' + N + ' 天窗口</b>：最新（' + dstr(S.raw[li]) + '）相关系数 <b>'
+      + cv(S.pts[li].value) + '</b>；期间最高 ' + cv(S.pts[mxI].value) + '（' + dstr(S.raw[mxI]) + '）、最低 '
+      + cv(S.pts[mnI].value) + '（' + dstr(S.raw[mnI]) + '）。' + tail;
+  }
+  CT.bindSeg('cr-seg', show);
+  g.markers(ps, [
+    {time: Date.parse('2022-05-12') / 1000, position: 'aboveBar', shape: 'arrowDown', color: 'crit', text: '90 天相关峰值 0.67'},
+    {time: Date.parse('2024-03-04') / 1000, position: 'belowBar', shape: 'circle', color: 'accent', text: '相关 −0.02 · 各走各的'},
+    {time: Date.parse('2026-09-30') / 1000, position: 'aboveBar', shape: 'circle', color: 'series2', text: '当前 0.40'}
+  ]);
+  g.fit();
+  CT.legend('cr-legend', [
+    ['series', 'BTC 收盘（上 · 对数轴）'],
+    ['series2', 'BTC × 纳指滚动相关系数（下）'],
+    ['muted', '零相关参考线']
+  ]);
+})();
+})();
+</script>
+</body>
+</html>

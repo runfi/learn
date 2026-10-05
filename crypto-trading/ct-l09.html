@@ -1,0 +1,739 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>币圈短线课 · 第 9 课 有多少人在参与</title>
+<link rel="stylesheet" href="assets/ct.css">
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <span class="book"><a href="ct-index.html">币圈短线实战课</a></span>
+  <span class="part"><a href="ct-index.html">学习地图</a> · 阶段 1 指标工具箱</span>
+  <span class="prefs">
+    <button id="btn-updown" type="button" title="切换涨跌配色"></button>
+    <button id="btn-theme" type="button" title="切换深浅主题"></button>
+  </span>
+</header>
+
+<div class="layout">
+
+<nav class="sidenav" aria-label="本课目录">
+  <p class="sn-chap">第 9 课 · 有多少人在参与</p>
+  <a href="#top">课首</a>
+  <a href="#s1">9.1 量的语法</a>
+  <a href="#s2">9.2 突破的量能确认</a>
+  <a href="#s3">9.3 OBV：净投票累计器</a>
+  <a href="#s4">9.4 VWAP：今天的平均成本</a>
+  <a href="#s5">9.5 币圈量能的坑</a>
+  <a href="#s6">9.6 落地：系统 v0.6</a>
+  <a href="#recap">小结 · 术语 · 自测</a>
+</nav>
+
+<main class="article">
+
+<section class="hero" id="top">
+  <span class="chap-no">LESSON 09 · 第 9 课 / 共 16 课</span>
+  <h1>有多少人在参与</h1>
+  <p class="en">VOLUME — HOW MANY ARE REALLY IN</p>
+  <p class="question">本课问题：这波行情有多少真金白银在投票？</p>
+  <p class="lede">前面五课的指标全是用价格算出来的：均线、MACD、RSI、ATR、布林带——同一个原料翻来覆去地炒。这一课加入第二种原料：<strong>量</strong>。价格告诉你市场往哪走，量告诉你<em>有多少人跟着走</em>——同样一根 3% 的大阳线，背后是一万人抢着买还是十个人对敲出来的，完全是两件事。第 7 课的模板 B 给收口突破留了一个坑："要有量能确认"——这一课就来填上它：先学量的语法，再用五个月的真实数据统计一遍"放量突破到底比缩量突破强多少"，顺便学两件顺手的工具（OBV 和 VWAP），最后认清币圈成交量里的脏数据。<strong>系统从 v0.5 升到 v0.6：突破装上量能闸，回调加上缩量偏好。</strong></p>
+  <div class="objectives">
+    <h2>学完你能做到</h2>
+    <ul>
+      <li>分清成交量（币）和成交额（USDT），知道比较量必须<strong>相对化</strong>：和近 20 期均量比、和同时段的正常水平比；</li>
+      <li>背熟量价四句话，并能在真实行情里对号入座：涨放量＝健康、涨缩量＝可疑、跌放量＝恐慌或投降、跌缩量＝阴跌无承接；</li>
+      <li>给突破装上量能闸：会算突破 K 线的量能倍数，更重要的是——知道这道闸<em>改善什么、不改善什么</em>；</li>
+      <li>看懂 OBV 的领先与"狼来了"：把 OBV 破位和背离当警报用，而不是当扳机用；</li>
+      <li>会用当日 VWAP 和锚定 VWAP：判断今天进场的人整体是赚是亏，顺势单回踩 VWAP 挂限价省成本；</li>
+      <li>认清币圈量能的脏数据：刷量、跨所不可比、周末与清晨的低基线；</li>
+      <li>装好系统 v0.6：模板 B 量能闸、模板 A 缩量回调偏好、投降式抛售观察标签。</li>
+    </ul>
+  </div>
+  <p class="colorkey">读图约定：本课默认<span class="up">绿涨</span>·<span class="dn">红跌</span>，可用右上角按钮切成红涨绿跌。带 <b>互动</b> 标签的图可以拖动、缩放、调参数；正文里带虚线下划线和角标的词，点一下原地弹出解释。图表时间轴按你设备的时区显示（北京时间 ＝ UTC+8）；正文里的日期如 2026-08-19 指币安日线的交易日（UTC 口径，收盘在北京时间次日早 8 点）。</p>
+  <nav class="chapmap" aria-label="本课小节">
+    <a href="#s1">量的语法</a><a href="#s2">量能闸</a><a href="#s3">OBV</a><a href="#s4">VWAP</a><a href="#s5">刷量与坑</a><a href="#s6">系统 v0.6</a><a href="#recap">小结</a>
+  </nav>
+</section>
+
+<!-- ================= 9.1 ================= -->
+<section class="ch" id="s1">
+  <h2 class="sec"><span class="no">9.1</span>量的语法：先学会怎么读，再谈怎么用</h2>
+  <p class="sec-en">THE GRAMMAR OF VOLUME</p>
+  <div class="cards">
+    <div class="card">
+      <h4>成交量 / 成交额<span class="en-term">Volume / Turnover</span><span class="fit fit-all">股票通用</span></h4>
+      <p><strong>一句话</strong>：一段时间内实际成交了多少——它是价格这个"选举结果"背后的<strong>投票人数</strong>，衡量一段行情有多少真金白银背书。</p>
+      <span class="k">本课统一用成交额（USDT 计）</span>
+    </div>
+  </div>
+  <div class="prose">
+    <p>先分清两个口径，很多图看错就错在这里：</p>
+    <ul>
+      <li><strong>成交量（Volume）</strong>：成交了多少<em>枚币</em>。同样 30 万枚 BTC，在 6 万美元和 12 万美元时代表的资金量差一倍；</li>
+      <li><strong><span class="nt" data-note="quote-vol">成交额</span>（Turnover）</strong>：成交了多少 <em>USDT</em>——资金视角，跨时期可比性好得多。<strong>本课的"量"一律指成交额</strong>。</li>
+    </ul>
+    <p>一个真实对照：2026-08-19（主升第一天）币安 BTCUSDT 永续全天成交 32.6 万枚、约 220 亿 USDT；2025-10-10（史上最大爆仓夜）成交 39.2 万枚、约 451 亿 USDT。<strong>按币数只差 20%，按钱数差了一倍</strong>——因为两个时期价格水平不同。只看"多少枚"会严重低估 10·10 那晚的资金烈度。</p>
+  </div>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>价格是选举结果，成交额是<strong>投票人数</strong>。"候选人 A 领先 3%"这句话，在一万人投票和十个人投票的两场选举里，可信度天差地别——十个人的选举，再换两个人投票结果就翻了。K 线也一样：<strong>一根涨 3% 的大阳线，220 亿成交额撑着和 20 亿"撑"着，是两根完全不同的 K 线</strong>。这就是为什么本课叫"有多少人在参与"：量不预测方向，量给方向<em>定可信度</em>。</p>
+  </div>
+  <div class="prose">
+    <h3><span class="tag">① </span>量价四句话</h3>
+    <p>量和价的组合只有四种，各自的标准读法如下——下面图 9-1 里每一句都配了一段 2026 年的真实行情：</p>
+  </div>
+  <div class="cards">
+    <div class="card">
+      <h4>涨 ＋ 放量</h4>
+      <p><strong>健康</strong>。买方不但赢了，还是在大量真实对手盘面前赢的——价格上了台阶，台阶下站满了人。例：2026-08-19 至 08-21，三天 +21%，量能 3.4× / 2.9× / 4.5×。</p>
+      <span class="k">趋势的标准燃料</span>
+    </div>
+    <div class="card">
+      <h4>涨 ＋ 缩量</h4>
+      <p><strong>可疑</strong>。价格在涨，跟的人却越来越少——要么是无人反对的惯性漂移，要么是没人接棒的尾声。出现在突破位上时最危险（9.2 节专门统计）。</p>
+      <span class="k">警惕，别追</span>
+    </div>
+    <div class="card">
+      <h4>跌 ＋ 放量</h4>
+      <p><strong>恐慌或投降</strong>。大量持仓者不计价格夺门而逃。例：2026-06-02 单日 −6.5%、量 2.4×，6 月瀑布的第一脚。若还带长下影，可能是<span class="nt" data-note="capitulation">投降式抛售</span>（9.6 节）。</p>
+      <span class="k">下跌的确认信号</span>
+    </div>
+    <div class="card">
+      <h4>跌 ＋ 缩量</h4>
+      <p><strong>阴跌无承接</strong>。没有恐慌，但也没人愿意接——价格靠自重往下滑。例：2026-05-11 至 05-31，21 天阴跌 −10.4%，均量只有 0.95×。</p>
+      <span class="k">最磨人的一种跌法</span>
+    </div>
+  </div>
+  <div class="prose">
+    <h3><span class="tag">② </span>"放量"必须相对化：两把尺子</h3>
+    <p>多大的量算"放量"？<strong>绝对数字永远没有答案</strong>，只有相对比较有：</p>
+    <ul>
+      <li><strong>第一把尺：和近 20 期<span class="nt" data-note="avg-vol">均量</span>比。</strong>当前 K 线成交额 ÷ 前 20 根的平均成交额，得到"量能倍数"。≥1.5 倍算放量、≤0.7 倍算缩量——这是本课的统一口径，也是 9.2 节量能闸的刻度；</li>
+      <li><strong>第二把尺：和同时段的正常水平比。</strong>第 2 课的心跳图算过：美盘高峰（北京 22 点）每小时约 937M USDT，清晨谷值（5 点）只有 276M，差 3.4 倍；周末活跃度只有工作日的 46%。<strong>凌晨 5 点冒出 500M 是大事，晚上 10 点的 500M 只是常态</strong>——拿错基线，量的语法全部读反。</li>
+    </ul>
+  </div>
+  <div class="keypoint">
+    <span class="label">本课最重要的一句话</span>
+    <p><strong>量没有绝对值，只有相对值：和近 20 期均量比，和同时段的正常基线比。</strong></p>
+    <p>所有"放量""缩量"的判断，都必须能说出"是谁的几倍"。说不出倍数的放量，是形容词，不是证据。</p>
+  </div>
+  <figure>
+    <p class="fig-title"><span class="fno">图 9-1</span>量价四句话的真实现场：2026 年 5–9 月<span class="real">真实数据</span><span class="ia">互动</span></p>
+    <div class="lw h420" id="v1-chart"></div>
+    <div class="lw-legend" id="v1-legend"></div>
+    <div class="stats">
+      <div class="stat"><span class="k">08-19 主升第一天</span><span class="v up">3.4× 均量</span><span class="s">220 亿 USDT · 涨＋放量＝健康</span></div>
+      <div class="stat"><span class="k">06-02 瀑布第一脚</span><span class="v dn">2.4× 均量</span><span class="s">237 亿 · 跌＋放量＝恐慌</span></div>
+      <div class="stat"><span class="k">5 月中下旬阴跌</span><span class="v warn">0.95× 均量</span><span class="s">21 天 −10.4% · 跌＋缩量＝无承接</span></div>
+      <div class="stat"><span class="k">09-26（周六）</span><span class="v">0.26× 均量</span><span class="s">周末基线天然低，别当信号</span></div>
+    </div>
+    <figcaption><b>读图：</b>币安 BTCUSDT 永续日线（上）与每日成交额（下，单位亿 USDT，按涨跌染色），蓝线是 20 日均量——所有"放量 / 缩量"都以它为尺。看四个标注：8 月主升的每一根大阳线都放着 3–4.5 倍的量（健康）；6-02 的大阴线放 2.4 倍量（恐慌确认）；5 月中下旬价格阴跌 10%，量始终趴在均量下方（无承接，阴跌往往比急跌磨更久）；9-26 是周六，量只有均量的 0.26 倍——<b>这不是"没人要了"，是周末的正常作息</b>（9.5 节细说）。把图缩放到任何时段，先读价、再读量、再对一遍四句话。</figcaption>
+  </figure>
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p><strong>"放量 ＝ 主力进场 ＝ 要涨。"</strong>量只回答"多少人参与"，不回答"谁赢"。跌的时候照样放量（06-02），顶部出货更是天量（9.3 节 2025 年 8 月的案例）。另一个变种：拿绝对数字说事——"今天成交 200 亿，好大！"——200 亿在 2026 年 8 月是均量的两倍，在 2025 年 10 月连均量都不到。<em>先问基线，再谈大小。</em></p>
+  </div>
+</section>
+
+<!-- ================= 9.2 ================= -->
+<section class="ch" id="s2">
+  <h2 class="sec"><span class="no">9.2</span>突破的量能确认：给模板 B 装闸门</h2>
+  <p class="sec-en">VOLUME CONFIRMATION FOR BREAKOUTS</p>
+  <div class="prose">
+    <p>第 7 课讲收口突破（模板 B）时留了一个坑："突破最好有量能确认"——当时没说为什么，也没说多少算"有"。第 8 课结尾也把球传了过来：位带的突破怎么分真假？答案都在同一个地方——参与的人数。现在用数据把这两个问题一起回答。</p>
+    <p>先讲道理。突破为什么需要量？因为突破的本质是<strong>攻破一个很多人盯着的价位</strong>：突破位上方堆着止损单和追涨单，下方是没走的套牢盘。真突破是大资金用真金白银把这些单子全部吃掉、价格才站上去的——必然放量；<span class="nt" data-note="fake-brk">假突破</span>往往是清淡时段用很少的钱把价格"碰"上去，勾出追涨盘之后无以为继——量能平平。<strong>量是突破的"施工记录"：楼要是真盖了，水泥用量骗不了人。</strong></p>
+    <p>再讲数据。口径：取币安 BTCUSDT 永续 4 小时线 2026-04 至 09 共 1,098 根，凡<strong>收盘价升破之前 20 根最高价</strong>的 K 线记为一次突破（连续多根只记第一根），共 42 次；按"突破 K 线成交额 ≥1.5× 前 20 期均量"分成<strong>过闸组</strong>和<strong>未过闸组</strong>，看两件事：之后 6 根（24 小时）的平均收益，和 6 根之内<strong>收盘跌回突破位下方</strong>（假突破）的比例。结果就在下面的实验台里，先说三个结论：</p>
+    <ul>
+      <li>42 次突破里有 22 次（52%）在 24 小时内收回突破位下方——<strong>假突破不是意外，是常态</strong>，这就是模板 B 必须装闸的理由；</li>
+      <li>1.5 倍量能闸把破位率从未过闸组的 67% 压到过闸组的 47%，收益中位数从 −0.34% 抬到 +0.07%——<strong>闸门有效，但效果是"概率上好一截"，不是点石成金</strong>；</li>
+      <li>平均收益反而是未过闸组略高（+0.23% 对 +0.13%）——被 08-20 深夜一根只有 0.74 倍量却涨了 7.3% 的 K 线拉高的。<strong>单一过滤器就是这样：挡掉一堆假突破的同时，偶尔也错杀真行情。</strong></li>
+    </ul>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 9-2</span>假突破统计器：1.5 倍量能闸到底值多少钱<span class="real">真实数据</span><span class="ia">互动</span></p>
+    <div class="ctrls">
+      <label class="rg"><span class="rg-top">量能闸阈值（× 前 20 期均量）<output>1.5×</output></span>
+        <input type="range" id="fb-x" min="1" max="2.5" step="0.1" value="1.5"></label>
+      <label class="rg"><span class="rg-top">持有根数（4 小时 K 线）<output>6 根（24 小时）</output></span>
+        <input type="range" id="fb-h" min="3" max="12" step="1" value="6"></label>
+    </div>
+    <div class="lw h480" id="fb-chart"></div>
+    <div class="lw-legend" id="fb-legend"></div>
+    <div class="stats">
+      <div class="stat"><span class="k">突破事件</span><span class="v" id="fb-nv">—</span><span class="s">2026-04 → 09 · 收盘创 20 期新高（只记串内第一根）</span></div>
+      <div class="stat"><span class="k">过闸组：回落破位率</span><span class="v up" id="fb-cv">—</span><span class="s" id="fb-cs">—</span></div>
+      <div class="stat"><span class="k">未过闸组：回落破位率</span><span class="v dn" id="fb-uv">—</span><span class="s" id="fb-us">—</span></div>
+      <div class="stat"><span class="k">闸门带来的改善</span><span class="v warn" id="fb-gv">—</span><span class="s" id="fb-gs">—</span></div>
+    </div>
+    <p class="lab-msg" id="fb-msg"></p>
+    <figcaption><b>读图：</b>上图是 BTCUSDT 永续 4 小时线，每个突破 K 线都打了标记：<b>绿箭头＝过闸（量能 ≥ 阈值），红圈＝没过闸</b>，标注数字是量能倍数；下图是每根 4 小时的成交额（亿 USDT），虚线是"阈值 × 均量"的闸门线。统计由页面按同一套规则现算。三个动作：① 默认 1.5× / 6 根，看破位率差（47% 对 67%）和中位数差；② 把阈值拉到 2.0×，过闸组平均收益升到 +0.33%、未过闸组转负——<b>闸门越严，筛出的突破越硬，但放行的机会也越少</b>；③ 找到 8-20 深夜那个 0.7× 的红圈——它之后涨了 7.3%，是本页最大的"漏网之鱼"。量能闸是概率工具：<b>它让你少踩多数坑，代价是偶尔错过一班车</b>。</figcaption>
+  </figure>
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>一成一败：11.8 倍量的真突破，0.94 倍量的假突破</h4>
+    <p><strong>成功的一面（2026-08-19，北京 20–24 点那根 4 小时）</strong>：开 64,479、收 68,524，一举升破前 20 根最高点 65,058。这一根 K 线成交 116 亿 USDT——前 20 期均量只有 9.8 亿，<strong>量能倍数 11.8 倍</strong>，是整个样本里最大的一次表态。之后 24 小时再涨 5.7%，这正是第 4 课讲过的 8 月主升的第一脚：方向票、动能票在这天到齐，量能把"可信度"也盖了章。</p>
+    <p><strong>失败的一面（2026-04-11，北京 4-12 凌晨那根）</strong>：收 73,636，刚好探过突破位 73,450 不到 0.3%。成交额 17.3 亿，<strong>连均量（18.5 亿）都没到，倍数 0.94</strong>——清淡时段的"无人区突破"。下一根 K 线就收回 73,013，24 小时后 −3.5%。如果按 v0.5 的模板 B 直接追，这就是一笔标准的追高止损；按 v0.6 的量能闸，它根本进不了候选名单。</p>
+    <p class="takeaway">突破要有人跟着投票才算数。但记住闸门管的是概率不是个案——它会放过 04-11，也会错过 08-20 深夜那根缩量大阳。</p>
+  </div>
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p><strong>把量能闸当圣杯，层层加码过滤器。</strong>看到 1.5 倍有用，就想"再加 RSI、再加 MACD、再加均线多头排列……全过才进"。每加一层过滤器，边际改善越来越小、错过的行情越来越多，最后系统退化成"几乎永远不交易"。本课的统计已经示范了诚实的期待值：一道量能闸，破位率改善约 20 个百分点、中位数由负转正——<em>就这么多</em>。过滤器两三道足矣，剩下的交给止损和仓位（第 3、6 课），那才是兜底的地方。</p>
+  </div>
+</section>
+
+<!-- ================= 9.3 ================= -->
+<section class="ch" id="s3">
+  <h2 class="sec"><span class="no">9.3</span>OBV：净投票累计器</h2>
+  <p class="sec-en">ON-BALANCE VOLUME</p>
+  <div class="cards">
+    <div class="card">
+      <h4>OBV<span class="en-term">On-Balance Volume</span><span class="fit fit-all">股票通用</span></h4>
+      <p><strong>一句话</strong>：把每天的成交量按"收涨记正、收跌记负"累加成一条线，<strong>给多空双方记总账</strong>——看资金的净流向和价格走不走得到一块儿。</p>
+      <span class="k">用法只有一条：和价格对照着看</span>
+    </div>
+  </div>
+  <div class="formula">
+    <p class="fx">今天收盘 ＞ 昨天收盘：OBV ＝ 昨日 OBV ＋ 今天成交量</p>
+    <p class="fx">今天收盘 ＜ 昨天收盘：OBV ＝ 昨日 OBV − 今天成交量　（平盘不变）</p>
+    <p class="note">Joe Granville 1963 年在股票市场上提出的老指标。OBV 的绝对数值没有意义（取决于从哪天开始累加），<strong>有意义的只有它的形状：OBV 的高低点结构，和价格的高低点结构，是否同步</strong>。</p>
+  </div>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>OBV 是一台只看散场结果的<strong>点名机</strong>：每天收盘，涨了就把今天全部到场人数记到多头名下，跌了全记给空头，长年累月记成一本总账。它粗糙得可以——哪怕只涨 0.1%，全天的量也都算多头的——但正因为简单，它擅长回答一个问题：<strong>价格和总账是不是一个方向？</strong>价格创新高、总账也创新高，说明新高有人数背书；价格创新高、总账却掉头向下，说明台上喊得响、台下在退场——这就是<span class="nt" data-note="pv-div">量价背离</span>。</p>
+  </div>
+  <div class="prose">
+    <h3><span class="tag">① </span>信号规则（本课用法）</h3>
+    <ul>
+      <li><strong>同步确认</strong>：价格创新高（新低）时看一眼 OBV 是否同创新高（新低）。同步＝行情有量背书；不同步＝记一笔警报；</li>
+      <li><strong>OBV 先破位</strong>：价格还没破位、OBV 已经先创出 40 日新高或新低——资金在价格表态之前先表了态，值得提高警觉（下图两个真实案例）；</li>
+      <li><strong>背离只当警报</strong>：和第 5 课 RSI 背离同一条纪律——<strong>收紧止损、停止加仓，但不直接反向开仓</strong>。背离可以持续很久，也经常是错的。</li>
+    </ul>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 9-3</span>OBV 实战两面：先知先觉的顶，和"狼来了"的底<span class="real">真实数据</span><span class="ia">互动</span></p>
+    <div class="ctrls">
+      <div>
+        <span class="seg-label">行情段</span>
+        <span class="seg" id="ob-seg" role="group">
+          <button type="button" data-val="top" aria-pressed="true">2025 年 8 月：顶部出货</button>
+          <button type="button" data-val="cry">2026 年 2–9 月：狼来了与领先</button>
+        </span>
+      </div>
+    </div>
+    <div class="lw h480" id="ob-chart"></div>
+    <div class="lw-legend" id="ob-legend"></div>
+    <div class="stats" id="ob-stats"></div>
+    <p class="lab-msg" id="ob-msg"></p>
+    <figcaption><b>读图：</b>上图 BTCUSDT 永续日线，下图 OBV（单位万枚，从窗口起点归零累计——记住看形状不看数值）。第一段是教科书：2025-08-14 价格刚创下 124,546 的历史新高，<b>第二天 OBV 就跌破了 40 日低点</b>——价格还站在山顶，总账已经在大笔流出（高位放量阴线＝出货），6 天后价格跟着跌破 40 日低，半个月见 107,212。第二段是解药：2026 年 2–3 月 OBV 连续九次创 40 日新低，价格却一次都没跟——随后不跌反涨 25%；直到 8 月，OBV 又一次抢跑（08-08 先创 40 日新高），这次价格 11 天后真的跟上了。<b>同一个信号，一次是先知，一次是狼来了</b>——所以它只配当警报，不配当扳机。</figcaption>
+  </figure>
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>一成一败：2025 年 8 月的顶 vs 2026 年 2 月的"假警报"</h4>
+    <p><strong>成功的一面</strong>：2025-08-14，BTC 摸到历史新高 124,546。价格离山顶只有一步之遥时（08-15 收 117,279，距高点不到 6%），OBV 已经创出 40 日新低——顶部那几天全是放量阴线，涨的日子反而缩量，点名机把"出货"记了个清清楚楚。价格 08-21 跟着破位（收 112,462），09-01 见 107,212。<strong>OBV 领先价格 6 天拉响警报</strong>，这 6 天足够你收紧止损、撤掉加仓计划。</p>
+    <p><strong>失败的一面</strong>：2026-02-05，BTC 单日 −14%、成交 454 亿 USDT（近一年日均的 3.6 倍）。OBV 的规则是"收跌全记负"，这一天把相当于平时三四天的总量全记给了空头，<strong>总账被一根极端 K 线砸出一个深坑</strong>。此后两三个月，OBV 顶着这个坑反复"创 40 日新低"——2-11 到 3-08 一共九次——价格却一次都没跟，反而从 65,000 一带涨到 5 月初的 82,829（+25.6%）。谁要是按 OBV 破位做空，会被连续止损到怀疑人生。</p>
+    <p class="takeaway">OBV 的两个天生缺陷：钝（只认收盘方向，不管涨多少）、怕巨量单日污染（一根投降式大阴线能让它失真几个月）。所以它说的话要当警报听，不当扳机用。</p>
+  </div>
+  <div class="prose">
+    <h3><span class="tag">② </span>何时失灵 · 和谁搭配</h3>
+    <ul>
+      <li><strong>何时失灵</strong>：极端行情日之后的几周（见上面 02-05 的污染）；横盘震荡里 OBV 和价格一样来回扭，背离满天飞全是噪音；另外它对"涨 0.1% 和涨 7% 一视同仁"，趋势强度它完全不懂；</li>
+      <li><strong>和谁搭配</strong>：高低点结构（第 4 课）——OBV 本质就是给"量的结构"数脚印，和价格结构互为证人；量能倍数（9.1 节）——OBV 看累计流向，倍数看单根烈度，一慢一快。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= 9.4 ================= -->
+<section class="ch" id="s4">
+  <h2 class="sec"><span class="no">9.4</span>VWAP：今天进场的人，平均成本在哪</h2>
+  <p class="sec-en">VOLUME-WEIGHTED AVERAGE PRICE</p>
+  <div class="cards">
+    <div class="card">
+      <h4>VWAP<span class="en-term">Volume-Weighted Average Price</span><span class="fit fit-adj">换着用</span></h4>
+      <p><strong>一句话</strong>：当日成交量加权的平均成交价——<strong>今天所有进场者的平均成本线</strong>。价格在上方，今天进场的人整体浮盈；在下方，整体被套。</p>
+      <span class="k">A 股对应物：分时图的黄色均价线</span>
+    </div>
+  </div>
+  <div class="formula">
+    <p class="fx">VWAP ＝ Σ（典型价 × 成交量）÷ Σ成交量，　典型价 ＝（高 ＋ 低 ＋ 收）÷ 3</p>
+    <p class="note">"当日"按币安切日口径（UTC 0 点 ＝ 北京早 8 点）从零重算。本课用 1 小时 K 线近似计算，和交易所用逐笔数据算的会有细微出入，形状一致。</p>
+  </div>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>第 4 课把 EMA20 比作一班车最近 20 天乘客的平均票价，VWAP 是同一个比方的<strong>当日版，而且按人头加权</strong>：每一小时上车多少人、票价多少，都如实计入。所以"价格在 VWAP 上方"不是一句玄学，它字面意思就是——<strong>今天上车的人，此刻平均每个人都在赚钱</strong>。赚钱的人心态稳、拿得住，回调到自己的成本价（VWAP）附近往往愿意补票加仓，这就是顺势日里价格一次次回踩 VWAP 又被接走的微观原因。机构的算法交易也拿它当执行基准：买得比 VWAP 便宜才算及格——所以 VWAP 附近天然聚集着双方的挂单。</p>
+  </div>
+  <div class="prose">
+    <h3><span class="tag">① </span>短线用法：执行工具，不是方向工具</h3>
+    <ul>
+      <li><strong>成本检查</strong>：开仓前看一眼——顺势做多时价格贴着 VWAP 上方，说明你和今天的多数人站在同一边且买得不算贵；价格已经高出 VWAP 很远，说明你在替今天的早鸟抬轿；</li>
+      <li><strong>回踩挂限价</strong>：日线、4 小时方向已定（模板 A）的前提下，<strong>把限价单挂在当日 VWAP 附近等回踩</strong>，而不是市价追。两笔账：执行价更好；限价单按 maker 收费（0.02% 对 taker 0.05%，第 1 课）——双边各省 0.03%，一万 U 名义一个来回省 6 U，等于 100 U 风险预算的 6%；</li>
+      <li><strong><span class="nt" data-note="avwap">锚定 VWAP</span></strong>：把累计起点从"今天 0 点"改成某个重大事件 K 线（暴跌夜、数据发布、突破那一根），得到"<strong>事件之后所有进场者的平均成本</strong>"。事件后的多头是否整体还赚钱，一眼可见——跌破锚定 VWAP，意味着事件后进场的人全体由盈转亏，踩踏风险上升。</li>
+    </ul>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 9-4</span>VWAP 实验：主升三天，价格怎么对待两条成本线<span class="real">真实数据</span><span class="ia">互动</span></p>
+    <div class="ctrls">
+      <div>
+        <span class="seg-label">锚定 VWAP 的锚点</span>
+        <span class="seg" id="vw-seg" role="group">
+          <button type="button" data-val="event" aria-pressed="true">8-19 事件 K 线（北京 23 点）</button>
+          <button type="button" data-val="day">8-19 日初（北京 8 点）</button>
+        </span>
+      </div>
+    </div>
+    <div class="lw h420" id="vw-chart"></div>
+    <div class="lw-legend" id="vw-legend"></div>
+    <div class="stats">
+      <div class="stat"><span class="k">事件 K 线（北京 8-19 23 点）</span><span class="v">70 亿 / 1h</span><span class="s">o 65,896 → c 68,524，主升的第一脚</span></div>
+      <div class="stat"><span class="k">收在当日 VWAP 上方的小时数</span><span class="v up">16 / 20 / 22</span><span class="s">三天各 24 小时，多头日的典型形态</span></div>
+      <div class="stat"><span class="k">8-20 白天的回踩</span><span class="v">69,400 一带</span><span class="s">北京 9–15 点六次下探当日 VWAP 都没走远</span></div>
+      <div class="stat"><span class="k">窗口末（8-21 收盘）</span><span class="v">78,309</span><span class="s">当日 VWAP 76,826 · 事件锚定 73,317</span></div>
+    </div>
+    <p class="lab-msg" id="vw-msg"></p>
+    <figcaption><b>读图：</b>BTCUSDT 永续 1 小时线，2026-08-19 至 08-21 主升三天。实线是当日 VWAP——注意它每天北京早 8 点重置归零重算，所以是三段；虚线是锚定 VWAP，可切换锚点。两个观察：① 多头日里价格绝大多数小时收在当日 VWAP 上方（16 / 20 / 22），回踩到线附近也走不远——8-20 北京 9 点到 15 点，价格六次下探 69,400 一带的当日 VWAP，每次都只在线的上下几百美元里打转，16 点一根大阳拉到 71,800：<b>在 69,400 挂限价的人，拿到了比 16 点追单的人便宜 3% 的多单，还省了 taker 费</b>；② 锚定 VWAP（事件锚）一路托在价格下方，到 8-21 收盘还在 73,317、价格已到 78,309——事件后进场的人整体浮盈丰厚，没人急着跑，这就是趋势"健康"的另一种读法。切到"日初"锚点对比：锚点越早，线越慢、离价格越远——<b>锚定 VWAP 是支撑参考，当日 VWAP 是执行参考</b>。</figcaption>
+  </figure>
+  <div class="prose">
+    <h3><span class="tag">② </span>何时失灵 · 和谁搭配</h3>
+    <ul>
+      <li><strong>何时失灵</strong>：单边极强的日子价格根本不回踩（8-21 下午之后就再没碰过 VWAP——挂单等回踩会完整踏空，这是用它的代价）；横盘日价格和 VWAP 缠成一团，上下方位置没有信息量；每天重置后的头几根 K 线样本太少，线还没站稳；<strong>它是日内工具</strong>——持仓几天的方向判断轮不到它，别拿它投三票制的票；</li>
+      <li><strong>和谁搭配</strong>：模板 A 的执行层（方向与位置由日线和 4 小时定，VWAP 只管把入场价买漂亮）；锚定 VWAP 配重大事件（10·10 那种夜晚之后，锚定 VWAP 就是全市场幸存者的平均成本线，第 14 课复盘时会再见到它）。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= 9.5 ================= -->
+<section class="ch" id="s5">
+  <h2 class="sec"><span class="no">9.5</span>币圈量能的坑：你看到的量，一半可能是演的</h2>
+  <p class="sec-en">WASH TRADING AND OTHER VOLUME TRAPS</p>
+  <div class="prose">
+    <p>量能工具在股票市场用了一百年，搬到币圈之前必须先消毒。股票交易所的成交数据受严格监管，虚报成交是操纵市场的重罪；币圈没有这道防线——<strong>交易所自己就有做大成交量的动机</strong>：行情聚合网站按成交量给交易所排名，排名就是流量，流量就是上币费和手续费。于是<span class="nt" data-note="wash">刷量</span>成了行业公开的秘密：左手卖给右手，成交量上去了，一分钱真实买卖都没发生。</p>
+  </div>
+  <div class="evidence">
+    <span class="label">证据与怀疑</span>
+    <h4>刷量不是传闻，是被统计学抓了现行</h4>
+    <p><strong>证据的一面</strong>：Cong、Li、Tang、Yang 四位学者的研究 "Crypto Wash Trading"（NBER 工作论文，后发表于 Management Science）用法证统计手段——首位数字的 Benford 定律、成交尺寸的聚类异常、尾部分布检验——逐笔检查了二十多家中心化交易所的成交数据。结论：<strong>受监管程度高的头部交易所未见系统性刷量迹象；而未受监管的交易所，报告成交量中平均约七成是刷量</strong>，且刷量程度和它们在排名网站上的名次利益显著相关。更早的 Bitwise 在 2019 年提交给美国 SEC 的报告甚至估计，当时聚合网站上约 95% 的 BTC 现货报告成交量不真实。</p>
+    <p><strong>怀疑的一面</strong>：① 这些研究用的是 2019 年前后的数据，具体比例早就变了——但"按量排名"的激励结构没变，结论的方向大概率仍然成立；② "头部所没有系统性刷量"不等于"头部所的量干净"——做市商返佣、交易挖矿、内部对敲都能合法合规地把量做"厚"；③ 本课所有统计用的是币安<strong>永续合约</strong>的成交额——衍生品和现货口径不同：合约可以加杠杆反复倒手，同样的真实资金在合约盘会放大出好几倍成交额。<strong>拿合约量和现货量直接比大小，是口径错误。</strong></p>
+  </div>
+  <div class="prose">
+    <h3>四条自保守则</h3>
+    <ul>
+      <li><strong>统计只用头部受监管程度高的所</strong>：本课全部用币安数据；你自己跑统计时选一家头部所从一而终，别换来换去；</li>
+      <li><strong>全市场视角用聚合数据</strong>：需要"整个市场的量"时，用会剔除可疑交易所的聚合口径，而不是把各家报告的量直接加总；</li>
+      <li><strong>量的绝对值跨所不可比</strong>：同一个 BTC，A 所显示的量是 B 所的三倍，不说明 A 所的行情更真——比相对变化（各自对各自均量的倍数），别比绝对值；</li>
+      <li><strong>时段基线牢记在心</strong>：周末活跃度只有工作日的 46%、凌晨只有美盘的三分之一（第 2 课实算）。<strong>周日的缩量是作息，不是信号</strong>；反过来，周末深夜突然放出工作日级别的量，才是真正值得警觉的异动。</li>
+    </ul>
+  </div>
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p><strong>"周末量这么小，说明没人想买了，周一要跌。"</strong>图 9-1 里 09-26（周六）量能倍数 0.26——看起来萎靡至极，其实只是市场在睡觉：对比的基线应该是"历史上的周六"，而不是"上周三"。用错基线，每个周末你都会读出一次"量价背离"。同理，凌晨 4–7 点的缩量阴跌经常在美盘开盘后被一笔买回——清淡时段的量价语法，可信度全面打折，第 2 课的看盘节律（清淡时段不做新决策）在量能课里依然成立。</p>
+  </div>
+</section>
+
+<!-- ================= 9.6 ================= -->
+<section class="ch" id="s6">
+  <h2 class="sec"><span class="no">9.6</span>落地：系统 v0.6——突破装闸，回调看量</h2>
+  <p class="sec-en">SYSTEM v0.6 — THE VOLUME GATE</p>
+  <div class="prose">
+    <p>把本课的零件装进系统。改动集中在入场条款：<strong>模板 B 的量能闸是硬规则</strong>（不满足就不进场），<strong>模板 A 的缩量偏好是软规则</strong>（加分项，不一票否决）。另外登记一个观察标签：<strong>跌 ＋ 巨量 ＋ 长下影 ＝ 投降式抛售</strong>的识别式——像 2026-02-05 那样单日 −14%、量是年均 3.6 倍、第二天长下影探到 59,800 又收回 70,545 的组合，常出现在恐慌的尾声。但注意它只是标签：<em>记入日志、提高警觉，不单独触发任何交易</em>——抄底是第 10 课合约数据和第 15 课组合拳的事。</p>
+  </div>
+  <figure>
+    <p class="fig-title"><span class="fno">图 9-5</span>量能怎么接进两个模板<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+      <svg viewBox="0 0 720 300" role="img" aria-label="量能闸接入模板 B 与缩量偏好接入模板 A 的决策流程">
+        <defs>
+          <marker id="f95-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="ar-fill"/></marker>
+        </defs>
+        <rect x="14" y="26" width="150" height="56" rx="8" class="node"/>
+        <text x="89" y="50" text-anchor="middle" class="nt">模板 B 信号</text>
+        <text x="89" y="68" text-anchor="middle" class="nd">收口后突破边界</text>
+        <path d="M164 54 L212 54" class="edge" marker-end="url(#f95-ar)"/>
+        <rect x="212" y="26" width="196" height="56" rx="8" class="node-warn"/>
+        <text x="310" y="50" text-anchor="middle" class="nt">量能闸</text>
+        <text x="310" y="68" text-anchor="middle" class="nd">额 ≥1.5× 前 20 期均量？</text>
+        <path d="M408 54 L468 54" class="edge" marker-end="url(#f95-ar)"/>
+        <text x="438" y="44" text-anchor="middle" class="elabel">过闸</text>
+        <rect x="468" y="26" width="140" height="56" rx="8" class="node-up"/>
+        <text x="538" y="50" text-anchor="middle" class="nt">允许进场</text>
+        <text x="538" y="68" text-anchor="middle" class="nd">止损仓位照 v0.3</text>
+        <path d="M310 82 L310 126" class="edge-soft" marker-end="url(#f95-ar)"/>
+        <text x="346" y="108" text-anchor="middle" class="elabel">没过闸</text>
+        <rect x="212" y="126" width="196" height="56" rx="8" class="node"/>
+        <text x="310" y="150" text-anchor="middle" class="nt">只观察，不追</text>
+        <text x="310" y="168" text-anchor="middle" class="nd">记下倍数，等回踩或二次放量</text>
+        <rect x="14" y="214" width="150" height="56" rx="8" class="node"/>
+        <text x="89" y="238" text-anchor="middle" class="nt">模板 A 回调</text>
+        <text x="89" y="256" text-anchor="middle" class="nd">4 小时顺势回调中</text>
+        <path d="M164 242 L212 242" class="edge" marker-end="url(#f95-ar)"/>
+        <rect x="212" y="214" width="196" height="56" rx="8" class="node-hi"/>
+        <text x="310" y="238" text-anchor="middle" class="nt">回调段的量能形态</text>
+        <text x="310" y="256" text-anchor="middle" class="nd">和 20 期均量比</text>
+        <path d="M408 230 L468 230" class="edge" marker-end="url(#f95-ar)"/>
+        <text x="438" y="220" text-anchor="middle" class="elabel">缩量</text>
+        <rect x="468" y="202" width="140" height="52" rx="8" class="node-up"/>
+        <text x="538" y="224" text-anchor="middle" class="nt">加分：优先执行</text>
+        <text x="538" y="242" text-anchor="middle" class="nd">抛压弱，承接从容</text>
+        <path d="M408 258 L468 258" class="edge-dn" marker-end="url(#f95-ar)"/>
+        <text x="438" y="276" text-anchor="middle" class="elabel">放量</text>
+        <rect x="468" y="258" width="140" height="38" rx="8" class="node-dn"/>
+        <text x="538" y="282" text-anchor="middle" class="nd">警惕：可能是反转，降级或放弃</text>
+      </svg>
+    </div>
+    <figcaption><b>读图：</b>两条接线泾渭分明：模板 B 那条是<b>硬闸门</b>——没过 1.5 倍就只观察，哪怕后来涨上天也不追（9.2 节的统计已经告诉你这笔"错过"长期是划算的）；模板 A 那条是<b>软偏好</b>——缩量回调说明没人急着跑、是健康的歇脚，放量回调说明有人借反弹出货、回调可能要变性，宁可降低仓位档位或干脆放弃这单。</figcaption>
+  </figure>
+  <div class="rulecard">
+    <div class="rc-head"><span class="label">规则卡</span><span class="rc-name">短波段系统 v0.6（在 v0.5 之上新增两处量能条款）</span></div>
+    <dl>
+      <dt>标的与周期</dt><dd>BTC / ETH 的 U 本位永续，模拟盘；日线定方向、4 小时找位置、1 小时扣扳机（第 2 课分工不变）</dd>
+      <dt>过滤条件</dt><dd>全部继承：事件回避（第 3 课）· 方向三票制（第 4 课）· 高波动熔断：日线 ATR% 超近一年 90 分位时风险减半（第 6 课）· 环境开关：趋势市走模板 A，震荡市按第 7 课的打法或观望</dd>
+      <dt>入场</dt><dd>模板 A 维持 v0.5 的"位置 ＋ 信号"双门槛：4 小时回调落进共振位带（第 8 课）→ 1 小时触发信号（第 5 课），<b>【本课新增】偏好项：缩量回调优于放量回调——回调段量能明显低于 20 期均量加分；回调反而放量 ≥1.5× 均量时警惕反转，降级或放弃</b>；模板 B 收口突破（第 7 课）：<b>【本课新增】量能闸——突破 K 线成交额 ≥1.5× 前 20 期均量才允许进场，否则只观察、记入日志等二次机会</b></dd>
+      <dt>止损</dt><dd>挂在所依托位带的另一侧之外，与入场价 ∓1.5×ATR(4h) 两者取更远者；跨周末、清淡时段或事件日改 2×ATR；止损市价单、标记价格触发（第 1、6、8 课不变）</dd>
+      <dt>出场</dt><dd>继承 v0.5：目标 ＝ 下一个位带与 2R 取其近者，先到哪个按哪个离场；目标距离不足 1.5 倍止损距离的放弃；出现反向三票信号市价离场</dd>
+      <dt>仓位</dt><dd>名义 ＝ 单笔风险额 ÷ 实际止损距离%；单笔风险 ≤1%（高波动期 0.5%）；逐仓 ≤5 倍；同时 ≤2 个仓位</dd>
+    </dl>
+    <p class="rc-note">对照 v0.5 的变化只有入场条款里加粗的两处：<strong>模板 B 多了一道硬闸，模板 A 多了一个软偏好</strong>。另外登记一个不进规则的观察标签：跌＋巨量＋长下影＝投降式抛售，只记日志不触发交易。其余条款原样继承。</p>
+  </div>
+  <div class="sysup">
+    <span class="label">系统升级</span>
+    <h4>你的交易系统：v0.5 → v0.6</h4>
+    <p>本课装进系统的零件：量的语法（成交额口径 ＋ 两把相对化的尺）· 模板 B 量能闸（≥1.5× 均量，硬规则）· 模板 A 缩量回调偏好（软规则）· OBV 破位与背离当警报（收紧防守用，不开仓）· VWAP 执行工具（顺势回踩挂限价，省 taker 费）· 投降式抛售观察标签。<strong>下一课（v0.7）把视角从"多少钱在动"转到"多少钱停在场内"：持仓量 OI、资金费率、多空比——价格 × OI 四象限会回答一个量能回答不了的问题：这波上涨是新钱进场，还是空头被迫回补？</strong></p>
+  </div>
+  <div class="stock">
+    <span class="label">股票上怎么对照</span>
+    <h4>量能工具箱搬到股票市场，哪些照用、哪些要换</h4>
+    <ul>
+      <li><b>量价四句话完全通用</b>——它本来就是股票市场一百多年的老经验（道氏理论就有"量随趋势"的说法）；OBV 更是 1963 年为美股发明的，公式一字不改；</li>
+      <li><b>A 股看量习惯用<span class="nt" data-note="turnover-rate">换手率</span></b>（成交量 ÷ 流通盘）而不是绝对额——个股流通盘差异太大，换手率就是股票版的"相对化"；</li>
+      <li><b>涨跌停会扭曲量的语法</b>：一字涨停板几乎无量——不是没人参与，是想买的人排队买不到。"缩量"在板上是强势信号，和连续交易市场的读法相反；</li>
+      <li><b>分时均价线 ＝ 当日 VWAP</b>：A 股分时图里那条黄线，思想和算法与本课 9.4 节同源；但 A 股 T+1，"回踩均价线日内加仓"的玩法要改成次日执行；</li>
+      <li><b>股票的量干净得多</b>：虚报成交属于操纵市场，是证券监管的重点打击对象——9.5 节的刷量防身术是币圈特有的功课。</li>
+    </ul>
+  </div>
+  <div class="task">
+    <span class="label">本周模拟任务</span>
+    <h4>给每笔单配上量能档案（继续模拟盘，系统 v0.6）</h4>
+    <ol>
+      <li><b>日志加一栏"量能"</b>：本周起每笔单必填——模板 B 记"突破 K 线成交额 ÷ 前 20 期均量 ＝ X 倍"；模板 A 记"回调段量能形态：缩量 / 平量 / 放量"。没填这一栏的单，算违规单；</li>
+      <li><b>复盘一次历史假突破</b>：从图 9-2 挑一个红圈（或用 04-11 那根现成的），写三行：突破时量能几倍、几根之内怎么收回去的、如果当时持仓止损会挂在哪；</li>
+      <li><b>用 VWAP 练一次执行</b>：本周至少一笔顺势单改在回踩当日 VWAP 附近挂限价成交，事后算账：比信号出现时市价追单省了多少（价差 ＋ maker/taker 费差），记进日志；</li>
+      <li><b>每天一句量价结论</b>：收盘复盘时（北京早 8 点后）用四句话里的一句给昨天的日线下结论，并写出量能倍数——坚持一周，语法就是你的了；</li>
+      <li><b>周末自查</b>：翻一遍本周日志，有没有把周六周日或凌晨的缩量当成信号写进判断依据？有就划掉，并在旁边注明基线错误。</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ================= 小结 ================= -->
+<section class="ch recap" id="recap">
+  <h2 class="sec"><span class="no">★</span>本课小结</h2>
+  <p class="sec-en">RECAP</p>
+  <div class="prose">
+    <ol>
+      <li><b>量给方向定可信度</b>：价格是选举结果，成交额是投票人数；本课的量一律用成交额（USDT），跨时期可比。</li>
+      <li><b>量价四句话</b>：涨放量健康（8 月主升 3–4.5×）、涨缩量可疑、跌放量恐慌（06-02 的 2.4×）、跌缩量阴跌（5 月中下旬的 0.95×）。</li>
+      <li><b>放量必须相对化</b>：和前 20 期均量比出倍数，和同时段基线比出异常——说不出"是谁的几倍"的放量不算证据。</li>
+      <li><b>假突破是常态</b>：2026 年 4–9 月的 42 次 4 小时突破，52% 在 24 小时内收回；1.5 倍量能闸把破位率从 67% 压到 47%、中位收益由负转正——有效，但只是概率改善，还会错杀个别真行情（8-20 那根 0.74× 的 +7.3%）。</li>
+      <li><b>OBV 是净投票累计器</b>：只看它和价格的结构同不同步。2025 年 8 月它领先价格 6 天报出顶部；2026 年 2–3 月它连喊九次"狼来了"——钝、怕巨量污染，所以只当警报不当扳机。</li>
+      <li><b>VWAP 是今天进场者的平均成本</b>：价格在上方＝今天的多头整体浮盈；顺势单回踩 VWAP 挂限价，买得好还省 taker 费；锚定 VWAP 把起点改到重大事件，看的是幸存者的平均成本。</li>
+      <li><b>币圈的量要先消毒</b>：未受监管所的报告成交量约七成是刷的；跨所、跨口径（合约 vs 现货）不可比；周末与凌晨基线天然低——周日缩量是作息不是信号。</li>
+      <li><b>v0.6 装好</b>：模板 B 量能闸（硬）、模板 A 缩量回调偏好（软）、投降式抛售观察标签（只记不做）。下一课进入合约数据：OI 与资金费率。</li>
+    </ol>
+  </div>
+
+  <h3>术语一览（点击正文中的角标词可随时弹出）</h3>
+  <ol class="notes-list" id="notes-list"></ol>
+
+  <h3>自测</h3>
+  <details><summary>1. 2026-08-19 全天成交约 220 亿 USDT，2025-10-10 约 451 亿。能不能据此说"10·10 的参与度是 8-19 的两倍"？按币数算呢（39.2 万枚 对 32.6 万枚）？</summary>
+    <div class="ans"><p>都不能直接比。按币数只差 20%，按钱数差一倍——差异主要来自两个时期的价格水平（11 万对 6 万多美元），这正是"成交量 vs 成交额"的口径陷阱。正确的比法是各自相对化：8-19 的 220 亿是它前 20 日均量的 3.4 倍，10·10 的 451 亿也要除以它自己当时的均量，两个<b>倍数</b>才可比。结论先问基线，再谈大小——这是 9.1 节的中心思想。</p></div>
+  </details>
+  <details><summary>2. 模板 B 出现收口突破信号，突破 K 线量能倍数 1.2。按 v0.6 怎么办？统计上这么做的依据是什么？它保证这次突破会失败吗？</summary>
+    <div class="ans"><p>1.2 ＜ 1.5，没过闸：只观察、不进场，把倍数记进日志，等回踩确认或二次放量的机会。依据是 9.2 节的统计：未过闸组 24 小时内收回突破位的比例 67%、收益中位数 −0.34%，过闸组分别是 47% 和 +0.07%。但它不保证个案——8-20 深夜那根 0.74 倍量的突破随后涨了 7.3%。量能闸是概率工具：长期执行让你少踩多数坑，个别踏空是它明码标价的成本。规则的价值在"每次都执行"，不在"每次都对"。</p></div>
+  </details>
+  <details><summary>3. 你持有多单，价格创出 60 日新高，OBV 却远低于它上一个高点。这叫什么？该做什么、不该做什么？</summary>
+    <div class="ans"><p>量价背离（顶背离）：新高缺少量的背书，台上喊得响、台下在退场。该做的：收紧止损（比如把吊灯止损的倍数收小）、停止加仓、提高复盘频率——2025 年 8 月顶部 OBV 领先价格 6 天报警，这些动作足够你全身而退。不该做的：直接反手开空——背离只是警报，2026 年 2–3 月 OBV 连续九次"破位"而价格反涨 25% 的"狼来了"就是教训（那次还叠加了 02-05 巨量投降日对 OBV 的污染）。警报和扳机是两种东西，这条纪律和第 5 课 RSI 背离完全一致。</p></div>
+  </details>
+  <details><summary>4. 为什么顺势单建议"回踩当日 VWAP 挂限价"而不是信号一出就市价追？这个做法什么时候会吃亏？</summary>
+    <div class="ans"><p>三笔账：① 执行价更好——多头日价格反复回踩 VWAP（8-20 北京 9–15 点六次回踩 69,400 一带，16 点才拉到 71,800，差约 3%）；② 费率——限价按 maker 0.02% 收，市价按 taker 0.05%，双边省 0.06%，一万 U 名义省 6 U ＝ 风险预算的 6%；③ 心理——VWAP 是今天进场者的平均成本，在它附近接单等于和当天的多数盈利盘站在一起。吃亏的时候：价格强起来可以一口气跑几个小时不回头——8-19 北京 23 点那根事件 K 线拉升之后，当晚价格就再没回到当日 VWAP，挂在线上等回踩的限价单完整踏空这一夜，直到第二天上午才重新给机会。所以它是模板 A 的执行工具——方向和位置先由日线、4 小时决定，VWAP 只负责把入场价买漂亮，追不追得上不影响系统存亡。</p></div>
+  </details>
+  <details><summary>5. 某新交易所宣传"日成交量全球前三"。你会怎么核实？为什么币圈的量需要这道工序而股票基本不用？</summary>
+    <div class="ans"><p>核实三步：① 看它是否受严格监管——Cong 等人的研究用 Benford 定律等法证手段发现，未受监管交易所的报告成交量平均约七成是刷量，而受监管头部所没有系统性造假；② 交叉验证——对比它和头部所的订单簿深度、滑点：真有那么大的量，吃一笔市价单的滑点应该很小；③ 看聚合网站的"已剔除可疑所"口径里它排第几。股票不需要这道工序，因为虚报成交在证券市场是操纵市场的重罪、交易所本身受监管；币圈交易所靠量能排名换流量，既有动机又少约束——所以量的来源审查是币圈量能分析的第一步。</p></div>
+  </details>
+  <details><summary>6. 2026-02-05：单日 −14%、成交 454 亿（年均 3.6 倍）；02-06 长下影探 59,800 后收回 70,545。这是什么形态？按 v0.6 你能做什么？</summary>
+    <div class="ans"><p>投降式抛售的标准识别式：跌 ＋ 巨量 ＋（次日）长下影——恐慌盘和强平单在一两天内集中出清，常出现在下跌的尾声。但按 v0.6 它只是<b>观察标签</b>：记入日志、知道"卖压可能接近出清"、对后续的做空信号多一分怀疑——仅此而已，不单独触发抄底。原因：①"投降"也可能只是半山腰（10·10 当晚之后次日仍创了新低）；② 方向三票制大概率还是空头或 flat，系统不允许逆势接飞刀；③ 确认底部需要合约数据（OI 出清、费率转负，第 10 课）和位置（第 8 课）配合。标签的价值是让你两周后复盘时能说出"那天的量能长什么样"，而不是当天冲进去。</p></div>
+  </details>
+
+  <nav class="pager" aria-label="课程导航">
+    <a class="pg" href="ct-l08.html"><span class="pg-dir">上一课</span><span class="pg-ttl">第 8 课 · 关键价位在哪</span></a>
+    <a class="pg pg-toc" href="ct-index.html"><span class="pg-dir">返回</span><span class="pg-ttl">学习地图</span></a>
+    <a class="pg pg-next" href="ct-l10.html"><span class="pg-dir">下一课</span><span class="pg-ttl">第 10 课 · 合约里的人在干什么</span></a>
+  </nav>
+
+  <p class="foot">数据：币安公开历史数据（data.binance.vision），BTCUSDT 永续，已本地化；文中所有价格、成交额、量能倍数与突破统计均由本地真实数据计算（日线为 UTC 交易日口径），页内统计口径与正文一致。图表组件：TradingView Lightweight Charts™（Apache-2.0）。本讲义仅为学习笔记，不构成投资建议；合约交易风险极高。</p>
+</section>
+
+</main>
+</div>
+
+<!-- ================= 术语弹注内容 ================= -->
+<div class="notes-src" hidden>
+  <section data-note-id="quote-vol" data-title="成交额" data-en="Turnover / Quote Volume">
+    <p>一段时间内成交的金额（本课按 USDT 计），＝ 每笔成交的价格 × 数量加总。与"成交量"（成交了多少枚币）相对：币价变化大的时期，按币数比较会失真，按成交额比较才是资金视角。K 线数据行的第 7 个字段就是它。</p>
+  </section>
+  <section data-note-id="avg-vol" data-title="均量" data-en="Average Volume">
+    <p>最近 n 期成交额的平均值，本课统一取前 20 期（不含当前 K 线）。它是"放量 / 缩量"的参照物：当前成交额 ÷ 均量 ＝ 量能倍数，≥1.5 倍算放量、≤0.7 倍算缩量。和均线一样，均量也要选和自己交易周期匹配的 K 线级别来算。</p>
+  </section>
+  <section data-note-id="fake-brk" data-title="假突破" data-en="False Breakout">
+    <p>价格突破关键价位后短时间内又收回去的走势。本课 9.2 节的统计口径：4 小时收盘创 20 期新高后，6 根（24 小时）之内收盘跌回突破位下方。2026 年 4–9 月 BTC 的 42 次突破中 52% 符合这个定义——假突破是常态，量能确认就是为它准备的闸门。</p>
+  </section>
+  <section data-note-id="pv-div" data-title="量价背离" data-en="Price-Volume Divergence">
+    <p>价格创了新高（新低），代表资金流向的指标（本课用 OBV）却没有同创新高（新低）——价和量"吵架"了。顶背离提示新高缺人数背书，底背离提示杀跌动能衰竭。背离是警报不是扳机：它可以持续很久，也经常是错的，正确反应是收紧防守，而不是反向开仓。</p>
+  </section>
+  <section data-note-id="avwap" data-title="锚定 VWAP" data-en="Anchored VWAP">
+    <p>把 VWAP 的累计起点从"今天 0 点"改为任选的某根重大事件 K 线（暴跌夜、数据发布、突破起点），从那一刻起累计成交量加权均价——即"事件之后所有进场者的平均成本"。价格在它上方，事件后进场的人整体浮盈；跌破它，这批人集体由盈转亏，踩踏风险上升。</p>
+  </section>
+  <section data-note-id="wash" data-title="刷量" data-en="Wash Trading">
+    <p>同一主体（或串通的双方）左手卖右手买，制造成交量而没有真实的所有权转移。目的通常是抬高交易所或代币在排名网站上的位置。在受监管证券市场属于操纵市场的违法行为；在缺乏监管的加密交易所曾长期泛滥——学术研究估计未受监管所的报告成交量平均约七成为刷量。</p>
+  </section>
+  <section data-note-id="capitulation" data-title="投降式抛售" data-en="Capitulation">
+    <p>下跌末段持仓者放弃抵抗、不计价格夺门而逃的集中抛售：识别式为"跌 ＋ 巨量 ＋ 长下影"（恐慌盘与强平单集中出清、随后被低位买盘接回）。它常出现在阶段性底部附近，但"投降"也可能发生在半山腰——本课只把它作为观察标签记录，不单独作为交易信号。</p>
+  </section>
+  <section data-note-id="turnover-rate" data-title="换手率" data-en="Turnover Rate">
+    <p>股票市场常用的相对化量能指标：成交量 ÷ 流通股本，表示这段时间有百分之几的筹码换了主人。它天然解决了"不同股票流通盘大小不可比"的问题，作用相当于本课的"量能倍数"。币圈很少用换手率，因为真实流通量难以准确统计。</p>
+  </section>
+</div>
+
+<script src="assets/lightweight-charts.js"></script>
+<script src="assets/ct.js"></script>
+<script src="assets/ctchart.js"></script>
+<script src="assets/data/klines-BTCUSDT-1d.js"></script>
+<script src="assets/data/klines-BTCUSDT-4h.js"></script>
+<script src="assets/data/klines-BTCUSDT-1h.js"></script>
+<script>
+(function(){
+'use strict';
+var fmt = CT.fmtN;
+
+/* ---------- 图 9-1 量价四句话 ---------- */
+(function(){
+  var all = CT.get('klines-BTCUSDT-1d');
+  var FROM = '2026-05-01', TO = '2026-10-01';
+  var rows = CT.slice(all, FROM, TO);
+  var g = CT.makeChart('v1-chart', {panes: [0.3]});
+  var cs = g.addCandles(rows);
+  g.addHist(rows.map(function(r){
+    return {time: CT.ts(r[0]), value: r[6] / 1e8, color: r[4] >= r[1] ? 'UP' : 'DOWN'};
+  }), 'vol', {pane: 1});
+  /* 20 日均量（前 20 根，不含当日），用全历史算再截窗口 */
+  var av = [], a = Date.parse(FROM) / 1000;
+  for(var i = 20; i < all.length; i++){
+    if(all[i][0] < a) continue;
+    var s = 0;
+    for(var j = i - 20; j < i; j++) s += all[j][6];
+    av.push({time: CT.ts(all[i][0]), value: s / 20 / 1e8});
+  }
+  g.addLine(av, 'series', {pane: 1, width: 2, title: '20 日均量'});
+  g.markers(cs, [
+    {time: Date.parse('2026-05-20') / 1000, position: 'aboveBar', shape: 'circle', color: 'muted', text: '跌＋缩量 0.95×：阴跌'},
+    {time: Date.parse('2026-06-02') / 1000, position: 'belowBar', shape: 'arrowUp', color: 'crit', text: '跌＋放量 2.4×：恐慌'},
+    {time: Date.parse('2026-08-19') / 1000, position: 'belowBar', shape: 'arrowUp', color: 'up', text: '涨＋放量 3.4×：健康'},
+    {time: Date.parse('2026-08-21') / 1000, position: 'aboveBar', shape: 'circle', color: 'accent', text: '4.5×'},
+    {time: Date.parse('2026-09-26') / 1000, position: 'belowBar', shape: 'circle', color: 'series2', text: '周六 0.26×：作息'}
+  ]);
+  g.fit();
+  CT.legend('v1-legend', [['up', '成交额（亿 USDT，按涨跌染色）'], ['series', '20 日均量'], ['muted', '上图：BTCUSDT 永续日线']]);
+})();
+
+/* ---------- 图 9-2 假突破统计器 ---------- */
+(function(){
+  var h4 = CT.get('klines-BTCUSDT-4h');
+  var A = Date.parse('2026-04-01') / 1000, B = Date.parse('2026-10-01') / 1000;
+  var N = 20;
+  var i0 = -1, i1 = h4.length, i, j;
+  for(i = 0; i < h4.length; i++){ if(h4[i][0] >= A){ i0 = i; break; } }
+  for(i = i0; i < h4.length; i++){ if(h4[i][0] >= B){ i1 = i; break; } }
+  function maxHigh(k){ var m = -Infinity; for(var x = k - N; x < k; x++) m = Math.max(m, h4[x][2]); return m; }
+  function avgQ(k){ var s = 0; for(var x = k - N; x < k; x++) s += h4[x][6]; return s / N; }
+  /* 突破事件：收盘创 20 期新高，串内只记第一根（与报告口径一致） */
+  var events = [];
+  for(i = i0; i < i1; i++){
+    var lvl = maxHigh(i);
+    if(h4[i][4] <= lvl) continue;
+    if(h4[i - 1][4] > maxHigh(i - 1)) continue;
+    events.push({i: i, t: h4[i][0], lvl: lvl, mult: h4[i][6] / avgQ(i)});
+  }
+  var rows = CT.slice(h4, '2026-04-01', '2026-10-01');
+  var g = CT.makeChart('fb-chart', {panes: [0.26], minBarSpacing: 0.05});
+  var cs = g.addCandles(rows);
+  g.addHist(rows.map(function(r){
+    return {time: CT.ts(r[0]), value: r[6] / 1e8, color: r[4] >= r[1] ? 'UP' : 'DOWN'};
+  }), 'vol', {pane: 1});
+  var thrBase = [];
+  for(i = i0; i < i1; i++) thrBase.push({t: h4[i][0], avg: avgQ(i)});
+  var thrLine = null;
+  var mkArr = [];
+  var mkApi = g.markers(cs, mkArr);
+  g.fit();
+  CT.legend('fb-legend', [['up', '过闸突破（量 ≥ 阈值）'], ['crit', '未过闸突破'], ['series2', '量能闸 ＝ 阈值 × 前 20 期均量'], ['muted', '下图：每根 4h 成交额（亿 USDT）']]);
+  var X = 1.5, H = 6;
+  function pct(x){ return (x >= 0 ? '+' : '−') + fmt(Math.abs(x), 2) + '%'; }
+  function stat(arr){
+    var n = arr.length;
+    if(!n) return {n: 0};
+    var sum = 0, fails = 0, rets = [];
+    arr.forEach(function(e){ sum += e.ret; rets.push(e.ret); if(e.fail) fails++; });
+    rets.sort(function(a, b){ return a - b; });
+    return {n: n, avg: sum / n * 100, med: rets[Math.floor(n / 2)] * 100, fails: fails, failPct: fails / n * 100};
+  }
+  function paint(){
+    if(thrLine){ g.chart.removeSeries(thrLine); g.series = g.series.filter(function(it){ return it.s !== thrLine; }); thrLine = null; }
+    thrLine = g.addLine(thrBase.map(function(d){
+      return {time: CT.ts(d.t), value: d.avg * X / 1e8};
+    }), 'series2', {pane: 1, width: 2, dashed: true, title: '量能闸'});
+    var conf = [], un = [];
+    events.forEach(function(e){
+      if(e.i + H >= h4.length) return;
+      var ret = h4[e.i + H][4] / h4[e.i][4] - 1;
+      var fail = false;
+      for(var x = e.i + 1; x <= e.i + H; x++) if(h4[x][4] < e.lvl){ fail = true; break; }
+      (e.mult >= X ? conf : un).push({ret: ret, fail: fail});
+    });
+    var sc = stat(conf), su = stat(un);
+    document.getElementById('fb-nv').textContent = (sc.n + su.n) + ' 次';
+    document.getElementById('fb-cv').textContent = sc.n ? fmt(sc.failPct, 0) + '%' : '—';
+    document.getElementById('fb-cs').textContent = sc.n ? 'n=' + sc.n + ' · 平均 ' + pct(sc.avg) + ' · 中位 ' + pct(sc.med) : '没有样本';
+    document.getElementById('fb-uv').textContent = su.n ? fmt(su.failPct, 0) + '%' : '—';
+    document.getElementById('fb-us').textContent = su.n ? 'n=' + su.n + ' · 平均 ' + pct(su.avg) + ' · 中位 ' + pct(su.med) : '没有样本';
+    var gv = document.getElementById('fb-gv');
+    if(sc.n && su.n){
+      var d = su.failPct - sc.failPct;
+      gv.textContent = (d >= 0 ? '−' : '+') + fmt(Math.abs(d), 0) + ' 个百分点';
+      document.getElementById('fb-gs').textContent = '过闸组比未过闸组的破位率' + (d >= 0 ? '低 ' : '高 ') + fmt(Math.abs(d), 0) + ' 个百分点';
+    }else{
+      gv.textContent = '—';
+      document.getElementById('fb-gs').textContent = '某一组样本为空，阈值拉回中间试试';
+    }
+    mkArr.length = 0;
+    events.forEach(function(e){
+      var ok = e.mult >= X;
+      mkArr.push({time: e.t, position: 'aboveBar', shape: ok ? 'arrowUp' : 'circle',
+        color: ok ? 'up' : 'crit', text: e.mult.toFixed(1) + '×'});
+    });
+    var p = CT.pal();
+    mkApi.setMarkers(mkArr.map(function(m){
+      return {time: CT.ts(m.time), position: m.position, shape: m.shape, color: p[m.color] || m.color, text: m.text, size: 1};
+    }));
+    var msg;
+    if(!sc.n || !su.n){
+      msg = '当前阈值下有一组没有样本，统计失去意义——这也是个教训：<b>过滤器越极端，样本越少，结论越不可信</b>。';
+    }else{
+      msg = '阈值 <b>' + X.toFixed(1) + '×</b>、持有 <b>' + H + ' 根（' + H * 4 + ' 小时）</b>：过闸组 ' + sc.n + ' 笔，平均 ' + pct(sc.avg) + '、中位 ' + pct(sc.med) + '、回落破位 ' + sc.fails + ' 笔（' + fmt(sc.failPct, 0) + '%）；未过闸组 ' + su.n + ' 笔，平均 ' + pct(su.avg) + '、中位 ' + pct(su.med) + '、破位 ' + su.fails + ' 笔（' + fmt(su.failPct, 0) + '%）。'
+        + (sc.failPct < su.failPct
+          ? '闸门把"站稳概率"抬高了——但注意平均收益：两组差距不大' + (su.avg > sc.avg ? '，甚至未过闸组更高（个别缩量真突破拉的）' : '') + '。<b>它是概率过滤器，不是印钞机。</b>'
+          : '当前参数下闸门没有带来改善——调一调阈值和持有期，感受参数敏感性本身就是功课。');
+    }
+    document.getElementById('fb-msg').innerHTML = msg;
+  }
+  CT.bindRange('fb-x', function(v){ X = v; paint(); }, function(v){ return v.toFixed(1) + '×'; });
+  CT.bindRange('fb-h', function(v){ H = v; paint(); }, function(v){ return v + ' 根（' + v * 4 + ' 小时）'; });
+})();
+
+/* ---------- 图 9-3 OBV 两面 ---------- */
+(function(){
+  var all = CT.get('klines-BTCUSDT-1d');
+  var WIN = {
+    top: {
+      from: '2025-07-01', to: '2025-09-21',
+      marks: [
+        {time: Date.parse('2025-08-14') / 1000, position: 'aboveBar', shape: 'arrowDown', color: 'crit', text: '历史新高 124,546'},
+        {time: Date.parse('2025-08-15') / 1000, position: 'belowBar', shape: 'circle', color: 'series2', text: 'OBV 已创 40 日新低'},
+        {time: Date.parse('2025-08-21') / 1000, position: 'belowBar', shape: 'arrowDown', color: 'down', text: '价格 6 天后跟破 112,462'},
+        {time: Date.parse('2025-09-01') / 1000, position: 'belowBar', shape: 'circle', color: 'muted', text: '低 107,212'}
+      ],
+      stats: [
+        ['价格历史新高', '124,546', '2025-08-14（最高价）'],
+        ['OBV 创 40 日新低', '08-15', '价格距山顶一步之遥时报警'],
+        ['价格跟破 40 日低', '08-21 · 112,462', '比 OBV 晚 6 天'],
+        ['随后低点', '107,212', '09-01，自高点约 −14%']
+      ],
+      msg: '顶部的解剖：08-14 创历史新高的几天里，<b>阴线放量、阳线缩量</b>——点名机每天都在给空头记大账。08-15 OBV 跌破 40 日低（价格还在 117,279），这就是"资金先走、价格后走"的经典一幕。'
+    },
+    cry: {
+      from: '2026-01-01', to: '2026-10-01',
+      marks: [
+        {time: Date.parse('2026-02-05') / 1000, position: 'belowBar', shape: 'arrowUp', color: 'crit', text: '投降日 −14% · 454 亿'},
+        {time: Date.parse('2026-02-24') / 1000, position: 'belowBar', shape: 'circle', color: 'muted', text: '2–3 月 OBV 九次新低 · 价格不跟'},
+        {time: Date.parse('2026-05-06') / 1000, position: 'aboveBar', shape: 'arrowDown', color: 'series2', text: '反而涨到 82,829'},
+        {time: Date.parse('2026-08-08') / 1000, position: 'belowBar', shape: 'circle', color: 'accent', text: 'OBV 先创 40 日新高'},
+        {time: Date.parse('2026-08-19') / 1000, position: 'belowBar', shape: 'arrowUp', color: 'up', text: '11 天后价格跟进 69,310'}
+      ],
+      stats: [
+        ['02-05 投降日', '−14% · 454 亿', '单日成交 ＝ 近一年日均 3.6 倍'],
+        ['OBV 创 40 日新低', '9 次', '02-11 → 03-08，价格一次都没跟'],
+        ['随后行情', '+25.6%', '03-08 收 65,934 → 05-06 高 82,829'],
+        ['8 月的领先', '08-08 → 08-19', 'OBV 先创新高，价格 11 天后跟上']
+      ],
+      msg: '同一个信号的两副面孔：2–3 月的九次"破位"全是<b>狼来了</b>——02-05 那根巨量阴线把总账砸出深坑，OBV 失真了几个月；而 8 月初的"OBV 先创新高"（价格还在 62,000–67,000 箱体里）却真的领先了主升 11 天。事前你无法分辨哪次是先知哪次是狼——<b>所以永远只把它当警报</b>。'
+    }
+  };
+  var g = CT.makeChart('ob-chart', {panes: [0.3]});
+  CT.legend('ob-legend', [['series', 'OBV（万枚，窗口起点归零，只看形状）']]);
+  function show(which){
+    var w = WIN[which];
+    g.series.forEach(function(it){ if(it.s) g.chart.removeSeries(it.s); });
+    g.series.length = 0;
+    var rows = CT.slice(all, w.from, w.to);
+    var cs = g.addCandles(rows);
+    g.addLine(CT.ind.obv(rows).map(function(p){ return {time: p.time, value: p.value / 1e4}; }),
+      'series', {pane: 1, width: 2, title: 'OBV'});
+    g.markers(cs, w.marks);
+    g.fit();
+    document.getElementById('ob-stats').innerHTML = w.stats.map(function(st){
+      return '<div class="stat"><span class="k">' + st[0] + '</span><span class="v">' + st[1] + '</span><span class="s">' + st[2] + '</span></div>';
+    }).join('');
+    document.getElementById('ob-msg').innerHTML = w.msg;
+  }
+  CT.bindSeg('ob-seg', show);
+})();
+
+/* ---------- 图 9-4 VWAP 实验 ---------- */
+(function(){
+  var rows = CT.slice(CT.get('klines-BTCUSDT-1h'), '2026-08-19T00:00:00Z', '2026-08-22T00:00:00Z');
+  var g = CT.makeChart('vw-chart', {timeVisible: true});
+  var cs = g.addCandles(rows);
+  g.addLine(CT.ind.vwapDaily(rows), 'series', {width: 2, title: '当日 VWAP'});
+  g.markers(cs, [
+    {time: Date.parse('2026-08-19T15:00:00Z') / 1000, position: 'belowBar', shape: 'arrowUp', color: 'crit', text: '事件 K 线：1 小时 70 亿'},
+    {time: Date.parse('2026-08-20T03:00:00Z') / 1000, position: 'belowBar', shape: 'circle', color: 'accent', text: '反复回踩当日 VWAP'},
+    {time: Date.parse('2026-08-20T08:00:00Z') / 1000, position: 'aboveBar', shape: 'circle', color: 'series2', text: '回踩后拉升 71,800'}
+  ]);
+  g.fit();
+  CT.legend('vw-legend', [['series', '当日 VWAP（北京早 8 点重置）'], ['series2', '锚定 VWAP（虚线，锚点可切换）']]);
+  function anchored(t0){
+    var out = [], pv = 0, vv = 0;
+    for(var i = 0; i < rows.length; i++){
+      var r = rows[i];
+      if(r[0] < t0) continue;
+      var tp = (r[2] + r[3] + r[4]) / 3;
+      pv += tp * r[5]; vv += r[5];
+      out.push({time: CT.ts(r[0]), value: pv / vv});
+    }
+    return out;
+  }
+  var ANCHOR = {
+    event: {t: Date.parse('2026-08-19T15:00:00Z') / 1000,
+      msg: '锚点 ＝ 8-19 北京 23 点那根 70 亿的事件 K 线。这条虚线是<b>主升启动之后所有进场者的平均成本</b>：锚定后的头几个小时价格还贴着它拉锯，8-20 凌晨低点 67,804 最后一次刺到线下又马上收回，此后越离越远——到 8-21 收盘它还在 73,317、价格 78,309，<b>事件后进场的多头人均浮盈 6% 以上</b>，没人急着跑，趋势自然走得稳。什么时候该紧张？价格跌破锚定 VWAP 的那一刻：事件后进场的人集体由盈转亏。'},
+    day: {t: Date.parse('2026-08-19T00:00:00Z') / 1000,
+      msg: '锚点 ＝ 8-19 日初（北京早 8 点）。和事件锚相比，它把启动前那十几个小时的横盘成交也算了进去，线更低、更慢。锚点选哪里没有标准答案，原则只有一条：<b>锚在"市场性质发生改变"的那一根 K 线</b>——事件、突破、暴跌夜。锚得越有意义，"平均成本"这四个字的含金量越高。'}
+  };
+  var line = null;
+  CT.bindSeg('vw-seg', function(v){
+    if(line){ g.chart.removeSeries(line); g.series = g.series.filter(function(it){ return it.s !== line; }); line = null; }
+    line = g.addLine(anchored(ANCHOR[v].t), 'series2', {width: 2, dashed: true, title: '锚定 VWAP'});
+    document.getElementById('vw-msg').innerHTML = ANCHOR[v].msg;
+  });
+})();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,819 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>币圈短线课 · 第 8 课 关键价位在哪</title>
+<link rel="stylesheet" href="assets/ct.css">
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <span class="book"><a href="ct-index.html">币圈短线实战课</a></span>
+  <span class="part"><a href="ct-index.html">学习地图</a> · 阶段 1 指标工具箱</span>
+  <span class="prefs">
+    <button id="btn-updown" type="button" title="切换涨跌配色"></button>
+    <button id="btn-theme" type="button" title="切换深浅主题"></button>
+  </span>
+</header>
+
+<div class="layout">
+
+<nav class="sidenav" aria-label="本课目录">
+  <p class="sn-chap">第 8 课 · 关键价位在哪</p>
+  <a href="#top">课首</a>
+  <a href="#s1">8.1 位置为什么优先于形状</a>
+  <a href="#s2">8.2 水平位怎么画</a>
+  <a href="#s3">8.3 整数关口</a>
+  <a href="#s4">8.4 斐波那契回撤</a>
+  <a href="#s5">8.5 成交量分布</a>
+  <a href="#s6">8.6 落地：系统 v0.5</a>
+  <a href="#recap">小结 · 术语 · 自测</a>
+</nav>
+
+<main class="article">
+
+<section class="hero" id="top">
+  <span class="chap-no">LESSON 08 · 第 8 课 / 共 16 课</span>
+  <h1>关键价位在哪</h1>
+  <p class="en">WHERE THE REAL LEVELS ARE</p>
+  <p class="question">本课问题：在哪进、在哪逃——图上这么多"关键位"，哪些是真的？</p>
+  <p class="lede">第 2 课留过一句话：<strong>单根 K 线是半句话，位置是下半句</strong>。到今天为止，你的系统已经会判方向（第 4 课）、挑时机（第 5 课）、量波动（第 6 课）、认环境（第 7 课），但"回调到位"的"位"一直是模糊的。这一课把它变成具体数字：支撑阻力为什么存在、水平位怎么画才不会画成蜘蛛网、整数关口和斐波那契回撤各管什么、成交量分布怎么告诉你价格在哪儿走得快在哪儿走得慢。课末系统升到 v0.5：<strong>入场和目标从"信号触发"升级为"位置 ＋ 信号"</strong>——从此每笔单你都说得出：我在什么位，它凭什么是位。</p>
+  <div class="objectives">
+    <h2>学完你能做到</h2>
+    <ul>
+      <li>解释同一根长下影为什么在日线支撑位上值钱、在半山腰上不值钱——用 2026 年 6 月相邻两天的真实对照；</li>
+      <li>说出支撑阻力的三种成因（成交记忆、挂单簇、心理整数），并解释角色互换背后是谁在卖；</li>
+      <li>按规则画出"只有几条线"的日线位图：摆动点聚类成带、触碰 ≥2 才算数、现价上下各留 2–3 条；</li>
+      <li>把整数关口当"带"用：知道 10·10 的针尖为什么停在 101,517，也知道整数位什么时候如纸；</li>
+      <li>正确画斐波那契回撤，说出 38.2 / 50 / 61.8 的用法，以及起终点选择这个最大的坑；</li>
+      <li>看懂成交量分布的 HVN / LVN / POC，判断现价头顶脚下的"地形"是粘滞还是真空；</li>
+      <li>装好系统 v0.5：入场"位置 ＋ 信号"双门槛、止损挂位带另一侧、目标看下一个位。</li>
+    </ul>
+  </div>
+  <p class="colorkey">读图约定：本课默认<span class="up">绿涨</span>·<span class="dn">红跌</span>，可用右上角按钮切成红涨绿跌。带 <b>互动</b> 标签的图可以拖动、缩放、调参数；正文里带虚线下划线和角标的词，点一下原地弹出解释。图表时间轴按你设备的时区显示（北京时间 ＝ UTC+8）；正文里的日期如 2026-09-15 指币安日线的交易日（UTC 口径，收盘在北京时间次日早 8 点）。</p>
+  <nav class="chapmap" aria-label="本课小节">
+    <a href="#s1">位置优先</a><a href="#s2">画水平位</a><a href="#s3">整数关口</a><a href="#s4">斐波那契</a><a href="#s5">成交量分布</a><a href="#s6">系统 v0.5</a><a href="#recap">小结</a>
+  </nav>
+</section>
+
+<!-- ================= 8.1 ================= -->
+<section class="ch" id="s1">
+  <h2 class="sec"><span class="no">8.1</span>位置为什么优先于形状</h2>
+  <p class="sec-en">LOCATION BEFORE PATTERN</p>
+  <div class="prose">
+    <p>先兑现第 2 课的承诺。当时说"单根 K 线只是半句话"，现在补上下半句：<strong>同一个形状，出现在不同位置，是两句完全不同的话</strong>。2026 年 6 月的瀑布里有一组教科书级的对照，两根长得几乎一样的锤子线，只隔一天：</p>
+    <ul>
+      <li><strong>06-04</strong>：下影线 3.9%（最低 61,345），收 63,853——看着像"有人接盘"。可 61,345 这个位置脚下什么都没有：没有旧低点、没有整数、没有成交密集区。<strong>次日直接跌穿，再创新低</strong>；</li>
+      <li><strong>06-05</strong>：下影线 3.2%（最低 59,080），收 61,022——形状差不多，但这根针扎进的是 2 月暴跌低点 59,800 一带，旁边还有 60,000 整数关口。<strong>这里接住了：十天后反弹到 67,255，幅度 ＋13.8%</strong>。</li>
+    </ul>
+    <p>形状相同、结局相反，差别只有一个：<strong>针尖落的地方，有没有"位"</strong>。所以指标课进行到第五件工具，顺序才轮到形状之前的那个问题——<span class="nt" data-note="sr">支撑位与阻力位</span>到底是什么、凭什么存在。</p>
+    <h3><span class="tag">① </span>支撑阻力的三种成因：位的背后是人</h3>
+  </div>
+  <div class="cards">
+    <div class="card">
+      <h4>成交记忆<span class="en-term">Volume Memory</span></h4>
+      <p>某个价区成交过巨量筹码，就有一大群人"记得这个价"：套在这里的人想解套，踏空的人想补票，赚过钱的人想故地重操。<strong>人没散，位就在</strong>。</p>
+      <span class="k">8.5 节的成交量分布直接度量它</span>
+    </div>
+    <div class="card">
+      <h4>挂单簇<span class="en-term">Order Clusters</span></h4>
+      <p>限价买单、止损单、止盈单都喜欢堆在显眼价位附近。订单簿里真实躺着的这些单子，就是支撑阻力的"物理实体"——价格撞上去自然减速或反弹。</p>
+      <span class="k">看不见订单簿也能推断它在哪</span>
+    </div>
+    <div class="card">
+      <h4>心理整数<span class="en-term">Round Numbers</span></h4>
+      <p>10 万刀的 BTC、4,000 刀的 ETH——人类记价、报价、下单都偏爱<span class="nt" data-note="round">整数关口</span>。不需要任何技术分析知识的人也在参与这种"位"，所以它格外大众化。</p>
+      <span class="k">8.3 节专门拆它</span>
+    </div>
+  </div>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>位就像<strong>老战场</strong>。在 74,000 打过大仗的人——套牢的、抄底的、踏空的——都在自己的账户里记着这个数。价格每次回到 74,000，这群人就同时想起自己的旧账，买卖盘自然密集起来：旧战场重游，枪声必然比无人区密。这也解释了为什么<strong>位是一片带，不是一条线</strong>：当年的仗不是在 74,000.00 一个点上打的，是在 73,700 到 74,900 一片区域里打的。</p>
+  </div>
+  <div class="prose">
+    <h3><span class="tag">② </span>角色互换：地板翻过来就是天花板</h3>
+    <p>三种成因推出同一个重要推论——<span class="nt" data-note="flip">角色互换</span>：<strong>支撑一旦跌破，就变成阻力；阻力一旦突破，就变成支撑</strong>。机制很具体：在支撑位买入的人跌破后被套，价格反弹回"回本价"时，这批人如释重负地排队卖出——旧地板上方堆满解套卖压，地板就成了天花板。反过来，突破阻力追进的人，回踩时愿意加仓护盘，天花板便成了地板。</p>
+    <p>2026 年的 BTC 把这出戏演了个完整：<strong>86,022–87,688 一带</strong>，2025 年 12 月到 2026 年 1 月三次充当地板（12-07 低点 87,688、12-24 低点 86,355、01-25 低点 86,022），2 月第一周被暴跌击穿；七个多月后的 09-21，行情一路反攻到 87,385——<strong>正好扎进当年那块地板的区间</strong>，随后三天跌回 82,832。九个月前的地板，九个月后变成了天花板，中间隔着一整轮熊市，市场居然还记得。再看反方向：<strong>73,669–74,909 一带</strong>，3 月是天花板（03-04 高点 74,047 打到就回落），4 月中旬站上去之后翻身变地板，接住了 04-20、04-29、05-23 三次回调，6 月瀑布把它砸穿，到 9 月中旬行情回到上方，它又一次当起地板（09-15 低点 74,909）。<strong>同一片价区，半年里换了三次角色。</strong></p>
+  </div>
+  <figure>
+    <p class="fig-title"><span class="fno">图 8-1</span>位置给含义，角色会互换<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+      <svg viewBox="0 0 720 300" role="img" aria-label="同一根锤子线在半山腰与支撑带上的不同结局，以及支撑跌破后变阻力的角色互换">
+        <defs>
+          <marker id="f81-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="ar-fill"/></marker>
+        </defs>
+        <!-- 左：同一根锤子，两种命运 -->
+        <text x="170" y="24" text-anchor="middle" class="nt">同一根锤子，两种命运</text>
+        <!-- 场景 A：半山腰 -->
+        <polyline points="26,56 60,88 92,118" class="edge-dn" fill="none"/>
+        <line x1="104" y1="128" x2="104" y2="186" class="wd"/>
+        <rect x="97" y="128" width="14" height="18" class="cd"/>
+        <polyline points="116,152 140,190 162,226" class="edge-dn" fill="none" marker-end="url(#f81-ar)"/>
+        <text x="130" y="120" class="dt">半山腰</text>
+        <text x="130" y="138" class="nd">脚下没有位</text>
+        <text x="146" y="248" class="nd">多半只是中继</text>
+        <!-- 场景 B：支撑带上 -->
+        <rect x="196" y="196" width="140" height="26" class="zone-up"/>
+        <line x1="196" y1="196" x2="336" y2="196" class="sr-up"/>
+        <text x="266" y="240" text-anchor="middle" class="ut">旧低点 ＋ 整数的带</text>
+        <polyline points="206,92 232,128 252,158" class="edge-dn" fill="none"/>
+        <line x1="264" y1="166" x2="264" y2="216" class="wu"/>
+        <rect x="257" y="166" width="14" height="16" class="cu"/>
+        <polyline points="276,178 300,146 322,112" class="edge-up" fill="none" marker-end="url(#f81-ar)"/>
+        <text x="306" y="98" text-anchor="middle" class="ut">值得多看一眼</text>
+        <!-- 分隔 -->
+        <line x1="366" y1="20" x2="366" y2="280" class="grid"/>
+        <!-- 右：角色互换 -->
+        <text x="548" y="24" text-anchor="middle" class="nt">角色互换：地板 → 天花板</text>
+        <rect x="392" y="140" width="310" height="24" class="zone"/>
+        <text x="398" y="158" class="elabel">同一片价区</text>
+        <polyline points="398,70 424,134 446,110 470,138 492,96" class="edge-up" fill="none"/>
+        <circle cx="424" cy="136" r="4" class="dot"/><circle cx="470" cy="140" r="4" class="dot"/>
+        <text x="446" y="186" text-anchor="middle" class="ut">地板 ×2</text>
+        <polyline points="492,96 516,176 538,210" class="edge-dn" fill="none"/>
+        <text x="524" y="232" text-anchor="middle" class="wt">跌破</text>
+        <polyline points="538,210 568,170 592,146" class="edge-up" fill="none"/>
+        <circle cx="596" cy="146" r="4" class="dot"/>
+        <polyline points="600,150 622,196 644,236" class="edge-dn" fill="none" marker-end="url(#f81-ar)"/>
+        <text x="630" y="122" text-anchor="middle" class="dt">回踩变天花板</text>
+        <text x="606" y="262" text-anchor="middle" class="nd">解套盘在"回本价"排队卖</text>
+      </svg>
+    </div>
+    <figcaption><b>读图：</b>左半是本节开头那组真实对照的抽象版：同一根锤子线，扎在半山腰多半只是下跌中继，扎在"旧低点 ＋ 整数"的带上才值得多看一眼——<b>先问在什么位，再问什么形状</b>。右半是角色互换：地板被跌破后，套在地板上的人把每次反弹到"回本价"都当成逃生门，于是旧支撑精确地变成新阻力。86,022–87,688 那片带用九个月演完了这个剧本。</figcaption>
+  </figure>
+  <div class="keypoint">
+    <span class="label">本课最重要的一句话</span>
+    <p><strong>位置给含义，信号给时机：先问"我在什么位"，再问"什么形状、什么指标"。</strong></p>
+    <p>前七课的所有工具——三票制、RSI 时机、ATR 尺度、环境开关——回答的都是"什么时候"；本课回答"在哪里"。v0.5 之后，没有位置的信号在你的系统里不再是信号。</p>
+  </div>
+</section>
+
+<!-- ================= 8.2 ================= -->
+<section class="ch" id="s2">
+  <h2 class="sec"><span class="no">8.2</span>水平位怎么画：少即是多</h2>
+  <p class="sec-en">DRAWING HORIZONTAL LEVELS — LESS IS MORE</p>
+  <div class="cards">
+    <div class="card">
+      <h4>水平支撑阻力<span class="en-term">Horizontal S / R</span><span class="fit fit-all">股票通用</span></h4>
+      <p><strong>一句话</strong>：把历史上反复让行情转身的价区画成水平带，作为入场、止损、目标的坐标。</p>
+      <span class="k">本课规则：摆动点聚类成带 · 触碰 ≥2 · 现价上下各 2–3 条</span>
+    </div>
+  </div>
+  <div class="prose">
+    <p>新手画支撑阻力的通病是<strong>画太多</strong>：图上二十条线，每根 K 线附近都有"关键位"——等于没有位。治法是把画线变成规则，像第 4 课认摆动点一样可执行。本课的画法只有四步，前两步你已经会了：</p>
+    <ul>
+      <li><strong>第一步，取材料</strong>：用第 4 课图 4-2 的摆动点算法，在日线上找显著拐点——左右各 3 根 K 线的局部极值，和上一个拐点距离不足 3% 的毛刺直接忽略。<em>算法原样复用，一个参数都不改</em>；</li>
+      <li><strong>第二步，聚类成带</strong>：把价格上互相距离小于 1.5% 的拐点并成一条"带"——3 月的高点 74,047 和 4 月的低点 73,669 显然在说同一个位置，没必要画两条线；</li>
+      <li><strong>第三步，数触碰</strong>：一条带至少要被触碰 2 次才算数。只被碰过一次的那叫拐点，不叫位——市场还没对它表过第二次态；</li>
+      <li><strong>第四步，做减法</strong>：只保留现价上方和下方各 2–3 条。更远的位等行情走近了再说，<strong>一张干净的位图比一张全面的位图值钱得多</strong>。</li>
+    </ul>
+    <p>下面这台机器把四步全自动化了。拖一拖两个参数，重点体会"容差"这个滑块在说什么：</p>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 8-2</span>自动画位机：真实 BTC 日线，一年行情的位图<span class="real">真实数据</span><span class="ia">互动</span></p>
+    <div class="ctrls">
+      <label class="rg"><span class="rg-top">聚类容差<output>1.5%</output></span>
+        <input type="range" id="lv-tol" min="0.5" max="3" step="0.25" value="1.5"></label>
+      <label class="rg"><span class="rg-top">最少触碰次数<output>2</output></span>
+        <input type="range" id="lv-min" min="1" max="4" step="1" value="2"></label>
+    </div>
+    <div class="lw h360" id="lv-chart"></div>
+    <div class="lw-legend" id="lv-legend"></div>
+    <div class="stats">
+      <div class="stat"><span class="k">全图合格的带</span><span class="v" id="lv-bands">—</span><span class="s">59 个显著摆动点聚出来的</span></div>
+      <div class="stat"><span class="k">画到图上的</span><span class="v" id="lv-kept">—</span><span class="s">现价上下各 ≤3 条</span></div>
+      <div class="stat"><span class="k">最近的支撑带</span><span class="v up" id="lv-sup">—</span><span class="s" id="lv-sup-s">—</span></div>
+      <div class="stat"><span class="k">最近的阻力带</span><span class="v dn" id="lv-res">—</span><span class="s" id="lv-res-s">—</span></div>
+    </div>
+    <p class="lab-msg" id="lv-msg"></p>
+    <figcaption><b>读图：</b>币安 BTCUSDT 永续 2025-10 至 2026-09 的日线，标注和带全部由页面按上面四步现场计算。默认参数（容差 1.5%、触碰 ≥2）下全年共聚出 16 条合格带，现价 83,577 上下各保留 3 条：上方 83,786–84,409（×2）、86,022–87,688（×4）、90,593–90,599（×2）；下方 82,283–82,829（×3）、80,600–81,500（×2）、78,077–79,455（×4）。两个要点：① 把容差从 0.5% 拉到 3%，带的数量一路变少、变宽——<b>这不是丢失精度，是承认事实：位是带，不是线</b>；② 触碰次数是"市场尊重过它几次"的计数器，×5、×6 的厚带（73,669–74,909、61,806–62,980）比 ×2 的薄带可靠得多。注意现价正好压在 83,786–84,409 带的下沿下面——头顶 0.3% 就是阻力，这类信息一眼可读，这就是位图的用法。</figcaption>
+  </figure>
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p><strong>把位画成精确的一条线，然后用它"精确"地挂单。</strong>两个典型翻车：① 止损挂在支撑带<em>里面</em>（比如带是 78,077–79,455，止损挂 78,500）——带内本来就是多空来回拉锯的战区，你的止损等于站在枪林弹雨里；止损要挂在<strong>带的另一侧之外</strong>，8.6 节写进规则。② 限价单挂在带的最外沿等"最好的价格"——行情经常碰到带的内沿就转身，你眼睁睁看着它涨走。对带的正确态度：<strong>进场等在带的近端，止损放在带的远端之外</strong>。另一个变种错误是二十条线的蜘蛛网——回去把"最少触碰"调到 1 看看那是什么样子。</p>
+  </div>
+  <div class="prose">
+    <h3><span class="tag">② </span>信号规则 · 何时失灵 · 和谁搭配</h3>
+    <ul>
+      <li><strong>信号规则（本课用法）</strong>：顺日线方向，4 小时回调进入支撑带 → 等 1 小时触发信号（第 5 课）再进场；带被收盘跌破 → 角色互换，反弹回踩该带受阻是顺势做空的位置。<em>位本身永远不是进场理由，位 ＋ 信号才是</em>；</li>
+      <li><strong>何时失灵</strong>：极端行情里位如纸——10·10 那种瀑布一天击穿好几层带，任何位都接不住强平踩踏（第 1 课）；创历史新高后上方没有左侧记忆，水平位无从画起，只能靠整数关口和斐波那契外推（下两节）；横盘太久后带会"磨损"——同一条带被敲第五、第六次时，往往越敲越薄；</li>
+      <li><strong>和谁搭配</strong>：整数关口、斐波那契、成交量分布——本课后面三件工具全是它的证人；还有量能（第 9 课）：带的突破有没有量，是真假突破的分水岭，下一课装闸。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= 8.3 ================= -->
+<section class="ch" id="s3">
+  <h2 class="sec"><span class="no">8.3</span>整数关口：全市场共用的心理坐标</h2>
+  <p class="sec-en">ROUND NUMBERS</p>
+  <div class="cards">
+    <div class="card">
+      <h4>整数关口<span class="en-term">Round Number Levels</span><span class="fit fit-all">股票通用</span></h4>
+      <p><strong>一句话</strong>：10 万、8 万、6 万这类整数价位，因为人人都在用它们记价和挂单，自动成为无需历史图形的"位"。</p>
+      <span class="k">BTC 看每万元整数，ETH 看每千元整数</span>
+    </div>
+  </div>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>约人见面说"老地方"，不如说"地铁口"——<strong>整数位就是价格世界的地铁口</strong>：不需要商量，所有人自然想到同一个数。踏空的人把"跌回 10 万我就买"挂在嘴边和订单簿上，获利的人把"到 10 万我就卖一半"设成止盈。千万个这样的决定互不相识，却堆在同一个价位上——这就是心理位的全部秘密：<strong>它有效，是因为人人都觉得它有效</strong>。</p>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 8-3</span>三道整数关口的一年：10 万的针、6 万的拉锯、8 万的反复<span class="real">真实数据</span><span class="ia">互动</span></p>
+    <div class="lw h360" id="rd-chart"></div>
+    <div class="lw-legend" id="rd-legend"></div>
+    <div class="stats">
+      <div class="stat"><span class="k">10·10 暴跌针尖</span><span class="v">101,517</span><span class="s">恰停在 10 万上方 1.5%</span></div>
+      <div class="stat"><span class="k">60,000 拉锯</span><span class="v warn">连续 9 个交易日</span><span class="s">06-24 → 07-02 天天扫过它</span></div>
+      <div class="stat"><span class="k">80,000 全年战况</span><span class="v">18 个触碰日</span><span class="s">2026 年收盘上下穿越 14 次</span></div>
+    </div>
+    <figcaption><b>读图：</b>币安 BTCUSDT 永续 2025-09 至 2026-09 日线，三条水平线是 100,000、80,000、60,000。三个看点：① 2025-10-10 史上最大连环爆仓，全天最低 101,517——瀑布冲到 10 万门口 1.5% 处刹住，<b>挂在整数位上方的抄底买单接住了最后一跌</b>；② 2026 年 6 月底，行情围着 60,000 连续拉锯 9 个交易日，其中两天的收盘价几乎钉在整数上（60,000.3 和 59,999.6），期间针尖最深 57,759——刺穿 3.7% 又收回来，<b>整数位是带，两边各留 3–4% 的毛边</b>；③ 80,000 在 1 月、5 月、8–9 月三度成为战场，全年 18 个交易日的日线区间扫过它。顺带一个反例藏在 2 月：02-05 一根 −14% 的大阴线当天连穿 70,000 和 65,000 两道关口——<b>趋势急起来，整数如纸</b>。</figcaption>
+  </figure>
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>10 万保卫战与 6 万拉锯：心理位的两张面孔</h4>
+    <p><strong>面孔一（接住瀑布）</strong>：2025-10-10 的恐慌抛售里，BTC 从 122,497 瀑布到 101,517 停住——不是停在什么精妙的技术位，是停在"跌破 10 万"这个全市场都在盯的心理门槛前。想在 95,000 抄底的人很多等不到：太多买单提前挤在 10 万上方，把针尖垫住了。<strong>大众化的位，经常让你"差一点买不到"</strong>。</p>
+    <p><strong>面孔二（黏住行情）</strong>：2026 年 6 月底的 60,000 之战完全是另一种戏：九个交易日里价格反复上下穿越，06-27 收 60,000.3、07-01 收 59,999.6——两次收盘几乎精确钉在整数上，多空在这个数上互不让步，直到 07-02 才分出胜负向上走到 64,692。<strong>整数位未必让行情转身，但几乎总让行情变粘</strong>——短线单把止盈目标设在整数位"前面一点"（比如 60,500 而不是 60,000），成交概率高得多：排在地铁口里面的队伍，常常轮不到你。</p>
+    <p class="takeaway">整数关口减速、吸针、拉锯，但很少单独扭转趋势——把它当"带"和"减速带"用，别当墙用。</p>
+  </div>
+  <div class="evidence">
+    <span class="label">证据与怀疑</span>
+    <h4>支撑阻力有学术证据，但"位"天生带着后视镜</h4>
+    <p><strong>证据的一面</strong>：Carol Osler 在纽约联储发表的研究（"Support for Resistance: Technical Analysis and Intraday Exchange Rates"，Economic Policy Review，2000）检验了六家机构每天发布的外汇支撑阻力位，发现<strong>日内汇率在这些公布位附近停住反转的频率，显著高于随机基准</strong>——技术位不是玄学，是可检验的统计现象。她随后用真实客户订单数据做的系列研究进一步给出机制：<strong>限价止盈单密集堆在整数价位上，止损单则堆在整数位刚被突破的外侧</strong>——这正好同时解释了"整数位常让行情停住"和"刺穿整数位后常加速一小段"两个日常观察。</p>
+    <p><strong>怀疑的一面</strong>：① 位是<em>事后容易、事前难</em>——复盘时人人都能指出"你看这里正好是支撑"，但一年的图上有几十个拐点，总有几个"正好"；本课坚持规则化画线（算法、容差、触碰数全固定），就是为了不给自己挑顺眼证据的机会；② 画线自由度是确认偏误的温床：容差放宽一点、起点挪一天，几乎任何反弹都能找到一条"解释它"的线——所以 v0.5 只认<strong>事先画好</strong>的位，盘中临时发现的"位"一律无效；③ Osler 研究的是外汇，币圈无官方收盘价、7×24 连续交易，机构发布位的生态也不同——方向上可借鉴，数值上别照搬。</p>
+  </div>
+  <div class="prose">
+    <h3><span class="tag">② </span>信号规则 · 何时失灵 · 和谁搭配</h3>
+    <ul>
+      <li><strong>信号规则（本课用法）</strong>：目标位挂在整数关口<em>前面一点</em>（多单在整数下方几百刀止盈）；止损放在整数关口<em>另一侧再留毛边</em>（参考 60,000 之战的 3.7% 刺穿深度，光贴着整数挂会被针收走）；整数与水平带重合时（如 80,000 与 80,600–81,500 带），位的权重升级；</li>
+      <li><strong>何时失灵</strong>：单边急行情（02-05 一天连穿两道万元关口）；离现价太远的整数没有意义——市场只盯最近的那一两道；山寨币随意，BTC / ETH 这种全球盯盘的品种整数效应才强；</li>
+      <li><strong>和谁搭配</strong>：水平带（重合则加分）、斐波那契（下一节）、成交量分布（整数位附近若是 HVN，粘滞性加倍）。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= 8.4 ================= -->
+<section class="ch" id="s4">
+  <h2 class="sec"><span class="no">8.4</span>斐波那契回撤：回调深浅的坐标系</h2>
+  <p class="sec-en">FIBONACCI RETRACEMENT</p>
+  <div class="cards">
+    <div class="card">
+      <h4>斐波那契回撤<span class="en-term">Fibonacci Retracement</span><span class="fit fit-all">股票通用</span></h4>
+      <p><strong>一句话</strong>：把一段显著行情的起终点设为 0 和 100%，用几条固定比例线度量"回调回了几成"，给没有左侧记忆的位置提供参考刻度。</p>
+      <span class="k">常用刻度：23.6 / 38.2 / 50 / 61.8 / 78.6%</span>
+    </div>
+  </div>
+  <div class="prose">
+    <p><span class="nt" data-note="fib">斐波那契回撤</span>的画法只有一步：在上涨行情里，从<strong>显著摆动低点拉到显著摆动高点</strong>（下跌镜像反过来），软件自动画出几条水平刻度线。公式朴素到让人失望：</p>
+  </div>
+  <div class="formula">
+    <p class="fx">回撤位 ＝ 摆动高点 −（摆动高点 − 摆动低点）× 比例</p>
+    <p class="note">比例族 23.6 / 38.2 / 61.8% 来自斐波那契数列相邻项的比值（0.618 即黄金分割）；50% 根本不是斐波那契数，但用的人最多——这个细节本身就在提示你：<strong>刻度的"魔力"不在数学，在于大家都用同一把尺</strong>。</p>
+  </div>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>fib 是给回调<strong>量体温的刻度尺</strong>：回到 38.2% 算浅回调（强势休整），50% 是中等，61.8% 算深回调（强弱分界的最后体面）。尺子本身不治病、不预测——它的价值是<strong>全世界的交易员用的是同一把尺</strong>，于是"61.8% 附近等买盘"成了千万人共享的脚本。这正是<span class="nt" data-note="selffulfill">自我实现预言</span>：刻度线上没有任何物理力量，站着的人多了，它就成了位。</p>
+  </div>
+  <div class="prose">
+    <p>先用真实行情感受这把尺最大的毛病——<strong>尺子本身是客观的，拿尺子的手是主观的</strong>：</p>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 8-4</span>fib 实验台：同一次回调，三种画法三个答案<span class="real">真实数据</span><span class="ia">互动</span></p>
+    <div class="ctrls">
+      <div>
+        <span class="seg-label">起终点选择</span>
+        <span class="seg" id="fb-seg" role="group">
+          <button type="button" data-val="a" aria-pressed="true">复盘腿 8-14 → 9-21</button>
+          <button type="button" data-val="b">实时腿 8-14 → 9-03</button>
+          <button type="button" data-val="c">远景腿 7-01 → 9-21</button>
+        </span>
+      </div>
+    </div>
+    <div class="lw h360" id="fb-chart"></div>
+    <div class="lw-legend" id="fb-legend"></div>
+    <div class="stats">
+      <div class="stat"><span class="k">所选波段</span><span class="v" id="fb-leg">—</span><span class="s" id="fb-leg-s">—</span></div>
+      <div class="stat"><span class="k">38.2% 位</span><span class="v" id="fb-382">—</span><span class="s">浅回调刻度</span></div>
+      <div class="stat"><span class="k">61.8% 位</span><span class="v" id="fb-618">—</span><span class="s">深回调刻度</span></div>
+      <div class="stat"><span class="k">9-15 低点 74,909 的读数</span><span class="v warn" id="fb-depth">—</span><span class="s" id="fb-depth-s">—</span></div>
+    </div>
+    <p class="lab-msg" id="fb-msg"></p>
+    <figcaption><b>读图：</b>币安 BTCUSDT 永续 2026 年 6 月下旬以来的日线，刻度线随起终点选择实时重画。同一个 9-15 回调低点 74,909，三种画法读出三个深度：50.1%、37.2%、42.1%——<b>起终点选择的主观性，是 fib 最大的坑</b>。尤其注意"复盘腿"与"实时腿"的区别：9-21 的高点在回调发生时还不存在，拿它画出的"50% 完美企稳"是后视镜里的漂亮话；回调当天你能画的最高点只有 9-03 的 82,283，读数是贴着 38.2% 的 37.2%。<b>fib 的起终点不只主观，还会随行情生长</b>——对自己诚实的画法是：只用当下已确认的显著摆动点（第 4 课的算法），并且写进日志"我用的是哪两个点"。</figcaption>
+  </figure>
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>一成一败：61.8% 接到 70 刀以内，也能被整段跌穿</h4>
+    <p><strong>成功的一面（2025 年 12 月）</strong>：BTC 从 12-01 低点 83,786 两天冲到 12-03 高点 94,185，随后回调。这段腿的 61.8% 位在 87,758，12-07 的实际低点 87,688——<strong>差 70 刀，0.08%</strong>，当天收出下影线，两天后反弹到 94,555（＋7.8%）。注意诚实的后半句：12-18 的第二波回调又下探 84,409，把 61.8% 乃至 78.6% 全数击穿——fib 层接住了第一波抛压，没能当永久地板，行情真正站上新台阶（01-14 的 97,932）要到一个多月后。<strong>fib 位是减速带和反应位，不是保证书</strong>。</p>
+    <p><strong>失败的一面（2026 年 6 月）</strong>：2 月低点 59,800 到 5 月高点 82,829 这段大腿，38.2% 位 74,032——05-23 低点 74,204 确实在这里撑过一回，反弹到 78,077。但 6 月瀑布来袭：50%（71,315）、61.8%（68,597）、78.6%（64,728）如入无人之境，07-01 最低 57,759，<strong>连 100% 都没守住</strong>——整段涨幅全数回吐再有余。每一条刻度线上，都站过一批"61.8 必反弹"的抄底者。</p>
+    <p class="takeaway">fib 层会不会接住，取决于那里有没有别的证据——它自己只是一条比例线。</p>
+  </div>
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p><strong>单独的 fib 不交易。</strong>给你一个本课自算的底：2024 年以来 BTC 日线上幅度 ≥12% 的上涨腿共引出 36 次回调，落在 38.2 / 50 / 61.8 三档 ±4 个百分点内的合计 12 次（三分之一），<strong>直接跌穿 100% 的有 8 次</strong>（超过五分之一），还有 2 次浅到连 23.6% 都不碰。换句话说：fib 刻度单独命中率平平，瀑布面前更是整段失效。它在 v0.5 里的角色是<strong>证人之一</strong>：回调落在 38.2–61.8% 区间，<em>并且</em>那里恰好有水平带、整数位或 HVN——多个独立证据指向同一价区，这叫<span class="nt" data-note="confluence">共振</span>，共振才把一条刻度线升级成"位"。另一个常见病是<strong>事后换尺</strong>：回调破了 38.2 就改口"看 50"，破了 50 再改口"看 61.8"——那不是分析，是一路下跌一路挪动的安慰剂。</p>
+  </div>
+  <div class="prose">
+    <h3><span class="tag">② </span>信号规则 · 何时失灵 · 和谁搭配</h3>
+    <ul>
+      <li><strong>信号规则（本课用法）</strong>：只在顺势回调里用；起终点取<em>已确认的</em>显著摆动低点和高点；38.2–61.8% 是"可接受的回调深度区"，与其他位共振处等 1 小时触发。回撤超过 78.6%，这段腿大概率已经作废，别再把它当回调；</li>
+      <li><strong>何时失灵</strong>：单边不回调的行情（浅过 23.6% 直接新高，你永远等不到）；瀑布与踩踏（6 月那种整段跌穿）；横盘震荡里腿太短，刻度之间只差几百刀，毫无分辨率；</li>
+      <li><strong>和谁搭配</strong>：水平带与整数位（共振判定的另两位证人）；第 5 课的 RSI 时机信号——"回调到 38.2–61.8 的共振区 ＋ 4 小时 RSI 回到 40–50 区"是 v0.5 入场检查单的核心两行。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= 8.5 ================= -->
+<section class="ch" id="s5">
+  <h2 class="sec"><span class="no">8.5</span>成交量分布：价格地图的地形图层</h2>
+  <p class="sec-en">VOLUME PROFILE</p>
+  <div class="cards">
+    <div class="card">
+      <h4>成交量分布<span class="en-term">Volume Profile</span><span class="fit fit-adj">换着用</span></h4>
+      <p><strong>一句话</strong>：把成交量从"按时间统计"换成"按价位统计"，直接画出每个价区历史上换过多少手——8.1 节说的"成交记忆"，这里给出数字。</p>
+      <span class="k">三个地标：HVN（高量区）· LVN（低量区）· POC（最大量价位）</span>
+    </div>
+  </div>
+  <div class="prose">
+    <p>K 线底部的成交量柱回答"<em>哪天</em>换手多"，成交量分布回答"<em>哪个价</em>换手多"——对找位的人，后者才是正确的问法。三个地标各有脾气：</p>
+    <ul>
+      <li><strong><span class="nt" data-note="hvnlvn">HVN</span>（高量区）</strong>：大量筹码在此换手，持仓者密集——价格走到这里容易变粘、来回磨（人人都有旧账要算），也像磁铁一样把附近的价格吸过来；</li>
+      <li><strong>LVN（低量区）</strong>：几乎没人在此成交过的"真空带"——没有记忆就没有阻力，价格穿越 LVN 往往又快又干脆，<em>很少在真空里停留</em>；</li>
+      <li><strong><span class="nt" data-note="poc">POC</span>（最大量价位）</strong>：统计期内换手最多的那个价位桶，全场"吵得最凶的价格"，常被当作这段时期的公允价值中枢。</li>
+    </ul>
+  </div>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>把价格轴想成一条高速公路：<strong>HVN 是服务区</strong>——车流密集、人人都可能停下来办点事（解套、加仓、了结），通过速度自然慢；<strong>LVN 是无人区隧道</strong>——没有出口、没有理由停留，一脚油门就穿过去了；<strong>POC 是全线最大的服务区</strong>，导航默认把你往那儿引。看懂地形，你就能回答两个实战问题：目标位设在哪（真空带另一头的服务区门口），以及走到哪要系好安全带（接近厚 HVN 时行情会变慢变磨）。</p>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 8-5</span>价位成交量直方：近半年的 BTC，钱都在哪些价位换过手<span class="real">真实数据</span><span class="ia">互动</span></p>
+    <div class="ctrls">
+      <label class="rg"><span class="rg-top">桶宽（U / 桶）<output>1,000</output></span>
+        <input type="range" id="vp-w" min="500" max="2500" step="500" value="1000"></label>
+    </div>
+    <div class="bars" id="vp-bars"></div>
+    <div class="stats">
+      <div class="stat"><span class="k">POC</span><span class="v" id="vp-poc">—</span><span class="s" id="vp-poc-s">—</span></div>
+      <div class="stat"><span class="k">现价所在桶</span><span class="v" id="vp-cur">—</span><span class="s" id="vp-cur-s">—</span></div>
+      <div class="stat"><span class="k">最薄的桶（真空带）</span><span class="v warn" id="vp-lvn">—</span><span class="s" id="vp-lvn-s">—</span></div>
+    </div>
+    <p class="lab-msg" id="vp-msg"></p>
+    <figcaption><b>读图：</b>币安 BTCUSDT 永续 2026-04 至 09 共 4,392 根 1 小时线，按"每根 K 线的典型价（高低收均值）落进哪个价格桶"聚合成交额画成横条，从高价排到低价。默认桶宽 1,000 U 时：POC 在 77,000–78,000（约 1,902 亿 USDT 换手）；两大 HVN 群清晰可见——76,000–79,000（约 4,459 亿）与 62,000–65,000（约 4,543 亿），正是 4–5 月和 6–8 月两轮长横盘磨出来的"服务区"；而 82,000–83,000 只有 62 亿，<b>不到 POC 的三十分之一，是全图最深的真空带</b>。它不是摆设：09-21 一根大阳线从 81,144 直拉 87,385，一天掠过这段真空；09-24 回调的针尖扎到 82,832，刚探进真空带边缘当天就弹回 84,370、不作停留——<b>LVN＝走得快不停留，HVN＝走得慢来回磨</b>，地形真的管用。拖动桶宽体会参数的代价：切太细（500）轮廓被噪音淹没，切太粗（2,000 以上）真空带被邻居的量摊平——和画位一样，这里也是少即是多。</figcaption>
+  </figure>
+  <div class="stock">
+    <span class="label">股票上怎么对照</span>
+    <h4>A 股的"筹码分布"是同一个思想的本土版本</h4>
+    <ul>
+      <li><b>思想同源</b>：A 股行情软件的国民功能<span class="nt" data-note="chips">筹码分布</span>（那把彩色的横向"梳子"）和 Volume Profile 一样，都是把参与度按价位聚合——高筹码峰 ＝ 粘滞区 ＝ 支撑阻力候选，低谷 ＝ 真空带，读法完全可以互通；</li>
+      <li><b>口径不同</b>：筹码分布按换手率衰减<em>估算</em>"当前持股者"的建仓成本（老成交会被新换手冲淡），VP 则是统计期内<em>真实成交额</em>的原样累计，不做持有者推断——前者模拟"还在场的人"，后者记录"发生过的事"，数字对不上是正常的；</li>
+      <li><b>用法差异</b>：A 股 T+1、有涨跌停，筹码峰上的解套抛压兑现得更慢更钝；币圈 7×24 加杠杆，HVN 与 LVN 的快慢对比反而更鲜明（有真空带里的强平连环加速，见第 1 课）；</li>
+      <li><b>水平位、整数位、fib 全部股票通用</b>——本课四件工具里只有成交量分布要"换着用"：换成你软件里的筹码分布即可，思想不变。</li>
+    </ul>
+  </div>
+  <div class="prose">
+    <h3><span class="tag">② </span>信号规则 · 何时失灵 · 和谁搭配</h3>
+    <ul>
+      <li><strong>信号规则（本课用法）</strong>：回调落在厚 HVN 的边缘 ＝ "到位"证据之一；目标位设在"穿过真空带之后的下一个 HVN 门口"——真空带里不设目标（价格不停留，成交概率差）；现价脚下如果是 LVN，意识到<em>下方没有垫子</em>，止损要放得比平时更远或仓位更小；</li>
+      <li><strong>何时失灵</strong>：创新高的价格发现区——上方没有任何分布，地形图一片空白；放量突破会当场改写地形（真空带被新成交填成 HVN），上个月的地图解释不了这个月的新战场；统计窗口是个自由参数——取 4–9 月和取全年，POC 不在一个地方，<em>换窗口前先想清楚你要回答哪段时期的问题</em>；</li>
+      <li><strong>和谁搭配</strong>：水平带与 fib（HVN 边缘 ＋ 回撤刻度 ＋ 旧摆动点三证齐全是最强的"到位"）；量能与 OBV（第 9 课）：地形是存量，量能是流量，一静一动。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= 8.6 ================= -->
+<section class="ch" id="s6">
+  <h2 class="sec"><span class="no">8.6</span>落地：系统 v0.5——位置 ＋ 信号</h2>
+  <p class="sec-en">SYSTEM v0.5 — LOCATION PLUS TRIGGER</p>
+  <div class="prose">
+    <p>把四件工具拧进系统。v0.4 的入场逻辑是"方向对、环境对、时机信号触发就进"；v0.5 在中间插入一道硬门槛：<strong>回调必须"到位"——落在至少两类独立证据共振的价区，否则信号再漂亮也不进</strong>。三类证据就是本课的三张地图：</p>
+  </div>
+  <figure>
+    <p class="fig-title"><span class="fno">图 8-6</span>v0.5 的一笔顺势单：五道关卡<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+      <svg viewBox="0 0 720 250" role="img" aria-label="系统 v0.5 从方向、环境、位置、触发到止损目标的流程">
+        <defs>
+          <marker id="f86-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="ar-fill"/></marker>
+        </defs>
+        <rect x="12" y="30" width="122" height="58" rx="8" class="node"/>
+        <text x="73" y="54" text-anchor="middle" class="nt">日线定方向</text>
+        <text x="73" y="72" text-anchor="middle" class="nd">三票制（第 4 课）</text>
+        <path d="M134 59 L158 59" class="edge" marker-end="url(#f86-ar)"/>
+        <rect x="158" y="30" width="122" height="58" rx="8" class="node"/>
+        <text x="219" y="54" text-anchor="middle" class="nt">环境开关</text>
+        <text x="219" y="72" text-anchor="middle" class="nd">趋势市走模板 A（第 7 课）</text>
+        <path d="M280 59 L304 59" class="edge" marker-end="url(#f86-ar)"/>
+        <rect x="304" y="22" width="150" height="74" rx="8" class="node-hi"/>
+        <text x="379" y="46" text-anchor="middle" class="nt">4h 回调"到位"</text>
+        <text x="379" y="64" text-anchor="middle" class="nd">≥2 类证据共振</text>
+        <text x="379" y="82" text-anchor="middle" class="hi">本课新增</text>
+        <path d="M454 59 L478 59" class="edge" marker-end="url(#f86-ar)"/>
+        <rect x="478" y="30" width="110" height="58" rx="8" class="node"/>
+        <text x="533" y="54" text-anchor="middle" class="nt">1h 扣扳机</text>
+        <text x="533" y="72" text-anchor="middle" class="nd">第 5 课的触发</text>
+        <path d="M588 59 L612 59" class="edge" marker-end="url(#f86-ar)"/>
+        <rect x="612" y="22" width="96" height="74" rx="8" class="node-up"/>
+        <text x="660" y="46" text-anchor="middle" class="nt">进场</text>
+        <text x="660" y="64" text-anchor="middle" class="nd">止损：带外侧</text>
+        <text x="660" y="82" text-anchor="middle" class="nd">目标：下一个位</text>
+        <path d="M379 96 L379 130" class="edge-acc" marker-end="url(#f86-ar)"/>
+        <rect x="124" y="130" width="160" height="54" rx="8" class="node"/>
+        <text x="204" y="152" text-anchor="middle" class="nt">① 日线水平位带</text>
+        <text x="204" y="170" text-anchor="middle" class="nd">8.2 的画法 · 触碰 ≥2</text>
+        <rect x="294" y="130" width="170" height="54" rx="8" class="node"/>
+        <text x="379" y="152" text-anchor="middle" class="nt">② fib 38.2–61.8% 区</text>
+        <text x="379" y="170" text-anchor="middle" class="nd">用已确认的摆动点画</text>
+        <rect x="474" y="130" width="170" height="54" rx="8" class="node"/>
+        <text x="559" y="152" text-anchor="middle" class="nt">③ HVN 边缘 / 整数关口</text>
+        <text x="559" y="170" text-anchor="middle" class="nd">8.3 与 8.5 的地形</text>
+        <text x="379" y="216" text-anchor="middle" class="elabel">三类证据任取其二共振，才叫"到位"——位不到，信号再漂亮也不进</text>
+      </svg>
+    </div>
+    <figcaption><b>读图：</b>v0.5 的流水线。前两关（方向、环境）和最后一关（触发）都是旧零件，本课插进去的是中间的位置关：回调落点必须同时被至少两类独立证据指认——水平带、fib 刻度区、HVN 或整数。<b>位置回答"在哪"，信号回答"何时"，两者都到才扣扳机</b>；止损和目标也从此有了坐标：止损挂位带另一侧，目标看下一个位。</figcaption>
+  </figure>
+  <div class="prose">
+    <h3>拿 9 月的真实行情走一遍</h3>
+    <p><strong>"到位"长什么样</strong>：09-15 的回调低点 74,909。对照当天<em>已有</em>的信息：① 它落在 73,669–74,909 水平带里——这条带之前已被 03-04、04-20、04-29、05-23 四次触碰（×4）；② 当时能画的实时腿（8-14 低点 62,484 → 9-03 高点 82,283）的 38.2% 位在 74,720，距离 189 刀；③ 75,000 整数关口近在 91 刀。<strong>三类证据全部指向同一个价区</strong>——这就是教科书级的"到位"，比"RSI 到了 45 所以我买"硬得多。</p>
+    <p><strong>几何账也要算</strong>：假设 1 小时触发来得晚，你在 76,500 才能进场（示意数字）。止损按规则挂位带另一侧之外 ≈ 73,600，R ＝ 2,900；可头顶 78,077–79,455 带的下沿只有 1,577 刀的赚头 ≈ 0.5R——<strong>位置完美、赚头不够，这笔不做</strong>（第 3 课的期望值关）。换个剧本：触发来得早，75,200 进场，止损同样 73,600，R ＝ 1,600（2.1%），目标 78,077 有 1.8R，仓位 ＝ 100 U ÷ 2.1% ≈ 4,700 U 名义——这笔可以做。事后看：09-18 一根大阳线最高 81,386，<strong>目标 78,077 先于 2R（78,400）到达</strong>，按规则在位前离场、日志记下"位先到"。同一个位、同一个信号，<strong>触发价离位带近还是远，是两笔完全不同的单</strong>——这就是"到位"两个字的全部含金量。</p>
+    <p><strong>再看今天（09-30 收盘 83,577）的位图</strong>：头顶 0.3% 就是 83,786–84,409 阻力带，脚下 82,283–82,829 虽有一条 ×3 的带，但 8.5 节的地形图说那里是全图最深的真空带（62 亿）——两套证据打架，支撑的可信度就要降级。上有近墙、下无厚垫，位置"不上不下"——<strong>v0.5 对这种图的输出和三票制一样干脆：没有入场理由，等</strong>。</p>
+  </div>
+  <div class="rulecard">
+    <div class="rc-head"><span class="label">规则卡</span><span class="rc-name">短波段系统 v0.5（在 v0.4 之上修改三项）</span></div>
+    <dl>
+      <dt>标的与周期</dt><dd>BTC / ETH 的 U 本位永续，模拟盘；日线定方向、4 小时找位置、1 小时扣扳机（第 2 课分工不变）</dd>
+      <dt>过滤条件</dt><dd>全部继承：事件回避（第 3 课）· 方向三票制（第 4 课）· 高波动熔断：日线 ATR% 超近一年 90 分位时风险减半（第 6 课）· 环境开关：趋势市走模板 A，震荡市按第 7 课的打法或观望</dd>
+      <dt>入场</dt><dd><b>【本课修改】模板 A 升级为"位置 ＋ 信号"双门槛</b>：4 小时回调必须"到位"——落点处于至少两类证据的共振区（① 日线水平位带，按 8.2 画法事先画好；② fib 38.2–61.8% 区，起终点用已确认摆动点；③ HVN 边缘或整数关口）；到位后仍须等 1 小时触发信号（第 5 课）才进场。<b>位不到不进，盘中临时"发现"的位不算</b></dd>
+      <dt>止损</dt><dd><b>【本课修改】挂在所依托位带的另一侧之外</b>，与入场价 ∓1.5×ATR(4h) 两者取更远者（跨周末 / 事件日 2×ATR，继承第 6 课）；止损市价单、标记价格触发（第 1 课规矩不变）</dd>
+      <dt>出场</dt><dd><b>【本课修改】目标 ＝ 下一个位带（位图上现价与方向之间最近的一条）与 2R 取其近者</b>，先到哪个按哪个离场，日志如实记录哪个先到；真空带里不设目标；事前算一眼盈亏比——目标距离不足 1.5 倍止损距离的，这笔放弃（第 3 课期望值关）</dd>
+      <dt>仓位</dt><dd>名义价值 ＝ 单笔风险额 ÷ 实际止损距离%；单笔风险 ≤1%（高波动期 0.5%）；逐仓 ≤5 倍；同时 ≤2 个仓位（不变）</dd>
+    </dl>
+    <p class="rc-note">对照 v0.4 的变化一句话：原来"信号触发就进、目标一律 2R"，现在<strong>入场多问一句"我在什么位"，目标多看一眼"前面哪里有墙"</strong>。单子会更少、更挑——这是功能：v0.5 拒掉的大多是"信号漂亮、位置半山腰"的那类单，它们正是你过去两周日志里亏得最冤的那几笔。</p>
+  </div>
+  <div class="sysup">
+    <span class="label">系统升级</span>
+    <h4>你的交易系统：v0.4 → v0.5</h4>
+    <p>本课装进系统的零件：规则化画位（摆动点聚类成带 · 触碰 ≥2 · 现价上下各 2–3 条，少即是多）· 整数关口当带用 · fib 回撤坐标系（38.2–61.8 为可接受回调区，单独不交易）· Volume Profile 地形（HVN 粘滞 / LVN 真空 / POC 中枢）· 入场"位置 ＋ 信号"双门槛 · 目标升级为"下一个位与 2R 取其近"。至此，方向（v0.1）、时机（v0.2）、尺度（v0.3）、环境（v0.4）、位置（v0.5）五块拼图就位。但还缺一个裁判：位带的突破，怎么分真假？答案在参与的人数里——<strong>下一课量能三件套（成交量、VWAP、OBV），给突破装上测谎仪，系统升 v0.6</strong>。</p>
+  </div>
+  <div class="task">
+    <span class="label">本周模拟任务</span>
+    <h4>给你的图装上"位"这一层（继续模拟盘）</h4>
+    <ol>
+      <li><b>画两张位图</b>：按 8.2 的四步规则，给 BTC、ETH 各画一张"只有 5 条线左右"的日线位图（现价上下各 2–3 条带，标注每条的触碰次数），截图或抄录存进交易日志首页；每周日收盘后更新一次——位图是活的；</li>
+      <li><b>日志加一栏</b>：本周起每笔单必须写明"<b>我在什么位、它凭什么是位</b>"（触碰几次、哪几类证据共振）；写不出这一栏的单不许下——这是 v0.5 的物理形态；</li>
+      <li><b>验证地形</b>：记下本周的 POC 和最近的真空带（用图 8-5 的方法），观察两件事：价格接近厚 HVN 时是不是变慢变磨、穿越 LVN 时是不是又快又干脆？各记一条实例进日志；</li>
+      <li><b>复盘练习</b>：翻出你前两周的全部单子，对照各自入场点标注"在位 / 半山腰"——数一数两组的胜率差。这个数字会替本课说话；</li>
+      <li>若本周三票不齐或回调始终不到位：一笔不下，日志写"本周等待，位图已更新"——flat 的一周照旧是合格的一周。</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ================= 小结 ================= -->
+<section class="ch recap" id="recap">
+  <h2 class="sec"><span class="no">★</span>本课小结</h2>
+  <p class="sec-en">RECAP</p>
+  <div class="prose">
+    <ol>
+      <li><b>位置给含义，信号给时机</b>：同一根锤子，半山腰是中继、支撑带上才值得看——第 2 课那半句话补齐了。</li>
+      <li><b>位的背后是人</b>：成交记忆、挂单簇、心理整数三种成因；跌破的支撑变阻力，是被套者在"回本价"排队卖——86,022–87,688 用九个月演了全程。</li>
+      <li><b>画位要规则化</b>：显著摆动点 → 1.5% 聚类成带 → 触碰 ≥2 → 现价上下各留 2–3 条。位是带不是线，触碰次数是它的信用分。</li>
+      <li><b>整数关口真实存在</b>：10·10 针尖停在 101,517、60,000 连续九天拉锯——但它减速多、反转少，且急行情里如纸（02-05 一天连穿两道）。</li>
+      <li><b>fib 是刻度尺不是魔法</b>：38.2 / 50 / 61.8 统一了全市场的回调语言；最大的坑在起终点——主观、而且会随行情生长，复盘腿和实时腿读数能差十几个百分点。</li>
+      <li><b>单独的 fib 不交易</b>：36 次回调只有三分之一落在三档刻度附近、超过五分之一直接跌穿 100%；与水平带 / 整数 / HVN 共振才升级为位。</li>
+      <li><b>成交量分布是地形图</b>：HVN 服务区走得慢、LVN 真空带走得快、POC 是中枢；目标设在真空带另一头的 HVN 门口，不设在真空里。</li>
+      <li><b>v0.5 双门槛</b>：到位（≥2 类证据共振）＋ 触发才进场；止损挂位带另一侧与 1.5×ATR 取更远；目标是下一个位与 2R 取其近——并事前核一眼盈亏比，不足 1.5R 的单不做。</li>
+    </ol>
+  </div>
+
+  <h3>术语一览（点击正文中的角标词可随时弹出）</h3>
+  <ol class="notes-list" id="notes-list"></ol>
+
+  <h3>自测</h3>
+  <details><summary>1. 图 8-2 里把聚类容差从 0.5% 拉到 3%，带的数量一路变少。这是在丢失信息吗？对挂单有什么直接含义？</summary>
+    <div class="ans"><p>不是丢失，是合并同类项：74,047、73,669、74,868、74,204 这些拐点本来就在说同一个位置，画成四条线才是信息失真。位是带的直接含义有两条：① 止损不能挂在带内（那是交战区），要挂在带的另一侧之外、再按第 6 课加 ATR 缓冲；② 进场别贪带的最远端——行情经常碰到近端就转身。60,000 之战是活例：针尖刺穿整数位 3.7% 又收回，贴着"精确位"挂的单全部被收走。</p></div>
+  </details>
+  <details><summary>2. 为什么支撑跌破会变成阻力？用"人"的语言解释，并举本课的真实例子。</summary>
+    <div class="ans"><p>在支撑位买入的人跌破后被套，心理锚定在"回本"——价格反弹到旧支撑时，这批人如释重负地卖出，旧地板上方于是堆满解套卖压，地板变天花板；反方向同理（突破追入者回踩护盘）。真实例：86,022–87,688 在 2025-12 至 2026-01 三次当地板（87,688 / 86,355 / 86,022），2 月被击穿，九个月后 09-21 反攻到 87,385 正好在带内被挡回，三天跌回 82,832。角色互换的可靠度跟原来那个位的"人气"成正比——触碰越多、换手越大（HVN），互换后越结实。</p></div>
+  </details>
+  <details><summary>3. 9-15 回调低点 74,909，在图 8-4 的三种画法下分别读作 50.1%、37.2%、42.1%。哪个读数"对"？这件事对你用 fib 的方式有什么约束？</summary>
+    <div class="ans"><p>都"对"，也都不对——fib 读数是起终点选择的函数，不存在唯一正确答案，这正是它最大的坑。约束有三条：① 只用已确认的显著摆动点画（第 4 课算法，左右各 3 根 ＋ 3% 过滤），不许拿盘中临时高低点；② 分清复盘腿和实时腿——9-21 的高点在回调发生时还不存在，用它算出的"50% 完美企稳"是后视镜；当时能画的腿给出的是 37.2%、贴着 38.2 刻度；③ 日志写明"我用的是哪两个点"，破了刻度不许换尺。最重要的总约束：单独的 fib 不交易，它只是共振判定里的一票。</p></div>
+  </details>
+  <details><summary>4. 看图 8-5 的地形：现价 83,577，脚下 82,000–83,000 只有 62 亿换手，而 76,000–79,000 堆着约 4,459 亿。如果你此刻持有多单，这张图在提醒什么？</summary>
+    <div class="ans"><p>提醒三件事：① 脚下是全图最深的真空带——一旦跌破 82,800 一带，下方没有成交记忆当垫子，价格大概率快速滑到下一个 HVN（81,000 附近乃至 78,000–79,000 的厚区）门口才减速——9-21 向上一天掠过这段真空、9-24 针尖探进去当天就弹回，都是"真空里不停留"的预演；② 所以止损不该贴在 83,000 上下的"薄冰"里，要么放到真空带另一侧的厚区之外，要么按仓位公式把仓位缩小；③ 上方 0.3% 就是 83,786–84,409 阻力带——赚头近、风险滑溜，这个位置的多单持有价值很低，v0.5 的输出是等。另注意 82,283–82,829 虽是 ×3 的水平带，但与真空带证据打架，可信度降级——证据不一致时保守处理。</p></div>
+  </details>
+  <details><summary>5. 按 v0.5 走一笔账（示意数字）：日线三票多、环境趋势市，4 小时回调到 78,077–79,455 带，带内还有 38.2% 刻度和 80,000 整数在上沿附近。1 小时触发出现在 79,300，4h ATR ＝ 900。入场、止损、目标、仓位各是多少？哪种情况下这笔要放弃？</summary>
+    <div class="ans"><p>到位判定：水平带 ＋ fib 刻度（＋整数邻近），≥2 类证据共振，可以进。入场 79,300。止损取更远者：带另一侧之外 ≈ 78,000 下方（如 77,900）vs 入场 − 1.5×ATR ＝ 79,300 − 1,350 ＝ 77,950——取 77,900，R ＝ 1,400（约 1.77%）。仓位 ＝ 100 U ÷ 1.77% ≈ 5,600 U 名义。目标：2R ＝ 82,100 vs 下一个位带 80,600–81,500 的下沿 80,600——取近者 80,600，但先核盈亏比：1,300 ÷ 1,400 ≈ 0.93R ＜ 1.5R，<b>这笔要放弃</b>。要么等回调更深、触发更贴近带（比如 78,600 进场，R 变小、目标比率过 1.5R），要么等行情突破 80,600–81,500 之后再找下一个结构。位置好不等于值得做——期望值关永远在最后把门。</p></div>
+  </details>
+  <details><summary>6. 10·10 瀑布的针尖停在 101,517 而不是 99,000，Osler 的研究怎么解释？这个解释的边界在哪里？</summary>
+    <div class="ans"><p>解释：限价买单（抄底、止盈空单）密集堆在 100,000 这个心理关口上方——瀑布砸下来时，这堵真实的订单墙把针尖垫在了 101,517；Osler 用外汇订单数据证实过这种聚集：止盈限价单堆在整数位上，止损单堆在整数位外侧。边界有三条：① 订单墙挡得住尾声的恐慌，挡不住趋势——如果宏观利空持续，10 万迟早被耗穿（挂单会撤、会被吃光）；② 她的样本是外汇，币圈只是机制相似，数值不可照搬；③ 别忘了幸存者偏差——我们记住了 10 万接住的这次，容易忘记 02-05 那天 70,000 和 65,000 一天连穿两道：心理位是减速带，不是安全气囊。</p></div>
+  </details>
+
+  <nav class="pager" aria-label="课程导航">
+    <a class="pg" href="ct-l07.html"><span class="pg-dir">上一课</span><span class="pg-ttl">第 7 课 · 趋势市还是震荡市</span></a>
+    <a class="pg pg-toc" href="ct-index.html"><span class="pg-dir">返回</span><span class="pg-ttl">学习地图</span></a>
+    <a class="pg pg-next" href="ct-l09.html"><span class="pg-dir">下一课</span><span class="pg-ttl">第 9 课 · 有多少人在参与</span></a>
+  </nav>
+
+  <p class="foot">数据：币安公开历史数据（data.binance.vision），BTCUSDT 永续，已本地化；文中所有价位、触碰次数、回撤深度与成交额分布均由本地真实数据计算（日线为 UTC 交易日口径，成交量分布为 2026-04 至 09 的 1 小时线实算）。图表组件：TradingView Lightweight Charts™（Apache-2.0）。本讲义仅为学习笔记，不构成投资建议；合约交易风险极高。</p>
+</section>
+
+</main>
+</div>
+
+<!-- ================= 术语弹注内容 ================= -->
+<div class="notes-src" hidden>
+  <section data-note-id="sr" data-title="支撑位与阻力位" data-en="Support / Resistance">
+    <p>下方买盘密集、历史上多次让下跌止住的价区叫支撑位；上方卖压密集、多次让上涨折返的叫阻力位。本质是订单和记忆在特定价区的聚集，所以它们天生是"带"而不是"线"。本课的画法：显著摆动点按 1.5% 容差聚类成带，触碰 ≥2 次才算数。</p>
+  </section>
+  <section data-note-id="flip" data-title="角色互换" data-en="Role Reversal">
+    <p>支撑跌破后变阻力、阻力突破后变支撑的现象。动力来自被套者的解套卖压（跌破支撑后，反弹到"回本价"就有人排队卖）和突破追入者的回踩护盘。位原来的人气越旺（触碰越多、换手越大），互换后的新角色越结实。</p>
+  </section>
+  <section data-note-id="round" data-title="整数关口" data-en="Round Number Level">
+    <p>10 万、8 万、4,000 这类整数价位。人类记价、报价、挂单天然偏爱整数，于是止盈、抄底、止损订单在整数附近聚集，形成不需要任何历史图形的"心理位"。特征：减速、吸针、拉锯多，单独反转少；两侧常有 3–4% 的刺穿毛边。</p>
+  </section>
+  <section data-note-id="fib" data-title="斐波那契回撤" data-en="Fibonacci Retracement">
+    <p>把一段显著行情的终点到起点设为 0–100%，按 23.6 / 38.2 / 50 / 61.8 / 78.6% 画水平刻度线，用来度量回调深浅。38.2% 以内算浅回调、61.8% 算深回调的末班车；50% 并非斐波那契数但使用者最多。刻度的效力主要来自"全市场用同一把尺"的自我实现。</p>
+  </section>
+  <section data-note-id="selffulfill" data-title="自我实现预言" data-en="Self-Fulfilling Prophecy">
+    <p>当足够多的参与者相信同一规则并据此行动时，规则本身就会影响价格——"61.8% 会有买盘"的信念让买单真的聚集在 61.8%。技术位的有效性部分来自于此；代价是拥挤的位也容易被反向收割（假突破扫止损），信的人越多，猎人越爱来。</p>
+  </section>
+  <section data-note-id="hvnlvn" data-title="HVN 与 LVN" data-en="High / Low Volume Node">
+    <p>成交量分布图上的高量区与低量区。HVN（High Volume Node）＝历史上大量换手的价区，持仓者密集，价格靠近时粘滞、像磁铁；LVN（Low Volume Node）＝几乎没人成交过的真空带，没有记忆就没有阻力，价格穿越快、少停留。实战：目标设在真空带另一头的 HVN 门口，不设在真空里。</p>
+  </section>
+  <section data-note-id="poc" data-title="POC" data-en="Point of Control">
+    <p>统计期内成交量最大的那个价位桶——这段时期"吵得最凶的价格"，常被视为该时期的公允价值中枢，价格远离后有被吸回的倾向。注意它依赖统计窗口的选择：取近半年和取全年，POC 往往不在同一个地方。</p>
+  </section>
+  <section data-note-id="chips" data-title="筹码分布" data-en="Chip Distribution">
+    <p>A 股行情软件的国民功能：按换手率衰减估算"当前持股者"的建仓成本在各价位的分布，画成横向彩色梳子。与 Volume Profile 思想同源（按价位聚合参与度），但口径不同——筹码分布推断还在场的人，VP 累计发生过的真实成交额。读法互通：筹码峰 ＝ HVN ＝ 粘滞区。</p>
+  </section>
+  <section data-note-id="confluence" data-title="共振" data-en="Confluence">
+    <p>多个相互独立的证据指向同一价区：水平位带、整数关口、斐波那契刻度、HVN 边缘……证据来源彼此独立时，重叠处的"位"远比单一证据可信。本课 v0.5 的"到位"门槛就是量化的共振：至少两类证据重叠才允许入场。注意同族工具互相印证不算共振（第 4 课 MACD 与均线的教训）。</p>
+  </section>
+</div>
+
+<script src="assets/lightweight-charts.js"></script>
+<script src="assets/ct.js"></script>
+<script src="assets/ctchart.js"></script>
+<script src="assets/data/klines-BTCUSDT-1d.js"></script>
+<script src="assets/data/klines-BTCUSDT-1h.js"></script>
+<script>
+(function(){
+'use strict';
+var fmt = CT.fmtN;
+
+/* ========== 共用：摆动点算法（与第 4 课图 4-2 完全一致） ========== */
+function rawSwings(rows, K){
+  var piv = [], i, j;
+  for(i = K; i < rows.length - K; i++){
+    var isH = true, isL = true;
+    for(j = i - K; j <= i + K; j++){
+      if(j === i) continue;
+      if(rows[j][2] >= rows[i][2]) isH = false;
+      if(rows[j][3] <= rows[i][3]) isL = false;
+    }
+    if(isH) piv.push({i: i, type: 'H', price: rows[i][2]});
+    if(isL) piv.push({i: i, type: 'L', price: rows[i][3]});
+  }
+  return piv;
+}
+function cleanSwings(piv, minPct){
+  var out = [];
+  for(var k = 0; k < piv.length; k++){
+    var p = piv[k];
+    if(!out.length){ out.push(p); continue; }
+    var last = out[out.length - 1];
+    if(p.type === last.type){
+      if(p.type === 'H' ? p.price > last.price : p.price < last.price) out[out.length - 1] = p;
+    }else{
+      if(Math.abs(p.price / last.price - 1) < minPct) continue;
+      out.push(p);
+    }
+  }
+  return out;
+}
+
+/* ========== 图 8-2 自动画位机 ========== */
+(function(){
+  var rows = CT.slice(CT.get('klines-BTCUSDT-1d'), '2025-10-01', '2026-10-01');
+  var last = rows[rows.length - 1][4];
+  var piv = cleanSwings(rawSwings(rows, 3), 0.03);
+  var g = CT.makeChart('lv-chart', {minBarSpacing: 0.1});
+  var cs = g.addCandles(rows);
+  g.fit();
+  CT.legend('lv-legend', [['up', '支撑带（实线为带中枢，虚线为带边）'], ['down', '阻力带'], ['accent', '触碰点']]);
+  var mkArr = [];
+  var mkApi = g.markers(cs, mkArr);
+  var lines = [];
+  var tol = 1.5, minT = 2;
+
+  function cluster(piv, tolFrac, minTouch){
+    var pts = piv.slice().sort(function(a, b){ return a.price - b.price; });
+    var bands = [];
+    pts.forEach(function(p){
+      var b = bands[bands.length - 1];
+      if(b && Math.abs(p.price / b.mean - 1) < tolFrac){
+        b.members.push(p);
+        b.mean = b.members.reduce(function(s, m){ return s + m.price; }, 0) / b.members.length;
+      }else{
+        bands.push({members: [p], mean: p.price});
+      }
+    });
+    bands.forEach(function(b){
+      b.lo = Math.min.apply(null, b.members.map(function(m){ return m.price; }));
+      b.hi = Math.max.apply(null, b.members.map(function(m){ return m.price; }));
+      b.n = b.members.length;
+    });
+    return bands.filter(function(b){ return b.n >= minTouch; });
+  }
+
+  function bandTxt(b){ return fmt(b.lo, 0) + '–' + fmt(b.hi, 0); }
+
+  function paint(){
+    var p = CT.pal();
+    lines.forEach(function(o){ cs.removePriceLine(o); });
+    lines = [];
+    var bands = cluster(piv, tol / 100, minT);
+    var above = bands.filter(function(b){ return b.mean > last; }).sort(function(a, b){ return a.mean - b.mean; }).slice(0, 3);
+    var below = bands.filter(function(b){ return b.mean <= last; }).sort(function(a, b){ return b.mean - a.mean; }).slice(0, 3);
+    var kept = below.concat(above);
+    kept.forEach(function(b){
+      var res = b.mean > last;
+      var col = res ? p.down : p.up;
+      if(b.hi > b.lo){
+        lines.push(cs.createPriceLine({price: b.lo, color: col, lineWidth: 1, lineStyle: 2, axisLabelVisible: false, title: ''}));
+        lines.push(cs.createPriceLine({price: b.hi, color: col, lineWidth: 1, lineStyle: 2, axisLabelVisible: false, title: ''}));
+      }
+      lines.push(cs.createPriceLine({price: b.mean, color: col, lineWidth: 1, lineStyle: 0, axisLabelVisible: true, title: (res ? '阻力' : '支撑') + ' ×' + b.n}));
+    });
+    mkArr.length = 0;
+    kept.forEach(function(b){
+      b.members.forEach(function(m){
+        mkArr.push({time: rows[m.i][0], position: m.type === 'H' ? 'aboveBar' : 'belowBar', shape: 'circle', color: 'accent'});
+      });
+    });
+    mkArr.sort(function(a, b){ return a.time - b.time; });
+    mkApi.setMarkers(mkArr.map(function(m){
+      return {time: CT.ts(m.time), position: m.position, shape: m.shape, color: p[m.color] || m.color, size: 1};
+    }));
+    document.getElementById('lv-bands').textContent = bands.length + ' 条';
+    document.getElementById('lv-kept').textContent = kept.length + ' 条（下 ' + below.length + ' / 上 ' + above.length + '）';
+    var supEl = document.getElementById('lv-sup');
+    if(below.length){
+      supEl.textContent = bandTxt(below[0]);
+      document.getElementById('lv-sup-s').textContent = '触碰 ×' + below[0].n + ' · 距现价 −' + fmt((1 - below[0].hi / last) * 100, 1) + '%';
+    }else{
+      supEl.textContent = '—';
+      document.getElementById('lv-sup-s').textContent = '下方没有合格带';
+    }
+    var resEl = document.getElementById('lv-res');
+    if(above.length){
+      resEl.textContent = bandTxt(above[0]);
+      document.getElementById('lv-res-s').textContent = '触碰 ×' + above[0].n + ' · 距现价 +' + fmt((above[0].lo / last - 1) * 100, 1) + '%';
+    }else{
+      resEl.textContent = '—';
+      document.getElementById('lv-res-s').textContent = '上方没有合格带';
+    }
+    var msg;
+    if(minT === 1){
+      msg = '触碰 1 次也算"位"？那只是一个拐点，市场还没对它表过第二次态。全图合格带暴增到 <b>' + bands.length + ' 条</b>——把最少触碰调回 2，剩下的才是市场真正反复尊重过的位置。';
+    }else if(tol <= 0.75){
+      msg = '容差 ' + tol + '%：几乎每个拐点各画各线，位显得又多又"精确"（' + bands.length + ' 条）。可惜市场不配合——位的本质是一群人的记忆和挂单，它从来不是一条线。把容差拉大看看。';
+    }else if(tol >= 2.25){
+      msg = '容差 ' + tol + '%：带变少（' + bands.length + ' 条）、变宽——注意位没有消失，是互相合并了。带宽接近 BTC 一天的呼吸（日 ATR 约 2.7%）时就到头了，再宽的带没有操作意义。';
+    }else{
+      var thick = bands.slice().sort(function(a, b){ return b.n - a.n; }).slice(0, 2);
+      msg = '容差 ' + tol + '%、触碰 ≥' + minT + '：全图 <b>' + bands.length + ' 条带</b>，画出现价上下共 ' + kept.length + ' 条。最厚的两条：' + thick.map(function(b){ return bandTxt(b) + '（×' + b.n + '）'; }).join(' 和 ') + '——<b>触碰次数就是位的信用分</b>，×5、×6 的厚带比 ×2 的薄带值得信。';
+    }
+    document.getElementById('lv-msg').innerHTML = msg;
+  }
+  g.onRestyle(paint);
+  CT.bindRange('lv-tol', function(v){ tol = v; paint(); }, function(v){ return v + '%'; });
+  CT.bindRange('lv-min', function(v){ minT = v; paint(); }, function(v){ return v; });
+})();
+
+/* ========== 图 8-3 整数关口 ========== */
+(function(){
+  var rows = CT.slice(CT.get('klines-BTCUSDT-1d'), '2025-09-01', '2026-10-01');
+  var g = CT.makeChart('rd-chart', {minBarSpacing: 0.1});
+  var cs = g.addCandles(rows);
+  g.priceLine(cs, 100000, 'crit', '100,000', 0);
+  g.priceLine(cs, 80000, 'accent', '80,000', 0);
+  g.priceLine(cs, 60000, 'series2', '60,000', 0);
+  g.markers(cs, [
+    {time: Date.parse('2025-10-10') / 1000, position: 'belowBar', shape: 'arrowUp', color: 'crit', text: '针尖 101,517'},
+    {time: Date.parse('2026-02-05') / 1000, position: 'belowBar', shape: 'circle', color: 'down', text: '一天连穿 70,000 与 65,000'},
+    {time: Date.parse('2026-05-08') / 1000, position: 'aboveBar', shape: 'circle', color: 'accent', text: '5 月：80,000 拉锯'},
+    {time: Date.parse('2026-06-27') / 1000, position: 'belowBar', shape: 'circle', color: 'series2', text: '收盘 60,000.3'},
+    {time: Date.parse('2026-09-05') / 1000, position: 'aboveBar', shape: 'circle', color: 'accent', text: '9 月：再战 80,000'}
+  ]);
+  g.fit();
+  CT.legend('rd-legend', [['crit', '100,000'], ['accent', '80,000'], ['series2', '60,000']]);
+})();
+
+/* ========== 图 8-4 fib 实验台 ========== */
+(function(){
+  var rows = CT.slice(CT.get('klines-BTCUSDT-1d'), '2026-06-20', '2026-10-01');
+  var g = CT.makeChart('fb-chart', {minBarSpacing: 0.1});
+  var cs = g.addCandles(rows);
+  g.fit();
+  CT.legend('fb-legend', [['series', '38.2%'], ['accent', '50%'], ['crit', '61.8%'], ['muted', '其余刻度与起终点']]);
+  var P0 = 74909;
+  var SEG = {
+    a: {lo: 62484, loD: '2026-08-14', hi: 87385, hiD: '2026-09-21',
+      name: '复盘腿：8-14 低 62,484 → 9-21 高 87,385',
+      msg: '复盘视角的"完美"：9-15 低点 74,909 距这条腿的 50% 线（74,935）只差 26 刀——漂亮得像广告。<b>但 9-21 的高点在回调发生时根本不存在</b>，这种事后用未来终点画出的精确，叫后视镜，不叫分析。切到"实时腿"看看当时真实的图。'},
+    b: {lo: 62484, loD: '2026-08-14', hi: 82283, hiD: '2026-09-03',
+      name: '实时腿：8-14 低 62,484 → 9-03 高 82,283',
+      msg: '回调当天你能画的最高确认点是 9-03 的 82,283。这把尺子读出的深度是 <b>37.2%，贴着 38.2% 刻度</b>——一个中规中矩的浅回调，加上脚下的 73,669–74,909 水平带与 75,000 整数位，构成 8.6 节那组教科书式的共振。实时视角没有复盘腿漂亮，但它才是你当时真正拥有的信息。'},
+    c: {lo: 57759, loD: '2026-07-01', hi: 87385, hiD: '2026-09-21',
+      name: '远景腿：7-01 低 57,759 → 9-21 高 87,385',
+      msg: '把起点再往前挪到 7 月的大底，同一个 74,909 又变成 <b>42.1%</b>——不贴任何刻度。三种画法、三个答案，哪个都"没画错"。<b>fib 最大的坑不在比例，在拿尺子的那只手</b>：起终点必须用已确认的显著摆动点，并且写进日志，才谈得上纪律。'}
+  };
+  var LV = [
+    [0, '0%', 'muted', 0], [0.236, '23.6%', 'muted', 2], [0.382, '38.2%', 'series', 2],
+    [0.5, '50%', 'accent', 2], [0.618, '61.8%', 'crit', 2], [0.786, '78.6%', 'muted', 2], [1, '100%', 'muted', 0]
+  ];
+  var pls = LV.map(function(l){ return g.priceLine(cs, 0, l[2], l[1], l[3]); });
+  var mkArr = [];
+  var mkApi = g.markers(cs, mkArr);
+  CT.bindSeg('fb-seg', function(v){
+    var s = SEG[v], leg = s.hi - s.lo;
+    LV.forEach(function(l, i){
+      var price = s.hi - leg * l[0];
+      pls[i].applyOptions({price: price, title: l[1] + ' ' + fmt(price, 0)});
+    });
+    var p = CT.pal();
+    mkArr.length = 0;
+    mkArr.push({time: Date.parse(s.loD) / 1000, position: 'belowBar', shape: 'arrowUp', color: 'up', text: '起点 ' + fmt(s.lo, 0)});
+    mkArr.push({time: Date.parse(s.hiD) / 1000, position: 'aboveBar', shape: 'arrowDown', color: 'down', text: '终点 ' + fmt(s.hi, 0)});
+    mkArr.push({time: Date.parse('2026-09-15') / 1000, position: 'belowBar', shape: 'circle', color: 'accent', text: '回调低点 74,909'});
+    mkArr.sort(function(a, b){ return a.time - b.time; });
+    mkApi.setMarkers(mkArr.map(function(m){
+      return {time: CT.ts(m.time), position: m.position, shape: m.shape, color: p[m.color] || m.color, text: m.text, size: 1};
+    }));
+    var depth = (s.hi - P0) / leg * 100;
+    document.getElementById('fb-leg').textContent = fmt(s.lo, 0) + ' → ' + fmt(s.hi, 0);
+    document.getElementById('fb-leg-s').textContent = '波段幅度 +' + fmt((s.hi / s.lo - 1) * 100, 1) + '%';
+    document.getElementById('fb-382').textContent = fmt(s.hi - leg * 0.382, 0);
+    document.getElementById('fb-618').textContent = fmt(s.hi - leg * 0.618, 0);
+    document.getElementById('fb-depth').textContent = fmt(depth, 1) + '%';
+    var nearest = LV.reduce(function(best, l){
+      var d = Math.abs(s.hi - leg * l[0] - P0);
+      return d < best.d ? {d: d, lbl: l[1]} : best;
+    }, {d: Infinity, lbl: ''});
+    document.getElementById('fb-depth-s').textContent = '距最近刻度 ' + nearest.lbl + ' 约 ' + fmt(nearest.d, 0) + ' U';
+    document.getElementById('fb-msg').innerHTML = '<b>' + s.name + '</b>　' + s.msg;
+  });
+})();
+
+/* ========== 图 8-5 价位成交量直方 ========== */
+(function(){
+  var h1 = CT.slice(CT.get('klines-BTCUSDT-1h'), '2026-04-01', '2026-10-01');
+  var d1 = CT.get('klines-BTCUSDT-1d');
+  var last = d1[d1.length - 1][4];
+  function paint(W){
+    var buckets = {};
+    h1.forEach(function(r){
+      var tp = (r[2] + r[3] + r[4]) / 3;
+      var b = Math.floor(tp / W) * W;
+      buckets[b] = (buckets[b] || 0) + r[6];
+    });
+    var keys = Object.keys(buckets).map(Number).sort(function(a, b){ return b - a; });
+    var max = -Infinity, poc = null;
+    keys.forEach(function(k){ if(buckets[k] > max){ max = buckets[k]; poc = k; } });
+    var interior = keys.slice(1, -1);
+    var lvn = interior.length ? interior.reduce(function(a, k){ return buckets[k] < buckets[a] ? k : a; }, interior[0]) : keys[0];
+    var cur = Math.floor(last / W) * W;
+    var html = '';
+    keys.forEach(function(k){
+      var v = buckets[k];
+      var cls = k === poc ? 'up' : (k === lvn ? 'dn' : '');
+      var tags = '';
+      if(k === poc) tags += '　← POC';
+      if(k === lvn) tags += '　← 真空带';
+      if(k === cur) tags += '　← 现价在这';
+      html += '<div class="bar"><span>' + fmt(k, 0) + '</span>'
+        + '<span class="track"><span class="fill ' + cls + '" style="width:' + (v / max * 100).toFixed(1) + '%"></span></span>'
+        + '<span class="val">' + fmt(v / 1e8, 0) + ' 亿' + tags + '</span></div>';
+    });
+    document.getElementById('vp-bars').innerHTML = html;
+    document.getElementById('vp-poc').textContent = fmt(poc, 0) + '–' + fmt(poc + W, 0);
+    document.getElementById('vp-poc-s').textContent = '换手约 ' + fmt(buckets[poc] / 1e8, 0) + ' 亿 USDT';
+    document.getElementById('vp-cur').textContent = fmt(cur, 0) + '–' + fmt(cur + W, 0);
+    document.getElementById('vp-cur-s').textContent = '现价 ' + fmt(last, 0) + ' · 换手 ' + fmt((buckets[cur] || 0) / 1e8, 0) + ' 亿';
+    document.getElementById('vp-lvn').textContent = fmt(lvn, 0) + '–' + fmt(lvn + W, 0);
+    document.getElementById('vp-lvn-s').textContent = '只有 ' + fmt(buckets[lvn] / 1e8, 0) + ' 亿 · 为 POC 的 ' + fmt(buckets[lvn] / buckets[poc] * 100, 1) + '%';
+    var msg;
+    if(W <= 500){
+      msg = '桶切到 ' + fmt(W, 0) + ' U：' + keys.length + ' 个桶，图变碎——HVN 与 LVN 的轮廓开始被逐桶的噪音淹没。分辨率不是越高越好，和画位的容差一个道理：<b>少即是多</b>。';
+    }else if(W >= 1500){
+      msg = '桶拉宽到 ' + fmt(W, 0) + ' U：只剩 ' + keys.length + ' 个桶，82,000 附近那条真空带被邻居的量摊平、快看不见了。<b>参数两头都有代价</b>——本课默认 1,000 U 是给 BTC 这个价位量级的折中。';
+    }else{
+      msg = '桶宽 ' + fmt(W, 0) + ' U、共 ' + keys.length + ' 个桶：两大服务区（76,000–79,000 与 62,000–65,000）和 82,000 附近的真空带轮廓清晰。<b>现价 ' + fmt(last, 0) + ' 正好悬在真空带上方</b>——脚下没有垫子，这个信息值得写进今天的位图。';
+    }
+    document.getElementById('vp-msg').innerHTML = msg;
+  }
+  CT.bindRange('vp-w', paint, function(v){ return fmt(v, 0); });
+})();
+})();
+</script>
+</body>
+</html>
