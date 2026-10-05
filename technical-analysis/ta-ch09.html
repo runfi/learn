@@ -327,6 +327,25 @@ details .ans p{margin:6px 0}
 .next .lbl{font-size:12px; letter-spacing:.18em; color:var(--muted)}
 .next .ttl{font-family:var(--serif); font-weight:700; font-size:18px; margin-top:2px}
 .foot{margin-top:26px; font-size:12.5px; color:var(--muted); line-height:1.8}
+
+/* 章末导航：上一章 · 目录 · 下一章 */
+.pager{margin-top:48px; display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr); gap:12px; align-items:stretch}
+.pager .pg{display:flex; flex-direction:column; justify-content:center; gap:3px; min-width:0; padding:14px 18px; background:var(--surface); border:1px solid var(--line); border-radius:8px; color:inherit; text-decoration:none}
+.pager a.pg:hover{border-color:var(--accent)}
+.pager a.pg:hover .pg-ttl{color:var(--accent-ink)}
+.pager a.pg:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.pager .pg-next{align-items:flex-end; text-align:right}
+.pager .pg-toc{align-items:center; text-align:center; padding-inline:26px}
+.pager .pg-dir{font-size:12px; letter-spacing:.16em; color:var(--muted)}
+.pager .pg-ttl{font-family:var(--serif); font-weight:700; font-size:16px; line-height:1.45; color:var(--ink); overflow-wrap:anywhere}
+.pager .pg-sub{font-size:12px; color:var(--muted); line-height:1.5}
+.pager .is-off{background:transparent; border-style:dashed}
+.pager .is-off .pg-ttl{font-family:var(--sans); font-weight:400; font-size:14px; color:var(--muted)}
+@media (max-width: 640px){
+  .pager{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .pager .pg-toc{grid-column:1 / -1; order:3; flex-direction:row; justify-content:center; gap:10px; padding-block:12px}
+  .pager .pg-ttl{font-size:15px}
+}
 </style>
 </head>
 <body>
@@ -4944,13 +4963,11 @@ details .ans p{margin:6px 0}
     <div class="ans"><p>先别换。第一，连亏 4 笔对趋势跟随系统是常态：胜率 35% 的系统，做 50 笔交易出现至少一次连亏 5 笔的概率超过九成，最近三个月很可能只是市场处于震荡期，系统在“交营业成本”。该检查的是每笔亏损是否都在 1% 风险以内、执行有没有走样。第二，“最近半年最好的参数”是典型的样本内最优：9.8 节的模拟显示，样本内冠军到了下一段数据，排名和随便挑差不多。按最近表现换参数，等于追着过去的噪声跑，很可能在换完之后正好错过原参数将要抓住的趋势。第三，如果要改，应该在冷静时用更长的历史、多个品种做样本外检验，看 10 / 30 是否处在一片表现稳定的参数区域，而不是在连亏的情绪里拍板。更有效的改进方向，往往是加一个市场状态过滤（比如 ADX，第 12 站），而不是换均线长度。</p></div>
   </details>
 
-  <a class="next" href="ta-ch10.html">
-    <div>
-      <div class="lbl">NEXT STATION · 第 9 站</div>
-      <div class="ttl">第 10 章 · 摆动指数和相反意见理论</div>
-    </div>
-    <div class="lbl">均线定方向，摆动指标测动能：MACD、RSI、随机指标与人群情绪</div>
-  </a>
+  <nav class="pager" aria-label="章节导航">
+    <a class="pg pg-prev" href="ta-ch12.html"><span class="pg-dir">← 上一章</span><span class="pg-ttl">第 12 章 · 日本蜡烛图</span><span class="pg-sub">第 7 站</span></a>
+    <a class="pg pg-toc" href="ta-index.html"><span class="pg-dir">目录</span><span class="pg-ttl">学习地图</span></a>
+    <a class="pg pg-next" href="ta-ch10.html"><span class="pg-dir">下一章 →</span><span class="pg-ttl">第 10 章 · 摆动指数和相反意见理论</span><span class="pg-sub">第 9 站</span></a>
+  </nav>
 
   <p class="foot">本页为依据约翰·墨菲《金融市场技术分析》框架整理的原创学习笔记（第 9 章），仅用于教学理解；标“示意”的图表为构造数据，其中的信号与盈亏数字由构造数据计算得出，不代表任何真实品种的表现；研究结论与历史数据为近似表述，以原始文献和官方数据为准。内容不构成任何投资建议。</p>
 </section>

@@ -327,6 +327,25 @@ details .ans p{margin:6px 0}
 .next .lbl{font-size:12px; letter-spacing:.18em; color:var(--muted)}
 .next .ttl{font-family:var(--serif); font-weight:700; font-size:18px; margin-top:2px}
 .foot{margin-top:26px; font-size:12.5px; color:var(--muted); line-height:1.8}
+
+/* 章末导航：上一章 · 目录 · 下一章 */
+.pager{margin-top:48px; display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr); gap:12px; align-items:stretch}
+.pager .pg{display:flex; flex-direction:column; justify-content:center; gap:3px; min-width:0; padding:14px 18px; background:var(--surface); border:1px solid var(--line); border-radius:8px; color:inherit; text-decoration:none}
+.pager a.pg:hover{border-color:var(--accent)}
+.pager a.pg:hover .pg-ttl{color:var(--accent-ink)}
+.pager a.pg:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.pager .pg-next{align-items:flex-end; text-align:right}
+.pager .pg-toc{align-items:center; text-align:center; padding-inline:26px}
+.pager .pg-dir{font-size:12px; letter-spacing:.16em; color:var(--muted)}
+.pager .pg-ttl{font-family:var(--serif); font-weight:700; font-size:16px; line-height:1.45; color:var(--ink); overflow-wrap:anywhere}
+.pager .pg-sub{font-size:12px; color:var(--muted); line-height:1.5}
+.pager .is-off{background:transparent; border-style:dashed}
+.pager .is-off .pg-ttl{font-family:var(--sans); font-weight:400; font-size:14px; color:var(--muted)}
+@media (max-width: 640px){
+  .pager{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .pager .pg-toc{grid-column:1 / -1; order:3; flex-direction:row; justify-content:center; gap:10px; padding-block:12px}
+  .pager .pg-ttl{font-size:15px}
+}
 </style>
 </head>
 <body>
@@ -3619,13 +3638,11 @@ details .ans p{margin:6px 0}
     <div class="ans"><p>不能。第一，会员是期货公司，一个席位汇总了大量客户，净空单是许多账户的合计，不是某个大户的观点。第二，股指期货的空单很大一部分来自套期保值：持有股票组合的机构、做市场中性策略的产品，都要卖出股指期货对冲，它们加空单，可能恰恰是因为股票仓位加大了，本身并不看空。这和 COT 报告里商业套保者常年净空是同一个道理。合理的用法是：只看净持仓相对自身历史的变化，并结合价格方向和总持仓量（价跌增仓还是价涨增仓）一起判断；把它当作背景信息，最终信号仍然来自价格。</p></div>
   </details>
 
-  <a class="next" href="ta-ch12.html">
-    <div>
-      <div class="lbl">NEXT STATION · 第 7 站</div>
-      <div class="ttl">第 12 章 · 日本蜡烛图</div>
-    </div>
-    <div class="lbl">单根 K 线里的多空故事 · 与量价、支撑阻力配合使用</div>
-  </a>
+  <nav class="pager" aria-label="章节导航">
+    <a class="pg pg-prev" href="ta-ch06.html"><span class="pg-dir">← 上一章</span><span class="pg-ttl">第 6 章 · 持续形态</span><span class="pg-sub">第 5 站</span></a>
+    <a class="pg pg-toc" href="ta-index.html"><span class="pg-dir">目录</span><span class="pg-ttl">学习地图</span></a>
+    <a class="pg pg-next" href="ta-ch12.html"><span class="pg-dir">下一章 →</span><span class="pg-ttl">第 12 章 · 日本蜡烛图</span><span class="pg-sub">第 7 站</span></a>
+  </nav>
 
   <p class="foot">本页为依据约翰·墨菲《金融市场技术分析》框架整理的原创学习笔记（第 7 章），仅用于教学理解；标“示意”的图表为构造数据，研究结论与历史数据为近似表述，以原始文献和官方数据为准。内容不构成任何投资建议。</p>
 </section>

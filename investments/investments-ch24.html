@@ -234,6 +234,25 @@ details .ans p{margin:6px 0}
 .next .lbl{font-size:12px; letter-spacing:.18em; color:var(--muted)}
 .next .ttl{font-family:var(--serif); font-weight:700; font-size:18px; margin-top:2px}
 .foot{margin-top:26px; font-size:12.5px; color:var(--muted); line-height:1.8}
+
+/* 章末导航：上一章 · 目录 · 下一章 */
+.pager{margin-top:48px; display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr); gap:12px; align-items:stretch}
+.pager .pg{display:flex; flex-direction:column; justify-content:center; gap:3px; min-width:0; padding:14px 18px; background:var(--surface); border:1px solid var(--line); border-radius:8px; color:inherit; text-decoration:none}
+.pager a.pg:hover{border-color:var(--accent)}
+.pager a.pg:hover .pg-ttl{color:var(--accent-ink)}
+.pager a.pg:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.pager .pg-next{align-items:flex-end; text-align:right}
+.pager .pg-toc{align-items:center; text-align:center; padding-inline:26px}
+.pager .pg-dir{font-size:12px; letter-spacing:.16em; color:var(--muted)}
+.pager .pg-ttl{font-family:var(--serif); font-weight:700; font-size:16px; line-height:1.45; color:var(--ink); overflow-wrap:anywhere}
+.pager .pg-sub{font-size:12px; color:var(--muted); line-height:1.5}
+.pager .is-off{background:transparent; border-style:dashed}
+.pager .is-off .pg-ttl{font-family:var(--sans); font-weight:400; font-size:14px; color:var(--muted)}
+@media (max-width: 640px){
+  .pager{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .pager .pg-toc{grid-column:1 / -1; order:3; flex-direction:row; justify-content:center; gap:10px; padding-block:12px}
+  .pager .pg-ttl{font-size:15px}
+}
 </style>
 </head>
 <body>
@@ -537,13 +556,11 @@ details .ans p{margin:6px 0}
     <div class="ans"><p>T ≈（2/0.8）² ≈ 6.3 年——这还是假设回测夏普无偏的乐观值。三道折减：① 多重检验：若这是几十次调参挑出的最优版本，期望夏普先打对折再估 T（变成 25 年量级——这就是为什么“策略组合 + 低相关”比单策略更现实）；② 成本：按第 3 章口径扣足价差与冲击，再看夏普还剩多少；③ 严格样本外 + 小资金实盘若干月，并持续监控实盘相对回测的衰减。把这三条写进上线清单，是本章对你的交易系统最直接的交付物。</p></div>
   </details>
 
-  <a class="next" href="investments-ch27.html">
-    <div>
-      <div class="lbl">NEXT CHAPTER · HAPPY PATH 终点站</div>
-      <div class="ttl">第 27 章 · 积极型投资组合管理理论</div>
-    </div>
-    <div class="lbl">Treynor-Black → 基本定律 → Black-Litterman → 通往 Kelly</div>
-  </a>
+  <nav class="pager" aria-label="章节导航">
+    <a class="pg pg-prev" href="investments-ch23.html"><span class="pg-dir">← 上一章</span><span class="pg-ttl">第 23 章 · 期货、互换与风险管理</span><span class="pg-sub">第 13 站</span></a>
+    <a class="pg pg-toc" href="investments-index.html"><span class="pg-dir">目录</span><span class="pg-ttl">学习地图</span></a>
+    <a class="pg pg-next" href="investments-ch27.html"><span class="pg-dir">下一章 →</span><span class="pg-ttl">第 27 章 · 积极型投资组合管理理论</span><span class="pg-sub">第 15 站</span></a>
+  </nav>
 
   <p class="foot">本页为依据 Bodie–Kane–Marcus《投资学》（Investments）框架整理的原创学习笔记，仅用于教学理解；数值为教学算例，案例为近似表述。内容不构成任何投资建议。</p>
 </section>

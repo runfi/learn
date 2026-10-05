@@ -327,6 +327,25 @@ details .ans p{margin:6px 0}
 .next .lbl{font-size:12px; letter-spacing:.18em; color:var(--muted)}
 .next .ttl{font-family:var(--serif); font-weight:700; font-size:18px; margin-top:2px}
 .foot{margin-top:26px; font-size:12.5px; color:var(--muted); line-height:1.8}
+
+/* 章末导航：上一章 · 目录 · 下一章 */
+.pager{margin-top:48px; display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr); gap:12px; align-items:stretch}
+.pager .pg{display:flex; flex-direction:column; justify-content:center; gap:3px; min-width:0; padding:14px 18px; background:var(--surface); border:1px solid var(--line); border-radius:8px; color:inherit; text-decoration:none}
+.pager a.pg:hover{border-color:var(--accent)}
+.pager a.pg:hover .pg-ttl{color:var(--accent-ink)}
+.pager a.pg:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.pager .pg-next{align-items:flex-end; text-align:right}
+.pager .pg-toc{align-items:center; text-align:center; padding-inline:26px}
+.pager .pg-dir{font-size:12px; letter-spacing:.16em; color:var(--muted)}
+.pager .pg-ttl{font-family:var(--serif); font-weight:700; font-size:16px; line-height:1.45; color:var(--ink); overflow-wrap:anywhere}
+.pager .pg-sub{font-size:12px; color:var(--muted); line-height:1.5}
+.pager .is-off{background:transparent; border-style:dashed}
+.pager .is-off .pg-ttl{font-family:var(--sans); font-weight:400; font-size:14px; color:var(--muted)}
+@media (max-width: 640px){
+  .pager{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .pager .pg-toc{grid-column:1 / -1; order:3; flex-direction:row; justify-content:center; gap:10px; padding-block:12px}
+  .pager .pg-ttl{font-size:15px}
+}
 </style>
 </head>
 <body>
@@ -4083,13 +4102,11 @@ details .ans p{margin:6px 0}
     <div class="ans"><p>先分清级别。周线定的是主要趋势，日线这条陡线往往只是一段<b>加速</b>的轨迹，它被跌破通常意味着加速阶段结束，不等于主要趋势结束（图 4-8 左）。接着看日线的峰谷结构：如果前一个日线谷还没被跌破，更可能只是减速，可以从同一个起点画一条更平缓的线（扇形原理的第二条线），或者回到原来那条较缓的趋势线。具体操作可以是：兑现一部分利润（陡线被破常伴随一段回落），把剩余仓位的止损移到前一个日线谷或较缓趋势线下方（加上过滤）；只有当较缓的线、乃至扇形的第三条线也被有效跌破，或者周线的峰谷结构被破坏，才全部离场。关键是这些处理方式要在事前写进规则，而不是在跌破之后临时决定。</p></div>
   </details>
 
-  <a class="next" href="ta-ch05.html">
-    <div>
-      <div class="lbl">NEXT STATION · 第 4 站</div>
-      <div class="ttl">第 5 章 · 主要反转形态</div>
-    </div>
-    <div class="lbl">头肩形、双重顶底：用本站的支撑阻力和趋势线拼出来的形态</div>
-  </a>
+  <nav class="pager" aria-label="章节导航">
+    <a class="pg pg-prev" href="ta-ch02.html"><span class="pg-dir">← 上一章</span><span class="pg-ttl">第 2 章 · 道氏理论</span><span class="pg-sub">第 2 站</span></a>
+    <a class="pg pg-toc" href="ta-index.html"><span class="pg-dir">目录</span><span class="pg-ttl">学习地图</span></a>
+    <a class="pg pg-next" href="ta-ch05.html"><span class="pg-dir">下一章 →</span><span class="pg-ttl">第 5 章 · 主要反转形态</span><span class="pg-sub">第 4 站</span></a>
+  </nav>
 
   <p class="foot">本页为依据约翰·墨菲《金融市场技术分析》框架整理的原创学习笔记（第 4 章，并入第 13 章斐波那契回撤要点），仅用于教学理解；标“示意”的图表为构造数据，研究结论与历史数据为近似表述，以原始文献和官方数据为准。内容不构成任何投资建议。</p>
 </section>

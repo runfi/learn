@@ -236,6 +236,25 @@ details .ans p{margin:6px 0}
 .next .lbl{font-size:12px; letter-spacing:.18em; color:var(--muted)}
 .next .ttl{font-family:var(--serif); font-weight:700; font-size:18px; margin-top:2px}
 .foot{margin-top:26px; font-size:12.5px; color:var(--muted); line-height:1.8}
+
+/* 章末导航：上一章 · 目录 · 下一章 */
+.pager{margin-top:48px; display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr); gap:12px; align-items:stretch}
+.pager .pg{display:flex; flex-direction:column; justify-content:center; gap:3px; min-width:0; padding:14px 18px; background:var(--surface); border:1px solid var(--line); border-radius:8px; color:inherit; text-decoration:none}
+.pager a.pg:hover{border-color:var(--accent)}
+.pager a.pg:hover .pg-ttl{color:var(--accent-ink)}
+.pager a.pg:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.pager .pg-next{align-items:flex-end; text-align:right}
+.pager .pg-toc{align-items:center; text-align:center; padding-inline:26px}
+.pager .pg-dir{font-size:12px; letter-spacing:.16em; color:var(--muted)}
+.pager .pg-ttl{font-family:var(--serif); font-weight:700; font-size:16px; line-height:1.45; color:var(--ink); overflow-wrap:anywhere}
+.pager .pg-sub{font-size:12px; color:var(--muted); line-height:1.5}
+.pager .is-off{background:transparent; border-style:dashed}
+.pager .is-off .pg-ttl{font-family:var(--sans); font-weight:400; font-size:14px; color:var(--muted)}
+@media (max-width: 640px){
+  .pager{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .pager .pg-toc{grid-column:1 / -1; order:3; flex-direction:row; justify-content:center; gap:10px; padding-block:12px}
+  .pager .pg-ttl{font-size:15px}
+}
 </style>
 </head>
 <body>
@@ -599,13 +618,11 @@ details .ans p{margin:6px 0}
     <div class="ans"><p>① 利率风险：资产久期约 6，加息 4.5 个百分点，ΔP ≈ −27%，浮亏吞掉资本金——信用无瑕疵，除法无情面；② 期限错配：负债是久期近零、且高度集中的机构活期存款，没有任何免疫安排（呼应第 1 章“借短贷长”）；③ 流动性挤兑：被迫卖出使“持有至到期”的账面幻觉破灭，恐慌在社交网络光速传染，一日提款 420 亿美元。教训：管理固收头寸，久期敞口与资金久期必须放在同一张表上看。</p></div>
   </details>
 
-  <a class="next" href="investments-ch18.html">
-    <div>
-      <div class="lbl">NEXT CHAPTER · HAPPY PATH</div>
-      <div class="ttl">第 18 章 · 权益估值模型</div>
-    </div>
-    <div class="lbl">第 17 章宏观行业为选学 · DDM → 戈登增长 → P/E 的正确用法</div>
-  </a>
+  <nav class="pager" aria-label="章节导航">
+    <a class="pg pg-prev" href="investments-ch12.html"><span class="pg-dir">← 上一章</span><span class="pg-ttl">第 12 章 · 行为金融与技术分析</span><span class="pg-sub">第 10 站</span></a>
+    <a class="pg pg-toc" href="investments-index.html"><span class="pg-dir">目录</span><span class="pg-ttl">学习地图</span></a>
+    <a class="pg pg-next" href="investments-ch18.html"><span class="pg-dir">下一章 →</span><span class="pg-ttl">第 18 章 · 权益估值模型</span><span class="pg-sub">第 12 站</span></a>
+  </nav>
 
   <p class="foot">本页为依据 Bodie–Kane–Marcus《投资学》（Investments）第 14–16 章框架整理的原创学习笔记，仅用于教学理解；数值为教学算例，案例数字为近似值。内容不构成任何投资建议。</p>
 </section>

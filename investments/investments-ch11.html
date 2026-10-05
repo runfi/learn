@@ -234,6 +234,25 @@ details .ans p{margin:6px 0}
 .next .lbl{font-size:12px; letter-spacing:.18em; color:var(--muted)}
 .next .ttl{font-family:var(--serif); font-weight:700; font-size:18px; margin-top:2px}
 .foot{margin-top:26px; font-size:12.5px; color:var(--muted); line-height:1.8}
+
+/* 章末导航：上一章 · 目录 · 下一章 */
+.pager{margin-top:48px; display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr); gap:12px; align-items:stretch}
+.pager .pg{display:flex; flex-direction:column; justify-content:center; gap:3px; min-width:0; padding:14px 18px; background:var(--surface); border:1px solid var(--line); border-radius:8px; color:inherit; text-decoration:none}
+.pager a.pg:hover{border-color:var(--accent)}
+.pager a.pg:hover .pg-ttl{color:var(--accent-ink)}
+.pager a.pg:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.pager .pg-next{align-items:flex-end; text-align:right}
+.pager .pg-toc{align-items:center; text-align:center; padding-inline:26px}
+.pager .pg-dir{font-size:12px; letter-spacing:.16em; color:var(--muted)}
+.pager .pg-ttl{font-family:var(--serif); font-weight:700; font-size:16px; line-height:1.45; color:var(--ink); overflow-wrap:anywhere}
+.pager .pg-sub{font-size:12px; color:var(--muted); line-height:1.5}
+.pager .is-off{background:transparent; border-style:dashed}
+.pager .is-off .pg-ttl{font-family:var(--sans); font-weight:400; font-size:14px; color:var(--muted)}
+@media (max-width: 640px){
+  .pager{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .pager .pg-toc{grid-column:1 / -1; order:3; flex-direction:row; justify-content:center; gap:10px; padding-block:12px}
+  .pager .pg-ttl{font-size:15px}
+}
 </style>
 </head>
 <body>
@@ -495,13 +514,11 @@ details .ans p{margin:6px 0}
     <div class="ans"><p>发表让机制暴露：套利资金涌入把价格压回（拥挤），且部分“异象”本是数据挖掘的伪发现，样本外自然消失。三条纪律：① 回测必须留出严格的样本外与发表后区间——只信策略在“被全世界知道之后”的表现；② 为每个策略写下收益机制与对手盘，机制属于“他人约束型”（杠杆限制、制度摩擦）的优先，纯统计型的降权；③ 持续监控拥挤度与容量，把“策略死亡”当作常态事件预设退出标准——异象是租约，不是产权。</p></div>
   </details>
 
-  <a class="next" href="investments-ch12.html">
-    <div>
-      <div class="lbl">NEXT CHAPTER</div>
-      <div class="ttl">第 12 章 · 行为金融与技术分析</div>
-    </div>
-    <div class="lbl">偏差清单 → 前景理论 → 套利的限制</div>
-  </a>
+  <nav class="pager" aria-label="章节导航">
+    <a class="pg pg-prev" href="investments-ch09.html"><span class="pg-dir">← 上一章</span><span class="pg-ttl">第 9 章 · 资本资产定价模型</span><span class="pg-sub">第 8 站</span></a>
+    <a class="pg pg-toc" href="investments-index.html"><span class="pg-dir">目录</span><span class="pg-ttl">学习地图</span></a>
+    <a class="pg pg-next" href="investments-ch12.html"><span class="pg-dir">下一章 →</span><span class="pg-ttl">第 12 章 · 行为金融与技术分析</span><span class="pg-sub">第 10 站</span></a>
+  </nav>
 
   <p class="foot">本页为依据 Bodie–Kane–Marcus《投资学》（Investments）框架整理的原创学习笔记，仅用于教学理解；历史与研究数据为近似表述，以原始文献为准。内容不构成任何投资建议。</p>
 </section>

@@ -327,6 +327,25 @@ details .ans p{margin:6px 0}
 .next .lbl{font-size:12px; letter-spacing:.18em; color:var(--muted)}
 .next .ttl{font-family:var(--serif); font-weight:700; font-size:18px; margin-top:2px}
 .foot{margin-top:26px; font-size:12.5px; color:var(--muted); line-height:1.8}
+
+/* 章末导航：上一章 · 目录 · 下一章 */
+.pager{margin-top:48px; display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr); gap:12px; align-items:stretch}
+.pager .pg{display:flex; flex-direction:column; justify-content:center; gap:3px; min-width:0; padding:14px 18px; background:var(--surface); border:1px solid var(--line); border-radius:8px; color:inherit; text-decoration:none}
+.pager a.pg:hover{border-color:var(--accent)}
+.pager a.pg:hover .pg-ttl{color:var(--accent-ink)}
+.pager a.pg:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.pager .pg-next{align-items:flex-end; text-align:right}
+.pager .pg-toc{align-items:center; text-align:center; padding-inline:26px}
+.pager .pg-dir{font-size:12px; letter-spacing:.16em; color:var(--muted)}
+.pager .pg-ttl{font-family:var(--serif); font-weight:700; font-size:16px; line-height:1.45; color:var(--ink); overflow-wrap:anywhere}
+.pager .pg-sub{font-size:12px; color:var(--muted); line-height:1.5}
+.pager .is-off{background:transparent; border-style:dashed}
+.pager .is-off .pg-ttl{font-family:var(--sans); font-weight:400; font-size:14px; color:var(--muted)}
+@media (max-width: 640px){
+  .pager{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .pager .pg-toc{grid-column:1 / -1; order:3; flex-direction:row; justify-content:center; gap:10px; padding-block:12px}
+  .pager .pg-ttl{font-size:15px}
+}
 </style>
 </head>
 <body>
@@ -2539,13 +2558,11 @@ details .ans p{margin:6px 0}
     <div class="ans"><p><b>连亏：</b>做 300 笔时，至少一次 10 连亏的概率约 52%。1% 时这段连亏回撤约 9.6%；5% 时回撤约 40%，要赚 67% 才能回本。<b>回撤：</b>两万次模拟里，1% 的平均最大回撤约 14%，几乎不会腰斩；5% 的平均最大回撤约 56%，曾经腰斩的概率约 66%。<b>凯利：</b>这个系统的全凯利是 10%，1% 是十分之一凯利，5% 是半凯利。如果参数估计准确，5% 的中位数终值更高（约 9 倍对 1.8 倍）。</p><p>但这个“如果”很脆弱：真实胜率若只有 35%，凯利比例降到 2.5%，5% 就成了 2 倍凯利，300 笔下来中位数约 1.0 倍，平均最大回撤约 73%，白白承受巨大的波动；1% 仍能小幅盈利（约 1.13 倍）。所以 1% 的优势是<b>稳健</b>：它对参数误差不敏感，回撤留在回本曲线平缓的一段，心理上也执行得下去。资金管理选择的不是理论上最赚钱的比例，而是在你可能估错的所有情况下都活得下来的比例。</p></div>
   </details>
 
-  <a class="next" href="ta-ch19.html">
-    <div>
-      <div class="lbl">NEXT STATION · 第 14 站</div>
-      <div class="ttl">第 19 章 · 全书大会串</div>
-    </div>
-    <div class="lbl">把十三站的工具串成一套从看图到下单的完整流程</div>
-  </a>
+  <nav class="pager" aria-label="章节导航">
+    <a class="pg pg-prev" href="ta-ch15.html"><span class="pg-dir">← 上一章</span><span class="pg-ttl">第 15 章 · 计算机和交易系统</span><span class="pg-sub">第 12 站</span></a>
+    <a class="pg pg-toc" href="ta-index.html"><span class="pg-dir">目录</span><span class="pg-ttl">学习地图</span></a>
+    <a class="pg pg-next" href="ta-ch19.html"><span class="pg-dir">下一章 →</span><span class="pg-ttl">第 19 章 · 全书大会串</span><span class="pg-sub">第 14 站</span></a>
+  </nav>
 
   <p class="foot">本页为依据约翰·墨菲《金融市场技术分析》框架整理的原创学习笔记（第 16 章），仅用于教学理解；标“示意”的图表为构造数据，标“模拟”的资金曲线由确定性随机数生成，概率与模拟结果均在本站脚本中计算；研究结论、历史数据与案例为近似表述，以原始文献和官方数据为准。内容不构成任何投资建议。</p>
 </section>
