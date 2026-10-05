@@ -1,0 +1,2523 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>技术分析 · 第1章 技术分析的理论基础</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700;900&family=Noto+Sans+SC:wght@400;500;700&display=swap">
+<style>
+/* 《金融市场技术分析》讲义共享样式：双栏（212px 侧栏 + 正文），沿用《投资学》手册模板；
+   新增：红涨绿跌的 K 线配色、图表注释类、规则卡 / 证据与怀疑 / A 股适配 / 打个比方 四种讲义块 */
+:root{
+  --bg:#f5f6f7;
+  --surface:#ffffff;
+  --ink:#171a20;
+  --ink-2:#4a5160;
+  --muted:#858c9b;
+  --line:#e2e5ea;
+  --line-2:#c9ced6;
+  --accent:#1d5fad;
+  --accent-ink:#174e8f;
+  --accent-soft:#eaf1fa;
+  --series:#2a78d6;
+  --series2:#eb6834;
+  --series2-ink:#b4501f;
+  --series3:#8a5fd1;
+  --up:#d63a3a;
+  --up-ink:#b42f2f;
+  --up-soft:rgba(214,58,58,.09);
+  --down:#14905a;
+  --down-soft:rgba(20,144,90,.10);
+  --crit:#d03b3b;
+  --crit-soft:rgba(208,59,59,.07);
+  --serif:"Noto Serif SC","Songti SC",serif;
+  --sans:"Noto Sans SC","Microsoft YaHei",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#101215; --surface:#181b20; --ink:#eef0f3; --ink-2:#c0c5cf; --muted:#8a909d;
+    --line:#282c33; --line-2:#3a3f48;
+    --accent:#5a96e3; --accent-ink:#79abec; --accent-soft:#1c2a3d;
+    --series:#3987e5; --series2:#e0703f; --series2-ink:#f0915f; --series3:#a585e8;
+    --up:#ec6262; --up-ink:#f08080; --up-soft:rgba(236,98,98,.13);
+    --down:#2fb87a; --down-soft:rgba(47,184,122,.13);
+    --crit:#e66767; --crit-soft:rgba(230,103,103,.10);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#101215; --surface:#181b20; --ink:#eef0f3; --ink-2:#c0c5cf; --muted:#8a909d;
+  --line:#282c33; --line-2:#3a3f48;
+  --accent:#5a96e3; --accent-ink:#79abec; --accent-soft:#1c2a3d;
+  --series:#3987e5; --series2:#e0703f; --series2-ink:#f0915f; --series3:#a585e8;
+  --up:#ec6262; --up-ink:#f08080; --up-soft:rgba(236,98,98,.13);
+  --down:#2fb87a; --down-soft:rgba(47,184,122,.13);
+  --crit:#e66767; --crit-soft:rgba(230,103,103,.10);
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:var(--sans); font-size:15.5px; line-height:1.85;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1190px; margin:0 auto; padding-inline:20px; padding-block:0 72px}
+
+.layout{display:grid; grid-template-columns:212px minmax(0,1fr); gap:44px; align-items:start}
+.article{max-width:920px; min-width:0}
+.sidenav{
+  position:sticky; top:16px; max-height:calc(100vh - 32px); overflow-y:auto;
+  padding-block:40px 16px; font-size:13px;
+}
+.sidenav .sn-chap{
+  margin:0 0 10px; padding-left:13px; font-size:11.5px; letter-spacing:.14em;
+  color:var(--muted); font-weight:700;
+}
+.sidenav a{
+  display:block; color:var(--ink-2); text-decoration:none; line-height:1.55;
+  padding:6px 10px 6px 13px; border-left:2px solid var(--line);
+}
+.sidenav a:hover{color:var(--accent-ink)}
+.sidenav a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.sidenav a.active{
+  color:var(--accent-ink); border-left-color:var(--accent);
+  background:var(--accent-soft); font-weight:700;
+}
+.hero,section.ch{scroll-margin-top:10px}
+@media (max-width: 999px){
+  .sidenav{display:none}
+  .layout{display:block}
+}
+@media (min-width: 1000px){
+  nav.chapmap{display:none}
+}
+
+.masthead{
+  display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  padding-block:18px 14px; border-bottom:1px solid var(--line);
+}
+.masthead .book{font-family:var(--serif); font-weight:700; font-size:15px; letter-spacing:.02em}
+.masthead .part{font-size:12.5px; color:var(--muted); letter-spacing:.12em}
+.masthead a{color:var(--accent-ink); text-decoration:none}
+.masthead a:hover{text-decoration:underline}
+.masthead a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+a.next{color:inherit; text-decoration:none}
+a.next:hover{border-color:var(--accent)}
+a.next:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+.hero{padding-block:44px 28px; border-bottom:1px solid var(--line)}
+.chap-no{
+  display:inline-flex; align-items:center; gap:10px;
+  font-size:12.5px; letter-spacing:.22em; color:var(--accent-ink); font-weight:700;
+}
+.chap-no::after{content:""; width:46px; height:1px; background:var(--accent)}
+.hero h1{
+  font-family:var(--serif); font-weight:900; font-size:clamp(30px,5vw,46px);
+  line-height:1.25; margin:10px 0 4px; letter-spacing:.02em; text-wrap:balance;
+}
+.hero .en{font-size:14px; color:var(--muted); letter-spacing:.08em; margin:0 0 18px}
+.hero .lede{max-width:46em; color:var(--ink-2); margin:0}
+.hero .lede strong{color:var(--ink)}
+.objectives{
+  margin-top:22px; padding:16px 20px; background:var(--surface);
+  border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:0 6px 6px 0;
+}
+.objectives h2{font-size:13px; letter-spacing:.18em; color:var(--accent-ink); margin:0 0 8px; font-weight:700}
+.objectives ul{margin:0; padding-left:1.3em; color:var(--ink-2)}
+.objectives li{margin:3px 0}
+.colorkey{margin-top:12px; font-size:12.5px; color:var(--muted)}
+.colorkey .up{color:var(--up-ink); font-weight:700}
+.colorkey .dn{color:var(--down); font-weight:700}
+.chapmap{display:flex; flex-wrap:wrap; gap:8px; margin-top:20px}
+.chapmap a{
+  font-size:13px; color:var(--ink-2); text-decoration:none;
+  border:1px solid var(--line-2); border-radius:999px; padding:4px 13px; background:var(--surface);
+}
+.chapmap a:hover{border-color:var(--accent); color:var(--accent-ink)}
+.chapmap a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+section.ch{padding-block:40px 8px}
+section.ch + section.ch{border-top:1px solid var(--line)}
+h2.sec{
+  font-family:var(--serif); font-weight:700; font-size:clamp(22px,3.4vw,28px);
+  margin:0 0 2px; line-height:1.35; text-wrap:balance;
+}
+h2.sec .no{color:var(--accent-ink); margin-right:10px; font-feature-settings:"tnum"}
+p.sec-en{font-size:12.5px; letter-spacing:.1em; color:var(--muted); margin:0 0 18px}
+h3{font-size:16.5px; font-weight:700; margin:26px 0 8px}
+h3 .tag{color:var(--accent-ink)}
+p{margin:10px 0}
+.prose{max-width:46em}
+.prose .en-term{color:var(--muted); font-size:.88em}
+.prose ul,.prose ol{padding-left:1.4em; margin:8px 0}
+.prose li{margin:5px 0}
+strong{font-weight:700}
+em{font-style:normal; font-weight:700; color:var(--accent-ink)}
+.up-t{color:var(--up-ink); font-weight:700}
+.dn-t{color:var(--down); font-weight:700}
+
+.cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px; margin:16px 0}
+.card{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:16px 18px;
+}
+.card h4{margin:0 0 6px; font-size:15px}
+.card h4 .en-term{display:block; font-weight:400; font-size:12px; color:var(--muted); letter-spacing:.04em; margin-top:2px}
+.card p{margin:6px 0; font-size:14px; color:var(--ink-2)}
+.card ul{margin:6px 0 0; padding-left:1.2em; font-size:14px; color:var(--ink-2)}
+.card li{margin:3px 0}
+.card .k{display:block; font-size:12px; letter-spacing:.12em; color:var(--muted); font-weight:700; margin-top:8px}
+
+.case,.evidence,.ashare{
+  margin:20px 0; padding:16px 20px 14px; background:var(--surface);
+  border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:0 8px 8px 0;
+}
+.evidence{border-left-color:var(--series2)}
+.ashare{border-left-color:var(--up)}
+.case .label,.evidence .label,.ashare .label{font-size:12px; letter-spacing:.2em; color:var(--accent-ink); font-weight:700; display:block; margin-bottom:6px}
+.evidence .label{color:var(--series2-ink)}
+.ashare .label{color:var(--up-ink)}
+.case h4,.evidence h4,.ashare h4{margin:0 0 6px; font-size:15.5px}
+.case p,.evidence p,.ashare p{margin:7px 0; font-size:14.5px; color:var(--ink-2)}
+.case p:last-child,.evidence p:last-child,.ashare p:last-child{margin-bottom:2px}
+.evidence ul,.ashare ul,.case ul{margin:6px 0; padding-left:1.3em; font-size:14.5px; color:var(--ink-2)}
+.evidence li,.ashare li,.case li{margin:5px 0}
+.case .takeaway{color:var(--ink); font-weight:500}
+.case .takeaway::before{content:"▸ 要点 "; color:var(--accent-ink); font-weight:700; font-size:12.5px; letter-spacing:.05em}
+
+.analogy{
+  margin:18px 0; padding:14px 20px; background:var(--accent-soft); border-radius:8px; max-width:46em;
+}
+.analogy .label{font-size:12px; letter-spacing:.2em; color:var(--accent-ink); font-weight:700; display:block; margin-bottom:4px}
+.analogy p{margin:5px 0; font-size:14.5px; color:var(--ink-2)}
+
+.pitfall{
+  margin:20px 0; padding:14px 20px; border:1px dashed var(--line-2); border-radius:8px; max-width:46em;
+}
+.pitfall .label{font-size:12px; letter-spacing:.2em; color:var(--crit); font-weight:700; display:block; margin-bottom:4px}
+.pitfall p{margin:4px 0; font-size:14.5px; color:var(--ink-2)}
+
+/* 规则卡 */
+.rulecard{
+  margin:22px 0; background:var(--surface); border:1px solid var(--line); border-radius:8px;
+  overflow:hidden; max-width:46em;
+}
+.rulecard .rc-head{
+  padding:10px 18px; background:var(--accent-soft); border-bottom:1px solid var(--line);
+  display:flex; justify-content:space-between; align-items:baseline; gap:10px; flex-wrap:wrap;
+}
+.rulecard .rc-head .label{font-size:12px; letter-spacing:.2em; color:var(--accent-ink); font-weight:700}
+.rulecard .rc-head .rc-name{font-weight:700; color:var(--ink)}
+.rulecard dl{display:grid; grid-template-columns:6.2em minmax(0,1fr); margin:0}
+.rulecard dt{padding:9px 0 9px 18px; font-size:13px; color:var(--muted); font-weight:700; border-top:1px solid var(--line)}
+.rulecard dd{margin:0; padding:9px 18px 9px 8px; font-size:14px; color:var(--ink-2); border-top:1px solid var(--line)}
+.rulecard dl > dt:first-child,.rulecard dl > dt:first-child + dd{border-top:none}
+.rulecard .rc-note{padding:10px 18px; font-size:13px; color:var(--muted); border-top:1px dashed var(--line-2); line-height:1.75}
+
+.formula{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px;
+  padding:12px 18px; margin:14px 0; max-width:46em; overflow-x:auto;
+  font-size:15px; line-height:2;
+}
+.formula .fx{white-space:nowrap}
+.formula sub,.formula sup{font-size:11px}
+.formula .note{font-size:12.5px; color:var(--muted)}
+
+table{border-collapse:collapse; width:100%; font-size:14px; font-variant-numeric:tabular-nums}
+.tablewrap{overflow-x:auto; margin:16px 0; border:1px solid var(--line); border-radius:8px; background:var(--surface)}
+.tablewrap table{min-width:560px}
+th,td{padding:9px 14px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top}
+th{font-size:12.5px; letter-spacing:.08em; color:var(--muted); font-weight:700; white-space:nowrap}
+tr:last-child td{border-bottom:none}
+td.num{white-space:nowrap}
+
+figure{margin:24px 0; background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:18px 18px 12px}
+figure .fig-scroll{overflow-x:auto}
+figure svg{display:block; max-width:100%; height:auto; color:var(--ink)}
+figure .fig-scroll svg{min-width:660px}
+figure .fig-scroll.narrow svg{min-width:0}
+figcaption{font-size:13px; color:var(--muted); margin-top:10px; line-height:1.7}
+figcaption b{color:var(--ink-2); font-weight:700}
+.fig-title{font-size:14px; font-weight:700; margin:0 0 12px}
+.fig-title .fno{color:var(--accent-ink); margin-right:8px}
+.fig-title .sch{font-size:11.5px; font-weight:400; color:var(--muted); border:1px solid var(--line-2); border-radius:999px; padding:1px 8px; margin-left:8px; white-space:nowrap}
+
+/* SVG：通用 */
+svg .node{fill:var(--bg); stroke:var(--line-2); stroke-width:1.2}
+svg .node-hi{fill:var(--accent-soft); stroke:var(--accent)}
+svg .node-up{fill:var(--up-soft); stroke:var(--up)}
+svg .node-dn{fill:var(--down-soft); stroke:var(--down)}
+svg .nt{font:700 12.5px var(--sans); fill:var(--ink)}
+svg .nd{font:400 11px var(--sans); fill:var(--ink-2)}
+svg .edge{stroke:var(--ink-2); stroke-width:1.4; fill:none}
+svg .edge-soft{stroke:var(--muted); stroke-width:1.2; fill:none; stroke-dasharray:4 4}
+svg .edge-acc{stroke:var(--accent); stroke-width:1.6; fill:none}
+svg .elabel{font:400 11.5px var(--sans); fill:var(--muted)}
+svg .grid{stroke:var(--line); stroke-width:1}
+svg .axis{stroke:var(--line-2); stroke-width:1.2}
+svg .tick{font:400 11px var(--sans); fill:var(--muted)}
+svg .atitle{font:400 11.5px var(--sans); fill:var(--muted)}
+svg .pl{font:700 13px var(--sans); fill:var(--ink)}
+svg .pv{font:400 11.5px var(--sans); fill:var(--ink-2)}
+svg .hi{font:700 12px var(--sans); fill:var(--accent-ink)}
+svg .ut{font:700 12px var(--sans); fill:var(--up-ink)}
+svg .dt{font:700 12px var(--sans); fill:var(--down)}
+svg .lg{font:400 11px var(--sans); fill:var(--ink-2)}
+svg .ln1{stroke:var(--series); stroke-width:2.8; fill:none}
+svg .seg1{fill:var(--series)}
+svg .seg2{fill:var(--series2)}
+
+/* SVG：K 线与指标（红涨绿跌） */
+svg .cu{fill:var(--up); stroke:var(--up); stroke-width:1}
+svg .cuh{fill:var(--surface); stroke:var(--up); stroke-width:1.2}
+svg .cd{fill:var(--down); stroke:var(--down); stroke-width:1}
+svg .wu{stroke:var(--up); stroke-width:1.2}
+svg .wd{stroke:var(--down); stroke-width:1.2}
+svg .bu{stroke:var(--up); stroke-width:1.6; fill:none}
+svg .bd{stroke:var(--down); stroke-width:1.6; fill:none}
+svg .vu{fill:var(--up); opacity:.45}
+svg .vd{fill:var(--down); opacity:.45}
+svg .cl{stroke:var(--ink-2); stroke-width:1.8; fill:none}
+svg .ma1{stroke:var(--series); stroke-width:1.7; fill:none}
+svg .ma2{stroke:var(--series2); stroke-width:1.7; fill:none}
+svg .ma3{stroke:var(--series3); stroke-width:1.7; fill:none}
+svg .bb{stroke:var(--series3); stroke-width:1.3; fill:none; stroke-dasharray:5 3}
+svg .bbm{stroke:var(--series3); stroke-width:1; fill:none; opacity:.7}
+svg .dc{stroke:var(--series2); stroke-width:1.4; fill:none}
+svg .ind1{stroke:var(--series); stroke-width:1.6; fill:none}
+svg .ind2{stroke:var(--series2); stroke-width:1.6; fill:none}
+svg .ind3{stroke:var(--series3); stroke-width:1.4; fill:none}
+svg .tl{stroke:var(--accent); stroke-width:2; fill:none}
+svg .tl2{stroke:var(--series2); stroke-width:2; fill:none}
+svg .tld{stroke:var(--accent); stroke-width:1.6; fill:none; stroke-dasharray:6 4}
+svg .sr{stroke:var(--muted); stroke-width:1.2; fill:none; stroke-dasharray:5 4}
+svg .sr-up{stroke:var(--up); stroke-width:1.4; fill:none; stroke-dasharray:6 4}
+svg .sr-dn{stroke:var(--down); stroke-width:1.4; fill:none; stroke-dasharray:6 4}
+svg .zone{fill:var(--accent-soft)}
+svg .zone-up{fill:var(--up-soft)}
+svg .zone-dn{fill:var(--down-soft)}
+svg .dot{fill:var(--accent)}
+svg .dot-up{fill:var(--up)}
+svg .dot-dn{fill:var(--down)}
+svg .px{stroke:var(--up); stroke-width:1.6}
+svg .po{stroke:var(--down); stroke-width:1.6; fill:none}
+
+.recap{margin-top:8px}
+.recap ol{margin:8px 0 0; padding-left:1.4em; max-width:46em; color:var(--ink-2)}
+.recap li{margin:7px 0}
+.recap li b{color:var(--ink)}
+details{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px;
+  padding:12px 18px; margin:10px 0; max-width:46em;
+}
+details summary{cursor:pointer; font-weight:500; color:var(--ink)}
+details summary:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+details[open] summary{color:var(--accent-ink)}
+details .ans{margin-top:8px; padding-top:8px; border-top:1px dashed var(--line); font-size:14.5px; color:var(--ink-2)}
+details .ans p{margin:6px 0}
+
+.next{
+  margin-top:48px; padding:18px 22px; border:1px solid var(--line); border-radius:8px;
+  background:var(--surface); display:flex; justify-content:space-between; align-items:center; gap:14px; flex-wrap:wrap;
+}
+.next .lbl{font-size:12px; letter-spacing:.18em; color:var(--muted)}
+.next .ttl{font-family:var(--serif); font-weight:700; font-size:18px; margin-top:2px}
+.foot{margin-top:26px; font-size:12.5px; color:var(--muted); line-height:1.8}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <span class="book">《金融市场技术分析》学习手册 · Technical Analysis of the Financial Markets (John J. Murphy)</span>
+  <span class="part"><a href="ta-index.html">学习地图</a> · 第一阶段 地基：理念与图表</span>
+</header>
+
+<div class="layout">
+
+<nav class="sidenav" aria-label="小节导航">
+  <p class="sn-chap">第 1 站 · 技术分析的理论基础</p>
+  <a href="#top">章首 · 学习目标</a>
+  <a href="#s1">1.1 技术分析研究什么</a>
+  <a href="#s2">1.2 三大前提</a>
+  <a href="#s3">1.3 技术面与基本面</a>
+  <a href="#s4">1.4 三种批评与回应</a>
+  <a href="#s5">1.5 图表的语言</a>
+  <a href="#s6">1.6 刻度与周期</a>
+  <a href="#s7">1.7 落地：规则 · 证据 · A 股</a>
+  <a href="#recap">小结 · 术语 · 自测</a>
+</nav>
+
+<main class="article">
+
+<!-- ======================== 章首 ======================== -->
+<div class="hero" id="top">
+  <span class="chap-no">CHAPTER 01 · 第 1 站 / 共 14 站</span>
+  <h1>技术分析的理论基础</h1>
+  <p class="en">Philosophy of Technical Analysis · 含第 3 章“图表简介”要点</p>
+  <p class="lede">技术分析不是“看图算命”，而是一套<strong>有前提、有边界</strong>的推理方法：它只研究市场行为本身（价格、成交量、持仓量），押注的是<strong>人群的买卖行为有惯性、有规律</strong>。这一站做两件事：先把整套方法的三块地基（三大前提）逐一拆开检验，弄清它们什么时候成立、什么时候会塌；再学会读图这门“语言”，包括四种图表、两种刻度、三种周期，以及 A 股读图独有的三个坑。带着上一本书的怀疑来学，正是你和大多数技术派散户的区别。</p>
+
+  <div class="objectives">
+    <h2>学习目标</h2>
+    <ul>
+      <li>说清技术分析研究什么（市场行为三要素）、想回答什么问题</li>
+      <li>逐条解释三大前提，并说出每一条的软肋和学术挑战</li>
+      <li>理解技术分析与有效市场假说“前提相同、结论相反”的关键分歧</li>
+      <li>区分技术面与基本面：研究“果”与研究“因”，“分析”与“择时”</li>
+      <li>回应三种经典批评：自我实现、过去不能预测未来、随机漫步</li>
+      <li>读懂线图、柱线图、K 线图、点数图，会选算术或对数刻度，会做多周期分析</li>
+      <li>处理 A 股读图的三个特殊问题：红涨绿跌、复权、涨跌停造成的特殊 K 线</li>
+      <li>学会本手册通用的“规则卡”格式</li>
+    </ul>
+  </div>
+  <p class="colorkey">读图约定：本手册遵循 A 股习惯，<span class="up">红色 = 上涨</span>（收盘 ≥ 开盘），<span class="dn">绿色 = 下跌</span>，与欧美软件正好相反。图题标有“示意”的，是为说明原理而构造的数据，不是真实行情。</p>
+
+  <nav class="chapmap" aria-label="本章导览">
+    <a href="#s1">1.1 研究什么</a>
+    <a href="#s2">1.2 三大前提</a>
+    <a href="#s3">1.3 技术面与基本面</a>
+    <a href="#s4">1.4 三种批评</a>
+    <a href="#s5">1.5 图表语言</a>
+    <a href="#s6">1.6 刻度与周期</a>
+    <a href="#s7">1.7 落地</a>
+    <a href="#recap">小结与自测</a>
+  </nav>
+</div>
+
+<!-- ======================== 1.1 ======================== -->
+<section class="ch" id="s1">
+  <h2 class="sec"><span class="no">1.1</span>技术分析到底研究什么</h2>
+  <p class="sec-en">WHAT TECHNICAL ANALYSIS STUDIES</p>
+
+  <div class="prose">
+    <p>墨菲给出的定义只有一句话：技术分析是<strong>以预测价格趋势为目的、主要借助图表来研究市场行为</strong>的方法。关键词是“市场行为”<span class="en-term">（market action）</span>，它只包括三样东西：</p>
+    <ul>
+      <li><strong>价格</strong>：买卖双方最终在哪里成交，这是一切的核心；</li>
+      <li><strong>成交量</strong>：这个价格背后有多少真金白银，衡量的是力度和参与度；</li>
+      <li><strong>持仓量</strong>（期货特有）：市场里还有多少份合约没有平仓，衡量的是有多少资金仍然“押在桌上”。</li>
+    </ul>
+    <p>注意这份清单里<strong>没有</strong>什么：没有市盈率，没有财报，没有新闻。不是技术分析认为这些不重要，而是它认为这些东西<strong>最终都会以买卖订单的形式</strong>落到价格和成交量上，所以只需要盯住终点。</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 1-1</span>因与果：技术分析站在链条的末端</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 300" role="img" aria-label="因果链：基本面、资金与情绪、消息与预期三类原因汇成买卖订单与供求力量，最终表现为价格、成交量、持仓量；价格变化又反过来影响人的行为">
+<defs>
+  <marker id="f11-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/></marker>
+  <marker id="f11-ara" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/></marker>
+</defs>
+<text class="hi" x="105" y="24" text-anchor="middle">基本面分析：研究“为什么”（因）</text>
+<line class="edge-acc" x1="20" y1="34" x2="190" y2="34"/>
+<text class="hi" x="600" y="24" text-anchor="middle">技术分析：研究“发生了什么”（果）</text>
+<line class="edge-acc" x1="500" y1="34" x2="700" y2="34"/>
+
+<rect class="node" x="20" y="48" width="170" height="58" rx="8"/>
+<text class="nt" x="105" y="72" text-anchor="middle">基本面</text>
+<text class="nd" x="105" y="92" text-anchor="middle">盈利 · 利率 · 政策 · 供需</text>
+<rect class="node" x="20" y="120" width="170" height="58" rx="8"/>
+<text class="nt" x="105" y="144" text-anchor="middle">资金与情绪</text>
+<text class="nd" x="105" y="164" text-anchor="middle">恐惧 · 贪婪 · 杠杆 · 从众</text>
+<rect class="node" x="20" y="192" width="170" height="58" rx="8"/>
+<text class="nt" x="105" y="216" text-anchor="middle">消息与预期</text>
+<text class="nd" x="105" y="236" text-anchor="middle">公告 · 传闻 · 预期差</text>
+
+<rect class="node" x="262" y="110" width="176" height="78" rx="8"/>
+<text class="nt" x="350" y="142" text-anchor="middle">买卖订单</text>
+<text class="nd" x="350" y="164" text-anchor="middle">供求力量此消彼长</text>
+
+<rect class="node node-hi" x="500" y="96" width="200" height="104" rx="8"/>
+<text class="nt" x="600" y="128" text-anchor="middle">市场行为</text>
+<text class="nd" x="600" y="152" text-anchor="middle">价格 · 成交量 · 持仓量</text>
+<text class="nd" x="600" y="174" text-anchor="middle">（图表记录的全部内容）</text>
+
+<path class="edge" d="M190 77 L258 132" marker-end="url(#f11-ar)"/>
+<path class="edge" d="M190 149 H258" marker-end="url(#f11-ar)"/>
+<path class="edge" d="M190 221 L258 166" marker-end="url(#f11-ar)"/>
+<path class="edge" d="M438 149 H496" marker-end="url(#f11-ar)"/>
+
+<path class="edge-soft" d="M600 200 V266 H105 V254" marker-end="url(#f11-ar)"/>
+<text class="elabel" x="352" y="286" text-anchor="middle">反馈：价格变化本身又改变人的行为（追涨杀跌、止损盘、爆仓平仓）</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>所有影响价格的原因（基本面、情绪、消息）都必须经过同一个关口：有人下单买、有人下单卖。基本面分析沿着链条往前追“为什么”，技术分析只读末端的“发生了什么”。底部那条虚线反馈环常被忽略，却是技术分析最有力的理由之一：价格上涨本身会吸引追涨盘，价格下跌会触发止损和强制平仓，<b>价格不只是结果，也是下一轮行为的原因</b>。</figcaption>
+  </figure>
+
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>技术分析者像一个看脚印追踪猎物的猎人。他不需要知道鹿为什么往东走（也许饿了，也许被狼追），只需要读懂脚印：<strong>方向</strong>（价格趋势）、<strong>深浅</strong>（成交量，脚印越深说明越用力）、<strong>新旧</strong>（时间周期），以及林子里还剩多少头鹿（持仓量）。基本面分析者则像动物学家，研究鹿的习性和食物来源。两者都能找到鹿，但猎人在“什么时候开枪”这件事上更有优势。</p>
+  </div>
+
+  <div class="prose">
+    <h3>它想回答的四个问题</h3>
+    <p>技术分析常被误解为“预测明天涨还是跌”。更准确地说，一个合格的技术分析要回答四个问题：</p>
+    <ol>
+      <li><strong>现在谁占上风？</strong>买方还是卖方，力量在增强还是衰竭；</li>
+      <li><strong>这个状态会延续还是转变？</strong>趋势还在，还是出现了反转的迹象；</li>
+      <li><strong>在哪里进、在哪里出？</strong>具体的价位和条件；</li>
+      <li><strong>如果我错了，在哪里认错？</strong>一个明确的失效价位。</li>
+    </ol>
+    <p>第 4 个问题是技术分析<strong>独有</strong>的优势。基本面分析者认定一只股票值 20 元，股价跌到 12 元时，他的模型会说“更便宜了，该加仓”，没有一个天然的认错点；而技术分析的每一个判断都自带失效条件，比如“跌破这条趋势线，上升趋势的判断就作废”。这让它天然适合做<strong>风险管理和交易执行</strong>，这一点会贯穿全书，并在第 13 站（资金管理）达到顶点。</p>
+  </div>
+
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p>“技术分析 = 预测涨跌，准确率越高越好。”实际上，技术分析的输出是<strong>条件化的应对方案</strong>：“如果放量突破 12 元，就做多，止损 11.4 元；如果跌破 10.8 元，就离场。”成熟的交易者胜率常常只有四到五成，靠的是“对的时候赚得多、错的时候亏得少”。只追求准确率的人，最后往往在一两次重大错误里输光所有利润。</p>
+  </div>
+</section>
+
+<!-- ======================== 1.2 ======================== -->
+<section class="ch" id="s2">
+  <h2 class="sec"><span class="no">1.2</span>三大前提：整套方法的地基</h2>
+  <p class="sec-en">THE THREE PREMISES</p>
+
+  <div class="prose">
+    <p>技术分析的全部大厦建在三个前提上。不接受它们，后面的一切都无从谈起；但盲目接受，你迟早会被市场教训。所以对每一条，我们都问三个问题：<strong>它说什么？它推出什么？它的软肋在哪？</strong></p>
+    <h3><span class="tag">前提一</span>市场行为包容消化一切</h3>
+    <p>任何能影响价格的因素，无论是公司盈利、央行加息、地缘冲突，还是投资者的恐惧和贪婪，<strong>都会通过买卖订单反映到价格上</strong>。需求大于供给，价格就涨；供给大于需求，价格就跌。技术分析者因此推论：既然价格已经消化了一切，那么研究价格就等于间接研究了所有因素。墨菲说得很直白：图表分析者其实是在<strong>间接地研究基本面</strong>。</p>
+    <p>更进一步，价格往往<strong>领先</strong>于已知的基本面。重大行情启动时，常常是价格先动，原因几个月后才在新闻和财报里出现。“买预期，卖事实”这句交易谚语，说的就是这个现象：</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 1-2</span>买预期，卖事实：价格跑在消息前面<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 340" role="img" aria-label="示意图：利好公告前价格已持续上涨约四成，公告当日放出天量并见顶，此后回落">
+<defs><marker id="f12-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/></marker><marker id="f12-ara" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/></marker></defs>
+<!-- kchart: n=62 L=52 step=10.516 x(i)=L+step*(i+0.5) price[9.626,15.079] y∈[14,240] -->
+<line class="axis" x1="52" y1="14" x2="52" y2="240"/>
+<line class="grid" x1="52" y1="224.5" x2="704" y2="224.5"/>
+<text class="tick" x="46" y="228.5" text-anchor="end">10</text>
+<line class="grid" x1="52" y1="141.6" x2="704" y2="141.6"/>
+<text class="tick" x="46" y="145.6" text-anchor="end">12</text>
+<line class="grid" x1="52" y1="58.7" x2="704" y2="58.7"/>
+<text class="tick" x="46" y="62.7" text-anchor="end">14</text>
+<line class="axis" x1="52" y1="240" x2="704" y2="240"/>
+<line class="wd" x1="57.3" y1="223.3" x2="57.3" y2="227"/>
+<rect class="cd" x="54" y="224.7" width="6.5" height="1"/>
+<line class="wu" x1="67.8" y1="217.8" x2="67.8" y2="226"/>
+<rect class="cu" x="64.5" y="219.5" width="6.5" height="4.2"/>
+<line class="wd" x1="78.3" y1="217" x2="78.3" y2="226.3"/>
+<rect class="cd" x="75" y="220.1" width="6.5" height="4.5"/>
+<line class="wu" x1="88.8" y1="213.7" x2="88.8" y2="229.7"/>
+<rect class="cu" x="85.5" y="216.5" width="6.5" height="9.1"/>
+<line class="wd" x1="99.3" y1="214.7" x2="99.3" y2="221.4"/>
+<rect class="cd" x="96.1" y="217.5" width="6.5" height="1.6"/>
+<line class="wu" x1="109.8" y1="211.5" x2="109.8" y2="221.2"/>
+<rect class="cu" x="106.6" y="216" width="6.5" height="1.9"/>
+<line class="wd" x1="120.4" y1="214.7" x2="120.4" y2="220.7"/>
+<rect class="cd" x="117.1" y="216.6" width="6.5" height="2.5"/>
+<line class="wu" x1="130.9" y1="207.4" x2="130.9" y2="222.5"/>
+<rect class="cu" x="127.6" y="212.2" width="6.5" height="7.4"/>
+<line class="wu" x1="141.4" y1="203.7" x2="141.4" y2="214.9"/>
+<rect class="cu" x="138.1" y="208.5" width="6.5" height="2.3"/>
+<line class="wu" x1="151.9" y1="205.3" x2="151.9" y2="209.1"/>
+<rect class="cu" x="148.6" y="205.6" width="6.5" height="3"/>
+<line class="wu" x1="162.4" y1="196.8" x2="162.4" y2="205.6"/>
+<rect class="cu" x="159.2" y="198.3" width="6.5" height="6.2"/>
+<line class="wu" x1="172.9" y1="189" x2="172.9" y2="200.7"/>
+<rect class="cu" x="169.7" y="189.2" width="6.5" height="10.9"/>
+<line class="wu" x1="183.5" y1="185.3" x2="183.5" y2="193.4"/>
+<rect class="cu" x="180.2" y="186.8" width="6.5" height="1.4"/>
+<line class="wu" x1="194" y1="177.6" x2="194" y2="186.2"/>
+<rect class="cu" x="190.7" y="179" width="6.5" height="5.9"/>
+<line class="wd" x1="204.5" y1="173.4" x2="204.5" y2="186.5"/>
+<rect class="cd" x="201.2" y="178" width="6.5" height="4.5"/>
+<line class="wu" x1="215" y1="172.8" x2="215" y2="187.9"/>
+<rect class="cu" x="211.7" y="175.5" width="6.5" height="8.2"/>
+<line class="wu" x1="225.5" y1="166.9" x2="225.5" y2="179"/>
+<rect class="cu" x="222.3" y="170.1" width="6.5" height="6.7"/>
+<line class="wu" x1="236" y1="161.5" x2="236" y2="170.7"/>
+<rect class="cu" x="232.8" y="163.5" width="6.5" height="4.9"/>
+<line class="wu" x1="246.5" y1="157.1" x2="246.5" y2="169.5"/>
+<rect class="cu" x="243.3" y="161.1" width="6.5" height="3.7"/>
+<line class="wu" x1="257.1" y1="149.7" x2="257.1" y2="165.2"/>
+<rect class="cu" x="253.8" y="150" width="6.5" height="11.3"/>
+<line class="wu" x1="267.6" y1="143.8" x2="267.6" y2="155.8"/>
+<rect class="cu" x="264.3" y="148" width="6.5" height="4.1"/>
+<line class="wd" x1="278.1" y1="145.1" x2="278.1" y2="156"/>
+<rect class="cd" x="274.8" y="146.5" width="6.5" height="6.1"/>
+<line class="wd" x1="288.6" y1="146.7" x2="288.6" y2="155.9"/>
+<rect class="cd" x="285.4" y="152" width="6.5" height="3.8"/>
+<line class="wd" x1="299.1" y1="151.2" x2="299.1" y2="163.8"/>
+<rect class="cd" x="295.9" y="154.7" width="6.5" height="4.4"/>
+<line class="wd" x1="309.6" y1="155" x2="309.6" y2="164.2"/>
+<rect class="cd" x="306.4" y="157.8" width="6.5" height="1.6"/>
+<line class="wd" x1="320.2" y1="159.2" x2="320.2" y2="172"/>
+<rect class="cd" x="316.9" y="160.6" width="6.5" height="7.7"/>
+<line class="wu" x1="330.7" y1="158.6" x2="330.7" y2="170.4"/>
+<rect class="cu" x="327.4" y="164.1" width="6.5" height="4.6"/>
+<line class="wu" x1="341.2" y1="156.4" x2="341.2" y2="168.9"/>
+<rect class="cu" x="337.9" y="158.3" width="6.5" height="7.4"/>
+<line class="wu" x1="351.7" y1="148.2" x2="351.7" y2="165.1"/>
+<rect class="cu" x="348.4" y="149.3" width="6.5" height="10.8"/>
+<line class="wu" x1="362.2" y1="135.6" x2="362.2" y2="150.7"/>
+<rect class="cu" x="359" y="138.2" width="6.5" height="9.3"/>
+<line class="wu" x1="372.7" y1="129.9" x2="372.7" y2="143.8"/>
+<rect class="cu" x="369.5" y="131.7" width="6.5" height="8.1"/>
+<line class="wu" x1="383.3" y1="115.2" x2="383.3" y2="138"/>
+<rect class="cu" x="380" y="120.3" width="6.5" height="13.4"/>
+<line class="wu" x1="393.8" y1="103.9" x2="393.8" y2="124.9"/>
+<rect class="cu" x="390.5" y="108.8" width="6.5" height="11.1"/>
+<line class="wu" x1="404.3" y1="100.4" x2="404.3" y2="114.2"/>
+<rect class="cu" x="401" y="105.3" width="6.5" height="3.3"/>
+<line class="wu" x1="414.8" y1="89.3" x2="414.8" y2="108.8"/>
+<rect class="cu" x="411.5" y="93.6" width="6.5" height="10.6"/>
+<line class="wu" x1="425.3" y1="81.6" x2="425.3" y2="96.4"/>
+<rect class="cu" x="422.1" y="82.9" width="6.5" height="9.4"/>
+<line class="wu" x1="435.8" y1="70.8" x2="435.8" y2="88"/>
+<rect class="cu" x="432.6" y="74.2" width="6.5" height="7.4"/>
+<line class="wu" x1="446.4" y1="66.7" x2="446.4" y2="74.1"/>
+<rect class="cu" x="443.1" y="72.5" width="6.5" height="1"/>
+<line class="wu" x1="456.9" y1="59.3" x2="456.9" y2="77.7"/>
+<rect class="cu" x="453.6" y="63.2" width="6.5" height="8.7"/>
+<line class="wu" x1="467.4" y1="39.3" x2="467.4" y2="67.5"/>
+<rect class="cu" x="464.1" y="45.3" width="6.5" height="19.8"/>
+<line class="wu" x1="477.9" y1="24.3" x2="477.9" y2="46.9"/>
+<rect class="cu" x="474.6" y="28.5" width="6.5" height="15.3"/>
+<line class="wd" x1="488.4" y1="26.4" x2="488.4" y2="45.8"/>
+<rect class="cd" x="485.2" y="30.4" width="6.5" height="9.8"/>
+<line class="wd" x1="498.9" y1="34.4" x2="498.9" y2="49.5"/>
+<rect class="cd" x="495.7" y="38.7" width="6.5" height="9.5"/>
+<line class="wd" x1="509.5" y1="45.7" x2="509.5" y2="64.5"/>
+<rect class="cd" x="506.2" y="48.6" width="6.5" height="14.2"/>
+<line class="wd" x1="520" y1="60.9" x2="520" y2="63.8"/>
+<rect class="cd" x="516.7" y="62.5" width="6.5" height="1"/>
+<line class="wd" x1="530.5" y1="56.6" x2="530.5" y2="72.3"/>
+<rect class="cd" x="527.2" y="62.7" width="6.5" height="6.4"/>
+<line class="wd" x1="541" y1="65.2" x2="541" y2="83.1"/>
+<rect class="cd" x="537.7" y="71.1" width="6.5" height="7.7"/>
+<line class="wd" x1="551.5" y1="79.1" x2="551.5" y2="87"/>
+<rect class="cd" x="548.3" y="81.2" width="6.5" height="5.7"/>
+<line class="wd" x1="562" y1="85" x2="562" y2="91.7"/>
+<rect class="cd" x="558.8" y="88.4" width="6.5" height="1"/>
+<line class="wd" x1="572.5" y1="89.7" x2="572.5" y2="99.7"/>
+<rect class="cd" x="569.3" y="91.2" width="6.5" height="8.1"/>
+<line class="wd" x1="583.1" y1="95.6" x2="583.1" y2="104.4"/>
+<rect class="cd" x="579.8" y="98.4" width="6.5" height="1"/>
+<line class="wu" x1="593.6" y1="97.7" x2="593.6" y2="106.5"/>
+<rect class="cu" x="590.3" y="98.5" width="6.5" height="1.9"/>
+<line class="wd" x1="604.1" y1="96" x2="604.1" y2="103.6"/>
+<rect class="cd" x="600.8" y="98.5" width="6.5" height="1.5"/>
+<line class="wu" x1="614.6" y1="88.7" x2="614.6" y2="104.8"/>
+<rect class="cu" x="611.4" y="90.4" width="6.5" height="9.3"/>
+<line class="wd" x1="625.1" y1="85.8" x2="625.1" y2="94.5"/>
+<rect class="cd" x="621.9" y="88.4" width="6.5" height="1"/>
+<line class="wu" x1="635.6" y1="83" x2="635.6" y2="92.7"/>
+<rect class="cu" x="632.4" y="83.3" width="6.5" height="5"/>
+<line class="wd" x1="646.2" y1="78.1" x2="646.2" y2="95.3"/>
+<rect class="cd" x="642.9" y="82.7" width="6.5" height="9.7"/>
+<line class="wd" x1="656.7" y1="90.2" x2="656.7" y2="103.9"/>
+<rect class="cd" x="653.4" y="92.9" width="6.5" height="10.9"/>
+<line class="wd" x1="667.2" y1="103" x2="667.2" y2="120.8"/>
+<rect class="cd" x="663.9" y="103.8" width="6.5" height="12"/>
+<line class="wd" x1="677.7" y1="113.6" x2="677.7" y2="122.1"/>
+<rect class="cd" x="674.4" y="114.5" width="6.5" height="3.4"/>
+<line class="wd" x1="688.2" y1="116.9" x2="688.2" y2="134.2"/>
+<rect class="cd" x="685" y="117.9" width="6.5" height="10.2"/>
+<line class="wd" x1="698.7" y1="127.2" x2="698.7" y2="135.5"/>
+<rect class="cd" x="695.5" y="128.4" width="6.5" height="5"/>
+<line class="axis" x1="52" y1="252" x2="52" y2="314"/>
+<line class="axis" x1="52" y1="314" x2="704" y2="314"/>
+<rect class="vd" x="54" y="303.9" width="6.5" height="10.1"/>
+<rect class="vu" x="64.5" y="301" width="6.5" height="13"/>
+<rect class="vd" x="75" y="304.8" width="6.5" height="9.2"/>
+<rect class="vu" x="85.5" y="304.5" width="6.5" height="9.5"/>
+<rect class="vd" x="96.1" y="305" width="6.5" height="9"/>
+<rect class="vu" x="106.6" y="301.9" width="6.5" height="12.1"/>
+<rect class="vd" x="117.1" y="301.4" width="6.5" height="12.6"/>
+<rect class="vu" x="127.6" y="299.6" width="6.5" height="14.4"/>
+<rect class="vu" x="138.1" y="300.9" width="6.5" height="13.1"/>
+<rect class="vu" x="148.6" y="300.4" width="6.5" height="13.6"/>
+<rect class="vu" x="159.2" y="299.6" width="6.5" height="14.4"/>
+<rect class="vu" x="169.7" y="302.1" width="6.5" height="11.9"/>
+<rect class="vu" x="180.2" y="303.2" width="6.5" height="10.8"/>
+<rect class="vu" x="190.7" y="303.5" width="6.5" height="10.5"/>
+<rect class="vd" x="201.2" y="301.4" width="6.5" height="12.6"/>
+<rect class="vu" x="211.7" y="301.7" width="6.5" height="12.3"/>
+<rect class="vu" x="222.3" y="303.2" width="6.5" height="10.8"/>
+<rect class="vu" x="232.8" y="298" width="6.5" height="16"/>
+<rect class="vu" x="243.3" y="299.9" width="6.5" height="14.1"/>
+<rect class="vu" x="253.8" y="302.2" width="6.5" height="11.8"/>
+<rect class="vu" x="264.3" y="301.8" width="6.5" height="12.2"/>
+<rect class="vd" x="274.8" y="299.8" width="6.5" height="14.2"/>
+<rect class="vd" x="285.4" y="297.7" width="6.5" height="16.3"/>
+<rect class="vd" x="295.9" y="298.5" width="6.5" height="15.5"/>
+<rect class="vd" x="306.4" y="300.3" width="6.5" height="13.7"/>
+<rect class="vd" x="316.9" y="300.9" width="6.5" height="13.1"/>
+<rect class="vu" x="327.4" y="297.3" width="6.5" height="16.7"/>
+<rect class="vu" x="337.9" y="299.8" width="6.5" height="14.2"/>
+<rect class="vu" x="348.4" y="292.3" width="6.5" height="21.7"/>
+<rect class="vu" x="359" y="297.5" width="6.5" height="16.5"/>
+<rect class="vu" x="369.5" y="296.8" width="6.5" height="17.2"/>
+<rect class="vu" x="380" y="295.8" width="6.5" height="18.2"/>
+<rect class="vu" x="390.5" y="297.1" width="6.5" height="16.9"/>
+<rect class="vu" x="401" y="299.2" width="6.5" height="14.8"/>
+<rect class="vu" x="411.5" y="296.4" width="6.5" height="17.6"/>
+<rect class="vu" x="422.1" y="290.6" width="6.5" height="23.4"/>
+<rect class="vu" x="432.6" y="294" width="6.5" height="20"/>
+<rect class="vu" x="443.1" y="290.7" width="6.5" height="23.3"/>
+<rect class="vu" x="453.6" y="290.4" width="6.5" height="23.6"/>
+<rect class="vu" x="464.1" y="286.8" width="6.5" height="27.2"/>
+<rect class="vu" x="474.6" y="256.6" width="6.5" height="57.4"/>
+<rect class="vd" x="485.2" y="275.2" width="6.5" height="38.8"/>
+<rect class="vd" x="495.7" y="285.9" width="6.5" height="28.1"/>
+<rect class="vd" x="506.2" y="282.9" width="6.5" height="31.1"/>
+<rect class="vd" x="516.7" y="291" width="6.5" height="23"/>
+<rect class="vd" x="527.2" y="294.9" width="6.5" height="19.1"/>
+<rect class="vd" x="537.7" y="293.6" width="6.5" height="20.4"/>
+<rect class="vd" x="548.3" y="298.3" width="6.5" height="15.7"/>
+<rect class="vd" x="558.8" y="297.1" width="6.5" height="16.9"/>
+<rect class="vd" x="569.3" y="289.8" width="6.5" height="24.2"/>
+<rect class="vd" x="579.8" y="296.5" width="6.5" height="17.5"/>
+<rect class="vu" x="590.3" y="295.3" width="6.5" height="18.7"/>
+<rect class="vd" x="600.8" y="296.2" width="6.5" height="17.8"/>
+<rect class="vu" x="611.4" y="299.7" width="6.5" height="14.3"/>
+<rect class="vd" x="621.9" y="295" width="6.5" height="19"/>
+<rect class="vu" x="632.4" y="299.6" width="6.5" height="14.4"/>
+<rect class="vd" x="642.9" y="295.8" width="6.5" height="18.2"/>
+<rect class="vd" x="653.4" y="301" width="6.5" height="13"/>
+<rect class="vd" x="663.9" y="297.9" width="6.5" height="16.1"/>
+<rect class="vd" x="674.4" y="302.6" width="6.5" height="11.4"/>
+<rect class="vd" x="685" y="298.8" width="6.5" height="15.2"/>
+<rect class="vd" x="695.5" y="304" width="6.5" height="10"/>
+<text class="lg" x="58" y="264">成交量</text>
+<text class="tick" x="57.3" y="331" text-anchor="middle">第 1 周</text>
+<text class="tick" x="267.6" y="331" text-anchor="middle">第 5 周</text>
+<text class="tick" x="477.9" y="331" text-anchor="middle">第 9 周</text>
+<text class="tick" x="688.2" y="331" text-anchor="middle">第 13 周</text>
+<line class="sr-up" x1="477.9" y1="14" x2="477.9" y2="314"/>
+<text class="ut" x="481.9" y="26">利好公告日</text>
+<text class="pv" x="246.5" y="75.3" text-anchor="middle">公告之前：价格已先涨约 40%</text>
+<text class="elabel" x="246.5" y="91.9" text-anchor="middle">（知情资金、预期在提前交易）</text>
+<text class="pv" x="614.6" y="54.6" text-anchor="middle">公告之后：利好兑现，见顶回落</text>
+<text class="hi" x="492.4" y="266.6" text-anchor="start">← 公告日天量</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>利好公告前的两个多月，价格已经涨了约四成，提前知道或提前预期的资金一直在买。公告当天成交量暴增到平时的三倍多，这是“最后一批买家”在新闻刺激下集中进场；而早先的买家正好把筹码卖给他们。当所有人都知道这个利好时，已经没有新的买家可以推高价格了。<b>消息不是行情的起点，往往是终点。</b></figcaption>
+  </figure>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>那些找不到原因的大涨大跌</h4>
+    <p>1989 年，Cutler、Poterba 和 Summers 三位经济学家做了一件很朴素的事：把 1941–1987 年标普 500 指数<strong>单日波动最大的 50 天</strong>逐一挑出来，翻当天的《纽约时报》，看看到底发生了什么。结果相当尴尬：<strong>大多数日子找不到足以解释这么大波动的重大新闻</strong>。最典型的就是 1987 年 10 月 19 日“黑色星期一”，道琼斯指数单日暴跌 22.6%，至今没有公认的“导火索”。</p>
+    <p class="takeaway">这个研究对技术分析是一把双刃剑。一方面，它支持“别猜原因，看价格”：如果连事后都找不到原因，事前去猜更没有意义。另一方面，它说明价格包容的<strong>不只是信息，还有情绪、杠杆和人群互动</strong>，也就是噪声。“包容一切”包括包容非理性，这正是技术分析可能有用的地方，也是它容易被噪声愚弄的地方。</p>
+  </div>
+
+  <div class="prose">
+    <p><strong>软肋：</strong>价格只能包容<strong>已经发生、并且已经被交易</strong>的信息。突发政策、黑天鹅事件这类“未来信息”，图表上不会有任何预告，它们会以<strong>跳空缺口</strong>的形式砸进价格（第 3 站讲缺口）。1.7 节的 A 股案例会让你看到这一点有多真实。</p>
+
+    <h3><span class="tag">前提二</span>价格以趋势方式演变</h3>
+    <p>这是技术分析的心脏。墨菲说，研究价格图表的全部意义，就是<strong>在趋势发展的早期把它识别出来，然后顺着趋势交易</strong>。由此推出一条推论：<strong>一个已经形成的趋势，延续下去的可能性大于反转</strong>，直到出现明确的反转信号为止。这其实就是物理学的惯性定律：运动中的物体会保持运动，除非有外力让它停下。</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 1-3</span>趋势的惯性：更高的高点，更高的低点<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 320" role="img" aria-label="示意图：上升趋势由一连串更高的高点与更高的低点组成，连接低点得到上升趋势线">
+<defs><marker id="f13-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/></marker><marker id="f13-ara" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/></marker></defs>
+<!-- kchart: n=72 L=52 step=9.056 x(i)=L+step*(i+0.5) price[9.584,17.321] y∈[14,294] -->
+<line class="axis" x1="52" y1="14" x2="52" y2="294"/>
+<line class="grid" x1="52" y1="278.9" x2="704" y2="278.9"/>
+<text class="tick" x="46" y="282.9" text-anchor="end">10</text>
+<line class="grid" x1="52" y1="206.6" x2="704" y2="206.6"/>
+<text class="tick" x="46" y="210.6" text-anchor="end">12</text>
+<line class="grid" x1="52" y1="134.2" x2="704" y2="134.2"/>
+<text class="tick" x="46" y="138.2" text-anchor="end">14</text>
+<line class="grid" x1="52" y1="61.8" x2="704" y2="61.8"/>
+<text class="tick" x="46" y="65.8" text-anchor="end">16</text>
+<line class="axis" x1="52" y1="294" x2="704" y2="294"/>
+<line class="wu" x1="56.5" y1="276.9" x2="56.5" y2="280.9"/>
+<rect class="cu" x="53.7" y="277.8" width="5.6" height="1"/>
+<line class="wu" x1="65.6" y1="269.1" x2="65.6" y2="281.3"/>
+<rect class="cu" x="62.8" y="271.2" width="5.6" height="6.2"/>
+<line class="wu" x1="74.6" y1="259.8" x2="74.6" y2="270.6"/>
+<rect class="cu" x="71.8" y="262.8" width="5.6" height="7.8"/>
+<line class="wu" x1="83.7" y1="257.1" x2="83.7" y2="265.2"/>
+<rect class="cu" x="80.9" y="258.4" width="5.6" height="3.4"/>
+<line class="wu" x1="92.8" y1="247.8" x2="92.8" y2="260.6"/>
+<rect class="cu" x="89.9" y="251.5" width="5.6" height="8.1"/>
+<line class="wu" x1="101.8" y1="240.4" x2="101.8" y2="252.7"/>
+<rect class="cu" x="99" y="245.1" width="5.6" height="6.5"/>
+<line class="wu" x1="110.9" y1="231.3" x2="110.9" y2="250.3"/>
+<rect class="cu" x="108.1" y="233.2" width="5.6" height="12.4"/>
+<line class="wu" x1="119.9" y1="224.7" x2="119.9" y2="237.5"/>
+<rect class="cu" x="117.1" y="229" width="5.6" height="5"/>
+<line class="wu" x1="129" y1="217.7" x2="129" y2="228.9"/>
+<rect class="cu" x="126.2" y="221" width="5.6" height="7.3"/>
+<line class="wd" x1="138" y1="217.5" x2="138" y2="228.6"/>
+<rect class="cd" x="135.2" y="221.5" width="5.6" height="4.1"/>
+<line class="wd" x1="147.1" y1="224.3" x2="147.1" y2="232.7"/>
+<rect class="cd" x="144.3" y="226" width="5.6" height="2.3"/>
+<line class="wd" x1="156.1" y1="226.1" x2="156.1" y2="243.2"/>
+<rect class="cd" x="153.3" y="227.5" width="5.6" height="10.9"/>
+<line class="wd" x1="165.2" y1="236.1" x2="165.2" y2="245.4"/>
+<rect class="cd" x="162.4" y="237.7" width="5.6" height="4.6"/>
+<line class="wd" x1="174.3" y1="239.1" x2="174.3" y2="250.2"/>
+<rect class="cd" x="171.4" y="241.7" width="5.6" height="7.4"/>
+<line class="wu" x1="183.3" y1="237.1" x2="183.3" y2="249.8"/>
+<rect class="cu" x="180.5" y="241.6" width="5.6" height="6.8"/>
+<line class="wu" x1="192.4" y1="225.9" x2="192.4" y2="245.3"/>
+<rect class="cu" x="189.6" y="228.7" width="5.6" height="12"/>
+<line class="wu" x1="201.4" y1="221.7" x2="201.4" y2="232.4"/>
+<rect class="cu" x="198.6" y="223.2" width="5.6" height="6.6"/>
+<line class="wu" x1="210.5" y1="216.8" x2="210.5" y2="222.9"/>
+<rect class="cu" x="207.7" y="217.5" width="5.6" height="5"/>
+<line class="wu" x1="219.5" y1="203.9" x2="219.5" y2="217.6"/>
+<rect class="cu" x="216.7" y="206.1" width="5.6" height="11.1"/>
+<line class="wu" x1="228.6" y1="193.6" x2="228.6" y2="210.4"/>
+<rect class="cu" x="225.8" y="197.3" width="5.6" height="9.2"/>
+<line class="wu" x1="237.6" y1="187.6" x2="237.6" y2="196.7"/>
+<rect class="cu" x="234.8" y="190.9" width="5.6" height="5.2"/>
+<line class="wu" x1="246.7" y1="183.7" x2="246.7" y2="197.1"/>
+<rect class="cu" x="243.9" y="186" width="5.6" height="6.2"/>
+<line class="wu" x1="255.8" y1="171.1" x2="255.8" y2="187.8"/>
+<rect class="cu" x="252.9" y="175.6" width="5.6" height="11.6"/>
+<line class="wd" x1="264.8" y1="173.2" x2="264.8" y2="181.6"/>
+<rect class="cd" x="262" y="176.5" width="5.6" height="4.5"/>
+<line class="wd" x1="273.9" y1="178" x2="273.9" y2="189.3"/>
+<rect class="cd" x="271.1" y="181.7" width="5.6" height="6.3"/>
+<line class="wd" x1="282.9" y1="185.1" x2="282.9" y2="195.5"/>
+<rect class="cd" x="280.1" y="187.6" width="5.6" height="3.9"/>
+<line class="wd" x1="292" y1="191" x2="292" y2="200.7"/>
+<rect class="cd" x="289.2" y="191.1" width="5.6" height="8.9"/>
+<line class="wd" x1="301" y1="194.5" x2="301" y2="210.8"/>
+<rect class="cd" x="298.2" y="199.5" width="5.6" height="8.2"/>
+<line class="wu" x1="310.1" y1="197.1" x2="310.1" y2="209.2"/>
+<rect class="cu" x="307.3" y="197.4" width="5.6" height="10.9"/>
+<line class="wu" x1="319.1" y1="191.6" x2="319.1" y2="196.5"/>
+<rect class="cu" x="316.3" y="194" width="5.6" height="2.2"/>
+<line class="wu" x1="328.2" y1="179.3" x2="328.2" y2="198.8"/>
+<rect class="cu" x="325.4" y="184.2" width="5.6" height="10.4"/>
+<line class="wu" x1="337.3" y1="175.5" x2="337.3" y2="186.4"/>
+<rect class="cu" x="334.4" y="180" width="5.6" height="4.9"/>
+<line class="wu" x1="346.3" y1="164.6" x2="346.3" y2="184.3"/>
+<rect class="cu" x="343.5" y="168.4" width="5.6" height="13.1"/>
+<line class="wu" x1="355.4" y1="160.5" x2="355.4" y2="171.1"/>
+<rect class="cu" x="352.6" y="165.1" width="5.6" height="2.8"/>
+<line class="wu" x1="364.4" y1="151.2" x2="364.4" y2="166.5"/>
+<rect class="cu" x="361.6" y="154.6" width="5.6" height="10.8"/>
+<line class="wu" x1="373.5" y1="149.3" x2="373.5" y2="158.1"/>
+<rect class="cu" x="370.7" y="149.7" width="5.6" height="4.9"/>
+<line class="wu" x1="382.5" y1="138.7" x2="382.5" y2="152.1"/>
+<rect class="cu" x="379.7" y="141.7" width="5.6" height="8.3"/>
+<line class="wu" x1="391.6" y1="130.7" x2="391.6" y2="143.8"/>
+<rect class="cu" x="388.8" y="134.7" width="5.6" height="6.9"/>
+<line class="wd" x1="400.6" y1="133.9" x2="400.6" y2="141.8"/>
+<rect class="cd" x="397.8" y="136.1" width="5.6" height="1.5"/>
+<line class="wd" x1="409.7" y1="135.6" x2="409.7" y2="151.7"/>
+<rect class="cd" x="406.9" y="136.1" width="5.6" height="12.6"/>
+<line class="wd" x1="418.8" y1="143.8" x2="418.8" y2="156.7"/>
+<rect class="cd" x="415.9" y="149.6" width="5.6" height="4.9"/>
+<line class="wd" x1="427.8" y1="149.4" x2="427.8" y2="159.5"/>
+<rect class="cd" x="425" y="153.8" width="5.6" height="2.6"/>
+<line class="wd" x1="436.9" y1="149.7" x2="436.9" y2="168.4"/>
+<rect class="cd" x="434.1" y="155.3" width="5.6" height="10.2"/>
+<line class="wu" x1="445.9" y1="152" x2="445.9" y2="166.1"/>
+<rect class="cu" x="443.1" y="153.8" width="5.6" height="11.8"/>
+<line class="wu" x1="455" y1="142.3" x2="455" y2="155.1"/>
+<rect class="cu" x="452.2" y="143.4" width="5.6" height="10.3"/>
+<line class="wu" x1="464" y1="137.3" x2="464" y2="146"/>
+<rect class="cu" x="461.2" y="141.6" width="5.6" height="1"/>
+<line class="wu" x1="473.1" y1="131.8" x2="473.1" y2="144.9"/>
+<rect class="cu" x="470.3" y="131.8" width="5.6" height="8.4"/>
+<line class="wu" x1="482.1" y1="120.9" x2="482.1" y2="136"/>
+<rect class="cu" x="479.3" y="122.9" width="5.6" height="9.2"/>
+<line class="wu" x1="491.2" y1="117.3" x2="491.2" y2="125.1"/>
+<rect class="cu" x="488.4" y="117.3" width="5.6" height="6"/>
+<line class="wu" x1="500.3" y1="101.2" x2="500.3" y2="119.3"/>
+<rect class="cu" x="497.4" y="107.4" width="5.6" height="8.7"/>
+<line class="wu" x1="509.3" y1="99.8" x2="509.3" y2="112"/>
+<rect class="cu" x="506.5" y="103.1" width="5.6" height="5.7"/>
+<line class="wu" x1="518.4" y1="90.3" x2="518.4" y2="107"/>
+<rect class="cu" x="515.6" y="90.3" width="5.6" height="13"/>
+<line class="wu" x1="527.4" y1="84.6" x2="527.4" y2="97.3"/>
+<rect class="cu" x="524.6" y="87" width="5.6" height="4.5"/>
+<line class="wu" x1="536.5" y1="85.8" x2="536.5" y2="92.2"/>
+<rect class="cu" x="533.7" y="86" width="5.6" height="1.2"/>
+<line class="wd" x1="545.5" y1="84.9" x2="545.5" y2="95.7"/>
+<rect class="cd" x="542.7" y="85.3" width="5.6" height="6.6"/>
+<line class="wd" x1="554.6" y1="91.6" x2="554.6" y2="101.4"/>
+<rect class="cd" x="551.8" y="92" width="5.6" height="4.8"/>
+<line class="wd" x1="563.6" y1="94" x2="563.6" y2="106.6"/>
+<rect class="cd" x="560.8" y="97.9" width="5.6" height="6.3"/>
+<line class="wd" x1="572.7" y1="103.6" x2="572.7" y2="114.5"/>
+<rect class="cd" x="569.9" y="104.6" width="5.6" height="7.4"/>
+<line class="wu" x1="581.8" y1="106.6" x2="581.8" y2="117.5"/>
+<rect class="cu" x="578.9" y="109.1" width="5.6" height="3.5"/>
+<line class="wu" x1="590.8" y1="98.5" x2="590.8" y2="111.8"/>
+<rect class="cu" x="588" y="103" width="5.6" height="7"/>
+<line class="wu" x1="599.9" y1="91.2" x2="599.9" y2="110"/>
+<rect class="cu" x="597.1" y="95" width="5.6" height="9.3"/>
+<line class="wu" x1="608.9" y1="81.8" x2="608.9" y2="98.2"/>
+<rect class="cu" x="606.1" y="86.7" width="5.6" height="8.1"/>
+<line class="wu" x1="618" y1="78.2" x2="618" y2="87.4"/>
+<rect class="cu" x="615.2" y="79.6" width="5.6" height="7.2"/>
+<line class="wd" x1="627" y1="75.6" x2="627" y2="83.1"/>
+<rect class="cd" x="624.2" y="78.4" width="5.6" height="1"/>
+<line class="wu" x1="636.1" y1="63.8" x2="636.1" y2="83.7"/>
+<rect class="cu" x="633.3" y="67.9" width="5.6" height="12.1"/>
+<line class="wu" x1="645.1" y1="62.4" x2="645.1" y2="71.3"/>
+<rect class="cu" x="642.3" y="67.3" width="5.6" height="1.3"/>
+<line class="wu" x1="654.2" y1="58.8" x2="654.2" y2="70.7"/>
+<rect class="cu" x="651.4" y="60.5" width="5.6" height="7.4"/>
+<line class="wu" x1="663.3" y1="46.2" x2="663.3" y2="66.8"/>
+<rect class="cu" x="660.4" y="50.6" width="5.6" height="10.1"/>
+<line class="wu" x1="672.3" y1="48.1" x2="672.3" y2="54.4"/>
+<rect class="cu" x="669.5" y="48.2" width="5.6" height="2.1"/>
+<line class="wu" x1="681.4" y1="38.8" x2="681.4" y2="49.6"/>
+<rect class="cu" x="678.6" y="45.5" width="5.6" height="1.5"/>
+<line class="wu" x1="690.4" y1="30" x2="690.4" y2="50.9"/>
+<rect class="cu" x="687.6" y="31.6" width="5.6" height="14.9"/>
+<line class="wu" x1="699.5" y1="26.7" x2="699.5" y2="39.2"/>
+<rect class="cu" x="696.7" y="27.2" width="5.6" height="5"/>
+<line class="tl" x1="174.3" y1="250.2" x2="704" y2="85.2"/>
+<circle class="dot-dn" cx="174.3" cy="250.2" r="4"/>
+<circle class="dot-dn" cx="301" cy="210.8" r="4"/>
+<circle class="dot-dn" cx="436.9" cy="168.4" r="4"/>
+<circle class="dot-dn" cx="572.7" cy="114.5" r="4"/>
+<circle class="dot-up" cx="129" cy="217.7" r="4"/>
+<circle class="dot-up" cx="255.8" cy="171.1" r="4"/>
+<circle class="dot-up" cx="391.6" cy="130.7" r="4"/>
+<circle class="dot-up" cx="527.4" cy="84.6" r="4"/>
+<text class="ut" x="129" y="207.7" text-anchor="middle">高点 1</text>
+<text class="ut" x="255.8" y="161.1" text-anchor="middle">更高的高点</text>
+<text class="ut" x="391.6" y="120.7" text-anchor="middle">更高的高点</text>
+<text class="dt" x="174.3" y="268.2" text-anchor="middle">低点 1</text>
+<text class="dt" x="301" y="228.8" text-anchor="middle">更高的低点</text>
+<text class="dt" x="436.9" y="186.4" text-anchor="middle">更高的低点</text>
+<text class="hi" x="627" y="188.5" text-anchor="middle">上升趋势线：只要不被有效跌破，</text>
+<text class="hi" x="627" y="202.9" text-anchor="middle">默认趋势继续</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>上升趋势不是一条直线，而是一连串“涨一段、回一段”的波浪，每次回调都没有跌破上一次的低点，每次反弹都创出新高。连接回调低点就得到上升趋势线。技术分析的默认立场是：只要这个结构没有被破坏，就假定趋势继续。注意这句话的方向：<b>不是预测它会涨，而是在没有反证之前，不和它作对</b>。趋势的精确定义和画法在第 3 站（第 4 章）展开。</figcaption>
+  </figure>
+
+  <div class="prose">
+    <p><strong>趋势为什么会存在？</strong>墨菲没有深究，但《投资学》第 12 章给了我们几个有实证支持的行为学解释：</p>
+    <ul>
+      <li><strong>反应不足</strong>：人们更新观点太慢（保守主义），好消息要花几周甚至几个月才能完全反映进价格，这个“慢慢消化”的过程在图上就是趋势；</li>
+      <li><strong>处置效应</strong>：投资者急于卖出盈利的股票，这些卖盘拖慢了价格到位的速度，反而让上涨变得更持久（Frazzini，2006）；</li>
+      <li><strong>反馈交易与羊群效应</strong>：价格上涨本身吸引更多买家，形成自我强化（图 1-1 的反馈环）；</li>
+      <li><strong>大资金建仓需要时间</strong>：机构不可能一天买够几十亿，只能分批买入，这种持续的需求本身就会推出趋势。</li>
+    </ul>
+    <p><strong>软肋：</strong>市场相当多的时间并不处于明显趋势，而是在一个区间里来回震荡。交易界流行的说法是，市场只有约三分之一的时间在走趋势。顺势方法在震荡市里会被反复“打脸”：刚追进去就回落，刚止损就反弹。如何识别和应对震荡，是第 8 站（均线）和第 12 站（交易系统）的核心议题。</p>
+
+    <h3><span class="tag">前提三</span>历史会重演</h3>
+    <p>图表形态之所以有用，是因为它们反映的是<strong>人群心理</strong>，而人性中的恐惧和贪婪几百年来没有变过。一百年前交易者面对暴涨时的狂热、面对暴跌时的绝望，和今天几乎一模一样。所以过去有效的形态，未来大概率仍然有效。有句常被引用的话说得更准确：<strong>历史不会简单重复，但总押着相同的韵脚</strong>。</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 1-4</span>泡沫的典型轨迹：反复上演的情绪循环<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 330" role="img" aria-label="示意图：泡沫的典型轨迹，依次经历潜伏期、觉醒期、狂热期、见顶、否认式反弹、恐惧、投降式抛售、绝望，最后回归长期均值">
+<line class="axis" x1="30" y1="300" x2="700" y2="300"/>
+<line class="axis" x1="30" y1="30" x2="30" y2="300"/>
+<text class="atitle" x="696" y="318" text-anchor="end">时间</text>
+<text class="atitle" x="38" y="42">价格</text>
+<line class="sr" x1="30" y1="252" x2="700" y2="252"/>
+<text class="elabel" x="696" y="246" text-anchor="end">长期均值 / 合理价值</text>
+
+<rect class="zone" x="300" y="30" width="160" height="270"/>
+<text class="elabel" x="380" y="292" text-anchor="middle">狂热区：多数散户在此入场</text>
+
+<polyline class="ln1" points="40,252 70,246 100,238 130,226 150,238 170,230 200,212 230,190 250,198 262,202 290,172 320,146 350,118 380,92 405,64 420,48 430,40 440,62 455,108 467,96 477,86 490,112 505,148 525,182 545,214 565,262 580,278 595,284 615,276 640,262 670,254 695,252"/>
+
+<circle class="dot" cx="100" cy="238" r="4"/>
+<text class="pv" x="100" y="226" text-anchor="middle">潜伏期</text>
+<text class="elabel" x="100" y="270" text-anchor="middle">聪明钱悄悄买入</text>
+<circle class="dot" cx="230" cy="190" r="4"/>
+<text class="pv" x="222" y="178" text-anchor="end">觉醒期：机构入场</text>
+<circle class="dot" cx="262" cy="202" r="4"/>
+<text class="elabel" x="268" y="224">第一次回调：被震下车</text>
+<circle class="dot" cx="350" cy="118" r="4"/>
+<text class="pv" x="342" y="106" text-anchor="end">媒体关注、全民开户</text>
+<circle class="dot-up" cx="430" cy="40" r="5"/>
+<text class="ut" x="442" y="38">见顶：“这次不一样”</text>
+<circle class="dot" cx="477" cy="86" r="4"/>
+<text class="pv" x="487" y="84">否认：“只是回调”（诱多反弹）</text>
+<circle class="dot" cx="525" cy="182" r="4"/>
+<text class="pv" x="535" y="178">恐惧</text>
+<circle class="dot-dn" cx="565" cy="262" r="4"/>
+<text class="dt" x="560" y="246" text-anchor="end">投降式抛售</text>
+<circle class="dot" cx="595" cy="284" r="4"/>
+<text class="pv" x="604" y="296">绝望：“再也不碰股票”</text>
+<text class="pv" x="672" y="272" text-anchor="middle">回归均值</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>从 17 世纪荷兰郁金香、1929 年美股、2000 年互联网泡沫，到 A 股 2007 年和 2015 年两轮大牛市，情绪的轨迹惊人地相似：越到后期涨得越快，参与者越多；见顶后的第一次反弹被当成“回调结束”，套住最后一批人；下跌比上涨更快更猛，直到“再也不碰股票”的绝望出现。这张图的用处是<b>判断自己身处哪个阶段</b>，而不是预测具体点位和日期。</figcaption>
+  </figure>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>A 股的两轮泡沫：押着同一个韵脚</h4>
+    <p><strong>2005–2008 年：</strong>上证指数从 2005 年 6 月的 998 点起步，到 2007 年 10 月 16 日的 6124 点，涨了五倍多。途中的 2007 年 5 月 30 日，财政部把股票交易印花税从 1‰ 上调到 3‰，当天沪指暴跌约 6.5%，但牛市并没有结束，几个月后还创出新高。见顶后一年，指数跌到 2008 年 10 月的 1664 点，跌幅超过七成。</p>
+    <p><strong>2014–2016 年：</strong>上证指数从 2014 年上半年的 2000 点附近起步，到 2015 年 6 月 12 日的 5178 点。这一轮多了杠杆：两融余额在 2015 年 6 月达到约 2.27 万亿元的峰值，场外配资更难统计。见顶后下跌极其猛烈，连续出现“千股跌停”，到 2016 年 1 月底跌至 2638 点。</p>
+    <p class="takeaway">韵脚相同：新开户数激增、“全民炒股”、宏大叙事（“黄金十年”“改革牛”）、越涨越快的末段、见顶后的诱多反弹、比上涨更快的下跌。但细节不同：2015 年的杠杆让下跌更急；2007 年的政策利空（印花税）没能终结趋势。所以前提三告诉你的是<b>情绪阶段</b>，不是精确的点位、时间和幅度。</p>
+  </div>
+
+  <div class="prose">
+    <p><strong>软肋：</strong>一是<strong>自我毁灭</strong>：一个形态一旦人尽皆知，就会被抢跑，最后失效（《投资学》第 12 章）。二是<strong>市场结构在变</strong>：程序化交易、量化基金、注册制改革都在改变参与者结构，旧经验可能过时。三是<strong>样本太少</strong>：像泡沫这样的大周期，一个人一辈子也就遇到几次，很难做严格的统计检验。</p>
+
+    <h3>关键分歧：技术分析与有效市场假说</h3>
+    <p>细心的你会发现，前提一听起来和《投资学》第 11 章的有效市场假说<strong>几乎一样</strong>：都说价格包含了所有信息。可结论却完全相反：有效市场说“所以价格变化不可预测”，技术分析说“所以研究价格就能预测”。分歧到底在哪？</p>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <tr><th>问题</th><th>技术分析的回答</th><th>有效市场假说的回答</th></tr>
+      <tr><td>价格是否包含所有信息？</td><td>是（前提一）</td><td>是（至少包含所有历史价格信息）</td></tr>
+      <tr><td><strong>信息被吸收的速度</strong></td><td><strong>有一个过程，会留下痕迹（趋势）</strong></td><td><strong>几乎瞬间完成，不留痕迹</strong></td></tr>
+      <tr><td>价格的下一步能否从历史价格预测？</td><td>部分可以（趋势、形态）</td><td>不能（随机游走）</td></tr>
+      <tr><td>人的心理偏差</td><td>稳定存在，可以识别和利用（前提三）</td><td>会被理性套利者迅速抹平</td></tr>
+      <tr><td>谁在赚钱？</td><td>识别趋势早、纪律好的人</td><td>扣除成本后，长期看几乎没有人</td></tr>
+    </table>
+  </div>
+
+  <div class="prose">
+    <p>真正的分歧在第二行：<strong>不是“价格有没有包含信息”，而是“包含得有多快”</strong>。技术分析押注的是信息被慢慢吸收的那段过程；有效市场认为这个过程短到无法利用。《投资学》第 11、12 章的结论是：大体有效，但在某些时间尺度上（比如 3–12 个月的动量）确实存在可被统计检验的“慢”。所以对技术分析最理性的立场是：<strong>三大前提是需要被检验的假设，不是信条</strong>。这句话是整本手册的基调。</p>
+  </div>
+</section>
+
+<!-- ======================== 1.3 ======================== -->
+<section class="ch" id="s3">
+  <h2 class="sec"><span class="no">1.3</span>技术面与基本面：研究“果”与研究“因”</h2>
+  <p class="sec-en">TECHNICAL VERSUS FUNDAMENTAL ANALYSIS</p>
+
+  <div class="prose">
+    <p>两种方法要解决的是<strong>同一个问题</strong>：价格接下来往哪走。只是角度不同。基本面分析研究供求背后的经济力量，算出一个“内在价值”：价格低于价值就买，高于价值就卖。技术分析则认为，基本面的一切都已经体现在价格里，而且<strong>价格变化往往领先于基本面消息</strong>。</p>
+    <p>墨菲观察到一个现象：重大的牛市或熊市启动时，往往看不到明显的基本面变化。等基本面的证据清晰起来，行情已经走了一大段。基本面分析者在行情初期常常感到困惑，而技术分析者只需要跟着价格走。这不是玄学，股市本身就是经济的领先指标：美国经济咨商会编制的<strong>领先经济指数</strong>里，就包含标普 500 股价指数这一项。</p>
+
+    <h3>分析与择时</h3>
+    <p>墨菲区分了两件事：<strong>分析</strong>回答“该不该买、买什么”，<strong>择时</strong>回答“什么时候买、什么时候认错”。基本面擅长前者，技术面擅长后者。在期货这类高杠杆市场里，择时就是生死：你看对了大方向，但入场早了几天，中途一个 5% 的反向波动就可能让保证金打光，等不到你“正确”的那一天。</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 1-5</span>一个完整交易决策的四个问题，以及分别由谁回答</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 176" role="img" aria-label="流程图：基本面决定买什么，技术面决定什么时候买和错了在哪里认，资金管理决定买多少">
+<defs>
+  <marker id="f15-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/></marker>
+</defs>
+<rect class="node" x="20" y="24" width="158" height="92" rx="8"/>
+<text class="nt" x="99" y="50" text-anchor="middle">① 基本面 / 宏观</text>
+<text class="nd" x="99" y="72" text-anchor="middle">选方向、选标的</text>
+<text class="hi" x="99" y="98" text-anchor="middle">买什么？</text>
+<rect class="node node-hi" x="200" y="24" width="158" height="92" rx="8"/>
+<text class="nt" x="279" y="50" text-anchor="middle">② 技术面</text>
+<text class="nd" x="279" y="72" text-anchor="middle">等待入场信号</text>
+<text class="hi" x="279" y="98" text-anchor="middle">什么时候买？</text>
+<rect class="node node-hi" x="380" y="24" width="158" height="92" rx="8"/>
+<text class="nt" x="459" y="50" text-anchor="middle">③ 技术面</text>
+<text class="nd" x="459" y="72" text-anchor="middle">设定认错点（止损）</text>
+<text class="hi" x="459" y="98" text-anchor="middle">错了在哪里认？</text>
+<rect class="node" x="560" y="24" width="140" height="92" rx="8"/>
+<text class="nt" x="630" y="50" text-anchor="middle">④ 资金管理</text>
+<text class="nd" x="630" y="72" text-anchor="middle">按认错距离定仓位</text>
+<text class="hi" x="630" y="98" text-anchor="middle">买多少？</text>
+<path class="edge" d="M178 70 H196" marker-end="url(#f15-ar)"/>
+<path class="edge" d="M358 70 H376" marker-end="url(#f15-ar)"/>
+<path class="edge" d="M538 70 H556" marker-end="url(#f15-ar)"/>
+<text class="elabel" x="360" y="146" text-anchor="middle">纯技术交易者跳过 ①，直接从 ② 开始；③ 和 ④ 是技术分析独有的价值：它天然给出“认错的位置”</text>
+<text class="elabel" x="360" y="166" text-anchor="middle">③ ④ 在第 13 站（第 16 章 资金管理）讲透</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>大多数人只想到第 ① 步，于是“看好一只股票”就直接满仓买入。真正决定结果的往往是后三步。举个例子：你研究后认为某消费龙头被低估了，但它的股价还在下跌趋势里。技术面在告诉你：<b>市场还不同意你</b>。比较稳妥的做法是等价格止跌、重新站上关键位置再分批买入，并把止损设在新形成的低点下方。这样你既保留了基本面判断，又不用“接飞刀”。</figcaption>
+  </figure>
+
+  <div class="prose">
+    <h3>灵活性：任何市场，任何周期</h3>
+    <p>技术分析的第三个优势是<strong>通用</strong>。同一套趋势、形态、量价的语言，适用于股票、期货、外汇、债券、加密资产，也适用于 1 分钟图到月线图的任何周期。基本面分析者通常只能深耕一两个行业，技术分析者则可以同时跟踪几十个市场，哪里有机会就去哪里。但“通用”也有边界：不同市场的制度差异会改变图表的含义。墨菲专门比较了股票和期货，这里换成中国投资者最可能接触的两个市场：</p>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <tr><th>维度</th><th>股票（A 股）</th><th>期货（国内商品 / 股指期货）</th></tr>
+      <tr><td>杠杆</td><td>普通账户无杠杆（融资融券另计）</td><td>保证金交易，保证金比例通常在 5%–20%，杠杆约 5–20 倍</td></tr>
+      <tr><td>期限</td><td>没有到期日，可以长期持有</td><td>合约到期必须移仓；长期图表要拼接“连续合约”（附录 D）</td></tr>
+      <tr><td>做空</td><td>融券难、成本高，基本只能做多</td><td>双向交易，做空和做多一样方便</td></tr>
+      <tr><td>择时的分量</td><td>看错可以“扛”，代价是时间和心态</td><td>看错几个百分点就可能爆仓，择时就是生死</td></tr>
+      <tr><td>可用的时间跨度</td><td>可以看几十年的月线</td><td>单个合约寿命短，以中短线为主</td></tr>
+      <tr><td>独有的数据</td><td>市场宽度：涨跌家数、涨停家数（第 11 站）</td><td>持仓量（第 6 站）</td></tr>
+      <tr><td>交易制度</td><td>T+1；涨跌停（主板 ±10%）</td><td>多数品种 T+0；有涨跌停板</td></tr>
+    </table>
+  </div>
+
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p>“既然价格包容一切，我完全不用懂基本面。”纯技术交易完全可行，但懂一点基本面能帮你判断<strong>跳空的性质</strong>（业绩暴雷造成的缺口和情绪性缺口，后续走法完全不同），也能帮你理解<strong>趋势的燃料</strong>还剩多少。反过来，“基本面好的股票不会跌”同样是误区：价格是对<strong>未来</strong>的定价，好公司也可能已经被定价过高，2021 年初见顶的一批白马股就是例子。</p>
+  </div>
+</section>
+
+<!-- ======================== 1.4 ======================== -->
+<section class="ch" id="s4">
+  <h2 class="sec"><span class="no">1.4</span>三种经典批评与回应</h2>
+  <p class="sec-en">THREE CLASSIC CRITICISMS</p>
+
+  <div class="cards">
+    <div class="card">
+      <h4>批评一：自我实现的预言 <span class="en-term">Self-fulfilling prophecy</span></h4>
+      <p><span class="k">批评</span>形态之所以“灵”，只是因为大家都看同样的图、在同样的位置买卖。</p>
+      <p><span class="k">墨菲的回应</span>图形判读高度主观，同一张图十个分析师有十种看法，很难形成整齐划一的行动；何况大家的周期和策略各不相同。而且如果所有人都在同一个突破点买入，聪明的人会提前买，结果是信号被抢跑而失效，这叫“自我毁灭”，不是“自我实现”。</p>
+      <p><span class="k">更深一层</span>在少数关键价位，自我实现确实存在：Osler（2003）研究外汇订单簿发现，止损单和止盈单明显扎堆在整数价位附近。价格一旦穿过，成串的止损单被触发，行情会加速。这正是支撑阻力在微观结构上的“真身”（第 3 站展开）。</p>
+    </div>
+    <div class="card">
+      <h4>批评二：过去不能预测未来 <span class="en-term">Can the past predict the future?</span></h4>
+      <p><span class="k">批评</span>历史价格只是历史，未来是新的。</p>
+      <p><span class="k">墨菲的回应</span>所有预测方法都基于历史数据：天气预报用历史气象数据，保险精算用历史死亡率，经济学家用历史统计。只用过去预测未来，不是技术分析独有的缺陷。</p>
+      <p><span class="k">更深一层</span>真正的问题不是“能不能用过去”，而是“过去的规律<strong>稳定吗</strong>”。这需要统计学来回答：在一段数据里发现的规律，必须在另一段<strong>没用过的数据</strong>（样本外）里依然成立，才算数。这就是日后回测的核心原则。</p>
+    </div>
+    <div class="card">
+      <h4>批评三：随机漫步 <span class="en-term">Random walk theory</span></h4>
+      <p><span class="k">批评</span>价格变化前后独立，像抛硬币一样，历史走势对未来毫无信息量。</p>
+      <p><span class="k">墨菲的回应</span>市场看起来随机，往往是因为短期噪声太多、我们还没找到规律；从长期图表看，持续多年的趋势一目了然，很难说是纯随机。</p>
+      <p><span class="k">更深一层</span>学术研究的结论介于两者之间：日度价格的自相关接近零，简单的“昨天涨今天还涨”赚不到钱；但在 3–12 个月的尺度上存在动量，在更短或更长的尺度上存在反转。随机漫步是一个很好的<strong>“零假设”</strong>：任何规律都要先证明自己不是随机产生的。</p>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p>第三种批评最值得认真对待，因为它揭示了一个关于我们自己的事实：<strong>人脑是一台过度活跃的模式识别机器</strong>。看看下面这张图：</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 1-6</span>你能从这张图里看出趋势、支撑和阻力吗？<span class="sch">抛硬币生成</span></p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 300" role="img" aria-label="抛硬币生成的随机价格序列，画成 K 线后看起来像有趋势、支撑和阻力">
+<defs><marker id="f16-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/></marker><marker id="f16-ara" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/></marker></defs>
+<!-- kchart: n=110 L=52 step=5.927 x(i)=L+step*(i+0.5) price[46.258,53.122] y∈[14,274] -->
+<line class="axis" x1="52" y1="14" x2="52" y2="274"/>
+<line class="grid" x1="52" y1="208" x2="704" y2="208"/>
+<text class="tick" x="46" y="212" text-anchor="end">48</text>
+<line class="grid" x1="52" y1="132.3" x2="704" y2="132.3"/>
+<text class="tick" x="46" y="136.3" text-anchor="end">50</text>
+<line class="grid" x1="52" y1="56.5" x2="704" y2="56.5"/>
+<text class="tick" x="46" y="60.5" text-anchor="end">52</text>
+<line class="axis" x1="52" y1="274" x2="704" y2="274"/>
+<line class="wu" x1="55" y1="102" x2="55" y2="140.2"/>
+<rect class="cu" x="53.1" y="109.2" width="3.7" height="23.1"/>
+<line class="wd" x1="60.9" y1="98.5" x2="60.9" y2="149.7"/>
+<rect class="cd" x="59.1" y="109.2" width="3.7" height="34.1"/>
+<line class="wu" x1="66.8" y1="110.7" x2="66.8" y2="151.2"/>
+<rect class="cu" x="65" y="121.7" width="3.7" height="21.6"/>
+<line class="wd" x1="72.7" y1="120.1" x2="72.7" y2="153.8"/>
+<rect class="cd" x="70.9" y="121.7" width="3.7" height="29.2"/>
+<line class="wu" x1="78.7" y1="120.5" x2="78.7" y2="162.2"/>
+<rect class="cu" x="76.8" y="128.5" width="3.7" height="22.3"/>
+<line class="wd" x1="84.6" y1="125.1" x2="84.6" y2="148.2"/>
+<rect class="cd" x="82.8" y="128.5" width="3.7" height="12.9"/>
+<line class="wu" x1="90.5" y1="112.9" x2="90.5" y2="144.8"/>
+<rect class="cu" x="88.7" y="121.7" width="3.7" height="19.7"/>
+<line class="wu" x1="96.5" y1="104.2" x2="96.5" y2="122.4"/>
+<rect class="cu" x="94.6" y="106.9" width="3.7" height="14.8"/>
+<line class="wu" x1="102.4" y1="88.3" x2="102.4" y2="108.8"/>
+<rect class="cu" x="100.5" y="98.2" width="3.7" height="8.7"/>
+<line class="wu" x1="108.3" y1="72.4" x2="108.3" y2="106.5"/>
+<rect class="cu" x="106.5" y="81.5" width="3.7" height="16.7"/>
+<line class="wu" x1="114.2" y1="52" x2="114.2" y2="81.9"/>
+<rect class="cu" x="112.4" y="56.1" width="3.7" height="25.4"/>
+<line class="wd" x1="120.2" y1="48.2" x2="120.2" y2="94"/>
+<rect class="cd" x="118.3" y="56.1" width="3.7" height="30.3"/>
+<line class="wd" x1="126.1" y1="77.3" x2="126.1" y2="108"/>
+<rect class="cd" x="124.3" y="86.4" width="3.7" height="20.5"/>
+<line class="wd" x1="132" y1="105.7" x2="132" y2="131.5"/>
+<rect class="cd" x="130.2" y="106.9" width="3.7" height="23.9"/>
+<line class="wd" x1="137.9" y1="128.1" x2="137.9" y2="142.9"/>
+<rect class="cd" x="136.1" y="130.7" width="3.7" height="11.7"/>
+<line class="wu" x1="143.9" y1="125.1" x2="143.9" y2="149.3"/>
+<rect class="cu" x="142" y="131.1" width="3.7" height="11.4"/>
+<line class="wd" x1="149.8" y1="130" x2="149.8" y2="165.2"/>
+<rect class="cd" x="148" y="131.1" width="3.7" height="29.5"/>
+<line class="wu" x1="155.7" y1="135.7" x2="155.7" y2="166.3"/>
+<rect class="cu" x="153.9" y="140.2" width="3.7" height="20.5"/>
+<line class="wu" x1="161.7" y1="125.4" x2="161.7" y2="145.1"/>
+<rect class="cu" x="159.8" y="130" width="3.7" height="10.2"/>
+<line class="wd" x1="167.6" y1="122.4" x2="167.6" y2="162.9"/>
+<rect class="cd" x="165.7" y="130" width="3.7" height="27.7"/>
+<line class="wd" x1="173.5" y1="148.2" x2="173.5" y2="200.4"/>
+<rect class="cd" x="171.7" y="157.6" width="3.7" height="34.8"/>
+<line class="wu" x1="179.4" y1="172.4" x2="179.4" y2="200.1"/>
+<rect class="cu" x="177.6" y="172.4" width="3.7" height="20.1"/>
+<line class="wu" x1="185.4" y1="150.4" x2="185.4" y2="179.2"/>
+<rect class="cu" x="183.5" y="158.4" width="3.7" height="14"/>
+<line class="wd" x1="191.3" y1="150.8" x2="191.3" y2="205"/>
+<rect class="cd" x="189.5" y="158.4" width="3.7" height="37.1"/>
+<line class="wd" x1="197.2" y1="185.3" x2="197.2" y2="217.5"/>
+<rect class="cd" x="195.4" y="195.5" width="3.7" height="15.9"/>
+<line class="wd" x1="203.1" y1="205.7" x2="203.1" y2="228.1"/>
+<rect class="cd" x="201.3" y="211.4" width="3.7" height="9.8"/>
+<line class="wu" x1="209.1" y1="183.8" x2="209.1" y2="225.4"/>
+<rect class="cu" x="207.2" y="186" width="3.7" height="35.2"/>
+<line class="wd" x1="215" y1="176.2" x2="215" y2="221.7"/>
+<rect class="cd" x="213.2" y="186" width="3.7" height="26.9"/>
+<line class="wu" x1="220.9" y1="190.2" x2="220.9" y2="217.1"/>
+<rect class="cu" x="219.1" y="194.8" width="3.7" height="18.2"/>
+<line class="wu" x1="226.9" y1="176.6" x2="226.9" y2="203.5"/>
+<rect class="cu" x="225" y="186.4" width="3.7" height="8.3"/>
+<line class="wd" x1="232.8" y1="185.3" x2="232.8" y2="209.5"/>
+<rect class="cd" x="230.9" y="186.4" width="3.7" height="14.8"/>
+<line class="wu" x1="238.7" y1="182.3" x2="238.7" y2="202.3"/>
+<rect class="cu" x="236.9" y="187.9" width="3.7" height="13.3"/>
+<line class="wd" x1="244.6" y1="180.4" x2="244.6" y2="231.5"/>
+<rect class="cd" x="242.8" y="187.9" width="3.7" height="33.3"/>
+<line class="wu" x1="250.6" y1="189.1" x2="250.6" y2="224.7"/>
+<rect class="cu" x="248.7" y="194.4" width="3.7" height="26.9"/>
+<line class="wd" x1="256.5" y1="191" x2="256.5" y2="213.7"/>
+<rect class="cd" x="254.7" y="194.4" width="3.7" height="17.4"/>
+<line class="wu" x1="262.4" y1="178.5" x2="262.4" y2="217.5"/>
+<rect class="cu" x="260.6" y="185.3" width="3.7" height="26.5"/>
+<line class="wd" x1="268.3" y1="184.2" x2="268.3" y2="200.1"/>
+<rect class="cd" x="266.5" y="185.3" width="3.7" height="12.1"/>
+<line class="wu" x1="274.3" y1="182.6" x2="274.3" y2="206.5"/>
+<rect class="cu" x="272.4" y="185.7" width="3.7" height="11.7"/>
+<line class="wu" x1="280.2" y1="166.7" x2="280.2" y2="186.4"/>
+<rect class="cu" x="278.4" y="174.7" width="3.7" height="11"/>
+<line class="wd" x1="286.1" y1="166.7" x2="286.1" y2="190.6"/>
+<rect class="cd" x="284.3" y="174.7" width="3.7" height="11.4"/>
+<line class="wd" x1="292.1" y1="177.3" x2="292.1" y2="198.5"/>
+<rect class="cd" x="290.2" y="186" width="3.7" height="8.7"/>
+<line class="wu" x1="298" y1="171.7" x2="298" y2="198.5"/>
+<rect class="cu" x="296.1" y="181.5" width="3.7" height="13.3"/>
+<line class="wd" x1="303.9" y1="179.6" x2="303.9" y2="216.3"/>
+<rect class="cd" x="302.1" y="181.5" width="3.7" height="33.3"/>
+<line class="wu" x1="309.8" y1="187.2" x2="309.8" y2="217.9"/>
+<rect class="cu" x="308" y="190.6" width="3.7" height="24.2"/>
+<line class="wd" x1="315.8" y1="183.4" x2="315.8" y2="211.8"/>
+<rect class="cd" x="313.9" y="190.6" width="3.7" height="12.1"/>
+<line class="wd" x1="321.7" y1="202.3" x2="321.7" y2="225.8"/>
+<rect class="cd" x="319.9" y="202.7" width="3.7" height="14"/>
+<line class="wu" x1="327.6" y1="187.9" x2="327.6" y2="225.1"/>
+<rect class="cu" x="325.8" y="190.6" width="3.7" height="26.1"/>
+<line class="wu" x1="333.5" y1="165.6" x2="333.5" y2="191.3"/>
+<rect class="cu" x="331.7" y="172.4" width="3.7" height="18.2"/>
+<line class="wu" x1="339.5" y1="140.2" x2="339.5" y2="182.6"/>
+<rect class="cu" x="337.6" y="146.3" width="3.7" height="26.1"/>
+<line class="wd" x1="345.4" y1="142.9" x2="345.4" y2="155.7"/>
+<rect class="cd" x="343.6" y="146.3" width="3.7" height="8.7"/>
+<line class="wd" x1="351.3" y1="146.7" x2="351.3" y2="164.5"/>
+<rect class="cd" x="349.5" y="155" width="3.7" height="9.1"/>
+<line class="wd" x1="357.3" y1="158" x2="357.3" y2="184.2"/>
+<rect class="cd" x="355.4" y="164.1" width="3.7" height="12.1"/>
+<line class="wd" x1="363.2" y1="171.7" x2="363.2" y2="193.6"/>
+<rect class="cd" x="361.3" y="176.2" width="3.7" height="14"/>
+<line class="wd" x1="369.1" y1="180.7" x2="369.1" y2="204.2"/>
+<rect class="cd" x="367.3" y="190.2" width="3.7" height="9.5"/>
+<line class="wd" x1="375" y1="189.5" x2="375" y2="218.2"/>
+<rect class="cd" x="373.2" y="199.7" width="3.7" height="12.5"/>
+<line class="wu" x1="381" y1="178.8" x2="381" y2="219.4"/>
+<rect class="cu" x="379.1" y="179.6" width="3.7" height="32.6"/>
+<line class="wd" x1="386.9" y1="177.3" x2="386.9" y2="209.5"/>
+<rect class="cd" x="385.1" y="179.6" width="3.7" height="20.8"/>
+<line class="wu" x1="392.8" y1="167.5" x2="392.8" y2="200.4"/>
+<rect class="cu" x="391" y="174.7" width="3.7" height="25.8"/>
+<line class="wd" x1="398.7" y1="166.3" x2="398.7" y2="197"/>
+<rect class="cd" x="396.9" y="174.7" width="3.7" height="19.7"/>
+<line class="wd" x1="404.7" y1="189.1" x2="404.7" y2="223.5"/>
+<rect class="cd" x="402.8" y="194.4" width="3.7" height="22"/>
+<line class="wu" x1="410.6" y1="181.9" x2="410.6" y2="219"/>
+<rect class="cu" x="408.8" y="189.5" width="3.7" height="26.9"/>
+<line class="wd" x1="416.5" y1="182.3" x2="416.5" y2="217.5"/>
+<rect class="cd" x="414.7" y="189.5" width="3.7" height="25.8"/>
+<line class="wu" x1="422.5" y1="173.9" x2="422.5" y2="220.9"/>
+<rect class="cu" x="420.6" y="179.6" width="3.7" height="35.6"/>
+<line class="wu" x1="428.4" y1="158" x2="428.4" y2="180.7"/>
+<rect class="cu" x="426.5" y="160.7" width="3.7" height="18.9"/>
+<line class="wu" x1="434.3" y1="147.8" x2="434.3" y2="163.3"/>
+<rect class="cu" x="432.5" y="150.1" width="3.7" height="10.6"/>
+<line class="wd" x1="440.2" y1="143.6" x2="440.2" y2="167.1"/>
+<rect class="cd" x="438.4" y="150.1" width="3.7" height="16.3"/>
+<line class="wd" x1="446.2" y1="161.4" x2="446.2" y2="204.6"/>
+<rect class="cd" x="444.3" y="166.3" width="3.7" height="34.5"/>
+<line class="wd" x1="452.1" y1="193.6" x2="452.1" y2="222"/>
+<rect class="cd" x="450.3" y="200.8" width="3.7" height="15.5"/>
+<line class="wd" x1="458" y1="206.9" x2="458" y2="236"/>
+<rect class="cd" x="456.2" y="216.3" width="3.7" height="17"/>
+<line class="wd" x1="463.9" y1="231.5" x2="463.9" y2="256.5"/>
+<rect class="cd" x="462.1" y="233.4" width="3.7" height="16.7"/>
+<line class="wu" x1="469.9" y1="223.2" x2="469.9" y2="251.6"/>
+<rect class="cu" x="468" y="230" width="3.7" height="20.1"/>
+<line class="wd" x1="475.8" y1="224.3" x2="475.8" y2="260.3"/>
+<rect class="cd" x="474" y="230" width="3.7" height="21.2"/>
+<line class="wu" x1="481.7" y1="227.7" x2="481.7" y2="252.7"/>
+<rect class="cu" x="479.9" y="230.7" width="3.7" height="20.5"/>
+<line class="wu" x1="487.7" y1="188.3" x2="487.7" y2="235.3"/>
+<rect class="cu" x="485.8" y="196.7" width="3.7" height="34.1"/>
+<line class="wu" x1="493.6" y1="166.3" x2="493.6" y2="204.2"/>
+<rect class="cu" x="491.7" y="168.6" width="3.7" height="28"/>
+<line class="wd" x1="499.5" y1="157.6" x2="499.5" y2="201.6"/>
+<rect class="cd" x="497.7" y="168.6" width="3.7" height="31.8"/>
+<line class="wu" x1="505.4" y1="175.1" x2="505.4" y2="200.8"/>
+<rect class="cu" x="503.6" y="182.6" width="3.7" height="17.8"/>
+<line class="wd" x1="511.4" y1="175.1" x2="511.4" y2="220.5"/>
+<rect class="cd" x="509.5" y="182.6" width="3.7" height="32.2"/>
+<line class="wd" x1="517.3" y1="204.6" x2="517.3" y2="233.4"/>
+<rect class="cd" x="515.5" y="214.8" width="3.7" height="15.5"/>
+<line class="wd" x1="523.2" y1="230" x2="523.2" y2="261.4"/>
+<rect class="cd" x="521.4" y="230.4" width="3.7" height="24.6"/>
+<line class="wu" x1="529.1" y1="233.4" x2="529.1" y2="262.2"/>
+<rect class="cu" x="527.3" y="244" width="3.7" height="11"/>
+<line class="wu" x1="535.1" y1="217.9" x2="535.1" y2="247.8"/>
+<rect class="cu" x="533.2" y="224.7" width="3.7" height="19.3"/>
+<line class="wu" x1="541" y1="194.8" x2="541" y2="235.3"/>
+<rect class="cu" x="539.2" y="200.1" width="3.7" height="24.6"/>
+<line class="wd" x1="546.9" y1="195.5" x2="546.9" y2="230"/>
+<rect class="cd" x="545.1" y="200.1" width="3.7" height="23.9"/>
+<line class="wu" x1="552.9" y1="191" x2="552.9" y2="232.3"/>
+<rect class="cu" x="551" y="192.1" width="3.7" height="31.8"/>
+<line class="wu" x1="558.8" y1="165.2" x2="558.8" y2="192.5"/>
+<rect class="cu" x="556.9" y="166.3" width="3.7" height="25.8"/>
+<line class="wu" x1="564.7" y1="139.1" x2="564.7" y2="175.1"/>
+<rect class="cu" x="562.9" y="140.2" width="3.7" height="26.1"/>
+<line class="wu" x1="570.6" y1="100.1" x2="570.6" y2="151.6"/>
+<rect class="cu" x="568.8" y="111" width="3.7" height="29.2"/>
+<line class="wu" x1="576.6" y1="86.4" x2="576.6" y2="113.3"/>
+<rect class="cu" x="574.7" y="97.8" width="3.7" height="13.3"/>
+<line class="wd" x1="582.5" y1="87.9" x2="582.5" y2="117.1"/>
+<rect class="cd" x="580.7" y="97.8" width="3.7" height="17"/>
+<line class="wd" x1="588.4" y1="105.7" x2="588.4" y2="137.6"/>
+<rect class="cd" x="586.6" y="114.8" width="3.7" height="15.9"/>
+<line class="wd" x1="594.3" y1="120.1" x2="594.3" y2="146.7"/>
+<rect class="cd" x="592.5" y="130.7" width="3.7" height="11.7"/>
+<line class="wu" x1="600.3" y1="100.8" x2="600.3" y2="151.2"/>
+<rect class="cu" x="598.4" y="106.9" width="3.7" height="35.6"/>
+<line class="wu" x1="606.2" y1="83.8" x2="606.2" y2="113.3"/>
+<rect class="cu" x="604.4" y="85.7" width="3.7" height="21.2"/>
+<line class="wd" x1="612.1" y1="82.6" x2="612.1" y2="108.8"/>
+<rect class="cd" x="610.3" y="85.7" width="3.7" height="22.7"/>
+<line class="wu" x1="618.1" y1="77" x2="618.1" y2="113.3"/>
+<rect class="cu" x="616.2" y="81.5" width="3.7" height="26.9"/>
+<line class="wu" x1="624" y1="71.7" x2="624" y2="85.3"/>
+<rect class="cu" x="622.1" y="73.2" width="3.7" height="8.3"/>
+<line class="wd" x1="629.9" y1="70.1" x2="629.9" y2="104.2"/>
+<rect class="cd" x="628.1" y="73.2" width="3.7" height="24.2"/>
+<line class="wu" x1="635.8" y1="57.3" x2="635.8" y2="100.8"/>
+<rect class="cu" x="634" y="62.6" width="3.7" height="34.8"/>
+<line class="wu" x1="641.8" y1="31.1" x2="641.8" y2="71.3"/>
+<rect class="cu" x="639.9" y="36.4" width="3.7" height="26.1"/>
+<line class="wd" x1="647.7" y1="25.8" x2="647.7" y2="69.8"/>
+<rect class="cd" x="645.9" y="36.4" width="3.7" height="33"/>
+<line class="wd" x1="653.6" y1="61.8" x2="653.6" y2="94.8"/>
+<rect class="cd" x="651.8" y="69.4" width="3.7" height="18.2"/>
+<line class="wd" x1="659.5" y1="83.4" x2="659.5" y2="110.3"/>
+<rect class="cd" x="657.7" y="87.6" width="3.7" height="18.6"/>
+<line class="wu" x1="665.5" y1="82.6" x2="665.5" y2="111.4"/>
+<rect class="cu" x="663.6" y="92.5" width="3.7" height="13.6"/>
+<line class="wu" x1="671.4" y1="78.8" x2="671.4" y2="103.1"/>
+<rect class="cu" x="669.6" y="83.8" width="3.7" height="8.7"/>
+<line class="wd" x1="677.3" y1="81.5" x2="677.3" y2="111"/>
+<rect class="cd" x="675.5" y="83.8" width="3.7" height="25.8"/>
+<line class="wd" x1="683.3" y1="107.6" x2="683.3" y2="135.7"/>
+<rect class="cd" x="681.4" y="109.5" width="3.7" height="20.5"/>
+<line class="wd" x1="689.2" y1="127.7" x2="689.2" y2="148.5"/>
+<rect class="cd" x="687.3" y="130" width="3.7" height="15.2"/>
+<line class="wd" x1="695.1" y1="141" x2="695.1" y2="164.1"/>
+<rect class="cd" x="693.3" y="145.1" width="3.7" height="9.8"/>
+<line class="wd" x1="701" y1="146.7" x2="701" y2="187.2"/>
+<rect class="cd" x="699.2" y="155" width="3.7" height="21.2"/>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>这张图的每一根 K 线都是“抛硬币”抛出来的：从 50 元开始，每天抛一次，正面涨、反面跌，幅度随机。它没有任何规律，但大多数人都能在里面“看出”上升趋势、下跌趋势、双底甚至头肩形。这不是你的问题，是人类的出厂设置：我们的祖先宁可把风吹草动错当成老虎，也不愿漏掉一只真老虎。在市场里，这个本能会让你在噪声中看见并不存在的规律。<b>这正是本手册坚持把每个方法写成规则、并要求用数据检验的根本原因。</b></figcaption>
+  </figure>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>马尔基尔的硬币图</h4>
+    <p>普林斯顿大学教授伯顿·马尔基尔在《漫步华尔街》里讲过一个故事：他让学生从 50 美元起，每天抛一次硬币决定股价涨跌，画出一张“走势图”，然后拿给一位图表分析师看。分析师看完非常兴奋，认定这是一个明确的形态，建议<strong>立刻买入</strong>。当马尔基尔告诉他这是硬币抛出来的，对方很不高兴。早在 1959 年，统计学家哈里·罗伯茨就发表过类似研究：用随机数生成的序列，画出来和真实股价图几乎无法区分。</p>
+    <p class="takeaway">这个故事不证明技术分析无效，它证明的是<b>肉眼识别形态不可靠</b>。对付它的方法不是放弃，而是：① 把形态定义成明确的规则；② 用足够多的历史样本统计它的胜率和盈亏比；③ 在没用过的数据上验证。这也是“技术分析者”和“图表分析者”的区别，墨菲本人也做了这个区分：前者越来越多地借助计算机和统计。</p>
+  </div>
+</section>
+
+<!-- ======================== 1.5 ======================== -->
+<section class="ch" id="s5">
+  <h2 class="sec"><span class="no">1.5</span>图表的语言：四种画法</h2>
+  <p class="sec-en">CHART CONSTRUCTION · 第 3 章要点</p>
+
+  <div class="prose">
+    <p>每个交易日，市场会产生四个关键价格：<strong>开盘价、最高价、最低价、收盘价</strong>（简称 OHLC）。在 A 股，开盘价由 9:15–9:25 的开盘集合竞价决定，收盘价由 14:57–15:00 的收盘集合竞价决定。所有图表都是用不同的方式画这四个数（外加成交量）。先看最基本的单元：</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 1-7</span>单根 K 线的解剖：同样四个价格，两种画法</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 300" role="img" aria-label="单根 K 线的解剖：美式柱线用左右两个短横表示开盘价和收盘价；K 线把开盘与收盘之间画成实体，收盘高于开盘为红色阳线，收盘低于开盘为绿色阴线，实体上下的细线是上影线和下影线">
+<text class="pl" x="130" y="24" text-anchor="middle">美式柱线（上涨日）</text>
+<text class="pl" x="370" y="24" text-anchor="middle">阳线：收盘 &gt; 开盘</text>
+<text class="pl" x="600" y="24" text-anchor="middle">阴线：收盘 &lt; 开盘</text>
+
+<!-- 柱线 -->
+<line class="bu" x1="130" y1="52" x2="130" y2="252" style="stroke-width:3"/>
+<line class="bu" x1="106" y1="192" x2="130" y2="192" style="stroke-width:3"/>
+<line class="bu" x1="130" y1="92" x2="154" y2="92" style="stroke-width:3"/>
+<text class="pv" x="130" y="46" text-anchor="middle">最高价</text>
+<text class="pv" x="130" y="270" text-anchor="middle">最低价</text>
+<text class="pv" x="100" y="196" text-anchor="end">开盘价 ←</text>
+<text class="pv" x="160" y="96">→ 收盘价</text>
+
+<!-- 阳线 -->
+<line class="wu" x1="370" y1="52" x2="370" y2="252" style="stroke-width:2"/>
+<rect class="cu" x="348" y="92" width="44" height="100"/>
+<line class="edge-soft" x1="392" y1="52" x2="424" y2="52"/><text class="pv" x="428" y="56">最高价</text>
+<line class="edge-soft" x1="392" y1="92" x2="424" y2="92"/><text class="pv" x="428" y="96">收盘价</text>
+<line class="edge-soft" x1="392" y1="192" x2="424" y2="192"/><text class="pv" x="428" y="196">开盘价</text>
+<line class="edge-soft" x1="392" y1="252" x2="424" y2="252"/><text class="pv" x="428" y="256">最低价</text>
+<text class="elabel" x="340" y="76" text-anchor="end">上影线</text>
+<text class="ut" x="340" y="146" text-anchor="end">实体</text>
+<text class="elabel" x="340" y="226" text-anchor="end">下影线</text>
+
+<!-- 阴线 -->
+<line class="wd" x1="600" y1="52" x2="600" y2="252" style="stroke-width:2"/>
+<rect class="cd" x="578" y="92" width="44" height="100"/>
+<line class="edge-soft" x1="622" y1="52" x2="648" y2="52"/><text class="pv" x="652" y="56">最高价</text>
+<line class="edge-soft" x1="622" y1="92" x2="648" y2="92"/><text class="pv" x="652" y="96">开盘价</text>
+<line class="edge-soft" x1="622" y1="192" x2="648" y2="192"/><text class="pv" x="652" y="196">收盘价</text>
+<line class="edge-soft" x1="622" y1="252" x2="648" y2="252"/><text class="pv" x="652" y="256">最低价</text>
+<text class="dt" x="570" y="146" text-anchor="end">实体</text>
+
+<text class="elabel" x="360" y="292" text-anchor="middle">四个价格完全相同，K 线只是把“开盘到收盘”这一段画粗并上色：一眼看出这一天多空谁赢了</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>美式柱线用一根竖线表示当天的最高到最低，左边短横是开盘价，右边短横是收盘价。K 线（蜡烛图）把开盘到收盘这一段画成粗粗的<b>实体</b>：收盘高于开盘是阳线（A 股画红色），收盘低于开盘是阴线（绿色）；实体上下的细线叫<b>上影线、下影线</b>，代表盘中曾经到过、但没守住的价格。长上影线意味着“冲上去又被打下来”，长下影线意味着“跌下去又被买回来”。第 7 站（日本蜡烛图）会把这些细节读透。</figcaption>
+  </figure>
+
+  <div class="prose">
+    <p>同一组数据，可以画成完全不同的样子。下面是同样 40 个交易日的数据，用四种方法画出来：</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 1-8</span>同一组数据，四种画法<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 540" role="img" aria-label="同一组 40 天的价格数据分别画成线图、美式柱线图、K 线图和点数图">
+<defs><marker id="f18-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/></marker><marker id="f18-ara" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/></marker></defs>
+<!-- kchart: n=40 L=52 step=7.300 x(i)=L+step*(i+0.5) price[9.871,13.702] y∈[34,252] -->
+<line class="axis" x1="52" y1="34" x2="52" y2="252"/>
+<line class="grid" x1="52" y1="244.7" x2="344" y2="244.7"/>
+<text class="tick" x="46" y="248.7" text-anchor="end">10</text>
+<line class="grid" x1="52" y1="187.8" x2="344" y2="187.8"/>
+<text class="tick" x="46" y="191.8" text-anchor="end">11</text>
+<line class="grid" x1="52" y1="130.9" x2="344" y2="130.9"/>
+<text class="tick" x="46" y="134.9" text-anchor="end">12</text>
+<line class="grid" x1="52" y1="74" x2="344" y2="74"/>
+<text class="tick" x="46" y="78" text-anchor="end">13</text>
+<line class="axis" x1="52" y1="252" x2="344" y2="252"/>
+<polyline class="cl" points="55.7,242.1 63,231.5 70.3,217 77.6,212 84.9,200.9 92.2,191.1 99.4,168.2 106.8,163.5 114.1,149.6 121.4,136.7 128.6,119 136,119.7 143.3,105 150.6,120.1 157.9,131.2 165.1,128.6 172.5,144.4 179.8,159.7 187,161.7 194.4,170.1 201.7,183.5 209,175 216.3,155.1 223.6,139.8 230.9,128.2 238.2,108.5 245.5,100.4 252.8,91.1 260,69.1 267.4,64.7 274.7,43.9 282,60.8 289.3,59.7 296.5,78.5 303.9,80.4 311.2,95.1 318.5,103 325.8,113 333.1,116.6 340.3,136.8"/>
+<!-- kchart: n=40 L=412 step=7.300 x(i)=L+step*(i+0.5) price[9.772,13.859] y∈[34,252] -->
+<line class="axis" x1="412" y1="34" x2="412" y2="252"/>
+<line class="grid" x1="412" y1="239.8" x2="704" y2="239.8"/>
+<text class="tick" x="406" y="243.8" text-anchor="end">10</text>
+<line class="grid" x1="412" y1="186.5" x2="704" y2="186.5"/>
+<text class="tick" x="406" y="190.5" text-anchor="end">11</text>
+<line class="grid" x1="412" y1="133.1" x2="704" y2="133.1"/>
+<text class="tick" x="406" y="137.1" text-anchor="end">12</text>
+<line class="grid" x1="412" y1="79.8" x2="704" y2="79.8"/>
+<text class="tick" x="406" y="83.8" text-anchor="end">13</text>
+<line class="axis" x1="412" y1="252" x2="704" y2="252"/>
+<path class="bu" d="M415.7 236V242.1M413.3 238.1H415.7M415.7 237.4H418"/>
+<path class="bu" d="M423 224.5V242.1M420.6 236.3H423M423 227.5H425.3"/>
+<path class="bu" d="M430.3 209.4V226.3M427.9 226.2H430.3M430.3 213.9H432.6"/>
+<path class="bu" d="M437.6 207.2V216.8M435.2 211.7H437.6M437.6 209.2H439.9"/>
+<path class="bu" d="M444.9 193.3V213.2M442.5 211.8H444.9M444.9 198.8H447.2"/>
+<path class="bu" d="M452.2 182.6V200.6M449.8 199H452.2M452.2 189.6H454.5"/>
+<path class="bu" d="M459.5 165.2V197.5M457.1 190.6H459.5M459.5 168.1H461.8"/>
+<path class="bu" d="M466.8 157.3V175M464.4 169.8H466.8M466.8 163.7H469.1"/>
+<path class="bu" d="M474.1 145.9V162.9M471.7 161.9H474.1M474.1 150.8H476.4"/>
+<path class="bu" d="M481.4 132.7V156.4M479 151.9H481.4M481.4 138.6H483.7"/>
+<path class="bu" d="M488.7 119.3V146.2M486.3 139.6H488.7M488.7 122H491"/>
+<path class="bd" d="M496 117.7V130.5M493.6 119.9H496M496 122.7H498.3"/>
+<path class="bu" d="M503.3 106.4V126.3M500.9 121.1H503.3M503.3 108.9H505.6"/>
+<path class="bd" d="M510.6 103.2V125.1M508.2 107.4H510.6M510.6 123.1H512.9"/>
+<path class="bd" d="M517.9 114.2V135.7M515.5 121.6H517.9M517.9 133.5H520.2"/>
+<path class="bu" d="M525.2 126.6V138.7M522.8 131.3H525.2M525.2 131H527.5"/>
+<path class="bd" d="M532.5 131.2V149.9M530.1 133.4H532.5M532.5 145.9H534.8"/>
+<path class="bd" d="M539.8 143.2V160.7M537.4 144.3H539.8M539.8 160.1H542.1"/>
+<path class="bd" d="M547.1 156.3V162.7M544.7 159.3H547.1M547.1 162H549.4"/>
+<path class="bd" d="M554.4 157.9V175.3M552 163H554.4M554.4 169.9H556.7"/>
+<path class="bd" d="M561.7 163V183.3M559.3 167.4H561.7M561.7 182.5H564"/>
+<path class="bu" d="M569 171.5V191.5M566.6 185H569M569 174.5H571.3"/>
+<path class="bu" d="M576.3 149.8V177.8M573.9 177.1H576.3M576.3 155.9H578.6"/>
+<path class="bu" d="M583.6 137V158.4M581.2 157.6H583.6M583.6 141.6H585.9"/>
+<path class="bu" d="M590.9 125.4V144.9M588.5 143.1H590.9M590.9 130.6H593.2"/>
+<path class="bu" d="M598.2 108.6V135.5M595.8 129.8H598.2M598.2 112.2H600.5"/>
+<path class="bu" d="M605.5 104.4V112.4M603.1 111.2H605.5M605.5 104.6H607.8"/>
+<path class="bu" d="M612.8 88.1V108.4M610.4 103.7H612.8M612.8 95.8H615.1"/>
+<path class="bu" d="M620.1 74.7V98.6M617.7 97.2H620.1M620.1 75.3H622.4"/>
+<path class="bu" d="M627.4 67.3V73M625 72.6H627.4M627.4 71.1H629.7"/>
+<path class="bu" d="M634.7 43.9V79.1M632.3 72.5H634.7M634.7 51.7H637"/>
+<path class="bd" d="M642 46.3V69.8M639.6 53.2H642M642 67.4H644.3"/>
+<path class="bu" d="M649.3 60.9V75.3M646.9 70.8H649.3M649.3 66.4H651.6"/>
+<path class="bd" d="M656.6 58.4V88.8M654.2 65.3H656.6M656.6 84.1H658.9"/>
+<path class="bd" d="M663.9 79.9V87.5M661.5 84.6H663.9M663.9 85.9H666.2"/>
+<path class="bd" d="M671.2 85.4V104.6M668.8 85.9H671.2M671.2 99.7H673.5"/>
+<path class="bd" d="M678.5 96.4V109.9M676.1 100.4H678.5M678.5 107H680.8"/>
+<path class="bd" d="M685.8 101.6V119.2M683.4 106.9H685.8M685.8 116.4H688.1"/>
+<path class="bd" d="M693.1 116.2V125.1M690.7 119.1H693.1M693.1 119.7H695.4"/>
+<path class="bd" d="M700.3 116V142.7M698 116.7H700.3M700.3 138.7H702.7"/>
+<!-- kchart: n=40 L=52 step=7.300 x(i)=L+step*(i+0.5) price[9.772,13.859] y∈[304,522] -->
+<line class="axis" x1="52" y1="304" x2="52" y2="522"/>
+<line class="grid" x1="52" y1="509.8" x2="344" y2="509.8"/>
+<text class="tick" x="46" y="513.8" text-anchor="end">10</text>
+<line class="grid" x1="52" y1="456.5" x2="344" y2="456.5"/>
+<text class="tick" x="46" y="460.5" text-anchor="end">11</text>
+<line class="grid" x1="52" y1="403.1" x2="344" y2="403.1"/>
+<text class="tick" x="46" y="407.1" text-anchor="end">12</text>
+<line class="grid" x1="52" y1="349.8" x2="344" y2="349.8"/>
+<text class="tick" x="46" y="353.8" text-anchor="end">13</text>
+<line class="axis" x1="52" y1="522" x2="344" y2="522"/>
+<line class="wu" x1="55.7" y1="506" x2="55.7" y2="512.1"/>
+<rect class="cu" x="53.4" y="507.4" width="4.5" height="1"/>
+<line class="wu" x1="63" y1="494.5" x2="63" y2="512.1"/>
+<rect class="cu" x="60.7" y="497.5" width="4.5" height="8.8"/>
+<line class="wu" x1="70.3" y1="479.4" x2="70.3" y2="496.3"/>
+<rect class="cu" x="68" y="483.9" width="4.5" height="12.4"/>
+<line class="wu" x1="77.6" y1="477.2" x2="77.6" y2="486.8"/>
+<rect class="cu" x="75.3" y="479.2" width="4.5" height="2.5"/>
+<line class="wu" x1="84.9" y1="463.3" x2="84.9" y2="483.2"/>
+<rect class="cu" x="82.6" y="468.8" width="4.5" height="13"/>
+<line class="wu" x1="92.2" y1="452.6" x2="92.2" y2="470.6"/>
+<rect class="cu" x="89.9" y="459.6" width="4.5" height="9.4"/>
+<line class="wu" x1="99.4" y1="435.2" x2="99.4" y2="467.5"/>
+<rect class="cu" x="97.2" y="438.1" width="4.5" height="22.5"/>
+<line class="wu" x1="106.8" y1="427.3" x2="106.8" y2="445"/>
+<rect class="cu" x="104.5" y="433.7" width="4.5" height="6.1"/>
+<line class="wu" x1="114.1" y1="415.9" x2="114.1" y2="432.9"/>
+<rect class="cu" x="111.8" y="420.8" width="4.5" height="11.2"/>
+<line class="wu" x1="121.4" y1="402.7" x2="121.4" y2="426.4"/>
+<rect class="cu" x="119.1" y="408.6" width="4.5" height="13.2"/>
+<line class="wu" x1="128.6" y1="389.3" x2="128.6" y2="416.2"/>
+<rect class="cu" x="126.4" y="392" width="4.5" height="17.6"/>
+<line class="wd" x1="136" y1="387.7" x2="136" y2="400.5"/>
+<rect class="cd" x="133.7" y="389.9" width="4.5" height="2.8"/>
+<line class="wu" x1="143.3" y1="376.4" x2="143.3" y2="396.3"/>
+<rect class="cu" x="141" y="378.9" width="4.5" height="12.2"/>
+<line class="wd" x1="150.6" y1="373.2" x2="150.6" y2="395.1"/>
+<rect class="cd" x="148.3" y="377.4" width="4.5" height="15.7"/>
+<line class="wd" x1="157.9" y1="384.2" x2="157.9" y2="405.7"/>
+<rect class="cd" x="155.6" y="391.6" width="4.5" height="11.8"/>
+<line class="wu" x1="165.1" y1="396.6" x2="165.1" y2="408.7"/>
+<rect class="cu" x="162.9" y="401" width="4.5" height="1"/>
+<line class="wd" x1="172.5" y1="401.2" x2="172.5" y2="419.9"/>
+<rect class="cd" x="170.2" y="403.4" width="4.5" height="12.4"/>
+<line class="wd" x1="179.8" y1="413.2" x2="179.8" y2="430.7"/>
+<rect class="cd" x="177.5" y="414.3" width="4.5" height="15.9"/>
+<line class="wd" x1="187" y1="426.3" x2="187" y2="432.7"/>
+<rect class="cd" x="184.8" y="429.3" width="4.5" height="2.7"/>
+<line class="wd" x1="194.4" y1="427.9" x2="194.4" y2="445.3"/>
+<rect class="cd" x="192.1" y="433" width="4.5" height="6.9"/>
+<line class="wd" x1="201.7" y1="433" x2="201.7" y2="453.3"/>
+<rect class="cd" x="199.4" y="437.4" width="4.5" height="15.1"/>
+<line class="wu" x1="209" y1="441.5" x2="209" y2="461.5"/>
+<rect class="cu" x="206.7" y="444.5" width="4.5" height="10.5"/>
+<line class="wu" x1="216.3" y1="419.8" x2="216.3" y2="447.8"/>
+<rect class="cu" x="214" y="425.9" width="4.5" height="21.2"/>
+<line class="wu" x1="223.6" y1="407" x2="223.6" y2="428.4"/>
+<rect class="cu" x="221.3" y="411.6" width="4.5" height="16"/>
+<line class="wu" x1="230.9" y1="395.4" x2="230.9" y2="414.9"/>
+<rect class="cu" x="228.6" y="400.6" width="4.5" height="12.4"/>
+<line class="wu" x1="238.2" y1="378.6" x2="238.2" y2="405.5"/>
+<rect class="cu" x="235.9" y="382.2" width="4.5" height="17.5"/>
+<line class="wu" x1="245.5" y1="374.4" x2="245.5" y2="382.4"/>
+<rect class="cu" x="243.2" y="374.6" width="4.5" height="6.6"/>
+<line class="wu" x1="252.8" y1="358.1" x2="252.8" y2="378.4"/>
+<rect class="cu" x="250.5" y="365.8" width="4.5" height="7.8"/>
+<line class="wu" x1="260" y1="344.7" x2="260" y2="368.6"/>
+<rect class="cu" x="257.8" y="345.3" width="4.5" height="22"/>
+<line class="wu" x1="267.4" y1="337.3" x2="267.4" y2="343"/>
+<rect class="cu" x="265.1" y="341.1" width="4.5" height="1.5"/>
+<line class="wu" x1="274.7" y1="313.9" x2="274.7" y2="349.1"/>
+<rect class="cu" x="272.4" y="321.7" width="4.5" height="20.9"/>
+<line class="wd" x1="282" y1="316.3" x2="282" y2="339.8"/>
+<rect class="cd" x="279.7" y="323.2" width="4.5" height="14.2"/>
+<line class="wu" x1="289.3" y1="330.9" x2="289.3" y2="345.3"/>
+<rect class="cu" x="287" y="336.4" width="4.5" height="4.4"/>
+<line class="wd" x1="296.5" y1="328.4" x2="296.5" y2="358.8"/>
+<rect class="cd" x="294.3" y="335.3" width="4.5" height="18.8"/>
+<line class="wd" x1="303.9" y1="349.9" x2="303.9" y2="357.5"/>
+<rect class="cd" x="301.6" y="354.6" width="4.5" height="1.3"/>
+<line class="wd" x1="311.2" y1="355.4" x2="311.2" y2="374.6"/>
+<rect class="cd" x="308.9" y="355.9" width="4.5" height="13.8"/>
+<line class="wd" x1="318.5" y1="366.4" x2="318.5" y2="379.9"/>
+<rect class="cd" x="316.2" y="370.4" width="4.5" height="6.6"/>
+<line class="wd" x1="325.8" y1="371.6" x2="325.8" y2="389.2"/>
+<rect class="cd" x="323.5" y="376.9" width="4.5" height="9.5"/>
+<line class="wd" x1="333.1" y1="386.2" x2="333.1" y2="395.1"/>
+<rect class="cd" x="330.8" y="389.1" width="4.5" height="1"/>
+<line class="wd" x1="340.3" y1="386" x2="340.3" y2="412.7"/>
+<rect class="cd" x="338.1" y="386.7" width="4.5" height="22.1"/>
+<line class="grid" x1="412" y1="517.8" x2="704" y2="517.8"/>
+<text class="tick" x="406" y="521.8" text-anchor="end">9.90</text>
+<line class="grid" x1="412" y1="484.3" x2="704" y2="484.3"/>
+<text class="tick" x="406" y="488.3" text-anchor="end">10.50</text>
+<line class="grid" x1="412" y1="450.7" x2="704" y2="450.7"/>
+<text class="tick" x="406" y="454.7" text-anchor="end">11.10</text>
+<line class="grid" x1="412" y1="417.2" x2="704" y2="417.2"/>
+<text class="tick" x="406" y="421.2" text-anchor="end">11.70</text>
+<line class="grid" x1="412" y1="383.7" x2="704" y2="383.7"/>
+<text class="tick" x="406" y="387.7" text-anchor="end">12.30</text>
+<line class="grid" x1="412" y1="350.1" x2="704" y2="350.1"/>
+<text class="tick" x="406" y="354.1" text-anchor="end">12.90</text>
+<line class="grid" x1="412" y1="316.6" x2="704" y2="316.6"/>
+<text class="tick" x="406" y="320.6" text-anchor="end">13.50</text>
+<path class="px" d="M413.2 506.4L419.2 512.4M419.2 506.4L413.2 512.4"/>
+<path class="px" d="M413.2 498L419.2 504.1M419.2 498L413.2 504.1"/>
+<path class="px" d="M413.2 489.6L419.2 495.7M419.2 489.6L413.2 495.7"/>
+<path class="px" d="M413.2 481.3L419.2 487.3M419.2 481.3L413.2 487.3"/>
+<path class="px" d="M413.2 472.9L419.2 478.9M419.2 472.9L413.2 478.9"/>
+<path class="px" d="M413.2 464.5L419.2 470.5M419.2 464.5L413.2 470.5"/>
+<path class="px" d="M413.2 456.1L419.2 462.1M419.2 456.1L413.2 462.1"/>
+<path class="px" d="M413.2 447.7L419.2 453.7M419.2 447.7L413.2 453.7"/>
+<path class="px" d="M413.2 439.3L419.2 445.4M419.2 439.3L413.2 445.4"/>
+<path class="px" d="M413.2 430.9L419.2 437M419.2 430.9L413.2 437"/>
+<path class="px" d="M413.2 422.6L419.2 428.6M419.2 422.6L413.2 428.6"/>
+<path class="px" d="M413.2 414.2L419.2 420.2M419.2 414.2L413.2 420.2"/>
+<path class="px" d="M413.2 405.8L419.2 411.8M419.2 405.8L413.2 411.8"/>
+<path class="px" d="M413.2 397.4L419.2 403.4M419.2 397.4L413.2 403.4"/>
+<path class="px" d="M413.2 389L419.2 395.1M419.2 389L413.2 395.1"/>
+<path class="px" d="M413.2 380.6L419.2 386.7M419.2 380.6L413.2 386.7"/>
+<path class="px" d="M413.2 372.3L419.2 378.3M419.2 372.3L413.2 378.3"/>
+<circle class="po" cx="424.6" cy="450.7" r="3"/>
+<circle class="po" cx="424.6" cy="442.3" r="3"/>
+<circle class="po" cx="424.6" cy="434" r="3"/>
+<circle class="po" cx="424.6" cy="425.6" r="3"/>
+<circle class="po" cx="424.6" cy="417.2" r="3"/>
+<circle class="po" cx="424.6" cy="408.8" r="3"/>
+<circle class="po" cx="424.6" cy="400.4" r="3"/>
+<circle class="po" cx="424.6" cy="392" r="3"/>
+<circle class="po" cx="424.6" cy="383.7" r="3"/>
+<path class="px" d="M429.9 439.3L436 445.4M436 439.3L429.9 445.4"/>
+<path class="px" d="M429.9 430.9L436 437M436 430.9L429.9 437"/>
+<path class="px" d="M429.9 422.6L436 428.6M436 422.6L429.9 428.6"/>
+<path class="px" d="M429.9 414.2L436 420.2M436 414.2L429.9 420.2"/>
+<path class="px" d="M429.9 405.8L436 411.8M436 405.8L429.9 411.8"/>
+<path class="px" d="M429.9 397.4L436 403.4M436 397.4L429.9 403.4"/>
+<path class="px" d="M429.9 389L436 395.1M436 389L429.9 395.1"/>
+<path class="px" d="M429.9 380.6L436 386.7M436 380.6L429.9 386.7"/>
+<path class="px" d="M429.9 372.3L436 378.3M436 372.3L429.9 378.3"/>
+<path class="px" d="M429.9 363.9L436 369.9M436 363.9L429.9 369.9"/>
+<path class="px" d="M429.9 355.5L436 361.5M436 355.5L429.9 361.5"/>
+<path class="px" d="M429.9 347.1L436 353.1M436 347.1L429.9 353.1"/>
+<path class="px" d="M429.9 338.7L436 344.7M436 338.7L429.9 344.7"/>
+<path class="px" d="M429.9 330.3L436 336.4M436 330.3L429.9 336.4"/>
+<path class="px" d="M429.9 321.9L436 328M436 321.9L429.9 328"/>
+<path class="px" d="M429.9 313.6L436 319.6M436 313.6L429.9 319.6"/>
+<circle class="po" cx="441.3" cy="400.4" r="3"/>
+<circle class="po" cx="441.3" cy="392" r="3"/>
+<circle class="po" cx="441.3" cy="383.7" r="3"/>
+<circle class="po" cx="441.3" cy="375.3" r="3"/>
+<circle class="po" cx="441.3" cy="366.9" r="3"/>
+<circle class="po" cx="441.3" cy="358.5" r="3"/>
+<circle class="po" cx="441.3" cy="350.1" r="3"/>
+<circle class="po" cx="441.3" cy="341.7" r="3"/>
+<circle class="po" cx="441.3" cy="333.3" r="3"/>
+<circle class="po" cx="441.3" cy="325" r="3"/>
+<text class="pl" x="52" y="20">① 线图：只连收盘价</text>
+<text class="pl" x="412" y="20">② 美式柱线图</text>
+<text class="pl" x="52" y="290">③ K 线图（蜡烛图）</text>
+<text class="pl" x="412" y="290">④ 点数图：没有时间轴</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>① 线图最干净，只有收盘价，适合看大趋势和跨市场比较；② 柱线图是西方的传统画法，能看出每天的波动区间；③ K 线图和柱线图信息量完全相同，但实体的颜色让“开盘到收盘谁赢了”一目了然，是 A 股软件的默认画法；④ 点数图最特别：它<b>没有时间轴</b>，只有价格变动超过一定幅度（这里是 0.15 元一格、反向 3 格才换列）才画一个符号，X 代表上涨、O 代表下跌。它把小波动全部过滤掉，只留下“有意义”的变动。点数图在本手册里是选学（第 11 章）。</figcaption>
+  </figure>
+
+  <div class="prose">
+    <h3>为什么收盘价最重要</h3>
+    <p>墨菲认为收盘价是一天中最重要的价格，线图也只用收盘价。理由有三：第一，收盘价是全天多空博弈后的<strong>最终共识</strong>，盘中的冲高或跳水只是过程；第二，收盘价是<strong>结算价格</strong>，期货的保证金、基金的净值都以收盘价（或结算价）计算，很多机构据此做决策；第三，大量技术指标（均线、MACD 等）都用收盘价计算。所以本手册的规则卡里，信号几乎都以“<strong>收盘价</strong>站上或跌破”来定义，而不用盘中价格。盘中的一次刺破，常常是假信号。</p>
+
+    <h3>成交量与持仓量</h3>
+    <p>成交量画在价格图下方，用柱状表示，A 股软件会按当天 K 线的涨跌把它涂成红或绿。它回答的是“这个价格变化有多少人认同”：放量上涨说明买方力量真实，缩量上涨则可能后继乏力。</p>
+    <p>持仓量是期货特有的概念：市场上还有多少份<strong>尚未平仓</strong>的合约。一个新买家和一个新卖家开仓成交，持仓量加 1；一个多头平仓卖给一个空头平仓买，持仓量减 1。持仓量上升意味着有新资金入场“押注”，下降意味着资金在撤离。成交量和持仓量的解读规则是第 6 站（第 7 章）的主题，这里只要记住：<strong>价格告诉你方向，量告诉你这个方向有多少分量</strong>。</p>
+  </div>
+</section>
+
+<!-- ======================== 1.6 ======================== -->
+<section class="ch" id="s6">
+  <h2 class="sec"><span class="no">1.6</span>刻度与周期：同一个市场，不同的样子</h2>
+  <p class="sec-en">SCALES AND TIME FRAMES · 第 3 章要点</p>
+
+  <div class="prose">
+    <h3>算术刻度与对数刻度</h3>
+    <p>价格轴有两种刻法。<strong>算术刻度</strong>：等距代表等额的价差，从 10 元到 20 元和从 100 元到 110 元，在图上的高度一样。<strong>对数刻度</strong>：等距代表等比的涨跌，从 10 元到 20 元（翻倍）和从 100 元到 200 元（也是翻倍），在图上的高度一样。对投资者来说，后者才是真实的盈亏感受：无论股价在 10 元还是 100 元，涨一倍就是赚一倍。</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 1-9</span>两次 50% 的下跌，在两种刻度下的样子<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 300" role="img" aria-label="同一条从 10 涨到 160 的价格曲线：算术刻度下早期 50% 的下跌几乎看不见、后期 50% 的下跌显得惊天动地；对数刻度下两次 50% 下跌高度相同">
+<defs><marker id="f19-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/></marker><marker id="f19-ara" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/></marker></defs>
+<!-- kchart: n=100 L=46 step=2.980 x(i)=L+step*(i+0.5) price[2.478,167.752] y∈[34,280] -->
+<line class="axis" x1="46" y1="34" x2="46" y2="280"/>
+<line class="grid" x1="46" y1="209.3" x2="344" y2="209.3"/>
+<text class="tick" x="40" y="213.3" text-anchor="end">50</text>
+<line class="grid" x1="46" y1="134.8" x2="344" y2="134.8"/>
+<text class="tick" x="40" y="138.8" text-anchor="end">100</text>
+<line class="grid" x1="46" y1="60.4" x2="344" y2="60.4"/>
+<text class="tick" x="40" y="64.4" text-anchor="end">150</text>
+<line class="axis" x1="46" y1="280" x2="344" y2="280"/>
+<polyline class="cl" points="47.5,268.8 50.5,268.5 53.5,267.9 56.4,267.5 59.4,267.1 62.4,266.4 65.4,265.9 68.4,265.4 71.3,265.1 74.3,264.5 77.3,263.7 80.3,263.2 83.3,262.6 86.2,262 89.2,261.4 92.2,260.9 95.2,260.2 98.2,259.5 101.1,258.7 104.1,257.9 107.1,257 110.1,256.6 113.1,255.7 116,254.9 119,254.1 122,257.3 125,260.2 128,262.8 130.9,264.8 133.9,267 136.9,268.8 139.9,268.1 142.9,267.4 145.8,266.7 148.8,265.8 151.8,265 154.8,264 157.8,263.1 160.7,262.1 163.7,261.1 166.7,260.1 169.7,259.1 172.7,257.8 175.6,256.5 178.6,255.5 181.6,253.7 184.6,252.7 187.6,250.8 190.5,249.5 193.5,247.7 196.5,246.3 199.5,244.5 202.5,242.7 205.4,240.5 208.4,238.3 211.4,236.5 214.4,234.3 217.4,231.8 220.3,229.6 223.3,226.6 226.3,224.3 229.3,221.4 232.3,218.6 235.2,215.3 238.2,211.9 241.2,208.6 244.2,204.7 247.2,201.4 250.1,197.5 253.1,193.4 256.1,189.4 259.1,184.8 262.1,179.8 265,174.9 268,170.3 271,164.7 274,159.8 277,153.9 279.9,147.9 282.9,140.6 285.9,134.1 288.9,126.7 291.9,119.8 294.8,111.9 297.8,102.9 300.8,96 303.8,85.9 306.8,75.3 309.7,65.9 312.7,56.1 315.7,45.2 318.7,63.8 321.7,78.5 324.6,94.6 327.6,107.3 330.6,122.2 333.6,134.8 336.6,144.1 339.5,155.8 342.5,165.5"/>
+<text class="hi" x="128" y="239" text-anchor="middle">这里也跌了 50%</text>
+<line class="edge" x1="128" y1="248" x2="128" y2="264.3" marker-end="url(#f19-ara)"/>
+<text class="hi" x="268" y="60.4" text-anchor="end">跌 50%：看起来天塌了</text>
+<!-- kchart: n=100 L=406 step=2.980 x(i)=L+step*(i+0.5) price[9.514,168.252] y∈[34,280] log -->
+<line class="axis" x1="406" y1="34" x2="406" y2="280"/>
+<line class="grid" x1="406" y1="275.7" x2="704" y2="275.7"/>
+<text class="tick" x="400" y="279.7" text-anchor="end">10</text>
+<line class="grid" x1="406" y1="216.4" x2="704" y2="216.4"/>
+<text class="tick" x="400" y="220.4" text-anchor="end">20</text>
+<line class="grid" x1="406" y1="157" x2="704" y2="157"/>
+<text class="tick" x="400" y="161" text-anchor="end">40</text>
+<line class="grid" x1="406" y1="97.7" x2="704" y2="97.7"/>
+<text class="tick" x="400" y="101.7" text-anchor="end">80</text>
+<line class="grid" x1="406" y1="38.3" x2="704" y2="38.3"/>
+<text class="tick" x="400" y="42.3" text-anchor="end">160</text>
+<line class="axis" x1="406" y1="280" x2="704" y2="280"/>
+<polyline class="cl" points="407.5,275.8 410.5,273.9 413.5,270.5 416.4,268.4 419.4,266.3 422.4,263 425.4,260.4 428.4,258 431.3,256.6 434.3,253.9 437.3,250.4 440.3,248.4 443.3,246.1 446.2,243.3 449.2,241.2 452.2,239.3 455.2,236.7 458.2,234.3 461.1,231.3 464.1,228.7 467.1,225.6 470.1,224.4 473.1,221.6 476,219.2 479,216.9 482,226.7 485,236.6 488,246.7 490.9,255.5 493.9,265.8 496.9,275.7 499.9,271.6 502.9,268.1 505.8,264.2 508.8,259.8 511.8,256.3 514.8,251.7 517.8,248.1 520.7,243.9 523.7,240 526.7,236.3 529.7,232.7 532.7,228.5 535.6,224.2 538.6,221 541.6,215.8 544.6,212.9 547.6,207.9 550.5,204.5 553.5,200.1 556.5,196.9 559.5,192.8 562.5,189 565.4,184.5 568.4,180.3 571.4,176.9 574.4,173 577.4,168.8 580.3,165.2 583.3,160.6 586.3,157.2 589.3,153.2 592.3,149.3 595.2,145.2 598.2,141 601.2,137.2 604.2,132.9 607.2,129.3 610.1,125.3 613.1,121.4 616.1,117.6 619.1,113.5 622.1,109.4 625,105.4 628,101.8 631,97.7 634,94.3 637,90.3 639.9,86.4 642.9,82 645.9,78.1 648.9,74 651.9,70.3 654.8,66.3 657.8,61.9 660.8,58.7 663.8,54.2 666.8,49.7 669.7,46 672.7,42.2 675.7,38.2 678.7,45.2 681.7,51.1 684.6,58.1 687.6,64 690.6,71.6 693.6,78.6 696.6,84.1 699.5,91.6 702.5,98.3"/>
+<text class="hi" x="488" y="193.9" text-anchor="middle">−50%</text>
+<text class="hi" x="693.6" y="52.9" text-anchor="end">−50%</text>
+<text class="pv" x="592.3" y="253.3" text-anchor="middle">两次跌幅相同，高度也相同</text>
+<text class="pl" x="46" y="20">算术刻度：等距 = 等额价差</text>
+<text class="pl" x="406" y="20">对数刻度：等距 = 等比涨跌</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>同一条从 10 元涨到 160 元的曲线，中间有两次跌幅都是 50% 的下跌。左边的算术刻度里，早期从 20 跌到 10 只是一个小坑，后期从 160 跌到 80 则像天塌了；右边的对数刻度里，两次下跌的高度一模一样，而长期的指数式上涨变成了一条直线。<b>经验法则：</b>看几个月的走势，两种刻度差别不大；看几年以上、价格翻了好几倍的走势，必须用对数刻度，否则会严重低估早期的波动、高估近期的波动。还有一个细节：同一条趋势线，在两种刻度上可能一个被跌破、一个没有，墨菲特别提醒在长期图表上要留意这一点。</figcaption>
+  </figure>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>“看不见”的大萧条</h4>
+    <p>如果你在算术刻度上画一张道琼斯指数一百年来的走势图，会看到左边很长一段几乎贴着底部的平线，右边是陡峭上冲的曲线。1929 年的崩盘在这张图上只是一个微不足道的小抖动。可实际上，道指从 1929 年 9 月的约 381 点跌到 1932 年 7 月的约 41 点，<strong>跌去了约 89%</strong>，比之后任何一次熊市都惨烈。只有在对数刻度上，这次崩盘才会显出它真实的深度。</p>
+    <p class="takeaway">任何跨越几十年的长期图（包括 A 股从 1990 年至今的上证指数月线），都应该切换成对数刻度再看。大多数行情软件都有这个选项，通常叫“对数坐标”。</p>
+  </div>
+
+  <div class="prose">
+    <h3>日线、周线、月线</h3>
+    <p>每根 K 线代表的时间长度叫<strong>周期</strong>。日线的一根代表一天；周线的一根代表一周，开盘价取周一开盘，收盘价取周五收盘，最高最低取全周极值；月线同理。周期越长，噪声越少，趋势越清楚；周期越短，细节越多，但也越容易被随机波动迷惑。</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 1-10</span>同一段行情：月线、周线、日线讲的是三个不同的故事<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 540" role="img" aria-label="同一市场的月线、周线与日线：月线是清晰的上升趋势，周线显示最近一段回调，日线最近两个月连续下跌">
+<defs><marker id="f110-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/></marker><marker id="f110-ara" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/></marker></defs>
+<!-- kchart: n=13 L=44 step=18.462 x(i)=L+step*(i+0.5) price[9.348,20.832] y∈[34,252] -->
+<line class="axis" x1="44" y1="34" x2="44" y2="252"/>
+<line class="grid" x1="44" y1="239.6" x2="284" y2="239.6"/>
+<text class="tick" x="38" y="243.6" text-anchor="end">10.0</text>
+<line class="grid" x1="44" y1="192.2" x2="284" y2="192.2"/>
+<text class="tick" x="38" y="196.2" text-anchor="end">12.5</text>
+<line class="grid" x1="44" y1="144.7" x2="284" y2="144.7"/>
+<text class="tick" x="38" y="148.7" text-anchor="end">15.0</text>
+<line class="grid" x1="44" y1="97.3" x2="284" y2="97.3"/>
+<text class="tick" x="38" y="101.3" text-anchor="end">17.5</text>
+<line class="grid" x1="44" y1="49.8" x2="284" y2="49.8"/>
+<text class="tick" x="38" y="53.8" text-anchor="end">20.0</text>
+<line class="axis" x1="44" y1="252" x2="284" y2="252"/>
+<rect class="zone" x="247.1" y="38.4" width="36.9" height="75.9"/>
+<line class="wu" x1="53.2" y1="223.1" x2="53.2" y2="242.1"/>
+<rect class="cu" x="47.5" y="223.9" width="11.4" height="15.2"/>
+<line class="wu" x1="71.7" y1="210.4" x2="71.7" y2="226.5"/>
+<rect class="cu" x="66" y="213.2" width="11.4" height="11.2"/>
+<line class="wd" x1="90.2" y1="209.4" x2="90.2" y2="222.7"/>
+<rect class="cd" x="84.4" y="212.7" width="11.4" height="8.7"/>
+<line class="wu" x1="108.6" y1="196" x2="108.6" y2="224.8"/>
+<rect class="cu" x="102.9" y="200.3" width="11.4" height="20.9"/>
+<line class="wu" x1="127.1" y1="172.4" x2="127.1" y2="200.9"/>
+<rect class="cu" x="121.4" y="174.9" width="11.4" height="24.9"/>
+<line class="wu" x1="145.5" y1="160.5" x2="145.5" y2="179.6"/>
+<rect class="cu" x="139.8" y="167.9" width="11.4" height="7.4"/>
+<line class="wd" x1="164" y1="161.6" x2="164" y2="184"/>
+<rect class="cd" x="158.3" y="167.3" width="11.4" height="1.5"/>
+<line class="wu" x1="182.5" y1="136" x2="182.5" y2="170.5"/>
+<rect class="cu" x="176.7" y="137.3" width="11.4" height="32.5"/>
+<line class="wu" x1="200.9" y1="105.4" x2="200.9" y2="139.4"/>
+<rect class="cu" x="195.2" y="105.8" width="11.4" height="31.7"/>
+<line class="wd" x1="219.4" y1="103.1" x2="219.4" y2="122.5"/>
+<rect class="cd" x="213.7" y="107.3" width="11.4" height="11.8"/>
+<line class="wu" x1="237.8" y1="56.1" x2="237.8" y2="122.3"/>
+<rect class="cu" x="232.1" y="60" width="11.4" height="59.4"/>
+<line class="wd" x1="256.3" y1="43.9" x2="256.3" y2="81.3"/>
+<rect class="cd" x="250.6" y="61.6" width="11.4" height="14.8"/>
+<line class="wd" x1="274.8" y1="68" x2="274.8" y2="104.7"/>
+<rect class="cd" x="269" y="76.7" width="11.4" height="25.4"/>
+<text class="hi" x="154.8" y="57.4" text-anchor="middle">回调只占一两根 K 线</text>
+<!-- kchart: n=52 L=344 step=6.923 x(i)=L+step*(i+0.5) price[9.348,20.832] y∈[34,252] -->
+<line class="axis" x1="344" y1="34" x2="344" y2="252"/>
+<line class="grid" x1="344" y1="239.6" x2="704" y2="239.6"/>
+<text class="tick" x="338" y="243.6" text-anchor="end">10.0</text>
+<line class="grid" x1="344" y1="192.2" x2="704" y2="192.2"/>
+<text class="tick" x="338" y="196.2" text-anchor="end">12.5</text>
+<line class="grid" x1="344" y1="144.7" x2="704" y2="144.7"/>
+<text class="tick" x="338" y="148.7" text-anchor="end">15.0</text>
+<line class="grid" x1="344" y1="97.3" x2="704" y2="97.3"/>
+<text class="tick" x="338" y="101.3" text-anchor="end">17.5</text>
+<line class="grid" x1="344" y1="49.8" x2="704" y2="49.8"/>
+<text class="tick" x="338" y="53.8" text-anchor="end">20.0</text>
+<line class="axis" x1="344" y1="252" x2="704" y2="252"/>
+<rect class="zone" x="648.6" y="38.4" width="55.4" height="75.9"/>
+<line class="wu" x1="347.5" y1="233.2" x2="347.5" y2="242.1"/>
+<rect class="cu" x="345.3" y="235.3" width="4.3" height="3.8"/>
+<line class="wu" x1="354.4" y1="228.6" x2="354.4" y2="237.7"/>
+<rect class="cu" x="352.2" y="231.3" width="4.3" height="3.2"/>
+<line class="wd" x1="361.3" y1="226.5" x2="361.3" y2="236.8"/>
+<rect class="cd" x="359.2" y="231.5" width="4.3" height="1"/>
+<line class="wu" x1="368.2" y1="223.1" x2="368.2" y2="234.5"/>
+<rect class="cu" x="366.1" y="223.9" width="4.3" height="8.2"/>
+<line class="wu" x1="375.2" y1="219.1" x2="375.2" y2="226.5"/>
+<rect class="cu" x="373" y="221.4" width="4.3" height="3"/>
+<line class="wu" x1="382.1" y1="216.5" x2="382.1" y2="225.6"/>
+<rect class="cu" x="379.9" y="219.5" width="4.3" height="1.5"/>
+<line class="wu" x1="389" y1="211.5" x2="389" y2="221.8"/>
+<rect class="cu" x="386.9" y="214.8" width="4.3" height="5.7"/>
+<line class="wu" x1="395.9" y1="210.4" x2="395.9" y2="219.3"/>
+<rect class="cu" x="393.8" y="213.2" width="4.3" height="1"/>
+<line class="wd" x1="402.8" y1="209.4" x2="402.8" y2="215.7"/>
+<rect class="cd" x="400.7" y="212.7" width="4.3" height="1"/>
+<line class="wd" x1="409.8" y1="210.6" x2="409.8" y2="218"/>
+<rect class="cd" x="407.6" y="212.9" width="4.3" height="2.5"/>
+<line class="wd" x1="416.7" y1="214.4" x2="416.7" y2="220.3"/>
+<rect class="cd" x="414.5" y="214.9" width="4.3" height="2.3"/>
+<line class="wd" x1="423.6" y1="213.4" x2="423.6" y2="222.7"/>
+<rect class="cd" x="421.5" y="216.5" width="4.3" height="4.9"/>
+<line class="wu" x1="430.5" y1="214.2" x2="430.5" y2="224.8"/>
+<rect class="cu" x="428.4" y="216.8" width="4.3" height="4.4"/>
+<line class="wu" x1="437.5" y1="208.9" x2="437.5" y2="217.8"/>
+<rect class="cu" x="435.3" y="210.8" width="4.3" height="6.3"/>
+<line class="wu" x1="444.4" y1="200.7" x2="444.4" y2="214.4"/>
+<rect class="cu" x="442.2" y="202" width="4.3" height="9.1"/>
+<line class="wu" x1="451.3" y1="196" x2="451.3" y2="205.8"/>
+<rect class="cu" x="449.2" y="200.3" width="4.3" height="1"/>
+<line class="wu" x1="458.2" y1="190.6" x2="458.2" y2="200.9"/>
+<rect class="cu" x="456.1" y="193.5" width="4.3" height="6.3"/>
+<line class="wu" x1="465.2" y1="186.1" x2="465.2" y2="195.6"/>
+<rect class="cu" x="463" y="186.9" width="4.3" height="5.7"/>
+<line class="wu" x1="472.1" y1="177.5" x2="472.1" y2="189.1"/>
+<rect class="cu" x="469.9" y="179.4" width="4.3" height="7.2"/>
+<line class="wu" x1="479" y1="172.4" x2="479" y2="184.6"/>
+<rect class="cu" x="476.9" y="174.9" width="4.3" height="5.3"/>
+<line class="wu" x1="485.9" y1="166.9" x2="485.9" y2="179.6"/>
+<rect class="cu" x="483.8" y="171.7" width="4.3" height="3.6"/>
+<line class="wu" x1="492.8" y1="160.5" x2="492.8" y2="174.5"/>
+<rect class="cu" x="490.7" y="161.8" width="4.3" height="10.8"/>
+<line class="wd" x1="499.8" y1="160.7" x2="499.8" y2="168.6"/>
+<rect class="cd" x="497.6" y="162.6" width="4.3" height="1.9"/>
+<line class="wd" x1="506.7" y1="163.1" x2="506.7" y2="174.1"/>
+<rect class="cd" x="504.5" y="164.1" width="4.3" height="3.8"/>
+<line class="wd" x1="513.6" y1="165" x2="513.6" y2="177.5"/>
+<rect class="cd" x="511.5" y="167.3" width="4.3" height="4.4"/>
+<line class="wd" x1="520.5" y1="171.1" x2="520.5" y2="182.1"/>
+<rect class="cd" x="518.4" y="172.6" width="4.3" height="5.9"/>
+<line class="wu" x1="527.5" y1="170.1" x2="527.5" y2="184"/>
+<rect class="cu" x="525.3" y="173.4" width="4.3" height="4"/>
+<line class="wu" x1="534.4" y1="161.6" x2="534.4" y2="177.7"/>
+<rect class="cu" x="532.2" y="168.8" width="4.3" height="5.7"/>
+<line class="wu" x1="541.3" y1="155.1" x2="541.3" y2="170.5"/>
+<rect class="cu" x="539.2" y="158" width="4.3" height="11.8"/>
+<line class="wu" x1="548.2" y1="148.5" x2="548.2" y2="162.9"/>
+<rect class="cu" x="546.1" y="152.9" width="4.3" height="5.9"/>
+<line class="wu" x1="555.2" y1="137.9" x2="555.2" y2="152.9"/>
+<rect class="cu" x="553" y="141.3" width="4.3" height="11"/>
+<line class="wu" x1="562.1" y1="136" x2="562.1" y2="148.7"/>
+<rect class="cu" x="559.9" y="137.3" width="4.3" height="4.6"/>
+<line class="wu" x1="569" y1="126.7" x2="569" y2="139.4"/>
+<rect class="cu" x="566.9" y="131.6" width="4.3" height="5.9"/>
+<line class="wu" x1="575.9" y1="117.6" x2="575.9" y2="134.6"/>
+<rect class="cu" x="573.8" y="119.3" width="4.3" height="11.2"/>
+<line class="wu" x1="582.8" y1="111.1" x2="582.8" y2="128.2"/>
+<rect class="cu" x="580.7" y="114" width="4.3" height="3.8"/>
+<line class="wu" x1="589.8" y1="105.4" x2="589.8" y2="119.1"/>
+<rect class="cu" x="587.6" y="105.8" width="4.3" height="6.8"/>
+<line class="wd" x1="596.7" y1="103.1" x2="596.7" y2="116.4"/>
+<rect class="cd" x="594.5" y="107.3" width="4.3" height="4.6"/>
+<line class="wd" x1="603.6" y1="103.1" x2="603.6" y2="115.5"/>
+<rect class="cd" x="601.5" y="111.5" width="4.3" height="3"/>
+<line class="wu" x1="610.5" y1="106.2" x2="610.5" y2="116"/>
+<rect class="cu" x="608.4" y="112.4" width="4.3" height="1.7"/>
+<line class="wd" x1="617.5" y1="107.9" x2="617.5" y2="122.5"/>
+<rect class="cd" x="615.3" y="111.1" width="4.3" height="8"/>
+<line class="wu" x1="624.4" y1="99" x2="624.4" y2="122.3"/>
+<rect class="cu" x="622.2" y="103.3" width="4.3" height="16.1"/>
+<line class="wu" x1="631.3" y1="85.7" x2="631.3" y2="105.8"/>
+<rect class="cu" x="629.2" y="89.1" width="4.3" height="13.1"/>
+<line class="wu" x1="638.2" y1="70.9" x2="638.2" y2="89.5"/>
+<rect class="cu" x="636.1" y="71.6" width="4.3" height="15.8"/>
+<line class="wu" x1="645.2" y1="56.1" x2="645.2" y2="71.2"/>
+<rect class="cu" x="643" y="60" width="4.3" height="10.1"/>
+<line class="wu" x1="652.1" y1="48.5" x2="652.1" y2="61.9"/>
+<rect class="cu" x="649.9" y="54" width="4.3" height="7.6"/>
+<line class="wd" x1="659" y1="43.9" x2="659" y2="62.7"/>
+<rect class="cd" x="656.9" y="52.8" width="4.3" height="2.1"/>
+<line class="wd" x1="665.9" y1="49.4" x2="665.9" y2="68.2"/>
+<rect class="cd" x="663.8" y="55.1" width="4.3" height="8.4"/>
+<line class="wd" x1="672.8" y1="59.7" x2="672.8" y2="81.3"/>
+<rect class="cd" x="670.7" y="64.8" width="4.3" height="11.6"/>
+<line class="wd" x1="679.8" y1="68" x2="679.8" y2="81.9"/>
+<rect class="cd" x="677.6" y="76.7" width="4.3" height="4"/>
+<line class="wd" x1="686.7" y1="77.5" x2="686.7" y2="90.4"/>
+<rect class="cd" x="684.5" y="82.3" width="4.3" height="6.3"/>
+<line class="wd" x1="693.6" y1="80" x2="693.6" y2="94.4"/>
+<rect class="cd" x="691.5" y="87" width="4.3" height="2.7"/>
+<line class="wd" x1="700.5" y1="86.8" x2="700.5" y2="104.7"/>
+<rect class="cd" x="698.4" y="89.5" width="4.3" height="12.7"/>
+<text class="hi" x="555.2" y="57.4" text-anchor="middle">周线：回调已持续约 8 周</text>
+<!-- kchart: n=60 L=44 step=11.000 x(i)=L+step*(i+0.5) price[15.973,20.516] y∈[304,522] -->
+<line class="axis" x1="44" y1="304" x2="44" y2="522"/>
+<line class="grid" x1="44" y1="520.7" x2="704" y2="520.7"/>
+<text class="tick" x="38" y="524.7" text-anchor="end">16</text>
+<line class="grid" x1="44" y1="472.7" x2="704" y2="472.7"/>
+<text class="tick" x="38" y="476.7" text-anchor="end">17</text>
+<line class="grid" x1="44" y1="424.8" x2="704" y2="424.8"/>
+<text class="tick" x="38" y="428.8" text-anchor="end">18</text>
+<line class="grid" x1="44" y1="376.8" x2="704" y2="376.8"/>
+<text class="tick" x="38" y="380.8" text-anchor="end">19</text>
+<line class="grid" x1="44" y1="328.8" x2="704" y2="328.8"/>
+<text class="tick" x="38" y="332.8" text-anchor="end">20</text>
+<line class="axis" x1="44" y1="522" x2="704" y2="522"/>
+<line class="wu" x1="49.5" y1="488.1" x2="49.5" y2="506.8"/>
+<rect class="cu" x="46.1" y="497.7" width="6.8" height="7.2"/>
+<line class="wd" x1="60.5" y1="492.9" x2="60.5" y2="503.9"/>
+<rect class="cd" x="57.1" y="496.7" width="6.8" height="5.3"/>
+<line class="wu" x1="71.5" y1="476.1" x2="71.5" y2="512.1"/>
+<rect class="cu" x="68.1" y="476.6" width="6.8" height="25.9"/>
+<line class="wu" x1="82.5" y1="467.9" x2="82.5" y2="483.3"/>
+<rect class="cu" x="79.1" y="472.7" width="6.8" height="2.9"/>
+<line class="wu" x1="93.5" y1="453.1" x2="93.5" y2="472.7"/>
+<rect class="cu" x="90.1" y="464.1" width="6.8" height="7.2"/>
+<line class="wu" x1="104.5" y1="447.3" x2="104.5" y2="470.3"/>
+<rect class="cu" x="101.1" y="459.3" width="6.8" height="1.9"/>
+<line class="wu" x1="115.5" y1="449.7" x2="115.5" y2="461.7"/>
+<rect class="cu" x="112.1" y="455" width="6.8" height="6.2"/>
+<line class="wd" x1="126.5" y1="444.4" x2="126.5" y2="456.9"/>
+<rect class="cd" x="123.1" y="452.1" width="6.8" height="1.9"/>
+<line class="wu" x1="137.5" y1="429.1" x2="137.5" y2="461.2"/>
+<rect class="cu" x="134.1" y="440.6" width="6.8" height="15.4"/>
+<line class="wu" x1="148.5" y1="419.5" x2="148.5" y2="452.1"/>
+<rect class="cu" x="145.1" y="428.1" width="6.8" height="16.3"/>
+<line class="wu" x1="159.5" y1="411.3" x2="159.5" y2="425.7"/>
+<rect class="cu" x="156.1" y="419" width="6.8" height="4.8"/>
+<line class="wd" x1="170.5" y1="409.9" x2="170.5" y2="425.2"/>
+<rect class="cd" x="167.1" y="415.6" width="6.8" height="3.4"/>
+<line class="wu" x1="181.5" y1="404.6" x2="181.5" y2="429.1"/>
+<rect class="cu" x="178.1" y="410.8" width="6.8" height="6.7"/>
+<line class="wu" x1="192.5" y1="397.9" x2="192.5" y2="422.4"/>
+<rect class="cu" x="189.1" y="400.3" width="6.8" height="12.5"/>
+<line class="wu" x1="203.5" y1="382" x2="203.5" y2="410.4"/>
+<rect class="cu" x="200.1" y="384" width="6.8" height="17.8"/>
+<line class="wu" x1="214.5" y1="363.3" x2="214.5" y2="383"/>
+<rect class="cu" x="211.1" y="374.4" width="6.8" height="5.8"/>
+<line class="wu" x1="225.5" y1="357.1" x2="225.5" y2="382.5"/>
+<rect class="cu" x="222.1" y="365.3" width="6.8" height="7.2"/>
+<line class="wu" x1="236.5" y1="347" x2="236.5" y2="369.1"/>
+<rect class="cu" x="233.1" y="360.5" width="6.8" height="6.7"/>
+<line class="wu" x1="247.5" y1="352.8" x2="247.5" y2="368.1"/>
+<rect class="cu" x="244.1" y="353.3" width="6.8" height="4.8"/>
+<line class="wd" x1="258.5" y1="344.6" x2="258.5" y2="359.5"/>
+<rect class="cd" x="255.1" y="353.3" width="6.8" height="1.4"/>
+<line class="wu" x1="269.5" y1="330.2" x2="269.5" y2="359.5"/>
+<rect class="cu" x="266.1" y="334.1" width="6.8" height="24.5"/>
+<line class="wd" x1="280.5" y1="330.7" x2="280.5" y2="336.5"/>
+<rect class="cd" x="277.1" y="334.1" width="6.8" height="1"/>
+<line class="wd" x1="291.5" y1="325.4" x2="291.5" y2="343.7"/>
+<rect class="cd" x="288.1" y="331.7" width="6.8" height="1.4"/>
+<line class="wd" x1="302.5" y1="326.4" x2="302.5" y2="338.4"/>
+<rect class="cd" x="299.1" y="332.6" width="6.8" height="4.8"/>
+<line class="wd" x1="313.5" y1="334.5" x2="313.5" y2="345.6"/>
+<rect class="cd" x="310.1" y="335" width="6.8" height="4.3"/>
+<line class="wu" x1="324.5" y1="327.3" x2="324.5" y2="336.5"/>
+<rect class="cu" x="321.1" y="328.3" width="6.8" height="8.2"/>
+<line class="wd" x1="335.5" y1="313.9" x2="335.5" y2="357.1"/>
+<rect class="cd" x="332.1" y="326.9" width="6.8" height="19.7"/>
+<line class="wu" x1="346.5" y1="333.6" x2="346.5" y2="361.4"/>
+<rect class="cu" x="343.1" y="335" width="6.8" height="12.5"/>
+<line class="wd" x1="357.5" y1="327.3" x2="357.5" y2="358.1"/>
+<rect class="cd" x="354.1" y="338.4" width="6.8" height="7.7"/>
+<line class="wu" x1="368.5" y1="334.1" x2="368.5" y2="354.2"/>
+<rect class="cu" x="365.1" y="341.7" width="6.8" height="6.2"/>
+<line class="wd" x1="379.5" y1="327.8" x2="379.5" y2="353.3"/>
+<rect class="cd" x="376.1" y="342.2" width="6.8" height="7.7"/>
+<line class="wd" x1="390.5" y1="352.3" x2="390.5" y2="375.3"/>
+<rect class="cd" x="387.1" y="353.7" width="6.8" height="13.9"/>
+<line class="wu" x1="401.5" y1="348" x2="401.5" y2="368.1"/>
+<rect class="cu" x="398.1" y="360" width="6.8" height="4.8"/>
+<line class="wd" x1="412.5" y1="348.5" x2="412.5" y2="372"/>
+<rect class="cd" x="409.1" y="355.7" width="6.8" height="10.1"/>
+<line class="wu" x1="423.5" y1="361.4" x2="423.5" y2="369.1"/>
+<rect class="cu" x="420.1" y="363.3" width="6.8" height="1"/>
+<line class="wu" x1="434.5" y1="353.7" x2="434.5" y2="380.1"/>
+<rect class="cu" x="431.1" y="366.7" width="6.8" height="1"/>
+<line class="wu" x1="445.5" y1="362.4" x2="445.5" y2="370.5"/>
+<rect class="cu" x="442.1" y="365.3" width="6.8" height="3.4"/>
+<line class="wd" x1="456.5" y1="354.2" x2="456.5" y2="398.4"/>
+<rect class="cd" x="453.1" y="360.9" width="6.8" height="24.5"/>
+<line class="wd" x1="467.5" y1="377.7" x2="467.5" y2="393.1"/>
+<rect class="cd" x="464.1" y="381.1" width="6.8" height="8.6"/>
+<line class="wd" x1="478.5" y1="380.6" x2="478.5" y2="408.4"/>
+<rect class="cd" x="475.1" y="386.8" width="6.8" height="9.1"/>
+<line class="wu" x1="489.5" y1="387.8" x2="489.5" y2="398.4"/>
+<rect class="cu" x="486.1" y="387.8" width="6.8" height="9.1"/>
+<line class="wd" x1="500.5" y1="374.9" x2="500.5" y2="400.8"/>
+<rect class="cd" x="497.1" y="385.4" width="6.8" height="7.2"/>
+<line class="wd" x1="511.5" y1="389.7" x2="511.5" y2="397.4"/>
+<rect class="cd" x="508.1" y="392.1" width="6.8" height="1"/>
+<line class="wd" x1="522.5" y1="394" x2="522.5" y2="398.8"/>
+<rect class="cd" x="519.1" y="394" width="6.8" height="1.4"/>
+<line class="wd" x1="533.5" y1="385.9" x2="533.5" y2="409.9"/>
+<rect class="cd" x="530.1" y="396.9" width="6.8" height="10.1"/>
+<line class="wd" x1="544.5" y1="400.8" x2="544.5" y2="419"/>
+<rect class="cd" x="541.1" y="410.8" width="6.8" height="1"/>
+<line class="wd" x1="555.5" y1="399.3" x2="555.5" y2="426.7"/>
+<rect class="cd" x="552.1" y="408.9" width="6.8" height="9.6"/>
+<line class="wu" x1="566.5" y1="398.8" x2="566.5" y2="425.7"/>
+<rect class="cu" x="563.1" y="405.1" width="6.8" height="17.3"/>
+<line class="wd" x1="577.5" y1="404.1" x2="577.5" y2="431.5"/>
+<rect class="cd" x="574.1" y="406" width="6.8" height="17.3"/>
+<line class="wd" x1="588.5" y1="415.6" x2="588.5" y2="431.5"/>
+<rect class="cd" x="585.1" y="421.4" width="6.8" height="5.3"/>
+<line class="wu" x1="599.5" y1="405.1" x2="599.5" y2="431"/>
+<rect class="cu" x="596.1" y="413.2" width="6.8" height="9.6"/>
+<line class="wd" x1="610.5" y1="411.8" x2="610.5" y2="433.9"/>
+<rect class="cd" x="607.1" y="416.1" width="6.8" height="11.5"/>
+<line class="wu" x1="621.5" y1="414.2" x2="621.5" y2="431"/>
+<rect class="cu" x="618.1" y="420.9" width="6.8" height="6.7"/>
+<line class="wd" x1="632.5" y1="420" x2="632.5" y2="436.3"/>
+<rect class="cd" x="629.1" y="423.8" width="6.8" height="9.1"/>
+<line class="wu" x1="643.5" y1="429.6" x2="643.5" y2="441.6"/>
+<rect class="cu" x="640.1" y="429.6" width="6.8" height="6.7"/>
+<line class="wd" x1="654.5" y1="422.4" x2="654.5" y2="442.5"/>
+<rect class="cd" x="651.1" y="429.1" width="6.8" height="7.7"/>
+<line class="wd" x1="665.5" y1="427.6" x2="665.5" y2="458.3"/>
+<rect class="cd" x="662.1" y="434.8" width="6.8" height="17.8"/>
+<line class="wu" x1="676.5" y1="441.1" x2="676.5" y2="452.1"/>
+<rect class="cu" x="673.1" y="446.8" width="6.8" height="4.8"/>
+<line class="wd" x1="687.5" y1="445.9" x2="687.5" y2="467.5"/>
+<rect class="cd" x="684.1" y="450.2" width="6.8" height="5.3"/>
+<line class="wd" x1="698.5" y1="456.9" x2="698.5" y2="467.5"/>
+<rect class="cd" x="695.1" y="457.9" width="6.8" height="3.4"/>
+<text class="hi" x="60.5" y="328.8" text-anchor="start">日线：高点以来连跌近两个月，单看这张图像熊市</text>
+<text class="pl" x="44" y="20">月线（每根 = 一个月）</text>
+<text class="pl" x="344" y="20">周线（每根 = 一周）</text>
+<text class="pl" x="44" y="290">日线：最近 60 个交易日</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>三张图来自<b>同一组</b>日线数据（周线、月线由日线合成）。单看日线，最近两个月连续下跌，像是熊市来了；切到周线，能看出这是一段持续约 8 周的回调；再切到月线，它只是长期上升趋势中的一根回调 K 线。三个结论都“对”，只是回答的问题不同。<b>原则：长周期定方向，短周期找时机。</b>先用月线、周线判断大趋势，再用日线寻找入场点。比如在月线上升趋势中，日线的回调可能是买入机会，而不是逃跑的理由。下一站的道氏理论会把这个思想系统化为“主要趋势、次要趋势、短暂趋势”。</figcaption>
+  </figure>
+
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>多周期分析就像用地图导航：先看全国地图，确认要从北京往南去上海（月线定方向）；再看省级地图，选好走哪条高速（周线看结构）；最后看街道图，找到最近的匝道入口（日线找时机）。只看街道图的人，会因为前面一个向北的弯道就以为自己走反了。</p>
+  </div>
+</section>
+
+<!-- ======================== 1.7 ======================== -->
+<section class="ch" id="s7">
+  <h2 class="sec"><span class="no">1.7</span>落地：规则卡、证据与 A 股适配</h2>
+  <p class="sec-en">PUTTING IT TO WORK</p>
+
+  <div class="prose">
+    <h3>为什么要写规则卡</h3>
+    <p>图 1-6 已经说明，肉眼看图会被噪声欺骗；《投资学》第 12 章也说明，盘中的你会被损失厌恶和过度自信左右。对付这两个敌人只有一个办法：<strong>在冷静的时候，把决策写成不需要临场判断的规则</strong>。从这一站开始，每一站都会把核心方法写成一张“规则卡”，格式固定为六项。先看一个反面例子：</p>
+    <p>“趋势向上就买，跌了就卖。”这<strong>不是</strong>规则，因为它没有回答：什么叫“趋势向上”？看哪个周期？在哪个价格买？跌多少算“跌了”？买多少？下面是把同一个想法改写成规则卡的样子：</p>
+  </div>
+
+  <div class="rulecard">
+    <div class="rc-head"><span class="label">规则卡 · 格式示范</span><span class="rc-name">多周期顺势回调买入</span></div>
+    <dl>
+      <dt>标的与周期</dt><dd>沪深 300 ETF；周线定方向，日线找入场</dd>
+      <dt>过滤条件</dt><dd>周线收盘价在 30 周均线之上，且 30 周均线向上（长周期处于上升趋势）</dd>
+      <dt>入场</dt><dd>日线出现回调后，收盘价重新创出 10 日新高，当天收盘买入</dd>
+      <dt>止损</dt><dd>本次回调最低点下方 1%；以收盘价判断，触发后次日开盘卖出</dd>
+      <dt>出场</dt><dd>周线收盘价跌破 30 周均线，全部卖出</dd>
+      <dt>仓位</dt><dd>股数 =（账户净值 × 1%）÷（入场价 − 止损价）。例：账户 20 万元，每笔最多亏 2000 元；入场 4.00 元、止损 3.80 元，每股风险 0.20 元，买 10000 股（市值 4 万元）</dd>
+    </dl>
+    <p class="rc-note">这是一张格式示范，规则是否有效，要等第 12 站学了系统检验的思路后用数据回答。现在记住三点：① 每个条件都必须精确到两个人执行会得到同一个结果；② 止损和仓位必须在入场<strong>之前</strong>写好；③ 仓位由“认错距离”反推，而不是由“有多看好”决定。</p>
+  </div>
+
+  <div class="evidence">
+    <span class="label">证据与怀疑</span>
+    <h4>三大前提经得起检验吗？</h4>
+    <ul>
+      <li><strong>短期随机性：</strong>大量研究发现，股票日度收益的自相关接近零。简单的“追昨天的涨跌”在扣除成本后赚不到钱，这符合弱式有效市场（《投资学》第 11 章）。</li>
+      <li><strong>中期趋势：</strong>Jegadeesh 和 Titman（1993）发现，美股过去 3–12 个月的赢家组合在之后数月继续跑赢输家，月均超额约 1%；Moskowitz、Ooi 和 Pedersen（2012）在股指、债券、外汇、商品等 58 个期货品种上发现了“时间序列动量”。这是前提二目前最强的证据。</li>
+      <li><strong>规律会衰减：</strong>Brock、Lakonishok 和 LeBaron（1992）用道指 1897–1986 年的数据，发现均线和区间突破规则有预测力；但 Sullivan、Timmermann 和 White（1999）校正“数据窥探”后发现，这些规则在 1987 年之后的样本外表现基本消失。</li>
+      <li><strong>形态有信息，不等于能赚钱：</strong>Lo、Mamaysky 和 Wang（2000）用统计方法自动识别头肩顶等形态，发现部分形态确实带有额外信息，但离“扣除成本后稳定盈利”还有距离。</li>
+      <li><strong>A 股的特殊性：</strong>多项研究发现，A 股在周度、月度这样的较短尺度上，<strong>反转效应</strong>往往比动量更明显。照搬欧美的“追强势”逻辑，在 A 股的短周期上要格外谨慎。</li>
+    </ul>
+    <p>结论：前提二在部分市场、部分时间尺度上有证据支持；前提一和前提三更像是“工作假设”。每一站的方法，我们都会问一句“证据怎么说”。</p>
+  </div>
+
+  <div class="ashare">
+    <span class="label">A 股适配</span>
+    <h4>A 股读图的三个特殊问题</h4>
+    <p><strong>① 红涨绿跌。</strong>欧美的行情软件和书籍普遍是“绿涨红跌”，与 A 股正好相反；墨菲原书是黑白印刷，阳线画成空心（白），阴线画成实心（黑）。看英文资料时，先确认颜色约定，别把阳线当阴线。</p>
+    <p><strong>② 复权。</strong>A 股公司经常送转股、分红。比如“10 送 10”，股数翻倍，股价在除权日机械地减半，股东财富一分没变。但如果不处理，图上会出现一个吓人的“断崖”，还会让均线、趋势线、止损预警全部失真：</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 1-11</span>10 送 10 除权前后：不复权与前复权<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 290" role="img" aria-label="同一只股票在 10 送 10 除权前后：不复权图在除权日出现约 50% 的断崖，前复权图走势连续">
+<defs><marker id="f111-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/></marker><marker id="f111-ara" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/></marker></defs>
+<!-- kchart: n=50 L=44 step=6.000 x(i)=L+step*(i+0.5) price[11.659,26.851] y∈[34,270] -->
+<line class="axis" x1="44" y1="34" x2="44" y2="270"/>
+<line class="grid" x1="44" y1="218.1" x2="344" y2="218.1"/>
+<text class="tick" x="38" y="222.1" text-anchor="end">15</text>
+<line class="grid" x1="44" y1="140.4" x2="344" y2="140.4"/>
+<text class="tick" x="38" y="144.4" text-anchor="end">20</text>
+<line class="grid" x1="44" y1="62.7" x2="344" y2="62.7"/>
+<text class="tick" x="38" y="66.7" text-anchor="end">25</text>
+<line class="axis" x1="44" y1="270" x2="344" y2="270"/>
+<line class="wd" x1="47" y1="138.9" x2="47" y2="145.6"/>
+<rect class="cd" x="45.1" y="140" width="3.7" height="3"/>
+<line class="wu" x1="53" y1="136.7" x2="53" y2="144"/>
+<rect class="cu" x="51.1" y="137.6" width="3.7" height="4.3"/>
+<line class="wu" x1="59" y1="131.7" x2="59" y2="139.6"/>
+<rect class="cu" x="57.1" y="133.9" width="3.7" height="5"/>
+<line class="wu" x1="65" y1="126.9" x2="65" y2="133.7"/>
+<rect class="cu" x="63.1" y="127.2" width="3.7" height="6.1"/>
+<line class="wu" x1="71" y1="124.3" x2="71" y2="130.5"/>
+<rect class="cu" x="69.1" y="127.1" width="3.7" height="1"/>
+<line class="wu" x1="77" y1="122.7" x2="77" y2="128.8"/>
+<rect class="cu" x="75.1" y="124.7" width="3.7" height="2.8"/>
+<line class="wd" x1="83" y1="122.2" x2="83" y2="127.1"/>
+<rect class="cd" x="81.1" y="123.6" width="3.7" height="1"/>
+<line class="wu" x1="89" y1="114.8" x2="89" y2="126.1"/>
+<rect class="cu" x="87.1" y="117.9" width="3.7" height="5.6"/>
+<line class="wu" x1="95" y1="115.3" x2="95" y2="123"/>
+<rect class="cu" x="93.1" y="116.5" width="3.7" height="2.6"/>
+<line class="wu" x1="101" y1="110.4" x2="101" y2="121.2"/>
+<rect class="cu" x="99.1" y="112.3" width="3.7" height="5.6"/>
+<line class="wu" x1="107" y1="110" x2="107" y2="113.4"/>
+<rect class="cu" x="105.1" y="110.3" width="3.7" height="1"/>
+<line class="wu" x1="113" y1="107.3" x2="113" y2="111.1"/>
+<rect class="cu" x="111.1" y="107.8" width="3.7" height="2.8"/>
+<line class="wu" x1="119" y1="98.9" x2="119" y2="112.8"/>
+<rect class="cu" x="117.1" y="98.9" width="3.7" height="9.8"/>
+<line class="wu" x1="125" y1="94.3" x2="125" y2="99.4"/>
+<rect class="cu" x="123.1" y="96.1" width="3.7" height="3.3"/>
+<line class="wd" x1="131" y1="95.5" x2="131" y2="100.3"/>
+<rect class="cd" x="129.1" y="95.5" width="3.7" height="1.6"/>
+<line class="wu" x1="137" y1="90.6" x2="137" y2="99.1"/>
+<rect class="cu" x="135.1" y="94.3" width="3.7" height="1.2"/>
+<line class="wu" x1="143" y1="86.2" x2="143" y2="93.2"/>
+<rect class="cu" x="141.1" y="87.4" width="3.7" height="5.3"/>
+<line class="wu" x1="149" y1="82.8" x2="149" y2="89.5"/>
+<rect class="cu" x="147.1" y="86.7" width="3.7" height="1.4"/>
+<line class="wu" x1="155" y1="82.2" x2="155" y2="87.6"/>
+<rect class="cu" x="153.1" y="84.5" width="3.7" height="1.4"/>
+<line class="wu" x1="161" y1="75.5" x2="161" y2="85.3"/>
+<rect class="cu" x="159.1" y="79.2" width="3.7" height="4.5"/>
+<line class="wu" x1="167" y1="71.4" x2="167" y2="83.9"/>
+<rect class="cu" x="165.1" y="71.9" width="3.7" height="8.9"/>
+<line class="wu" x1="173" y1="66.3" x2="173" y2="75.2"/>
+<rect class="cu" x="171.1" y="69" width="3.7" height="4.7"/>
+<line class="wd" x1="179" y1="69" x2="179" y2="76.6"/>
+<rect class="cd" x="177.1" y="70.1" width="3.7" height="3.1"/>
+<line class="wu" x1="185" y1="68" x2="185" y2="75.8"/>
+<rect class="cu" x="183.1" y="70.1" width="3.7" height="3"/>
+<line class="wu" x1="191" y1="64.3" x2="191" y2="70.4"/>
+<rect class="cu" x="189.1" y="65.5" width="3.7" height="4.3"/>
+<line class="wu" x1="197" y1="62.3" x2="197" y2="65.5"/>
+<rect class="cu" x="195.1" y="62.7" width="3.7" height="2.6"/>
+<line class="wu" x1="203" y1="56.8" x2="203" y2="65.7"/>
+<rect class="cu" x="201.1" y="60.9" width="3.7" height="1.9"/>
+<line class="wu" x1="209" y1="51.9" x2="209" y2="65.1"/>
+<rect class="cu" x="207.1" y="52.3" width="3.7" height="9.5"/>
+<line class="wu" x1="215" y1="44.9" x2="215" y2="57.6"/>
+<rect class="cu" x="213.1" y="46.4" width="3.7" height="7.1"/>
+<line class="wd" x1="221" y1="44.7" x2="221" y2="47.7"/>
+<rect class="cd" x="219.1" y="45.8" width="3.7" height="1"/>
+<line class="wd" x1="227" y1="247.8" x2="227" y2="250.9"/>
+<rect class="cd" x="225.1" y="248.2" width="3.7" height="1.9"/>
+<line class="wd" x1="233" y1="249" x2="233" y2="252.9"/>
+<rect class="cd" x="231.1" y="249.3" width="3.7" height="3.1"/>
+<line class="wu" x1="239" y1="251.8" x2="239" y2="254.9"/>
+<rect class="cu" x="237.1" y="252.4" width="3.7" height="1"/>
+<line class="wd" x1="245" y1="251" x2="245" y2="257.3"/>
+<rect class="cd" x="243.1" y="252.3" width="3.7" height="3.4"/>
+<line class="wd" x1="251" y1="255.4" x2="251" y2="257.4"/>
+<rect class="cd" x="249.1" y="256.2" width="3.7" height="1"/>
+<line class="wu" x1="257" y1="252.7" x2="257" y2="259.3"/>
+<rect class="cu" x="255.1" y="253.5" width="3.7" height="3.6"/>
+<line class="wd" x1="263" y1="252.9" x2="263" y2="256.8"/>
+<rect class="cd" x="261.1" y="253.7" width="3.7" height="1.7"/>
+<line class="wu" x1="269" y1="248.9" x2="269" y2="254.9"/>
+<rect class="cu" x="267.1" y="250.3" width="3.7" height="4.5"/>
+<line class="wu" x1="275" y1="246.2" x2="275" y2="250.1"/>
+<rect class="cu" x="273.1" y="246.5" width="3.7" height="2.8"/>
+<line class="wu" x1="281" y1="242.5" x2="281" y2="248.1"/>
+<rect class="cu" x="279.1" y="244.7" width="3.7" height="1.7"/>
+<line class="wd" x1="287" y1="243.9" x2="287" y2="246.8"/>
+<rect class="cd" x="285.1" y="244.4" width="3.7" height="1"/>
+<line class="wu" x1="293" y1="240.5" x2="293" y2="246.4"/>
+<rect class="cu" x="291.1" y="241.1" width="3.7" height="3"/>
+<line class="wd" x1="299" y1="238.5" x2="299" y2="242.6"/>
+<rect class="cd" x="297.1" y="240.3" width="3.7" height="1"/>
+<line class="wu" x1="305" y1="235.3" x2="305" y2="242.8"/>
+<rect class="cu" x="303.1" y="236.7" width="3.7" height="4.7"/>
+<line class="wu" x1="311" y1="232.7" x2="311" y2="237.8"/>
+<rect class="cu" x="309.1" y="233.8" width="3.7" height="2.5"/>
+<line class="wd" x1="317" y1="234.1" x2="317" y2="236.3"/>
+<rect class="cd" x="315.1" y="234.4" width="3.7" height="1.1"/>
+<line class="wu" x1="323" y1="231.5" x2="323" y2="237.8"/>
+<rect class="cu" x="321.1" y="232.7" width="3.7" height="3.3"/>
+<line class="wu" x1="329" y1="226.3" x2="329" y2="233"/>
+<rect class="cu" x="327.1" y="229" width="3.7" height="3.3"/>
+<line class="wu" x1="335" y1="224.2" x2="335" y2="229.3"/>
+<rect class="cu" x="333.1" y="224.9" width="3.7" height="3.9"/>
+<line class="wu" x1="341" y1="221.7" x2="341" y2="228.2"/>
+<rect class="cu" x="339.1" y="223.4" width="3.7" height="2.6"/>
+<line class="sr-dn" x1="227" y1="34" x2="227" y2="270"/>
+<text class="hi" x="233" y="70.5" text-anchor="start">除权日：股数翻倍，</text>
+<text class="hi" x="233" y="93.8" text-anchor="start">股价减半</text>
+<text class="dt" x="269" y="187" text-anchor="middle">看起来像暴跌 50%</text>
+<!-- kchart: n=50 L=404 step=6.000 x(i)=L+step*(i+0.5) price[9.583,15.017] y∈[34,270] -->
+<line class="axis" x1="404" y1="34" x2="404" y2="270"/>
+<line class="grid" x1="404" y1="251.9" x2="704" y2="251.9"/>
+<text class="tick" x="398" y="255.9" text-anchor="end">10</text>
+<line class="grid" x1="404" y1="165" x2="704" y2="165"/>
+<text class="tick" x="398" y="169" text-anchor="end">12</text>
+<line class="grid" x1="404" y1="78.2" x2="704" y2="78.2"/>
+<text class="tick" x="398" y="82.2" text-anchor="end">14</text>
+<line class="axis" x1="404" y1="270" x2="704" y2="270"/>
+<line class="wd" x1="407" y1="249.7" x2="407" y2="259.3"/>
+<rect class="cd" x="405.1" y="251" width="3.7" height="4.3"/>
+<line class="wu" x1="413" y1="246.7" x2="413" y2="256.7"/>
+<rect class="cu" x="411.1" y="248" width="3.7" height="6.1"/>
+<line class="wu" x1="419" y1="239.7" x2="419" y2="251"/>
+<rect class="cu" x="417.1" y="242.8" width="3.7" height="6.9"/>
+<line class="wu" x1="425" y1="233.2" x2="425" y2="242.8"/>
+<rect class="cu" x="423.1" y="233.6" width="3.7" height="8.3"/>
+<line class="wu" x1="431" y1="229.3" x2="431" y2="238"/>
+<rect class="cu" x="429.1" y="233.2" width="3.7" height="1"/>
+<line class="wu" x1="437" y1="227.1" x2="437" y2="235.8"/>
+<rect class="cu" x="435.1" y="229.7" width="3.7" height="4.3"/>
+<line class="wd" x1="443" y1="226.7" x2="443" y2="233.2"/>
+<rect class="cd" x="441.1" y="228.4" width="3.7" height="1"/>
+<line class="wu" x1="449" y1="216.3" x2="449" y2="231.9"/>
+<rect class="cu" x="447.1" y="220.2" width="3.7" height="8.3"/>
+<line class="wu" x1="455" y1="216.7" x2="455" y2="227.6"/>
+<rect class="cu" x="453.1" y="218.4" width="3.7" height="3.5"/>
+<line class="wu" x1="461" y1="210.2" x2="461" y2="225"/>
+<rect class="cu" x="459.1" y="212.4" width="3.7" height="8.3"/>
+<line class="wu" x1="467" y1="209.3" x2="467" y2="214.1"/>
+<rect class="cu" x="465.1" y="209.8" width="3.7" height="1.3"/>
+<line class="wu" x1="473" y1="205.4" x2="473" y2="211.1"/>
+<rect class="cu" x="471.1" y="206.3" width="3.7" height="3.9"/>
+<line class="wu" x1="479" y1="193.7" x2="479" y2="213.2"/>
+<rect class="cu" x="477.1" y="194.1" width="3.7" height="13.5"/>
+<line class="wu" x1="485" y1="187.2" x2="485" y2="194.6"/>
+<rect class="cu" x="483.1" y="190.2" width="3.7" height="4.3"/>
+<line class="wd" x1="491" y1="188.9" x2="491" y2="195.9"/>
+<rect class="cd" x="489.1" y="188.9" width="3.7" height="2.6"/>
+<line class="wu" x1="497" y1="182" x2="497" y2="194.1"/>
+<rect class="cu" x="495.1" y="187.6" width="3.7" height="1.3"/>
+<line class="wu" x1="503" y1="175.9" x2="503" y2="185.9"/>
+<rect class="cu" x="501.1" y="178.1" width="3.7" height="7.4"/>
+<line class="wu" x1="509" y1="171.1" x2="509" y2="180.7"/>
+<rect class="cu" x="507.1" y="176.8" width="3.7" height="2.2"/>
+<line class="wu" x1="515" y1="170.2" x2="515" y2="178.1"/>
+<rect class="cu" x="513.1" y="173.7" width="3.7" height="2.2"/>
+<line class="wu" x1="521" y1="161.1" x2="521" y2="175"/>
+<rect class="cu" x="519.1" y="166.3" width="3.7" height="6.1"/>
+<line class="wu" x1="527" y1="155.5" x2="527" y2="172.8"/>
+<rect class="cu" x="525.1" y="155.9" width="3.7" height="12.6"/>
+<line class="wu" x1="533" y1="148.1" x2="533" y2="160.7"/>
+<rect class="cu" x="531.1" y="152" width="3.7" height="6.5"/>
+<line class="wd" x1="539" y1="152" x2="539" y2="162.9"/>
+<rect class="cd" x="537.1" y="153.7" width="3.7" height="4.3"/>
+<line class="wu" x1="545" y1="150.7" x2="545" y2="161.6"/>
+<rect class="cu" x="543.1" y="153.7" width="3.7" height="3.9"/>
+<line class="wu" x1="551" y1="145.5" x2="551" y2="154.2"/>
+<rect class="cu" x="549.1" y="147.2" width="3.7" height="6.1"/>
+<line class="wu" x1="557" y1="142.9" x2="557" y2="147.2"/>
+<rect class="cu" x="555.1" y="143.3" width="3.7" height="3.9"/>
+<line class="wu" x1="563" y1="135.1" x2="563" y2="147.2"/>
+<rect class="cu" x="561.1" y="140.7" width="3.7" height="2.6"/>
+<line class="wu" x1="569" y1="128.1" x2="569" y2="146.4"/>
+<rect class="cu" x="567.1" y="129" width="3.7" height="13"/>
+<line class="wu" x1="575" y1="118.6" x2="575" y2="136.4"/>
+<rect class="cu" x="573.1" y="120.3" width="3.7" height="10.4"/>
+<line class="wd" x1="581" y1="118.1" x2="581" y2="122"/>
+<rect class="cd" x="579.1" y="119.4" width="3.7" height="1.3"/>
+<line class="wd" x1="587" y1="117.7" x2="587" y2="126.4"/>
+<rect class="cd" x="585.1" y="119" width="3.7" height="5.2"/>
+<line class="wd" x1="593" y1="121.2" x2="593" y2="132"/>
+<rect class="cd" x="591.1" y="122" width="3.7" height="8.7"/>
+<line class="wu" x1="599" y1="129" x2="599" y2="137.7"/>
+<rect class="cu" x="597.1" y="130.7" width="3.7" height="1.3"/>
+<line class="wd" x1="605" y1="126.8" x2="605" y2="144.2"/>
+<rect class="cd" x="603.1" y="130.3" width="3.7" height="9.6"/>
+<line class="wd" x1="611" y1="139" x2="611" y2="144.6"/>
+<rect class="cd" x="609.1" y="141.1" width="3.7" height="1.3"/>
+<line class="wu" x1="617" y1="131.6" x2="617" y2="149.8"/>
+<rect class="cu" x="615.1" y="133.8" width="3.7" height="10"/>
+<line class="wd" x1="623" y1="132" x2="623" y2="142.9"/>
+<rect class="cd" x="621.1" y="134.2" width="3.7" height="4.8"/>
+<line class="wu" x1="629" y1="120.7" x2="629" y2="137.7"/>
+<rect class="cu" x="627.1" y="124.6" width="3.7" height="12.6"/>
+<line class="wu" x1="635" y1="113.3" x2="635" y2="124.2"/>
+<rect class="cu" x="633.1" y="114.2" width="3.7" height="7.8"/>
+<line class="wu" x1="641" y1="102.9" x2="641" y2="118.6"/>
+<rect class="cu" x="639.1" y="109" width="3.7" height="4.8"/>
+<line class="wd" x1="647" y1="106.8" x2="647" y2="115.1"/>
+<rect class="cd" x="645.1" y="108.1" width="3.7" height="1.7"/>
+<line class="wu" x1="653" y1="97.3" x2="653" y2="113.8"/>
+<rect class="cu" x="651.1" y="99" width="3.7" height="8.3"/>
+<line class="wd" x1="659" y1="91.6" x2="659" y2="103.4"/>
+<rect class="cd" x="657.1" y="96.8" width="3.7" height="1"/>
+<line class="wu" x1="665" y1="82.9" x2="665" y2="103.8"/>
+<rect class="cu" x="663.1" y="86.9" width="3.7" height="13"/>
+<line class="wu" x1="671" y1="75.6" x2="671" y2="89.9"/>
+<rect class="cu" x="669.1" y="78.6" width="3.7" height="6.9"/>
+<line class="wd" x1="677" y1="79.5" x2="677" y2="85.6"/>
+<rect class="cd" x="675.1" y="80.3" width="3.7" height="3"/>
+<line class="wu" x1="683" y1="72.1" x2="683" y2="89.9"/>
+<rect class="cu" x="681.1" y="75.6" width="3.7" height="9.1"/>
+<line class="wu" x1="689" y1="57.8" x2="689" y2="76.4"/>
+<rect class="cu" x="687.1" y="65.1" width="3.7" height="9.1"/>
+<line class="wu" x1="695" y1="51.7" x2="695" y2="66"/>
+<rect class="cu" x="693.1" y="53.8" width="3.7" height="10.9"/>
+<line class="wu" x1="701" y1="44.7" x2="701" y2="63"/>
+<rect class="cu" x="699.1" y="49.5" width="3.7" height="7.4"/>
+<line class="sr" x1="587" y1="34" x2="587" y2="270"/>
+<text class="pv" x="425" y="65.1" text-anchor="start">把除权前的价格按比例调低，</text>
+<text class="pv" x="425" y="82.5" text-anchor="start">走势连续，真实涨跌一目了然</text>
+<text class="pl" x="44" y="20">不复权：出现假“断崖”</text>
+<text class="pl" x="404" y="20">前复权：走势连续</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>左图不复权，除权日出现一个约 50% 的“跳空”，任何以价格计算的指标都会被污染。右图<b>前复权</b>：保持最新价格不变，把除权前的历史价格按比例调低，走势恢复连续。做技术分析、回测时一律用复权数据（前复权最常用）；但要注意，前复权后的历史价格不是当时真实的成交价，和老报纸、老截图对不上是正常的。</figcaption>
+  </figure>
+
+  <div class="ashare">
+    <span class="label">A 股适配</span>
+    <p><strong>③ 涨跌停造成的特殊 K 线。</strong>A 股主板单日涨跌幅限制为 ±10%（创业板和科创板 ±20%，北交所 ±30%；主板风险警示股票原为 ±5%，2025 年 7 月起也调整为 ±10%；注册制新股上市前 5 个交易日不设限）。价格被“锁”在限制价位时，会画出欧美市场没有的 K 线：</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 1-12</span>涨跌停制度下的四种特殊 K 线（主板 ±10%）<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 300" role="img" aria-label="四种涨跌停相关的特殊 K 线：一字涨停、T 字涨停、炸板（冲板回落）、跌停翘板到涨停（地天板）">
+<defs><marker id="f112-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/></marker><marker id="f112-ara" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/></marker></defs>
+<!-- kchart: n=5 L=14 step=31.200 x(i)=L+step*(i+0.5) price[8.600,12.400] y∈[30,240] -->
+<line class="axis" x1="14" y1="30" x2="14" y2="240"/>
+<line class="grid" x1="14" y1="217.9" x2="170" y2="217.9"/>
+<line class="grid" x1="14" y1="162.6" x2="170" y2="162.6"/>
+<line class="grid" x1="14" y1="107.4" x2="170" y2="107.4"/>
+<line class="grid" x1="14" y1="52.1" x2="170" y2="52.1"/>
+<line class="axis" x1="14" y1="240" x2="170" y2="240"/>
+<line class="wu" x1="29.6" y1="170.9" x2="29.6" y2="190.3"/>
+<rect class="cu" x="21" y="173.7" width="17.2" height="11.1"/>
+<line class="wu" x1="60.8" y1="159.9" x2="60.8" y2="179.2"/>
+<rect class="cu" x="52.2" y="168.2" width="17.2" height="5.5"/>
+<line class="wu" x1="92" y1="157.1" x2="92" y2="170.9"/>
+<rect class="cu" x="83.4" y="162.6" width="17.2" height="5.5"/>
+<line class="wu" x1="123.2" y1="107.4" x2="123.2" y2="107.4"/>
+<rect class="cu" x="114.6" y="107.4" width="17.2" height="1"/>
+<line class="wu" x1="154.4" y1="46.6" x2="154.4" y2="46.6"/>
+<rect class="cu" x="145.8" y="46.6" width="17.2" height="1"/>
+<!-- kchart: n=4 L=194 step=39.000 x(i)=L+step*(i+0.5) price[8.600,12.400] y∈[30,240] -->
+<line class="axis" x1="194" y1="30" x2="194" y2="240"/>
+<line class="grid" x1="194" y1="217.9" x2="350" y2="217.9"/>
+<line class="grid" x1="194" y1="162.6" x2="350" y2="162.6"/>
+<line class="grid" x1="194" y1="107.4" x2="350" y2="107.4"/>
+<line class="grid" x1="194" y1="52.1" x2="350" y2="52.1"/>
+<line class="axis" x1="194" y1="240" x2="350" y2="240"/>
+<line class="wu" x1="213.5" y1="170.9" x2="213.5" y2="190.3"/>
+<rect class="cu" x="202.8" y="173.7" width="21.5" height="11.1"/>
+<line class="wu" x1="252.5" y1="159.9" x2="252.5" y2="179.2"/>
+<rect class="cu" x="241.8" y="168.2" width="21.5" height="5.5"/>
+<line class="wu" x1="291.5" y1="157.1" x2="291.5" y2="170.9"/>
+<rect class="cu" x="280.8" y="162.6" width="21.5" height="5.5"/>
+<line class="wu" x1="330.5" y1="107.4" x2="330.5" y2="137.8"/>
+<rect class="cu" x="319.8" y="107.4" width="21.5" height="1"/>
+<line class="sr-up" x1="194" y1="107.4" x2="350" y2="107.4"/>
+<text class="ut" x="198" y="102.4" text-anchor="start">涨停 11.00</text>
+<!-- kchart: n=4 L=374 step=39.000 x(i)=L+step*(i+0.5) price[8.600,12.400] y∈[30,240] -->
+<line class="axis" x1="374" y1="30" x2="374" y2="240"/>
+<line class="grid" x1="374" y1="217.9" x2="530" y2="217.9"/>
+<line class="grid" x1="374" y1="162.6" x2="530" y2="162.6"/>
+<line class="grid" x1="374" y1="107.4" x2="530" y2="107.4"/>
+<line class="grid" x1="374" y1="52.1" x2="530" y2="52.1"/>
+<line class="axis" x1="374" y1="240" x2="530" y2="240"/>
+<line class="wu" x1="393.5" y1="170.9" x2="393.5" y2="190.3"/>
+<rect class="cu" x="382.8" y="173.7" width="21.5" height="11.1"/>
+<line class="wu" x1="432.5" y1="159.9" x2="432.5" y2="179.2"/>
+<rect class="cu" x="421.8" y="168.2" width="21.5" height="5.5"/>
+<line class="wu" x1="471.5" y1="157.1" x2="471.5" y2="170.9"/>
+<rect class="cu" x="460.8" y="162.6" width="21.5" height="5.5"/>
+<line class="wu" x1="510.5" y1="107.4" x2="510.5" y2="159.9"/>
+<rect class="cu" x="499.8" y="143.3" width="21.5" height="13.8"/>
+<line class="sr-up" x1="374" y1="107.4" x2="530" y2="107.4"/>
+<text class="ut" x="378" y="102.4" text-anchor="start">涨停 11.00</text>
+<!-- kchart: n=4 L=554 step=39.000 x(i)=L+step*(i+0.5) price[8.600,12.400] y∈[30,240] -->
+<line class="axis" x1="554" y1="30" x2="554" y2="240"/>
+<line class="grid" x1="554" y1="217.9" x2="710" y2="217.9"/>
+<line class="grid" x1="554" y1="162.6" x2="710" y2="162.6"/>
+<line class="grid" x1="554" y1="107.4" x2="710" y2="107.4"/>
+<line class="grid" x1="554" y1="52.1" x2="710" y2="52.1"/>
+<line class="axis" x1="554" y1="240" x2="710" y2="240"/>
+<line class="wu" x1="573.5" y1="170.9" x2="573.5" y2="190.3"/>
+<rect class="cu" x="562.8" y="173.7" width="21.5" height="11.1"/>
+<line class="wu" x1="612.5" y1="159.9" x2="612.5" y2="179.2"/>
+<rect class="cu" x="601.8" y="168.2" width="21.5" height="5.5"/>
+<line class="wu" x1="651.5" y1="157.1" x2="651.5" y2="170.9"/>
+<rect class="cu" x="640.8" y="162.6" width="21.5" height="5.5"/>
+<line class="wu" x1="690.5" y1="107.4" x2="690.5" y2="217.9"/>
+<rect class="cu" x="679.8" y="107.4" width="21.5" height="110.5"/>
+<line class="sr-up" x1="554" y1="107.4" x2="710" y2="107.4"/>
+<text class="ut" x="558" y="102.4" text-anchor="start">涨停 11.00</text>
+<line class="sr-dn" x1="554" y1="217.9" x2="710" y2="217.9"/>
+<text class="dt" x="558" y="230.9" text-anchor="start">跌停 9.00</text>
+<text class="pl" x="90" y="18" text-anchor="middle">一字涨停</text>
+<text class="pl" x="270" y="18" text-anchor="middle">T 字涨停</text>
+<text class="pl" x="450" y="18" text-anchor="middle">炸板</text>
+<text class="pl" x="630" y="18" text-anchor="middle">地天板</text>
+<text class="nd" x="90" y="272" text-anchor="middle">开高低收全在涨停价：</text>
+<text class="nd" x="90" y="288" text-anchor="middle">想买买不到，没有成交区间</text>
+<text class="nd" x="270" y="272" text-anchor="middle">开盘封板、盘中打开、</text>
+<text class="nd" x="270" y="288" text-anchor="middle">收盘回封：下影线 = 抛压</text>
+<text class="nd" x="450" y="272" text-anchor="middle">盘中摸到涨停又被砸开：</text>
+<text class="nd" x="450" y="288" text-anchor="middle">长上影线，多头失守</text>
+<text class="nd" x="630" y="272" text-anchor="middle">跌停开盘、收于涨停：</text>
+<text class="nd" x="630" y="288" text-anchor="middle">一天振幅约 20%</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>一字涨停时，开高低收四价相同，K 线缩成一条横线，意味着想买的人排队也买不到，<b>真实需求远大于图上显示的</b>，所以一字板之后的跳空和量能都不能按常规解读。T 字板的下影线代表盘中有人大量卖出、又被买回；炸板的长上影线代表多头没守住涨停；地天板一天振幅约 20%，是情绪极端化的标志。这些 K 线的含义在第 7 站（蜡烛图）细讲。</figcaption>
+  </figure>
+
+  <div class="ashare">
+    <span class="label">A 股适配</span>
+    <h4>另外三条：T+1、停牌与政策跳空</h4>
+    <ul>
+      <li><strong>T+1：</strong>当天买入的股票最早次日才能卖。这意味着当天入场后，即使盘中跌破止损也无法离场；止损只能在次日执行，隔夜跳空的风险更大，仓位应该比 T+0 市场更保守。</li>
+      <li><strong>停牌：</strong>个股停牌期间没有 K 线，复牌时常常连续跳空。图上的“断档”不代表那段时间没有风险，只代表你无法交易。</li>
+      <li><strong>政策跳空：</strong>见下面的案例，它正好检验了前提一的边界。</li>
+    </ul>
+  </div>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>2024 年 9 月 24 日：图表无法预告的行情</h4>
+    <p>2024 年 9 月 18 日，上证指数盘中跌到约 2690 点，市场情绪低迷，日线、周线都处于下跌趋势。9 月 24 日，国新办发布会上，央行等部门宣布降准、降息，并创设支持股票市场的新货币政策工具；26 日的中央政治局会议又提出“要努力提振资本市场”。此后行情急转：9 月 30 日沪指单日大涨约 8%；国庆长假后的 10 月 8 日高开于约 3674 点，全天成交额约 3.5 万亿元，创下历史纪录，随后震荡回落。不到三周，指数从低点上涨了约 36%。</p>
+    <p class="takeaway">这是检验前提一的绝佳样本。<b>发布会之前</b>，没有任何图表信号“预告”了这次政策转向，价格只能包容已知信息，突发政策只能以跳空的方式砸进来。<b>发布会之后</b>，技术分析立刻变得有用：连续跳空缺口、天量、节后高开低走的长上影线，都在实时讲述多空力量的变化。这就是技术分析的正确位置：<b>它不预知未来，但能最快地读懂“现在正在发生什么”。</b></p>
+  </div>
+</section>
+
+<!-- ======================== 小结 ======================== -->
+<section class="ch" id="recap">
+  <h2 class="sec"><span class="no">※</span>本章小结</h2>
+  <p class="sec-en">SUMMARY</p>
+
+  <div class="recap">
+    <ol>
+      <li><b>研究对象：</b>技术分析只研究市场行为（价格、成交量、持仓量），回答四个问题：谁占上风、会不会延续、在哪进出、错了在哪认。最后一个问题是它独有的价值。</li>
+      <li><b>前提一（包容一切）：</b>一切因素都通过订单反映到价格上，价格常常领先于消息（买预期卖事实）；软肋是无法包容尚未发生的信息，突发事件以跳空的方式出现。</li>
+      <li><b>前提二（趋势）：</b>运行中的趋势更可能延续，直到出现明确反转信号；行为学解释包括反应不足、处置效应、反馈交易和大资金建仓；软肋是市场大量时间处于震荡。</li>
+      <li><b>前提三（历史重演）：</b>形态反映稳定的人群心理，“不会简单重复，但押着相同的韵脚”；软肋是自我毁灭、结构变化和样本太少。</li>
+      <li><b>与有效市场的分歧：</b>不在于价格是否包含信息，而在于信息被吸收的<b>速度</b>；三大前提是待检验的假设，不是信条。</li>
+      <li><b>技术面与基本面：</b>研究“果”与“因”；基本面擅长分析，技术面擅长择时和认错；杠杆越高，择时越关键。</li>
+      <li><b>三种批评：</b>自我实现（主要是自我毁灭，少数关键价位存在止损单聚集）、过去预测未来（关键在样本外检验）、随机漫步（是最好的零假设，人脑会在噪声中看见规律）。</li>
+      <li><b>读图：</b>四种图表（线图、柱线图、K 线图、点数图）；收盘价最重要；长期图用对数刻度；长周期定方向、短周期找时机。</li>
+      <li><b>A 股：</b>红涨绿跌、一律用复权数据、看懂涨跌停造成的特殊 K 线；T+1 让止损滞后，仓位要更保守。</li>
+    </ol>
+  </div>
+
+  <h3>核心术语（中英对照）</h3>
+  <div class="tablewrap">
+    <table>
+      <tr><th>中文</th><th>English</th><th>一句话定义</th></tr>
+      <tr><td>技术分析</td><td>technical analysis</td><td>主要借助图表研究市场行为、预测价格趋势的方法</td></tr>
+      <tr><td>市场行为</td><td>market action</td><td>价格、成交量、持仓量三要素</td></tr>
+      <tr><td>市场行为包容消化一切</td><td>market action discounts everything</td><td>一切影响因素都已反映在价格中</td></tr>
+      <tr><td>趋势</td><td>trend</td><td>价格运动的方向，技术分析的核心概念</td></tr>
+      <tr><td>历史会重演</td><td>history repeats itself</td><td>形态反映稳定的人群心理，会反复出现</td></tr>
+      <tr><td>基本面分析</td><td>fundamental analysis</td><td>研究供求背后的经济力量、估算内在价值</td></tr>
+      <tr><td>择时</td><td>timing</td><td>决定何时入场、何时离场</td></tr>
+      <tr><td>自我实现预言</td><td>self-fulfilling prophecy</td><td>因为大家相信而变成真的预测</td></tr>
+      <tr><td>随机漫步</td><td>random walk</td><td>价格变化前后独立、不可预测的假说</td></tr>
+      <tr><td>样本外检验</td><td>out-of-sample test</td><td>在没有参与建模的数据上验证规律</td></tr>
+      <tr><td>开盘 / 最高 / 最低 / 收盘价</td><td>open / high / low / close（OHLC）</td><td>每根 K 线记录的四个价格</td></tr>
+      <tr><td>柱线图</td><td>bar chart</td><td>竖线表示高低、左右短横表示开收</td></tr>
+      <tr><td>线图</td><td>line chart</td><td>只连接收盘价的折线</td></tr>
+      <tr><td>K 线图（蜡烛图）</td><td>candlestick chart</td><td>以实体颜色区分涨跌的图表</td></tr>
+      <tr><td>实体 / 影线</td><td>real body / shadow</td><td>开收之间的粗段 / 高低点延伸出的细线</td></tr>
+      <tr><td>点数图</td><td>point and figure chart</td><td>没有时间轴，只记录有意义的价格变动</td></tr>
+      <tr><td>成交量</td><td>volume</td><td>一段时间内成交的股数或合约数</td></tr>
+      <tr><td>持仓量</td><td>open interest</td><td>期货市场尚未平仓的合约总数</td></tr>
+      <tr><td>算术刻度 / 对数刻度</td><td>arithmetic / logarithmic scale</td><td>等距代表等额价差 / 等比涨跌</td></tr>
+      <tr><td>复权（前复权）</td><td>price adjustment (forward-adjusted)</td><td>按送转、分红调整历史价格，使走势连续</td></tr>
+      <tr><td>涨跌停</td><td>daily price limit</td><td>单日涨跌幅上限，A 股主板为 ±10%</td></tr>
+    </table>
+  </div>
+
+  <h3>自测（先想后翻）</h3>
+  <details>
+    <summary>Q1 前提一和有效市场假说都说“价格包含了所有信息”，为什么一个得出“研究价格能预测”，另一个得出“价格不可预测”？</summary>
+    <div class="ans"><p>分歧不在“是否包含”，而在“包含的速度”。有效市场认为信息几乎瞬间被吸收，价格立刻到位，剩下的变化只能来自新的、不可预测的信息，所以是随机游走。技术分析押注的是信息被吸收<b>需要一个过程</b>：反应不足、分批建仓、反馈交易让价格分阶段到位，这个过程在图上留下趋势和形态。前提二和前提三是这个分歧的具体化。实证上，中期动量的存在说明“过程”在部分尺度上确实存在，但它是否足以覆盖交易成本，需要逐个检验。</p></div>
+  </details>
+  <details>
+    <summary>Q2 一只股票基本面很好、估值也低，但股价处于明显的下跌趋势。技术分析和基本面分析分别会怎么说？你会怎么结合？</summary>
+    <div class="ans"><p>基本面说“越跌越便宜，可以买”；技术分析说“市场还不同意你，趋势向下，不要接飞刀”。两者并不矛盾：基本面决定<b>买什么</b>，技术面决定<b>什么时候买、错了在哪认</b>（图 1-5）。合理做法是把它放进观察名单，等价格止跌并出现趋势转好的信号（比如站上关键均线、形成更高的低点）再分批买入，止损设在新形成的低点下方。这样即使基本面判断是对的，也不必承受“正确但提前”的大幅浮亏；如果基本面判断错了，止损会保护你。</p></div>
+  </details>
+  <details>
+    <summary>Q3 你在某只股票的日线上清晰地看到了一个“双底”。根据本章，在据此交易之前，你应该先问自己哪些问题？</summary>
+    <div class="ans"><p>① 这是不是我的大脑在噪声里找规律（图 1-6）？换个周期看还成立吗？② 它在更长的周期上处于什么位置（图 1-10）：是长期上升趋势中的回调低点，还是长期下跌趋势中的一次喘息？③ “双底”的定义是否明确到可以写成规则（两个低点相差多少以内、中间反弹多少、以什么条件确认突破）？④ 这类形态的历史统计表现如何（第 4 站会讲）？⑤ 如果判断错了，在哪里认错、亏多少？能回答完这五个问题，才算从“看图”进入“分析”。</p></div>
+  </details>
+  <details>
+    <summary>Q4 为什么看十年以上的走势要用对数刻度？举一个算术刻度会误导你的例子。</summary>
+    <div class="ans"><p>因为投资者的盈亏是按百分比计算的，对数刻度让等比的涨跌在图上等高，真实反映每一段行情对你账户的影响。算术刻度会让早期低价时期的波动被压扁、近期高价时期的波动被放大。例子：道指 1929–1932 年下跌约 89%，在百年算术图上几乎看不见；图 1-9 中早期从 20 跌到 10 的 50% 下跌，在算术图上只是个小坑。另外，长期趋势线在两种刻度下可能给出不同的突破信号，务必在对数图上确认。</p></div>
+  </details>
+  <details>
+    <summary>Q5 某股票昨天实施了 10 送 10，你的软件显示一根“跌 50%”的大阴线，还触发了“跌破 20 日最低价”的预警。怎么处理？</summary>
+    <div class="ans"><p>先确认软件是否开启了复权。这根“大阴线”是除权造成的机械变化，股东财富没有任何损失，基于不复权价格计算的 20 日最低价、均线、趋势线全部失真，预警是假信号。切换到前复权后重新看图和指标：如果复权后的价格并没有跌破 20 日最低价，就不该行动。教训：所有技术分析和回测都必须使用复权数据，这是 A 股读图的第一道工序。</p></div>
+  </details>
+  <details>
+    <summary>Q6 把“趋势向上就买，跌了就卖”改写成一张完整的规则卡（六项都要填）。</summary>
+    <div class="ans"><p>一种写法：<b>标的与周期</b>：某宽基指数 ETF，日线。<b>过滤条件</b>：收盘价在 60 日均线之上且 60 日均线向上。<b>入场</b>：收盘价创 20 日新高时收盘买入。<b>止损</b>：入场价下方 8%，或收盘跌破最近 10 日最低价，取较近者，次日开盘执行。<b>出场</b>：收盘价跌破 60 日均线。<b>仓位</b>：单笔亏损不超过账户 1%，股数 = 账户 × 1% ÷ 每股止损距离。答案不唯一，关键是每一项都精确到“两个人执行结果相同”，并且止损和仓位在入场前就确定。至于这张卡有没有效，留到第 12 站用数据回答。</p></div>
+  </details>
+
+  <a class="next" href="ta-ch02.html">
+    <div>
+      <div class="lbl">NEXT STATION · 第 2 站</div>
+      <div class="ttl">第 2 章 · 道氏理论</div>
+    </div>
+    <div class="lbl">技术分析的鼻祖 · 并入第 8 章：长期图表与多周期</div>
+  </a>
+
+  <p class="foot">本页为依据约翰·墨菲《金融市场技术分析》框架整理的原创学习笔记（第 1 章，并入第 3 章要点），仅用于教学理解；标“示意”的图表为构造数据，研究结论与历史数据为近似表述，以原始文献和官方数据为准。内容不构成任何投资建议。</p>
+</section>
+
+</main>
+</div>
+</div>
+
+<script>
+(function(){
+  var links = Array.prototype.slice.call(document.querySelectorAll('.sidenav a[href^="#"]'));
+  if(!links.length) return;
+  var map = [];
+  links.forEach(function(a){
+    var el = document.getElementById(a.getAttribute('href').slice(1));
+    if(el) map.push([el, a]);
+  });
+  if(!map.length) return;
+  function update(){
+    var y = window.scrollY + 150;
+    var cur = map[0][1];
+    for(var i = 0; i < map.length; i++){
+      if(map[i][0].offsetTop <= y) cur = map[i][1];
+    }
+    map.forEach(function(p){ p[1].classList.toggle('active', p[1] === cur); });
+  }
+  var tick = false;
+  window.addEventListener('scroll', function(){
+    if(!tick){
+      tick = true;
+      requestAnimationFrame(function(){ tick = false; update(); });
+    }
+  }, {passive:true});
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+</body>
+</html>
