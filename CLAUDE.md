@@ -9,7 +9,7 @@
 | 书 | 文件夹 | 学习地图 | 讲义文件名 | 未完成标记 | 计数文字 |
 |---|---|---|---|---|---|
 | 《投资学》Bodie–Kane–Marcus | `investments/` | `investments-index.html` | `investments-chXX.html` | `讲义待制作` | 已改为「15 份讲义全部就绪 ✓」 |
-| 《金融市场技术分析》Murphy | `technical-analysis/` | `ta-index.html` | `ta-chXX.html`（两位编号，附录待定） | `讲义待生成` | 「讲义已上线 N / 14」 |
+| 《金融市场技术分析》Murphy | `technical-analysis/` | `ta-index.html` | `ta-chXX.html`（两位编号，附录待定） | `讲义待生成` | 已改为「14 份讲义全部就绪 ✓」 |
 
 ## 上传新章节讲义的固定流程
 

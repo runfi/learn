@@ -1,0 +1,1517 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>技术分析 · 第17章 股票市场和期货市场的联系：交叉市场分析</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700;900&family=Noto+Sans+SC:wght@400;500;700&display=swap">
+<style>
+/* 《金融市场技术分析》讲义共享样式：双栏（212px 侧栏 + 正文），沿用《投资学》手册模板；
+   新增：红涨绿跌的 K 线配色、图表注释类、规则卡 / 证据与怀疑 / A 股适配 / 打个比方 四种讲义块 */
+:root{
+  --bg:#f5f6f7;
+  --surface:#ffffff;
+  --ink:#171a20;
+  --ink-2:#4a5160;
+  --muted:#858c9b;
+  --line:#e2e5ea;
+  --line-2:#c9ced6;
+  --accent:#1d5fad;
+  --accent-ink:#174e8f;
+  --accent-soft:#eaf1fa;
+  --series:#2a78d6;
+  --series2:#eb6834;
+  --series2-ink:#b4501f;
+  --series3:#8a5fd1;
+  --up:#d63a3a;
+  --up-ink:#b42f2f;
+  --up-soft:rgba(214,58,58,.09);
+  --down:#14905a;
+  --down-soft:rgba(20,144,90,.10);
+  --crit:#d03b3b;
+  --crit-soft:rgba(208,59,59,.07);
+  --serif:"Noto Serif SC","Songti SC",serif;
+  --sans:"Noto Sans SC","Microsoft YaHei",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#101215; --surface:#181b20; --ink:#eef0f3; --ink-2:#c0c5cf; --muted:#8a909d;
+    --line:#282c33; --line-2:#3a3f48;
+    --accent:#5a96e3; --accent-ink:#79abec; --accent-soft:#1c2a3d;
+    --series:#3987e5; --series2:#e0703f; --series2-ink:#f0915f; --series3:#a585e8;
+    --up:#ec6262; --up-ink:#f08080; --up-soft:rgba(236,98,98,.13);
+    --down:#2fb87a; --down-soft:rgba(47,184,122,.13);
+    --crit:#e66767; --crit-soft:rgba(230,103,103,.10);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#101215; --surface:#181b20; --ink:#eef0f3; --ink-2:#c0c5cf; --muted:#8a909d;
+  --line:#282c33; --line-2:#3a3f48;
+  --accent:#5a96e3; --accent-ink:#79abec; --accent-soft:#1c2a3d;
+  --series:#3987e5; --series2:#e0703f; --series2-ink:#f0915f; --series3:#a585e8;
+  --up:#ec6262; --up-ink:#f08080; --up-soft:rgba(236,98,98,.13);
+  --down:#2fb87a; --down-soft:rgba(47,184,122,.13);
+  --crit:#e66767; --crit-soft:rgba(230,103,103,.10);
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:var(--sans); font-size:15.5px; line-height:1.85;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1190px; margin:0 auto; padding-inline:20px; padding-block:0 72px}
+
+.layout{display:grid; grid-template-columns:212px minmax(0,1fr); gap:44px; align-items:start}
+.article{max-width:920px; min-width:0}
+.sidenav{
+  position:sticky; top:16px; max-height:calc(100vh - 32px); overflow-y:auto;
+  padding-block:40px 16px; font-size:13px;
+}
+.sidenav .sn-chap{
+  margin:0 0 10px; padding-left:13px; font-size:11.5px; letter-spacing:.14em;
+  color:var(--muted); font-weight:700;
+}
+.sidenav a{
+  display:block; color:var(--ink-2); text-decoration:none; line-height:1.55;
+  padding:6px 10px 6px 13px; border-left:2px solid var(--line);
+}
+.sidenav a:hover{color:var(--accent-ink)}
+.sidenav a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.sidenav a.active{
+  color:var(--accent-ink); border-left-color:var(--accent);
+  background:var(--accent-soft); font-weight:700;
+}
+.hero,section.ch{scroll-margin-top:10px}
+@media (max-width: 999px){
+  .sidenav{display:none}
+  .layout{display:block}
+}
+@media (min-width: 1000px){
+  nav.chapmap{display:none}
+}
+
+.masthead{
+  display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  padding-block:18px 14px; border-bottom:1px solid var(--line);
+}
+.masthead .book{font-family:var(--serif); font-weight:700; font-size:15px; letter-spacing:.02em}
+.masthead .part{font-size:12.5px; color:var(--muted); letter-spacing:.12em}
+.masthead a{color:var(--accent-ink); text-decoration:none}
+.masthead a:hover{text-decoration:underline}
+.masthead a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+a.next{color:inherit; text-decoration:none}
+a.next:hover{border-color:var(--accent)}
+a.next:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+.hero{padding-block:44px 28px; border-bottom:1px solid var(--line)}
+.chap-no{
+  display:inline-flex; align-items:center; gap:10px;
+  font-size:12.5px; letter-spacing:.22em; color:var(--accent-ink); font-weight:700;
+}
+.chap-no::after{content:""; width:46px; height:1px; background:var(--accent)}
+.hero h1{
+  font-family:var(--serif); font-weight:900; font-size:clamp(30px,5vw,46px);
+  line-height:1.25; margin:10px 0 4px; letter-spacing:.02em; text-wrap:balance;
+}
+.hero .en{font-size:14px; color:var(--muted); letter-spacing:.08em; margin:0 0 18px}
+.hero .lede{max-width:46em; color:var(--ink-2); margin:0}
+.hero .lede strong{color:var(--ink)}
+.objectives{
+  margin-top:22px; padding:16px 20px; background:var(--surface);
+  border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:0 6px 6px 0;
+}
+.objectives h2{font-size:13px; letter-spacing:.18em; color:var(--accent-ink); margin:0 0 8px; font-weight:700}
+.objectives ul{margin:0; padding-left:1.3em; color:var(--ink-2)}
+.objectives li{margin:3px 0}
+.colorkey{margin-top:12px; font-size:12.5px; color:var(--muted)}
+.colorkey .up{color:var(--up-ink); font-weight:700}
+.colorkey .dn{color:var(--down); font-weight:700}
+.chapmap{display:flex; flex-wrap:wrap; gap:8px; margin-top:20px}
+.chapmap a{
+  font-size:13px; color:var(--ink-2); text-decoration:none;
+  border:1px solid var(--line-2); border-radius:999px; padding:4px 13px; background:var(--surface);
+}
+.chapmap a:hover{border-color:var(--accent); color:var(--accent-ink)}
+.chapmap a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+section.ch{padding-block:40px 8px}
+section.ch + section.ch{border-top:1px solid var(--line)}
+h2.sec{
+  font-family:var(--serif); font-weight:700; font-size:clamp(22px,3.4vw,28px);
+  margin:0 0 2px; line-height:1.35; text-wrap:balance;
+}
+h2.sec .no{color:var(--accent-ink); margin-right:10px; font-feature-settings:"tnum"}
+p.sec-en{font-size:12.5px; letter-spacing:.1em; color:var(--muted); margin:0 0 18px}
+h3{font-size:16.5px; font-weight:700; margin:26px 0 8px}
+h3 .tag{color:var(--accent-ink)}
+p{margin:10px 0}
+.prose{max-width:46em}
+.prose .en-term{color:var(--muted); font-size:.88em}
+.prose ul,.prose ol{padding-left:1.4em; margin:8px 0}
+.prose li{margin:5px 0}
+strong{font-weight:700}
+em{font-style:normal; font-weight:700; color:var(--accent-ink)}
+.up-t{color:var(--up-ink); font-weight:700}
+.dn-t{color:var(--down); font-weight:700}
+
+.cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px; margin:16px 0}
+.card{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:16px 18px;
+}
+.card h4{margin:0 0 6px; font-size:15px}
+.card h4 .en-term{display:block; font-weight:400; font-size:12px; color:var(--muted); letter-spacing:.04em; margin-top:2px}
+.card p{margin:6px 0; font-size:14px; color:var(--ink-2)}
+.card ul{margin:6px 0 0; padding-left:1.2em; font-size:14px; color:var(--ink-2)}
+.card li{margin:3px 0}
+.card .k{display:block; font-size:12px; letter-spacing:.12em; color:var(--muted); font-weight:700; margin-top:8px}
+
+.case,.evidence,.ashare{
+  margin:20px 0; padding:16px 20px 14px; background:var(--surface);
+  border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:0 8px 8px 0;
+}
+.evidence{border-left-color:var(--series2)}
+.ashare{border-left-color:var(--up)}
+.case .label,.evidence .label,.ashare .label{font-size:12px; letter-spacing:.2em; color:var(--accent-ink); font-weight:700; display:block; margin-bottom:6px}
+.evidence .label{color:var(--series2-ink)}
+.ashare .label{color:var(--up-ink)}
+.case h4,.evidence h4,.ashare h4{margin:0 0 6px; font-size:15.5px}
+.case p,.evidence p,.ashare p{margin:7px 0; font-size:14.5px; color:var(--ink-2)}
+.case p:last-child,.evidence p:last-child,.ashare p:last-child{margin-bottom:2px}
+.evidence ul,.ashare ul,.case ul{margin:6px 0; padding-left:1.3em; font-size:14.5px; color:var(--ink-2)}
+.evidence li,.ashare li,.case li{margin:5px 0}
+.case .takeaway{color:var(--ink); font-weight:500}
+.case .takeaway::before{content:"▸ 要点 "; color:var(--accent-ink); font-weight:700; font-size:12.5px; letter-spacing:.05em}
+
+.analogy{
+  margin:18px 0; padding:14px 20px; background:var(--accent-soft); border-radius:8px; max-width:46em;
+}
+.analogy .label{font-size:12px; letter-spacing:.2em; color:var(--accent-ink); font-weight:700; display:block; margin-bottom:4px}
+.analogy p{margin:5px 0; font-size:14.5px; color:var(--ink-2)}
+
+.pitfall{
+  margin:20px 0; padding:14px 20px; border:1px dashed var(--line-2); border-radius:8px; max-width:46em;
+}
+.pitfall .label{font-size:12px; letter-spacing:.2em; color:var(--crit); font-weight:700; display:block; margin-bottom:4px}
+.pitfall p{margin:4px 0; font-size:14.5px; color:var(--ink-2)}
+
+/* 规则卡 */
+.rulecard{
+  margin:22px 0; background:var(--surface); border:1px solid var(--line); border-radius:8px;
+  overflow:hidden; max-width:46em;
+}
+.rulecard .rc-head{
+  padding:10px 18px; background:var(--accent-soft); border-bottom:1px solid var(--line);
+  display:flex; justify-content:space-between; align-items:baseline; gap:10px; flex-wrap:wrap;
+}
+.rulecard .rc-head .label{font-size:12px; letter-spacing:.2em; color:var(--accent-ink); font-weight:700}
+.rulecard .rc-head .rc-name{font-weight:700; color:var(--ink)}
+.rulecard dl{display:grid; grid-template-columns:6.2em minmax(0,1fr); margin:0}
+.rulecard dt{padding:9px 0 9px 18px; font-size:13px; color:var(--muted); font-weight:700; border-top:1px solid var(--line)}
+.rulecard dd{margin:0; padding:9px 18px 9px 8px; font-size:14px; color:var(--ink-2); border-top:1px solid var(--line)}
+.rulecard dl > dt:first-child,.rulecard dl > dt:first-child + dd{border-top:none}
+.rulecard .rc-note{padding:10px 18px; font-size:13px; color:var(--muted); border-top:1px dashed var(--line-2); line-height:1.75}
+
+.formula{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px;
+  padding:12px 18px; margin:14px 0; max-width:46em; overflow-x:auto;
+  font-size:15px; line-height:2;
+}
+.formula .fx{white-space:nowrap}
+.formula sub,.formula sup{font-size:11px}
+.formula .note{font-size:12.5px; color:var(--muted)}
+
+table{border-collapse:collapse; width:100%; font-size:14px; font-variant-numeric:tabular-nums}
+.tablewrap{overflow-x:auto; margin:16px 0; border:1px solid var(--line); border-radius:8px; background:var(--surface)}
+.tablewrap table{min-width:560px}
+th,td{padding:9px 14px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top}
+th{font-size:12.5px; letter-spacing:.08em; color:var(--muted); font-weight:700; white-space:nowrap}
+tr:last-child td{border-bottom:none}
+td.num{white-space:nowrap}
+
+figure{margin:24px 0; background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:18px 18px 12px}
+figure .fig-scroll{overflow-x:auto}
+figure svg{display:block; max-width:100%; height:auto; color:var(--ink)}
+figure .fig-scroll svg{min-width:660px}
+figure .fig-scroll.narrow svg{min-width:0}
+figcaption{font-size:13px; color:var(--muted); margin-top:10px; line-height:1.7}
+figcaption b{color:var(--ink-2); font-weight:700}
+.fig-title{font-size:14px; font-weight:700; margin:0 0 12px}
+.fig-title .fno{color:var(--accent-ink); margin-right:8px}
+.fig-title .sch{font-size:11.5px; font-weight:400; color:var(--muted); border:1px solid var(--line-2); border-radius:999px; padding:1px 8px; margin-left:8px; white-space:nowrap}
+
+/* SVG：通用 */
+svg .node{fill:var(--bg); stroke:var(--line-2); stroke-width:1.2}
+svg .node-hi{fill:var(--accent-soft); stroke:var(--accent)}
+svg .node-up{fill:var(--up-soft); stroke:var(--up)}
+svg .node-dn{fill:var(--down-soft); stroke:var(--down)}
+svg .nt{font:700 12.5px var(--sans); fill:var(--ink)}
+svg .nd{font:400 11px var(--sans); fill:var(--ink-2)}
+svg .edge{stroke:var(--ink-2); stroke-width:1.4; fill:none}
+svg .edge-soft{stroke:var(--muted); stroke-width:1.2; fill:none; stroke-dasharray:4 4}
+svg .edge-acc{stroke:var(--accent); stroke-width:1.6; fill:none}
+svg .elabel{font:400 11.5px var(--sans); fill:var(--muted)}
+svg .grid{stroke:var(--line); stroke-width:1}
+svg .axis{stroke:var(--line-2); stroke-width:1.2}
+svg .tick{font:400 11px var(--sans); fill:var(--muted)}
+svg .atitle{font:400 11.5px var(--sans); fill:var(--muted)}
+svg .pl{font:700 13px var(--sans); fill:var(--ink)}
+svg .pv{font:400 11.5px var(--sans); fill:var(--ink-2)}
+svg .hi{font:700 12px var(--sans); fill:var(--accent-ink)}
+svg .ut{font:700 12px var(--sans); fill:var(--up-ink)}
+svg .dt{font:700 12px var(--sans); fill:var(--down)}
+svg .lg{font:400 11px var(--sans); fill:var(--ink-2)}
+svg .ln1{stroke:var(--series); stroke-width:2.8; fill:none}
+svg .seg1{fill:var(--series)}
+svg .seg2{fill:var(--series2)}
+
+/* SVG：K 线与指标（红涨绿跌） */
+svg .cu{fill:var(--up); stroke:var(--up); stroke-width:1}
+svg .cuh{fill:var(--surface); stroke:var(--up); stroke-width:1.2}
+svg .cd{fill:var(--down); stroke:var(--down); stroke-width:1}
+svg .wu{stroke:var(--up); stroke-width:1.2}
+svg .wd{stroke:var(--down); stroke-width:1.2}
+svg .bu{stroke:var(--up); stroke-width:1.6; fill:none}
+svg .bd{stroke:var(--down); stroke-width:1.6; fill:none}
+svg .vu{fill:var(--up); opacity:.45}
+svg .vd{fill:var(--down); opacity:.45}
+svg .cl{stroke:var(--ink-2); stroke-width:1.8; fill:none}
+svg .ma1{stroke:var(--series); stroke-width:1.7; fill:none}
+svg .ma2{stroke:var(--series2); stroke-width:1.7; fill:none}
+svg .ma3{stroke:var(--series3); stroke-width:1.7; fill:none}
+svg .bb{stroke:var(--series3); stroke-width:1.3; fill:none; stroke-dasharray:5 3}
+svg .bbm{stroke:var(--series3); stroke-width:1; fill:none; opacity:.7}
+svg .dc{stroke:var(--series2); stroke-width:1.4; fill:none}
+svg .ind1{stroke:var(--series); stroke-width:1.6; fill:none}
+svg .ind2{stroke:var(--series2); stroke-width:1.6; fill:none}
+svg .ind3{stroke:var(--series3); stroke-width:1.4; fill:none}
+svg .tl{stroke:var(--accent); stroke-width:2; fill:none}
+svg .tl2{stroke:var(--series2); stroke-width:2; fill:none}
+svg .tld{stroke:var(--accent); stroke-width:1.6; fill:none; stroke-dasharray:6 4}
+svg .sr{stroke:var(--muted); stroke-width:1.2; fill:none; stroke-dasharray:5 4}
+svg .sr-up{stroke:var(--up); stroke-width:1.4; fill:none; stroke-dasharray:6 4}
+svg .sr-dn{stroke:var(--down); stroke-width:1.4; fill:none; stroke-dasharray:6 4}
+svg .zone{fill:var(--accent-soft)}
+svg .zone-up{fill:var(--up-soft)}
+svg .zone-dn{fill:var(--down-soft)}
+svg .dot{fill:var(--accent)}
+svg .dot-up{fill:var(--up)}
+svg .dot-dn{fill:var(--down)}
+svg .px{stroke:var(--up); stroke-width:1.6}
+svg .po{stroke:var(--down); stroke-width:1.6; fill:none}
+
+.recap{margin-top:8px}
+.recap ol{margin:8px 0 0; padding-left:1.4em; max-width:46em; color:var(--ink-2)}
+.recap li{margin:7px 0}
+.recap li b{color:var(--ink)}
+details{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px;
+  padding:12px 18px; margin:10px 0; max-width:46em;
+}
+details summary{cursor:pointer; font-weight:500; color:var(--ink)}
+details summary:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+details[open] summary{color:var(--accent-ink)}
+details .ans{margin-top:8px; padding-top:8px; border-top:1px dashed var(--line); font-size:14.5px; color:var(--ink-2)}
+details .ans p{margin:6px 0}
+
+.next{
+  margin-top:48px; padding:18px 22px; border:1px solid var(--line); border-radius:8px;
+  background:var(--surface); display:flex; justify-content:space-between; align-items:center; gap:14px; flex-wrap:wrap;
+}
+.next .lbl{font-size:12px; letter-spacing:.18em; color:var(--muted)}
+.next .ttl{font-family:var(--serif); font-weight:700; font-size:18px; margin-top:2px}
+.foot{margin-top:26px; font-size:12.5px; color:var(--muted); line-height:1.8}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <span class="book">《金融市场技术分析》学习手册 · Technical Analysis of the Financial Markets (John J. Murphy)</span>
+  <span class="part"><a href="ta-index.html">学习地图</a> · 第四阶段 大局</span>
+</header>
+
+<div class="layout">
+
+<nav class="sidenav" aria-label="小节导航">
+  <p class="sn-chap">第 10 站 · 交叉市场分析</p>
+  <a href="#top">章首 · 学习目标</a>
+  <a href="#s1">17.1 没有一个市场是孤岛</a>
+  <a href="#s2">17.2 四个市场的联动链条</a>
+  <a href="#s3">17.3 谁先转向：周期中的顺序</a>
+  <a href="#s4">17.4 板块轮动与相对强度</a>
+  <a href="#s5">17.5 关系会变：通胀与通缩</a>
+  <a href="#s6">17.6 中国投资者的仪表盘</a>
+  <a href="#s7">17.7 落地：规则 · 证据 · A 股</a>
+  <a href="#recap">小结 · 术语 · 自测</a>
+</nav>
+
+<main class="article">
+
+<!-- ======================== 章首 ======================== -->
+<div class="hero" id="top">
+  <span class="chap-no">CHAPTER 17 · 第 10 站 / 共 14 站</span>
+  <h1>股票市场和期货市场的联系：交叉市场分析</h1>
+  <p class="en">The Link Between Stocks and Futures: Intermarket Analysis</p>
+  <p class="lede">前九站教你读懂一张图；这一站问一个更大的问题：<strong>这张图之外，其他市场在说什么？</strong>墨菲认为，商品、债券、股票、美元四个市场被同一根链条串在一起：美元影响商品，商品影响通胀和利率，利率影响股票估值。读懂这根链条，你就能在目标市场的图形还没出问题时，先从“上游”听到警报，也能判断钱该放在哪类资产、哪个板块。这一站也会诚实地讲清它的边界：链条的方向会随通胀与通缩两种体制切换，领先的时间也不稳定，所以它最适合当<strong>过滤器</strong>，而不是扳机。本站和下一站（市场宽度）放在交易系统、资金管理之前，目的是在动手搭系统之前，先把全部分析工具学完。</p>
+
+  <div class="objectives">
+    <h2>学习目标</h2>
+    <ul>
+      <li>说清交叉市场分析的思想，以及它为什么是“过滤器”而不是“扳机”</li>
+      <li>画出美元、商品、债券、股票的传导链，讲清每一环的经济逻辑和正负号</li>
+      <li>看懂收益率与债券价格的镜像关系，用“股票久期”解释加息为什么先伤成长股</li>
+      <li>记住周期顶部和底部的转向顺序（债券 → 股票 → 商品），会用六阶段框架给当下定位</li>
+      <li>理解板块轮动的逻辑；会计算、阅读相对强度比率线，并在比率线上画趋势线和均线</li>
+      <li>解释股债相关性为什么会在通胀与通缩两种体制之间切换（2022 年美国与 2022–2024 年中国）</li>
+      <li>搭建中国投资者的交叉市场仪表盘：国内利率、人民币汇率、国内商品、海外利率与政策</li>
+      <li>把相对强度轮动和股债比率滤网写成规则卡</li>
+    </ul>
+  </div>
+  <p class="colorkey">读图约定：本手册遵循 A 股习惯，<span class="up">红色 = 上涨</span>（收盘 ≥ 开盘），<span class="dn">绿色 = 下跌</span>，与欧美软件正好相反。图题标有“示意”的，是为说明原理而构造的数据，不是真实行情。</p>
+
+  <nav class="chapmap" aria-label="本章导览">
+    <a href="#s1">17.1 孤岛</a>
+    <a href="#s2">17.2 联动链条</a>
+    <a href="#s3">17.3 转向顺序</a>
+    <a href="#s4">17.4 轮动与相对强度</a>
+    <a href="#s5">17.5 体制切换</a>
+    <a href="#s6">17.6 中国仪表盘</a>
+    <a href="#s7">17.7 落地</a>
+    <a href="#recap">小结与自测</a>
+  </nav>
+</div>
+
+<!-- ======================== 17.1 ======================== -->
+<section class="ch" id="s1">
+  <h2 class="sec"><span class="no">17.1</span>没有一个市场是孤岛</h2>
+  <p class="sec-en">NO MARKET IS AN ISLAND</p>
+
+  <div class="prose">
+    <p>前面九站，我们的镜头一直对准一张图：一只股票或一个指数自己的价格、成交量和指标。这么做有一个隐含假设：这张图里已经有你需要的一切。墨菲在 1980 年代后期越来越怀疑这一点。他发现交易者各管一摊：股票交易员很少看债券，商品交易员很少看汇率，可这些市场之间一直在相互“说话”。1991 年，他把这些观察写成了《交叉市场技术分析》<span class="en-term">（Intermarket Technical Analysis）</span>，本章可以看作那本书的精华摘要。</p>
+    <p>核心命题只有一句：<strong>所有金融市场都相互关联，只分析一个市场，等于只听了一个证人的证词。</strong>这并不是让你放弃单一市场的图表分析。墨菲反复强调，交叉市场分析是对它的<strong>补充</strong>：先用前几站的工具读懂目标市场本身，再看相关市场是在支持还是在反对你的结论。</p>
+  </div>
+
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>法官断案，不会只听一个证人的话。一个证人说“我看见嫌疑人往东跑了”，可能是真的，也可能看错了；如果另外两个互不相识的证人也这么说，可信度就大大提高；如果他们说的完全相反，法官就该警惕。单一市场的图形是一个证人，债券、商品、汇率是另外几个证人。<strong>它们说法一致时，你可以更大胆；它们互相矛盾时，你应该收缩仓位、等待澄清。</strong>道氏理论要求工业指数和运输指数相互验证（第 2 站），交叉市场分析把这种“相互验证”从两个股票指数扩展到了整个金融体系。</p>
+  </div>
+
+  <div class="prose">
+    <h3>四个市场</h3>
+    <p>墨菲把金融世界简化成四个相互咬合的市场。每个市场都有一个“代表”，你只要盯住这几张图：</p>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <h4>商品 <span class="en-term">Commodities</span></h4>
+      <p><span class="k">看什么</span>美国用 CRB 商品价格指数，这是墨菲最常用的商品晴雨表；国内可看南华商品指数，以及铜、原油、煤炭等单个品种。</p>
+      <p><span class="k">它代表什么</span>实体经济的需求冷暖和通胀压力，是整条链的“上游”。</p>
+    </div>
+    <div class="card">
+      <h4>债券（利率） <span class="en-term">Bonds / Interest Rates</span></h4>
+      <p><span class="k">看什么</span>美国 10 年、30 年期国债的价格或收益率；国内看 10 年期国债收益率和国债期货。</p>
+      <p><span class="k">它代表什么</span>资金的价格。收益率上升就是债券价格下跌，两者互为镜像。</p>
+    </div>
+    <div class="card">
+      <h4>股票 <span class="en-term">Stocks</span></h4>
+      <p><span class="k">看什么</span>道琼斯指数、标普 500；国内看沪深 300 和各行业指数。</p>
+      <p><span class="k">它代表什么</span>企业盈利预期乘以市场愿意给的估值。利率主要通过估值这一项影响它。</p>
+    </div>
+    <div class="card">
+      <h4>货币（美元） <span class="en-term">Currencies / U.S. Dollar</span></h4>
+      <p><span class="k">看什么</span>美元指数（美元对一篮子主要货币）；国内看美元兑人民币汇率。</p>
+      <p><span class="k">它代表什么</span>资金流向，以及大宗商品这把“计价尺子”的长短。美元一动，以美元计价的商品先动。</p>
+    </div>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 17-1</span>交叉市场的传导链：从美元到股票</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 350" role="img" aria-label="交叉市场传导链：美元、商品、通胀预期、债券、股票从左到右排列。美元与商品反向，商品与通胀预期同向，通胀预期与债券价格反向，债券与股票同向；黄金与美元常反向；美元与债券、股票的关系方向不固定">
+<defs>
+  <marker id="f171-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/></marker>
+</defs>
+<text class="elabel" x="70" y="26" text-anchor="middle">源头</text>
+<text class="elabel" x="215" y="26" text-anchor="middle">上游</text>
+<text class="elabel" x="360" y="26" text-anchor="middle">中游</text>
+<text class="elabel" x="505" y="26" text-anchor="middle">下游</text>
+<text class="elabel" x="650" y="26" text-anchor="middle">更下游</text>
+
+<rect class="node" x="20" y="38" width="100" height="72" rx="8"/>
+<text class="nt" x="70" y="62" text-anchor="middle">美元</text>
+<text class="nd" x="70" y="82" text-anchor="middle">美元指数 / 汇率</text>
+<text class="nd" x="70" y="99" text-anchor="middle">商品的计价尺子</text>
+
+<rect class="node" x="165" y="38" width="100" height="72" rx="8"/>
+<text class="nt" x="215" y="62" text-anchor="middle">商品</text>
+<text class="nd" x="215" y="82" text-anchor="middle">CRB / 南华指数</text>
+<text class="nd" x="215" y="99" text-anchor="middle">原材料价格</text>
+
+<rect class="edge-soft" x="310" y="38" width="100" height="72" rx="8"/>
+<text class="nt" x="360" y="62" text-anchor="middle">通胀预期</text>
+<text class="nd" x="360" y="82" text-anchor="middle">不是可交易市场</text>
+<text class="nd" x="360" y="99" text-anchor="middle">却决定利率走向</text>
+
+<rect class="node" x="455" y="38" width="100" height="72" rx="8"/>
+<text class="nt" x="505" y="62" text-anchor="middle">债券</text>
+<text class="nd" x="505" y="82" text-anchor="middle">国债价格</text>
+<text class="nd" x="505" y="99" text-anchor="middle">收益率的镜像</text>
+
+<rect class="node node-hi" x="600" y="38" width="100" height="72" rx="8"/>
+<text class="nt" x="650" y="62" text-anchor="middle">股票</text>
+<text class="nd" x="650" y="82" text-anchor="middle">股指 / 板块</text>
+<text class="nd" x="650" y="99" text-anchor="middle">盈利 × 估值</text>
+
+<path class="edge" d="M120 74 H161" marker-end="url(#f171-ar)"/>
+<path class="edge" d="M265 74 H306" marker-end="url(#f171-ar)"/>
+<path class="edge" d="M410 74 H451" marker-end="url(#f171-ar)"/>
+<path class="edge" d="M555 74 H596" marker-end="url(#f171-ar)"/>
+<text class="dt" x="141" y="66" text-anchor="middle">−</text>
+<text class="ut" x="286" y="66" text-anchor="middle">+</text>
+<text class="dt" x="431" y="66" text-anchor="middle">−</text>
+<text class="ut" x="576" y="66" text-anchor="middle">+</text>
+<text class="elabel" x="141" y="94" text-anchor="middle">①</text>
+<text class="elabel" x="286" y="94" text-anchor="middle">②</text>
+<text class="elabel" x="431" y="94" text-anchor="middle">③</text>
+<text class="elabel" x="576" y="94" text-anchor="middle">④</text>
+
+<rect class="node" x="20" y="148" width="100" height="48" rx="8"/>
+<text class="nt" x="70" y="168" text-anchor="middle">黄金</text>
+<text class="nd" x="70" y="186" text-anchor="middle">避险 · 抗通胀</text>
+<path class="edge" d="M70 114 V144" marker-start="url(#f171-ar)" marker-end="url(#f171-ar)"/>
+<text class="dt" x="80" y="134">−</text>
+<text class="elabel" x="92" y="134">常反向</text>
+
+<path class="edge-soft" d="M124 102 C 250 210, 520 210, 640 114" marker-start="url(#f171-ar)" marker-end="url(#f171-ar)"/>
+<text class="elabel" x="385" y="200" text-anchor="middle">美元与债券、股票：符号不固定，要看美元为什么涨</text>
+
+<text class="pv" x="20" y="232">① 美元走强 → 以美元计价的商品对其他国家的买家变贵、需求下降 → 商品承压（跷跷板）</text>
+<text class="pv" x="20" y="254">② 商品上涨 → 企业的原材料成本上升 → 市场预期通胀走高（上游传到中游）</text>
+<text class="pv" x="20" y="276">③ 通胀预期上升 → 投资者要求更高收益率、央行倾向加息 → 收益率上行、债券价格下跌</text>
+<text class="pv" x="20" y="298">④ 利率下降（债券上涨）→ 未来现金流的折现值升高、企业融资变便宜 → 股票估值上升</text>
+<line class="edge-acc" x1="20" y1="314" x2="700" y2="314"/>
+<text class="hi" x="360" y="336" text-anchor="middle">周期顶部与底部的转向顺序：债券最先 → 股票其次 → 商品最后（17.3 节）</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>从左往右是一条“上下游”的河：美元是源头，决定商品这把尺子的长短；商品价格是上游；通胀预期是中游，它不是一个可以交易的市场，却决定利率往哪走；利率和债券是下游；股票估值在更下游。箭头上的“−”表示反向，“+”表示同向。把四个符号连乘，美元与股票之间是“+”，也就是美元走强最终利好股票；但这条链太长、时滞太大，现实中经常被别的力量盖过，所以图中用虚线标为“符号不固定”。黄金单独列出，因为它和美元的反向关系比一般商品更紧。</figcaption>
+  </figure>
+
+  <div class="prose">
+    <h3>技术分析者为什么要在乎</h3>
+    <p>交叉市场分析给单一市场的图表分析补上了三样东西：</p>
+    <ol>
+      <li><strong>背景：</strong>你做多的股票是顺风还是逆风？利率在上升、商品在暴涨的环境里，股票上的突破信号更容易失败。</li>
+      <li><strong>预警：</strong>上游先动，下游后动。债券和商品常常比股票更早转向，给你几周到几个月的准备时间（17.3 节）。</li>
+      <li><strong>选择：</strong>钱该放在哪里？股票还是债券？哪个板块正在接棒？比率分析直接回答这个问题（17.4 节）。</li>
+    </ol>
+  </div>
+
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p>“交叉市场分析就是做宏观预测，得先算准 GDP 和 CPI。”墨菲的做法恰恰相反：他看的是债券、商品、美元自己的<strong>价格图</strong>，用趋势线、均线、形态来分析它们。市场价格通常领先经济数据几个月：等 CPI 公布出来，债券和商品早就动了。你不需要成为经济学家，只需要多看几张图，并且知道它们之间为什么会联动。</p>
+  </div>
+</section>
+
+<!-- ======================== 17.2 ======================== -->
+<section class="ch" id="s2">
+  <h2 class="sec"><span class="no">17.2</span>四个市场的联动链条</h2>
+  <p class="sec-en">THE INTERMARKET CHAIN</p>
+
+  <div class="prose">
+    <p>下面沿着图 17-1 的链条，一环一环地拆。每一环都问两个问题：<strong>为什么会这样？什么时候不会这样？</strong></p>
+
+    <h3><span class="tag">第一环</span>美元与商品：跷跷板</h3>
+    <p>国际大宗商品几乎都以美元计价。美元走强有两层效果。第一层是<strong>机械的</strong>：同样一吨铜，用更值钱的美元标价，数字自然变小。第二层是<strong>需求的</strong>：对美国以外的买家来说，美元升值等于商品涨价，买得起的人少了，需求下降，美元价格只能往下走才能找到买家。</p>
+    <p>算一笔账：假设伦敦铜价一直是 9000 美元/吨，美元兑人民币从 6.5 升到 7.2，中国买家的成本就从 58500 元/吨涨到 64800 元/吨，贵了约 10.8%。中国是全球最大的铜消费国，用量约占全球一半，这样的成本上升足以压低需求，最后压低以美元计的铜价。</p>
+    <p>黄金和美元的反向关系更紧。黄金不生利息，本质上是一种“没有国家的货币”：人们对美元的信心下降时买黄金，信心增强时卖黄金，所以金价常被看作美元信用和通胀预期的温度计。但它也会失灵：2023–2024 年，美元和实际利率都处在高位，金价却屡创新高，市场普遍把原因归于各国央行持续购金。</p>
+  </div>
+
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>把交叉市场想象成一条河：商品是上游，通胀是中游，利率和债券是下游，股票估值在更下游。上游涨水（商品大涨），要过一段时间才流到下游（收益率上升、估值被压低），所以下游的变化总是慢半拍。美元则像河边的一架<strong>跷跷板</strong>：美元这头压下去，商品那头就翘起来。读交叉市场，就是站在上游看水位，提前判断下游会不会涨水。</p>
+  </div>
+
+  <div class="prose">
+    <h3><span class="tag">第二环</span>商品与债券：通胀是中间人</h3>
+    <p>商品价格上涨，企业的原材料成本上升，逐步传导到 PPI、CPI；债券投资者担心未来的通胀侵蚀固定的利息，要求更高的收益率；央行也可能加息抑制通胀。结果是收益率上升、债券价格下跌。这就是《投资学》第 5 章费雪方程的直接应用：<strong>名义利率 ≈ 实际利率 + 预期通胀</strong>。预期通胀一抬头，名义利率就得跟着抬。</p>
+    <p>价格跌多少，由久期决定（《投资学》第 14 章）：ΔP/P ≈ −D* × Δy。一只修正久期约 8.5 的 10 年期国债，收益率上升 0.5 个百分点，价格约下跌 4.25%。所以墨菲说“商品与债券反向”，换成收益率的语言就是“商品与利率同向”。</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 17-2</span>链条的一次完整传导：美元 → 商品 → 收益率 → 债券价格<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 490" role="img" aria-label="示意图：四条上下排列的曲线。美元指数先见顶回落，随后商品指数见底回升，再之后 10 年期国债收益率见底回升，国债价格作为收益率的镜像同时见顶回落">
+<defs><marker id="f172-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/></marker><marker id="f172-ara" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/></marker></defs>
+<!-- kchart: n=100 L=52 step=6.520 x(i)=L+step*(i+0.5) price[87.448,104.872] y∈[30,110] -->
+<line class="axis" x1="52" y1="30" x2="52" y2="110"/>
+<line class="grid" x1="52" y1="98.3" x2="704" y2="98.3"/>
+<text class="tick" x="46" y="102.3" text-anchor="end">90</text>
+<line class="grid" x1="52" y1="75.3" x2="704" y2="75.3"/>
+<text class="tick" x="46" y="79.3" text-anchor="end">95</text>
+<line class="grid" x1="52" y1="52.4" x2="704" y2="52.4"/>
+<text class="tick" x="46" y="56.4" text-anchor="end">100</text>
+<line class="axis" x1="52" y1="110" x2="704" y2="110"/>
+<polyline class="cl" points="55.3,52.3 61.8,50.9 68.3,49.7 74.8,49.5 81.3,46.5 87.9,44.2 94.4,45 100.9,44.1 107.4,40.1 113.9,42.3 120.5,40.6 127,40.6 133.5,38.2 140,36.3 146.5,37.7 153.1,36.1 159.6,35.1 166.1,33.9 172.6,34.5 179.1,35.1 185.7,33.6 192.2,33.9 198.7,36.3 205.2,37 211.7,37.5 218.3,40.4 224.8,40.2 231.3,41.6 237.8,44.6 244.3,47.7 250.9,46.2 257.4,49.8 263.9,51.1 270.4,53.2 276.9,54.4 283.5,55.3 290,58.8 296.5,58.2 303,61.6 309.5,61.7 316.1,64.3 322.6,64.5 329.1,66.1 335.6,68.2 342.1,66.9 348.7,71 355.2,70.6 361.7,70.7 368.2,74.3 374.7,74.3 381.3,76.2 387.8,76.8 394.3,79 400.8,77.8 407.3,79 413.9,82.4 420.4,80.8 426.9,83.1 433.4,85.1 439.9,86.9 446.5,86 453,86 459.5,87.4 466,87.8 472.5,90.9 479.1,91.3 485.6,89.7 492.1,92.6 498.6,92.6 505.1,94.7 511.7,93.3 518.2,95.6 524.7,96.5 531.2,97.4 537.7,98 544.3,95.9 550.8,99 557.3,98.9 563.8,98.7 570.3,100.2 576.9,102 583.4,99.8 589.9,101.5 596.4,101.3 602.9,101.9 609.5,103.3 616,102.1 622.5,100.9 629,103.1 635.5,102.2 642.1,104.3 648.6,101.7 655.1,103.7 661.6,104.6 668.1,102.8 674.7,105.7 681.2,105.4 687.7,105.3 694.2,106.4 700.7,105.3"/>
+<line class="sr" x1="185.7" y1="30" x2="185.7" y2="110"/>
+<line class="sr" x1="211.7" y1="30" x2="211.7" y2="110"/>
+<line class="sr" x1="276.9" y1="30" x2="276.9" y2="110"/>
+<circle class="dot-up" cx="185.7" cy="33.6" r="4"/>
+<text class="hi" x="250.9" y="36.8" text-anchor="start">① 美元见顶回落</text>
+<text class="pv" x="681.2" y="47.8" text-anchor="end">美元走弱：以美元计价的商品变“便宜”</text>
+<!-- kchart: n=100 L=52 step=6.520 x(i)=L+step*(i+0.5) price[93.319,121.291] y∈[148,228] -->
+<line class="axis" x1="52" y1="148" x2="52" y2="228"/>
+<line class="grid" x1="52" y1="208.9" x2="704" y2="208.9"/>
+<text class="tick" x="46" y="212.9" text-anchor="end">100</text>
+<line class="grid" x1="52" y1="180.3" x2="704" y2="180.3"/>
+<text class="tick" x="46" y="184.3" text-anchor="end">110</text>
+<line class="grid" x1="52" y1="151.7" x2="704" y2="151.7"/>
+<text class="tick" x="46" y="155.7" text-anchor="end">120</text>
+<line class="axis" x1="52" y1="228" x2="704" y2="228"/>
+<polyline class="cl" points="55.3,209.6 61.8,211.2 68.3,211.7 74.8,210.1 81.3,212 87.9,213.1 94.4,213.1 100.9,213 107.4,214.8 113.9,215.6 120.5,215.2 127,216.4 133.5,217.6 140,217.7 146.5,216.4 153.1,216.3 159.6,219.8 166.1,219.7 172.6,218.1 179.1,220.3 185.7,222.3 192.2,222.3 198.7,222 205.2,223.1 211.7,224.4 218.3,223.8 224.8,221.2 231.3,222.2 237.8,219.8 244.3,221.3 250.9,220.2 257.4,219.1 263.9,215.5 270.4,213.9 276.9,215.5 283.5,211.7 290,212.1 296.5,211.4 303,208.6 309.5,206.7 316.1,205.7 322.6,206.5 329.1,202.8 335.6,201.5 342.1,202.8 348.7,201.7 355.2,201.2 361.7,198.1 368.2,197.4 374.7,196.3 381.3,195.1 387.8,194.1 394.3,193.2 400.8,191.1 407.3,190.2 413.9,190.4 420.4,187.8 426.9,188.2 433.4,183.9 439.9,183 446.5,181.8 453,182.9 459.5,180.6 466,180.3 472.5,177.1 479.1,175.8 485.6,174.6 492.1,173.8 498.6,173.5 505.1,173.4 511.7,171.5 518.2,169.1 524.7,170.1 531.2,167.4 537.7,167 544.3,166.5 550.8,166.3 557.3,163.3 563.8,164.1 570.3,161.2 576.9,162.4 583.4,161.9 589.9,159 596.4,158.4 602.9,160.4 609.5,158.1 616,159 622.5,157.4 629,157 635.5,154.9 642.1,156.1 648.6,153.2 655.1,154.7 661.6,153.6 668.1,151.7 674.7,154.4 681.2,152 687.7,153.5 694.2,153 700.7,151.6"/>
+<line class="sr" x1="185.7" y1="148" x2="185.7" y2="228"/>
+<line class="sr" x1="211.7" y1="148" x2="211.7" y2="228"/>
+<line class="sr" x1="276.9" y1="148" x2="276.9" y2="228"/>
+<circle class="dot-dn" cx="211.7" cy="224.4" r="4"/>
+<text class="hi" x="211.7" y="197.5" text-anchor="middle">② 商品见底回升</text>
+<text class="pv" x="681.2" y="211.8" text-anchor="end">原材料涨价 → 通胀预期升温</text>
+<!-- kchart: n=100 L=52 step=6.520 x(i)=L+step*(i+0.5) price[2.528,3.364] y∈[266,346] -->
+<line class="axis" x1="52" y1="266" x2="52" y2="346"/>
+<line class="grid" x1="52" y1="324.8" x2="704" y2="324.8"/>
+<text class="tick" x="46" y="328.8" text-anchor="end">2.75</text>
+<line class="grid" x1="52" y1="300.8" x2="704" y2="300.8"/>
+<text class="tick" x="46" y="304.8" text-anchor="end">3.00</text>
+<line class="grid" x1="52" y1="276.9" x2="704" y2="276.9"/>
+<text class="tick" x="46" y="280.9" text-anchor="end">3.25</text>
+<line class="axis" x1="52" y1="346" x2="704" y2="346"/>
+<polyline class="cl" points="55.3,321.8 61.8,323.3 68.3,322.9 74.8,324 81.3,324.6 87.9,325.2 94.4,326 100.9,326.6 107.4,327.6 113.9,328 120.5,328.8 127,328.5 133.5,330.1 140,329.4 146.5,330.6 153.1,331.1 159.6,332.5 166.1,333.4 172.6,333.6 179.1,334.5 185.7,334.3 192.2,335.1 198.7,335.3 205.2,335.8 211.7,337.6 218.3,338.1 224.8,337.5 231.3,339.2 237.8,339.2 244.3,340.1 250.9,340.2 257.4,341.4 263.9,341.4 270.4,342.1 276.9,342.4 283.5,341.8 290,341.5 296.5,341.4 303,340.2 309.5,339.2 316.1,338 322.6,338.6 329.1,337.9 335.6,336.2 342.1,334.7 348.7,332.8 355.2,332.7 361.7,331.3 368.2,328.8 374.7,327.5 381.3,326.7 387.8,325.6 394.3,324.3 400.8,323.8 407.3,322.5 413.9,320.9 420.4,318.5 426.9,318.7 433.4,316.3 439.9,316.2 446.5,315 453,312.8 459.5,311.8 466,310.7 472.5,308.2 479.1,307.1 485.6,306.4 492.1,304.5 498.6,302.4 505.1,302.4 511.7,300.9 518.2,299 524.7,297 531.2,296.5 537.7,294.7 544.3,293.1 550.8,292.3 557.3,289.9 563.8,288.5 570.3,287.4 576.9,286 583.4,285.3 589.9,285 596.4,283 602.9,283.9 609.5,282 616,281.1 622.5,279.9 629,279.4 635.5,279.6 642.1,277.4 648.6,277.6 655.1,275.6 661.6,275.9 668.1,274.5 674.7,274.2 681.2,273 687.7,272.5 694.2,270.2 700.7,269.6"/>
+<line class="sr" x1="185.7" y1="266" x2="185.7" y2="346"/>
+<line class="sr" x1="211.7" y1="266" x2="211.7" y2="346"/>
+<line class="sr" x1="276.9" y1="266" x2="276.9" y2="346"/>
+<circle class="dot-dn" cx="276.9" cy="342.4" r="4"/>
+<text class="hi" x="276.9" y="320" text-anchor="middle">③ 收益率见底回升</text>
+<text class="pv" x="681.2" y="333.4" text-anchor="end">投资者要求更高的收益率补偿通胀</text>
+<!-- kchart: n=100 L=52 step=6.520 x(i)=L+step*(i+0.5) price[95.326,102.014] y∈[384,464] -->
+<line class="axis" x1="52" y1="384" x2="52" y2="464"/>
+<line class="grid" x1="52" y1="455.9" x2="704" y2="455.9"/>
+<text class="tick" x="46" y="459.9" text-anchor="end">96</text>
+<line class="grid" x1="52" y1="432" x2="704" y2="432"/>
+<text class="tick" x="46" y="436" text-anchor="end">98</text>
+<line class="grid" x1="52" y1="408.1" x2="704" y2="408.1"/>
+<text class="tick" x="46" y="412.1" text-anchor="end">100</text>
+<line class="grid" x1="52" y1="384.2" x2="704" y2="384.2"/>
+<text class="tick" x="46" y="388.2" text-anchor="end">102</text>
+<line class="axis" x1="52" y1="464" x2="704" y2="464"/>
+<polyline class="cl" points="55.3,408.2 61.8,406.7 68.3,407 74.8,405.9 81.3,405.5 87.9,404.7 94.4,403.9 100.9,403.4 107.4,402.3 113.9,402 120.5,401.2 127,401.5 133.5,399.8 140,400.6 146.5,399.4 153.1,399 159.6,397.4 166.1,396.6 172.6,396.4 179.1,395.4 185.7,395.7 192.2,394.9 198.7,394.7 205.2,394.2 211.7,392.4 218.3,391.9 224.8,392.5 231.3,390.9 237.8,390.9 244.3,389.9 250.9,389.8 257.4,388.5 263.9,388.6 270.4,387.9 276.9,387.6 283.5,388.1 290,388.5 296.5,388.6 303,389.8 309.5,390.7 316.1,391.9 322.6,391.3 329.1,392.1 335.6,393.7 342.1,395.3 348.7,397.2 355.2,397.3 361.7,398.8 368.2,401.2 374.7,402.5 381.3,403.3 387.8,404.4 394.3,405.7 400.8,406.2 407.3,407.5 413.9,409 420.4,411.4 426.9,411.2 433.4,413.6 439.9,413.7 446.5,414.9 453,417.2 459.5,418.1 466,419.3 472.5,421.7 479.1,422.8 485.6,423.5 492.1,425.4 498.6,427.6 505.1,427.7 511.7,429 518.2,430.9 524.7,433 531.2,433.4 537.7,435.2 544.3,436.9 550.8,437.6 557.3,440 563.8,441.6 570.3,442.5 576.9,444 583.4,444.7 589.9,444.9 596.4,447 602.9,446.1 609.5,447.9 616,448.9 622.5,450.1 629,450.6 635.5,450.4 642.1,452.6 648.6,452.3 655.1,454.5 661.6,454.1 668.1,455.5 674.7,455.7 681.2,457 687.7,457.5 694.2,459.8 700.7,460.4"/>
+<text class="tick" x="55.3" y="481" text-anchor="middle">第 1 周</text>
+<text class="tick" x="218.3" y="481" text-anchor="middle">第 26 周</text>
+<text class="tick" x="381.3" y="481" text-anchor="middle">第 51 周</text>
+<text class="tick" x="544.3" y="481" text-anchor="middle">第 76 周</text>
+<line class="sr" x1="185.7" y1="384" x2="185.7" y2="464"/>
+<line class="sr" x1="211.7" y1="384" x2="211.7" y2="464"/>
+<line class="sr" x1="276.9" y1="384" x2="276.9" y2="464"/>
+<circle class="dot-up" cx="276.9" cy="387.6" r="4"/>
+<text class="hi" x="276.9" y="420.1" text-anchor="middle">④ 债券价格见顶回落</text>
+<text class="pv" x="681.2" y="411.7" text-anchor="end">价格与收益率反向：上图的镜像</text>
+<text class="pl" x="52" y="20">美元指数</text>
+<text class="pl" x="52" y="138">商品价格指数</text>
+<text class="pl" x="52" y="256">10 年期国债收益率（%）</text>
+<text class="pl" x="52" y="374">10 年期国债价格（修正久期约 8）</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>四张图共用一条时间轴。① 美元指数在第 21 周附近见顶回落；② 几周后商品见底回升，因为美元走弱让以美元计价的商品变“便宜”，需求回来了；③ 又过了约 10 周，10 年期国债收益率见底回升，原材料涨价让市场预期通胀走高；④ 最下面的债券价格是收益率的镜像：收益率见底的那一刻，就是债券价格见顶的那一刻。注意时滞：上游先动、下游后动，这正是交叉市场能“预警”的原因；但时滞每次都不一样，从几周到几个月都有可能。这是构造数据，只用来说明顺序，不代表任何一段真实行情。</figcaption>
+  </figure>
+
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p>“10 年期国债收益率涨了，债券牛市来了。”正好说反了。收益率上升意味着债券价格下跌，是<strong>债券熊市</strong>。墨菲原书画的多是国债期货的价格，国内财经新闻报的多是收益率，两者方向相反。读交叉市场关系之前先统一口径：本手册说“债券上涨”，一律指<strong>价格上涨、收益率下降</strong>。国内的国债期货（如 10 年期的 T 合约）报的是价格，方向和墨菲原书一致。</p>
+  </div>
+
+  <div class="prose">
+    <h3><span class="tag">第三环</span>债券与股票：同向，且债券常常领先</h3>
+    <p>利率下降（债券上涨）通常利好股票，理由有三：</p>
+    <ul>
+      <li><strong>折现率下降：</strong>股票的价值是未来现金流的现值，折现率越低，现值越高（《投资学》第 18 章的戈登模型）；</li>
+      <li><strong>比价效应：</strong>国债收益率下降，股票的盈利收益率（市盈率的倒数）和股息率就显得更有吸引力，资金从债券流向股票；</li>
+      <li><strong>融资成本下降：</strong>企业借钱更便宜，利润改善，杠杆资金也更活跃。</li>
+    </ul>
+    <p>为什么债券常常<strong>领先</strong>？因为两个市场关心的东西不一样。债券只关心通胀和利率：经济一过热、通胀苗头一出现，债券先跌。股票关心盈利：而经济过热的阶段，恰恰是盈利最好的时候，所以股票还会再涨一段，直到利率高到足以压垮估值和经济。底部也一样：经济最差的时候，通胀回落、央行降息，债券先涨；股票要等到“低利率会带来复苏”的预期出现，才见底回升。墨菲的经验是，债券的转向常常领先股票几个月，有时长达一年左右，每次都不一样。</p>
+    <p>利率对不同股票的杀伤力也不一样。用戈登模型 P = D ÷（r − g）算一笔账就明白了，其中 D 是明年的股利，r 是折现率，g 是长期增长率：</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 17-3</span>利率上升 1 个百分点，谁跌得最多：股票的“久期”<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 340" role="img" aria-label="示意图：折现率从 7.5% 升到 11% 时四种资产价格的变化。以折现率 8% 时价格为 100：利率上升 1 个百分点，成长股约跌 33%，30 年零息国债约跌 24%，价值股约跌 14%，10 年零息国债约跌 9%">
+<line class="grid" x1="78" y1="266.9" x2="500" y2="266.9"/>
+<text class="tick" x="72" y="270.9" text-anchor="end">40</text>
+<line class="grid" x1="78" y1="220.7" x2="500" y2="220.7"/>
+<text class="tick" x="72" y="224.7" text-anchor="end">60</text>
+<line class="grid" x1="78" y1="174.5" x2="500" y2="174.5"/>
+<text class="tick" x="72" y="178.5" text-anchor="end">80</text>
+<line class="grid" x1="78" y1="128.4" x2="500" y2="128.4"/>
+<text class="tick" x="72" y="132.4" text-anchor="end">100</text>
+<line class="grid" x1="78" y1="82.2" x2="500" y2="82.2"/>
+<text class="tick" x="72" y="86.2" text-anchor="end">120</text>
+<line class="grid" x1="78" y1="36" x2="500" y2="36"/>
+<text class="tick" x="72" y="40" text-anchor="end">140</text>
+<text class="tick" x="78" y="307" text-anchor="middle">7.5%</text>
+<text class="tick" x="138.3" y="307" text-anchor="middle">8%</text>
+<text class="tick" x="258.9" y="307" text-anchor="middle">9%</text>
+<text class="tick" x="379.4" y="307" text-anchor="middle">10%</text>
+<text class="tick" x="500" y="307" text-anchor="middle">11%</text>
+<line class="axis" x1="78" y1="36" x2="78" y2="290"/><line class="axis" x1="78" y1="290" x2="500" y2="290"/>
+<text class="atitle" x="500" y="326" text-anchor="end">折现率 r（投资者要求的回报率，随利率升降）</text>
+<text class="atitle" x="84" y="22">价格（以 r = 8% 时为 100）</text>
+<line class="sr" x1="138.3" y1="36" x2="138.3" y2="290"/>
+<line class="sr-dn" x1="258.9" y1="36" x2="258.9" y2="290"/>
+<text class="elabel" x="132.3" y="144.4" text-anchor="end">起点 100</text>
+<text class="hi" x="262.9" y="48">利率 +1 个百分点</text>
+<polyline class="ma2" points="78,51.4 84,61.3 90.1,70.6 96.1,79.4 102.1,87.6 108.1,95.4 114.2,102.7 120.2,109.6 126.2,116.2 132.3,122.4 138.3,128.4 144.3,134 150.3,139.4 156.4,144.5 162.4,149.4 168.4,154 174.5,158.5 180.5,162.8 186.5,166.8 192.5,170.8 198.6,174.5 204.6,178.2 210.6,181.7 216.7,185 222.7,188.2 228.7,191.3 234.7,194.3 240.8,197.2 246.8,200 252.8,202.7 258.9,205.3 264.9,207.9 270.9,210.3 276.9,212.7 283,215 289,217.2 295,219.3 301.1,221.4 307.1,223.4 313.1,225.4 319.1,227.3 325.2,229.2 331.2,231 337.2,232.7 343.3,234.5 349.3,236.1 355.3,237.7 361.3,239.3 367.4,240.9 373.4,242.4 379.4,243.8 385.5,245.2 391.5,246.6 397.5,248 403.5,249.3 409.6,250.6 415.6,251.9 421.6,253.1 427.7,254.3 433.7,255.5 439.7,256.6 445.7,257.8 451.8,258.9 457.8,260 463.8,261 469.9,262 475.9,263.1 481.9,264.1 487.9,265 494,266 500,266.9"/>
+<polyline class="ma1" points="78,107.4 84,109.6 90.1,111.9 96.1,114.1 102.1,116.2 108.1,118.3 114.2,120.4 120.2,122.4 126.2,124.4 132.3,126.4 138.3,128.4 144.3,130.3 150.3,132.1 156.4,134 162.4,135.8 168.4,137.6 174.5,139.4 180.5,141.1 186.5,142.8 192.5,144.5 198.6,146.1 204.6,147.8 210.6,149.4 216.7,150.9 222.7,152.5 228.7,154 234.7,155.5 240.8,157 246.8,158.5 252.8,159.9 258.9,161.4 264.9,162.8 270.9,164.1 276.9,165.5 283,166.8 289,168.2 295,169.5 301.1,170.8 307.1,172 313.1,173.3 319.1,174.5 325.2,175.8 331.2,177 337.2,178.2 343.3,179.3 349.3,180.5 355.3,181.7 361.3,182.8 367.4,183.9 373.4,185 379.4,186.1 385.5,187.2 391.5,188.2 397.5,189.3 403.5,190.3 409.6,191.3 415.6,192.4 421.6,193.4 427.7,194.3 433.7,195.3 439.7,196.3 445.7,197.2 451.8,198.2 457.8,199.1 463.8,200 469.9,200.9 475.9,201.8 481.9,202.7 487.9,203.6 494,204.5 500,205.3"/>
+<polyline class="tld" points="78,93.9 84,97.6 90.1,101.2 96.1,104.7 102.1,108.3 108.1,111.7 114.2,115.2 120.2,118.5 126.2,121.9 132.3,125.1 138.3,128.4 144.3,131.5 150.3,134.7 156.4,137.8 162.4,140.8 168.4,143.8 174.5,146.8 180.5,149.7 186.5,152.6 192.5,155.4 198.6,158.2 204.6,161 210.6,163.7 216.7,166.4 222.7,169 228.7,171.7 234.7,174.2 240.8,176.8 246.8,179.3 252.8,181.7 258.9,184.1 264.9,186.5 270.9,188.9 276.9,191.2 283,193.5 289,195.8 295,198 301.1,200.2 307.1,202.4 313.1,204.5 319.1,206.6 325.2,208.7 331.2,210.7 337.2,212.8 343.3,214.7 349.3,216.7 355.3,218.6 361.3,220.5 367.4,222.4 373.4,224.3 379.4,226.1 385.5,227.9 391.5,229.7 397.5,231.4 403.5,233.2 409.6,234.9 415.6,236.6 421.6,238.2 427.7,239.9 433.7,241.5 439.7,243.1 445.7,244.6 451.8,246.2 457.8,247.7 463.8,249.2 469.9,250.7 475.9,252.1 481.9,253.6 487.9,255 494,256.4 500,257.8"/>
+<polyline class="sr" points="78,117.4 84,118.5 90.1,119.6 96.1,120.7 102.1,121.9 108.1,122.9 114.2,124 120.2,125.1 126.2,126.2 132.3,127.3 138.3,128.4 144.3,129.4 150.3,130.5 156.4,131.5 162.4,132.6 168.4,133.6 174.5,134.7 180.5,135.7 186.5,136.7 192.5,137.8 198.6,138.8 204.6,139.8 210.6,140.8 216.7,141.8 222.7,142.8 228.7,143.8 234.7,144.8 240.8,145.8 246.8,146.8 252.8,147.7 258.9,148.7 264.9,149.7 270.9,150.6 276.9,151.6 283,152.5 289,153.5 295,154.4 301.1,155.3 307.1,156.3 313.1,157.2 319.1,158.1 325.2,159 331.2,159.9 337.2,160.8 343.3,161.8 349.3,162.7 355.3,163.5 361.3,164.4 367.4,165.3 373.4,166.2 379.4,167.1 385.5,167.9 391.5,168.8 397.5,169.7 403.5,170.5 409.6,171.4 415.6,172.2 421.6,173.1 427.7,173.9 433.7,174.8 439.7,175.6 445.7,176.4 451.8,177.2 457.8,178.1 463.8,178.9 469.9,179.7 475.9,180.5 481.9,181.3 487.9,182.1 494,182.9 500,183.7"/>
+<circle class="dot" cx="138.3" cy="128.4" r="4"/>
+<circle class="dot" cx="258.9" cy="205.3" r="3.5"/>
+<circle class="dot" cx="258.9" cy="161.4" r="3.5"/>
+<circle class="dot" cx="258.9" cy="184.1" r="3.5"/>
+<circle class="dot" cx="258.9" cy="148.7" r="3.5"/>
+<text class="elabel" x="90" y="212">利率从 8% 升到 9%：</text>
+<line class="sr" x1="90" y1="228" x2="112" y2="228"/>
+<text class="pv" x="118" y="232">10 年零息债 −9%</text>
+<line class="ma1" x1="90" y1="245" x2="112" y2="245"/>
+<text class="pv" x="118" y="249">价值股 −14%</text>
+<line class="tld" x1="90" y1="262" x2="112" y2="262"/>
+<text class="pv" x="118" y="266">30 年零息债 −24%</text>
+<line class="ma2" x1="90" y1="279" x2="112" y2="279"/>
+<text class="dt" x="118" y="283">成长股 −33%</text>
+<line class="ma2" x1="528" y1="46" x2="552" y2="46"/>
+<text class="pv" x="558" y="50">成长股：g = 6%</text>
+<text class="elabel" x="558" y="66">“久期”约 50 年</text>
+<line class="ma1" x1="528" y1="88" x2="552" y2="88"/>
+<text class="pv" x="558" y="92">价值股：g = 2%</text>
+<text class="elabel" x="558" y="108">“久期”约 17 年</text>
+<line class="tld" x1="528" y1="130" x2="552" y2="130"/>
+<text class="pv" x="558" y="134">30 年零息国债</text>
+<text class="elabel" x="558" y="150">久期 30 年</text>
+<line class="sr" x1="528" y1="172" x2="552" y2="172"/>
+<text class="pv" x="558" y="176">10 年零息国债</text>
+<text class="elabel" x="558" y="192">久期 10 年</text>
+<text class="hi" x="528" y="228">戈登模型：P = D ÷（r − g）</text>
+<text class="elabel" x="528" y="248">“久期”≈ 1 ÷（r − g）</text>
+<text class="elabel" x="528" y="266">r − g 越小，价格对 r 越敏感</text>
+<text class="elabel" x="528" y="284">成长股像一张“超长期债券”</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>以折现率 8% 为起点，四种资产的价格都记为 100。成长股假设股利长期增长 6%，价值股假设增长 2%。折现率升 1 个百分点到 9%：价值股从 100 跌到约 86（−14%），成长股从 100 跌到约 67（−33%），跌得比一张 30 年期零息国债（−24%）还多。原因在分母 r − g：成长股的 r − g 只有 2 个百分点，利率一动，分母变化的比例就很大。对戈登模型求导可以得到，股票的“久期”约等于 1 ÷（r − g）：成长股约 50 年，价值股约 17 年。<b>成长股像一张超长期债券</b>，它的大部分价值来自很远的未来，所以对利率最敏感。这是理想化的模型，真实世界里盈利本身也会随经济变化，但方向是可靠的。</figcaption>
+  </figure>
+
+  <div class="prose">
+    <p>这解释了一个反复出现的现象：加息周期里，高估值的成长股、科技股往往跌得最多；降息周期里，它们反弹也最猛。2022 年纳斯达克指数的跌幅远大于标普 500（17.5 节），就是这个逻辑的现实版本。</p>
+
+    <h3><span class="tag">第四环</span>美元与股票、债券：关系复杂</h3>
+    <p>按链条推演，美元走强 → 商品下跌 → 通胀回落 → 债券上涨 → 股票上涨，所以“强美元最终利好美国的股票和债券”。但这条链太长，中途有太多别的力量：</p>
+    <ul>
+      <li><strong>美元为什么涨？</strong>如果是美国经济强劲、资本流入，股债可能一起受益；如果是美联储激进加息（2022 年），美元涨，债券和股票却一起跌；如果是全球恐慌、资金逃向美元（2008 年、2020 年 3 月），美元涨、股票跌。</li>
+      <li><strong>对谁有利？</strong>强美元会压低美国跨国公司换算回美元的海外利润，对以国内业务为主的公司影响小得多。</li>
+      <li><strong>对美国以外的市场：</strong>强美元常意味着资金回流美国、其他国家货币贬值，新兴市场承压。</li>
+    </ul>
+    <p>结论：<strong>美元与股票、债券之间没有固定的符号</strong>，先问“美元为什么涨”，再下判断。对 A 股投资者来说，更直接的是人民币汇率（17.6 节）。把四个关系汇总成一张表：</p>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <tr><th>关系</th><th>通常方向</th><th>背后的逻辑</th><th>什么时候会失灵</th></tr>
+      <tr><td>美元 ↔ 商品</td><td>反向</td><td>商品以美元计价；美元升值抑制美国以外的需求</td><td>供给冲击：2022 年上半年战争推高能源价格，美元与商品罕见同涨</td></tr>
+      <tr><td>美元 ↔ 黄金</td><td>反向，而且更紧</td><td>黄金是“没有国家的货币”，与美元信用此消彼长</td><td>各国央行大举购金：2023–2024 年金价与强美元并存</td></tr>
+      <tr><td>商品 ↔ 债券</td><td>反向（商品与收益率同向）</td><td>商品涨 → 通胀预期升 → 收益率升 → 债券跌</td><td>商品上涨只来自个别品种的供给问题，市场认定是暂时的</td></tr>
+      <tr><td><strong>债券 ↔ 股票</strong></td><td><strong>同向，债券常领先</strong></td><td>利率下降 → 估值上升、融资变便宜</td><td><strong>通缩</strong>：利率下降源于需求崩塌，债涨股跌（1998 年、日本、中国 2022–2024 年）</td></tr>
+      <tr><td>美元 ↔ 股票、债券</td><td>不固定</td><td>链条太长，取决于美元为什么涨</td><td>几乎总要具体分析</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ======================== 17.3 ======================== -->
+<section class="ch" id="s3">
+  <h2 class="sec"><span class="no">17.3</span>谁先转向：周期中的顺序</h2>
+  <p class="sec-en">WHO TURNS FIRST: THE SEQUENCE IN THE BUSINESS CYCLE</p>
+
+  <div class="prose">
+    <p>交叉市场分析最有价值的部分，是它能帮你回答“现在走到周期的哪一段了”。墨菲的观点是：在经济周期的<strong>顶部和底部</strong>，三个市场的转向有一个大致固定的顺序：<strong>债券最先，股票其次，商品最后</strong>。</p>
+
+    <h3>为什么是这个顺序</h3>
+    <p><strong>底部：</strong>经济衰退时，需求萎缩，通胀回落，央行降息。债券最先嗅到利率见顶，率先上涨。股票是经济的领先指标，通常在经济见底前几个月就开始预期复苏，所以第二个见底。商品需要真实的需求回暖才能涨价，要等经济真正复苏才见底。</p>
+    <p><strong>顶部：</strong>扩张后期需求旺盛，商品和通胀开始抬头，利率上升，债券最先见顶回落。股票还在享受盈利增长，继续上涨，直到利率高到足以拖累估值和经济，才第二个见顶。商品需求和经济同步，通胀又是滞后指标，所以商品往往最后见顶，有时股市已经跌了一段，商品还在创新高。</p>
+    <p>这个顺序和马丁·普林格<span class="en-term">（Martin Pring）</span>的“六阶段”经济周期模型一致：用债券、股票、商品各自见底、见顶的时点，把一个完整周期切成六段。</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 17-4</span>周期中的转向顺序：债券、股票、商品依次见底、依次见顶<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 400" role="img" aria-label="示意图：一个完整经济周期中债券、股票、商品的转向顺序。底部依次是债券先见底、股票其次、商品最后；顶部同样是债券先见顶、股票其次、商品最后，由此划分出六个阶段及各阶段适合持有的资产">
+<rect class="zone-up" x="274.2" y="50" width="131.8" height="290"/>
+<rect class="zone-dn" x="548.8" y="50" width="131.8" height="290"/>
+<line class="sr" x1="131.5" y1="18" x2="131.5" y2="340"/>
+<line class="sr" x1="197.3" y1="18" x2="197.3" y2="340"/>
+<line class="sr" x1="274.2" y1="18" x2="274.2" y2="340"/>
+<line class="sr" x1="406" y1="18" x2="406" y2="340"/>
+<line class="sr" x1="471.9" y1="18" x2="471.9" y2="340"/>
+<line class="sr" x1="548.8" y1="18" x2="548.8" y2="340"/>
+<line class="sr" x1="680.5" y1="18" x2="680.5" y2="340"/>
+<text class="hi" x="164.4" y="28" text-anchor="middle">阶段 1</text>
+<text class="elabel" x="164.4" y="44" text-anchor="middle">债券见底</text>
+<text class="ut" x="164.4" y="330" text-anchor="middle">债券</text>
+<text class="hi" x="235.8" y="28" text-anchor="middle">阶段 2</text>
+<text class="elabel" x="235.8" y="44" text-anchor="middle">股票见底</text>
+<text class="ut" x="235.8" y="330" text-anchor="middle">债 + 股</text>
+<text class="hi" x="340.1" y="28" text-anchor="middle">阶段 3</text>
+<text class="elabel" x="340.1" y="44" text-anchor="middle">商品见底</text>
+<text class="ut" x="340.1" y="330" text-anchor="middle">债 + 股 + 商</text>
+<text class="hi" x="438.9" y="28" text-anchor="middle">阶段 4</text>
+<text class="elabel" x="438.9" y="44" text-anchor="middle">债券见顶</text>
+<text class="ut" x="438.9" y="330" text-anchor="middle">股 + 商</text>
+<text class="hi" x="510.3" y="28" text-anchor="middle">阶段 5</text>
+<text class="elabel" x="510.3" y="44" text-anchor="middle">股票见顶</text>
+<text class="ut" x="510.3" y="330" text-anchor="middle">商品</text>
+<text class="hi" x="614.7" y="28" text-anchor="middle">阶段 6</text>
+<text class="elabel" x="614.7" y="44" text-anchor="middle">商品见顶</text>
+<text class="dt" x="614.7" y="330" text-anchor="middle">现金</text>
+<text class="nt" x="12" y="334">该持有</text>
+<line class="grid" x1="104" y1="82" x2="708" y2="82"/>
+<polyline class="cl" points="104,83.3 106.7,84 109.5,84.6 112.2,85.3 115,85.9 117.7,86.6 120.5,87.2 123.2,87.9 126,88.5 128.7,89.1 131.5,89.7 134.2,90.3 136.9,90.9 139.7,91.5 142.4,92.1 145.2,92.7 147.9,93.3 150.7,93.8 153.4,94.3 156.2,94.9 158.9,95.4 161.7,95.9 164.4,96.4 167.1,96.8 169.9,97.3 172.6,97.8 175.4,98.2 178.1,98.6 180.9,99 183.6,99.4 186.4,99.7 189.1,100.1 191.9,100.4 194.6,100.7 197.3,101 200.1,101.3 202.8,101.5 205.6,101.8 208.3,102 211.1,102.2 213.8,102.3 216.6,102.5 219.3,102.6 222.1,102.7 224.8,102.8 227.5,102.9 230.3,103 233,103 235.8,103 238.5,103 241.3,103 244,102.9 246.8,102.8 249.5,102.7 252.3,102.6 255,102.5 257.7,102.3 260.5,102.2 263.2,102 266,101.8 268.7,101.5 271.5,101.3 274.2,101 277,100.7 279.7,100.4 282.5,100.1 285.2,99.7 287.9,99.4 290.7,99 293.4,98.6 296.2,98.2 298.9,97.8 301.7,97.3 304.4,96.8 307.2,96.4 309.9,95.9 312.7,95.4 315.4,94.9 318.1,94.3 320.9,93.8 323.6,93.3 326.4,92.7 329.1,92.1 331.9,91.5 334.6,90.9 337.4,90.3 340.1,89.7 342.9,89.1 345.6,88.5 348.3,87.9 351.1,87.2 353.8,86.6 356.6,85.9 359.3,85.3 362.1,84.6 364.8,84 367.6,83.3 370.3,82.7 373.1,82 375.8,81.3 378.5,80.7 381.3,80 384,79.4 386.8,78.7 389.5,78.1 392.3,77.4 395,76.8 397.8,76.1 400.5,75.5 403.3,74.9 406,74.3 408.7,73.7 411.5,73.1 414.2,72.5 417,71.9 419.7,71.3 422.5,70.7 425.2,70.2 428,69.7 430.7,69.1 433.5,68.6 436.2,68.1 438.9,67.6 441.7,67.2 444.4,66.7 447.2,66.2 449.9,65.8 452.7,65.4 455.4,65 458.2,64.6 460.9,64.3 463.7,63.9 466.4,63.6 469.1,63.3 471.9,63 474.6,62.7 477.4,62.5 480.1,62.2 482.9,62 485.6,61.8 488.4,61.7 491.1,61.5 493.9,61.4 496.6,61.3 499.3,61.2 502.1,61.1 504.8,61 507.6,61 510.3,61 513.1,61 515.8,61 518.6,61.1 521.3,61.2 524.1,61.3 526.8,61.4 529.5,61.5 532.3,61.7 535,61.8 537.8,62 540.5,62.2 543.3,62.5 546,62.7 548.8,63 551.5,63.3 554.3,63.6 557,63.9 559.7,64.3 562.5,64.6 565.2,65 568,65.4 570.7,65.8 573.5,66.2 576.2,66.7 579,67.2 581.7,67.6 584.5,68.1 587.2,68.6 589.9,69.1 592.7,69.7 595.4,70.2 598.2,70.7 600.9,71.3 603.7,71.9 606.4,72.5 609.2,73.1 611.9,73.7 614.7,74.3 617.4,74.9 620.1,75.5 622.9,76.1 625.6,76.8 628.4,77.4 631.1,78.1 633.9,78.7 636.6,79.4 639.4,80 642.1,80.7 644.9,81.3 647.6,82 650.3,82.7 653.1,83.3 655.8,84 658.6,84.6 661.3,85.3 664.1,85.9 666.8,86.6 669.6,87.2 672.3,87.9 675.1,88.5 677.8,89.1 680.5,89.7 683.3,90.3 686,90.9 688.8,91.5 691.5,92.1 694.3,92.7 697,93.3 699.8,93.8 702.5,94.3 705.3,94.9 708,95.4"/>
+<text class="nt" x="12" y="80">经济活动</text>
+<text class="elabel" x="8" y="97">（实体经济）</text>
+<circle class="dot-dn" cx="235.8" cy="103" r="4"/>
+<circle class="dot-up" cx="510.3" cy="61" r="4"/>
+<line class="grid" x1="104" y1="146" x2="708" y2="146"/>
+<polyline class="ma1" points="104,166 106.7,166.2 109.5,166.3 112.2,166.5 115,166.6 117.7,166.7 120.5,166.8 123.2,166.9 126,167 128.7,167 131.5,167 134.2,167 136.9,167 139.7,166.9 142.4,166.8 145.2,166.7 147.9,166.6 150.7,166.5 153.4,166.3 156.2,166.2 158.9,166 161.7,165.8 164.4,165.5 167.1,165.3 169.9,165 172.6,164.7 175.4,164.4 178.1,164.1 180.9,163.7 183.6,163.4 186.4,163 189.1,162.6 191.9,162.2 194.6,161.8 197.3,161.3 200.1,160.8 202.8,160.4 205.6,159.9 208.3,159.4 211.1,158.9 213.8,158.3 216.6,157.8 219.3,157.3 222.1,156.7 224.8,156.1 227.5,155.5 230.3,154.9 233,154.3 235.8,153.7 238.5,153.1 241.3,152.5 244,151.9 246.8,151.2 249.5,150.6 252.3,149.9 255,149.3 257.7,148.6 260.5,148 263.2,147.3 266,146.7 268.7,146 271.5,145.3 274.2,144.7 277,144 279.7,143.4 282.5,142.7 285.2,142.1 287.9,141.4 290.7,140.8 293.4,140.1 296.2,139.5 298.9,138.9 301.7,138.3 304.4,137.7 307.2,137.1 309.9,136.5 312.7,135.9 315.4,135.3 318.1,134.7 320.9,134.2 323.6,133.7 326.4,133.1 329.1,132.6 331.9,132.1 334.6,131.6 337.4,131.2 340.1,130.7 342.9,130.2 345.6,129.8 348.3,129.4 351.1,129 353.8,128.6 356.6,128.3 359.3,127.9 362.1,127.6 364.8,127.3 367.6,127 370.3,126.7 373.1,126.5 375.8,126.2 378.5,126 381.3,125.8 384,125.7 386.8,125.5 389.5,125.4 392.3,125.3 395,125.2 397.8,125.1 400.5,125 403.3,125 406,125 408.7,125 411.5,125 414.2,125.1 417,125.2 419.7,125.3 422.5,125.4 425.2,125.5 428,125.7 430.7,125.8 433.5,126 436.2,126.2 438.9,126.5 441.7,126.7 444.4,127 447.2,127.3 449.9,127.6 452.7,127.9 455.4,128.3 458.2,128.6 460.9,129 463.7,129.4 466.4,129.8 469.1,130.2 471.9,130.7 474.6,131.2 477.4,131.6 480.1,132.1 482.9,132.6 485.6,133.1 488.4,133.7 491.1,134.2 493.9,134.7 496.6,135.3 499.3,135.9 502.1,136.5 504.8,137.1 507.6,137.7 510.3,138.3 513.1,138.9 515.8,139.5 518.6,140.1 521.3,140.8 524.1,141.4 526.8,142.1 529.5,142.7 532.3,143.4 535,144 537.8,144.7 540.5,145.3 543.3,146 546,146.7 548.8,147.3 551.5,148 554.3,148.6 557,149.3 559.7,149.9 562.5,150.6 565.2,151.2 568,151.9 570.7,152.5 573.5,153.1 576.2,153.7 579,154.3 581.7,154.9 584.5,155.5 587.2,156.1 589.9,156.7 592.7,157.3 595.4,157.8 598.2,158.3 600.9,158.9 603.7,159.4 606.4,159.9 609.2,160.4 611.9,160.8 614.7,161.3 617.4,161.8 620.1,162.2 622.9,162.6 625.6,163 628.4,163.4 631.1,163.7 633.9,164.1 636.6,164.4 639.4,164.7 642.1,165 644.9,165.3 647.6,165.5 650.3,165.8 653.1,166 655.8,166.2 658.6,166.3 661.3,166.5 664.1,166.6 666.8,166.7 669.6,166.8 672.3,166.9 675.1,167 677.8,167 680.5,167 683.3,167 686,167 688.8,166.9 691.5,166.8 694.3,166.7 697,166.6 699.8,166.5 702.5,166.3 705.3,166.2 708,166"/>
+<text class="nt" x="12" y="144">债券价格</text>
+<text class="elabel" x="8" y="161">（利率的镜像）</text>
+<circle class="dot-dn" cx="131.5" cy="167" r="4"/>
+<circle class="dot-dn" cx="680.5" cy="167" r="4"/>
+<circle class="dot-up" cx="406" cy="125" r="4"/>
+<line class="grid" x1="104" y1="210" x2="708" y2="210"/>
+<polyline class="ma2" points="104,220.1 106.7,220.7 109.5,221.3 112.2,221.8 115,222.3 117.7,222.9 120.5,223.4 123.2,223.9 126,224.4 128.7,224.8 131.5,225.3 134.2,225.8 136.9,226.2 139.7,226.6 142.4,227 145.2,227.4 147.9,227.7 150.7,228.1 153.4,228.4 156.2,228.7 158.9,229 161.7,229.3 164.4,229.5 167.1,229.8 169.9,230 172.6,230.2 175.4,230.3 178.1,230.5 180.9,230.6 183.6,230.7 186.4,230.8 189.1,230.9 191.9,231 194.6,231 197.3,231 200.1,231 202.8,231 205.6,230.9 208.3,230.8 211.1,230.7 213.8,230.6 216.6,230.5 219.3,230.3 222.1,230.2 224.8,230 227.5,229.8 230.3,229.5 233,229.3 235.8,229 238.5,228.7 241.3,228.4 244,228.1 246.8,227.7 249.5,227.4 252.3,227 255,226.6 257.7,226.2 260.5,225.8 263.2,225.3 266,224.8 268.7,224.4 271.5,223.9 274.2,223.4 277,222.9 279.7,222.3 282.5,221.8 285.2,221.3 287.9,220.7 290.7,220.1 293.4,219.5 296.2,218.9 298.9,218.3 301.7,217.7 304.4,217.1 307.2,216.5 309.9,215.9 312.7,215.2 315.4,214.6 318.1,213.9 320.9,213.3 323.6,212.6 326.4,212 329.1,211.3 331.9,210.7 334.6,210 337.4,209.3 340.1,208.7 342.9,208 345.6,207.4 348.3,206.7 351.1,206.1 353.8,205.4 356.6,204.8 359.3,204.1 362.1,203.5 364.8,202.9 367.6,202.3 370.3,201.7 373.1,201.1 375.8,200.5 378.5,199.9 381.3,199.3 384,198.7 386.8,198.2 389.5,197.7 392.3,197.1 395,196.6 397.8,196.1 400.5,195.6 403.3,195.2 406,194.7 408.7,194.2 411.5,193.8 414.2,193.4 417,193 419.7,192.6 422.5,192.3 425.2,191.9 428,191.6 430.7,191.3 433.5,191 436.2,190.7 438.9,190.5 441.7,190.2 444.4,190 447.2,189.8 449.9,189.7 452.7,189.5 455.4,189.4 458.2,189.3 460.9,189.2 463.7,189.1 466.4,189 469.1,189 471.9,189 474.6,189 477.4,189 480.1,189.1 482.9,189.2 485.6,189.3 488.4,189.4 491.1,189.5 493.9,189.7 496.6,189.8 499.3,190 502.1,190.2 504.8,190.5 507.6,190.7 510.3,191 513.1,191.3 515.8,191.6 518.6,191.9 521.3,192.3 524.1,192.6 526.8,193 529.5,193.4 532.3,193.8 535,194.2 537.8,194.7 540.5,195.2 543.3,195.6 546,196.1 548.8,196.6 551.5,197.1 554.3,197.7 557,198.2 559.7,198.7 562.5,199.3 565.2,199.9 568,200.5 570.7,201.1 573.5,201.7 576.2,202.3 579,202.9 581.7,203.5 584.5,204.1 587.2,204.8 589.9,205.4 592.7,206.1 595.4,206.7 598.2,207.4 600.9,208 603.7,208.7 606.4,209.3 609.2,210 611.9,210.7 614.7,211.3 617.4,212 620.1,212.6 622.9,213.3 625.6,213.9 628.4,214.6 631.1,215.2 633.9,215.9 636.6,216.5 639.4,217.1 642.1,217.7 644.9,218.3 647.6,218.9 650.3,219.5 653.1,220.1 655.8,220.7 658.6,221.3 661.3,221.8 664.1,222.3 666.8,222.9 669.6,223.4 672.3,223.9 675.1,224.4 677.8,224.8 680.5,225.3 683.3,225.8 686,226.2 688.8,226.6 691.5,227 694.3,227.4 697,227.7 699.8,228.1 702.5,228.4 705.3,228.7 708,229"/>
+<text class="nt" x="12" y="214">股票</text>
+<circle class="dot-dn" cx="197.3" cy="231" r="4"/>
+<circle class="dot-up" cx="471.9" cy="189" r="4"/>
+<line class="grid" x1="104" y1="274" x2="708" y2="274"/>
+<polyline class="ma3" points="104,266.3 106.7,266.9 109.5,267.5 112.2,268.1 115,268.8 117.7,269.4 120.5,270.1 123.2,270.7 126,271.4 128.7,272 131.5,272.7 134.2,273.3 136.9,274 139.7,274.7 142.4,275.3 145.2,276 147.9,276.6 150.7,277.3 153.4,277.9 156.2,278.6 158.9,279.2 161.7,279.9 164.4,280.5 167.1,281.1 169.9,281.7 172.6,282.3 175.4,282.9 178.1,283.5 180.9,284.1 183.6,284.7 186.4,285.3 189.1,285.8 191.9,286.3 194.6,286.9 197.3,287.4 200.1,287.9 202.8,288.4 205.6,288.8 208.3,289.3 211.1,289.8 213.8,290.2 216.6,290.6 219.3,291 222.1,291.4 224.8,291.7 227.5,292.1 230.3,292.4 233,292.7 235.8,293 238.5,293.3 241.3,293.5 244,293.8 246.8,294 249.5,294.2 252.3,294.3 255,294.5 257.7,294.6 260.5,294.7 263.2,294.8 266,294.9 268.7,295 271.5,295 274.2,295 277,295 279.7,295 282.5,294.9 285.2,294.8 287.9,294.7 290.7,294.6 293.4,294.5 296.2,294.3 298.9,294.2 301.7,294 304.4,293.8 307.2,293.5 309.9,293.3 312.7,293 315.4,292.7 318.1,292.4 320.9,292.1 323.6,291.7 326.4,291.4 329.1,291 331.9,290.6 334.6,290.2 337.4,289.8 340.1,289.3 342.9,288.8 345.6,288.4 348.3,287.9 351.1,287.4 353.8,286.9 356.6,286.3 359.3,285.8 362.1,285.3 364.8,284.7 367.6,284.1 370.3,283.5 373.1,282.9 375.8,282.3 378.5,281.7 381.3,281.1 384,280.5 386.8,279.9 389.5,279.2 392.3,278.6 395,277.9 397.8,277.3 400.5,276.6 403.3,276 406,275.3 408.7,274.7 411.5,274 414.2,273.3 417,272.7 419.7,272 422.5,271.4 425.2,270.7 428,270.1 430.7,269.4 433.5,268.8 436.2,268.1 438.9,267.5 441.7,266.9 444.4,266.3 447.2,265.7 449.9,265.1 452.7,264.5 455.4,263.9 458.2,263.3 460.9,262.7 463.7,262.2 466.4,261.7 469.1,261.1 471.9,260.6 474.6,260.1 477.4,259.6 480.1,259.2 482.9,258.7 485.6,258.2 488.4,257.8 491.1,257.4 493.9,257 496.6,256.6 499.3,256.3 502.1,255.9 504.8,255.6 507.6,255.3 510.3,255 513.1,254.7 515.8,254.5 518.6,254.2 521.3,254 524.1,253.8 526.8,253.7 529.5,253.5 532.3,253.4 535,253.3 537.8,253.2 540.5,253.1 543.3,253 546,253 548.8,253 551.5,253 554.3,253 557,253.1 559.7,253.2 562.5,253.3 565.2,253.4 568,253.5 570.7,253.7 573.5,253.8 576.2,254 579,254.2 581.7,254.5 584.5,254.7 587.2,255 589.9,255.3 592.7,255.6 595.4,255.9 598.2,256.3 600.9,256.6 603.7,257 606.4,257.4 609.2,257.8 611.9,258.2 614.7,258.7 617.4,259.2 620.1,259.6 622.9,260.1 625.6,260.6 628.4,261.1 631.1,261.7 633.9,262.2 636.6,262.7 639.4,263.3 642.1,263.9 644.9,264.5 647.6,265.1 650.3,265.7 653.1,266.3 655.8,266.9 658.6,267.5 661.3,268.1 664.1,268.8 666.8,269.4 669.6,270.1 672.3,270.7 675.1,271.4 677.8,272 680.5,272.7 683.3,273.3 686,274 688.8,274.7 691.5,275.3 694.3,276 697,276.6 699.8,277.3 702.5,277.9 705.3,278.6 708,279.2"/>
+<text class="nt" x="12" y="278">商品</text>
+<circle class="dot-dn" cx="274.2" cy="295" r="4"/>
+<circle class="dot-up" cx="548.8" cy="253" r="4"/>
+<text class="elabel" x="235.8" y="84" text-anchor="middle">衰退谷底</text>
+<text class="elabel" x="510.3" y="90" text-anchor="middle">扩张高峰</text>
+<text class="elabel" x="360" y="370" text-anchor="middle">底部与顶部的顺序相同：债券最先、股票其次、商品最后（绿点 = 低点，红点 = 高点）</text>
+<text class="elabel" x="360" y="390" text-anchor="middle">六个阶段的长短在不同周期里差别很大，有时还会被政策或危机压缩、跳过</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>四条曲线共用一条时间轴。阶段 1：经济还在衰退，债券先见底上涨；阶段 2：股票见底，债券和股票一起涨；阶段 3：经济复苏，商品也见底，三者齐涨（红色底色）；阶段 4：通胀抬头，债券先见顶下跌；阶段 5：利率升到足以伤害估值，股票见顶；阶段 6：经济放缓，商品最后见顶，三者齐跌（绿色底色），现金为王。最下面一行是这个框架推出的资产配置倾向。<b>用法：</b>你不需要预测下一阶段何时到来，只要用前几站的趋势线、均线分别判断三个市场的趋势，就能大致给当下定位，比如“债券已经转跌、股票和商品还在涨”，就是阶段 4。</figcaption>
+  </figure>
+
+  <div class="prose">
+    <h3>美元排在哪里</h3>
+    <p>按链条的逻辑，美元的转向通常还要再早一步：美元见顶回落，往往先于商品见底回升（图 17-2）。所以完整的预警链是<strong>美元 → 商品 → 债券 → 股票</strong>。链条越往前，信号越早，但离你要交易的股票也越远，中间可能被别的因素打断；链条越往后，信号越晚，但越直接。实践中，多数交易者把<strong>债券</strong>当作股票最重要的“前哨”。</p>
+  </div>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>1987 年：债券先倒下，股票后崩盘</h4>
+    <p>1987 年开年，美国股市延续了 1982 年开始的大牛市，道琼斯工业指数在 1 月首次站上 2000 点。可是到了春天，债券市场先出了问题：美元持续走弱、商品价格回升，通胀担忧升温，长期国债价格从 3–4 月起大幅下跌，长期收益率在随后半年里上升了约 3 个百分点，10 月中旬一度超过 10%。</p>
+    <p>股票起初毫不理会，继续涨到 8 月 25 日的约 2722 点，之后才开始回落，并在 10 月 19 日“黑色星期一”单日暴跌 508 点、跌幅 22.6%，收于约 1739 点。崩盘当天和随后几天，资金涌向国债避险，债券价格急升；美联储在第二天开盘前发表声明，表示随时准备提供流动性。崩盘还扩散到全球：香港联交所停市四天，复市当天恒生指数暴跌约三分之一。</p>
+    <p class="takeaway">墨菲把 1987 年当作交叉市场分析的经典教材：<b>债券提前约 5 个月报警</b>，商品的上涨解释了债券为什么跌，而只看股票图的人直到 8 月以后才看到问题。但这个例子也说明了领先的代价：如果你在春天债券破位时就做空股票，得先扛住一段一成以上的上涨。交叉市场信号告诉你“风险在积累”，告诉不了你“哪天爆发”。</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 17-5</span>1987 年的先后顺序：债券春季见顶，股票 8 月见顶，10 月崩盘<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 468" role="img" aria-label="示意图：1987 年三个市场的先后顺序。长期国债价格在春季见顶后大幅下跌，商品价格同期走高，股票却继续上涨到 8 月才见顶，10 月 19 日崩盘">
+<defs><marker id="f175-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/></marker><marker id="f175-ara" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/></marker></defs>
+<!-- kchart: n=252 L=22 step=2.706 x(i)=L+step*(i+0.5) price[79.244,104.016] y∈[30,142] -->
+<line class="axis" x1="22" y1="30" x2="22" y2="142"/>
+<line class="grid" x1="22" y1="138.6" x2="704" y2="138.6"/>
+<line class="grid" x1="22" y1="93.4" x2="704" y2="93.4"/>
+<line class="grid" x1="22" y1="48.2" x2="704" y2="48.2"/>
+<line class="axis" x1="22" y1="142" x2="704" y2="142"/>
+<polyline class="cl" points="23.4,47.7 26.1,48.4 28.8,48.2 31.5,48.7 34.2,46.3 36.9,46.7 39.6,46.3 42.3,45.4 45,46.8 47.7,46.5 50.4,45.6 53.1,44.6 55.8,44.8 58.5,45.5 61.2,45.5 63.9,44.1 66.7,44.8 69.4,44.5 72.1,43.3 74.8,45.2 77.5,45.2 80.2,44.8 82.9,43.6 85.6,43.7 88.3,43.9 91,43.5 93.7,42.2 96.4,42.6 99.1,42 101.8,42.5 104.5,42.1 107.3,42.7 110,41 112.7,42.2 115.4,40.6 118.1,41.1 120.8,40.7 123.5,40.9 126.2,39.3 128.9,40.4 131.6,40 134.3,40 137,38.1 139.7,39.6 142.4,40 145.1,37.3 147.8,37.5 150.6,37.3 153.3,37.6 156,37.4 158.7,38.6 161.4,38 164.1,36.9 166.8,37.1 169.5,37.7 172.2,35.5 174.9,35.4 177.6,35.1 180.3,36.4 183,36.9 185.7,38.7 188.4,37.4 191.1,38.9 193.9,41.1 196.6,41.9 199.3,42.1 202,45.1 204.7,44.4 207.4,47.1 210.1,46.4 212.8,47.1 215.5,49.3 218.2,50.8 220.9,54.4 223.6,54 226.3,57.6 229,58.7 231.7,59.3 234.4,63 237.2,64.2 239.9,64 242.6,66.8 245.3,67.3 248,70.7 250.7,71.5 253.4,73.7 256.1,74.7 258.8,76.1 261.5,78 264.2,80.3 266.9,82.7 269.6,81.5 272.3,80.6 275,82.2 277.8,81 280.5,80.8 283.2,80.2 285.9,80.3 288.6,79.7 291.3,79.3 294,79.5 296.7,79 299.4,78.3 302.1,79.4 304.8,77.3 307.5,78.7 310.2,76.1 312.9,77 315.6,77.7 318.3,76.6 321.1,76.2 323.8,77.1 326.5,77.4 329.2,75.3 331.9,75.4 334.6,75.5 337.3,75.7 340,77.4 342.7,77.8 345.4,76.7 348.1,77.9 350.8,78.3 353.5,78 356.2,78.1 358.9,76.5 361.6,77.5 364.4,78 367.1,77.3 369.8,77 372.5,77.1 375.2,79.4 377.9,79.5 380.6,78 383.3,78.3 386,78.7 388.7,78.4 391.4,79.7 394.1,78.9 396.8,81.3 399.5,80.9 402.2,79.6 404.9,80.4 407.7,82.7 410.4,80.8 413.1,82.2 415.8,83 418.5,83 421.2,82.6 423.9,84.1 426.6,84.2 429.3,83.5 432,85.2 434.7,84.2 437.4,86 440.1,85.5 442.8,85.5 445.5,88.1 448.3,88.7 451,88.8 453.7,88.9 456.4,89.5 459.1,91.9 461.8,91.2 464.5,92.6 467.2,93.2 469.9,94.9 472.6,95 475.3,95.3 478,97 480.7,98.2 483.4,97.8 486.1,99.8 488.8,101.1 491.6,101.2 494.3,101.9 497,102.5 499.7,104 502.4,105.1 505.1,105.8 507.8,106.6 510.5,109 513.2,109.6 515.9,110.6 518.6,112.8 521.3,114.4 524,115.5 526.7,115.2 529.4,117.2 532.1,118.4 534.9,119.6 537.6,121.7 540.3,121.9 543,124.2 545.7,125 548.4,126.8 551.1,126.2 553.8,128.7 556.5,130.5 559.2,131.8 561.9,133.6 564.6,136.9 567.3,131.3 570,125.1 572.7,120.9 575.4,117.8 578.2,115 580.9,111.5 583.6,111.6 586.3,110.4 589,110 591.7,111.4 594.4,110.9 597.1,109.3 599.8,109.6 602.5,110.6 605.2,109.8 607.9,108.6 610.6,110.4 613.3,109.1 616,109.4 618.8,107.7 621.5,109.8 624.2,108 626.9,109.4 629.6,108.2 632.3,107.9 635,108.7 637.7,108.6 640.4,106.3 643.1,106.3 645.8,107.7 648.5,107.2 651.2,105.7 653.9,106.8 656.6,106.3 659.3,105.6 662.1,105.5 664.8,106.4 667.5,106.1 670.2,105.9 672.9,103.7 675.6,103.5 678.3,105.2 681,104.7 683.7,104.4 686.4,103.9 689.1,103.7 691.8,102.2 694.5,103.5 697.2,103.6 699.9,103.2 702.6,103.3"/>
+<line class="sr-dn" x1="177.6" y1="30" x2="177.6" y2="142"/>
+<line class="sr" x1="464.5" y1="30" x2="464.5" y2="142"/>
+<line class="sr" x1="567.3" y1="30" x2="567.3" y2="142"/>
+<circle class="dot-up" cx="177.6" cy="35.1" r="4"/>
+<text class="dt" x="185.6" y="33.1" text-anchor="start">春季：债券见顶，利率开始急升</text>
+<text class="pv" x="375.2" y="111.5" text-anchor="middle">整个夏天，债券一路走低</text>
+<text class="pv" x="578.2" y="95.6" text-anchor="start">崩盘后资金逃向国债</text>
+<!-- kchart: n=252 L=22 step=2.706 x(i)=L+step*(i+0.5) price[98.255,109.794] y∈[180,292] -->
+<line class="axis" x1="22" y1="180" x2="22" y2="292"/>
+<line class="grid" x1="22" y1="275.1" x2="704" y2="275.1"/>
+<line class="grid" x1="22" y1="226.5" x2="704" y2="226.5"/>
+<line class="axis" x1="22" y1="292" x2="704" y2="292"/>
+<polyline class="cl" points="23.4,275.7 26.1,275.6 28.8,276.8 31.5,276.9 34.2,276.8 36.9,277.8 39.6,274.7 42.3,275.8 45,278.7 47.7,276.1 50.4,277.3 53.1,278.9 55.8,276.5 58.5,279.5 61.2,277.2 63.9,280.4 66.7,277 69.4,280.2 72.1,281.7 74.8,279.5 77.5,282.5 80.2,279.3 82.9,280.9 85.6,283.2 88.3,278.9 91,283.1 93.7,280.8 96.4,281.9 99.1,282.2 101.8,281.5 104.5,284.9 107.3,281.8 110,284.3 112.7,281.1 115.4,285 118.1,285.6 120.8,286.5 123.5,286.9 126.2,284.6 128.9,286.1 131.6,282.3 134.3,283.8 137,284.8 139.7,279.6 142.4,284.4 145.1,279.3 147.8,281.7 150.6,280.9 153.3,275.6 156,274.8 158.7,274 161.4,275 164.1,275.9 166.8,274.4 169.5,274.8 172.2,275.5 174.9,272.3 177.6,273.6 180.3,271.6 183,271.5 185.7,270.4 188.4,266.3 191.1,264.3 193.9,268.1 196.6,265 199.3,266.9 202,265.7 204.7,262 207.4,261.6 210.1,262.2 212.8,261.2 215.5,258.9 218.2,256.3 220.9,259.8 223.6,255.8 226.3,254.4 229,256.7 231.7,253 234.4,255.5 237.2,253.3 239.9,249.4 242.6,250.4 245.3,247 248,247.3 250.7,249.3 253.4,245.1 256.1,246.2 258.8,246.3 261.5,243.3 264.2,241.2 266.9,243.8 269.6,239.5 272.3,240.1 275,235.9 277.8,239.8 280.5,238 283.2,235.5 285.9,232.7 288.6,233.6 291.3,232 294,233.6 296.7,230.7 299.4,227.5 302.1,228.8 304.8,225.2 307.5,225.4 310.2,226.1 312.9,224.9 315.6,222.3 318.3,223.7 321.1,222.1 323.8,220.4 326.5,222.2 329.2,217.1 331.9,216.6 334.6,219.7 337.3,214 340,216 342.7,215.6 345.4,214.6 348.1,214 350.8,210.8 353.5,212.8 356.2,210.7 358.9,212 361.6,206.1 364.4,207.5 367.1,205.3 369.8,204.6 372.5,205.1 375.2,202.9 377.9,201.8 380.6,200.6 383.3,203.1 386,203.9 388.7,198.1 391.4,197.7 394.1,199.3 396.8,200 399.5,198.3 402.2,193.1 404.9,193.6 407.7,196.2 410.4,190.6 413.1,189.7 415.8,191.1 418.5,188.8 421.2,188.3 423.9,186.7 426.6,191.3 429.3,187.2 432,189.8 434.7,189.5 437.4,185.1 440.1,187.6 442.8,189.7 445.5,188.2 448.3,186.4 451,187.6 453.7,190.4 456.4,191.4 459.1,192.4 461.8,190.4 464.5,192.7 467.2,192.1 469.9,189.9 472.6,188.7 475.3,191 478,193.1 480.7,189.7 483.4,190.4 486.1,194.6 488.8,194.6 491.6,191.3 494.3,193.8 497,193.1 499.7,193.7 502.4,195.7 505.1,194 507.8,196.9 510.5,193.5 513.2,198.5 515.9,193.9 518.6,198.9 521.3,194.7 524,197.8 526.7,198.9 529.4,201.7 532.1,202.8 534.9,203.1 537.6,201.5 540.3,199.1 543,200.5 545.7,201.9 548.4,205.7 551.1,202 553.8,205.5 556.5,203.2 559.2,204.9 561.9,206.3 564.6,205.3 567.3,207.2 570,210.4 572.7,210.6 575.4,211.4 578.2,213.3 580.9,213.4 583.6,214.5 586.3,212.4 589,212 591.7,213.1 594.4,217.4 597.1,215.9 599.8,217.1 602.5,218.6 605.2,218.7 607.9,219 610.6,216.6 613.3,219.1 616,218.7 618.8,219.5 621.5,224.5 624.2,220.2 626.9,221.8 629.6,221.1 632.3,222.9 635,220 637.7,218.4 640.4,218.6 643.1,219 645.8,219.6 648.5,222.5 651.2,220.7 653.9,217 656.6,219 659.3,221 662.1,220.6 664.8,218.8 667.5,220.9 670.2,216.7 672.9,218.8 675.6,218.9 678.3,220.8 681,218.9 683.7,220.6 686.4,215.4 689.1,214.8 691.8,216.5 694.5,218.6 697.2,217.2 699.9,218.8 702.6,215.8"/>
+<line class="sr-dn" x1="177.6" y1="180" x2="177.6" y2="292"/>
+<line class="sr" x1="464.5" y1="180" x2="464.5" y2="292"/>
+<line class="sr" x1="567.3" y1="180" x2="567.3" y2="292"/>
+<text class="pv" x="307.5" y="187.7" text-anchor="middle">商品价格走高：通胀担忧升温</text>
+<!-- kchart: n=252 L=22 step=2.706 x(i)=L+step*(i+0.5) price[89.105,146.195] y∈[330,442] -->
+<line class="axis" x1="22" y1="330" x2="22" y2="442"/>
+<line class="grid" x1="22" y1="420.6" x2="704" y2="420.6"/>
+<line class="grid" x1="22" y1="381.4" x2="704" y2="381.4"/>
+<line class="grid" x1="22" y1="342.2" x2="704" y2="342.2"/>
+<line class="axis" x1="22" y1="442" x2="704" y2="442"/>
+<rect class="zone" x="176.3" y="330.4" width="289.6" height="110.8"/>
+<polyline class="cl" points="23.4,420.5 26.1,419.1 28.8,419.3 31.5,417.8 34.2,416.5 36.9,416.1 39.6,414.7 42.3,414.5 45,413.7 47.7,412 50.4,412.8 53.1,411.6 55.8,409.8 58.5,409.3 61.2,409.5 63.9,407.2 66.7,407.4 69.4,405.2 72.1,405.3 74.8,403.3 77.5,402.6 80.2,401.8 82.9,402.3 85.6,401.1 88.3,399.4 91,398.6 93.7,398.9 96.4,398.7 99.1,398 101.8,396.7 104.5,396.5 107.3,396.2 110,394.3 112.7,393.1 115.4,392.9 118.1,393.4 120.8,391.7 123.5,391.2 126.2,390.4 128.9,390.5 131.6,389.5 134.3,389.5 137,388.7 139.7,387.2 142.4,386.7 145.1,386.3 147.8,384.5 150.6,384.4 153.3,384.2 156,383.3 158.7,382.2 161.4,382.9 164.1,381 166.8,380.8 169.5,379.8 172.2,380.6 174.9,377.2 177.6,376.8 180.3,375 183,375.6 185.7,374.4 188.4,371.9 191.1,372.1 193.9,373.5 196.6,373.4 199.3,372.9 202,373.9 204.7,376.5 207.4,376.7 210.1,377.1 212.8,376.8 215.5,377.9 218.2,379.9 220.9,378.8 223.6,379.5 226.3,380.9 229,381.8 231.7,382.7 234.4,381.8 237.2,383.1 239.9,382.1 242.6,382.7 245.3,384.2 248,383 250.7,384.2 253.4,383.6 256.1,384.7 258.8,385.2 261.5,385.8 264.2,384.2 266.9,383.1 269.6,381.8 272.3,383.1 275,381.5 277.8,379.4 280.5,379.3 283.2,379.7 285.9,379 288.6,377.4 291.3,375.8 294,376 296.7,375.7 299.4,373.7 302.1,374.7 304.8,374.4 307.5,374.6 310.2,372 312.9,372.9 315.6,371.6 318.3,370.8 321.1,372.3 323.8,371.8 326.5,371.5 329.2,369.8 331.9,369.1 334.6,370.3 337.3,370.2 340,368.9 342.7,369.1 345.4,367 348.1,366.8 350.8,367.1 353.5,367.6 356.2,365.8 358.9,365 361.6,366.1 364.4,364.8 367.1,363.9 369.8,364.2 372.5,363.1 375.2,363.4 377.9,362.3 380.6,361.2 383.3,361.4 386,359.7 388.7,359.2 391.4,358 394.1,356.4 396.8,355.8 399.5,357.3 402.2,355.4 404.9,355.3 407.7,354 410.4,352.2 413.1,352.4 415.8,353.1 418.5,350.4 421.2,349.1 423.9,349.2 426.6,348.8 429.3,346.7 432,345.4 434.7,346.6 437.4,345.7 440.1,342.4 442.8,341.4 445.5,342.9 448.3,341.9 451,339.9 453.7,339 456.4,338.4 459.1,336.9 461.8,336.2 464.5,335.1 467.2,336.7 469.9,337.9 472.6,338.5 475.3,337.7 478,338.6 480.7,339.3 483.4,342.8 486.1,342.3 488.8,342.3 491.6,343.5 494.3,344.6 497,346.4 499.7,346.8 502.4,348.2 505.1,349.4 507.8,348.4 510.5,349.2 513.2,351.6 515.9,352.3 518.6,353 521.3,354.1 524,354.1 526.7,353.4 529.4,355.7 532.1,355 534.9,358 537.6,357.5 540.3,359.2 543,361.6 545.7,363.9 548.4,366.2 551.1,368.1 553.8,371.8 556.5,375.7 559.2,378.2 561.9,381.6 564.6,384.3 567.3,436.9 570,425.6 572.7,418.1 575.4,417.6 578.2,417.5 580.9,417.4 583.6,417.6 586.3,416.7 589,415.8 591.7,415.2 594.4,415.5 597.1,415.1 599.8,415.3 602.5,415 605.2,415.4 607.9,415.7 610.6,416.5 613.3,417.1 616,418.4 618.8,417.8 621.5,419 624.2,420 626.9,420.6 629.6,421 632.3,420.2 635,422 637.7,421.2 640.4,422.3 643.1,421.3 645.8,421.4 648.5,422.4 651.2,421.1 653.9,420.9 656.6,420.1 659.3,419.8 662.1,419 664.8,420.2 667.5,420 670.2,419.9 672.9,418.5 675.6,418.4 678.3,417.9 681,417.6 683.7,418.1 686.4,418 689.1,418.1 691.8,416.3 694.5,417.5 697.2,417.3 699.9,415.4 702.6,416.2"/>
+<text class="tick" x="23.4" y="459" text-anchor="middle">1 月</text>
+<text class="tick" x="134.3" y="459" text-anchor="middle">3 月</text>
+<text class="tick" x="248" y="459" text-anchor="middle">5 月</text>
+<text class="tick" x="361.6" y="459" text-anchor="middle">7 月</text>
+<text class="tick" x="475.3" y="459" text-anchor="middle">9 月</text>
+<text class="tick" x="589" y="459" text-anchor="middle">11 月</text>
+<line class="sr-dn" x1="177.6" y1="330" x2="177.6" y2="442"/>
+<line class="sr" x1="464.5" y1="330" x2="464.5" y2="442"/>
+<line class="sr" x1="567.3" y1="330" x2="567.3" y2="442"/>
+<text class="hi" x="321.1" y="410.8" text-anchor="middle">债券已经报警，股票又涨了近 5 个月</text>
+<circle class="dot-up" cx="464.5" cy="335.1" r="4"/>
+<text class="ut" x="480.6" y="336.3" text-anchor="start">8 月 25 日见顶</text>
+<circle class="dot-dn" cx="567.3" cy="436.9" r="4"/>
+<text class="dt" x="559.3" y="440.9" text-anchor="end">10 月 19 日：单日 −22.6%</text>
+<text class="pl" x="22" y="20">① 长期国债价格</text>
+<text class="pl" x="22" y="170">② 商品价格指数</text>
+<text class="pl" x="22" y="320">③ 道琼斯工业指数</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>三张图按时间对齐。① 长期国债价格在春季见顶后一路下跌，夏天反弹无力，10 月中旬跌到全年最低；② 同期商品价格走高，给了债券下跌的理由：通胀担忧；③ 股票完全无视警告，又涨了近 5 个月，8 月 25 日才见顶，10 月 19 日崩盘。崩盘之后债券反而大涨，资金逃向国债。曲线形状为示意，只保留了时间顺序以及道指 8 月高点、10 月 19 日单日跌幅这些可靠事实；这里没有画美元，当年美元持续走弱，正是链条的源头。</figcaption>
+  </figure>
+
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p>“债券破位了，马上做空股票。”1987 年的债券领先了约 5 个月；在别的周期里，领先可能是 3 个月，也可能超过一年，这期间股票还可能大涨。交叉市场信号回答的是“风险在不在积累”，不是“明天跌不跌”。正确的用法是：债券转弱时，<strong>收紧个股止损、降低仓位上限、暂停加仓</strong>；真正的卖出信号，仍然要等股票自己的图形破位（第 3 站的趋势线、第 8 站的均线）。</p>
+  </div>
+</section>
+
+<!-- ======================== 17.4 ======================== -->
+<section class="ch" id="s4">
+  <h2 class="sec"><span class="no">17.4</span>板块轮动与相对强度比率</h2>
+  <p class="sec-en">SECTOR ROTATION AND RELATIVE STRENGTH RATIOS</p>
+
+  <div class="prose">
+    <p>交叉市场分析不只发生在股票、债券、商品这些大类之间，也发生在股票市场内部。不同板块对利率、增长、通胀的敏感度不同，于是在经济周期的不同阶段轮流领涨，这就是<strong>板块轮动</strong><span class="en-term">（sector rotation）</span>。</p>
+
+    <h3>谁先谁后：板块轮动的逻辑</h3>
+    <p>墨菲特别重视<strong>利率敏感板块</strong>：公用事业（负债高、分红高，价格像债券一样对利率敏感），以及银行、券商等金融股。它们离债券市场最近，常常比大盘更早转向：利率见顶回落时，它们先涨；利率见底回升时，它们先跌。墨菲把公用事业指数当作股市的领先指标之一。</p>
+    <p>复苏早期，盈利弹性大的板块（科技、可选消费、运输）领涨；扩张后期，商品和通胀走强，原材料和能源板块接棒，它们卖的就是“上游”的商品，涨价直接放大利润；增长放缓时，必需消费、医药、公用事业这些需求刚性的防御板块相对抗跌。这个顺序就是 17.3 节“债券 → 股票 → 商品”在板块层面的投影。</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 17-6</span>板块轮动钟：周期的四个阶段与领涨板块</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 430" role="img" aria-label="示意图：板块轮动钟。顺时针依次为衰退后期（债券领涨，利率敏感板块领先）、复苏早期（股票领涨，高弹性板块领先）、扩张后期（商品领涨，原材料和能源领先）、放缓见顶（防御板块相对抗跌）">
+<defs><marker id="f176-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/></marker></defs>
+<path class="node node-hi" d="M260 212 A100 100 0 0 1 360 112 L360 182 A30 30 0 0 0 330 212 Z"/>
+<text class="nt" x="313.3" y="162.3" text-anchor="middle">衰退后期</text>
+<text class="hi" x="313.3" y="179.3" text-anchor="middle">债券领涨</text>
+<path class="edge-acc" d="M249.7 192.6 A112 112 0 0 1 340.6 101.7" marker-end="url(#f176-ar)"/>
+<rect class="node" x="12" y="16" width="220" height="124" rx="8"/>
+<text class="nt" x="24" y="40">① 衰退后期：利率见顶回落</text>
+<text class="hi" x="24" y="64">领涨：利率敏感板块</text>
+<text class="nd" x="24" y="84">美股：公用事业、银行等金融股</text>
+<text class="nd" x="24" y="104">A 股：券商、银行、高股息</text>
+<text class="nd" x="24" y="124">逻辑：降息最先改善它们的估值</text>
+<path class="edge-soft" d="M232 120 L273.7 125.7"/>
+<path class="node node-up" d="M360 112 A100 100 0 0 1 460 212 L390 212 A30 30 0 0 0 360 182 Z"/>
+<text class="nt" x="406.7" y="162.3" text-anchor="middle">复苏早期</text>
+<text class="hi" x="406.7" y="179.3" text-anchor="middle">股票领涨</text>
+<path class="edge-acc" d="M379.4 101.7 A112 112 0 0 1 470.3 192.6" marker-end="url(#f176-ar)"/>
+<rect class="node" x="488" y="16" width="220" height="124" rx="8"/>
+<text class="nt" x="500" y="40">② 复苏早期：股票见底回升</text>
+<text class="hi" x="500" y="64">领涨：高弹性、早周期板块</text>
+<text class="nd" x="500" y="84">美股：科技、非必需消费、运输</text>
+<text class="nd" x="500" y="104">A 股：券商、汽车家电、科技成长</text>
+<text class="nd" x="500" y="124">逻辑：盈利弹性最大、最先修复</text>
+<path class="edge-soft" d="M488 120 L446.3 125.7"/>
+<path class="node" d="M460 212 A100 100 0 0 1 360 312 L360 242 A30 30 0 0 0 390 212 Z"/>
+<text class="nt" x="406.7" y="255.7" text-anchor="middle">扩张后期</text>
+<text class="hi" x="406.7" y="272.7" text-anchor="middle">商品领涨</text>
+<path class="edge-acc" d="M470.3 231.4 A112 112 0 0 1 379.4 322.3" marker-end="url(#f176-ar)"/>
+<rect class="node" x="488" y="278" width="220" height="124" rx="8"/>
+<text class="nt" x="500" y="302">③ 扩张后期：商品与通胀走强</text>
+<text class="hi" x="500" y="326">领涨：原材料、能源</text>
+<text class="nd" x="500" y="346">美股：工业 → 基础材料、能源</text>
+<text class="nd" x="500" y="366">A 股：有色、煤炭、钢铁、石化</text>
+<text class="nd" x="500" y="386">逻辑：产品涨价，利润直接放大</text>
+<path class="edge-soft" d="M488 298 L446.3 298.3"/>
+<path class="node node-dn" d="M360 312 A100 100 0 0 1 260 212 L330 212 A30 30 0 0 0 360 242 Z"/>
+<text class="nt" x="313.3" y="255.7" text-anchor="middle">放缓见顶</text>
+<text class="hi" x="313.3" y="272.7" text-anchor="middle">防御抗跌</text>
+<path class="edge-acc" d="M340.6 322.3 A112 112 0 0 1 249.7 231.4" marker-end="url(#f176-ar)"/>
+<rect class="node" x="12" y="278" width="220" height="124" rx="8"/>
+<text class="nt" x="24" y="302">④ 放缓：增长回落、利率高位</text>
+<text class="hi" x="24" y="326">相对抗跌：防御板块</text>
+<text class="nd" x="24" y="346">美股：必需消费、医药、公用事业</text>
+<text class="nd" x="24" y="366">A 股：食品饮料、医药、电力</text>
+<text class="nd" x="24" y="386">逻辑：需求刚性，盈利波动小</text>
+<path class="edge-soft" d="M232 298 L273.7 298.3"/>
+<circle class="node" cx="360" cy="212" r="28"/>
+<text class="nt" x="360" y="217" text-anchor="middle">周期</text>
+<text class="elabel" x="360" y="422" text-anchor="middle">顺时针轮动；真实周期长短不一、可能跳过阶段，A 股还常被政策打断，板块归属以逻辑为准</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>顺时针读。① 衰退后期，利率见顶回落，债券领涨，利率敏感板块最先受益；② 复苏早期，股票见底，高弹性板块领涨；③ 扩张后期，商品与通胀走强，原材料、能源接棒；④ 增长放缓、利率还在高位，防御板块相对抗跌，然后回到 ①。A 股一栏是按经济逻辑给出的大致归类：券商对市场成交额高度敏感，常在牛市初期领涨；2021 年商品大涨时，煤炭、有色、钢铁跻身最强的板块之列。<b>陷阱：</b>真实的周期不会按钟表走，A 股还常被政策打断（比如 2016 年的供给侧改革让煤炭、钢铁走出独立行情），所以不要拿这张钟去“预测”下一棒，而要用下面的相对强度比率去<b>确认</b>谁正在接棒。</figcaption>
+  </figure>
+
+  <div class="prose">
+    <h3>相对强度比率：它回答“比谁涨得多”</h3>
+    <p>怎么知道轮动轮到了谁？墨菲的工具非常简单：<strong>比率分析</strong><span class="en-term">（ratio analysis）</span>。把一个市场的价格除以另一个市场的价格，画成一条线：</p>
+  </div>
+
+  <div class="formula">
+    <span class="fx">相对强度比率 RS = A 的价格 ÷ B 的价格 × 100</span><br>
+    <span class="fx">N 日后比率的变化 =（1 + A 的 N 日涨幅）÷（1 + B 的 N 日涨幅）− 1</span><br>
+    <span class="fx">涨幅不大时 ≈ A 的 N 日涨幅 − B 的 N 日涨幅</span><br>
+    <span class="note">A 可以是板块、个股或另一类资产，B 通常是基准（如沪深 300）。为了方便比较，常把两者在起点都换算成 100。比率的绝对数值没有意义，有意义的是它的方向和趋势。</span>
+  </div>
+
+  <div class="prose">
+    <p>比率线上升，说明 A 比 B 强；下降，说明 A 比 B 弱；走平，说明两者同步。关键在于：<strong>它回答的不是“涨没涨”，而是“比谁涨得多”</strong>。算两个例子：</p>
+    <ul>
+      <li>行业 A 三个月涨了 12%，沪深 300 涨了 5%：比率变化 = 1.12 ÷ 1.05 − 1 ≈ <span class="up-t">+6.7%</span>，A 跑赢；</li>
+      <li>行业 B 三个月跌了 3%，沪深 300 跌了 10%：比率变化 = 0.97 ÷ 0.90 − 1 ≈ <span class="up-t">+7.8%</span>，B 也“跑赢”了，尽管它在亏钱。</li>
+    </ul>
+    <p>把价格方向和比率方向组合起来，一共四种情况：</p>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <tr><th>A 自身价格</th><th>比率线（A ÷ 基准）</th><th>含义</th><th>怎么做</th></tr>
+      <tr><td><span class="up-t">上涨</span></td><td><span class="up-t">上升</span></td><td>领涨：又涨又强</td><td>最佳持有对象</td></tr>
+      <tr><td><span class="up-t">上涨</span></td><td><span class="dn-t">下降</span></td><td>跟涨：涨了，但落后于大盘</td><td>警惕，资金可能正在流出</td></tr>
+      <tr><td><span class="dn-t">下跌</span></td><td><span class="up-t">上升</span></td><td>抗跌：跌得比大盘少</td><td>防御品种；熊市里的观察名单</td></tr>
+      <tr><td><span class="dn-t">下跌</span></td><td><span class="dn-t">下降</span></td><td>领跌：又跌又弱</td><td>回避</td></tr>
+    </table>
+  </div>
+
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>涨潮的时候，港口里所有的船都在升高，但这说明不了哪条船的发动机更好。<strong>绝对价格看的是水位，相对强度看的是哪条船在自己往前开。</strong>又像跑马拉松，看的是名次而不是配速：大家都在减速的时候，减速最少的人名次在上升。轮动策略想抓的，就是名次正在上升的那条船。</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 17-7</span>相对强度比率线的构造：价格还在创新高，比率线已经转头<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 444" role="img" aria-label="示意图：上图为某行业指数 A，中图为沪深 300 指数 B，下图为 A 除以 B 的比率线。前半段 A 涨得比 B 快，比率线上升；之后 A 仍在创新高，但比率线已经跌破自身的上升趋势线和 20 日均线，A 随后见顶回落">
+<defs><marker id="f177-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/></marker><marker id="f177-ara" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/></marker></defs>
+<!-- kchart: n=120 L=52 step=5.433 x(i)=L+step*(i+0.5) price[97.391,144.459] y∈[30,120] -->
+<line class="axis" x1="52" y1="30" x2="52" y2="120"/>
+<line class="grid" x1="52" y1="115" x2="704" y2="115"/>
+<text class="tick" x="46" y="119" text-anchor="end">100</text>
+<line class="grid" x1="52" y1="76.8" x2="704" y2="76.8"/>
+<text class="tick" x="46" y="80.8" text-anchor="end">120</text>
+<line class="grid" x1="52" y1="38.5" x2="704" y2="38.5"/>
+<text class="tick" x="46" y="42.5" text-anchor="end">140</text>
+<line class="axis" x1="52" y1="120" x2="704" y2="120"/>
+<polyline class="cl" points="54.7,115.9 60.2,114.6 65.6,113 71,112.4 76.5,112.4 81.9,111.5 87.3,110.2 92.8,109.4 98.2,107.3 103.6,107.4 109.1,105.6 114.5,104.3 119.9,102.9 125.4,104.4 130.8,101.1 136.2,100.8 141.7,100.4 147.1,103.5 152.5,101.7 158,102.2 163.4,102 168.8,100.8 174.3,101.2 179.7,100.1 185.1,97.5 190.6,96.1 196,95.6 201.4,91.2 206.9,89.5 212.3,89.7 217.7,88.5 223.2,86.8 228.6,83 234,84.6 239.5,82.6 244.9,82.5 250.3,79.3 255.8,77.5 261.2,76.6 266.6,74.7 272.1,75.9 277.5,74 282.9,73.5 288.4,69.8 293.8,69.7 299.2,68.8 304.7,68.7 310.1,70.4 315.5,70 321,72.4 326.4,69.9 331.8,69.2 337.3,65.6 342.7,65.2 348.1,62.2 353.6,59.8 359,59.1 364.4,54.3 369.9,51.6 375.3,50.4 380.7,49.4 386.2,48 391.6,46.3 397,48.6 402.5,47.7 407.9,44.5 413.3,44.8 418.8,44.8 424.2,43.2 429.6,42 435.1,44.6 440.5,42.5 445.9,44.5 451.4,43.2 456.8,40.2 462.2,40.7 467.7,41.8 473.1,41.1 478.5,40.8 484,41.5 489.4,38.7 494.8,41.1 500.3,36.8 505.7,38 511.1,39.8 516.6,37.4 522,36.3 527.4,37.2 532.9,34.5 538.3,35.5 543.7,34.1 549.2,36.9 554.6,38.3 560,40.3 565.5,38.3 570.9,42.5 576.3,42.2 581.8,42.7 587.2,41.9 592.6,45 598.1,44.9 603.5,45.2 608.9,47.5 614.4,46.9 619.8,50 625.2,49.4 630.7,50.2 636.1,49.8 641.5,53.9 647,54.5 652.4,55.3 657.8,56.5 663.3,57.2 668.7,56.1 674.1,58.6 679.6,57.8 685,60.2 690.4,58.5 695.9,60.6 701.3,59.6"/>
+<line class="sr-dn" x1="435.1" y1="30" x2="435.1" y2="120"/>
+<line class="sr" x1="543.7" y1="30" x2="543.7" y2="120"/>
+<circle class="dot-up" cx="543.7" cy="34.1" r="4"/>
+<text class="ut" x="551.7" y="28.1" text-anchor="start">A 在这里才创出最后一个新高</text>
+<text class="pv" x="76.5" y="48.1" text-anchor="start">前 60 天：A 涨约 34%</text>
+<!-- kchart: n=120 L=52 step=5.433 x(i)=L+step*(i+0.5) price[98.404,128.446] y∈[158,248] -->
+<line class="axis" x1="52" y1="158" x2="52" y2="248"/>
+<line class="grid" x1="52" y1="243.2" x2="704" y2="243.2"/>
+<text class="tick" x="46" y="247.2" text-anchor="end">100</text>
+<line class="grid" x1="52" y1="183.3" x2="704" y2="183.3"/>
+<text class="tick" x="46" y="187.3" text-anchor="end">120</text>
+<line class="axis" x1="52" y1="248" x2="704" y2="248"/>
+<polyline class="cl" points="54.7,242.3 60.2,243.9 65.6,240.5 71,241.5 76.5,240.2 81.9,242.3 87.3,241.6 92.8,240.4 98.2,239.4 103.6,238.4 109.1,237.5 114.5,237.9 119.9,237.7 125.4,237.3 130.8,236.3 136.2,234.8 141.7,234.6 147.1,232.1 152.5,233.8 158,231.4 163.4,233.5 168.8,230.4 174.3,230.3 179.7,230.1 185.1,230.9 190.6,230.5 196,228.1 201.4,227.9 206.9,226.6 212.3,226.6 217.7,225.3 223.2,224.7 228.6,225.5 234,224.8 239.5,226.2 244.9,223.1 250.3,221.6 255.8,220.8 261.2,221.3 266.6,222.7 272.1,220.9 277.5,218.4 282.9,220.3 288.4,218.2 293.8,218.8 299.2,219 304.7,216.3 310.1,215.4 315.5,216.3 321,216 326.4,213.6 331.8,215.8 337.3,212.5 342.7,214.3 348.1,213.3 353.6,211.8 359,212.8 364.4,210.8 369.9,211.4 375.3,209.4 380.7,207 386.2,208.7 391.6,204.5 397,203.2 402.5,201.8 407.9,201.6 413.3,200.1 418.8,195.6 424.2,194.5 429.6,196.5 435.1,192.8 440.5,191.6 445.9,189.5 451.4,188.2 456.8,185.7 462.2,184.9 467.7,182.4 473.1,183.9 478.5,179.3 484,180.6 489.4,177.8 494.8,175.3 500.3,173.8 505.7,172.2 511.1,171 516.6,171.1 522,170 527.4,166.8 532.9,164.6 538.3,165.9 543.7,162.8 549.2,162.1 554.6,163.1 560,163.3 565.5,164.8 570.9,165.3 576.3,164.3 581.8,166.8 587.2,163.6 592.6,166.9 598.1,164.4 603.5,166.7 608.9,165.3 614.4,163.3 619.8,166 625.2,166.5 630.7,165.3 636.1,164.1 641.5,165.2 647,166.3 652.4,165.7 657.8,168.7 663.3,168.5 668.7,170.2 674.1,171.1 679.6,170 685,167.8 690.4,171.1 695.9,171.1 701.3,171.6"/>
+<line class="sr-dn" x1="435.1" y1="158" x2="435.1" y2="248"/>
+<line class="sr" x1="543.7" y1="158" x2="543.7" y2="248"/>
+<text class="pv" x="76.5" y="177.3" text-anchor="start">同期：B 只涨约 12%</text>
+<text class="pv" x="467.7" y="207.3" text-anchor="start">后段：B 加速上涨</text>
+<!-- kchart: n=120 L=52 step=5.433 x(i)=L+step*(i+0.5) price[97.221,124.081] y∈[286,418] -->
+<line class="axis" x1="52" y1="286" x2="52" y2="418"/>
+<line class="grid" x1="52" y1="404.3" x2="704" y2="404.3"/>
+<text class="tick" x="46" y="408.3" text-anchor="end">100</text>
+<line class="grid" x1="52" y1="355.2" x2="704" y2="355.2"/>
+<text class="tick" x="46" y="359.2" text-anchor="end">110</text>
+<line class="grid" x1="52" y1="306.1" x2="704" y2="306.1"/>
+<text class="tick" x="46" y="310.1" text-anchor="end">120</text>
+<line class="axis" x1="52" y1="418" x2="704" y2="418"/>
+<polyline class="cl" points="54.7,408.2 60.2,402.3 65.6,403.7 71,400.5 76.5,402.8 81.9,396.8 87.3,394.6 92.8,394.7 98.2,390.9 103.6,393 109.1,389.8 114.5,385.9 119.9,382.7 125.4,387 130.8,380.5 136.2,382.3 141.7,381.7 147.1,393.3 152.5,386.1 158,391.3 163.4,387.4 168.8,389.6 174.3,390.6 179.7,388.3 185.1,380.5 190.6,377.8 196,380.6 201.4,370 206.9,368.1 212.3,368.6 217.7,367.9 223.2,364.7 228.6,354 234,359.2 239.5,352 244.9,357 250.3,351.9 255.8,348.7 261.2,346 266.6,338.9 272.1,344.8 277.5,344.7 282.9,340.2 288.4,334.8 293.8,333.7 299.2,331.2 304.7,335.6 310.1,341.3 315.5,338.7 321,344.9 326.4,343.1 331.8,337.7 337.3,334.9 342.7,330.7 348.1,325.6 353.6,322.6 359,319.2 364.4,311.4 369.9,304.2 375.3,304.9 380.7,306.9 386.2,300.7 391.6,304.3 397,311.8 402.5,312 407.9,305 413.3,308.4 418.8,316.1 424.2,314.3 429.6,308.5 435.1,320.2 440.5,317.7 445.9,325.5 451.4,324.6 456.8,322.2 462.2,324.5 467.7,330.9 473.1,326.9 478.5,333.6 484,333 489.4,331.5 494.8,340.4 500.3,333.5 505.7,338.6 511.1,344.2 516.6,338.8 522,338.3 527.4,344.9 532.9,342.5 538.3,342.8 543.7,344.4 549.2,351.1 554.6,352.3 560,356.3 565.5,349.9 570.9,357.9 576.3,358.7 581.8,356.1 587.2,359 592.6,360.7 598.1,364 603.5,361.3 608.9,368.1 614.4,369.6 619.8,372.3 625.2,370.2 630.7,373.7 636.1,374.5 641.5,381.3 647,381 652.4,383.3 657.8,381.8 663.3,383.6 668.7,379 674.1,382.8 679.6,382.8 685,390.5 690.4,382.6 695.9,387.1 701.3,384.1"/>
+<polyline class="ma2" points="158,392.4 163.4,391.4 168.8,390.7 174.3,390.1 179.7,389.5 185.1,388.4 190.6,387.4 196,386.7 201.4,385.5 206.9,384.3 212.3,383.1 217.7,382 223.2,380.9 228.6,379.5 234,378.1 239.5,376.7 244.9,375.4 250.3,373.9 255.8,371.7 261.2,369.7 266.6,367.1 272.1,364.9 277.5,362.7 282.9,360.2 288.4,357.5 293.8,355.2 299.2,352.8 304.7,350.6 310.1,349.2 315.5,347.7 321,346.5 326.4,345.3 331.8,343.9 337.3,343 342.7,341.5 348.1,340.2 353.6,338.5 359,336.9 364.4,335 369.9,332.9 375.3,331.2 380.7,329.3 386.2,327.1 391.6,325.3 397,324.2 402.5,323.1 407.9,321.8 413.3,320.4 418.8,319.2 424.2,317.9 429.6,316.1 435.1,315 440.5,314 445.9,313.5 451.4,313.2 456.8,313 462.2,313.1 467.7,313.7 473.1,314.5 478.5,315.9 484,317.3 489.4,318.6 494.8,320.6 500.3,322 505.7,323.4 511.1,325 516.6,326.7 522,328.2 527.4,329.6 532.9,331 538.3,332.7 543.7,333.9 549.2,335.6 554.6,337 560,338.5 565.5,339.9 570.9,341.6 576.3,343 581.8,344.4 587.2,345.7 592.6,347.1 598.1,348.7 603.5,349.8 608.9,351.5 614.4,353.1 619.8,354.5 625.2,356 630.7,357.8 636.1,359.3 641.5,361.2 647,363.1 652.4,365.1 657.8,366.6 663.3,368.2 668.7,369.3 674.1,371 679.6,372.2 685,373.8 690.4,375.1 695.9,376.5 701.3,377.7"/>
+<line class="ma2" x1="60" y1="296" x2="78" y2="296"/>
+<text class="lg" x="83" y="300">比率线的 20 日均线</text>
+<text class="tick" x="54.7" y="435" text-anchor="middle">第 1 天</text>
+<text class="tick" x="217.7" y="435" text-anchor="middle">第 31 天</text>
+<text class="tick" x="380.7" y="435" text-anchor="middle">第 61 天</text>
+<text class="tick" x="543.7" y="435" text-anchor="middle">第 91 天</text>
+<line class="sr-dn" x1="435.1" y1="286" x2="435.1" y2="418"/>
+<line class="sr" x1="543.7" y1="286" x2="543.7" y2="418"/>
+<line class="tl" x1="147.1" y1="393.3" x2="511.1" y2="291.9"/>
+<circle class="dot" cx="147.1" cy="393.3" r="4"/>
+<circle class="dot" cx="321" cy="344.9" r="4"/>
+<text class="ut" x="217.7" y="408.1" text-anchor="start">比率上升：A 跑赢 B</text>
+<circle class="dot-dn" cx="435.1" cy="320.2" r="4"/>
+<line class="edge" x1="451.4" y1="367" x2="437.2" y2="326.1" marker-end="url(#f177-ara)"/>
+<text class="dt" x="441.1" y="379.8" text-anchor="start">比率线跌破趋势线和均线</text>
+<text class="dt" x="695.9" y="301.1" text-anchor="end">比率下降：A 跑输 B</text>
+<text class="pl" x="52" y="20">A：某行业指数</text>
+<text class="pl" x="52" y="148">B：沪深 300 指数</text>
+<text class="pl" x="52" y="276">A ÷ B × 100：相对强度比率线</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>上两张是两个指数各自的走势，下面是它们的比率线。前 60 天，A 涨了约 34%，B 只涨了约 12%，比率从 100 升到约 120，A 是领涨板块。之后 B 加速上涨，A 涨得慢了，比率线在第 71 天前后同时跌破自己的上升趋势线和 20 日均线。<b>此时 A 的价格还在涨</b>，又过了约 20 天才创出最后一个新高，随后回落。只看 A 自己的图，你会觉得一切正常；看比率线，你会提前发现资金正在离开。比率线就是一条普通的价格线，第 3 站的趋势线、第 8 站的均线都可以直接用在它上面。</figcaption>
+  </figure>
+
+  <div class="prose">
+    <h3>自上而下：比率分析的三层用法</h3>
+    <p>墨菲把比率分析用成一个漏斗，一层一层往下筛：</p>
+    <ol>
+      <li><strong>资产大类：</strong>股票 ÷ 债券、商品 ÷ 债券，决定把钱主要放在哪类资产（规则卡 2 就是这一层）；</li>
+      <li><strong>板块：</strong>各行业指数 ÷ 大盘，找出比率线向上的板块（规则卡 1）；</li>
+      <li><strong>个股：</strong>板块里的个股 ÷ 行业指数，在最强的板块里挑最强的股票。</li>
+    </ol>
+    <p>每一层都用同一套技术工具：比率线的趋势、均线、突破和背离。比率线创新高而价格还没创新高，是强势的早期信号；价格创新高而比率线没有跟上（图 17-7），是落后的早期信号。下一站的市场宽度会从另一个角度做同样的事：看指数背后有多少股票在跟。</p>
+  </div>
+
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p>两个容易混淆的名字：<strong>相对强度比率</strong>（relative strength，本站）是两个市场的比值，衡量“谁比谁强”；<strong>相对强弱指数 RSI</strong>（第 9 站）是一个市场自己的摆动指标，衡量“自己涨得快不快、是否超买”。名字很像，用途完全不同。另一个误区是只看比率、不看绝对价格：熊市里比率线升得最快的板块，往往只是跌得少，照样亏钱。所以轮动规则通常要同时满足“相对强”和“自身趋势向上”两个条件（规则卡 1）。</p>
+  </div>
+</section>
+
+<!-- ======================== 17.5 ======================== -->
+<section class="ch" id="s5">
+  <h2 class="sec"><span class="no">17.5</span>关系会变：通胀与通缩两种世界</h2>
+  <p class="sec-en">WHEN THE RELATIONSHIPS FLIP: INFLATION VERSUS DEFLATION</p>
+
+  <div class="prose">
+    <p>到目前为止讲的所有关系，都有一个隐含的前提：我们生活在一个<strong>以通胀为主要风险</strong>的世界。墨菲写书的 1970–1990 年代正是如此：利率下降几乎总是意味着通胀降温，自然是股票的利好。但在 1999 年版的这一章里，墨菲已经开始讨论另一种情形：当市场担心的不再是通胀而是<strong>通缩</strong>时，这些关系会翻转。</p>
+  </div>
+
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>利率下降就像体温下降。病人发高烧时（通胀），体温降下来是好消息；可如果病人已经失温（通缩），体温继续往下掉就是危险信号。<strong>同一个读数，意义取决于病人原来的状态。</strong>“利率下降”“商品下跌”都是这样的读数：在通胀世界里是利好，在通缩世界里可能是利空。</p>
+  </div>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>1998 年与日本：利率越低，股市越冷</h4>
+    <p>1997 年 7 月泰铢失守，亚洲金融危机爆发；1998 年 8 月俄罗斯债务违约，9 月美国对冲基金长期资本管理公司（LTCM）濒临倒闭，由美联储出面组织救助。这一年，原油跌到每桶十几美元，商品价格跌到多年低点；美国国债大涨，30 年期国债收益率跌破 5%。按经典链条，这本该是股市的利好，可标普 500 在 7 月到 10 月间下跌了约 19%。这就是前面说的“关系翻转”：商品下跌是因为需求崩塌、市场担心的是通缩时，债券上涨不再是股票的利好，而是资金逃离风险的信号，股债由同向变成反向。</p>
+    <p>日本是更长的教训。日经指数在 1989 年底见顶于约 38900 点，此后十几年里，日本的利率一路降到接近零，10 年期国债收益率在 1998 年一度跌破 1%，股市却持续走低，2003 年跌到 8000 点以下。</p>
+    <p class="takeaway">“利率下降利好股票”有一个隐含前提：利率下降是因为通胀回落，而不是因为经济失温。区分这两种情况，要看商品与股票的关系：商品跌、股票涨，是“通胀降温”；商品和股票一起跌、只有债券涨，是“需求崩塌”。</p>
+  </div>
+
+  <div class="prose">
+    <h3>两种世界：股债相关性的体制切换</h3>
+    <p>想清楚股票和债券的关系，关键是问一个问题：<strong>当前市场最怕的冲击是什么？</strong></p>
+    <ul>
+      <li>如果最怕<strong>通胀冲击</strong>：通胀超预期 → 利率上升 → 债券下跌；利率上升同时压低估值 → 股票也跌。股票和债券被同一个因素推向同一个方向，<strong>正相关</strong>，债券保护不了股票。</li>
+      <li>如果最怕<strong>增长冲击</strong>（衰退、通缩、金融危机）：增长下滑 → 盈利预期下降 → 股票下跌；同时央行降息、资金避险 → 债券上涨。<strong>负相关</strong>，债券是股票的“保险”。</li>
+    </ul>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 17-8</span>股债相关性的两种体制：同一套市场，两种关系<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 420" role="img" aria-label="示意图：左边是通胀主导的世界，通胀冲击推高利率，债券和股票同时下跌，股债正相关；右边是增长或通缩主导的世界，增长冲击压低利率，债券上涨、股票下跌，股债负相关。底部时间条概括美国股债相关性的符号：1970 至 1990 年代为正，约 2000 至 2021 年为负，2022 年再次转正">
+<defs><marker id="f178-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/></marker></defs>
+<rect class="node" x="10" y="10" width="340" height="282" rx="8"/>
+<text class="pl" x="180" y="34" text-anchor="middle">通胀主导的世界</text>
+<text class="elabel" x="180" y="54" text-anchor="middle">例：美国 1970–1990 年代、2022 年</text>
+<rect class="node node-hi" x="24" y="68" width="96" height="44" rx="6"/><text class="nt" x="72" y="95" text-anchor="middle">通胀上升</text>
+<rect class="node" x="140" y="68" width="80" height="44" rx="6"/><text class="nt" x="180" y="95" text-anchor="middle">利率上升</text>
+<rect class="node node-dn" x="242" y="62" width="94" height="24" rx="5"/><text class="nd" x="289" y="78" text-anchor="middle">债券下跌</text>
+<rect class="node node-dn" x="242" y="94" width="94" height="24" rx="5"/><text class="nd" x="289" y="110" text-anchor="middle">股票下跌</text>
+<path class="edge" d="M120 90 H136" marker-end="url(#f178-ar)"/>
+<path class="edge" d="M220 84 L238 76" marker-end="url(#f178-ar)"/>
+<path class="edge" d="M220 96 L238 104" marker-end="url(#f178-ar)"/>
+<line class="axis" x1="40" y1="140" x2="40" y2="250"/><line class="axis" x1="40" y1="250" x2="320" y2="250"/>
+<polyline class="ma2" points="40,174 47,178.5 54,176.3 61,175.9 68,181.7 75,184.1 82,181.2 89,183 96,189 103,189.1 110,186.6 117,190.6 124,195.6 131,193.8 138,192.8 145,198.3 152,201.4 159,198.6 166,199.7 173,205.8 180,206.6 187,203.8 194,207.2 201,212.6 208,211.3 215,209.8 222,214.9 229,218.7 236,216 243,216.5 250,222.5 257,224 264,221.1 271,223.8 278,229.5 285,228.8 292,226.8 299,231.6 306,235.8 313,233.5 320,233.3"/>
+<polyline class="ma1" points="40,208.1 47,206.4 54,205.9 61,210.7 68,207.3 75,209.6 82,212.5 89,208.8 96,213.3 103,213.5 110,211.2 117,216.5 124,214.2 131,214.5 138,218.9 145,215.2 152,218.3 159,220.4 166,217 173,221.9 180,221.3 187,219.7 194,224.9 201,222.1 208,223.1 215,227.1 222,223.3 229,226.9 236,228.4 243,225.3 250,230.4 257,229.1 264,228.2 271,233.2 278,230 285,231.8 292,235.1 299,231.4 306,235.6 313,236.2 320,233.6"/>
+<line class="ma2" x1="48" y1="268" x2="68" y2="268"/><text class="lg" x="72" y="272">股票</text>
+<line class="ma1" x1="120" y1="268" x2="140" y2="268"/><text class="lg" x="144" y="272">债券价格</text>
+<text class="hi" x="48" y="146">同跌：正相关</text>
+<text class="elabel" x="48" y="162">债券不再是股票的保险</text>
+<rect class="node" x="370" y="10" width="340" height="282" rx="8"/>
+<text class="pl" x="540" y="34" text-anchor="middle">增长 / 通缩主导的世界</text>
+<text class="elabel" x="540" y="54" text-anchor="middle">例：美国约 2000–2020 年、日本 1990 年代</text>
+<rect class="node node-hi" x="384" y="68" width="96" height="44" rx="6"/><text class="nt" x="432" y="95" text-anchor="middle">增长下滑</text>
+<rect class="node" x="500" y="68" width="80" height="44" rx="6"/><text class="nt" x="540" y="95" text-anchor="middle">利率下降</text>
+<rect class="node node-up" x="602" y="62" width="94" height="24" rx="5"/><text class="nd" x="649" y="78" text-anchor="middle">债券上涨</text>
+<rect class="node node-dn" x="602" y="94" width="94" height="24" rx="5"/><text class="nd" x="649" y="110" text-anchor="middle">股票下跌</text>
+<path class="edge" d="M480 90 H496" marker-end="url(#f178-ar)"/>
+<path class="edge" d="M580 84 L598 76" marker-end="url(#f178-ar)"/>
+<path class="edge" d="M580 96 L598 104" marker-end="url(#f178-ar)"/>
+<line class="axis" x1="400" y1="140" x2="400" y2="250"/><line class="axis" x1="400" y1="250" x2="680" y2="250"/>
+<polyline class="ma2" points="400,174 407,178.5 414,176.3 421,175.9 428,181.7 435,184.1 442,181.2 449,183 456,189 463,189.1 470,186.6 477,190.6 484,195.6 491,193.8 498,192.8 505,198.3 512,201.4 519,198.6 526,199.7 533,205.8 540,206.6 547,203.8 554,207.2 561,212.6 568,211.3 575,209.8 582,214.9 589,218.7 596,216 603,216.5 610,222.5 617,224 624,221.1 631,223.8 638,229.5 645,228.8 652,226.8 659,231.6 666,235.8 673,233.5 680,233.3"/>
+<polyline class="ma1" points="400,212.1 407,208.3 414,205.8 421,208.6 428,203.1 435,203.3 442,204.2 449,198.4 456,200.9 463,199 470,194.7 477,198 484,193.6 491,191.9 498,194.2 505,188.5 512,189.5 519,189.6 526,184.1 533,186.9 540,184.3 547,180.6 554,183.8 561,178.9 568,177.9 575,179.8 582,174 589,175.6 596,175 603,169.8 610,172.9 617,169.6 624,166.6 631,169.6 638,164.3 645,164 652,165.3 659,159.5 666,161.7 673,160.3 680,155.6"/>
+<line class="ma2" x1="408" y1="268" x2="428" y2="268"/><text class="lg" x="432" y="272">股票</text>
+<line class="ma1" x1="480" y1="268" x2="500" y2="268"/><text class="lg" x="504" y="272">债券价格</text>
+<text class="hi" x="408" y="146">反向：负相关</text>
+<text class="elabel" x="408" y="162">债券是股票的“保险”</text>
+<text class="nt" x="12" y="322">美国股债相关性的符号（概括）</text>
+<rect class="node node-up" x="80" y="334" width="338.2" height="30"/>
+<rect class="node node-hi" x="418.2" y="334" width="248" height="30"/>
+<rect class="node node-up" x="666.2" y="334" width="33.8" height="30"/>
+<text class="nd" x="249.1" y="354" text-anchor="middle">多为正相关：高通胀、加息年代</text>
+<text class="nd" x="542.2" y="354" text-anchor="middle">多为负相关：低通胀年代</text>
+<text class="nd" x="683.1" y="354" text-anchor="middle">转正</text>
+<text class="tick" x="80" y="380" text-anchor="middle">1970</text>
+<text class="tick" x="418.2" y="380" text-anchor="middle">2000</text>
+<text class="tick" x="666.2" y="380" text-anchor="middle">2022</text>
+<text class="elabel" x="708" y="406" text-anchor="end">转折年份因研究方法和样本而异，此处只表示大致的体制划分</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>左右两个世界的区别不在于市场参与者变了，而在于<b>主导冲击</b>变了。左边，通胀是主要矛盾，利率上升同时压低债券和股票估值，股债同跌；右边，增长和通缩是主要矛盾，利率下降救不了股票，却让债券大涨，股债反向。底部时间条是对美国经验的概括：1970–1990 年代高通胀时期，股债多为正相关；约 2000–2021 年低通胀时期转为负相关，股债组合的分散效果很好；2022 年通胀卷土重来，又转回正相关。曲线和时间划分都是示意，具体转折点因研究方法而异。</figcaption>
+  </figure>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>2022 年美国：股债双杀</h4>
+    <p>2022 年，美国 CPI 同比在 6 月达到约 9.1%，为四十年来最高；俄乌冲突爆发后，油价一度突破每桶 120 美元。美联储从 3 月开始加息，全年累计加息 4.25 个百分点，其中连续四次单次加息 0.75 个百分点。10 年期美债收益率从年初约 1.5% 升到 10 月一度超过 4.2%。</p>
+    <p>结果是教科书式的“通胀世界”：纳斯达克综合指数全年下跌约 33%，标普 500 下跌约 19%；美国综合债券指数下跌约 13%，是有记录以来最差的一年。股债同跌，靠债券对冲股票风险的传统 60/40 组合，遭遇了几十年来最差的年份之一。美元指数在 9 月底升到约 114，创 20 年新高；而在上半年，美元和商品罕见地一起上涨，因为战争造成的供给冲击压过了美元的影响。</p>
+    <p class="takeaway">这一年既验证了经典链条，也推翻了一条流行了二十年的经验。商品涨 → 收益率升 → 债券跌 → 股票跌，链条完全成立；但“债券是股票的保险”失效了。成长股跌得最惨（纳指约 −33%，标普约 −19%），正是图 17-3 久期逻辑的现实版本。</p>
+  </div>
+
+  <div class="prose">
+    <h3>怎么判断自己身处哪个世界</h3>
+    <ol>
+      <li><strong>看通胀：</strong>通胀高企、还在上升，按左边的世界理解；通胀低迷、甚至物价下跌，按右边的世界理解。</li>
+      <li><strong>看商品与股票的关系：</strong>商品涨、股票跌，是通胀在伤害估值；商品和股票一起跌、只有债券涨，是需求在崩塌。</li>
+      <li><strong>算滚动相关系数：</strong>用最近 60 个交易日股票指数和国债期货的日收益率算一个相关系数。持续为正，说明股债同向（通胀世界）；持续为负，说明债券在对冲股票（增长或通缩世界）。这是日后量化系统里最容易实现的“体制开关”。</li>
+    </ol>
+  </div>
+
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p>“过去 20 年股债都是负相关，所以股债组合永远安全。”相关系数是对过去的统计，不是对未来的承诺。2022 年，用过去 20 年数据估计出来的“债券对冲股票”，在一年之内失效。任何依赖某种交叉市场关系的规则，都要写上“这个关系失效时怎么办”，并且定期重新检验。</p>
+  </div>
+
+  <div class="prose">
+    <h3>全球联动：危机时大家一起跌</h3>
+    <p>墨菲在本章还强调，各国股市之间、各国利率之间越来越联动。资本可以自由流动的地方，一个大市场的变化会很快传到其他市场：1987 年的崩盘从纽约蔓延到伦敦、东京和香港；2008 年金融危机和 2020 年 3 月的疫情恐慌中，几乎所有国家的股市同时暴跌，标普 500 在 2020 年 2 月 19 日到 3 月 23 日之间跌了约 34%。研究发现，各国股市的相关性在熊市里明显高于牛市，分散化恰恰在最需要的时候打了折扣。</p>
+    <p>A 股是一个特殊的例子。由于资本账户管制、投资者以国内资金为主，A 股和海外股市的日常相关性长期偏低，走势更多由国内政策和流动性决定；随着沪港通（2014 年）、深港通（2016 年）开通，A 股从 2018 年起被纳入 MSCI 等国际指数，这种隔离在减弱。连接 A 股和全球市场最重要的一环，是人民币汇率。</p>
+  </div>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>2015 年 8 月：一次汇率调整，全球同震</h4>
+    <p>2015 年 8 月 11 日，央行完善人民币兑美元中间价报价机制，当天中间价下调约 1.9%，是多年来最大的单日调整。市场把它解读为增长放缓和资本外流的信号，全球风险资产随之承压：8 月 24 日，上证指数单日下跌约 8.5%，美股道指开盘后一度暴跌超过 1000 点，大宗商品同步走弱。</p>
+    <p class="takeaway">全球联动有两层。一是<b>同一种冲击</b>（2008 年金融危机、2020 年疫情）让各国一起跌；二是<b>汇率与资本流动</b>把一个国家的问题传到别处。对 A 股投资者来说，人民币汇率是这条传导链上最值得盯的一环，它把“海外利率与美元”和“国内资产价格”连在了一起。</p>
+  </div>
+</section>
+
+<!-- ======================== 17.6 ======================== -->
+<section class="ch" id="s6">
+  <h2 class="sec"><span class="no">17.6</span>中国投资者的交叉市场仪表盘</h2>
+  <p class="sec-en">AN INTERMARKET DASHBOARD FOR A-SHARE INVESTORS</p>
+
+  <div class="prose">
+    <p>墨菲的四个市场以美国为中心：美元、CRB、美债、美股。中国投资者要做一次翻译：<strong>美元换成人民币汇率，美债换成中国国债，CRB 换成国内商品，再加上一个 A 股特有的仪表：政策</strong>。美债和美元并没有消失，它们通过汇率和外资间接影响 A 股，退到了第二排。</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 17-9</span>中国投资者的交叉市场仪表盘</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 434" role="img" aria-label="中国投资者的交叉市场仪表盘：中间是 A 股，周围五个仪表分别是国内利率、政策与流动性、人民币汇率、国内商品、海外利率与美元，每个仪表标出看什么数据和典型读法；底部是读表三步">
+<defs>
+  <marker id="f179-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/></marker>
+</defs>
+<!-- ① 国内利率 -->
+<rect class="node" x="12" y="14" width="220" height="122" rx="8"/>
+<text class="nt" x="24" y="38">① 国内利率</text>
+<text class="nd" x="24" y="60">看：中债 10 年期国债收益率</text>
+<text class="nd" x="24" y="80">工具：10 年、30 年国债期货</text>
+<text class="pv" x="24" y="102">下行：估值有支撑，红利受追捧</text>
+<text class="elabel" x="24" y="122">但若源于通缩，股票未必涨</text>
+
+<!-- ⑤ 政策与流动性 -->
+<rect class="node node-hi" x="250" y="14" width="220" height="122" rx="8"/>
+<text class="nt" x="262" y="38">⑤ 政策与流动性</text>
+<text class="nd" x="262" y="60">看：降准降息、财政、监管表态</text>
+<text class="nd" x="262" y="80">A 股特有的“第五个市场”</text>
+<text class="pv" x="262" y="102">重大转向时常压倒前四个仪表</text>
+<text class="elabel" x="262" y="122">例：第 1 站的 2024 年 9 月案例</text>
+
+<!-- ② 人民币汇率 -->
+<rect class="node" x="488" y="14" width="220" height="122" rx="8"/>
+<text class="nt" x="500" y="38">② 人民币汇率</text>
+<text class="nd" x="500" y="60">看：美元兑人民币、中美利差</text>
+<text class="nd" x="500" y="80">工具：在岸、离岸人民币汇率</text>
+<text class="pv" x="500" y="102">升值：外资偏好的龙头受益</text>
+<text class="elabel" x="500" y="122">贬值：资金流出压力，出口链受益</text>
+
+<!-- 中心 -->
+<rect class="node node-up" x="280" y="176" width="160" height="86" rx="10"/>
+<text class="nt" x="360" y="206" text-anchor="middle">A 股</text>
+<text class="nd" x="360" y="226" text-anchor="middle">大盘 · 行业 · 风格</text>
+<text class="nd" x="360" y="246" text-anchor="middle">交叉信号只做过滤</text>
+
+<!-- ③ 国内商品 -->
+<rect class="node" x="12" y="300" width="220" height="122" rx="8"/>
+<text class="nt" x="24" y="324">③ 国内商品</text>
+<text class="nd" x="24" y="346">看：南华商品指数、铜、煤、螺纹钢</text>
+<text class="nd" x="24" y="366">工具：上期所、大商所、郑商所</text>
+<text class="pv" x="24" y="388">上涨：有色、煤炭、钢铁走强</text>
+<text class="elabel" x="24" y="408">下游成本上升；价格常受政策干预</text>
+
+<!-- 读表三步 -->
+<rect class="edge-soft" x="250" y="300" width="220" height="122" rx="8"/>
+<text class="nt" x="262" y="324">读表三步</text>
+<text class="nd" x="262" y="346">1. 各个仪表的方向一致吗？</text>
+<text class="nd" x="262" y="366">2. 谁先转向？债券常常领先</text>
+<text class="nd" x="262" y="386">3. A 股自身的趋势确认了吗？</text>
+<text class="elabel" x="262" y="408">三步都过，才放大仓位</text>
+
+<!-- ④ 海外利率与美元 -->
+<rect class="node" x="488" y="300" width="220" height="122" rx="8"/>
+<text class="nt" x="500" y="324">④ 海外利率与美元</text>
+<text class="nd" x="500" y="346">看：美债 10 年期收益率、美元指数</text>
+<text class="nd" x="500" y="366">影响：港股、外资、人民币</text>
+<text class="pv" x="500" y="388">上行：成长股估值与汇率承压</text>
+<text class="elabel" x="500" y="408">危机时美元走强、全球同跌</text>
+
+<!-- 指向中心 -->
+<path class="edge" d="M232 112 L276 186" marker-end="url(#f179-ar)"/>
+<path class="edge" d="M360 136 V172" marker-end="url(#f179-ar)"/>
+<path class="edge" d="M488 112 L444 186" marker-end="url(#f179-ar)"/>
+<path class="edge" d="M232 318 L276 254" marker-end="url(#f179-ar)"/>
+<path class="edge" d="M488 318 L444 254" marker-end="url(#f179-ar)"/>
+<!-- 仪表之间的联系 -->
+<path class="edge-soft" d="M122 300 V140" marker-end="url(#f179-ar)"/>
+<text class="elabel" x="130" y="214">商品 → 通胀</text>
+<text class="elabel" x="130" y="232">→ 利率</text>
+<path class="edge-soft" d="M598 300 V140" marker-end="url(#f179-ar)"/>
+<text class="elabel" x="590" y="214" text-anchor="end">利差变化</text>
+<text class="elabel" x="590" y="232" text-anchor="end">→ 汇率</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>五个仪表围着 A 股。① 国内利率是 A 股估值的锚，用 10 年期国债收益率或国债期货观察；② 人民币汇率连着外资的进出；③ 国内商品价格决定周期板块的盈利；④ 海外利率与美元通过港股、外资和汇率间接施压；⑤ 政策与流动性是 A 股特有的“第五个市场”，重大转向时常常压倒前四个仪表。虚线表示仪表之间的联系：商品通过通胀影响利率，中美利差影响汇率。底部的“读表三步”是用法：仪表方向一致、上游已经转向、A 股自身趋势也确认了，才放大仓位。</figcaption>
+  </figure>
+
+  <div class="tablewrap">
+    <table>
+      <tr><th>仪表</th><th>看什么</th><th>典型读法</th><th>失效情形</th></tr>
+      <tr><td>① 国内利率</td><td>中债 10 年期国债收益率；10 年、30 年期国债期货</td><td>收益率下行：估值有支撑，高股息与成长股受益</td><td>下行源于通缩和需求不足时，股票未必涨（2022–2024 年）</td></tr>
+      <tr><td>② 人民币汇率</td><td>美元兑人民币（在岸、离岸）；中美 10 年期利差</td><td>人民币升值期，外资偏好的消费、金融龙头常相对强势</td><td>汇率受管理，短期波动常被平滑，信号偏慢</td></tr>
+      <tr><td>③ 国内商品</td><td>南华商品指数；铜、铝、动力煤、焦煤、螺纹钢、原油</td><td>商品走强：有色、煤炭、钢铁、石化盈利改善；下游制造业成本承压</td><td>限产、保供稳价等政策让价格与盈利脱节</td></tr>
+      <tr><td>④ 海外利率与美元</td><td>美国 10 年期国债收益率、美元指数</td><td>美债收益率上行：港股成长股和全球高估值资产承压，人民币有贬值压力</td><td>A 股与海外的日常相关性偏低，影响常被国内因素盖过</td></tr>
+      <tr><td>⑤ 政策与流动性</td><td>降准降息、财政发力、监管与稳市场措施</td><td>重大转向时，先于其他仪表改变方向</td><td>政策见效需要时间，首日暴涨之后常有反复</td></tr>
+    </table>
+  </div>
+
+  <div class="prose">
+    <p>几条仪表之间也有联系。最重要的一条是<strong>中美利差</strong>：2022 年起，中国 10 年期国债收益率低于美国同期限收益率，出现倒挂，2023–2024 年一度倒挂超过 2 个百分点。利差倒挂意味着持有美元资产的回报更高，资金有外流压力，人民币承压；同期人民币兑美元从 2022 年初的约 6.3 贬值到 7.2 附近。这就是“海外利率 → 汇率 → A 股”这条链的具体形态。</p>
+  </div>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>中国 2022–2024 年：利率下行，红利走强</h4>
+    <p>2022 年初，中国 10 年期国债收益率在 2.8% 左右。此后在经济恢复偏弱、物价低迷（PPI 从 2022 年 10 月起长期同比为负）和多次降息降准的背景下一路走低，到 2024 年底降到约 1.7%，创下有记录以来的新低。同期 A 股却并不景气：沪深 300 指数 2022 年、2023 年分别下跌约 22% 和 11%。</p>
+    <p>按经典链条，利率大降应该推高股票估值；实际情况更像 17.5 节的“通缩世界”：债券走牛，股票走弱，股债反向。资金在股票内部的选择也很有交叉市场的味道：以银行、煤炭、电力、公路为代表的高股息（红利）资产相对强势。道理不难理解：当国债只给 2% 左右的收益时，股息率稳定在 4%–5% 的股票就成了“类债券”，保险等长期资金愿意配置；2024 年 4 月发布的新“国九条”又强调了上市公司分红。</p>
+    <p class="takeaway">这是一个“利率下行 ≠ 股票普涨”的本土案例。交叉市场分析在这里的价值不是预测指数，而是指引<b>风格</b>：利率下行、通胀低迷时，相对强度比率会告诉你资金在偏向哪一类股票，而不是让你在指数上硬猜底部。2024 年 9 月底政策转向后，成长股反弹更猛，红利的相对强度随之回落，体制切换又一次提醒你：要跟着比率线走，而不是跟着故事走。</p>
+  </div>
+
+  <div class="ashare">
+    <span class="label">A 股适配</span>
+    <h4>把墨菲的四个市场翻译成 A 股语境</h4>
+    <ul>
+      <li><strong>国内利率排第一，全球商品排后面。</strong>A 股的估值锚是中国的无风险利率，而不是美债。国内通胀长期温和，利率更多随增长预期和货币政策变化，所以“商品 → 通胀 → 利率”这条链在国内偏弱；全球商品对 A 股的影响，主要体现在周期板块的盈利上。</li>
+      <li><strong>人民币汇率是外资偏好的风向标。</strong>人民币升值阶段，外资偏好的消费、金融龙头常常相对强势；贬值阶段则有资金外流压力。注意：北向资金的实时数据和逐日净买入数据已在 2024 年先后停止披露，回测和规则里不要依赖它，改用汇率、中美利差这类连续可得的数据。</li>
+      <li><strong>商品价格是周期板块的上游。</strong>有色看铜、铝，煤炭看动力煤、焦煤，钢铁看螺纹钢和铁矿石，石化看原油。商品价格的趋势常常先于这些板块的业绩公告；但国内商品价格受政策影响很大（2016 年起的供给侧改革、2021 年的保供稳价），政策一转向，商品和板块会一起急转。</li>
+      <li><strong>国债期货是观察利率趋势的好工具。</strong>中金所有 2 年、5 年、10 年、30 年期国债期货（代码 TS、TF、T、TL）。它们价格连续、盘中可得、可以直接画 K 线、趋势线和均线，比每天一个点的收益率数据更适合做技术分析。记住价格与收益率反向。</li>
+      <li><strong>政策是第五个市场。</strong>降准降息、财政发力、稳市场措施常常在其他仪表还没转向时，就直接改变 A 股的方向（第 1 站的 2024 年 9 月案例）。交叉市场分析在 A 股要多加一句：先看政策的方向，再看其他仪表是否跟上。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ======================== 17.7 ======================== -->
+<section class="ch" id="s7">
+  <h2 class="sec"><span class="no">17.7</span>落地：规则卡、证据与 A 股适配</h2>
+  <p class="sec-en">PUTTING IT TO WORK</p>
+
+  <div class="prose">
+    <p>本章的方法有一个共同特点：<strong>它们给出的是背景和方向，不是精确的买卖点</strong>。所以落地时，交叉市场信号主要扮演两个角色：一是在一组候选标的里<strong>挑出最强的</strong>（相对强度轮动），二是给整个账户<strong>设定仓位上限</strong>（股债比率滤网）。真正的入场和止损，仍然交给前几站的价格工具。</p>
+  </div>
+
+  <div class="rulecard">
+    <div class="rc-head"><span class="label">规则卡 1</span><span class="rc-name">行业 ETF 相对强度轮动</span></div>
+    <dl>
+      <dt>标的与周期</dt><dd>6 只行业或风格 ETF（示例：红利、证券、有色金属、煤炭、消费、半导体），基准为沪深 300 指数；每月末调仓一次，日线监控止损。全部使用复权价格</dd>
+      <dt>过滤条件</dt><dd>① 相对强度：RS3 = 今日（ETF ÷ 沪深 300）÷ 63 个交易日前（ETF ÷ 沪深 300）− 1，必须大于 0；② 绝对趋势：ETF 收盘价在自身 60 日均线之上。两条都不满足的 ETF 不参与排名；若没有 ETF 合格，资金放货币基金</dd>
+      <dt>入场</dt><dd>每月最后一个交易日收盘后，在合格的 ETF 中选 RS3 最大的一只，下一个交易日开盘买入。若当天一字涨停买不进，顺延一天，不追涨停</dd>
+      <dt>止损</dt><dd>收盘价较买入价下跌 8%，或收盘跌破 60 日均线，次日开盘卖出，转入货币基金，当月不再买回。T+1 意味着买入当天不能卖，止损最早次日执行；遇到跌停卖不出，次日继续挂单</dd>
+      <dt>出场</dt><dd>月末重新排名：只有当新的第一名 RS3 比持仓高出 3 个百分点以上时才换仓（缓冲带，减少来回换手）；持仓跌出过滤条件时，直接换成新的第一名或转入货币基金</dd>
+      <dt>仓位</dt><dd>按止损反推，单笔风险不超过账户的 2%。例：账户 30 万元，最多可亏 6000 元；止损幅度 8%，ETF 市值上限 = 6000 ÷ 8% = 7.5 万元。ETF 价格 1.250 元，买 60000 份。其余资金放货币基金或核心持仓</dd>
+    </dl>
+    <p class="rc-note">为什么是 3 个月：行业动量的研究多集中在 3–12 个月的形成期（见下方证据），3 个月反应较快；也可以试 6 个月，但要在第 12 站学完样本外检验后再定。为什么要加 60 日均线：熊市里相对强度最高的板块，往往只是跌得最少（17.4 节的“抗跌”象限），绝对趋势过滤能让你在系统性下跌中退到货币基金。注意第 1 站提到的 A 股短周期反转效应：行业层面的动量在 A 股并不稳定，这张卡是待检验的假设，不是现成的赚钱机器；每月换仓的交易成本也必须算进回测。</p>
+  </div>
+
+  <div class="rulecard">
+    <div class="rc-head"><span class="label">规则卡 2</span><span class="rc-name">股债比率仓位滤网</span></div>
+    <dl>
+      <dt>标的与周期</dt><dd>不单独交易，用来给任何 A 股权益策略设定总仓位上限。比率 = 沪深 300 ETF 复权收盘价 ÷ 10 年期国债 ETF 复权收盘价（也可用 10 年期国债期货主力连续合约代替分母）；日线</dd>
+      <dt>过滤条件</dt><dd>比率线收盘低于自身 120 日均线，且 120 日均线比 20 个交易日前更低 → “债强股弱”，进入防守状态；比率重新站上 120 日均线并连续保持 5 个交易日 → 恢复正常状态</dd>
+      <dt>入场</dt><dd>本卡不产生买入信号。原策略照常出信号，只是能用的仓位上限变了</dd>
+      <dt>止损</dt><dd>沿用原策略自己的止损，本卡不改动</dd>
+      <dt>出场</dt><dd>进入防守状态的次日起，用 2 个交易日把超出上限的部分分两次减掉，避免一天集中卖在低点</dd>
+      <dt>仓位</dt><dd>正常状态权益仓位上限 80%，防守状态降为 40%。例：账户 50 万元，正常时股票最多 40 万元；防守时最多 20 万元，其余放国债 ETF 或货币基金</dd>
+    </dl>
+    <p class="rc-note">为什么用比率，而不是单看收益率：中国的利率更多跟着增长预期走。2020 年下半年，10 年期国债收益率从约 2.5% 回升到约 3.3%，沪深 300 同期却大涨；2022–2024 年收益率一路下行，股票反而走弱。单看“收益率上行就减仓”，这两段都会做反。股债比率直接比较两类资产谁更强，不管背后是通胀还是增长在主导，都能反映“钱更愿意待在哪里”，这正是本章比率分析在资产配置层面的用法。代价是滞后：它躲不开急跌，只能帮你避开漫长熊市的大部分；震荡市里还会来回切换，所以加了“均线方向”和“连续 5 天”两道确认。</p>
+  </div>
+
+  <div class="evidence">
+    <span class="label">证据与怀疑</span>
+    <h4>交叉市场关系有多可靠？</h4>
+    <ul>
+      <li><strong>股债相关性会换号：</strong>Campbell、Sunderam 和 Viceira（2017）发现，美国国债与股票的协方差在 1980 年代为正、2000 年代转为负；Baele、Bekaert 和 Inghelbrecht（2010）、Ilmanen（2003）等研究把这种切换与通胀和增长冲击的相对强弱联系起来。2022 年的再次转正，与 17.5 节的框架一致。</li>
+      <li><strong>领先关系存在，但时间不稳定：</strong>Estrella 和 Mishkin（1998）发现，长短期利差（收益率曲线的斜率）是预测美国衰退最有用的金融变量之一；Fama 和 French（1989）发现期限利差、信用利差随经济周期变化，并与股票、债券的预期回报相关。但美国 10 年期与 2 年期国债利差从 2022 年 7 月起倒挂了两年多，截至 2024 年底并未出现公认的衰退，提醒你“领先”可能领先得非常久，甚至落空。</li>
+      <li><strong>行业确实带有领先信息：</strong>Hong、Torous 和 Valkanov（2007）发现，部分行业（如零售、商业地产、金属、石油）的收益率能领先大盘一到两个月，作者用“信息在市场中缓慢扩散”来解释；Moskowitz 和 Grinblatt（1999）发现行业动量很强，能解释个股动量的很大一部分。这为相对强度轮动提供了学术依据。</li>
+      <li><strong>危机时相关性上升：</strong>Longin 和 Solnik（2001）发现各国股市在熊市中的相关性明显高于牛市；Forbes 和 Rigobon（2002）提醒，部分“相关性上升”是波动放大带来的统计假象。无论哪种解释，分散化都往往在最需要的时候打折。</li>
+      <li><strong>回扣《投资学》：</strong>交叉市场关系早已写进教科书和墨菲 1991 年的书。按第 11 章的半强式有效市场，人人皆知、稳定可套利的领先关系应该早被抢跑殆尽；能留下来的，更可能是第 12 章讲的信息缓慢扩散、反应不足，以及随经济周期变化的风险溢价。利率影响估值的机制见第 14 章（久期）和第 18 章（戈登模型），宏观与行业的系统分析见第 17 章（宏观经济与行业分析，选学）。</li>
+    </ul>
+    <p>结论：交叉市场关系是<strong>有经济逻辑支撑的倾向</strong>，不是物理定律。方向会随体制切换，领先时间从几周到一年以上不等。最适合的用法是判断背景、调整仓位上限、挑选板块，而不是给出精确的买卖点。</p>
+  </div>
+
+  <div class="ashare">
+    <span class="label">A 股适配</span>
+    <h4>执行细节：ETF 的 T+1、T+0 与涨跌停</h4>
+    <ul>
+      <li><strong>交收制度不同：</strong>股票类 ETF（行业、风格、宽基）实行 T+1，买入当天不能卖，止损最早次日执行；债券 ETF、黄金 ETF、跨境 ETF、货币 ETF 实行 T+0，当天可以买卖，适合当作轮动时的“避风港”和临时停泊处。</li>
+      <li><strong>涨跌停：</strong>多数 ETF 的涨跌幅限制为 10%，跟踪创业板、科创板指数的 ETF 为 20%。轮动规则遇到一字涨停买不进、跌停卖不出时，按规则卡写好的顺延办法执行，不要临场改主意。</li>
+      <li><strong>数据口径：</strong>10 年期国债收益率用中债估值的到期收益率；国债期货看中金所的主力连续合约，换月时注意价格跳空（参考附录 D 的连续合约处理）；人民币汇率区分在岸与离岸；所有 ETF 一律用复权价格计算比率。</li>
+      <li><strong>不要拿停更的数据做输入：</strong>规则里的每个变量都要能每天稳定获取，并且有足够长的历史可供回测。北向资金这类已经停止逐日披露的数据，不适合再作为规则输入。</li>
+    </ul>
+  </div>
+
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p>“我把美元、铜、原油、美债、汇率五个指标排列组合，回测出一个年化 40% 的择时信号。”交叉市场变量多、彼此高度相关，样本里真正完整的大周期又只有寥寥几个，最容易过度拟合。每加一个条件都要问：背后有没有 17.2 节那样的经济逻辑？换一段时间、换一个市场还成立吗？第 12 站（计算机和交易系统）会系统地讲样本外检验。</p>
+  </div>
+</section>
+
+<!-- ======================== 小结 ======================== -->
+<section class="ch" id="recap">
+  <h2 class="sec"><span class="no">※</span>本章小结</h2>
+  <p class="sec-en">SUMMARY</p>
+
+  <div class="recap">
+    <ol>
+      <li><b>思想：</b>所有市场相互关联，只看一个市场等于只听一个证人；交叉市场分析是单一市场图表分析的补充，用相关市场的<b>价格图</b>读宏观，而不是预测经济数据。</li>
+      <li><b>传导链：</b>美元 →（−）商品 →（+）通胀预期 →（−）债券 →（+）股票。商品是上游，通胀是中游，利率和债券是下游，股票估值在更下游；上游先动，下游后动。</li>
+      <li><b>商品与债券反向：</b>通胀是中间人（费雪方程）；收益率与债券价格互为镜像，ΔP/P ≈ −D* × Δy；说“债券上涨”指价格涨、收益率降。</li>
+      <li><b>债券与股票同向，债券常领先：</b>利率通过折现率、比价和融资成本影响股票；股票“久期”≈ 1 ÷（r − g），成长股像超长期债券，对利率最敏感。</li>
+      <li><b>美元与股债没有固定符号：</b>先问美元为什么涨；黄金与美元常反向，但会被央行购金等因素打破。</li>
+      <li><b>转向顺序：</b>顶部和底部都是债券最先、股票其次、商品最后，对应六阶段框架；1987 年债券领先股票约 5 个月，但领先时间不稳定，不能当扳机。</li>
+      <li><b>板块轮动与相对强度：</b>利率敏感板块领先，原材料和能源在扩张后期接棒，防御板块在放缓期抗跌；比率线回答“比谁涨得多”，可以画趋势线、均线；它不是 RSI，使用时要配合绝对趋势过滤。</li>
+      <li><b>关系会变：</b>通胀世界股债正相关（1970–1990 年代、2022 年美国），增长或通缩世界股债负相关（约 2000–2020 年、1998 年、日本、中国 2022–2024 年）；危机时全球股市相关性上升。</li>
+      <li><b>A 股仪表盘：</b>国内利率、人民币汇率、国内商品、海外利率与美元、政策与流动性；交叉信号只做过滤和仓位调节，入场、止损仍交给价格工具。</li>
+    </ol>
+  </div>
+
+  <h3>核心术语（中英对照）</h3>
+  <div class="tablewrap">
+    <table>
+      <tr><th>中文</th><th>English</th><th>一句话定义</th></tr>
+      <tr><td>交叉市场分析</td><td>intermarket analysis</td><td>通过相关市场的走势来理解和验证目标市场</td></tr>
+      <tr><td>CRB 商品价格指数</td><td>CRB Index (Commodity Research Bureau)</td><td>墨菲常用的美国商品期货综合指数</td></tr>
+      <tr><td>南华商品指数</td><td>Nanhua Commodity Index</td><td>反映国内商品期货整体走势的指数</td></tr>
+      <tr><td>美元指数</td><td>U.S. Dollar Index (DXY)</td><td>美元对一篮子主要货币的加权汇率</td></tr>
+      <tr><td>收益率</td><td>yield</td><td>按当前价格买入债券的年化回报，与价格反向</td></tr>
+      <tr><td>通胀预期</td><td>inflation expectations</td><td>市场对未来物价涨幅的判断，决定名义利率</td></tr>
+      <tr><td>久期 / 修正久期</td><td>duration / modified duration</td><td>价格对利率变化的敏感度</td></tr>
+      <tr><td>戈登增长模型</td><td>Gordon growth model</td><td>P = D ÷（r − g），股利以固定速度增长时的股票价值</td></tr>
+      <tr><td>领先 / 滞后</td><td>lead / lag</td><td>一个市场的转向发生在另一个之前 / 之后</td></tr>
+      <tr><td>经济周期</td><td>business cycle</td><td>经济在衰退、复苏、扩张、放缓之间的循环</td></tr>
+      <tr><td>板块轮动</td><td>sector rotation</td><td>不同板块在周期不同阶段轮流领涨</td></tr>
+      <tr><td>利率敏感板块</td><td>interest-rate-sensitive sectors</td><td>公用事业、金融等对利率反应最快的板块</td></tr>
+      <tr><td>防御板块 / 周期板块</td><td>defensive / cyclical sectors</td><td>需求刚性、波动小 / 盈利随经济大起大落的板块</td></tr>
+      <tr><td>相对强度比率</td><td>relative strength ratio</td><td>A 的价格 ÷ B 的价格，衡量谁比谁强</td></tr>
+      <tr><td>比率分析</td><td>ratio analysis</td><td>把两个市场相除，对比率线做技术分析</td></tr>
+      <tr><td>自上而下分析</td><td>top-down analysis</td><td>资产大类 → 板块 → 个股，逐层筛选</td></tr>
+      <tr><td>股债相关性</td><td>stock-bond correlation</td><td>股票与债券回报同向或反向变动的程度</td></tr>
+      <tr><td>通货紧缩</td><td>deflation</td><td>物价普遍持续下跌，需求不足的状态</td></tr>
+      <tr><td>避险需求</td><td>flight to quality</td><td>恐慌时资金从风险资产涌向国债等安全资产</td></tr>
+      <tr><td>滚动相关系数</td><td>rolling correlation</td><td>用最近一段窗口反复计算的相关系数</td></tr>
+      <tr><td>中美利差</td><td>China-U.S. yield spread</td><td>中国与美国同期限国债收益率之差</td></tr>
+      <tr><td>国债期货</td><td>Treasury bond futures</td><td>以国债为标的的期货，价格与收益率反向</td></tr>
+      <tr><td>传染</td><td>contagion</td><td>危机从一个市场或国家蔓延到其他市场</td></tr>
+    </table>
+  </div>
+
+  <h3>自测（先想后翻）</h3>
+  <details>
+    <summary>Q1 为什么商品与债券通常反向？请沿着“上游 → 中游 → 下游”讲一遍，并说出什么情况下这条链会断。</summary>
+    <div class="ans"><p>商品是上游：商品涨价，企业的原材料成本上升，逐步推高 PPI、CPI。通胀预期是中游：按费雪方程，名义利率 ≈ 实际利率 + 预期通胀，预期通胀上升，债券投资者要求更高的收益率，央行也可能加息。债券是下游：收益率上升，债券价格按久期下跌（ΔP/P ≈ −D* × Δy）。所以商品与收益率同向、与债券价格反向。链条会断的情形：一是商品上涨只来自个别品种的供给问题（比如一次减产），市场认为是暂时的，通胀预期不动；二是在通缩世界里，商品下跌反映的是需求崩塌，债券上涨的同时股票下跌，经典链条的后半段失效；三是央行压低利率（比如收益率曲线控制），收益率不再自由反映通胀。</p></div>
+  </details>
+  <details>
+    <summary>Q2 为什么债券常常领先股票见顶？1987 年它领先了多久？如果你在债券见顶时立刻做空股票，会发生什么？</summary>
+    <div class="ans"><p>债券只关心通胀和利率，股票关心盈利。经济过热时，通胀苗头一出现，债券就先跌；而这个阶段正是企业盈利最好的时候，股票还会继续上涨，直到利率高到足以压垮估值和经济。1987 年，长期国债在春季（3–4 月）见顶，股票 8 月 25 日才见顶，领先约 5 个月，10 月 19 日道指单日暴跌 22.6%。如果你在春天债券破位时就做空股票，要先扛住一段一成以上的上涨，很可能在崩盘前就被止损出局。正确的做法是把债券转弱当作“收紧止损、降低仓位上限、暂停加仓”的信号，真正的卖出等股票自己的趋势线或均线破位。</p></div>
+  </details>
+  <details>
+    <summary>Q3 行业 A 三个月涨了 8%，沪深 300 同期涨了 12%；行业 B 三个月跌了 3%，沪深 300 同期跌了 10%。分别计算相对强度比率的变化，谁“强”？</summary>
+    <div class="ans"><p>A：1.08 ÷ 1.12 − 1 ≈ −3.6%，比率下降，A 虽然在涨，却跑输大盘，属于“跟涨”，资金可能正在流出。B：0.97 ÷ 0.90 − 1 ≈ +7.8%，比率上升，B 跑赢大盘，属于“抗跌”。按相对强度，B 更强；但 B 的持有者仍然亏了 3%。这就是为什么轮动规则要同时要求“相对强”和“自身趋势向上”：在熊市里，相对强度最高的品种也可能只是亏得最少。另外记住，相对强度比率衡量两个市场谁更强，和第 9 站衡量单一市场超买超卖的 RSI 是两回事。</p></div>
+  </details>
+  <details>
+    <summary>Q4 2022 年美国股债同跌说明了什么？同一时期中国却是债涨股跌，怎么用一个框架同时解释？</summary>
+    <div class="ans"><p>框架是“主导冲击”：股债同向还是反向，取决于市场最怕的是通胀冲击还是增长冲击。2022 年的美国，CPI 一度达到约 9.1%，通胀是主要矛盾：通胀推高利率，利率同时打压债券价格和股票估值，股债同跌（正相关），成长股因为“久期”长跌得最惨，“债券是股票的保险”这条二十年的经验失效。同期的中国，物价低迷、PPI 长期为负，增长不足是主要矛盾：利率一路下行，债券走牛，但需求疲弱让股票走弱（负相关），资金转向股息率高的“类债券”股票。两个国家用的是同一个框架，只是处在不同的体制里。教训是：任何依赖固定股债关系的组合或规则，都要先判断自己身处哪个世界，并写好关系失效时的应对办法。</p></div>
+  </details>
+  <details>
+    <summary>Q5 为什么交叉市场信号只能作为过滤条件，而不是入场信号？</summary>
+    <div class="ans"><p>三个原因。① 领先时间不稳定：债券可能领先股票 3 个月，也可能超过一年，期间股票可能大涨，用它入场或离场会严重错位。② 关系会切换：在通胀与通缩两种体制下，同一个信号（比如利率下降）对股票的含义相反。③ 信号太慢、太粗：交叉市场信号描述的是背景和资金偏好，给不出精确的价位，也就给不出明确的止损位置，而规则卡要求入场之前就知道在哪里认错。所以合理的分工是：交叉市场负责“顺风还是逆风”“放多少仓位”“挑哪个板块”，价格工具（趋势线、均线、形态）负责“何时进、何时出、错了在哪认”。规则卡 1 用它选标的，规则卡 2 用它定仓位上限，都没有让它直接触发买卖。</p></div>
+  </details>
+  <details>
+    <summary>Q6 中国 10 年期国债收益率连续下行，A 股就一定会涨吗？还应该看哪些仪表？</summary>
+    <div class="ans"><p>不一定。收益率下行有两种可能：如果是因为通胀回落、货币宽松，而经济增长预期稳定，估值抬升，股票受益；如果是因为需求不足、通缩担忧，那就是 17.5 节的“通缩世界”，债涨股跌，2022–2024 年就是这样。要区分，至少再看四个仪表：① 国内商品和 PPI：商品与股票一起跌，说明需求在崩塌；② 人民币汇率和中美利差：贬值压力大时，外资偏好的板块承压；③ 政策：有没有足以扭转预期的重大政策；④ A 股自身的趋势和风格比率：沪深 300 是否站上关键均线，红利与成长的比率线朝哪边走。最后，用股债比率（规则卡 2）直接看资金更愿意待在股票还是债券里，它不需要你先判断背后是通胀还是增长在主导。</p></div>
+  </details>
+
+  <a class="next" href="ta-ch18.html">
+    <div>
+      <div class="lbl">NEXT STATION · 第 11 站</div>
+      <div class="ttl">第 18 章 · 股票市场指标</div>
+    </div>
+    <div class="lbl">市场宽度：指数在涨，是多数股票在涨，还是少数权重在拉</div>
+  </a>
+
+  <p class="foot">本页为依据约翰·墨菲《金融市场技术分析》框架整理的原创学习笔记（第 17 章），仅用于教学理解；标“示意”的图表为构造数据，研究结论与历史数据为近似表述，以原始文献和官方数据为准。内容不构成任何投资建议。</p>
+</section>
+
+</main>
+</div>
+</div>
+
+<script>
+(function(){
+  var links = Array.prototype.slice.call(document.querySelectorAll('.sidenav a[href^="#"]'));
+  if(!links.length) return;
+  var map = [];
+  links.forEach(function(a){
+    var el = document.getElementById(a.getAttribute('href').slice(1));
+    if(el) map.push([el, a]);
+  });
+  if(!map.length) return;
+  function update(){
+    var y = window.scrollY + 150;
+    var cur = map[0][1];
+    for(var i = 0; i < map.length; i++){
+      if(map[i][0].offsetTop <= y) cur = map[i][1];
+    }
+    map.forEach(function(p){ p[1].classList.toggle('active', p[1] === cur); });
+  }
+  var tick = false;
+  window.addEventListener('scroll', function(){
+    if(!tick){
+      tick = true;
+      requestAnimationFrame(function(){ tick = false; update(); });
+    }
+  }, {passive:true});
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+</body>
+</html>

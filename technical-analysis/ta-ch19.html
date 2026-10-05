@@ -1,0 +1,2276 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>技术分析 · 第19章 全书大会串</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700;900&family=Noto+Sans+SC:wght@400;500;700&display=swap">
+<style>
+/* 《金融市场技术分析》讲义共享样式：双栏（212px 侧栏 + 正文），沿用《投资学》手册模板；
+   新增：红涨绿跌的 K 线配色、图表注释类、规则卡 / 证据与怀疑 / A 股适配 / 打个比方 四种讲义块 */
+:root{
+  --bg:#f5f6f7;
+  --surface:#ffffff;
+  --ink:#171a20;
+  --ink-2:#4a5160;
+  --muted:#858c9b;
+  --line:#e2e5ea;
+  --line-2:#c9ced6;
+  --accent:#1d5fad;
+  --accent-ink:#174e8f;
+  --accent-soft:#eaf1fa;
+  --series:#2a78d6;
+  --series2:#eb6834;
+  --series2-ink:#b4501f;
+  --series3:#8a5fd1;
+  --up:#d63a3a;
+  --up-ink:#b42f2f;
+  --up-soft:rgba(214,58,58,.09);
+  --down:#14905a;
+  --down-soft:rgba(20,144,90,.10);
+  --crit:#d03b3b;
+  --crit-soft:rgba(208,59,59,.07);
+  --serif:"Noto Serif SC","Songti SC",serif;
+  --sans:"Noto Sans SC","Microsoft YaHei",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#101215; --surface:#181b20; --ink:#eef0f3; --ink-2:#c0c5cf; --muted:#8a909d;
+    --line:#282c33; --line-2:#3a3f48;
+    --accent:#5a96e3; --accent-ink:#79abec; --accent-soft:#1c2a3d;
+    --series:#3987e5; --series2:#e0703f; --series2-ink:#f0915f; --series3:#a585e8;
+    --up:#ec6262; --up-ink:#f08080; --up-soft:rgba(236,98,98,.13);
+    --down:#2fb87a; --down-soft:rgba(47,184,122,.13);
+    --crit:#e66767; --crit-soft:rgba(230,103,103,.10);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#101215; --surface:#181b20; --ink:#eef0f3; --ink-2:#c0c5cf; --muted:#8a909d;
+  --line:#282c33; --line-2:#3a3f48;
+  --accent:#5a96e3; --accent-ink:#79abec; --accent-soft:#1c2a3d;
+  --series:#3987e5; --series2:#e0703f; --series2-ink:#f0915f; --series3:#a585e8;
+  --up:#ec6262; --up-ink:#f08080; --up-soft:rgba(236,98,98,.13);
+  --down:#2fb87a; --down-soft:rgba(47,184,122,.13);
+  --crit:#e66767; --crit-soft:rgba(230,103,103,.10);
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:var(--sans); font-size:15.5px; line-height:1.85;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1190px; margin:0 auto; padding-inline:20px; padding-block:0 72px}
+
+.layout{display:grid; grid-template-columns:212px minmax(0,1fr); gap:44px; align-items:start}
+.article{max-width:920px; min-width:0}
+.sidenav{
+  position:sticky; top:16px; max-height:calc(100vh - 32px); overflow-y:auto;
+  padding-block:40px 16px; font-size:13px;
+}
+.sidenav .sn-chap{
+  margin:0 0 10px; padding-left:13px; font-size:11.5px; letter-spacing:.14em;
+  color:var(--muted); font-weight:700;
+}
+.sidenav a{
+  display:block; color:var(--ink-2); text-decoration:none; line-height:1.55;
+  padding:6px 10px 6px 13px; border-left:2px solid var(--line);
+}
+.sidenav a:hover{color:var(--accent-ink)}
+.sidenav a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.sidenav a.active{
+  color:var(--accent-ink); border-left-color:var(--accent);
+  background:var(--accent-soft); font-weight:700;
+}
+.hero,section.ch{scroll-margin-top:10px}
+@media (max-width: 999px){
+  .sidenav{display:none}
+  .layout{display:block}
+}
+@media (min-width: 1000px){
+  nav.chapmap{display:none}
+}
+
+.masthead{
+  display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  padding-block:18px 14px; border-bottom:1px solid var(--line);
+}
+.masthead .book{font-family:var(--serif); font-weight:700; font-size:15px; letter-spacing:.02em}
+.masthead .part{font-size:12.5px; color:var(--muted); letter-spacing:.12em}
+.masthead a{color:var(--accent-ink); text-decoration:none}
+.masthead a:hover{text-decoration:underline}
+.masthead a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+a.next{color:inherit; text-decoration:none}
+a.next:hover{border-color:var(--accent)}
+a.next:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+.hero{padding-block:44px 28px; border-bottom:1px solid var(--line)}
+.chap-no{
+  display:inline-flex; align-items:center; gap:10px;
+  font-size:12.5px; letter-spacing:.22em; color:var(--accent-ink); font-weight:700;
+}
+.chap-no::after{content:""; width:46px; height:1px; background:var(--accent)}
+.hero h1{
+  font-family:var(--serif); font-weight:900; font-size:clamp(30px,5vw,46px);
+  line-height:1.25; margin:10px 0 4px; letter-spacing:.02em; text-wrap:balance;
+}
+.hero .en{font-size:14px; color:var(--muted); letter-spacing:.08em; margin:0 0 18px}
+.hero .lede{max-width:46em; color:var(--ink-2); margin:0}
+.hero .lede strong{color:var(--ink)}
+.objectives{
+  margin-top:22px; padding:16px 20px; background:var(--surface);
+  border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:0 6px 6px 0;
+}
+.objectives h2{font-size:13px; letter-spacing:.18em; color:var(--accent-ink); margin:0 0 8px; font-weight:700}
+.objectives ul{margin:0; padding-left:1.3em; color:var(--ink-2)}
+.objectives li{margin:3px 0}
+.colorkey{margin-top:12px; font-size:12.5px; color:var(--muted)}
+.colorkey .up{color:var(--up-ink); font-weight:700}
+.colorkey .dn{color:var(--down); font-weight:700}
+.chapmap{display:flex; flex-wrap:wrap; gap:8px; margin-top:20px}
+.chapmap a{
+  font-size:13px; color:var(--ink-2); text-decoration:none;
+  border:1px solid var(--line-2); border-radius:999px; padding:4px 13px; background:var(--surface);
+}
+.chapmap a:hover{border-color:var(--accent); color:var(--accent-ink)}
+.chapmap a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+section.ch{padding-block:40px 8px}
+section.ch + section.ch{border-top:1px solid var(--line)}
+h2.sec{
+  font-family:var(--serif); font-weight:700; font-size:clamp(22px,3.4vw,28px);
+  margin:0 0 2px; line-height:1.35; text-wrap:balance;
+}
+h2.sec .no{color:var(--accent-ink); margin-right:10px; font-feature-settings:"tnum"}
+p.sec-en{font-size:12.5px; letter-spacing:.1em; color:var(--muted); margin:0 0 18px}
+h3{font-size:16.5px; font-weight:700; margin:26px 0 8px}
+h3 .tag{color:var(--accent-ink)}
+p{margin:10px 0}
+.prose{max-width:46em}
+.prose .en-term{color:var(--muted); font-size:.88em}
+.prose ul,.prose ol{padding-left:1.4em; margin:8px 0}
+.prose li{margin:5px 0}
+strong{font-weight:700}
+em{font-style:normal; font-weight:700; color:var(--accent-ink)}
+.up-t{color:var(--up-ink); font-weight:700}
+.dn-t{color:var(--down); font-weight:700}
+
+.cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px; margin:16px 0}
+.card{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:16px 18px;
+}
+.card h4{margin:0 0 6px; font-size:15px}
+.card h4 .en-term{display:block; font-weight:400; font-size:12px; color:var(--muted); letter-spacing:.04em; margin-top:2px}
+.card p{margin:6px 0; font-size:14px; color:var(--ink-2)}
+.card ul{margin:6px 0 0; padding-left:1.2em; font-size:14px; color:var(--ink-2)}
+.card li{margin:3px 0}
+.card .k{display:block; font-size:12px; letter-spacing:.12em; color:var(--muted); font-weight:700; margin-top:8px}
+
+.case,.evidence,.ashare{
+  margin:20px 0; padding:16px 20px 14px; background:var(--surface);
+  border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:0 8px 8px 0;
+}
+.evidence{border-left-color:var(--series2)}
+.ashare{border-left-color:var(--up)}
+.case .label,.evidence .label,.ashare .label{font-size:12px; letter-spacing:.2em; color:var(--accent-ink); font-weight:700; display:block; margin-bottom:6px}
+.evidence .label{color:var(--series2-ink)}
+.ashare .label{color:var(--up-ink)}
+.case h4,.evidence h4,.ashare h4{margin:0 0 6px; font-size:15.5px}
+.case p,.evidence p,.ashare p{margin:7px 0; font-size:14.5px; color:var(--ink-2)}
+.case p:last-child,.evidence p:last-child,.ashare p:last-child{margin-bottom:2px}
+.evidence ul,.ashare ul,.case ul{margin:6px 0; padding-left:1.3em; font-size:14.5px; color:var(--ink-2)}
+.evidence li,.ashare li,.case li{margin:5px 0}
+.case .takeaway{color:var(--ink); font-weight:500}
+.case .takeaway::before{content:"▸ 要点 "; color:var(--accent-ink); font-weight:700; font-size:12.5px; letter-spacing:.05em}
+
+.analogy{
+  margin:18px 0; padding:14px 20px; background:var(--accent-soft); border-radius:8px; max-width:46em;
+}
+.analogy .label{font-size:12px; letter-spacing:.2em; color:var(--accent-ink); font-weight:700; display:block; margin-bottom:4px}
+.analogy p{margin:5px 0; font-size:14.5px; color:var(--ink-2)}
+
+.pitfall{
+  margin:20px 0; padding:14px 20px; border:1px dashed var(--line-2); border-radius:8px; max-width:46em;
+}
+.pitfall .label{font-size:12px; letter-spacing:.2em; color:var(--crit); font-weight:700; display:block; margin-bottom:4px}
+.pitfall p{margin:4px 0; font-size:14.5px; color:var(--ink-2)}
+
+/* 规则卡 */
+.rulecard{
+  margin:22px 0; background:var(--surface); border:1px solid var(--line); border-radius:8px;
+  overflow:hidden; max-width:46em;
+}
+.rulecard .rc-head{
+  padding:10px 18px; background:var(--accent-soft); border-bottom:1px solid var(--line);
+  display:flex; justify-content:space-between; align-items:baseline; gap:10px; flex-wrap:wrap;
+}
+.rulecard .rc-head .label{font-size:12px; letter-spacing:.2em; color:var(--accent-ink); font-weight:700}
+.rulecard .rc-head .rc-name{font-weight:700; color:var(--ink)}
+.rulecard dl{display:grid; grid-template-columns:6.2em minmax(0,1fr); margin:0}
+.rulecard dt{padding:9px 0 9px 18px; font-size:13px; color:var(--muted); font-weight:700; border-top:1px solid var(--line)}
+.rulecard dd{margin:0; padding:9px 18px 9px 8px; font-size:14px; color:var(--ink-2); border-top:1px solid var(--line)}
+.rulecard dl > dt:first-child,.rulecard dl > dt:first-child + dd{border-top:none}
+.rulecard .rc-note{padding:10px 18px; font-size:13px; color:var(--muted); border-top:1px dashed var(--line-2); line-height:1.75}
+
+.formula{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px;
+  padding:12px 18px; margin:14px 0; max-width:46em; overflow-x:auto;
+  font-size:15px; line-height:2;
+}
+.formula .fx{white-space:nowrap}
+.formula sub,.formula sup{font-size:11px}
+.formula .note{font-size:12.5px; color:var(--muted)}
+
+table{border-collapse:collapse; width:100%; font-size:14px; font-variant-numeric:tabular-nums}
+.tablewrap{overflow-x:auto; margin:16px 0; border:1px solid var(--line); border-radius:8px; background:var(--surface)}
+.tablewrap table{min-width:560px}
+th,td{padding:9px 14px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top}
+th{font-size:12.5px; letter-spacing:.08em; color:var(--muted); font-weight:700; white-space:nowrap}
+tr:last-child td{border-bottom:none}
+td.num{white-space:nowrap}
+
+figure{margin:24px 0; background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:18px 18px 12px}
+figure .fig-scroll{overflow-x:auto}
+figure svg{display:block; max-width:100%; height:auto; color:var(--ink)}
+figure .fig-scroll svg{min-width:660px}
+figure .fig-scroll.narrow svg{min-width:0}
+figcaption{font-size:13px; color:var(--muted); margin-top:10px; line-height:1.7}
+figcaption b{color:var(--ink-2); font-weight:700}
+.fig-title{font-size:14px; font-weight:700; margin:0 0 12px}
+.fig-title .fno{color:var(--accent-ink); margin-right:8px}
+.fig-title .sch{font-size:11.5px; font-weight:400; color:var(--muted); border:1px solid var(--line-2); border-radius:999px; padding:1px 8px; margin-left:8px; white-space:nowrap}
+
+/* SVG：通用 */
+svg .node{fill:var(--bg); stroke:var(--line-2); stroke-width:1.2}
+svg .node-hi{fill:var(--accent-soft); stroke:var(--accent)}
+svg .node-up{fill:var(--up-soft); stroke:var(--up)}
+svg .node-dn{fill:var(--down-soft); stroke:var(--down)}
+svg .nt{font:700 12.5px var(--sans); fill:var(--ink)}
+svg .nd{font:400 11px var(--sans); fill:var(--ink-2)}
+svg .edge{stroke:var(--ink-2); stroke-width:1.4; fill:none}
+svg .edge-soft{stroke:var(--muted); stroke-width:1.2; fill:none; stroke-dasharray:4 4}
+svg .edge-acc{stroke:var(--accent); stroke-width:1.6; fill:none}
+svg .elabel{font:400 11.5px var(--sans); fill:var(--muted)}
+svg .grid{stroke:var(--line); stroke-width:1}
+svg .axis{stroke:var(--line-2); stroke-width:1.2}
+svg .tick{font:400 11px var(--sans); fill:var(--muted)}
+svg .atitle{font:400 11.5px var(--sans); fill:var(--muted)}
+svg .pl{font:700 13px var(--sans); fill:var(--ink)}
+svg .pv{font:400 11.5px var(--sans); fill:var(--ink-2)}
+svg .hi{font:700 12px var(--sans); fill:var(--accent-ink)}
+svg .ut{font:700 12px var(--sans); fill:var(--up-ink)}
+svg .dt{font:700 12px var(--sans); fill:var(--down)}
+svg .lg{font:400 11px var(--sans); fill:var(--ink-2)}
+svg .ln1{stroke:var(--series); stroke-width:2.8; fill:none}
+svg .seg1{fill:var(--series)}
+svg .seg2{fill:var(--series2)}
+
+/* SVG：K 线与指标（红涨绿跌） */
+svg .cu{fill:var(--up); stroke:var(--up); stroke-width:1}
+svg .cuh{fill:var(--surface); stroke:var(--up); stroke-width:1.2}
+svg .cd{fill:var(--down); stroke:var(--down); stroke-width:1}
+svg .wu{stroke:var(--up); stroke-width:1.2}
+svg .wd{stroke:var(--down); stroke-width:1.2}
+svg .bu{stroke:var(--up); stroke-width:1.6; fill:none}
+svg .bd{stroke:var(--down); stroke-width:1.6; fill:none}
+svg .vu{fill:var(--up); opacity:.45}
+svg .vd{fill:var(--down); opacity:.45}
+svg .cl{stroke:var(--ink-2); stroke-width:1.8; fill:none}
+svg .ma1{stroke:var(--series); stroke-width:1.7; fill:none}
+svg .ma2{stroke:var(--series2); stroke-width:1.7; fill:none}
+svg .ma3{stroke:var(--series3); stroke-width:1.7; fill:none}
+svg .bb{stroke:var(--series3); stroke-width:1.3; fill:none; stroke-dasharray:5 3}
+svg .bbm{stroke:var(--series3); stroke-width:1; fill:none; opacity:.7}
+svg .dc{stroke:var(--series2); stroke-width:1.4; fill:none}
+svg .ind1{stroke:var(--series); stroke-width:1.6; fill:none}
+svg .ind2{stroke:var(--series2); stroke-width:1.6; fill:none}
+svg .ind3{stroke:var(--series3); stroke-width:1.4; fill:none}
+svg .tl{stroke:var(--accent); stroke-width:2; fill:none}
+svg .tl2{stroke:var(--series2); stroke-width:2; fill:none}
+svg .tld{stroke:var(--accent); stroke-width:1.6; fill:none; stroke-dasharray:6 4}
+svg .sr{stroke:var(--muted); stroke-width:1.2; fill:none; stroke-dasharray:5 4}
+svg .sr-up{stroke:var(--up); stroke-width:1.4; fill:none; stroke-dasharray:6 4}
+svg .sr-dn{stroke:var(--down); stroke-width:1.4; fill:none; stroke-dasharray:6 4}
+svg .zone{fill:var(--accent-soft)}
+svg .zone-up{fill:var(--up-soft)}
+svg .zone-dn{fill:var(--down-soft)}
+svg .dot{fill:var(--accent)}
+svg .dot-up{fill:var(--up)}
+svg .dot-dn{fill:var(--down)}
+svg .px{stroke:var(--up); stroke-width:1.6}
+svg .po{stroke:var(--down); stroke-width:1.6; fill:none}
+
+.recap{margin-top:8px}
+.recap ol{margin:8px 0 0; padding-left:1.4em; max-width:46em; color:var(--ink-2)}
+.recap li{margin:7px 0}
+.recap li b{color:var(--ink)}
+details{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px;
+  padding:12px 18px; margin:10px 0; max-width:46em;
+}
+details summary{cursor:pointer; font-weight:500; color:var(--ink)}
+details summary:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+details[open] summary{color:var(--accent-ink)}
+details .ans{margin-top:8px; padding-top:8px; border-top:1px dashed var(--line); font-size:14.5px; color:var(--ink-2)}
+details .ans p{margin:6px 0}
+
+.next{
+  margin-top:48px; padding:18px 22px; border:1px solid var(--line); border-radius:8px;
+  background:var(--surface); display:flex; justify-content:space-between; align-items:center; gap:14px; flex-wrap:wrap;
+}
+.next .lbl{font-size:12px; letter-spacing:.18em; color:var(--muted)}
+.next .ttl{font-family:var(--serif); font-weight:700; font-size:18px; margin-top:2px}
+.foot{margin-top:26px; font-size:12.5px; color:var(--muted); line-height:1.8}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <span class="book">《金融市场技术分析》学习手册 · Technical Analysis of the Financial Markets (John J. Murphy)</span>
+  <span class="part"><a href="ta-index.html">学习地图</a> · 第五阶段 从分析到交易</span>
+</header>
+
+<div class="layout">
+
+<nav class="sidenav" aria-label="小节导航">
+  <p class="sn-chap">第 14 站 · 全书大会串</p>
+  <a href="#top">章首 · 学习目标</a>
+  <a href="#s1">19.1 为什么需要清单</a>
+  <a href="#s2">19.2 自上而下的十六问</a>
+  <a href="#s3">19.3 当工具相互矛盾时</a>
+  <a href="#s4">19.4 实战演练</a>
+  <a href="#s5">19.5 第一份交易计划</a>
+  <a href="#s6">19.6 证据地图与下一步</a>
+  <a href="#s7">19.7 落地：规则 · 证据 · A 股</a>
+  <a href="#recap">小结 · 术语 · 自测</a>
+</nav>
+
+<main class="article">
+
+<!-- ======================== 章首 ======================== -->
+<div class="hero" id="top">
+  <span class="chap-no">CHAPTER 19 · 第 14 站 / 共 14 站</span>
+  <h1>全书大会串</h1>
+  <p class="en">Pulling It All Together: A Checklist</p>
+  <p class="lede">前 13 站，你攒下了一整箱工具：趋势线、形态、量价、K 线、均线、摆动指标、交叉市场、市场宽度，再加上交易系统和资金管理。到了真正下单的那一刻，问题不再是“工具不够”，而是<strong>工具太多、互相打架，而人在压力下会漏项、会只挑对自己有利的证据</strong>。这是全书的最后一站，做三件事：把全部工具排成一张<strong>自上而下的检查清单</strong>（十六问）；学会在工具冲突时<strong>给证据加权</strong>；最后完成本手册的结业作业，<strong>一份成文的交易计划</strong>。演练用的是一只构造的“示例股 A”，我们从大盘一路问到下单股数，给出“买、不买还是等”的结论。</p>
+
+  <div class="objectives">
+    <h2>学习目标</h2>
+    <ul>
+      <li>按“大局 → 长周期 → 价格结构 → 确认 → 风控”的顺序说出检查清单十六问，并说出每一问回到哪一站</li>
+      <li>说清检查清单的边界：它减少漏项和挑证据，不会让没有优势的方法变得有优势</li>
+      <li>工具冲突时会排优先级：长周期优先于短周期，价格优先于指标，趋势优先于摆动，风险一票否决</li>
+      <li>把基本面放进同一个决策流程：基本面回答买什么，技术面回答何时买、错了在哪认（回扣图 1-5）</li>
+      <li>完整走一遍演练：读出十六项读数、加权打分，给出“等待、确认后买入”的结论和一张完整规则卡</li>
+      <li>写出自己的第一份交易计划：标的池、周期、入场设置、止损仓位、组合风险、例行流程、交易日志、复盘节奏、暂停条件</li>
+      <li>把全书工具按证据强弱分级，知道哪些规则卡要最先用数据检验</li>
+      <li>规划下一步：Elder《以交易为生》→ Curtis Faith《海龟交易法则》→ Ernest Chan《量化交易》</li>
+    </ul>
+  </div>
+  <p class="colorkey">读图约定：本手册遵循 A 股习惯，<span class="up">红色 = 上涨</span>（收盘 ≥ 开盘），<span class="dn">绿色 = 下跌</span>，与欧美软件正好相反。图题标有“示意”的，是为说明原理而构造的数据，不是真实行情。</p>
+
+  <nav class="chapmap" aria-label="本章导览">
+    <a href="#s1">19.1 为什么要清单</a>
+    <a href="#s2">19.2 十六问</a>
+    <a href="#s3">19.3 工具冲突</a>
+    <a href="#s4">19.4 实战演练</a>
+    <a href="#s5">19.5 交易计划</a>
+    <a href="#s6">19.6 证据地图</a>
+    <a href="#s7">19.7 落地</a>
+    <a href="#recap">小结与自测</a>
+  </nav>
+</div>
+
+<!-- ======================== 19.1 ======================== -->
+<section class="ch" id="s1">
+  <h2 class="sec"><span class="no">19.1</span>为什么需要一张检查清单</h2>
+  <p class="sec-en">WHY A CHECKLIST</p>
+
+  <div class="prose">
+    <p>先把工具箱倒出来看一眼。下面五张卡按学习地图的五个阶段，列出你在前 13 站拿到的东西：</p>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <h4>地基 <span class="en-term">第 1–2 站</span></h4>
+      <ul>
+        <li>三大前提和各自的软肋</li>
+        <li>K 线、对数刻度、多周期、复权</li>
+        <li>道氏理论：三级趋势、相互验证、用峰谷定义反转</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>价格行为 <span class="en-term">第 3–7 站</span></h4>
+      <ul>
+        <li>支撑阻力、角色互换、趋势线、3% 与两日过滤</li>
+        <li>回撤、缺口、反转与持续形态、量度目标</li>
+        <li>量价配合、OBV、持仓量；K 线的位置意义</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>技术指标 <span class="en-term">第 8–9 站</span></h4>
+      <ul>
+        <li>均线、布林带、四周规则</li>
+        <li>RSI、随机指标、MACD，背离与钝化</li>
+        <li>相反意见与情绪指标</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>大局 <span class="en-term">第 10–11 站</span></h4>
+      <ul>
+        <li>债券、商品、汇率与股票的联动</li>
+        <li>相对强度比率、板块轮动</li>
+        <li>腾落线、新高新低、TRIN</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>从分析到交易 <span class="en-term">第 12–13 站</span></h4>
+      <ul>
+        <li>ADX 判断市场状态，系统检验与过度拟合</li>
+        <li>止损、仓位、报酬风险比、组合热度</li>
+        <li>回撤的数学与连败的概率</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p>工具不少。可盘中真正坏事的，往往不是哪件工具没学会，而是三种“操作失误”：</p>
+    <ol>
+      <li><strong>漏项。</strong>盯着日线上漂亮的突破，忘了周线正处在下降趋势里；或者忘了明天就是业绩披露截止日。</li>
+      <li><strong>挑证据。</strong>先决定了想买，再去找支持它的指标：RSI 不支持就换 KDJ，KDJ 不支持就换周期。《投资学》第 12 章讲过的确认偏差，在看图时会被放大，因为指标多到总能找到一个点头的。</li>
+      <li><strong>顺序错。</strong>从 5 分钟图看起，越看越细，最后被噪声牵着走。回想第 1 站图 1-6 的硬币图：人脑在任何一段随机波动里都能“看出”形态。</li>
+    </ol>
+    <p>检查清单对付的正是这三件事：<strong>固定的项目防漏项，固定的顺序防挑证据，自上而下防止迷失在细节里</strong>。它不替你思考，只保证你把该想的每一件事都想过了。</p>
+  </div>
+
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>一位飞了一万小时的机长，起飞前照样拿出检查单，和副驾驶一问一答：“襟翼？”“放下 15 度。”“燃油？”“足够。”“配平？”“已设定。”不是他记不住，而是人在疲劳、赶时间、被打断的时候，最容易漏掉的恰恰是那些“闭着眼都会做”的步骤。交易也一样：你最熟的那一步（比如看周线），偏偏会在你最兴奋的那一刻被跳过。检查单的价值不在于教你新东西，而在于<strong>让你在状态最差的时候，也不低于自己的平均水平</strong>。</p>
+  </div>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>一架“太复杂的飞机”，和一张清单的诞生</h4>
+    <p>1935 年 10 月 30 日，波音公司的 299 型原型机在俄亥俄州代顿的赖特机场参加美国陆军的轰炸机竞标试飞。它是当时最先进的轰炸机，起飞后不久却突然失速坠毁，两名飞行员遇难。调查发现，原因不是机械故障，而是机组<strong>忘了解除升降舵的锁定装置</strong>。报纸评论说，这架飞机对一个人来说太复杂了。</p>
+    <p>陆军没有放弃它，而是让试飞员编了一张简短的检查单，把起飞、降落前必须核对的项目逐条列出。这款飞机后来成为二战中著名的 B-17“空中堡垒”。七十多年后，外科医生阿图·葛文德在《清单革命》（2009）里重讲了这个故事，并参与推动世界卫生组织的手术安全核对表。Haynes 等人 2009 年在《新英格兰医学杂志》上报告：八家医院推行这张核对表后，术后死亡率从约 1.5% 降到约 0.8%，严重并发症从约 11% 降到约 7%。</p>
+    <p class="takeaway">两个领域的共同点：失败大多不是因为不懂，而是因为<b>漏了</b>。清单不要求你更聪明，只要求你更有纪律。也要看到边界：医疗和航空清单上的每一项，本身是被反复验证过的正确做法；交易清单上的工具，证据强弱参差不齐（19.6 节）。清单能保证你“按方法做”，不能保证“方法本身有效”。</p>
+  </div>
+
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p>“清单是给新手用的，老手凭感觉就行。”恰恰相反，越有经验，越容易因为“我早就知道”而跳步。葛文德在书里记录过不少资深外科医生对核对表的抵触。交易里，连续盈利之后的自信，往往就是漏项的开始。真正的老手不是不用清单，而是把清单精简到只剩真正决定结果的那几项，然后每一次都不跳过。</p>
+  </div>
+</section>
+
+<!-- ======================== 19.2 ======================== -->
+<section class="ch" id="s2">
+  <h2 class="sec"><span class="no">19.2</span>自上而下的十六问</h2>
+  <p class="sec-en">SIXTEEN QUESTIONS, TOP DOWN</p>
+
+  <div class="prose">
+    <p>墨菲在收官章里开出了一份技术分析检查清单，从大盘、板块问起，经过长短周期、支撑阻力、趋势线、量、回撤、缺口、形态、均线、摆动指标，一直问到情绪、交叉市场和市场宽度。这里把它按<strong>自上而下</strong>重新分成四层，再加一道风控闸门，并给每一问标上它回到哪一站。先看整个流程：</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 19-1</span>自上而下：从森林到树叶，每一步都有输出</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 466" role="img" aria-label="自上而下分析流程图：先做数据检查，再依次看大盘、板块、长周期、日线结构、确认信号，最后做风控与执行；每一步标出对应的站和这一步的输出">
+<defs>
+  <marker id="f191-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/></marker>
+</defs>
+<polygon class="zone" points="20,62 110,62 80,446 50,446"/>
+<text class="hi" x="65" y="96" text-anchor="middle">看森林</text>
+<text class="hi" x="65" y="270" text-anchor="middle">看树</text>
+<text class="hi" x="65" y="420" text-anchor="middle">下单</text>
+<line class="edge-soft" x1="65" y1="108" x2="65" y2="252"/>
+<line class="edge-soft" x1="65" y1="282" x2="65" y2="402"/>
+
+<rect class="node" x="124" y="12" width="352" height="34" rx="8"/>
+<text class="nt" x="140" y="34">第 0 步 · 数据：前复权，长期图用对数刻度</text>
+<text class="pv" x="492" y="27">第 1 站</text>
+<text class="elabel" x="492" y="42">输出：一张不会骗你的图</text>
+<path class="edge" d="M300 46 V58" marker-end="url(#f191-ar)"/>
+
+<rect class="node" x="124" y="62" width="352" height="52" rx="8"/>
+<text class="nt" x="140" y="84">第 1 步 · 大盘：顺风还是逆风？</text>
+<text class="nd" x="140" y="103">问 ①③④⑤：指数周线、交叉市场、宽度、情绪</text>
+<text class="pv" x="492" y="83">第 2、9、10、11 站</text>
+<text class="elabel" x="492" y="102">输出：总仓位上限、风险档位</text>
+<path class="edge" d="M300 114 V124" marker-end="url(#f191-ar)"/>
+
+<rect class="node" x="124" y="128" width="352" height="52" rx="8"/>
+<text class="nt" x="140" y="150">第 2 步 · 板块：资金往哪里流？</text>
+<text class="nd" x="140" y="169">问 ②：板块 ÷ 大盘的相对强度比率</text>
+<text class="pv" x="492" y="149">第 10、11 站</text>
+<text class="elabel" x="492" y="168">输出：只在最强的板块里挑</text>
+<path class="edge" d="M300 180 V190" marker-end="url(#f191-ar)"/>
+
+<rect class="node" x="124" y="194" width="352" height="52" rx="8"/>
+<text class="nt" x="140" y="216">第 3 步 · 长周期：周线、月线指向哪？</text>
+<text class="nd" x="140" y="235">问 ⑥：峰谷结构、30 周均线、周线趋势线</text>
+<text class="pv" x="492" y="215">第 2、3、8 站</text>
+<text class="elabel" x="492" y="234">输出：只做多，还是只观望</text>
+<path class="edge" d="M300 246 V256" marker-end="url(#f191-ar)"/>
+
+<rect class="node" x="124" y="260" width="352" height="52" rx="8"/>
+<text class="nt" x="140" y="282">第 4 步 · 日线结构：关键价位在哪？</text>
+<text class="nd" x="140" y="301">问 ⑦–⑫：趋势、支撑阻力、趋势线、回撤、缺口、形态</text>
+<text class="pv" x="492" y="281">第 3、4、5 站</text>
+<text class="elabel" x="492" y="300">输出：入场区、认错点、目标</text>
+<path class="edge" d="M300 312 V322" marker-end="url(#f191-ar)"/>
+
+<rect class="node" x="124" y="326" width="352" height="52" rx="8"/>
+<text class="nt" x="140" y="348">第 5 步 · 确认：力量站在哪一边？</text>
+<text class="nd" x="140" y="367">问 ⑬–⑯：成交量、均线、摆动指标、K 线</text>
+<text class="pv" x="492" y="347">第 6、7、8、9 站</text>
+<text class="elabel" x="492" y="366">输出：一个具体的触发条件</text>
+<path class="edge" d="M300 378 V388" marker-end="url(#f191-ar)"/>
+
+<rect class="node node-hi" x="124" y="392" width="352" height="54" rx="8"/>
+<text class="nt" x="140" y="414">第 6 步 · 风控与执行：错了亏多少？</text>
+<text class="nd" x="140" y="434">报酬风险比、止损、股数、组合热度</text>
+<text class="pv" x="492" y="413">第 12、13 站</text>
+<text class="elabel" x="492" y="432">输出：股数、条件单、日志</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>左侧的漏斗是视野的大小：先看森林（大盘、板块），再看树（长周期、日线结构），最后才看叶子（确认信号）并下单。每一步右侧都写着这一步的<b>输出</b>，这是这张图最要紧的地方：大盘不负责告诉你买哪只，它只决定总仓位和风险档位；长周期决定方向；日线结构决定在哪进、在哪认错；确认信号只决定“什么时候”。第 0 步最容易被忽略：没复权的图会画出假缺口和假跌破（第 1 站），后面问得再仔细也是白问。</figcaption>
+  </figure>
+
+  <div class="prose">
+    <h3>为什么非得自上而下</h3>
+    <ul>
+      <li><strong>潮水决定大多数船的方向。</strong>个股的涨跌里，有相当一部分来自大盘和行业的共同波动。A 股尤其明显：Morck、Yeung 和 Yu（2000）比较了约 40 个国家和地区的股市，中国股市个股“同涨同跌”的程度位居前列。逆着大盘做个股，等于逆水行舟。</li>
+      <li><strong>长周期噪声小、分量重。</strong>周线上的一个低点，背后是几周的成交和更多资金的共识；日线上的一个低点，可能只是一笔大单砸出来的。道氏理论的三级趋势（第 2 站）说的就是这个：潮汐决定浪涛的方向。</li>
+      <li><strong>效率。</strong>A 股有五千多只股票，不可能每只都过十六问。大盘和板块先把池子缩到几十只，长周期再缩到十来只，真正需要细看日线的只剩几只。</li>
+    </ul>
+    <p>下面是十六问总表。最后一列告诉你，忘了怎么判断时该回哪一站复习：</p>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <tr><th>层</th><th>问</th><th>看什么、怎么判</th><th>回到</th></tr>
+      <tr><td rowspan="5"><strong>第一层<br>大局</strong></td><td>① 大盘的方向如何？</td><td>指数周线的峰谷、收盘与 30 周均线、两个指数是否相互验证</td><td>第 2 站（道氏理论）、第 3 站</td></tr>
+      <tr><td>② 板块的方向如何？</td><td>板块 ÷ 大盘的相对强度比率是否上升；板块内多数股票是否同步</td><td>第 10 站、第 11 站</td></tr>
+      <tr><td>③ 交叉市场在说什么？</td><td>债券（利率）、商品、汇率的趋势，对股票是顺风还是逆风</td><td>第 10 站（交叉市场分析）</td></tr>
+      <tr><td>④ 市场宽度健康吗？</td><td>腾落线、新高新低、涨停跌停家数是否跟随指数</td><td>第 11 站（股票市场指标）</td></tr>
+      <tr><td>⑤ 情绪是否走到极端？</td><td>成交额、融资余额、开户数、看跌看涨比率；极端时反向理解</td><td>第 9 站（相反意见）</td></tr>
+      <tr><td rowspan="2"><strong>第二层<br>长周期</strong></td><td>⑥ 周线、月线的长期趋势？</td><td>峰谷结构、周线趋势线、30 周均线的方向；长期图用对数刻度</td><td>第 2 站、第 1 站、第 8 站</td></tr>
+      <tr><td>⑦ 日线的主要、中期、短期趋势？</td><td>三级趋势各自向哪；现在处于主要趋势的推动段还是调整段</td><td>第 2 站、第 3 站</td></tr>
+      <tr><td rowspan="5"><strong>第三层<br>价格结构</strong></td><td>⑧ 重要的支撑阻力在哪？</td><td>前高前低、成交密集区、整数关口；有没有角色互换</td><td>第 3 站（趋势的基本概念）</td></tr>
+      <tr><td>⑨ 趋势线和通道？</td><td>是否有效（三个触点）；是否被收盘有效跌破（3% 或两日规则）</td><td>第 3 站</td></tr>
+      <tr><td>⑩ 回撤到了哪里？</td><td>33%、50%、66%（斐波那契 38.2%、61.8%）；超过三分之二要警惕反转</td><td>第 3 站</td></tr>
+      <tr><td>⑪ 有没有缺口？</td><td>普通、突破、中继、衰竭；突破缺口不回补是强势</td><td>第 3 站</td></tr>
+      <tr><td>⑫ 有没有反转或持续形态？</td><td>头肩、双重顶底、三角形、旗形、箱体；是否已确认；量度目标在哪</td><td>第 4 站、第 5 站</td></tr>
+      <tr><td rowspan="4"><strong>第四层<br>确认</strong></td><td>⑬ 成交量（期货看持仓量）确认吗？</td><td>顺势放量、逆势缩量；向上突破必须放量</td><td>第 6 站（交易量和持仓量）</td></tr>
+      <tr><td>⑭ 均线说明什么？</td><td>短期、长期均线的方向与排列；价格在均线的哪一侧</td><td>第 8 站（移动平均线）</td></tr>
+      <tr><td>⑮ 摆动指标：超买超卖，还是背离？</td><td>RSI、随机指标、MACD；趋势中只采纳顺势的信号</td><td>第 9 站（摆动指数）</td></tr>
+      <tr><td>⑯ K 线给出什么信号？</td><td>关键价位上的反转 K 线；多数需要次日确认</td><td>第 7 站（日本蜡烛图）</td></tr>
+      <tr><td><strong>风控闸门</strong></td><td>错了亏多少？</td><td>止损位、报酬风险比、股数、组合热度；不计分，一票否决</td><td>第 13 站；规则化与检验见第 12 站</td></tr>
+    </table>
+  </div>
+
+  <div class="prose">
+    <p>两点说明。第一，墨菲的原清单里还有艾略特波浪、时间周期等问题，本手册把它们列为选学，没有展开；第 7 站的 K 线信号则单列为第 ⑯ 问。第二，19.4 节打分时用“+1 / 0 / −1”，口径先记住：<strong>+1 支持做多，0 中性或看不清，−1 反对</strong>。A 股基本只能做多，所以每一问都问“支持做多吗”；期货交易者可以对称地用于做空。</p>
+
+    <h3>四层各管一件事</h3>
+    <p><strong>第一层大局：决定撑多大的伞。</strong>它不负责挑股票，输出的是风险档位：顺风时单笔风险 1%，逆风时降到 0.5%，极端逆风时干脆不开新仓。</p>
+    <p><strong>第二层长周期：决定往哪个方向走。</strong>周线下降趋势中，日线再漂亮的买点也只是反弹。这一层对做多有一票否决权。</p>
+    <p><strong>第三层价格结构：决定在哪进、在哪认错。</strong>支撑、趋势线、回撤位、缺口、形态，都是价格自己画出来的位置，止损和目标都从这里来。</p>
+    <p><strong>第四层确认：决定什么时候。</strong>量、均线、摆动指标、K 线都是对价格的再加工，它们回答“现在动手还是再等等”，不负责改变方向。</p>
+  </div>
+
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p>“十六问就是十六票，赞成的多就买。”这是最常见的误用。十六问的分量完全不同：一个周线下降趋势（第 ⑥ 问 −1），十个日线指标金叉也抵不过；而 RSI、KDJ、MACD 同时超卖，信息量其实只比一个多一点点，因为它们都由同一条收盘价算出。清单负责“问全”，权重负责“问准”，下一节讲权重。</p>
+  </div>
+</section>
+
+<!-- ======================== 19.3 ======================== -->
+<section class="ch" id="s3">
+  <h2 class="sec"><span class="no">19.3</span>当工具相互矛盾时</h2>
+  <p class="sec-en">WEIGHING CONFLICTING EVIDENCE</p>
+
+  <div class="prose">
+    <p>十六问几乎不可能全部指向同一个方向。最典型的场面是：周线上升趋势完好，日线却 RSI 超买、MACD 死叉、K 线收出一根长上影线。这时听谁的？全书的工具可以浓缩成三条优先级，外加一条否决权：</p>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <h4>长周期优先于短周期 <span class="en-term">Longer time frame first</span></h4>
+      <p><span class="k">为什么</span>周线、月线背后的资金量和时间跨度大得多。一根日线能被一则消息扭转，一段周线趋势不能。第 2 站：潮汐决定浪涛。</p>
+      <p><span class="k">怎么用</span>周线向上时，日线的超买和死叉只说明“回调可能要来”，用来暂缓买入或等回调，不用来做空或清仓。</p>
+    </div>
+    <div class="card">
+      <h4>价格优先于指标 <span class="en-term">Price before indicators</span></h4>
+      <p><span class="k">为什么</span>所有指标都是价格和成交量的变换（第 9 站），不会知道价格不知道的东西。</p>
+      <p><span class="k">怎么用</span>支撑、趋势线、形态决定进出场位置；指标只负责确认或提醒。指标背离而价格没有跌破关键位，就只是警告；价格跌破了而指标还“健康”，以价格为准。</p>
+    </div>
+    <div class="card">
+      <h4>趋势优先于摆动 <span class="en-term">Trend before oscillators</span></h4>
+      <p><span class="k">为什么</span>强趋势里摆动指标会长期钝化（第 9 站），“超买”可以一直超买下去。</p>
+      <p><span class="k">怎么用</span>上升趋势中只采纳摆动指标的超卖信号（买点），忽略超买信号；只有在 ADX 低迷的震荡市里，才让摆动指标唱主角（第 12 站）。</p>
+    </div>
+    <div class="card">
+      <h4>风险一票否决 <span class="en-term">Risk has the veto</span></h4>
+      <p><span class="k">为什么</span>前三条决定方向和位置。可如果认错点太远、报酬风险比不足墨菲建议的 3:1（第 13 站），再好的分析也是坏交易。</p>
+      <p><span class="k">怎么用</span>不许为了凑报酬风险比把止损挪近；算不过来就放弃，等下一次机会。</p>
+    </div>
+  </div>
+
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>用两个比喻记住前两条。<strong>季节和云</strong>：长周期是季节，短周期是今天天上的云。七月里飘来一片乌云，你会带伞，但不会因此穿上棉袄。<strong>原件和复印件</strong>：价格是原件，指标是复印件，还是加了滤镜的复印件。两者对不上时以原件为准；三份复印件说法一致，也不等于有了三份证据。</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 19-2</span>工具冲突时的决策树</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 470" role="img" aria-label="工具冲突时的决策树：第一关问长周期趋势是否向上，第二关问价格是否到了有利位置，第三关问有没有确认信号，第四关问风险是否可控；任何一关回答否，都对应不做、等待或放弃；四关都通过才按规则卡入场，大局层只调节风险档位">
+<defs>
+  <marker id="f192-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/></marker>
+  <marker id="f192-ara" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/></marker>
+</defs>
+<rect class="node node-hi" x="20" y="16" width="350" height="60" rx="8"/>
+<text class="nt" x="36" y="40">第一关 · 长周期趋势向上吗？</text>
+<text class="nd" x="36" y="62">周线峰谷抬高、收盘在 30 周均线上（长周期优先）</text>
+<rect class="node node-hi" x="20" y="108" width="350" height="60" rx="8"/>
+<text class="nt" x="36" y="132">第二关 · 价格到了有利位置吗？</text>
+<text class="nd" x="36" y="154">支撑或回撤区，或放量突破（价格优先于指标）</text>
+<rect class="node node-hi" x="20" y="200" width="350" height="60" rx="8"/>
+<text class="nt" x="36" y="224">第三关 · 有没有确认信号？</text>
+<text class="nd" x="36" y="246">量、K 线、摆动指标顺着趋势发出（趋势优先于摆动）</text>
+<rect class="node node-hi" x="20" y="292" width="350" height="60" rx="8"/>
+<text class="nt" x="36" y="316">第四关 · 风险可控吗？</text>
+<text class="nd" x="36" y="338">报酬风险比 ≥ 3，组合热度 ≤ 6%（一票否决）</text>
+<rect class="node node-up" x="20" y="390" width="350" height="62" rx="8"/>
+<text class="nt" x="36" y="414">按规则卡入场</text>
+<text class="nd" x="36" y="437">股数 = 风险金额 ÷ 每股止损距离</text>
+
+<rect class="node" x="446" y="16" width="254" height="60" rx="8"/>
+<text class="nt" x="460" y="40">不做多</text>
+<text class="nd" x="460" y="62">A 股以空仓等待为主，留在观察池</text>
+<rect class="node" x="446" y="108" width="254" height="60" rx="8"/>
+<text class="nt" x="460" y="132">不追</text>
+<text class="nd" x="460" y="154">写下目标价位，等价格来找你</text>
+<rect class="node" x="446" y="200" width="254" height="60" rx="8"/>
+<text class="nt" x="460" y="224">等待</text>
+<text class="nd" x="460" y="246">设好触发条件，确认出现再动手</text>
+<rect class="node node-dn" x="446" y="292" width="254" height="60" rx="8"/>
+<text class="nt" x="460" y="316">放弃：好股票不等于好交易</text>
+<text class="nd" x="460" y="338">不许为了凑比例去挪止损</text>
+<rect class="node" x="446" y="390" width="254" height="62" rx="8"/>
+<text class="nt" x="460" y="414">大局层（问 ①–⑤）</text>
+<text class="nd" x="460" y="437">不一票否决，只调风险档位</text>
+
+<path class="edge" d="M370 46 H442" marker-end="url(#f192-ar)"/>
+<path class="edge" d="M370 138 H442" marker-end="url(#f192-ar)"/>
+<path class="edge" d="M370 230 H442" marker-end="url(#f192-ar)"/>
+<path class="edge" d="M370 322 H442" marker-end="url(#f192-ar)"/>
+<text class="dt" x="406" y="40" text-anchor="middle">否</text>
+<text class="dt" x="406" y="132" text-anchor="middle">否</text>
+<text class="dt" x="406" y="224" text-anchor="middle">否</text>
+<text class="dt" x="406" y="316" text-anchor="middle">否</text>
+
+<path class="edge" d="M195 76 V104" marker-end="url(#f192-ar)"/>
+<path class="edge" d="M195 168 V196" marker-end="url(#f192-ar)"/>
+<path class="edge" d="M195 260 V288" marker-end="url(#f192-ar)"/>
+<path class="edge" d="M195 352 V386" marker-end="url(#f192-ar)"/>
+<text class="ut" x="205" y="95">是</text>
+<text class="ut" x="205" y="187">是</text>
+<text class="ut" x="205" y="279">是</text>
+<text class="ut" x="205" y="374">是</text>
+
+<path class="edge-acc" d="M446 421 H374" marker-end="url(#f192-ara)"/>
+<text class="elabel" x="410" y="413" text-anchor="middle">顺风 1%</text>
+<text class="elabel" x="410" y="439" text-anchor="middle">逆风 0.5%</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>四道关按优先级排好了顺序。任何一关答“否”，都不是硬着头皮买，而是右边几种体面的选择：不做、不追、等待或放弃。注意第三关的“否”通向<b>等待</b>而不是放弃：价格已经在好位置，只差一个确认，就该把触发条件写下来交给条件单。右下角的大局层不在主干上，它不否决单笔交易，只调节你下多大的注：顺风时单笔风险 1%，逆风时 0.5%。这棵树就是 19.4 节演练的骨架。</figcaption>
+  </figure>
+
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p>“指标越多越安全，五个指标同时金叉才买。”多个指标同时发出信号，往往是因为价格已经涨了一大段，这时入场点离认错点最远，报酬风险比最差。更糟的是，指标叠得越多，你越容易从中挑到支持自己的那一个。经验法则：每一类信息只留一个代表，趋势用一条均线，动量用一个摆动指标，力度看成交量，够了。</p>
+  </div>
+
+  <div class="prose">
+    <h3>技术面与基本面：同一个流程里的两个角色</h3>
+    <p>第 1 站图 1-5 把一次完整的交易决策拆成四问：买什么、什么时候买、错了在哪认、买多少。基本面擅长第一问，技术面擅长后三问，资金管理负责最后一问。两者冲突时不必二选一，按分工处理：</p>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <tr><th>基本面 \ 技术面</th><th>技术面向好（周线上升、结构健康）</th><th>技术面向坏（周线下降、跌破关键位）</th></tr>
+      <tr><td><strong>基本面向好</strong></td><td>最舒服的情形：按规则入场，用正常风险档位</td><td>“好公司，坏价格”：放进观察池，等技术面转好再买，不接飞刀</td></tr>
+      <tr><td><strong>基本面向坏</strong></td><td>可以按技术规则做，但当成纯交易而非投资：仓位减半，避开财报日</td><td>不碰</td></tr>
+    </table>
+  </div>
+
+  <div class="prose">
+    <p>对纯技术交易者，基本面至少有一个用处：<strong>事件日历</strong>。业绩预告、定期报告、限售股解禁、重要会议前后最容易出现跳空，而跳空会让止损失效：第 1 站讲过，突发消息总是以缺口的形式砸进价格。把这些日子写进清单的 A 股附加项（19.7 节），比去猜财报好坏实用得多。</p>
+  </div>
+</section>
+
+<!-- ======================== 19.4 ======================== -->
+<section class="ch" id="s4">
+  <h2 class="sec"><span class="no">19.4</span>实战演练：用清单读一张图</h2>
+  <p class="sec-en">WALKTHROUGH: ONE STOCK, SIXTEEN QUESTIONS</p>
+
+  <div class="prose">
+    <p>设定：周六晚上复盘。你的账户 20 万元，已有两只持仓，止损风险合计约占账户的 3.2%。观察池里有一只“示例股 A”（虚构的主板股票，涨跌幅限制 ±10%），周五收盘 18.90 元。下面按四层逐项读数。三张图都是构造数据，周线由同一组日线合成。</p>
+    <h3><span class="tag">第一层</span>大局：顺风，但有一片云</h3>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 19-3</span>大局三联：大盘、宽度、板块<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 262" role="img" aria-label="示意图：第一层大局的三张小图。大盘指数周线创出新高但只比前高高出约 0.6%，收盘在 30 周均线上方；自建腾落线的第二个高点低于第一个高点，出现宽度背离；板块除以大盘的相对强度比率创出新高">
+<defs><marker id="f193-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/></marker><marker id="f193-ara" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/></marker></defs>
+<!-- kchart: n=104 L=42 step=1.904 x(i)=L+step*(i+0.5) price[2930.928,4085.680] y∈[34,238] -->
+<line class="axis" x1="42" y1="34" x2="42" y2="238"/>
+<line class="grid" x1="42" y1="225.8" x2="240" y2="225.8"/>
+<text class="tick" x="36" y="229.8" text-anchor="end">3000</text>
+<line class="grid" x1="42" y1="137.5" x2="240" y2="137.5"/>
+<text class="tick" x="36" y="141.5" text-anchor="end">3500</text>
+<line class="grid" x1="42" y1="49.1" x2="240" y2="49.1"/>
+<text class="tick" x="36" y="53.1" text-anchor="end">4000</text>
+<line class="axis" x1="42" y1="238" x2="240" y2="238"/>
+<polyline class="cl" points="43,170.8 44.9,177.7 46.8,181.2 48.7,187.5 50.6,181.1 52.5,186.8 54.4,189.4 56.3,189.5 58.2,199.3 60.1,202.2 62,202.6 63.9,202.5 65.8,207.4 67.7,214.1 69.6,218.3 71.5,209.4 73.4,209.4 75.3,205.2 77.2,197.3 79.1,201.9 81,199.1 82.9,194.4 84.8,186.6 86.7,183.9 88.6,181.7 90.5,177.2 92.5,168.7 94.4,167.1 96.3,161.7 98.2,160.9 100.1,156.5 102,161.5 103.9,156.1 105.8,164.1 107.7,159.2 109.6,164 111.5,164.9 113.4,167.7 115.3,163.4 117.2,170.3 119.1,170.9 121,168.2 122.9,157.6 124.8,161.4 126.7,160.5 128.6,146 130.5,144.3 132.4,140.5 134.3,139.4 136.2,135.7 138.1,138.6 140,133.3 142,125.9 143.9,124.2 145.8,124.1 147.7,111.7 149.6,108.5 151.5,110.9 153.4,120.8 155.3,121.1 157.2,127.2 159.1,119.7 161,124.4 162.9,132.6 164.8,134.2 166.7,124.6 168.6,128.4 170.5,114.7 172.4,116.6 174.3,102.7 176.2,95.3 178.1,92.3 180,85.9 181.9,89.7 183.8,73.5 185.7,77.8 187.6,69.2 189.5,57.9 191.5,63.2 193.4,64.3 195.3,58.8 197.2,68.9 199.1,66.6 201,80 202.9,79.6 204.8,86.7 206.7,87.1 208.6,89.7 210.5,95.2 212.4,94.6 214.3,94.1 216.2,85.3 218.1,78.4 220,84.8 221.9,75.9 223.8,72.3 225.7,66.9 227.6,65.3 229.5,59.2 231.4,55 233.3,53.7 235.2,54.8 237.1,54.5 239,64.4"/>
+<polyline class="ma2" points="98.2,190.5 100.1,190 102,189.5 103.9,188.6 105.8,187.9 107.7,187.1 109.6,186.4 111.5,185.6 113.4,184.8 115.3,183.6 117.2,182.6 119.1,181.5 121,180.4 122.9,178.7 124.8,177 126.7,175 128.6,172.9 130.5,170.7 132.4,168.6 134.3,166.7 136.2,164.5 138.1,162.4 140,160.4 142,158.4 143.9,156.4 145.8,154.5 147.7,152.3 149.6,150.3 151.5,148.4 153.4,147 155.3,145.7 157.2,144.7 159.1,143.3 161,142.3 162.9,141.2 164.8,140.4 166.7,139.1 168.6,137.9 170.5,136.1 172.4,134.5 174.3,132.3 176.2,129.8 178.1,127.2 180,124.9 181.9,122.5 183.8,119.6 185.7,117.3 187.6,114.8 189.5,112 191.5,109.5 193.4,107.1 195.3,104.5 197.2,102.3 199.1,100.3 201,98.9 202.9,97.4 204.8,96.5 206.7,95.8 208.6,95.1 210.5,94.3 212.4,93.4 214.3,92.3 216.2,91.1 218.1,89.6 220,88 221.9,86.1 223.8,84.3 225.7,82.3 227.6,80.6 229.5,78.7 231.4,77.1 233.3,75.7 235.2,74.5 237.1,73.4 239,72.6"/>
+<text class="tick" x="43" y="255" text-anchor="middle">两年前</text>
+<text class="tick" x="227.6" y="255" text-anchor="middle">本周</text>
+<circle class="dot-up" cx="189.5" cy="57.9" r="4"/>
+<circle class="dot-up" cx="233.3" cy="53.7" r="4"/>
+<text class="ut" x="189.5" y="48.9" text-anchor="middle">A</text>
+<text class="ut" x="233.3" y="44.7" text-anchor="middle">B</text>
+<text class="pv" x="111.5" y="203.3" text-anchor="start">B 只比 A 高约 0.6%</text>
+<text class="pv" x="111.5" y="227.8" text-anchor="start">收盘仍在 30 周均线上</text>
+<!-- kchart: n=104 L=266 step=2.019 x(i)=L+step*(i+0.5) price[8287.681,16848.132] y∈[34,238] -->
+<line class="axis" x1="266" y1="34" x2="266" y2="238"/>
+<line class="grid" x1="266" y1="197.2" x2="476" y2="197.2"/>
+<line class="grid" x1="266" y1="149.5" x2="476" y2="149.5"/>
+<line class="grid" x1="266" y1="101.9" x2="476" y2="101.9"/>
+<line class="grid" x1="266" y1="54.2" x2="476" y2="54.2"/>
+<line class="axis" x1="266" y1="238" x2="476" y2="238"/>
+<polyline class="cl" points="267,197.5 269,198.7 271,200.5 273.1,201.8 275.1,203 277.1,204.7 279.1,204.5 281.1,206.3 283.2,208.9 285.2,208.9 287.2,210.7 289.2,212.7 291.2,212.9 293.3,215.5 295.3,215.7 297.3,213.6 299.3,208.5 301.3,206.4 303.4,203.6 305.4,199 307.4,197 309.4,191.8 311.4,189.1 313.5,186.8 315.5,181 317.5,179.6 319.5,174.8 321.5,171.9 323.5,168.5 325.6,164.5 327.6,162.9 329.6,162 331.6,164.2 333.6,163.2 335.7,166.2 337.7,167.4 339.7,168.7 341.7,169.7 343.7,169.2 345.8,170.9 347.8,169.6 349.8,166.9 351.8,163.8 353.8,157.4 355.9,156.5 357.9,150 359.9,147.9 361.9,143.9 363.9,137.1 366,133.1 368,129.1 370,126.2 372,123.3 374,118.8 376,115.6 378.1,112.5 380.1,106.9 382.1,109.9 384.1,110.5 386.1,112.5 388.2,113.8 390.2,113.1 392.2,113.8 394.2,118.3 396.2,118.3 398.3,115.5 400.3,110.7 402.3,104.1 404.3,99.8 406.3,96.1 408.4,91.4 410.4,85.9 412.4,80.2 414.4,78.8 416.4,72 418.5,67 420.5,64.9 422.5,58.3 424.5,56.3 426.5,59.5 428.5,61.3 430.6,66.8 432.6,69 434.6,74.1 436.6,80.2 438.6,81.9 440.7,87.5 442.7,92.3 444.7,94.9 446.7,92.4 448.7,93 450.8,88.9 452.8,88.2 454.8,84.2 456.8,85.8 458.8,83.5 460.9,80.6 462.9,77.5 464.9,77 466.9,74.8 468.9,74.9 471,75.1 473,75.1 475,78.2"/>
+<text class="tick" x="267" y="255" text-anchor="middle">两年前</text>
+<text class="tick" x="462.9" y="255" text-anchor="middle">本周</text>
+<circle class="dot-up" cx="422.5" cy="58.3" r="4"/>
+<circle class="dot-dn" cx="468.9" cy="74.9" r="4"/>
+<text class="ut" x="422.5" y="49.3" text-anchor="middle">A′</text>
+<text class="dt" x="468.9" y="65.9" text-anchor="middle">B′</text>
+<line class="tl2" x1="422.5" y1="58.3" x2="468.9" y2="74.9"/>
+<text class="dt" x="327.6" y="203.3" text-anchor="start">B′ 低于 A′：</text>
+<text class="pv" x="327.6" y="227.8" text-anchor="start">士兵没跟上将军</text>
+<!-- kchart: n=104 L=502 step=2.019 x(i)=L+step*(i+0.5) price[0.929,1.259] y∈[34,238] -->
+<line class="axis" x1="502" y1="34" x2="502" y2="238"/>
+<line class="grid" x1="502" y1="193.9" x2="712" y2="193.9"/>
+<line class="grid" x1="502" y1="132.1" x2="712" y2="132.1"/>
+<line class="grid" x1="502" y1="70.4" x2="712" y2="70.4"/>
+<line class="axis" x1="502" y1="238" x2="712" y2="238"/>
+<polyline class="cl" points="503,193.9 505,193.9 507,200.1 509.1,193.9 511.1,193.9 513.1,200.1 515.1,200.1 517.1,200.1 519.2,206.3 521.2,200.1 523.2,212.4 525.2,212.4 527.2,206.3 529.3,212.4 531.3,218.6 533.3,206.3 535.3,212.4 537.3,206.3 539.4,206.3 541.4,200.1 543.4,200.1 545.4,193.9 547.4,200.1 549.5,193.9 551.5,193.9 553.5,187.7 555.5,193.9 557.5,187.7 559.5,187.7 561.6,181.6 563.6,181.6 565.6,187.7 567.6,181.6 569.6,181.6 571.7,181.6 573.7,187.7 575.7,181.6 577.7,187.7 579.7,187.7 581.8,187.7 583.8,187.7 585.8,187.7 587.8,187.7 589.8,181.6 591.9,175.4 593.9,175.4 595.9,169.2 597.9,169.2 599.9,169.2 602,163 604,156.9 606,163 608,156.9 610,150.7 612,150.7 614.1,150.7 616.1,138.3 618.1,144.5 620.1,144.5 622.1,150.7 624.2,150.7 626.2,150.7 628.2,156.9 630.2,156.9 632.2,156.9 634.3,150.7 636.3,144.5 638.3,150.7 640.3,144.5 642.3,138.3 644.4,132.1 646.4,132.1 648.4,132.1 650.4,119.8 652.4,119.8 654.5,113.6 656.5,113.6 658.5,113.6 660.5,107.4 662.5,113.6 664.5,107.4 666.6,107.4 668.6,113.6 670.6,113.6 672.6,113.6 674.6,113.6 676.7,119.8 678.7,119.8 680.7,119.8 682.7,113.6 684.7,107.4 686.8,101.3 688.8,101.3 690.8,95.1 692.8,82.7 694.8,82.7 696.9,82.7 698.9,76.6 700.9,70.4 702.9,64.2 704.9,58 707,64.2 709,58 711,64.2"/>
+<text class="tick" x="503" y="255" text-anchor="middle">两年前</text>
+<text class="tick" x="698.9" y="255" text-anchor="middle">本周</text>
+<circle class="dot-up" cx="709" cy="56.3" r="4"/>
+<text class="ut" x="703" y="52.3" text-anchor="end">新高</text>
+<text class="pv" x="563.6" y="203.3" text-anchor="start">比率上升 = 板块</text>
+<text class="pv" x="563.6" y="227.8" text-anchor="start">跑赢大盘</text>
+<text class="pl" x="42" y="18">① 大盘指数（周线）</text>
+<text class="pl" x="266" y="18">④ 腾落线（自建）</text>
+<text class="pl" x="502" y="18">② 板块 ÷ 大盘</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>左图，大盘指数周线刚创出新高 B，但只比前高 A 高约 0.6%，收盘仍在 30 周均线之上：趋势向上（① +1）。中图是用每日涨跌家数自建的腾落线：指数创新高时，它的第二个高点 B′ 反而低于 A′，参与上涨的股票在变少，这是第 11 站讲的宽度背离（④ −1）。右图是示例股 A 所在板块除以大盘的比率，创出新高，说明资金在往这个板块流（② +1）。宽度背离不是卖出信号，它的领先时间长短不一；在清单里，它的作用是给大局层扣分，提醒你别把风险档位开到最大。</figcaption>
+  </figure>
+
+  <div class="prose">
+    <p>图外的两项：③ 交叉市场，10 年期国债收益率在低位横盘，人民币汇率和商品价格都没有异动，记 0；⑤ 情绪，两市成交额处在一年来的中等水平，融资余额平稳，没有“全民讨论”，记 0。第一层合计 +1，判定为<strong>顺风</strong>，风险档位取 1%。</p>
+    <h3><span class="tag">第二层</span>长周期：周线上升趋势完好</h3>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 19-4</span>示例股 A 的两年周线<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 400" role="img" aria-label="示意图：示例股 A 的两年周线。底部约 9.5 元，之后形成依次抬高的低点，周线上升趋势线三次触及；16 到 17 元的箱体被向上突破；最近几周回调到约 18.5 元，仍在上升的 30 周均线上方；周线 MACD 柱线转负，DIF 仍在零轴上方">
+<defs><marker id="f194-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/></marker><marker id="f194-ara" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/></marker></defs>
+<!-- kchart: n=104 L=52 step=6.269 x(i)=L+step*(i+0.5) price[8.400,23.200] y∈[14,284] -->
+<line class="axis" x1="52" y1="14" x2="52" y2="284"/>
+<line class="grid" x1="52" y1="254.8" x2="704" y2="254.8"/>
+<text class="tick" x="46" y="258.8" text-anchor="end">10.0</text>
+<line class="grid" x1="52" y1="209.2" x2="704" y2="209.2"/>
+<text class="tick" x="46" y="213.2" text-anchor="end">12.5</text>
+<line class="grid" x1="52" y1="163.6" x2="704" y2="163.6"/>
+<text class="tick" x="46" y="167.6" text-anchor="end">15.0</text>
+<line class="grid" x1="52" y1="118" x2="704" y2="118"/>
+<text class="tick" x="46" y="122" text-anchor="end">17.5</text>
+<line class="grid" x1="52" y1="72.4" x2="704" y2="72.4"/>
+<text class="tick" x="46" y="76.4" text-anchor="end">20.0</text>
+<line class="grid" x1="52" y1="26.8" x2="704" y2="26.8"/>
+<text class="tick" x="46" y="30.8" text-anchor="end">22.5</text>
+<line class="axis" x1="52" y1="284" x2="704" y2="284"/>
+<rect class="zone" x="490.8" y="126.2" width="106.6" height="19.2"/>
+<line class="wd" x1="55.1" y1="235.3" x2="55.1" y2="240.4"/>
+<rect class="cd" x="53.2" y="236.6" width="3.9" height="1.3"/>
+<line class="wd" x1="61.4" y1="235.7" x2="61.4" y2="242.4"/>
+<rect class="cd" x="59.5" y="237.3" width="3.9" height="4"/>
+<line class="wd" x1="67.7" y1="239.3" x2="67.7" y2="244"/>
+<rect class="cd" x="65.7" y="241.3" width="3.9" height="1.5"/>
+<line class="wd" x1="73.9" y1="240.6" x2="73.9" y2="246.6"/>
+<rect class="cd" x="72" y="243" width="3.9" height="1.8"/>
+<line class="wd" x1="80.2" y1="241.3" x2="80.2" y2="246.4"/>
+<rect class="cd" x="78.3" y="244.6" width="3.9" height="1"/>
+<line class="wd" x1="86.5" y1="243.5" x2="86.5" y2="249.9"/>
+<rect class="cd" x="84.5" y="245.3" width="3.9" height="3.1"/>
+<line class="wd" x1="92.8" y1="245.3" x2="92.8" y2="251"/>
+<rect class="cd" x="90.8" y="247.9" width="3.9" height="1.3"/>
+<line class="wd" x1="99" y1="248.1" x2="99" y2="252.4"/>
+<rect class="cd" x="97.1" y="249.7" width="3.9" height="1"/>
+<line class="wd" x1="105.3" y1="249.7" x2="105.3" y2="254.6"/>
+<rect class="cd" x="103.3" y="250.1" width="3.9" height="1.3"/>
+<line class="wd" x1="111.6" y1="251.5" x2="111.6" y2="256.8"/>
+<rect class="cd" x="109.6" y="251.7" width="3.9" height="2.9"/>
+<line class="wd" x1="117.8" y1="252.8" x2="117.8" y2="257.9"/>
+<rect class="cd" x="115.9" y="254.6" width="3.9" height="1"/>
+<line class="wd" x1="124.1" y1="253.7" x2="124.1" y2="259.9"/>
+<rect class="cd" x="122.2" y="255.5" width="3.9" height="3.6"/>
+<line class="wd" x1="130.4" y1="256.1" x2="130.4" y2="262.3"/>
+<rect class="cd" x="128.4" y="259.6" width="3.9" height="1.5"/>
+<line class="wd" x1="136.6" y1="259.4" x2="136.6" y2="264.7"/>
+<rect class="cd" x="134.7" y="260.8" width="3.9" height="2.4"/>
+<line class="wu" x1="142.9" y1="260.3" x2="142.9" y2="263.4"/>
+<rect class="cu" x="141" y="261.2" width="3.9" height="1.5"/>
+<line class="wu" x1="149.2" y1="255.5" x2="149.2" y2="261.4"/>
+<rect class="cu" x="147.2" y="257.5" width="3.9" height="3.3"/>
+<line class="wu" x1="155.4" y1="253.4" x2="155.4" y2="259.4"/>
+<rect class="cu" x="153.5" y="254.8" width="3.9" height="2.6"/>
+<line class="wu" x1="161.7" y1="250.6" x2="161.7" y2="256.8"/>
+<rect class="cu" x="159.8" y="251.2" width="3.9" height="3.8"/>
+<line class="wu" x1="168" y1="247.9" x2="168" y2="253.4"/>
+<rect class="cu" x="166" y="247.9" width="3.9" height="3.8"/>
+<line class="wu" x1="174.3" y1="245" x2="174.3" y2="251.2"/>
+<rect class="cu" x="172.3" y="246.4" width="3.9" height="1.3"/>
+<line class="wd" x1="180.5" y1="242.6" x2="180.5" y2="248.6"/>
+<rect class="cd" x="178.6" y="246.4" width="3.9" height="1.5"/>
+<line class="wd" x1="186.8" y1="247" x2="186.8" y2="251.7"/>
+<rect class="cd" x="184.8" y="248.2" width="3.9" height="1.5"/>
+<line class="wd" x1="193.1" y1="248.1" x2="193.1" y2="253.5"/>
+<rect class="cd" x="191.1" y="249.3" width="3.9" height="2.7"/>
+<line class="wd" x1="199.3" y1="250.8" x2="199.3" y2="255.4"/>
+<rect class="cd" x="197.4" y="252.1" width="3.9" height="2.4"/>
+<line class="wu" x1="205.6" y1="250.6" x2="205.6" y2="256.3"/>
+<rect class="cu" x="203.7" y="252.1" width="3.9" height="2.4"/>
+<line class="wu" x1="211.9" y1="247.7" x2="211.9" y2="253.5"/>
+<rect class="cu" x="209.9" y="249.2" width="3.9" height="3.3"/>
+<line class="wu" x1="218.1" y1="241.1" x2="218.1" y2="250.6"/>
+<rect class="cu" x="216.2" y="243" width="3.9" height="6.4"/>
+<line class="wu" x1="224.4" y1="238.2" x2="224.4" y2="243.9"/>
+<rect class="cu" x="222.5" y="240.2" width="3.9" height="2.6"/>
+<line class="wu" x1="230.7" y1="234.7" x2="230.7" y2="241.9"/>
+<rect class="cu" x="228.7" y="236.2" width="3.9" height="4.4"/>
+<line class="wu" x1="236.9" y1="230.5" x2="236.9" y2="238"/>
+<rect class="cu" x="235" y="232.6" width="3.9" height="4.2"/>
+<line class="wu" x1="243.2" y1="225.3" x2="243.2" y2="233.1"/>
+<rect class="cu" x="241.3" y="226.4" width="3.9" height="5.7"/>
+<line class="wu" x1="249.5" y1="220.7" x2="249.5" y2="228.5"/>
+<rect class="cu" x="247.5" y="220.9" width="3.9" height="5.8"/>
+<line class="wu" x1="255.8" y1="217.8" x2="255.8" y2="224.3"/>
+<rect class="cu" x="253.8" y="219.8" width="3.9" height="1"/>
+<line class="wu" x1="262" y1="212.7" x2="262" y2="220.7"/>
+<rect class="cu" x="260.1" y="213.4" width="3.9" height="6.9"/>
+<line class="wd" x1="268.3" y1="209.2" x2="268.3" y2="216.5"/>
+<rect class="cd" x="266.3" y="213.6" width="3.9" height="2.2"/>
+<line class="wd" x1="274.6" y1="212.9" x2="274.6" y2="218.7"/>
+<rect class="cd" x="272.6" y="215.2" width="3.9" height="2.6"/>
+<line class="wd" x1="280.8" y1="216" x2="280.8" y2="223.4"/>
+<rect class="cd" x="278.9" y="217.6" width="3.9" height="4.2"/>
+<line class="wd" x1="287.1" y1="220.1" x2="287.1" y2="225.3"/>
+<rect class="cd" x="285.2" y="222.2" width="3.9" height="1.5"/>
+<line class="wu" x1="293.4" y1="222" x2="293.4" y2="228.4"/>
+<rect class="cu" x="291.4" y="222.2" width="3.9" height="2"/>
+<line class="wu" x1="299.6" y1="217" x2="299.6" y2="224.3"/>
+<rect class="cu" x="297.7" y="217" width="3.9" height="4.9"/>
+<line class="wu" x1="305.9" y1="211.2" x2="305.9" y2="219.1"/>
+<rect class="cu" x="304" y="212.5" width="3.9" height="4.6"/>
+<line class="wu" x1="312.2" y1="208.7" x2="312.2" y2="215"/>
+<rect class="cu" x="310.2" y="209.2" width="3.9" height="3.1"/>
+<line class="wu" x1="318.4" y1="204.1" x2="318.4" y2="211"/>
+<rect class="cu" x="316.5" y="206.8" width="3.9" height="2.4"/>
+<line class="wu" x1="324.7" y1="199" x2="324.7" y2="207.6"/>
+<rect class="cu" x="322.8" y="202.6" width="3.9" height="4.9"/>
+<line class="wu" x1="331" y1="193.7" x2="331" y2="204.8"/>
+<rect class="cu" x="329" y="195.2" width="3.9" height="7.1"/>
+<line class="wu" x1="337.3" y1="190.4" x2="337.3" y2="197.3"/>
+<rect class="cu" x="335.3" y="192.8" width="3.9" height="2.4"/>
+<line class="wu" x1="343.5" y1="184.6" x2="343.5" y2="195.7"/>
+<rect class="cu" x="341.6" y="187.1" width="3.9" height="6.2"/>
+<line class="wu" x1="349.8" y1="181.5" x2="349.8" y2="191.7"/>
+<rect class="cu" x="347.8" y="185.9" width="3.9" height="1.8"/>
+<line class="wu" x1="356.1" y1="181.8" x2="356.1" y2="186.9"/>
+<rect class="cu" x="354.1" y="185.1" width="3.9" height="1"/>
+<line class="wd" x1="362.3" y1="183.8" x2="362.3" y2="193.9"/>
+<rect class="cd" x="360.4" y="184.6" width="3.9" height="7.7"/>
+<line class="wd" x1="368.6" y1="189.3" x2="368.6" y2="196.2"/>
+<rect class="cd" x="366.7" y="191.7" width="3.9" height="2.2"/>
+<line class="wd" x1="374.9" y1="193.7" x2="374.9" y2="200.1"/>
+<rect class="cd" x="372.9" y="194.1" width="3.9" height="4.6"/>
+<line class="wu" x1="381.1" y1="194.6" x2="381.1" y2="201.9"/>
+<rect class="cu" x="379.2" y="196.4" width="3.9" height="1.5"/>
+<line class="wu" x1="387.4" y1="187.7" x2="387.4" y2="199.7"/>
+<rect class="cu" x="385.5" y="189.5" width="3.9" height="6.4"/>
+<line class="wu" x1="393.7" y1="182" x2="393.7" y2="192.1"/>
+<rect class="cu" x="391.7" y="184.2" width="3.9" height="5.3"/>
+<line class="wu" x1="399.9" y1="177.3" x2="399.9" y2="185.3"/>
+<rect class="cu" x="398" y="179.8" width="3.9" height="3.6"/>
+<line class="wu" x1="406.2" y1="169.1" x2="406.2" y2="181.5"/>
+<rect class="cu" x="404.3" y="170.9" width="3.9" height="8.6"/>
+<line class="wu" x1="412.5" y1="161.6" x2="412.5" y2="172.4"/>
+<rect class="cu" x="410.5" y="164.3" width="3.9" height="6.6"/>
+<line class="wu" x1="418.8" y1="158.1" x2="418.8" y2="167.4"/>
+<rect class="cu" x="416.8" y="158.3" width="3.9" height="6.6"/>
+<line class="wu" x1="425" y1="150.8" x2="425" y2="161.6"/>
+<rect class="cu" x="423.1" y="152.6" width="3.9" height="6.2"/>
+<line class="wd" x1="431.3" y1="150.8" x2="431.3" y2="158.1"/>
+<rect class="cd" x="429.3" y="151.9" width="3.9" height="2.2"/>
+<line class="wd" x1="437.6" y1="151.9" x2="437.6" y2="159.6"/>
+<rect class="cd" x="435.6" y="154.1" width="3.9" height="3.1"/>
+<line class="wd" x1="443.8" y1="155" x2="443.8" y2="166.1"/>
+<rect class="cd" x="441.9" y="156.8" width="3.9" height="6.6"/>
+<line class="wd" x1="450.1" y1="160.3" x2="450.1" y2="166.1"/>
+<rect class="cd" x="448.2" y="163.4" width="3.9" height="1"/>
+<line class="wu" x1="456.4" y1="156.3" x2="456.4" y2="169.1"/>
+<rect class="cu" x="454.4" y="161" width="3.9" height="3.3"/>
+<line class="wu" x1="462.6" y1="155.2" x2="462.6" y2="164.1"/>
+<rect class="cu" x="460.7" y="157" width="3.9" height="4.6"/>
+<line class="wu" x1="468.9" y1="146.4" x2="468.9" y2="159.2"/>
+<rect class="cu" x="467" y="151.2" width="3.9" height="6"/>
+<line class="wu" x1="475.2" y1="142.1" x2="475.2" y2="152.5"/>
+<rect class="cu" x="473.2" y="144.3" width="3.9" height="6"/>
+<line class="wu" x1="481.4" y1="135.1" x2="481.4" y2="147.9"/>
+<rect class="cu" x="479.5" y="137.7" width="3.9" height="7.5"/>
+<line class="wu" x1="487.7" y1="130.9" x2="487.7" y2="138.1"/>
+<rect class="cu" x="485.8" y="132.2" width="3.9" height="4.7"/>
+<line class="wd" x1="494" y1="129.3" x2="494" y2="136.6"/>
+<rect class="cd" x="492" y="132.4" width="3.9" height="1.1"/>
+<line class="wd" x1="500.3" y1="131.7" x2="500.3" y2="139.7"/>
+<rect class="cd" x="498.3" y="134.2" width="3.9" height="4.9"/>
+<line class="wd" x1="506.5" y1="136.4" x2="506.5" y2="143.3"/>
+<rect class="cd" x="504.6" y="139.9" width="3.9" height="1"/>
+<line class="wd" x1="512.8" y1="135.7" x2="512.8" y2="144.8"/>
+<rect class="cd" x="510.8" y="140.1" width="3.9" height="1.3"/>
+<line class="wu" x1="519.1" y1="131.5" x2="519.1" y2="142.1"/>
+<rect class="cu" x="517.1" y="137" width="3.9" height="4.2"/>
+<line class="wu" x1="525.3" y1="127.5" x2="525.3" y2="139.3"/>
+<rect class="cu" x="523.4" y="130.2" width="3.9" height="6.7"/>
+<line class="wd" x1="531.6" y1="127.8" x2="531.6" y2="136.6"/>
+<rect class="cd" x="529.7" y="129.5" width="3.9" height="5.3"/>
+<line class="wd" x1="537.9" y1="132.2" x2="537.9" y2="141.3"/>
+<rect class="cd" x="535.9" y="133.9" width="3.9" height="4"/>
+<line class="wd" x1="544.1" y1="134.8" x2="544.1" y2="144.4"/>
+<rect class="cd" x="542.2" y="137.5" width="3.9" height="4.2"/>
+<line class="wu" x1="550.4" y1="136.6" x2="550.4" y2="145"/>
+<rect class="cu" x="548.5" y="140.4" width="3.9" height="2"/>
+<line class="wu" x1="556.7" y1="131.7" x2="556.7" y2="143"/>
+<rect class="cu" x="554.7" y="136.8" width="3.9" height="3.6"/>
+<line class="wu" x1="562.9" y1="127.1" x2="562.9" y2="139"/>
+<rect class="cu" x="561" y="129.5" width="3.9" height="6.6"/>
+<line class="wd" x1="569.2" y1="125.6" x2="569.2" y2="134.6"/>
+<rect class="cd" x="567.3" y="129.8" width="3.9" height="1.6"/>
+<line class="wd" x1="575.5" y1="128.4" x2="575.5" y2="137"/>
+<rect class="cd" x="573.5" y="131.5" width="3.9" height="2"/>
+<line class="wd" x1="581.8" y1="130.6" x2="581.8" y2="140.2"/>
+<rect class="cd" x="579.8" y="133.1" width="3.9" height="4.6"/>
+<line class="wd" x1="588" y1="137.3" x2="588" y2="145.4"/>
+<rect class="cd" x="586.1" y="138.2" width="3.9" height="2.9"/>
+<line class="wu" x1="594.3" y1="131.7" x2="594.3" y2="141.9"/>
+<rect class="cu" x="592.3" y="132" width="3.9" height="8.8"/>
+<line class="wu" x1="600.6" y1="115.1" x2="600.6" y2="133.9"/>
+<rect class="cu" x="598.6" y="116.5" width="3.9" height="16.2"/>
+<line class="wu" x1="606.8" y1="102.5" x2="606.8" y2="118.9"/>
+<rect class="cu" x="604.9" y="104.1" width="3.9" height="12.4"/>
+<line class="wu" x1="613.1" y1="85.5" x2="613.1" y2="106.3"/>
+<rect class="cu" x="611.2" y="87.7" width="3.9" height="17.1"/>
+<line class="wu" x1="619.4" y1="78.9" x2="619.4" y2="89.2"/>
+<rect class="cu" x="617.4" y="82.6" width="3.9" height="5.7"/>
+<line class="wd" x1="625.6" y1="81.7" x2="625.6" y2="95.9"/>
+<rect class="cd" x="623.7" y="82" width="3.9" height="7.8"/>
+<line class="wu" x1="631.9" y1="83.9" x2="631.9" y2="96.1"/>
+<rect class="cu" x="630" y="86.6" width="3.9" height="4.4"/>
+<line class="wu" x1="638.2" y1="73.8" x2="638.2" y2="88.8"/>
+<rect class="cu" x="636.2" y="74.7" width="3.9" height="10.8"/>
+<line class="wu" x1="644.4" y1="58.9" x2="644.4" y2="78"/>
+<rect class="cu" x="642.5" y="63.3" width="3.9" height="12.6"/>
+<line class="wu" x1="650.7" y1="50.9" x2="650.7" y2="64.5"/>
+<rect class="cu" x="648.8" y="54.9" width="3.9" height="8.2"/>
+<line class="wu" x1="657" y1="43.2" x2="657" y2="57.6"/>
+<rect class="cu" x="655" y="52.1" width="3.9" height="2.7"/>
+<line class="wd" x1="663.3" y1="50.5" x2="663.3" y2="69.3"/>
+<rect class="cd" x="661.3" y="53.2" width="3.9" height="13.1"/>
+<line class="wu" x1="669.5" y1="56.7" x2="669.5" y2="74.6"/>
+<rect class="cu" x="667.6" y="57.1" width="3.9" height="8.6"/>
+<line class="wd" x1="675.8" y1="52.1" x2="675.8" y2="68"/>
+<rect class="cd" x="673.8" y="57.2" width="3.9" height="9.3"/>
+<line class="wd" x1="682.1" y1="63.6" x2="682.1" y2="92.4"/>
+<rect class="cd" x="680.1" y="65.6" width="3.9" height="25.9"/>
+<line class="wu" x1="688.3" y1="74.4" x2="688.3" y2="93.2"/>
+<rect class="cu" x="686.4" y="79.9" width="3.9" height="11.7"/>
+<line class="wd" x1="694.6" y1="76" x2="694.6" y2="85.3"/>
+<rect class="cd" x="692.7" y="79.3" width="3.9" height="6"/>
+<line class="wd" x1="700.9" y1="83.9" x2="700.9" y2="99.7"/>
+<rect class="cd" x="698.9" y="86.1" width="3.9" height="6.4"/>
+<polyline class="ma1" points="111.6,246.5 117.8,248.3 124.1,250.1 130.4,251.9 136.6,253.8 142.9,255.4 149.2,256.3 155.4,256.9 161.7,257 168,256.6 174.3,255.8 180.5,255 186.8,254.1 193.1,253.2 199.3,252.3 205.6,251.4 211.9,250.6 218.1,249.4 224.4,248.3 230.7,247.1 236.9,245.7 243.2,243.6 249.5,240.7 255.8,237.5 262,233.4 268.3,229.7 274.6,226.6 280.8,224.5 287.1,222.8 293.4,221.4 299.6,219.9 305.9,218.5 312.2,217.3 318.4,216 324.7,214.9 331,212.9 337.3,210.4 343.5,206.9 349.8,203.1 356.1,199.4 362.3,196.9 368.6,195.1 374.9,194 381.1,193 387.4,191.7 393.7,190.6 399.9,189.3 406.2,187.7 412.5,185.5 418.8,182.8 425,178.9 431.3,174.9 437.6,170.7 443.8,167.4 450.1,164.9 456.4,162.6 462.6,160.3 468.9,158.3 475.2,156.3 481.4,154.3 487.7,152.2 494,150.2 500.3,148.4 506.5,146 512.8,143.8 519.1,141.4 525.3,138.7 531.6,137 537.9,136.4 544.1,136.8 550.4,137.6 556.7,137.9 562.9,137 569.2,136.1 575.5,135.3 581.8,135.4 588,136.5 594.3,136.2 600.6,134.1 606.8,130.3 613.1,125 619.4,119.6 625.6,115.7 631.9,111.2 638.2,105.3 644.4,97.9 650.7,89.2 657,81.2 663.3,76.2 669.5,71.5 675.8,69.4 682.1,70.3 688.3,69.3 694.6,69.2 700.9,70.9"/>
+<polyline class="ma2" points="236.9,249.4 243.2,249 249.5,248.3 255.8,247.5 262,246.5 268.3,245.5 274.6,244.5 280.8,243.6 287.1,242.7 293.4,241.7 299.6,240.5 305.9,239 312.2,237.4 318.4,235.6 324.7,233.5 331,231.3 337.3,229.2 343.5,226.9 349.8,224.7 356.1,222.6 362.3,220.8 368.6,219 374.9,217.3 381.1,215.5 387.4,213.3 393.7,211.1 399.9,208.7 406.2,206.3 412.5,203.8 418.8,201.2 425,198.6 431.3,196.1 437.6,194 443.8,192.1 450.1,190.5 456.4,188.7 462.6,186.7 468.9,184.3 475.2,181.7 481.4,178.8 487.7,176 494,173.4 500.3,171 506.5,168.8 512.8,166.8 519.1,164.8 525.3,162.8 531.6,161 537.9,159.4 544.1,158 550.4,156.2 556.7,154.3 562.9,152 569.2,149.9 575.5,148 581.8,146.4 588,145.2 594.3,143.9 600.6,142.3 606.8,140.5 613.1,138.3 619.4,135.9 625.6,133.7 631.9,131.1 638.2,128.1 644.4,124.9 650.7,121.5 657,118.2 663.3,115.6 669.5,112.9 675.8,110.7 682.1,109.3 688.3,107.3 694.6,105.5 700.9,103.9"/>
+<line class="ma1" x1="60" y1="24" x2="78" y2="24"/>
+<text class="lg" x="83" y="28">10 周均线</text>
+<line class="ma2" x1="148" y1="24" x2="166" y2="24"/>
+<text class="lg" x="171" y="28">30 周均线</text>
+<line class="axis" x1="52" y1="296" x2="52" y2="374"/>
+<line class="axis" x1="52" y1="374" x2="704" y2="374"/>
+<line class="grid" x1="52" y1="355.3" x2="704" y2="355.3"/>
+<text class="tick" x="46" y="359.3" text-anchor="end">0</text>
+<rect class="vu" x="53.2" y="355.3" width="3.9" height="0.5"/>
+<rect class="vd" x="59.5" y="355.3" width="3.9" height="0.5"/>
+<rect class="vd" x="65.7" y="355.3" width="3.9" height="1"/>
+<rect class="vd" x="72" y="355.3" width="3.9" height="1.5"/>
+<rect class="vd" x="78.3" y="355.3" width="3.9" height="1.8"/>
+<rect class="vd" x="84.5" y="355.3" width="3.9" height="2.4"/>
+<rect class="vd" x="90.8" y="355.3" width="3.9" height="2.7"/>
+<rect class="vd" x="97.1" y="355.3" width="3.9" height="2.9"/>
+<rect class="vd" x="103.3" y="355.3" width="3.9" height="3"/>
+<rect class="vd" x="109.6" y="355.3" width="3.9" height="3.3"/>
+<rect class="vd" x="115.9" y="355.3" width="3.9" height="3.5"/>
+<rect class="vd" x="122.2" y="355.3" width="3.9" height="3.8"/>
+<rect class="vd" x="128.4" y="355.3" width="3.9" height="4.1"/>
+<rect class="vd" x="134.7" y="355.3" width="3.9" height="4.2"/>
+<rect class="vd" x="141" y="355.3" width="3.9" height="3.8"/>
+<rect class="vd" x="147.2" y="355.3" width="3.9" height="2.6"/>
+<rect class="vd" x="153.5" y="355.3" width="3.9" height="1.3"/>
+<rect class="vu" x="159.8" y="355.1" width="3.9" height="0.5"/>
+<rect class="vu" x="166" y="353.6" width="3.9" height="1.7"/>
+<rect class="vu" x="172.3" y="352.4" width="3.9" height="2.9"/>
+<rect class="vu" x="178.6" y="351.9" width="3.9" height="3.3"/>
+<rect class="vu" x="184.8" y="352" width="3.9" height="3.2"/>
+<rect class="vu" x="191.1" y="352.5" width="3.9" height="2.8"/>
+<rect class="vu" x="197.4" y="353.2" width="3.9" height="2"/>
+<rect class="vu" x="203.7" y="353.4" width="3.9" height="1.9"/>
+<rect class="vu" x="209.9" y="353.1" width="3.9" height="2.1"/>
+<rect class="vu" x="216.2" y="352.1" width="3.9" height="3.1"/>
+<rect class="vu" x="222.5" y="351.2" width="3.9" height="4"/>
+<rect class="vu" x="228.7" y="350.2" width="3.9" height="5"/>
+<rect class="vu" x="235" y="349.4" width="3.9" height="5.9"/>
+<rect class="vu" x="241.3" y="348.2" width="3.9" height="7"/>
+<rect class="vu" x="247.5" y="347.1" width="3.9" height="8.2"/>
+<rect class="vu" x="253.8" y="346.7" width="3.9" height="8.6"/>
+<rect class="vu" x="260.1" y="346" width="3.9" height="9.3"/>
+<rect class="vu" x="266.3" y="346.5" width="3.9" height="8.8"/>
+<rect class="vu" x="272.6" y="347.6" width="3.9" height="7.7"/>
+<rect class="vu" x="278.9" y="349.4" width="3.9" height="5.9"/>
+<rect class="vu" x="285.2" y="351.2" width="3.9" height="4.1"/>
+<rect class="vu" x="291.4" y="352.4" width="3.9" height="2.8"/>
+<rect class="vu" x="297.7" y="352.8" width="3.9" height="2.5"/>
+<rect class="vu" x="304" y="352.6" width="3.9" height="2.6"/>
+<rect class="vu" x="310.2" y="352.3" width="3.9" height="2.9"/>
+<rect class="vu" x="316.5" y="352.1" width="3.9" height="3.2"/>
+<rect class="vu" x="322.8" y="351.7" width="3.9" height="3.6"/>
+<rect class="vu" x="329" y="350.7" width="3.9" height="4.6"/>
+<rect class="vu" x="335.3" y="350.1" width="3.9" height="5.1"/>
+<rect class="vu" x="341.6" y="349.5" width="3.9" height="5.8"/>
+<rect class="vu" x="347.8" y="349.3" width="3.9" height="5.9"/>
+<rect class="vu" x="354.1" y="349.7" width="3.9" height="5.6"/>
+<rect class="vu" x="360.4" y="351.4" width="3.9" height="3.8"/>
+<rect class="vu" x="366.7" y="353.2" width="3.9" height="2"/>
+<rect class="vd" x="372.9" y="355.3" width="3.9" height="0.5"/>
+<rect class="vd" x="379.2" y="355.3" width="3.9" height="1.4"/>
+<rect class="vd" x="385.5" y="355.3" width="3.9" height="1.3"/>
+<rect class="vd" x="391.7" y="355.3" width="3.9" height="0.7"/>
+<rect class="vu" x="398" y="355.1" width="3.9" height="0.5"/>
+<rect class="vu" x="404.3" y="353.6" width="3.9" height="1.7"/>
+<rect class="vu" x="410.5" y="352" width="3.9" height="3.3"/>
+<rect class="vu" x="416.8" y="350.5" width="3.9" height="4.7"/>
+<rect class="vu" x="423.1" y="349.3" width="3.9" height="5.9"/>
+<rect class="vu" x="429.3" y="349.3" width="3.9" height="5.9"/>
+<rect class="vu" x="435.6" y="350.4" width="3.9" height="4.8"/>
+<rect class="vu" x="441.9" y="352.5" width="3.9" height="2.8"/>
+<rect class="vu" x="448.2" y="354.4" width="3.9" height="0.9"/>
+<rect class="vd" x="454.4" y="355.3" width="3.9" height="0.5"/>
+<rect class="vd" x="460.7" y="355.3" width="3.9" height="0.6"/>
+<rect class="vd" x="467" y="355.3" width="3.9" height="0.5"/>
+<rect class="vu" x="473.2" y="354.6" width="3.9" height="0.7"/>
+<rect class="vu" x="479.5" y="353.4" width="3.9" height="1.9"/>
+<rect class="vu" x="485.8" y="352.3" width="3.9" height="3"/>
+<rect class="vu" x="492" y="352.2" width="3.9" height="3"/>
+<rect class="vu" x="498.3" y="353.5" width="3.9" height="1.8"/>
+<rect class="vu" x="504.6" y="354.8" width="3.9" height="0.5"/>
+<rect class="vd" x="510.8" y="355.3" width="3.9" height="0.9"/>
+<rect class="vd" x="517.1" y="355.3" width="3.9" height="1.4"/>
+<rect class="vd" x="523.4" y="355.3" width="3.9" height="1"/>
+<rect class="vd" x="529.7" y="355.3" width="3.9" height="1.7"/>
+<rect class="vd" x="535.9" y="355.3" width="3.9" height="2.8"/>
+<rect class="vd" x="542.2" y="355.3" width="3.9" height="4.1"/>
+<rect class="vd" x="548.5" y="355.3" width="3.9" height="4.9"/>
+<rect class="vd" x="554.7" y="355.3" width="3.9" height="4.9"/>
+<rect class="vd" x="561" y="355.3" width="3.9" height="3.9"/>
+<rect class="vd" x="567.3" y="355.3" width="3.9" height="3.6"/>
+<rect class="vd" x="573.5" y="355.3" width="3.9" height="3.7"/>
+<rect class="vd" x="579.8" y="355.3" width="3.9" height="4.5"/>
+<rect class="vd" x="586.1" y="355.3" width="3.9" height="5.5"/>
+<rect class="vd" x="592.3" y="355.3" width="3.9" height="4.7"/>
+<rect class="vd" x="598.6" y="355.3" width="3.9" height="2"/>
+<rect class="vu" x="604.9" y="353.8" width="3.9" height="1.4"/>
+<rect class="vu" x="611.2" y="349.7" width="3.9" height="5.6"/>
+<rect class="vu" x="617.4" y="346.8" width="3.9" height="8.4"/>
+<rect class="vu" x="623.7" y="346.8" width="3.9" height="8.5"/>
+<rect class="vu" x="630" y="347" width="3.9" height="8.3"/>
+<rect class="vu" x="636.2" y="346.1" width="3.9" height="9.1"/>
+<rect class="vu" x="642.5" y="344.7" width="3.9" height="10.5"/>
+<rect class="vu" x="648.8" y="343.5" width="3.9" height="11.7"/>
+<rect class="vu" x="655" y="343.3" width="3.9" height="11.9"/>
+<rect class="vu" x="661.3" y="346.3" width="3.9" height="9"/>
+<rect class="vu" x="667.6" y="347.7" width="3.9" height="7.6"/>
+<rect class="vu" x="673.8" y="350.7" width="3.9" height="4.5"/>
+<rect class="vd" x="680.1" y="355.3" width="3.9" height="1.6"/>
+<rect class="vd" x="686.4" y="355.3" width="3.9" height="4.2"/>
+<rect class="vd" x="692.7" y="355.3" width="3.9" height="6.7"/>
+<rect class="vd" x="698.9" y="355.3" width="3.9" height="9.4"/>
+<polyline class="ind1" points="55.1,355.3 61.4,355.9 67.7,356.6 73.9,357.5 80.2,358.2 86.5,359.4 92.8,360.4 99,361.4 105.3,362.2 111.6,363.4 117.8,364.4 124.1,365.7 130.4,366.9 136.6,368.2 142.9,368.6 149.2,368.2 155.4,367.2 161.7,365.6 168,363.7 174.3,361.8 180.5,360.5 186.8,359.8 193.1,359.6 199.3,359.8 205.6,359.5 211.9,358.7 218.1,356.9 224.4,355 230.7,352.8 236.9,350.4 243.2,347.5 249.5,344.3 255.8,341.8 262,338.8 268.3,337.1 274.6,336.3 280.8,336.6 287.1,337.4 293.4,337.9 299.6,337.6 305.9,336.8 312.2,335.8 318.4,334.8 324.7,333.4 331,331.3 337.3,329.5 343.5,327.4 349.8,325.8 356.1,324.7 362.3,325.5 368.6,326.8 374.9,329 381.1,330.6 387.4,330.9 393.7,330.4 399.9,329.6 406.2,327.6 412.5,325.2 418.8,322.6 425,319.9 431.3,318.4 437.6,318.3 443.8,319.7 450.1,321.3 456.4,322.4 462.6,323 468.9,322.7 475.2,321.6 481.4,320 487.7,318.1 494,317.3 500.3,318.1 506.5,319.4 512.8,321 519.1,321.8 525.3,321.6 531.6,322.7 537.9,324.5 544.1,326.9 550.4,328.9 556.7,330.1 562.9,330 569.2,330.6 575.5,331.7 581.8,333.6 588,335.9 594.3,336.4 600.6,334.1 606.8,330.4 613.1,324.8 619.4,319.8 625.6,317.7 631.9,315.8 638.2,312.7 644.4,308.7 650.7,304.5 657,301.4 663.3,302.1 669.5,301.6 675.8,303.5 682.1,310 688.3,313.6 694.6,317.9 700.9,322.9"/>
+<polyline class="ind2" points="55.1,355.3 61.4,355.4 67.7,355.6 73.9,356 80.2,356.5 86.5,357 92.8,357.7 99,358.4 105.3,359.2 111.6,360 117.8,360.9 124.1,361.9 130.4,362.9 136.6,363.9 142.9,364.9 149.2,365.5 155.4,365.9 161.7,365.8 168,365.4 174.3,364.7 180.5,363.8 186.8,363 193.1,362.4 199.3,361.8 205.6,361.4 211.9,360.8 218.1,360.1 224.4,359 230.7,357.8 236.9,356.3 243.2,354.6 249.5,352.5 255.8,350.4 262,348.1 268.3,345.9 274.6,343.9 280.8,342.5 287.1,341.4 293.4,340.7 299.6,340.1 305.9,339.5 312.2,338.7 318.4,337.9 324.7,337 331,335.9 337.3,334.6 343.5,333.2 349.8,331.7 356.1,330.3 362.3,329.3 368.6,328.8 374.9,328.9 381.1,329.2 387.4,329.5 393.7,329.7 399.9,329.7 406.2,329.3 412.5,328.5 418.8,327.3 425,325.8 431.3,324.3 437.6,323.1 443.8,322.4 450.1,322.2 456.4,322.2 462.6,322.4 468.9,322.4 475.2,322.3 481.4,321.8 487.7,321.1 494,320.3 500.3,319.9 506.5,319.8 512.8,320 519.1,320.4 525.3,320.6 531.6,321 537.9,321.7 544.1,322.8 550.4,324 556.7,325.2 562.9,326.2 569.2,327.1 575.5,328 581.8,329.1 588,330.5 594.3,331.7 600.6,332.2 606.8,331.8 613.1,330.4 619.4,328.3 625.6,326.2 631.9,324.1 638.2,321.8 644.4,319.2 650.7,316.3 657,313.3 663.3,311 669.5,309.1 675.8,308 682.1,308.4 688.3,309.5 694.6,311.1 700.9,313.5"/>
+<text class="lg" x="58" y="308">周线 MACD(12,26,9)</text>
+<text class="tick" x="55.1" y="391" text-anchor="middle">两年前</text>
+<text class="tick" x="381.1" y="391" text-anchor="middle">一年前</text>
+<text class="tick" x="700.9" y="391" text-anchor="middle">本周</text>
+<line class="tl" x1="205.6" y1="256.2" x2="700.9" y2="112.6"/>
+<circle class="dot-dn" cx="205.6" cy="256.2" r="4"/>
+<circle class="dot-dn" cx="381.1" cy="202" r="4"/>
+<circle class="dot-dn" cx="588" cy="145.4" r="4"/>
+<text class="dt" x="136.6" y="282.6" text-anchor="middle">底部 9.5</text>
+<text class="hi" x="431.3" y="225.6" text-anchor="start">⑥ 周线上升趋势线：</text>
+<text class="hi" x="431.3" y="238.4" text-anchor="start">三个触点，至今未破</text>
+<text class="pv" x="573" y="117.1" text-anchor="end">箱体 16–17：突破后变支撑</text>
+<line class="sr" x1="578.6" y1="14" x2="578.6" y2="284"/>
+<text class="elabel" x="582.6" y="26">图 19-5 的日线窗口</text>
+<text class="pv" x="685.8" y="174.5" text-anchor="end">本周回调到 18.5，</text>
+<text class="pv" x="685.8" y="187.3" text-anchor="end">仍在 30 周均线之上</text>
+<line class="edge" x1="692.7" y1="176.4" x2="699.6" y2="107" marker-end="url(#f194-ar)"/>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>两年里，示例股 A 从约 9.5 元的底部走出一串依次抬高的低点，周线上升趋势线经过三个低点，至今没有被跌破；16–17 元的箱体被向上突破后，价格最高到 21.60 元。最近 7 周的回调把价格带回 18.5 元附近，跌破了 10 周均线，周线 MACD 在零轴上方死叉，柱线连续 4 周为负，说明上涨动能在减弱。但按“长周期优先”，周线的结构才是关键：峰谷依次抬高，收盘 18.90 元仍在上升的 30 周均线（约 18.27 元）之上，离趋势线（约 17.8 元）还有约 6%。⑥ 记 +1，第一关通过。虚线右侧的 20 周，就是下一张日线图的范围。</figcaption>
+  </figure>
+
+  <div class="prose">
+    <h3><span class="tag">第三、四层</span>日线：结构不错，确认未到</h3>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 19-5</span>综合演练：示例股 A 的最后 100 个交易日<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 580" role="img" aria-label="示意图：示例股 A 的日线综合演练。箱体上沿 17 元被放量跳空突破，缺口未回补；上涨到 21.60 元后回调，跌破短期上升趋势线，回到 18.70 到 18.90 元的旧整理区与 50% 回撤位，第二次测试时收出锤子线；回调缩量，RSI 与 MACD 柱线出现底背离；右侧计划区标出触发价 19.10、止损 18.35、颈线 19.89 和目标 21.60">
+<defs><marker id="f195-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/></marker><marker id="f195-ara" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/></marker></defs>
+<!-- kchart: n=100 L=52 step=5.500 x(i)=L+step*(i+0.5) price[15.500,22.300] y∈[14,328] -->
+<line class="axis" x1="52" y1="14" x2="52" y2="328"/>
+<line class="grid" x1="52" y1="304.9" x2="602" y2="304.9"/>
+<text class="tick" x="46" y="308.9" text-anchor="end">16</text>
+<line class="grid" x1="52" y1="258.7" x2="602" y2="258.7"/>
+<text class="tick" x="46" y="262.7" text-anchor="end">17</text>
+<line class="grid" x1="52" y1="212.6" x2="602" y2="212.6"/>
+<text class="tick" x="46" y="216.6" text-anchor="end">18</text>
+<line class="grid" x1="52" y1="166.4" x2="602" y2="166.4"/>
+<text class="tick" x="46" y="170.4" text-anchor="end">19</text>
+<line class="grid" x1="52" y1="120.2" x2="602" y2="120.2"/>
+<text class="tick" x="46" y="124.2" text-anchor="end">20</text>
+<line class="grid" x1="52" y1="74" x2="602" y2="74"/>
+<text class="tick" x="46" y="78" text-anchor="end">21</text>
+<line class="grid" x1="52" y1="27.9" x2="602" y2="27.9"/>
+<text class="tick" x="46" y="31.9" text-anchor="end">22</text>
+<line class="axis" x1="52" y1="328" x2="602" y2="328"/>
+<rect class="zone" x="261" y="171" width="341" height="9.2"/>
+<rect class="zone-up" x="151" y="248.6" width="451" height="9.2"/>
+<line class="wd" x1="54.8" y1="267.5" x2="54.8" y2="284.6"/>
+<rect class="cd" x="53" y="274" width="3.4" height="4.6"/>
+<line class="wd" x1="60.3" y1="271.7" x2="60.3" y2="286"/>
+<rect class="cd" x="58.5" y="276.7" width="3.4" height="3.7"/>
+<line class="wd" x1="65.8" y1="274.4" x2="65.8" y2="286.9"/>
+<rect class="cd" x="64" y="278.6" width="3.4" height="6.9"/>
+<line class="wd" x1="71.3" y1="282.7" x2="71.3" y2="292"/>
+<rect class="cd" x="69.5" y="287.8" width="3.4" height="1.8"/>
+<line class="wu" x1="76.8" y1="280.4" x2="76.8" y2="291.1"/>
+<rect class="cu" x="75" y="285.5" width="3.4" height="4.2"/>
+<line class="wd" x1="82.3" y1="284.6" x2="82.3" y2="301.2"/>
+<rect class="cd" x="80.5" y="286.9" width="3.4" height="11.1"/>
+<line class="wu" x1="87.8" y1="292" x2="87.8" y2="303.1"/>
+<rect class="cu" x="86" y="294.8" width="3.4" height="3.7"/>
+<line class="wd" x1="93.3" y1="288.3" x2="93.3" y2="298"/>
+<rect class="cd" x="91.5" y="294.8" width="3.4" height="1"/>
+<line class="wd" x1="98.8" y1="293.8" x2="98.8" y2="304.9"/>
+<rect class="cd" x="97" y="296.6" width="3.4" height="5.5"/>
+<line class="wu" x1="104.3" y1="290.6" x2="104.3" y2="300.3"/>
+<rect class="cu" x="102.5" y="294.3" width="3.4" height="5.1"/>
+<line class="wu" x1="109.8" y1="290.1" x2="109.8" y2="296.1"/>
+<rect class="cu" x="108" y="293.4" width="3.4" height="1"/>
+<line class="wu" x1="115.3" y1="283.7" x2="115.3" y2="292"/>
+<rect class="cu" x="113.5" y="287.8" width="3.4" height="3.2"/>
+<line class="wu" x1="120.8" y1="271.2" x2="120.8" y2="287.8"/>
+<rect class="cu" x="119" y="277.2" width="3.4" height="8.8"/>
+<line class="wu" x1="126.3" y1="274.9" x2="126.3" y2="281.8"/>
+<rect class="cu" x="124.5" y="276.7" width="3.4" height="1"/>
+<line class="wu" x1="131.8" y1="270.3" x2="131.8" y2="279.5"/>
+<rect class="cu" x="130" y="271.2" width="3.4" height="6.5"/>
+<line class="wu" x1="137.3" y1="268.9" x2="137.3" y2="275.8"/>
+<rect class="cu" x="135.5" y="271.7" width="3.4" height="1.4"/>
+<line class="wu" x1="142.8" y1="258.7" x2="142.8" y2="272.1"/>
+<rect class="cu" x="141" y="262" width="3.4" height="8.8"/>
+<line class="wu" x1="148.3" y1="257.8" x2="148.3" y2="265.2"/>
+<rect class="cu" x="146.5" y="260.1" width="3.4" height="1.8"/>
+<line class="wu" x1="153.8" y1="232" x2="153.8" y2="248.6"/>
+<rect class="cu" x="152" y="234.7" width="3.4" height="11.1"/>
+<line class="wu" x1="159.3" y1="228.3" x2="159.3" y2="241.6"/>
+<rect class="cu" x="157.5" y="232" width="3.4" height="4.2"/>
+<line class="wu" x1="164.8" y1="219.5" x2="164.8" y2="238"/>
+<rect class="cu" x="163" y="226" width="3.4" height="6"/>
+<line class="wu" x1="170.3" y1="218.6" x2="170.3" y2="228.3"/>
+<rect class="cu" x="168.5" y="219.5" width="3.4" height="7.4"/>
+<line class="wu" x1="175.8" y1="206.6" x2="175.8" y2="218.6"/>
+<rect class="cu" x="174" y="212.1" width="3.4" height="5.1"/>
+<line class="wu" x1="181.3" y1="198.7" x2="181.3" y2="215.8"/>
+<rect class="cu" x="179.5" y="199.6" width="3.4" height="11.5"/>
+<line class="wd" x1="186.8" y1="196.4" x2="186.8" y2="202.4"/>
+<rect class="cd" x="185" y="199.6" width="3.4" height="1"/>
+<line class="wu" x1="192.3" y1="185.3" x2="192.3" y2="206.1"/>
+<rect class="cu" x="190.5" y="189.5" width="3.4" height="12.9"/>
+<line class="wu" x1="197.8" y1="177" x2="197.8" y2="196.4"/>
+<rect class="cu" x="196" y="180.2" width="3.4" height="11.1"/>
+<line class="wu" x1="203.3" y1="164.1" x2="203.3" y2="182.5"/>
+<rect class="cu" x="201.5" y="167.8" width="3.4" height="13.4"/>
+<line class="wu" x1="208.8" y1="153.5" x2="208.8" y2="177.9"/>
+<rect class="cu" x="207" y="161.8" width="3.4" height="7.9"/>
+<line class="wu" x1="214.3" y1="155.3" x2="214.3" y2="163.6"/>
+<rect class="cu" x="212.5" y="159" width="3.4" height="3.7"/>
+<line class="wu" x1="219.8" y1="145.1" x2="219.8" y2="162.7"/>
+<rect class="cu" x="218" y="152.5" width="3.4" height="7.9"/>
+<line class="wu" x1="225.3" y1="139.6" x2="225.3" y2="152.1"/>
+<rect class="cu" x="223.5" y="142.4" width="3.4" height="7.8"/>
+<line class="wu" x1="230.8" y1="137.3" x2="230.8" y2="141.4"/>
+<rect class="cu" x="229" y="140.5" width="3.4" height="1"/>
+<line class="wd" x1="236.3" y1="136.8" x2="236.3" y2="142.8"/>
+<rect class="cd" x="234.5" y="141.4" width="3.4" height="1.4"/>
+<line class="wd" x1="241.8" y1="143.3" x2="241.8" y2="151.1"/>
+<rect class="cd" x="240" y="143.8" width="3.4" height="2.3"/>
+<line class="wd" x1="247.3" y1="143.8" x2="247.3" y2="160.4"/>
+<rect class="cd" x="245.5" y="144.7" width="3.4" height="11.5"/>
+<line class="wd" x1="252.8" y1="153.9" x2="252.8" y2="165.9"/>
+<rect class="cd" x="251" y="157.6" width="3.4" height="1.4"/>
+<line class="wd" x1="258.3" y1="157.1" x2="258.3" y2="160.8"/>
+<rect class="cd" x="256.5" y="159" width="3.4" height="1"/>
+<line class="wd" x1="263.8" y1="159" x2="263.8" y2="177"/>
+<rect class="cd" x="262" y="162.2" width="3.4" height="8.3"/>
+<line class="wu" x1="269.3" y1="161.3" x2="269.3" y2="179.8"/>
+<rect class="cu" x="267.5" y="164.5" width="3.4" height="6.5"/>
+<line class="wd" x1="274.8" y1="165" x2="274.8" y2="180.2"/>
+<rect class="cd" x="273" y="167.3" width="3.4" height="8.3"/>
+<line class="wu" x1="280.3" y1="170.1" x2="280.3" y2="176.5"/>
+<rect class="cu" x="278.5" y="172.8" width="3.4" height="1.8"/>
+<line class="wu" x1="285.8" y1="156.2" x2="285.8" y2="171"/>
+<rect class="cu" x="284" y="160.4" width="3.4" height="9.7"/>
+<line class="wu" x1="291.3" y1="155.8" x2="291.3" y2="164.1"/>
+<rect class="cu" x="289.5" y="162.7" width="3.4" height="1"/>
+<line class="wu" x1="296.8" y1="149.3" x2="296.8" y2="163.6"/>
+<rect class="cu" x="295" y="156.2" width="3.4" height="5.5"/>
+<line class="wu" x1="302.3" y1="140.1" x2="302.3" y2="161.8"/>
+<rect class="cu" x="300.5" y="147" width="3.4" height="6.5"/>
+<line class="wd" x1="307.8" y1="147" x2="307.8" y2="156.7"/>
+<rect class="cd" x="306" y="149.3" width="3.4" height="1.4"/>
+<line class="wu" x1="313.3" y1="130.8" x2="313.3" y2="157.1"/>
+<rect class="cu" x="311.5" y="133.6" width="3.4" height="17.1"/>
+<line class="wd" x1="318.8" y1="127.6" x2="318.8" y2="139.1"/>
+<rect class="cd" x="317" y="135" width="3.4" height="1"/>
+<line class="wu" x1="324.3" y1="123.9" x2="324.3" y2="138.2"/>
+<rect class="cu" x="322.5" y="126.2" width="3.4" height="7.9"/>
+<line class="wu" x1="329.8" y1="109.6" x2="329.8" y2="134.5"/>
+<rect class="cu" x="328" y="116.5" width="3.4" height="12.5"/>
+<line class="wu" x1="335.3" y1="105.4" x2="335.3" y2="117.4"/>
+<rect class="cu" x="333.5" y="111" width="3.4" height="3.7"/>
+<line class="wu" x1="340.8" y1="100.4" x2="340.8" y2="114.2"/>
+<rect class="cu" x="339" y="107.3" width="3.4" height="4.2"/>
+<line class="wu" x1="346.3" y1="89.3" x2="346.3" y2="117.9"/>
+<rect class="cu" x="344.5" y="99" width="3.4" height="10.2"/>
+<line class="wd" x1="351.8" y1="86" x2="351.8" y2="104"/>
+<rect class="cd" x="350" y="96.2" width="3.4" height="1"/>
+<line class="wu" x1="357.3" y1="90.2" x2="357.3" y2="100.4"/>
+<rect class="cu" x="355.5" y="94.3" width="3.4" height="2.3"/>
+<line class="wu" x1="362.8" y1="81" x2="362.8" y2="93.9"/>
+<rect class="cu" x="361" y="84.7" width="3.4" height="7.4"/>
+<line class="wu" x1="368.3" y1="82.8" x2="368.3" y2="87"/>
+<rect class="cu" x="366.5" y="86" width="3.4" height="1"/>
+<line class="wu" x1="373.8" y1="71.7" x2="373.8" y2="87"/>
+<rect class="cu" x="372" y="76.8" width="3.4" height="10.2"/>
+<line class="wu" x1="379.3" y1="65.7" x2="379.3" y2="79.6"/>
+<rect class="cu" x="377.5" y="75.9" width="3.4" height="1.4"/>
+<line class="wu" x1="384.8" y1="59.3" x2="384.8" y2="82.8"/>
+<rect class="cu" x="383" y="63.9" width="3.4" height="12"/>
+<line class="wu" x1="390.3" y1="56.5" x2="390.3" y2="65.3"/>
+<rect class="cu" x="388.5" y="62.5" width="3.4" height="2.3"/>
+<line class="wu" x1="395.8" y1="46.3" x2="395.8" y2="69.4"/>
+<rect class="cu" x="394" y="50" width="3.4" height="13.9"/>
+<line class="wd" x1="401.3" y1="47.2" x2="401.3" y2="60.2"/>
+<rect class="cd" x="399.5" y="50.9" width="3.4" height="4.6"/>
+<line class="wd" x1="406.8" y1="53.3" x2="406.8" y2="77.7"/>
+<rect class="cd" x="405" y="56.5" width="3.4" height="12.5"/>
+<line class="wd" x1="412.3" y1="64.8" x2="412.3" y2="89.3"/>
+<rect class="cd" x="410.5" y="71.7" width="3.4" height="9.7"/>
+<line class="wu" x1="417.8" y1="75.9" x2="417.8" y2="91.6"/>
+<rect class="cu" x="416" y="76.8" width="3.4" height="6.9"/>
+<line class="wd" x1="423.3" y1="72.6" x2="423.3" y2="95.7"/>
+<rect class="cd" x="421.5" y="79.1" width="3.4" height="14.8"/>
+<line class="wu" x1="428.8" y1="87" x2="428.8" y2="98"/>
+<rect class="cu" x="427" y="91.6" width="3.4" height="1"/>
+<line class="wd" x1="434.3" y1="88.8" x2="434.3" y2="112.4"/>
+<rect class="cd" x="432.5" y="93.4" width="3.4" height="11.5"/>
+<line class="wd" x1="439.8" y1="101.3" x2="439.8" y2="122.5"/>
+<rect class="cd" x="438" y="103.1" width="3.4" height="16.2"/>
+<line class="wu" x1="445.3" y1="96.7" x2="445.3" y2="125.7"/>
+<rect class="cu" x="443.5" y="102.7" width="3.4" height="16.6"/>
+<line class="wu" x1="450.8" y1="91.1" x2="450.8" y2="104"/>
+<rect class="cu" x="449" y="97.1" width="3.4" height="5.1"/>
+<line class="wu" x1="456.3" y1="83.7" x2="456.3" y2="102.7"/>
+<rect class="cu" x="454.5" y="86.5" width="3.4" height="8.8"/>
+<line class="wu" x1="461.8" y1="80.5" x2="461.8" y2="90.2"/>
+<rect class="cu" x="460" y="81.4" width="3.4" height="6.5"/>
+<line class="wu" x1="467.3" y1="69.9" x2="467.3" y2="85.6"/>
+<rect class="cu" x="465.5" y="76.3" width="3.4" height="5.5"/>
+<line class="wu" x1="472.8" y1="69" x2="472.8" y2="86"/>
+<rect class="cu" x="471" y="77.3" width="3.4" height="1"/>
+<line class="wd" x1="478.3" y1="72.6" x2="478.3" y2="91.1"/>
+<rect class="cd" x="476.5" y="78.6" width="3.4" height="11.1"/>
+<line class="wd" x1="483.8" y1="83.3" x2="483.8" y2="98"/>
+<rect class="cd" x="482" y="89.3" width="3.4" height="6"/>
+<line class="wd" x1="489.3" y1="93" x2="489.3" y2="109.1"/>
+<rect class="cd" x="487.5" y="93.9" width="3.4" height="11.5"/>
+<line class="wd" x1="494.8" y1="98" x2="494.8" y2="121.6"/>
+<rect class="cd" x="493" y="103.1" width="3.4" height="9.7"/>
+<line class="wd" x1="500.3" y1="106.4" x2="500.3" y2="129.9"/>
+<rect class="cd" x="498.5" y="110.5" width="3.4" height="14.8"/>
+<line class="wd" x1="505.8" y1="125.7" x2="505.8" y2="148.4"/>
+<rect class="cd" x="504" y="126.2" width="3.4" height="12.9"/>
+<line class="wd" x1="511.3" y1="133.6" x2="511.3" y2="162.2"/>
+<rect class="cd" x="509.5" y="140.1" width="3.4" height="13.4"/>
+<line class="wd" x1="516.8" y1="144.2" x2="516.8" y2="171"/>
+<rect class="cd" x="515" y="147.9" width="3.4" height="20.8"/>
+<line class="wu" x1="522.3" y1="152.5" x2="522.3" y2="172.8"/>
+<rect class="cu" x="520.5" y="155.3" width="3.4" height="13.4"/>
+<line class="wu" x1="527.8" y1="142.8" x2="527.8" y2="160.8"/>
+<rect class="cu" x="526" y="148.4" width="3.4" height="11.5"/>
+<line class="wu" x1="533.3" y1="132.7" x2="533.3" y2="150.7"/>
+<rect class="cu" x="531.5" y="136.4" width="3.4" height="13.4"/>
+<line class="wu" x1="538.8" y1="125.3" x2="538.8" y2="146.1"/>
+<rect class="cu" x="537" y="134.1" width="3.4" height="3.7"/>
+<line class="wd" x1="544.3" y1="129" x2="544.3" y2="141.4"/>
+<rect class="cd" x="542.5" y="134.1" width="3.4" height="5.1"/>
+<line class="wu" x1="549.8" y1="132.2" x2="549.8" y2="147"/>
+<rect class="cu" x="548" y="133.6" width="3.4" height="4.2"/>
+<line class="wd" x1="555.3" y1="131.8" x2="555.3" y2="147.5"/>
+<rect class="cd" x="553.5" y="133.1" width="3.4" height="6"/>
+<line class="wd" x1="560.8" y1="134.5" x2="560.8" y2="146.1"/>
+<rect class="cd" x="559" y="136.8" width="3.4" height="3.7"/>
+<line class="wd" x1="566.3" y1="134.5" x2="566.3" y2="147.5"/>
+<rect class="cd" x="564.5" y="139.1" width="3.4" height="1"/>
+<line class="wd" x1="571.8" y1="129.4" x2="571.8" y2="153"/>
+<rect class="cd" x="570" y="136.8" width="3.4" height="16.2"/>
+<line class="wd" x1="577.3" y1="149.3" x2="577.3" y2="161.8"/>
+<rect class="cd" x="575.5" y="154.8" width="3.4" height="3.7"/>
+<line class="wd" x1="582.8" y1="156.2" x2="582.8" y2="172.4"/>
+<rect class="cd" x="581" y="160.4" width="3.4" height="2.8"/>
+<line class="wd" x1="588.3" y1="162.7" x2="588.3" y2="175.6"/>
+<rect class="cd" x="586.5" y="164.1" width="3.4" height="6"/>
+<line class="wd" x1="593.8" y1="167.3" x2="593.8" y2="179.3"/>
+<rect class="cd" x="592" y="170.1" width="3.4" height="5.5"/>
+<line class="wu" x1="599.3" y1="170.1" x2="599.3" y2="189.5"/>
+<rect class="cu" x="597.5" y="171" width="3.4" height="4.6"/>
+<line class="axis" x1="52" y1="340" x2="52" y2="396"/>
+<line class="axis" x1="52" y1="396" x2="602" y2="396"/>
+<rect class="vd" x="53" y="383.5" width="3.4" height="12.5"/>
+<rect class="vd" x="58.5" y="387" width="3.4" height="9"/>
+<rect class="vd" x="64" y="384.9" width="3.4" height="11.1"/>
+<rect class="vd" x="69.5" y="386.8" width="3.4" height="9.2"/>
+<rect class="vu" x="75" y="386.2" width="3.4" height="9.8"/>
+<rect class="vd" x="80.5" y="385.5" width="3.4" height="10.5"/>
+<rect class="vu" x="86" y="385.7" width="3.4" height="10.3"/>
+<rect class="vd" x="91.5" y="387.2" width="3.4" height="8.8"/>
+<rect class="vd" x="97" y="387.2" width="3.4" height="8.8"/>
+<rect class="vu" x="102.5" y="386" width="3.4" height="10"/>
+<rect class="vu" x="108" y="386.9" width="3.4" height="9.1"/>
+<rect class="vu" x="113.5" y="383.2" width="3.4" height="12.8"/>
+<rect class="vu" x="119" y="382.6" width="3.4" height="13.4"/>
+<rect class="vu" x="124.5" y="384.4" width="3.4" height="11.6"/>
+<rect class="vu" x="130" y="385.1" width="3.4" height="10.9"/>
+<rect class="vu" x="135.5" y="382.5" width="3.4" height="13.5"/>
+<rect class="vu" x="141" y="383.3" width="3.4" height="12.7"/>
+<rect class="vu" x="146.5" y="385.7" width="3.4" height="10.3"/>
+<rect class="vu" x="152" y="344.1" width="3.4" height="51.9"/>
+<rect class="vu" x="157.5" y="368.1" width="3.4" height="27.9"/>
+<rect class="vu" x="163" y="374.6" width="3.4" height="21.4"/>
+<rect class="vu" x="168.5" y="370.1" width="3.4" height="25.9"/>
+<rect class="vu" x="174" y="368.7" width="3.4" height="27.3"/>
+<rect class="vu" x="179.5" y="373.8" width="3.4" height="22.2"/>
+<rect class="vd" x="185" y="379.2" width="3.4" height="16.8"/>
+<rect class="vu" x="190.5" y="375" width="3.4" height="21"/>
+<rect class="vu" x="196" y="376.1" width="3.4" height="19.9"/>
+<rect class="vu" x="201.5" y="376.1" width="3.4" height="19.9"/>
+<rect class="vu" x="207" y="374.6" width="3.4" height="21.4"/>
+<rect class="vu" x="212.5" y="379.3" width="3.4" height="16.7"/>
+<rect class="vu" x="218" y="375" width="3.4" height="21"/>
+<rect class="vu" x="223.5" y="379.4" width="3.4" height="16.6"/>
+<rect class="vu" x="229" y="378.4" width="3.4" height="17.6"/>
+<rect class="vd" x="234.5" y="377.1" width="3.4" height="18.9"/>
+<rect class="vd" x="240" y="378.6" width="3.4" height="17.4"/>
+<rect class="vd" x="245.5" y="382" width="3.4" height="14"/>
+<rect class="vd" x="251" y="383.1" width="3.4" height="12.9"/>
+<rect class="vd" x="256.5" y="384.6" width="3.4" height="11.4"/>
+<rect class="vd" x="262" y="382.4" width="3.4" height="13.6"/>
+<rect class="vu" x="267.5" y="386.6" width="3.4" height="9.4"/>
+<rect class="vd" x="273" y="386.1" width="3.4" height="9.9"/>
+<rect class="vu" x="278.5" y="387.1" width="3.4" height="8.9"/>
+<rect class="vu" x="284" y="386.1" width="3.4" height="9.9"/>
+<rect class="vu" x="289.5" y="384.1" width="3.4" height="11.9"/>
+<rect class="vu" x="295" y="380.7" width="3.4" height="15.3"/>
+<rect class="vu" x="300.5" y="383.1" width="3.4" height="12.9"/>
+<rect class="vd" x="306" y="380.7" width="3.4" height="15.3"/>
+<rect class="vu" x="311.5" y="377.5" width="3.4" height="18.5"/>
+<rect class="vd" x="317" y="377.4" width="3.4" height="18.6"/>
+<rect class="vu" x="322.5" y="377.1" width="3.4" height="18.9"/>
+<rect class="vu" x="328" y="375.8" width="3.4" height="20.2"/>
+<rect class="vu" x="333.5" y="377.6" width="3.4" height="18.4"/>
+<rect class="vu" x="339" y="378.5" width="3.4" height="17.5"/>
+<rect class="vu" x="344.5" y="374.5" width="3.4" height="21.5"/>
+<rect class="vd" x="350" y="378.5" width="3.4" height="17.5"/>
+<rect class="vu" x="355.5" y="380.6" width="3.4" height="15.4"/>
+<rect class="vu" x="361" y="380.1" width="3.4" height="15.9"/>
+<rect class="vu" x="366.5" y="378.9" width="3.4" height="17.1"/>
+<rect class="vu" x="372" y="376.4" width="3.4" height="19.6"/>
+<rect class="vu" x="377.5" y="375.8" width="3.4" height="20.2"/>
+<rect class="vu" x="383" y="377.1" width="3.4" height="18.9"/>
+<rect class="vu" x="388.5" y="377.4" width="3.4" height="18.6"/>
+<rect class="vu" x="394" y="378.7" width="3.4" height="17.3"/>
+<rect class="vd" x="399.5" y="378.9" width="3.4" height="17.1"/>
+<rect class="vd" x="405" y="373.3" width="3.4" height="22.7"/>
+<rect class="vd" x="410.5" y="381.7" width="3.4" height="14.3"/>
+<rect class="vu" x="416" y="379.2" width="3.4" height="16.8"/>
+<rect class="vd" x="421.5" y="378.7" width="3.4" height="17.3"/>
+<rect class="vu" x="427" y="383.8" width="3.4" height="12.2"/>
+<rect class="vd" x="432.5" y="384.8" width="3.4" height="11.2"/>
+<rect class="vd" x="438" y="384.6" width="3.4" height="11.4"/>
+<rect class="vu" x="443.5" y="379.8" width="3.4" height="16.2"/>
+<rect class="vu" x="449" y="384.6" width="3.4" height="11.4"/>
+<rect class="vu" x="454.5" y="386.3" width="3.4" height="9.7"/>
+<rect class="vu" x="460" y="386.8" width="3.4" height="9.2"/>
+<rect class="vu" x="465.5" y="383.4" width="3.4" height="12.6"/>
+<rect class="vu" x="471" y="386.2" width="3.4" height="9.8"/>
+<rect class="vd" x="476.5" y="383.1" width="3.4" height="12.9"/>
+<rect class="vd" x="482" y="386.7" width="3.4" height="9.3"/>
+<rect class="vd" x="487.5" y="387.6" width="3.4" height="8.4"/>
+<rect class="vd" x="493" y="384.6" width="3.4" height="11.4"/>
+<rect class="vd" x="498.5" y="387" width="3.4" height="9"/>
+<rect class="vd" x="504" y="386.1" width="3.4" height="9.9"/>
+<rect class="vd" x="509.5" y="388" width="3.4" height="8"/>
+<rect class="vd" x="515" y="383.5" width="3.4" height="12.5"/>
+<rect class="vu" x="520.5" y="384.7" width="3.4" height="11.3"/>
+<rect class="vu" x="526" y="385.3" width="3.4" height="10.7"/>
+<rect class="vu" x="531.5" y="384.7" width="3.4" height="11.3"/>
+<rect class="vu" x="537" y="387.9" width="3.4" height="8.1"/>
+<rect class="vd" x="542.5" y="386.8" width="3.4" height="9.2"/>
+<rect class="vu" x="548" y="386.1" width="3.4" height="9.9"/>
+<rect class="vd" x="553.5" y="387.6" width="3.4" height="8.4"/>
+<rect class="vd" x="559" y="387.6" width="3.4" height="8.4"/>
+<rect class="vd" x="564.5" y="388.3" width="3.4" height="7.7"/>
+<rect class="vd" x="570" y="387.8" width="3.4" height="8.2"/>
+<rect class="vd" x="575.5" y="390.3" width="3.4" height="5.7"/>
+<rect class="vd" x="581" y="390.3" width="3.4" height="5.7"/>
+<rect class="vd" x="586.5" y="387.5" width="3.4" height="8.5"/>
+<rect class="vd" x="592" y="389" width="3.4" height="7"/>
+<rect class="vu" x="597.5" y="381.6" width="3.4" height="14.4"/>
+<text class="lg" x="58" y="352">成交量</text>
+<line class="axis" x1="52" y1="408" x2="52" y2="472"/>
+<line class="axis" x1="52" y1="472" x2="602" y2="472"/>
+<line class="sr" x1="52" y1="452.8" x2="602" y2="452.8"/>
+<text class="tick" x="46" y="456.8" text-anchor="end">30</text>
+<line class="sr" x1="52" y1="427.2" x2="602" y2="427.2"/>
+<text class="tick" x="46" y="431.2" text-anchor="end">70</text>
+<polyline class="ind1" points="131.8,436.6 137.3,436.8 142.8,432.8 148.3,432.1 153.8,425.1 159.3,424.6 164.8,423.4 170.3,422.2 175.8,421 181.3,419.2 186.8,419.8 192.3,418.4 197.8,417.3 203.3,416.2 208.8,415.7 214.3,415.4 219.8,414.9 225.3,414.2 230.8,414.1 236.3,415.6 241.8,417.7 247.3,423.9 252.8,425.5 258.3,426 263.8,431.7 269.3,430.1 274.8,435.2 280.3,434.4 285.8,430.8 291.3,431.9 296.8,430.1 302.3,427.9 307.8,429.7 313.3,426 318.8,426.9 324.3,425.1 329.8,423.4 335.3,422.6 340.8,422 346.3,420.8 351.8,420.5 357.3,420.1 362.8,418.8 368.3,419.7 373.8,418.5 379.3,418.4 384.8,417 390.3,416.8 395.8,415.6 401.3,419.1 406.8,426.4 412.3,431.9 417.8,430.8 423.3,437.2 428.8,436.6 434.3,440.9 439.8,444.7 445.3,439.8 450.8,438.4 456.3,435.8 461.8,434.6 467.3,433.4 472.8,433.8 478.3,438 483.8,439.7 489.3,442.6 494.8,444.5 500.3,447.4 505.8,450.2 511.3,452.6 516.8,454.8 522.3,450.3 527.8,448.1 533.3,444.6 538.8,444 544.3,445.1 549.8,443.4 555.3,444.7 560.8,445.1 566.3,444.8 571.8,448.1 577.3,449.3 582.8,450.3 588.3,451.7 593.8,452.8 599.3,450.7"/>
+<text class="lg" x="58" y="420">RSI(14)</text>
+<line class="axis" x1="52" y1="484" x2="52" y2="554"/>
+<line class="axis" x1="52" y1="554" x2="602" y2="554"/>
+<line class="grid" x1="52" y1="530.6" x2="602" y2="530.6"/>
+<text class="tick" x="46" y="534.6" text-anchor="end">0</text>
+<rect class="vu" x="53" y="530.6" width="3.4" height="0.5"/>
+<rect class="vd" x="58.5" y="530.6" width="3.4" height="0.5"/>
+<rect class="vd" x="64" y="530.6" width="3.4" height="0.6"/>
+<rect class="vd" x="69.5" y="530.6" width="3.4" height="1.2"/>
+<rect class="vd" x="75" y="530.6" width="3.4" height="1.2"/>
+<rect class="vd" x="80.5" y="530.6" width="3.4" height="2.1"/>
+<rect class="vd" x="86" y="530.6" width="3.4" height="2.3"/>
+<rect class="vd" x="91.5" y="530.6" width="3.4" height="2.3"/>
+<rect class="vd" x="97" y="530.6" width="3.4" height="2.7"/>
+<rect class="vd" x="102.5" y="530.6" width="3.4" height="2.2"/>
+<rect class="vd" x="108" y="530.6" width="3.4" height="1.6"/>
+<rect class="vd" x="113.5" y="530.6" width="3.4" height="0.7"/>
+<rect class="vu" x="119" y="529.9" width="3.4" height="0.8"/>
+<rect class="vu" x="124.5" y="528.9" width="3.4" height="1.7"/>
+<rect class="vu" x="130" y="527.9" width="3.4" height="2.7"/>
+<rect class="vu" x="135.5" y="527.4" width="3.4" height="3.2"/>
+<rect class="vu" x="141" y="526.5" width="3.4" height="4.1"/>
+<rect class="vu" x="146.5" y="526" width="3.4" height="4.6"/>
+<rect class="vu" x="152" y="523.9" width="3.4" height="6.7"/>
+<rect class="vu" x="157.5" y="522.8" width="3.4" height="7.8"/>
+<rect class="vu" x="163" y="522" width="3.4" height="8.6"/>
+<rect class="vu" x="168.5" y="521.6" width="3.4" height="9.1"/>
+<rect class="vu" x="174" y="521.2" width="3.4" height="9.4"/>
+<rect class="vu" x="179.5" y="520.6" width="3.4" height="10"/>
+<rect class="vu" x="185" y="520.9" width="3.4" height="9.7"/>
+<rect class="vu" x="190.5" y="520.9" width="3.4" height="9.7"/>
+<rect class="vu" x="196" y="520.9" width="3.4" height="9.8"/>
+<rect class="vu" x="201.5" y="520.5" width="3.4" height="10.1"/>
+<rect class="vu" x="207" y="520.6" width="3.4" height="10"/>
+<rect class="vu" x="212.5" y="521.2" width="3.4" height="9.5"/>
+<rect class="vu" x="218" y="521.8" width="3.4" height="8.9"/>
+<rect class="vu" x="223.5" y="522.1" width="3.4" height="8.6"/>
+<rect class="vu" x="229" y="522.9" width="3.4" height="7.8"/>
+<rect class="vu" x="234.5" y="524.2" width="3.4" height="6.4"/>
+<rect class="vu" x="240" y="526" width="3.4" height="4.6"/>
+<rect class="vu" x="245.5" y="528.5" width="3.4" height="2.1"/>
+<rect class="vd" x="251" y="530.6" width="3.4" height="0.5"/>
+<rect class="vd" x="256.5" y="530.6" width="3.4" height="1.9"/>
+<rect class="vd" x="262" y="530.6" width="3.4" height="4.1"/>
+<rect class="vd" x="267.5" y="530.6" width="3.4" height="5.1"/>
+<rect class="vd" x="273" y="530.6" width="3.4" height="6.7"/>
+<rect class="vd" x="278.5" y="530.6" width="3.4" height="7.4"/>
+<rect class="vd" x="284" y="530.6" width="3.4" height="6.7"/>
+<rect class="vd" x="289.5" y="530.6" width="3.4" height="6.4"/>
+<rect class="vd" x="295" y="530.6" width="3.4" height="5.6"/>
+<rect class="vd" x="300.5" y="530.6" width="3.4" height="4.3"/>
+<rect class="vd" x="306" y="530.6" width="3.4" height="3.8"/>
+<rect class="vd" x="311.5" y="530.6" width="3.4" height="2.2"/>
+<rect class="vd" x="317" y="530.6" width="3.4" height="1.4"/>
+<rect class="vd" x="322.5" y="530.6" width="3.4" height="0.5"/>
+<rect class="vu" x="328" y="529.7" width="3.4" height="0.9"/>
+<rect class="vu" x="333.5" y="528.7" width="3.4" height="1.9"/>
+<rect class="vu" x="339" y="528.1" width="3.4" height="2.5"/>
+<rect class="vu" x="344.5" y="527.5" width="3.4" height="3.1"/>
+<rect class="vu" x="350" y="527.3" width="3.4" height="3.3"/>
+<rect class="vu" x="355.5" y="527.4" width="3.4" height="3.2"/>
+<rect class="vu" x="361" y="527.1" width="3.4" height="3.5"/>
+<rect class="vu" x="366.5" y="527.5" width="3.4" height="3.2"/>
+<rect class="vu" x="372" y="527.4" width="3.4" height="3.2"/>
+<rect class="vu" x="377.5" y="527.7" width="3.4" height="2.9"/>
+<rect class="vu" x="383" y="527.4" width="3.4" height="3.2"/>
+<rect class="vu" x="388.5" y="527.5" width="3.4" height="3.1"/>
+<rect class="vu" x="394" y="527.1" width="3.4" height="3.5"/>
+<rect class="vu" x="399.5" y="527.7" width="3.4" height="2.9"/>
+<rect class="vu" x="405" y="529.6" width="3.4" height="1"/>
+<rect class="vd" x="410.5" y="530.6" width="3.4" height="1.5"/>
+<rect class="vd" x="416" y="530.6" width="3.4" height="3"/>
+<rect class="vd" x="421.5" y="530.6" width="3.4" height="5.4"/>
+<rect class="vd" x="427" y="530.6" width="3.4" height="6.7"/>
+<rect class="vd" x="432.5" y="530.6" width="3.4" height="8.5"/>
+<rect class="vd" x="438" y="530.6" width="3.4" height="10.5"/>
+<rect class="vd" x="443.5" y="530.6" width="3.4" height="10.2"/>
+<rect class="vd" x="449" y="530.6" width="3.4" height="9.2"/>
+<rect class="vd" x="454.5" y="530.6" width="3.4" height="7.4"/>
+<rect class="vd" x="460" y="530.6" width="3.4" height="5.7"/>
+<rect class="vd" x="465.5" y="530.6" width="3.4" height="4.1"/>
+<rect class="vd" x="471" y="530.6" width="3.4" height="3.1"/>
+<rect class="vd" x="476.5" y="530.6" width="3.4" height="3.4"/>
+<rect class="vd" x="482" y="530.6" width="3.4" height="3.9"/>
+<rect class="vd" x="487.5" y="530.6" width="3.4" height="5"/>
+<rect class="vd" x="493" y="530.6" width="3.4" height="6.1"/>
+<rect class="vd" x="498.5" y="530.6" width="3.4" height="7.6"/>
+<rect class="vd" x="504" y="530.6" width="3.4" height="9.2"/>
+<rect class="vd" x="509.5" y="530.6" width="3.4" height="11"/>
+<rect class="vd" x="515" y="530.6" width="3.4" height="12.7"/>
+<rect class="vd" x="520.5" y="530.6" width="3.4" height="12.1"/>
+<rect class="vd" x="526" y="530.6" width="3.4" height="10.5"/>
+<rect class="vd" x="531.5" y="530.6" width="3.4" height="7.9"/>
+<rect class="vd" x="537" y="530.6" width="3.4" height="5.7"/>
+<rect class="vd" x="542.5" y="530.6" width="3.4" height="4.3"/>
+<rect class="vd" x="548" y="530.6" width="3.4" height="2.6"/>
+<rect class="vd" x="553.5" y="530.6" width="3.4" height="1.8"/>
+<rect class="vd" x="559" y="530.6" width="3.4" height="1.2"/>
+<rect class="vd" x="564.5" y="530.6" width="3.4" height="0.6"/>
+<rect class="vd" x="570" y="530.6" width="3.4" height="1.1"/>
+<rect class="vd" x="575.5" y="530.6" width="3.4" height="1.7"/>
+<rect class="vd" x="581" y="530.6" width="3.4" height="2.2"/>
+<rect class="vd" x="586.5" y="530.6" width="3.4" height="2.9"/>
+<rect class="vd" x="592" y="530.6" width="3.4" height="3.4"/>
+<rect class="vd" x="597.5" y="530.6" width="3.4" height="3.1"/>
+<polyline class="ind1" points="54.8,530.6 60.3,530.8 65.8,531.4 71.3,532.3 76.8,532.6 82.3,534 87.8,534.8 93.3,535.4 98.8,536.5 104.3,536.5 109.8,536.3 115.3,535.6 120.8,534 126.3,532.6 131.8,530.9 137.3,529.6 142.8,527.7 148.3,526.1 153.8,522.3 159.3,519.2 164.8,516.3 170.3,513.5 175.8,510.9 181.3,507.8 186.8,505.7 192.3,503.2 197.8,500.7 203.3,497.9 208.8,495.4 214.3,493.6 219.8,492 225.3,490.2 230.8,489 236.3,488.8 241.8,489.5 247.3,491.4 252.8,493.7 258.3,496 263.8,499.2 269.3,501.5 274.8,504.7 280.3,507.3 285.8,508.3 291.3,509.6 296.8,510.2 302.3,510 307.8,510.5 313.3,509.4 318.8,508.9 324.3,507.9 329.8,506.4 335.3,505 340.8,503.8 346.3,502.4 351.8,501.4 357.3,500.6 362.8,499.5 368.3,499 373.8,498.1 379.3,497.7 384.8,496.6 390.3,496 395.8,494.6 401.3,494.5 406.8,496.2 412.3,499.1 417.8,501.3 423.3,505.1 428.8,508 434.3,512 439.8,516.7 445.3,518.9 450.8,520.2 456.3,520.3 461.8,520 467.3,519.3 472.8,519.1 478.3,520.2 483.8,521.8 489.3,524.1 494.8,526.8 500.3,530.1 505.8,534.1 511.3,538.5 516.8,543.5 522.3,545.9 527.8,546.9 533.3,546.3 538.8,545.5 544.3,545.1 549.8,544.2 555.3,543.8 560.8,543.5 566.3,543 571.8,543.8 577.3,544.8 582.8,545.9 588.3,547.3 593.8,548.7 599.3,549.2"/>
+<polyline class="ind2" points="54.8,530.6 60.3,530.7 65.8,530.8 71.3,531.1 76.8,531.4 82.3,531.9 87.8,532.5 93.3,533.1 98.8,533.8 104.3,534.3 109.8,534.7 115.3,534.9 120.8,534.7 126.3,534.3 131.8,533.6 137.3,532.8 142.8,531.8 148.3,530.6 153.8,529 159.3,527 164.8,524.9 170.3,522.6 175.8,520.3 181.3,517.8 186.8,515.3 192.3,512.9 197.8,510.5 203.3,508 208.8,505.5 214.3,503.1 219.8,500.9 225.3,498.7 230.8,496.8 236.3,495.2 241.8,494.1 247.3,493.5 252.8,493.6 258.3,494 263.8,495.1 269.3,496.4 274.8,498 280.3,499.9 285.8,501.6 291.3,503.2 296.8,504.6 302.3,505.7 307.8,506.6 313.3,507.2 318.8,507.5 324.3,507.6 329.8,507.4 335.3,506.9 340.8,506.3 346.3,505.5 351.8,504.7 357.3,503.9 362.8,503 368.3,502.2 373.8,501.4 379.3,500.7 384.8,499.8 390.3,499.1 395.8,498.2 401.3,497.5 406.8,497.2 412.3,497.6 417.8,498.3 423.3,499.7 428.8,501.4 434.3,503.5 439.8,506.1 445.3,508.7 450.8,511 456.3,512.8 461.8,514.2 467.3,515.3 472.8,516 478.3,516.9 483.8,517.9 489.3,519.1 494.8,520.6 500.3,522.5 505.8,524.8 511.3,527.6 516.8,530.8 522.3,533.8 527.8,536.4 533.3,538.4 538.8,539.8 544.3,540.9 549.8,541.5 555.3,542 560.8,542.3 566.3,542.4 571.8,542.7 577.3,543.1 582.8,543.7 588.3,544.4 593.8,545.3 599.3,546"/>
+<text class="lg" x="58" y="496">MACD(12,26,9)</text>
+<text class="tick" x="54.8" y="571" text-anchor="middle">20 周前</text>
+<text class="tick" x="329.8" y="571" text-anchor="middle">10 周前</text>
+<text class="tick" x="599.3" y="571" text-anchor="middle">今天</text>
+<polyline class="ma3" points="54.8,298 60.3,297.5 65.8,297.1 71.3,296.6 76.8,296.1 82.3,296.1 87.8,295.7 93.3,295.7 98.8,295.2 104.3,294.8 109.8,294.3 115.3,293.8 120.8,293.4 126.3,292.9 131.8,292 137.3,291.5 142.8,291.1 148.3,290.1 153.8,289.2 159.3,288.3 164.8,286.9 170.3,286 175.8,284.6 181.3,283.7 186.8,282.3 192.3,280.9 197.8,280 203.3,278.6 208.8,276.7 214.3,275.4 219.8,274 225.3,272.6 230.8,271.2 236.3,269.8 241.8,268 247.3,267 252.8,265.7 258.3,264.3 263.8,263.4 269.3,262.4 274.8,261 280.3,260.1 285.8,259.2 291.3,258.3 296.8,256.9 302.3,256 307.8,255 313.3,253.7 318.8,252.7 324.3,251.3 329.8,250 335.3,248.6 340.8,247.2 346.3,245.8 351.8,244.4 357.3,243 362.8,241.2 368.3,239.3 373.8,238 379.3,236.1 384.8,234.3 390.3,232.4 395.8,230.1 401.3,228.3 406.8,226.4 412.3,224.6 417.8,222.7 423.3,220.9 428.8,219.5 434.3,217.6 439.8,216.3 445.3,214.9 450.8,213.5 456.3,211.6 461.8,209.8 467.3,208.4 472.8,206.6 478.3,205.2 483.8,203.8 489.3,202.4 494.8,201 500.3,200.1 505.8,198.7 511.3,197.8 516.8,196.9 522.3,195.9 527.8,195 533.3,193.6 538.8,192.7 544.3,191.3 549.8,189.9 555.3,188.5 560.8,187.6 566.3,186.2 571.8,184.9 577.3,183.9 582.8,183 588.3,182.1 593.8,181.2 599.3,179.8"/>
+<polyline class="ma1" points="54.8,272.6 60.3,272.6 65.8,272.6 71.3,273.5 76.8,273.5 82.3,274.9 87.8,275.8 93.3,277.2 98.8,278.6 104.3,280 109.8,281.4 115.3,282.7 120.8,283.7 126.3,283.7 131.8,283.7 137.3,284.1 142.8,283.7 148.3,282.7 153.8,280.9 159.3,278.6 164.8,275.8 170.3,273 175.8,269.4 181.3,264.7 186.8,260.6 192.3,255 197.8,249.5 203.3,243 208.8,236.1 214.3,229.2 219.8,222.3 225.3,214.9 230.8,207.9 236.3,201.5 241.8,195 247.3,189.5 252.8,183.9 258.3,179.3 263.8,176.1 269.3,172.4 274.8,170.1 280.3,167.8 285.8,165 291.3,163.2 296.8,160.8 302.3,159 307.8,157.6 313.3,155.8 318.8,154.4 324.3,153 329.8,151.1 335.3,149.3 340.8,147.9 346.3,145.6 351.8,143.3 357.3,140.1 362.8,136.4 368.3,132.7 373.8,128.1 379.3,123.4 384.8,117.9 390.3,112.4 395.8,106.8 401.3,101.3 406.8,97.1 412.3,93.9 417.8,90.2 423.3,88.3 428.8,86 434.3,85.1 439.8,85.1 445.3,84.7 450.8,84.2 456.3,83.3 461.8,82.8 467.3,81.9 472.8,81.4 478.3,81.4 483.8,82.3 489.3,84.2 494.8,86.5 500.3,89.7 505.8,93.9 511.3,99 516.8,104 522.3,107.7 527.8,111.4 533.3,113.3 538.8,115.6 544.3,117 549.8,117.9 555.3,119.7 560.8,122.1 566.3,124.4 571.8,128.1 577.3,132.2 582.8,136.4 588.3,140.5 593.8,144.7 599.3,147.9"/>
+<line class="sr" x1="54.8" y1="258.7" x2="151" y2="258.7"/>
+<text class="pv" x="60.3" y="249.5" text-anchor="start">箱体上沿 17.00</text>
+<text class="ut" x="373.8" y="262.4" text-anchor="start">⑪ 突破缺口 17.02–17.22：至今未回补</text>
+<circle class="dot-dn" cx="98.8" cy="304.9" r="4"/>
+<text class="dt" x="98.8" y="321.9" text-anchor="middle">L 16.00</text>
+<circle class="dot-up" cx="395.8" cy="46.3" r="4"/>
+<text class="ut" x="395.8" y="37.3" text-anchor="middle">H 21.60</text>
+<line class="tl" x1="98.8" y1="304.9" x2="456.3" y2="58.6"/>
+<text class="hi" x="439.8" y="28.8" text-anchor="start">⑨ 短期上升趋势线</text>
+<text class="hi" x="439.8" y="41.7" text-anchor="start">第 67 根收盘跌破</text>
+<line class="sr" x1="395.8" y1="145.1" x2="599.3" y2="145.1"/>
+<line class="sr" x1="395.8" y1="175.6" x2="599.3" y2="175.6"/>
+<line class="sr" x1="395.8" y1="206.1" x2="599.3" y2="206.1"/>
+<text class="elabel" x="401.3" y="141.1" text-anchor="start">38.2% 19.46</text>
+<text class="hi" x="401.3" y="163.6" text-anchor="start">⑩ 50% 18.80</text>
+<text class="elabel" x="401.3" y="202.1" text-anchor="start">61.8% 18.14</text>
+<text class="hi" x="274.8" y="193.2" text-anchor="start">⑧ 支撑区 18.7–18.9</text>
+<line class="sr" x1="516.8" y1="125.3" x2="709.3" y2="125.3"/>
+<line class="tl2" x1="516.8" y1="171" x2="599.3" y2="189.5"/>
+<text class="hi" x="588.3" y="221.8" text-anchor="end">⑯ 锤子线：待次日确认</text>
+<line class="edge" x1="591" y1="216.3" x2="598.4" y2="193.2" marker-end="url(#f195-ara)"/>
+<line class="sr" x1="602" y1="14" x2="602" y2="328"/>
+<line class="sr-up" x1="54.8" y1="446.4" x2="599.3" y2="446.4"/>
+<text class="tick" x="58.8" y="441.4" text-anchor="start">40</text>
+<line class="sr-up" x1="602" y1="46.3" x2="709.3" y2="46.3"/>
+<text class="ut" x="606" y="58.3" text-anchor="start">目标① 21.60</text>
+<text class="ut" x="605.9" y="41.7" text-anchor="start">目标② 24.10 ↑</text>
+<text class="elabel" x="605.9" y="120.3" text-anchor="start">⑫ 颈线 19.89</text>
+<line class="sr-up" x1="602" y1="161.8" x2="709.3" y2="161.8"/>
+<text class="ut" x="606" y="156.8" text-anchor="start">触发：收盘 ≥ 19.10</text>
+<line class="sr-dn" x1="602" y1="196.4" x2="709.3" y2="196.4"/>
+<text class="dt" x="606" y="208.4" text-anchor="start">止损 18.35</text>
+<text class="ut" x="164.8" y="354.1" text-anchor="start">⑬ 突破放量</text>
+<text class="pv" x="417.8" y="359" text-anchor="start">回调一路缩量</text>
+<text class="pv" x="605.9" y="385.6" text-anchor="start">锤子线放量</text>
+<line class="tl2" x1="516.8" y1="454.8" x2="593.8" y2="452.7"/>
+<text class="hi" x="605.9" y="438.7" text-anchor="start">⑮ 底背离：</text>
+<text class="pv" x="605.9" y="457.9" text-anchor="start">RSI 低点抬高</text>
+<line class="tl2" x1="516.8" y1="543.3" x2="593.8" y2="534.1"/>
+<text class="pv" x="605.9" y="516.4" text-anchor="start">柱线低点抬高，</text>
+<text class="pv" x="605.9" y="533.5" text-anchor="start">DIF 仍在零轴下</text>
+<text class="hi" x="58" y="30">⑭</text>
+<line class="ma1" x1="76" y1="26" x2="94" y2="26"/><text class="lg" x="99" y="30">MA20</text>
+<line class="ma3" x1="140" y1="26" x2="158" y2="26"/><text class="lg" x="163" y="30">MA120</text>
+<text class="atitle" x="614" y="26">计划区（未来）</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>把这张图当成一份体检报告，带圈的数字就是清单上的问号。左边是故事的前半段：17 元的箱体上沿被放量跳空突破，⑪ 缺口至今未回补，⑬ 突破日量能接近此前 20 日均量的 5 倍。中间是第二段上涨和回调：价格从 H 21.60 元回落，⑨ 短期上升趋势线在第 67 根被收盘跌破；回调一路缩量，回到 ⑧ 18.7–18.9 元的旧整理区，这里恰好也是 ⑩ 这段涨幅的 50% 回撤位，上升的 ⑭ 120 日线也在附近。右边是今天：第二次测试支撑时盘中刺破到 18.50 元，收盘又收回 18.90 元，画出一根 ⑯ 锤子线；⑮ 价格低点更低，RSI 和 MACD 柱线的低点却抬高了，是底背离。虚线以右是“计划区”：触发价、止损、⑫ 双底颈线和目标，都在下单前画好。</figcaption>
+  </figure>
+
+  <div class="prose">
+    <p>日线上的十项读数（序号对应图上的标记）：</p>
+    <ul>
+      <li><strong>⑦ 三级趋势：</strong>主要趋势向上（峰谷抬高）；中期趋势向下，回调已持续 37 个交易日，最低点回撤约 55%，收盘回撤约 48%；短期趋势要看锤子线能否被确认。记 0。</li>
+      <li><strong>⑧ 支撑：</strong>18.70–18.90 元是第 38–42 根的旗形整理区，旧的成交密集区变成支撑。这是第二次测试，第一次在第 84–85 根，低点约 18.86 元。记 +1。</li>
+      <li><strong>⑨ 趋势线：</strong>连接 L 16.00 元与第 47 根低点的短期上升趋势线，已在第 67 根被收盘跌破，按第 3 站的扇形原理，趋势在放缓。周线趋势线完好，已在 ⑥ 里计入。记 −1。</li>
+      <li><strong>⑩ 回撤：</strong>16.00 → 21.60 元这段涨幅的 38.2%、50%、61.8% 回撤位分别是 19.46、18.80、18.14 元。价格停在 50% 附近，处于三分之一到三分之二的正常调整区。记 +1。</li>
+      <li><strong>⑪ 缺口：</strong>17.02–17.22 元的突破缺口没有回补，回调途中也没有出现向下的突破缺口。记 +1。</li>
+      <li><strong>⑫ 形态：</strong>16–17 元箱体的量度目标 18 元早已完成；回调段的两次低点可能构成双重底，但要收盘突破颈线 19.89 元才算确认（第 4 站）。记 0。</li>
+      <li><strong>⑬ 成交量：</strong>上涨段日均量约 156，回调段约 97，缩了约四成，符合“顺势放量、逆势缩量”；锤子线当天放量到前 5 日均量的约 2 倍，低位有人接。记 +1。</li>
+      <li><strong>⑭ 均线：</strong>收盘 18.90 元在 20 日线（19.40 元）和 60 日线（20.04 元）之下，但守在仍在上升的 120 日线（18.71 元）之上。一负一正，记 0。</li>
+      <li><strong>⑮ 摆动指标：</strong>RSI(14) 从上涨末段的 88 回落，第一次探底 26.8，第二次 30.1，低点抬高；MACD 柱线低点从 −0.22 抬高到 −0.06，但 DIF 仍在零轴下方创新低。按“趋势优先于摆动”，上升趋势中的超卖加底背离是顺势信号。记 +1。</li>
+      <li><strong>⑯ K 线：</strong>锤子线下影线 0.30 元，是实体 0.10 元的 3 倍，几乎没有上影线，又出现在支撑位，形态合格；但第 7 站的规则要求次日收盘高于锤子线最高价才算确认。今天记 0。</li>
+    </ul>
+
+    <h3>打分：今天 11 分，差一个确认</h3>
+    <p>把读数填进打分表。权重按上一节的优先级：长周期 ×3，大局和价格结构 ×2，确认 ×1，满分 30 分。</p>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <tr><th>层（权重）</th><th>问</th><th>示例股 A 的读数</th><th>得分</th><th>加权</th></tr>
+      <tr><td rowspan="6">大局（×2）</td><td>① 大盘</td><td>周线创新高（仅高出前高约 0.6%），收盘在 30 周均线上</td><td class="num">+1</td><td></td></tr>
+      <tr><td>② 板块</td><td>板块 ÷ 大盘的比率创新高</td><td class="num">+1</td><td></td></tr>
+      <tr><td>③ 交叉市场</td><td>国债收益率低位横盘，汇率、商品无异动</td><td class="num">0</td><td></td></tr>
+      <tr><td>④ 宽度</td><td>腾落线第二个高点低于第一个：宽度背离</td><td class="num">−1</td><td></td></tr>
+      <tr><td>⑤ 情绪</td><td>成交额、融资余额处于中位，无极端</td><td class="num">0</td><td></td></tr>
+      <tr><td colspan="2"><em>小计</em></td><td class="num">+1</td><td class="num"><strong>+2</strong></td></tr>
+      <tr><td rowspan="3">长周期（×3）</td><td>⑥ 周线</td><td>峰谷抬高，收盘在上升的 30 周均线上，趋势线未破</td><td class="num">+1</td><td></td></tr>
+      <tr><td>⑦ 日线三级趋势</td><td>主要向上，中期调整（约 50% 回撤），短期待确认</td><td class="num">0</td><td></td></tr>
+      <tr><td colspan="2"><em>小计</em></td><td class="num">+1</td><td class="num"><strong>+3</strong></td></tr>
+      <tr><td rowspan="6">价格结构（×2）</td><td>⑧ 支撑阻力</td><td>第二次测试 18.7–18.9 元旧整理区，刺破后收回</td><td class="num">+1</td><td></td></tr>
+      <tr><td>⑨ 趋势线</td><td>短期上升趋势线已跌破</td><td class="num">−1</td><td></td></tr>
+      <tr><td>⑩ 回撤</td><td>停在 50% 回撤位 18.80 元附近</td><td class="num">+1</td><td></td></tr>
+      <tr><td>⑪ 缺口</td><td>突破缺口未回补</td><td class="num">+1</td><td></td></tr>
+      <tr><td>⑫ 形态</td><td>双底雏形，颈线 19.89 元未破</td><td class="num">0</td><td></td></tr>
+      <tr><td colspan="2"><em>小计</em></td><td class="num">+2</td><td class="num"><strong>+4</strong></td></tr>
+      <tr><td rowspan="5">确认（×1）</td><td>⑬ 成交量</td><td>回调缩量约四成，锤子线日放量</td><td class="num">+1</td><td></td></tr>
+      <tr><td>⑭ 均线</td><td>在 20、60 日线下，守住上升的 120 日线</td><td class="num">0</td><td></td></tr>
+      <tr><td>⑮ 摆动指标</td><td>RSI 与 MACD 柱线底背离，DIF 仍在零轴下</td><td class="num">+1</td><td></td></tr>
+      <tr><td>⑯ K 线</td><td>支撑位锤子线，待次日确认</td><td class="num">0（确认后 +1）</td><td></td></tr>
+      <tr><td colspan="2"><em>小计</em></td><td class="num">+2</td><td class="num"><strong>+2</strong></td></tr>
+      <tr><td colspan="3"><strong>合计（满分 30）</strong></td><td colspan="2" class="num"><strong>今天 +11；确认后 +12</strong></td></tr>
+    </table>
+  </div>
+
+  <div class="prose">
+    <p>本手册给的门槛：<strong>四关全过且总分 ≥ 12，执行；8–11 分，等待并写好触发条件；7 分及以下，不做</strong>。今天 11 分，落在“等待”区；如果下一个交易日收盘站上锤子线最高价，⑯ 变成 +1，总分升到 12，触发执行。门槛只是起点：它本身也是一个参数，要用你自己的日志去校准，并警惕把它调到“刚好让历史最好看”（第 12 站的过度拟合）。</p>
+
+    <h3>走一遍决策树</h3>
+    <ol>
+      <li><strong>第一关，长周期：</strong>通过。周线峰谷抬高，收盘在上升的 30 周均线之上，趋势线未破。</li>
+      <li><strong>第二关，位置：</strong>通过。价格在旧整理区、50% 回撤位和 120 日线的汇合处，三种独立来源的支撑叠在一起。</li>
+      <li><strong>第三关，确认：</strong>还没有。锤子线需要次日确认；底背离只说明跌势在衰减，不说明涨势已经开始。结论是<strong>等待</strong>，把触发条件写成条件单。</li>
+      <li><strong>第四关，风险：</strong>提前算好。触发价 19.10 元，止损 18.35 元，每股风险 0.75 元。目标① 是前高 21.60 元，报酬 2.50 元，约 3.3 倍；目标② 用第 5 站的量度跳动：第一段涨了 5.60 元，从回调低点 18.50 元再加一段，得 24.10 元。一半在目标① 卖、一半在目标② 卖，混合报酬风险比为 5.0，远超 3:1。</li>
+    </ol>
+    <p>两种看起来更“稳”的方案，算下来反而过不了第四关。等收盘突破颈线 19.89 元再买，每股风险变成 1.54 元，混合报酬风险比只剩约 1.9；按第 3 站规则卡把止损放到 66% 回撤位下方的 17.80 元，每股风险 1.30 元，混合报酬风险比约 2.9。确认越多，入场越晚，离认错点越远，这是第 13 站“突破入场还是回调入场”的老问题。</p>
+    <p>最后把支持和反对摆在一起。<strong>支持：</strong>周线上升趋势（分量最重）、三重支撑汇合、缺口未补、缩量回调、底背离、板块强势。<strong>反对：</strong>宽度背离、短期趋势线跌破、跌破 20 日和 60 日线、DIF 仍在零轴下。反对项没有一项属于“长周期转空”或“关键价位失守”，按优先级它们让位；但它们一起说明下跌的动能还没有完全消失，所以今天不买，只在确认后买，而且止损要贴近。<strong>结论：等待；出现确认，就按下面这张规则卡执行。</strong></p>
+  </div>
+
+  <div class="rulecard">
+    <div class="rc-head"><span class="label">规则卡 · 演练结论</span><span class="rc-name">示例股 A：支撑区锤子线确认后买入</span></div>
+    <dl>
+      <dt>标的与周期</dt><dd>示例股 A（虚构，主板，涨跌幅 ±10%）；周线定方向，日线入场</dd>
+      <dt>过滤条件</dt><dd>周线收盘在上升的 30 周均线之上，且周线趋势线未破（第一关）；大局层合计不为负，风险档位 1%；确认后清单总分 ≥ 12</dd>
+      <dt>入场</dt><dd>未来 3 个交易日内，任一日收盘价 ≥ 19.10 元（锤子线最高价 18.92 元与前两日高点之上）即买入；以收盘价为准的信号只能在尾盘近似执行，收盘前 10 分钟价格仍在 19.10 元以上就下单。价格高于 19.47 元则放弃：入场越高，报酬风险比越差，19.47 元是混合报酬风险比 3:1 的底线。3 日内未触发，撤单并重新评估</dd>
+      <dt>止损</dt><dd>18.35 元，即锤子线最低价 18.50 元下方约 0.8%。用条件单执行：买入当天受 T+1 限制无法卖出，次日起盘中触及即卖；若次日开盘就低于 18.35 元，开盘即卖，接受滑点</dd>
+      <dt>出场</dt><dd>目标① 21.60 元（前高）卖出一半，其余的止损上移到成本价，并以“收盘跌破最近 20 日最低价”跟踪；目标② 24.10 元只作参考，不挂死单</dd>
+      <dt>仓位</dt><dd>账户 20 万元 × 1% = 2000 元；每股风险 0.75 元，可买 2666 股，取整为 2600 股，市值 49660 元，超过单股 20% 的上限（4 万元），降为 2000 股，市值 38200 元，实际风险 1500 元（约 0.75%）。组合热度 3.2% + 0.75% ≈ 3.95%，低于 6% 的上限</dd>
+    </dl>
+    <p class="rc-note">这张卡展示了仓位的“两道闸”：风险上限算出 2600 股，集中度上限把它压到 2000 股，取较小者。T+1 的代价也要算进去：如果买入次日低开到 18.00 元，实际亏损是（19.10 − 18.00）× 2000 = 2200 元，比计划多出 700 元，这正是单笔风险不宜超过 1% 的原因。至于这类交易长期有没有优势，演练回答不了，要靠日志和第 12 站的检验。</p>
+  </div>
+
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p>“等十六问全部变成 +1 再买，最稳。”这样的图确实存在，但通常出现在趋势晚期：价格站上所有均线，指标全部向上，新闻全是利好，所有人都看得见，入场点离任何合理止损都很远。清单的目的不是等一张完美的图，而是在<strong>够好的位置、用够近的止损</strong>入场。演练里的示例股 A 有四项反对，照样可以做，因为反对项都不在关键层上。</p>
+  </div>
+</section>
+
+<!-- ======================== 19.5 ======================== -->
+<section class="ch" id="s5">
+  <h2 class="sec"><span class="no">19.5</span>写出你的第一份交易计划</h2>
+  <p class="sec-en">YOUR FIRST WRITTEN TRADING PLAN</p>
+
+  <div class="prose">
+    <p>清单回答“这一笔该不该做”，交易计划回答“我是一个什么样的交易者”。前者每次下单前用，后者每个季度修订一次。为什么一定要写下来？</p>
+  </div>
+
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>荷马史诗里，奥德修斯要驶过海妖塞壬的海域，传说听到歌声的水手都会跳海。他让水手用蜡封住耳朵，再把自己绑在桅杆上，并下令：等会儿无论我怎么哀求，都别给我松绑。他没有指望到时候的自己还能保持理智，而是在清醒的时候替将来的自己做了决定。交易计划就是你的桅杆：周末冷静时写好，盘中那个被涨跌冲昏头的你，只负责执行。行为经济学把这叫作<strong>预先承诺</strong>。</p>
+  </div>
+
+  <div class="prose">
+    <p>一份能用的交易计划，至少要回答九个问题。左边是问题，右边是一份示范答案，你可以照着改成自己的：</p>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <tr><th>要素</th><th>要回答的问题</th><th>示范答案</th></tr>
+      <tr><td><strong>① 标的池</strong></td><td>我交易什么，不交易什么？</td><td>交易：沪深 300、中证 500 成分股中日均成交额 2 亿元以上的股票，外加宽基 ETF。不交易：ST 股、上市不满一年的新股、刚复牌的股票、看不懂的期货期权，以及任何“朋友推荐”的股票</td></tr>
+      <tr><td><strong>② 周期</strong></td><td>我用什么周期，持有多久？</td><td>周线定方向，日线找入场；计划持有 2–8 周；不看分时图做决定</td></tr>
+      <tr><td><strong>③ 入场设置</strong></td><td>我只做哪几种机会？</td><td>设置 A 趋势回调、B 放量突破、C 宽基趋势跟随（见下表），其他一律不做</td></tr>
+      <tr><td><strong>④ 止损</strong></td><td>错了在哪认？</td><td>入场前写好，放在让交易逻辑失效的价位外侧；距离超过 2.5 × ATR(20) 就放弃这笔交易；止损只许朝有利方向移动</td></tr>
+      <tr><td><strong>⑤ 仓位</strong></td><td>每笔下多大的注？</td><td>单笔风险 1%（大局逆风时 0.5%）；股数 = 风险金额 ÷ 每股止损距离，向下取整到 100 股；单股市值不超过账户的 20%</td></tr>
+      <tr><td><strong>⑥ 组合风险</strong></td><td>同时最多承担多少风险？</td><td>所有持仓的止损风险合计（组合热度）不超过 6%；同一行业最多 2 只；总仓位上限由大局层决定</td></tr>
+      <tr><td><strong>⑦ 例行流程</strong></td><td>每天、每周做什么？</td><td>见下方例行流程表</td></tr>
+      <tr><td><strong>⑧ 记录与复盘</strong></td><td>怎么记、多久复盘、怎么改？</td><td>每笔当天写日志；每周复盘执行偏差；每月做统计；每季度修订计划，版本号加 1</td></tr>
+      <tr><td><strong>⑨ 暂停条件</strong></td><td>什么时候必须停？</td><td>见图 19-6 右侧的七个暂停开关</td></tr>
+    </table>
+  </div>
+
+  <div class="rulecard">
+    <div class="rc-head"><span class="label">规则卡 · 我的交易计划（总卡）</span><span class="rc-name">交易计划 v1.0 · 签署日期 ______</span></div>
+    <dl>
+      <dt>标的与周期</dt><dd>我交易 ______（示范：沪深 300、中证 500 成分股 + 宽基 ETF）；我不交易 ______（示范：ST、次新股、刚复牌股、推荐股）；周线定方向、日线入场，持有 ___ 周</dd>
+      <dt>过滤条件</dt><dd>大局：______ 时风险档位 1%，否则 0.5%（示范：沪深 300 收盘在 120 日均线之上）；个股：周线收盘在上升的 30 周均线之上；清单总分 ≥ ___（示范 12）</dd>
+      <dt>入场</dt><dd>只用设置 A、B、C 的触发条件；开盘 15 分钟内不追涨；一字涨停或离涨停不足 3% 时不买</dd>
+      <dt>止损</dt><dd>入场前写进条件单；图表止损加缓冲，距离 ≤ ___ × ATR(20)（示范 2.5）；只上移，不下移</dd>
+      <dt>出场</dt><dd>目标① 卖一半，其余用 ___ 日最低价跟踪（示范 20）；时间止损：___ 个交易日（示范 15）仍没走出成本价 ±3% 的区间，就离场</dd>
+      <dt>仓位</dt><dd>单笔风险 ___%（示范 1%）；单股市值 ≤ ___%（示范 20%）；组合热度 ≤ ___%（示范 6%）；同一行业 ≤ ___ 只（示范 2）</dd>
+    </dl>
+    <p class="rc-note">空格必须用你自己的数字填满，并在页脚写上版本号和日期。数字可以先抄示范，但要在日志积累到 20–30 笔之后，按 19.6 节的方法逐条检验。修改计划只在季度复盘时做：盘中不许改，刚亏完钱的那个晚上也不许改。</p>
+  </div>
+
+  <div class="prose">
+    <h3>我的三个入场设置</h3>
+    <p>每个设置都来自前面几站的规则卡。设置少而精，是为了让每一种都能攒够样本，日后才检验得了：</p>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <tr><th>设置</th><th>来源</th><th>前提条件</th><th>触发</th><th>止损</th></tr>
+      <tr><td><strong>A 趋势回调</strong></td><td>第 3、7、9 站</td><td>周线上升；日线回撤到 38.2%–61.8% 区间，并碰到支撑（旧整理区、前高、上升的长均线）</td><td>支撑处出现锤子线、看涨吞没或底部反转日，次日收盘高于其最高价；或 RSI(14) 跌破 40 后重新上穿 40</td><td>信号 K 线最低价下方约 1%</td></tr>
+      <tr><td><strong>B 放量突破</strong></td><td>第 4、5、6 站</td><td>周线上升；日线有清晰的箱体、三角形或头肩底颈线</td><td>收盘突破上沿，且成交量大于 20 日均量的 1.5 倍；3% 过滤和两日规则二选一，写死</td><td>形态内最后一个转折低点下方</td></tr>
+      <tr><td><strong>C 宽基趋势跟随</strong></td><td>第 8、12 站</td><td>只做宽基 ETF；ADX(14) 大于 20</td><td>收盘突破 55 日最高价</td><td>入场价下方 2 × ATR(20)；收盘跌破 20 日最低价离场</td></tr>
+    </table>
+  </div>
+
+  <div class="prose">
+    <h3>每天、每周做什么</h3>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <tr><th>时段</th><th>做什么</th><th>不做什么</th></tr>
+      <tr><td><strong>盘前</strong><br>8:30–9:25</td><td>看隔夜外盘、汇率和政策新闻；查持仓股公告（停牌、解禁、业绩预告）；把止损和触发价设成条件单；确认今天的观察单（最多 5 只）；集合竞价时看有没有跳空穿过止损</td><td>不临时往观察单里加新股票</td></tr>
+      <tr><td><strong>盘中</strong><br>9:30–15:00</td><td>只执行条件单；尾盘检查“收盘价触发”的条件是否满足</td><td>不盯分时图找理由，不下移止损，不因别人推荐而买入</td></tr>
+      <tr><td><strong>盘后</strong><br>15:00 以后</td><td>更新复权数据；写交易日志；用十六问扫描观察池；写下明天的计划</td><td>大赚或大亏之后的情绪里，不修改任何规则</td></tr>
+      <tr><td><strong>每周</strong></td><td>复核第一层大局（周线、宽度、情绪、交叉市场）；更新观察池；统计本周的执行偏差</td><td>不只看盈亏</td></tr>
+      <tr><td><strong>每月</strong></td><td>按设置统计胜率、平均盈亏（以 R 计）、期望值、最大回撤；检查组合热度</td><td>不因为一个月的表现改规则</td></tr>
+      <tr><td><strong>每季度</strong></td><td>修订交易计划，版本号加 1；和“买入持有沪深 300”比较</td><td>样本不足 20–30 笔的设置不下结论</td></tr>
+    </table>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 19-6</span>交易计划的闭环与暂停开关</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 350" role="img" aria-label="交易计划的闭环：交易计划、盘前、盘中、盘后、周末与月末复盘五个环节循环，每个季度修订计划；右侧是暂停开关，列出七种必须停下来的情况">
+<defs>
+  <marker id="f196-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/></marker>
+</defs>
+<rect class="node node-hi" x="175" y="16" width="150" height="54" rx="8"/>
+<text class="nt" x="250" y="38" text-anchor="middle">① 交易计划</text>
+<text class="nd" x="250" y="58" text-anchor="middle">成文，每季度修订</text>
+
+<rect class="node" x="320" y="118" width="150" height="54" rx="8"/>
+<text class="nt" x="395" y="140" text-anchor="middle">② 盘前</text>
+<text class="nd" x="395" y="160" text-anchor="middle">观察单、条件单</text>
+
+<rect class="node" x="270" y="250" width="150" height="54" rx="8"/>
+<text class="nt" x="345" y="272" text-anchor="middle">③ 盘中</text>
+<text class="nd" x="345" y="292" text-anchor="middle">只执行，不分析</text>
+
+<rect class="node" x="80" y="250" width="150" height="54" rx="8"/>
+<text class="nt" x="155" y="272" text-anchor="middle">④ 盘后</text>
+<text class="nd" x="155" y="292" text-anchor="middle">记日志、扫清单</text>
+
+<rect class="node" x="30" y="118" width="150" height="54" rx="8"/>
+<text class="nt" x="105" y="140" text-anchor="middle">⑤ 周末与月末</text>
+<text class="nd" x="105" y="160" text-anchor="middle">复盘偏差、统计 R</text>
+
+<path class="edge" d="M325 54 L372 114" marker-end="url(#f196-ar)"/>
+<path class="edge" d="M390 172 L360 246" marker-end="url(#f196-ar)"/>
+<path class="edge" d="M270 277 H234" marker-end="url(#f196-ar)"/>
+<path class="edge" d="M140 250 L116 176" marker-end="url(#f196-ar)"/>
+<path class="edge" d="M120 118 L172 56" marker-end="url(#f196-ar)"/>
+
+<text class="hi" x="250" y="196" text-anchor="middle">计划 → 执行 → 记录 → 复盘 → 修订</text>
+<text class="elabel" x="250" y="216" text-anchor="middle">每转一圈，规则都更贴近你自己</text>
+
+<rect class="node node-dn" x="494" y="16" width="214" height="320" rx="8"/>
+<text class="nt" x="510" y="42">暂停开关：任一触发就停</text>
+<text class="nd" x="510" y="76">账户回撤 10%：单笔风险减半</text>
+<text class="nd" x="510" y="110">账户回撤 20%：停开新仓</text>
+<text class="nd" x="510" y="144">连亏 6 笔：暂停一周查原因</text>
+<text class="nd" x="510" y="178">一周违反计划 2 次：停到下周</text>
+<text class="nd" x="510" y="212">想翻本、失眠、想加码：当天停</text>
+<text class="nd" x="510" y="246">某个设置滚动期望转负：停用</text>
+<text class="nd" x="510" y="280">市场失灵或生活大事：先停</text>
+<text class="elabel" x="510" y="318">停下来不是认输，是止损的升级版</text>
+
+<path class="edge-soft" d="M420 277 H490" marker-end="url(#f196-ar)"/>
+<path class="edge-soft" d="M470 145 H490" marker-end="url(#f196-ar)"/>
+<text class="elabel" x="456" y="268" text-anchor="middle">随时对照</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>左边五个环节是一个循环：计划写好后，盘前把它翻译成观察单和条件单，盘中只执行，盘后记日志，周末和月末复盘，每个季度把复盘的结论写回计划，版本号加 1。最容易断掉的一环是“盘中只执行”：一旦你在盘中重新分析，计划就退化成了建议。右边的暂停开关是计划里最容易被省略、也最值钱的部分，它们的共同点是：<b>在你最不想停的时候，强制你停</b>。</figcaption>
+  </figure>
+
+  <div class="prose">
+    <h3>交易日志：你自己的样本外数据</h3>
+    <p>为什么要写日志？心理学家 Fischhoff（1975）的实验发现，人一旦知道了结果，就会觉得“我早就知道会这样”，并且记不清自己事前的真实判断，这叫<strong>后见之明偏差</strong>。不记日志，复盘就是在用结果反推理由：赚了说明判断对，亏了说明运气差。日志把<strong>事前的理由</strong>冻结下来，让你能把“决策质量”和“结果好坏”分开评价。日后走向量化，日志也是检验回测可不可信的唯一实盘证据。</p>
+    <p>下面是日志模板，附两行示范，数字为虚构：</p>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <tr><th>日期</th><th>标的 · 设置</th><th>清单分</th><th>入场理由（一句话）</th><th>入场 / 止损 / 目标</th><th>股数 / 风险</th><th>出场 / 原因</th><th>结果</th><th>情绪（1–5）</th><th>偏差与教训</th></tr>
+      <tr><td>第 1 天</td><td>示例股 A · 设置 A</td><td class="num">12</td><td>50% 回撤 + 旧整理区 + 锤子线确认</td><td class="num">19.10 / 18.35 / 21.60</td><td>2000 股 / 1500 元</td><td>18.35 / 触发止损</td><td class="num">−1R</td><td>入场前 3，止损后 2</td><td>无偏差。按计划亏损，是一笔好交易</td></tr>
+      <tr><td>第 2 天</td><td>示例股 B · 无</td><td>未打分</td><td>群里推荐，怕踏空</td><td class="num">25.80 / 未设 / 未设</td><td>3000 股 / 未知</td><td>27.10 / 冲高卖出</td><td>盈利 3900 元</td><td>5，兴奋</td><td>违规三项：无设置、无止损、超仓（市值约占账户 39%）。赚了钱的坏交易</td></tr>
+    </table>
+  </div>
+
+  <div class="prose">
+    <p>日志里最重要的两列是<strong>情绪</strong>和<strong>偏差</strong>。每月统计时，把违规交易单独汇总：你很可能会发现，违规交易偶尔大赚，合计却是亏的，而且亏在少数几笔大亏上。</p>
+
+    <h3>复盘与修订的节奏</h3>
+    <ul>
+      <li><strong>每笔：</strong>当天收盘后写完日志，截图存档，标出入场、止损和出场的位置。</li>
+      <li><strong>每周：</strong>只看执行，不看盈亏：有几笔违规？止损有没有被挪动？有没有做计划外的设置？</li>
+      <li><strong>每月：</strong>按设置分组统计胜率、平均盈利与平均亏损（以 R 计）、期望值和最大回撤；更新组合热度。</li>
+      <li><strong>每季度：</strong>修订计划。样本达到 20–30 笔的设置才下结论；每次只改一处，写明理由，旧版本留档对照。</li>
+      <li><strong>每年：</strong>和“买入持有沪深 300”比较，用夏普比率和最大回撤，而不是只比收益率（《投资学》第 24 章）。</li>
+    </ul>
+
+    <h3>什么时候必须暂停</h3>
+    <p>暂停条件要在计划里写死，因为需要它的时候，你多半不想停：</p>
+    <ul>
+      <li><strong>账户回撤：</strong>从净值高点回撤 10%，单笔风险减半；回撤 20%，停开新仓，全面复盘（第 13 站规则卡）。</li>
+      <li><strong>连续亏损：</strong>连亏 6 笔，暂停一周，逐笔检查是执行出了问题，还是市场状态变了。注意：胜率 40% 的方法，在 100 笔交易里至少出现一次 6 连亏的概率约 87%。这个开关的目的不是“证明方法失效”，而是强制你冷静检查；如果每笔都按计划执行，检查完就恢复。</li>
+      <li><strong>违反计划：</strong>一周内违规 2 次，停到下周，先把复盘写完。</li>
+      <li><strong>情绪信号：</strong>想把亏的赚回来、想加大仓位、盯盘失眠、对某只股票产生感情，当天停止交易。</li>
+      <li><strong>设置失效：</strong>某个设置最近 30 笔的期望值转负，而且比历史上最差的一段还差，就停用它，回到第 12 站的流程重新检验。</li>
+      <li><strong>市场失灵与生活大事：</strong>千股跌停、流动性枯竭、交易制度突变，或者生病、搬家、家庭变故，先停。</li>
+    </ul>
+    <p>Barber 和 Odean（2000）研究了美国一家券商六万多个家庭账户，交易最频繁的那一组，扣除成本后的收益明显落后于市场（《投资学》第 12 章）。暂停开关还有一层作用：给过度交易踩刹车。</p>
+  </div>
+
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p>“赚钱的交易就是好交易，亏钱的就是坏交易。”这叫结果论。日志里示例股 A 那笔按计划止损的交易是好交易：理由清楚、止损执行、仓位合规，亏损只是这种方法的正常成本。示例股 B 那笔赚钱的交易是坏交易：它强化了一个迟早会让你大亏的习惯。评价一笔交易看<strong>过程是否符合计划</strong>，评价一套方法看<strong>几十笔交易的统计</strong>，两者不能混。</p>
+  </div>
+</section>
+
+<!-- ======================== 19.6 ======================== -->
+<section class="ch" id="s6">
+  <h2 class="sec"><span class="no">19.6</span>全书证据地图与下一步</h2>
+  <p class="sec-en">THE EVIDENCE MAP AND THE ROAD AHEAD</p>
+
+  <div class="prose">
+    <p>每一站都有一个“证据与怀疑”栏。收官时把它们放到同一张图上：横轴是证据有多强，纵轴是这个工具有多难写成客观规则。两个维度合起来回答一个问题：<strong>你的交易计划应该先依赖什么、先检验什么</strong>。</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 19-7</span>全书证据地图<span class="sch">定性判断</span></p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 440" role="img" aria-label="全书证据地图：横轴是证据强度，从薄弱到较强；纵轴是规则化难度，从容易到困难。右下角是证据较强且容易写成规则的工具，包括仓位数学、趋势跟随、中期动量、量价确认；左上角是主观且证据薄弱的工具，包括波浪、周期、经典形态和趋势线">
+<rect class="zone" x="385" y="215" width="315" height="185"/>
+<line class="sr" x1="385" y1="30" x2="385" y2="400"/>
+<line class="sr" x1="70" y1="215" x2="700" y2="215"/>
+<line class="axis" x1="70" y1="400" x2="700" y2="400"/>
+<line class="axis" x1="70" y1="30" x2="70" y2="400"/>
+<text class="atitle" x="76" y="22">规则化越难 ↑</text>
+<text class="atitle" x="700" y="432" text-anchor="end">证据越强 →</text>
+<text class="tick" x="150" y="416" text-anchor="middle">薄弱</text>
+<text class="tick" x="385" y="416" text-anchor="middle">一般</text>
+<text class="tick" x="620" y="416" text-anchor="middle">较强</text>
+<text class="tick" x="62" y="396" text-anchor="end">易</text>
+<text class="tick" x="62" y="40" text-anchor="end">难</text>
+<text class="hi" x="80" y="205">主观且证据弱：当参考，不下注</text>
+<text class="hi" x="695" y="48" text-anchor="end">有道理但难规则化：作背景过滤</text>
+<text class="hi" x="80" y="392">好写好测：先回测，再决定信不信</text>
+<text class="hi" x="695" y="236" text-anchor="end">骨架区：优先检验、优先使用</text>
+<circle class="dot" cx="668.5" cy="377.8" r="5"/>
+<text class="pv" x="658.5" y="381.8" text-anchor="end">仓位与回撤数学（第 13 站）</text>
+<circle class="dot" cx="611.8" cy="337.1" r="5"/>
+<text class="pv" x="601.8" y="341.1" text-anchor="end">趋势跟随：均线与通道（第 8、12 站）</text>
+<circle class="dot" cx="580" cy="281.6" r="5"/>
+<text class="pv" x="570" y="285.6" text-anchor="end">中期动量、相对强度（第 10 站）</text>
+<circle class="dot" cx="435.4" cy="318.6" r="5"/>
+<text class="pv" x="445.4" y="322.6">量价确认（第 6 站）</text>
+<circle class="dot" cx="397.6" cy="252" r="5"/>
+<text class="pv" x="407.6" y="256.0">市场宽度（第 11 站）</text>
+<circle class="dot" cx="334.6" cy="170.6" r="5"/>
+<text class="pv" x="324.6" y="174.6" text-anchor="end">交叉市场（第 10 站）</text>
+<circle class="dot" cx="460.6" cy="178" r="5"/>
+<text class="pv" x="470.6" y="182.0">情绪与相反意见（第 9 站）</text>
+<circle class="dot" cx="435.4" cy="141" r="5"/>
+<text class="pv" x="445.4" y="145.0">道氏理论（第 2 站）</text>
+<circle class="dot" cx="397.6" cy="96.6" r="5"/>
+<text class="pv" x="407.6" y="100.6">支撑阻力（第 3 站）</text>
+<circle class="dot" cx="296.8" cy="344.5" r="5"/>
+<text class="pv" x="286.8" y="348.5" text-anchor="end">摆动指标（第 9 站）</text>
+<circle class="dot" cx="259" cy="118.8" r="5"/>
+<text class="pv" x="249.0" y="122.8" text-anchor="end">趋势线与通道（第 3 站）</text>
+<circle class="dot" cx="221.2" cy="259.4" r="5"/>
+<text class="pv" x="211.2" y="263.4" text-anchor="end">缺口分类（第 3 站）</text>
+<circle class="dot" cx="208.6" cy="74.4" r="5"/>
+<text class="pv" x="218.6" y="78.4">经典形态（第 4、5 站）</text>
+<circle class="dot" cx="158.2" cy="289" r="5"/>
+<text class="pv" x="168.2" y="293.0">蜡烛图（第 7 站）</text>
+<circle class="dot" cx="133" cy="363" r="5"/>
+<text class="pv" x="143.0" y="367.0">斐波那契“神奇比例”（第 3 站）</text>
+<circle class="dot" cx="101.5" cy="48.5" r="5"/>
+<text class="pv" x="111.5" y="52.5">波浪、周期（选学）</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>右下角是“骨架区”：证据较强又容易写成规则，趋势跟随、中期动量、量价确认都在这里；仓位与回撤的数学甚至不需要统计证据，它是确定的算术。左下角的蜡烛图、斐波那契比例、摆动指标同样好写好测，但证据薄弱，正适合你亲手回测，用数据决定去留。右上角的道氏理论、支撑阻力、情绪有道理却难以完全客观化，适合作背景和过滤条件。左上角的波浪、周期、经典形态既主观又缺乏证据，看看可以，别拿钱押。点的位置是本手册的定性判断，不是精确测量。</figcaption>
+  </figure>
+
+  <div class="tablewrap">
+    <table>
+      <tr><th>证据</th><th>工具（站）</th><th>代表研究</th><th>在计划里的角色</th></tr>
+      <tr><td><strong>较强</strong></td><td>趋势跟随、时间序列动量（第 8、12 站）</td><td>Moskowitz、Ooi、Pedersen（2012）在 58 个期货品种上发现时间序列动量；Hurst、Ooi、Pedersen（2017）把样本推到 1880 年以来</td><td>系统骨架；证据主要来自期货和指数，个股与 A 股短周期偏弱</td></tr>
+      <tr><td><strong>较强</strong></td><td>中期动量、相对强度（第 10 站）</td><td>Jegadeesh、Titman（1993）：过去 3–12 个月的赢家继续跑赢输家</td><td>板块和个股筛选；A 股短周期反转更明显，回看期宜放长</td></tr>
+      <tr><td><strong>确定</strong></td><td>仓位与回撤的数学（第 13 站）</td><td>回本不对称、破产风险、凯利（1956）</td><td>不需要回测也必须遵守；但胜率和赔率是估计值，要留余量</td></tr>
+      <tr><td><strong>一般</strong></td><td>量价确认（第 6 站）</td><td>Gervais、Kaniel、Mingelgrin（2001）；Lee、Swaminathan（2000）</td><td>作确认，不单独入场</td></tr>
+      <tr><td><strong>一般</strong></td><td>支撑阻力（第 3 站）</td><td>Osler（2000、2003）：公布的支撑阻力位与止损单聚集确有作用</td><td>定止损和目标的框架</td></tr>
+      <tr><td><strong>一般</strong></td><td>情绪与相反意见（第 9 站）</td><td>Baker、Wurgler（2006）；Fisher、Statman（2000）</td><td>只在极端时有用，用来调节风险档位</td></tr>
+      <tr><td><strong>一般</strong></td><td>道氏理论（第 2 站）</td><td>Brown、Goetzmann、Kumar（1998）重检汉密尔顿的社论择时</td><td>大方向判断；信号慢</td></tr>
+      <tr><td><strong>一般偏弱</strong></td><td>市场宽度、交叉市场（第 10、11 站）</td><td>历史案例多，严格的统计检验少；领先时间不稳，关系会随通胀体制切换</td><td>作过滤条件，不作入场信号</td></tr>
+      <tr><td><strong>一般偏弱</strong></td><td>摆动指标（第 9 站）</td><td>在震荡品种上较有用，趋势中会钝化；信息只是价格的变换</td><td>顺着大趋势用，作时机微调</td></tr>
+      <tr><td><strong>薄弱</strong></td><td>经典形态（第 4、5 站）</td><td>Lo、Mamaysky、Wang（2000）：部分形态带有信息，但离稳定盈利有距离；Chang、Osler（1999）：头肩形不如简单规则稳定</td><td>当作描述结构的语言；交易前写成规则再测</td></tr>
+      <tr><td><strong>薄弱</strong></td><td>蜡烛图（第 7 站）</td><td>Marshall、Young、Rose（2006）：在道琼斯成分股上未发现能创造价值的证据</td><td>只在关键价位作确认</td></tr>
+      <tr><td><strong>薄弱</strong></td><td>斐波那契比例、波浪、周期（第 3 站、选学）</td><td>没有可靠证据，而且很难被证伪</td><td>不作为下注理由</td></tr>
+    </table>
+  </div>
+
+  <div class="prose">
+    <h3>用数据检验每一张规则卡</h3>
+    <p>证据地图是别人的研究，你的规则卡要你自己验证。第 12 站的流程，落到每一张卡上是六步：</p>
+    <ol>
+      <li><strong>写死：</strong>每个条件都精确到两个人执行结果一样，能直接翻译成代码。</li>
+      <li><strong>用对数据：</strong>前复权价格；股票池要用当时的成分股，包含后来退市的股票，否则会有幸存者偏差。</li>
+      <li><strong>建模制度：</strong>信号在收盘产生、按次日开盘成交；涨停买不进、跌停卖不出；扣掉卖出印花税 0.05%、佣金和滑点。</li>
+      <li><strong>分段检验：</strong>样本内调参数，样本外验证，最好做向前滚动检验；看参数高原，不选孤立的最优点。</li>
+      <li><strong>记账：</strong>记下你一共试了多少个版本。试得越多，偶然“有效”的可能越大，这就是数据窥探。</li>
+      <li><strong>小钱实盘：</strong>用最小仓位实盘 20–30 笔，把成交、滑点和情绪与回测对照；日志就是这一步的记录。</li>
+    </ol>
+
+    <h3>下一步：三本书</h3>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 19-8</span>下一步学习路线</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 268" role="img" aria-label="学习路线图：墨菲《金融市场技术分析》学会看懂市场，接着读 Elder《以交易为生》学会管住自己，再读 Curtis Faith《海龟交易法则》把规则搭成系统，最后读 Ernest Chan《量化交易》用数据检验规则；每一本都配一项作业">
+<defs>
+  <marker id="f198-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/></marker>
+  <marker id="f198-ara" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/></marker>
+</defs>
+<text class="hi" x="91" y="24" text-anchor="middle">看懂市场</text>
+<text class="hi" x="271" y="24" text-anchor="middle">管住自己</text>
+<text class="hi" x="451" y="24" text-anchor="middle">搭成系统</text>
+<text class="hi" x="631" y="24" text-anchor="middle">用数据说话</text>
+
+<rect class="node node-up" x="14" y="36" width="154" height="136" rx="8"/>
+<text class="nt" x="91" y="60" text-anchor="middle">① 墨菲</text>
+<text class="nd" x="91" y="80" text-anchor="middle">《金融市场技术分析》</text>
+<text class="nd" x="91" y="106" text-anchor="middle">读图的完整语言</text>
+<text class="nd" x="91" y="124" text-anchor="middle">工具背后的假设</text>
+<text class="ut" x="91" y="156" text-anchor="middle">已完成：交易计划 v1</text>
+
+<rect class="node node-hi" x="194" y="36" width="154" height="136" rx="8"/>
+<text class="nt" x="271" y="60" text-anchor="middle">② Elder</text>
+<text class="nd" x="271" y="80" text-anchor="middle">《以交易为生》</text>
+<text class="nd" x="271" y="106" text-anchor="middle">心理、方法、资金</text>
+<text class="nd" x="271" y="124" text-anchor="middle">三重滤网、交易记录</text>
+<text class="hi" x="271" y="156" text-anchor="middle">作业：日志满 30 笔</text>
+
+<rect class="node" x="374" y="36" width="154" height="136" rx="8"/>
+<text class="nt" x="451" y="60" text-anchor="middle">③ Curtis Faith</text>
+<text class="nd" x="451" y="80" text-anchor="middle">《海龟交易法则》</text>
+<text class="nd" x="451" y="106" text-anchor="middle">规则怎样长成系统</text>
+<text class="nd" x="451" y="124" text-anchor="middle">突破入场、波动率仓位</text>
+<text class="hi" x="451" y="156" text-anchor="middle">作业：计划改写成系统</text>
+
+<rect class="node" x="554" y="36" width="154" height="136" rx="8"/>
+<text class="nt" x="631" y="60" text-anchor="middle">④ Ernest Chan</text>
+<text class="nd" x="631" y="80" text-anchor="middle">《量化交易》</text>
+<text class="nd" x="631" y="106" text-anchor="middle">回测、夏普比率</text>
+<text class="nd" x="631" y="124" text-anchor="middle">凯利公式、过度拟合</text>
+<text class="hi" x="631" y="156" text-anchor="middle">作业：回测每张规则卡</text>
+
+<path class="edge" d="M168 104 H190" marker-end="url(#f198-ar)"/>
+<path class="edge" d="M348 104 H370" marker-end="url(#f198-ar)"/>
+<path class="edge" d="M528 104 H550" marker-end="url(#f198-ar)"/>
+
+<path class="edge-acc" d="M20 200 H700" marker-end="url(#f198-ara)"/>
+<text class="pv" x="360" y="224" text-anchor="middle">从“会看图”到“能证明”：每一步都在给上一步的结论加一道检验</text>
+<text class="elabel" x="360" y="250" text-anchor="middle">每读完一本，就回到 19.5 节，给你的交易计划升一个版本号</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>四本书是一条从“会看图”到“能证明”的路。墨菲给了你读图的语言和每个工具背后的假设；Elder 补上前 13 站最薄弱的一环，也就是交易者自己；Faith 示范传统规则怎样组装成一个完整、可执行的系统；Chan 教你用数据回答“这个系统到底有没有优势”。每本书下面的作业，都会让你的交易计划升一个版本。</figcaption>
+  </figure>
+
+  <div class="prose">
+    <ul>
+      <li><strong>Elder《以交易为生》：</strong>作者亚历山大·埃尔德是精神科医生出身的交易者。书的骨架是“3M”：心理（Mind）、方法（Method）、资金（Money）。方法部分的三重滤网交易系统，正是本站“长周期定方向、短周期找时机”的一个现成实现；他的资金管理以单笔风险 2%、月度亏损 6% 两条红线著称，并且反复强调交易记录。读它时带着你的日志，对照找自己的心理漏洞。</li>
+      <li><strong>Curtis Faith《海龟交易法则》：</strong>作者是 1983 年理查德·丹尼斯“海龟实验”的学员之一。书里展示了第 8 站的四周规则怎样长成一套完整系统：突破入场、按波动率（N 值）定仓位、分批加仓、明确的离场规则，以及为什么多数人拿到规则也执行不了。读完后，把你的计划改写成一个没有任何模糊词的系统。</li>
+      <li><strong>Ernest Chan《量化交易》：</strong>一本面向个人的量化入门书，讲回测的陷阱、夏普比率、凯利公式和过度拟合，正好接上第 12 站和《投资学》第 24 章。读完后，给你的每一张规则卡跑一次回测。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ======================== 19.7 ======================== -->
+<section class="ch" id="s7">
+  <h2 class="sec"><span class="no">19.7</span>落地：规则卡、证据与 A 股适配</h2>
+  <p class="sec-en">PUTTING IT TO WORK</p>
+
+  <div class="prose">
+    <p>最后一节做三件事：把十六问里能量化的部分写成一张可以直接编程的规则卡；用证据框说清清单的边界；再把清单改造成 A 股版，并用 2024 年 9–10 月的真实行情做一次回放。</p>
+  </div>
+
+  <div class="rulecard">
+    <div class="rc-head"><span class="label">规则卡 · 可编程的清单过滤器</span><span class="rc-name">A 股版十六问的量化骨架</span></div>
+    <dl>
+      <dt>标的与周期</dt><dd>沪深 300 与中证 500 成分股（按当时的成分），剔除 ST、上市不满 250 个交易日、最近 20 个交易日有过停牌的股票；日线，前复权</dd>
+      <dt>过滤条件</dt><dd>大局（问 ①④）：沪深 300 收盘在 120 日均线之上，且自建腾落线在其 50 日均线之上，风险档位 1%；只满足一项，0.5%；都不满足，不开新仓。板块（问 ②）：所属行业指数 ÷ 沪深 300 的 60 日涨幅排名前 30%。长周期（问 ⑥）：周收盘高于 30 周均线，且 30 周均线高于 10 周前</dd>
+      <dt>入场</dt><dd>设置 A 或 B 的触发条件成立；当日涨幅不超过 7%；未来 5 个交易日内没有定期报告预约披露日或限售股解禁（防跳空）</dd>
+      <dt>止损</dt><dd>信号价位外侧，且距离不超过 2.5 × ATR(20)；条件单执行。回测时买入当天不得卖出，止损按“次日开盘价与止损价中较差者”成交</dd>
+      <dt>出场</dt><dd>目标① 卖出一半，其余收盘跌破 20 日最低价离场；遇到停牌，按复牌首日开盘价处理</dd>
+      <dt>仓位</dt><dd>风险档位 × 账户净值 ÷ 每股止损距离，向下取整到 100 股；单股市值 ≤ 20%；组合热度 ≤ 6%；同一行业 ≤ 2 只；回测扣除卖出印花税 0.05%、双边佣金和滑点</dd>
+    </dl>
+    <p class="rc-note">这张卡把十六问里能量化的部分（大盘、宽度、板块、长周期、入场和风控）都写成了一行行条件，剩下的形态、趋势线、情绪等主观项，暂时留给人工复核。它不是圣杯，而是你从清单走向量化的第一个可检验版本：先按第 12 站的流程回测，再用小资金实盘，对照日志。</p>
+  </div>
+
+  <div class="evidence">
+    <span class="label">证据与怀疑</span>
+    <h4>清单能防错，不能造优势</h4>
+    <ul>
+      <li><strong>清单减少的是遗漏：</strong>航空和外科的经验（19.1 节）说明，清单能显著减少“会做但漏做”的错误。但那些领域清单上的每一项，本身都是验证过的正确做法；交易清单上的工具证据强弱不一（图 19-7）。把一个没有优势的方法执行得再整齐，结果也只是整齐地亏钱。</li>
+      <li><strong>信息越多，信心越高，准确率未必提高：</strong>Oskamp（1965）让临床心理学工作者分阶段阅读一份病例资料。随着资料增加，他们对自己判断的信心明显上升，准确率却基本没有提高。十六问不是越多越好，真正决定结论的是长周期、价格结构和风险三项。</li>
+      <li><strong>指标并不独立：</strong>RSI、随机指标、MACD 都由同一条收盘价算出，“三个指标同时确认”的信息量远小于三份独立证据。</li>
+      <li><strong>打分门槛也会被过度拟合：</strong>权重和门槛都是参数。Sullivan、Timmermann 和 White（1999）以及 White（2000）提醒，在同一批数据上试的规则越多，“最好”的那条越可能只是运气；Harvey、Liu 和 Zhu（2016）因此主张把显著性门槛提高到 t 值约 3。</li>
+      <li><strong>回到学术框架：</strong>弱式有效市场（《投资学》第 11 章）意味着公开的图表信息很难长期提供超额收益；行为金融（《投资学》第 12 章）解释了趋势和过度反应为什么可能存在，也解释了我们为什么需要清单和计划来约束自己的偏差。</li>
+    </ul>
+    <p>结论：清单和计划解决的是<strong>执行质量</strong>，规则有没有优势只能由第 12 站的检验流程回答。你的交易日志，就是这个检验最真实的样本外数据。</p>
+  </div>
+
+  <div class="ashare">
+    <span class="label">A 股适配</span>
+    <h4>A 股版清单：十六问之外的六道工序</h4>
+    <ul>
+      <li><strong>数据关：</strong>确认用的是前复权数据；上市不满一年的股票，年线和周线结构都不可靠（第 1 站）。</li>
+      <li><strong>制度关：</strong>T+1 让买入当天无法止损，隔夜跳空风险要算进仓位。涨跌停：主板 ±10%，创业板和科创板 ±20%；主板风险警示股原为 ±5%，2025 年 7 月起调整为 ±10%。涨停买不进、跌停卖不出，离涨停太近不追。</li>
+      <li><strong>停牌关：</strong>有没有重大事项停牌的可能？停牌期间没有 K 线，风险却一直在，复牌常常连续跳空。</li>
+      <li><strong>风险警示关：</strong>是不是 ST，或者可能被实施风险警示？近期有没有限售股解禁、大股东减持计划？</li>
+      <li><strong>日历关：</strong>未来两周有没有重要会议和数据：全国两会（每年 3 月）；中央政治局会议（通常在 4 月、7 月底分析经济形势，12 月部署来年经济工作）；中央经济工作会议（12 月）；国家统计局月度数据（官方 PMI 在月末发布，主要经济数据在月中前后）；美联储议息会议；定期报告披露截止日（年报和一季报 4 月 30 日，半年报 8 月 31 日，三季报 10 月 31 日）。</li>
+      <li><strong>温度计：</strong>A 股特有的宽度和情绪指标：涨停与跌停家数、上涨家数占比、两市成交额、融资余额变化（第 9、11 站）。</li>
+    </ul>
+  </div>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>2024 年 9–10 月：用清单回放一段政策行情</h4>
+    <p>第 1 站用这段行情检验了“市场包容一切”的边界。这里换个角度：如果你当时手里有这张清单，每个时点它会告诉你什么？先摆事实：9 月 18 日，上证指数盘中跌到约 2690 点，日线、周线都处于下跌趋势；9 月 24 日，国新办发布会宣布降准、降息和支持股票市场的新货币政策工具；26 日，中央政治局会议提出“要努力提振资本市场”；9 月 30 日，沪指单日大涨约 8%，收于约 3336 点；国庆长假后的 10 月 8 日，沪指高开于约 3674 点，开盘价就是全天最高价，随后震荡回落，收于约 3490 点，全天仍上涨约 4.6%，两市成交额约 3.5 万亿元，创历史纪录；次日（10 月 9 日），沪指大跌约 6.6%。下表按清单逐项回放：</p>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <tr><th>清单项</th><th>9 月 24 日之前</th><th>9 月 24 日—30 日</th><th>10 月 8 日</th></tr>
+      <tr><td>①⑥ 大盘与长周期（第 2、3 站）</td><td>日线、周线下跌趋势，约 2690 点创阶段新低</td><td>连续大阳线，收复 3000 点关口，下降趋势被打破</td><td>长周期转向的证据增多，但价格远离所有均线</td></tr>
+      <tr><td>⑪ 缺口（第 3 站）</td><td>无</td><td>大阳线接连出现</td><td>开盘比节前收盘高出约 10%，留下巨大缺口；是突破缺口还是衰竭缺口，只能事后判断</td></tr>
+      <tr><td>⑬ 成交量（第 6 站）</td><td>成交清淡</td><td>成交额迅速放大</td><td>约 3.5 万亿元的历史天量，配合高开低走：买入高潮的典型场景</td></tr>
+      <tr><td>⑮ 摆动指标（第 9 站）</td><td>弱势区</td><td>迅速冲进极端超买区</td><td>极端超买中，价格从开盘高点回落</td></tr>
+      <tr><td>⑯ K 线（第 7 站）</td><td>无</td><td>连续大阳线</td><td>收涨约 4.6%，却是一根阴线（收盘低于开盘），开盘即最高</td></tr>
+      <tr><td>⑤ 情绪（第 9 站）</td><td>悲观，无人问津</td><td>迅速转向亢奋</td><td>天量与全民讨论同时出现：新买家还剩多少？</td></tr>
+      <tr><td><strong>清单的结论</strong></td><td>第一关不过：不做多</td><td>第二关不过：不追，等回调或机械信号</td><td>持仓者收紧止损、分批止盈；空仓者不追开盘</td></tr>
+    </table>
+  </div>
+
+  <div class="case">
+    <span class="label">真实案例 · 续</span>
+    <p class="takeaway">清单不会让你抓住 9 月 24 日的起点：政策无法从图上预知，第一关（长周期向下）会让你一直空仓，直到趋势被打破。它也不会让你在 10 月 8 日开盘追进最高点：天量、极端超买、高开低走的阴线同时亮起了红灯。清单真正的价值在中间那一段：<b>趋势已经转向时，它要求你等一个有利位置和确认，而不是追；已经持仓的人，它要求你按规则上移止损，而不是在狂热中加码。</b>另一面也要承认：像“收盘突破 55 日最高价”这样的机械突破规则，在 9 月底就会发出入场信号，不需要你理解政策的含义。这正是第 12 站说的，规则在“犹豫”面前的优势。</p>
+  </div>
+</section>
+
+<!-- ======================== 小结 ======================== -->
+<section class="ch" id="recap">
+  <h2 class="sec"><span class="no">※</span>本章小结</h2>
+  <p class="sec-en">SUMMARY</p>
+
+  <div class="recap">
+    <ol>
+      <li><b>为什么要清单：</b>盘中的主要错误是漏项、挑证据和顺序错；清单用固定项目和固定顺序对付它们，不替你思考，只保证你想全。</li>
+      <li><b>十六问分四层：</b>大局（①–⑤：大盘、板块、交叉市场、宽度、情绪）→ 长周期（⑥⑦）→ 价格结构（⑧–⑫：支撑阻力、趋势线、回撤、缺口、形态）→ 确认（⑬–⑯：量、均线、摆动指标、K 线），最后过风控闸门。</li>
+      <li><b>每层管一件事：</b>大局定风险档位，长周期定方向，价格结构定进出场位置，确认定时机，风控定股数。</li>
+      <li><b>冲突时的优先级：</b>长周期优先于短周期，价格优先于指标，趋势优先于摆动，风险一票否决；同源的指标不算多份证据。</li>
+      <li><b>技术面与基本面：</b>基本面回答买什么，技术面回答何时买、错了在哪认；对纯技术交易者，基本面最大的用处是事件日历。</li>
+      <li><b>演练的结论：</b>“等待”是一个正式的答案；位置好但确认未到时，把触发价、止损、股数提前写成条件单；仓位取风险上限和集中度上限中的较小者。</li>
+      <li><b>交易计划九要素：</b>标的池、周期、入场设置、止损、仓位、组合风险、例行流程、记录与复盘、暂停条件；写下来是为了预先承诺。</li>
+      <li><b>日志与复盘：</b>日志冻结事前理由，对抗后见之明；评价交易看过程，评价方法看几十笔的统计；暂停开关在你最不想停的时候强制你停。</li>
+      <li><b>证据地图：</b>趋势跟随、中期动量和仓位数学最可靠；量价、支撑阻力、情绪、宽度有一定支持；蜡烛图、经典形态、斐波那契、波浪和周期证据薄弱。每张规则卡都要用自己的数据检验。</li>
+      <li><b>下一步：</b>Elder《以交易为生》管住自己 → Faith《海龟交易法则》搭成系统 → Chan《量化交易》用数据证明。</li>
+    </ol>
+  </div>
+
+  <h3>核心术语（中英对照）</h3>
+  <div class="tablewrap">
+    <table>
+      <tr><th>中文</th><th>English</th><th>一句话定义</th></tr>
+      <tr><td>检查清单</td><td>checklist</td><td>固定项目、固定顺序的核对表，用来防止漏项</td></tr>
+      <tr><td>自上而下分析</td><td>top-down analysis</td><td>从大盘、板块、长周期一路看到日线和入场</td></tr>
+      <tr><td>证据权重</td><td>weight of the evidence</td><td>按可靠性给不同信号不同的分量</td></tr>
+      <tr><td>多周期分析</td><td>multiple time frame analysis</td><td>长周期定方向，短周期找时机</td></tr>
+      <tr><td>汇合区</td><td>confluence zone</td><td>几种独立来源的支撑或阻力叠在同一价位</td></tr>
+      <tr><td>确认</td><td>confirmation</td><td>用量、K 线或指标验证价格信号</td></tr>
+      <tr><td>背离</td><td>divergence</td><td>价格创新高（低）而指标不跟随</td></tr>
+      <tr><td>交易计划</td><td>trading plan</td><td>成文的交易总纲：交易什么、怎么做、何时停</td></tr>
+      <tr><td>标的池 / 观察池</td><td>trading universe / watchlist</td><td>允许交易的品种范围与重点观察名单</td></tr>
+      <tr><td>入场设置</td><td>setup</td><td>一组预先定义好的入场前提</td></tr>
+      <tr><td>触发条件</td><td>trigger</td><td>让设置变成实际下单的具体价格事件</td></tr>
+      <tr><td>条件单</td><td>conditional order</td><td>价格达到预设条件时自动下单</td></tr>
+      <tr><td>报酬风险比</td><td>reward-to-risk ratio</td><td>潜在盈利与止损亏损之比，墨菲建议至少 3:1</td></tr>
+      <tr><td>R 倍数</td><td>R-multiple</td><td>以单笔计划风险为单位计量的盈亏</td></tr>
+      <tr><td>组合热度</td><td>portfolio heat</td><td>所有持仓止损风险之和占账户的比例</td></tr>
+      <tr><td>交易日志</td><td>trading journal</td><td>逐笔记录理由、执行、结果和情绪</td></tr>
+      <tr><td>复盘</td><td>trade review</td><td>定期检查执行偏差和统计表现</td></tr>
+      <tr><td>执行偏差</td><td>execution error</td><td>实际操作偏离计划的部分</td></tr>
+      <tr><td>预先承诺</td><td>precommitment</td><td>冷静时替将来的自己做好决定</td></tr>
+      <tr><td>后见之明偏差</td><td>hindsight bias</td><td>知道结果后，高估自己当初的预见</td></tr>
+      <tr><td>结果论</td><td>outcome bias</td><td>只按结果好坏评价决策的质量</td></tr>
+      <tr><td>暂停规则</td><td>trading halt rules</td><td>一旦触发就停止交易的预设条件</td></tr>
+      <tr><td>数据窥探</td><td>data snooping</td><td>在同一批数据上反复试验造成的虚假发现</td></tr>
+    </table>
+  </div>
+
+  <h3>自测（先想后翻）</h3>
+  <details>
+    <summary>Q1 检查清单为什么要自上而下？如果先看日线、再看周线，会出什么问题？</summary>
+    <div class="ans"><p>三个理由：大盘和行业解释了个股相当大一部分的涨跌，A 股的同涨同跌尤其明显，逆着潮水做个股胜算低；长周期的结构背后资金量大、噪声小，是判断方向的主要依据；从大到小逐层筛选效率最高。先看日线的问题在于<b>锚定</b>：你会先被一个漂亮的日线信号吸引，再去看周线时，会不自觉地为它找理由（确认偏差），把周线下降趋势里的反弹当成买点。自上而下的顺序，让“方向”在你爱上某个买点之前就定下来。</p></div>
+  </details>
+  <details>
+    <summary>Q2 周线上升趋势完好，日线 RSI 到了 80、MACD 刚刚死叉。你持有这只股票，怎么办？没持有呢？</summary>
+    <div class="ans"><p>按优先级，长周期优先于短周期、趋势优先于摆动。周线向上时，日线超买和死叉只是“短期可能回调”的提示，不是清仓或做空的理由。<b>持有者：</b>不因指标卖出，按规则卡执行，比如把止损上移到最近一个日线低点下方，或在到达目标时按计划减半；只有价格跌破关键位（趋势线、前低）才离场，因为价格优先于指标。<b>未持有者：</b>不在超买时追，放进观察单，等回调到支撑或回撤区并出现确认信号（设置 A）再买。同一组读数对不同处境的人给出不同动作，但原则相同：顺着长周期，等价格确认。</p></div>
+  </details>
+  <details>
+    <summary>Q3 一份交易计划必须包含哪些要素？你认为最常被漏掉的是哪一项，为什么？</summary>
+    <div class="ans"><p>九项：标的池（交易什么、不交易什么）、周期、入场设置、止损、仓位、组合风险上限、例行流程、记录与复盘节奏、暂停条件。最常被漏掉的通常是两项。一是“不交易什么”：人天然只想机会、不想限制，结果被消息股、推荐股拖下水。二是暂停条件：写计划时人是冷静的，想象不到自己连亏之后会报复性交易。这两项恰恰是保护你免于大亏的部分。止损和仓位虽然常被写上，却往往只写了“要止损”，没写具体位置和股数的算法，这和没写差不多。</p></div>
+  </details>
+  <details>
+    <summary>Q4 为什么要写交易日志？一笔“没设止损、超仓，却赚了 3900 元”的交易，日志里该怎么评价？</summary>
+    <div class="ans"><p>日志把事前的理由冻结下来，对抗后见之明偏差：不记录，复盘时你会用结果反推理由，赚了就觉得判断对。日志还能把交易拆成“过程”和“结果”分别评价，并积累你自己的实盘样本，用来检验回测是否可信。那笔交易应记为违规（无设置、无止损、超仓），评价为<b>赚了钱的坏交易</b>：盈利来自运气，而它强化的习惯（不止损、重仓追推荐）在未来遇到一次跳空或连续跌停，就可能造成远大于 3900 元的亏损。月度统计时，把违规交易单独汇总，看它们长期合计的表现。</p></div>
+  </details>
+  <details>
+    <summary>Q5 你的方法胜率约 40%，刚刚连亏了 6 笔。要不要暂停？要不要放弃这个方法？</summary>
+    <div class="ans"><p>要暂停，但不急着放弃。算一下：胜率 40% 时，100 笔交易里至少出现一次 6 连亏的概率约 87%，连亏本身是这种方法的正常现象。暂停是为了检查三件事：逐笔看是否按计划执行（入场条件、止损、仓位有没有走样）；看市场状态是否变了，比如从趋势市进入震荡市，ADX 长期低迷（第 12 站）；看大局层是否转为逆风。如果执行无误、状态没变，暂停期满就恢复，同时检查账户回撤是否触发了“单笔风险减半”。只有当这个设置的滚动期望值转负，而且比历史最差的阶段还差时，才停用它，回到第 12 站重新检验。</p></div>
+  </details>
+  <details>
+    <summary>Q6 全书哪些工具证据较强，哪些较弱？这对你交易计划的结构意味着什么？</summary>
+    <div class="ans"><p><b>较强：</b>趋势跟随与时间序列动量（Moskowitz、Ooi、Pedersen 2012；Hurst、Ooi、Pedersen 2017）、中期动量与相对强度（Jegadeesh、Titman 1993），以及仓位与回撤的数学（确定的算术）。<b>有一定支持：</b>量价、支撑阻力、情绪、道氏理论，宽度和交叉市场稍弱。<b>薄弱：</b>蜡烛图（Marshall、Young、Rose 2006）、经典形态（有信息不等于能赚钱）、斐波那契“神奇比例”、波浪和周期。对计划的含义：骨架用证据较强又容易规则化的部分（趋势过滤、相对强度选股、固定比例仓位）；证据一般的工具做过滤和确认；证据薄弱的工具最多用于入场时机的微调，而且要先自己回测。还要记住 A 股的特殊性：短周期上反转效应更明显，欧美的动量证据不能直接照搬到 A 股的日线和周线上。</p></div>
+  </details>
+
+  <a class="next" href="ta-index.html">
+    <div>
+      <div class="lbl">全书完成 · 回到学习地图</div>
+      <div class="ttl">14 站全部走完 · 学习地图</div>
+    </div>
+    <div class="lbl">下一本：Elder《以交易为生》，补上交易心理与资金管理</div>
+  </a>
+
+  <p class="foot">本页为依据约翰·墨菲《金融市场技术分析》框架整理的原创学习笔记（第 19 章），仅用于教学理解；标“示意”的图表为构造数据，“示例股 A”“示例股 B”为虚构标的，证据地图中各点的位置为定性判断；研究结论与历史数据为近似表述，以原始文献和官方数据为准。内容不构成任何投资建议。</p>
+</section>
+
+</main>
+</div>
+</div>
+
+<script>
+(function(){
+  var links = Array.prototype.slice.call(document.querySelectorAll('.sidenav a[href^="#"]'));
+  if(!links.length) return;
+  var map = [];
+  links.forEach(function(a){
+    var el = document.getElementById(a.getAttribute('href').slice(1));
+    if(el) map.push([el, a]);
+  });
+  if(!map.length) return;
+  function update(){
+    var y = window.scrollY + 150;
+    var cur = map[0][1];
+    for(var i = 0; i < map.length; i++){
+      if(map[i][0].offsetTop <= y) cur = map[i][1];
+    }
+    map.forEach(function(p){ p[1].classList.toggle('active', p[1] === cur); });
+  }
+  var tick = false;
+  window.addEventListener('scroll', function(){
+    if(!tick){
+      tick = true;
+      requestAnimationFrame(function(){ tick = false; update(); });
+    }
+  }, {passive:true});
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,2587 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>技术分析 · 第16章 资金管理和交易策略</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700;900&family=Noto+Sans+SC:wght@400;500;700&display=swap">
+<style>
+/* 《金融市场技术分析》讲义共享样式：双栏（212px 侧栏 + 正文），沿用《投资学》手册模板；
+   新增：红涨绿跌的 K 线配色、图表注释类、规则卡 / 证据与怀疑 / A 股适配 / 打个比方 四种讲义块 */
+:root{
+  --bg:#f5f6f7;
+  --surface:#ffffff;
+  --ink:#171a20;
+  --ink-2:#4a5160;
+  --muted:#858c9b;
+  --line:#e2e5ea;
+  --line-2:#c9ced6;
+  --accent:#1d5fad;
+  --accent-ink:#174e8f;
+  --accent-soft:#eaf1fa;
+  --series:#2a78d6;
+  --series2:#eb6834;
+  --series2-ink:#b4501f;
+  --series3:#8a5fd1;
+  --up:#d63a3a;
+  --up-ink:#b42f2f;
+  --up-soft:rgba(214,58,58,.09);
+  --down:#14905a;
+  --down-soft:rgba(20,144,90,.10);
+  --crit:#d03b3b;
+  --crit-soft:rgba(208,59,59,.07);
+  --serif:"Noto Serif SC","Songti SC",serif;
+  --sans:"Noto Sans SC","Microsoft YaHei",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#101215; --surface:#181b20; --ink:#eef0f3; --ink-2:#c0c5cf; --muted:#8a909d;
+    --line:#282c33; --line-2:#3a3f48;
+    --accent:#5a96e3; --accent-ink:#79abec; --accent-soft:#1c2a3d;
+    --series:#3987e5; --series2:#e0703f; --series2-ink:#f0915f; --series3:#a585e8;
+    --up:#ec6262; --up-ink:#f08080; --up-soft:rgba(236,98,98,.13);
+    --down:#2fb87a; --down-soft:rgba(47,184,122,.13);
+    --crit:#e66767; --crit-soft:rgba(230,103,103,.10);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#101215; --surface:#181b20; --ink:#eef0f3; --ink-2:#c0c5cf; --muted:#8a909d;
+  --line:#282c33; --line-2:#3a3f48;
+  --accent:#5a96e3; --accent-ink:#79abec; --accent-soft:#1c2a3d;
+  --series:#3987e5; --series2:#e0703f; --series2-ink:#f0915f; --series3:#a585e8;
+  --up:#ec6262; --up-ink:#f08080; --up-soft:rgba(236,98,98,.13);
+  --down:#2fb87a; --down-soft:rgba(47,184,122,.13);
+  --crit:#e66767; --crit-soft:rgba(230,103,103,.10);
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:var(--sans); font-size:15.5px; line-height:1.85;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1190px; margin:0 auto; padding-inline:20px; padding-block:0 72px}
+
+.layout{display:grid; grid-template-columns:212px minmax(0,1fr); gap:44px; align-items:start}
+.article{max-width:920px; min-width:0}
+.sidenav{
+  position:sticky; top:16px; max-height:calc(100vh - 32px); overflow-y:auto;
+  padding-block:40px 16px; font-size:13px;
+}
+.sidenav .sn-chap{
+  margin:0 0 10px; padding-left:13px; font-size:11.5px; letter-spacing:.14em;
+  color:var(--muted); font-weight:700;
+}
+.sidenav a{
+  display:block; color:var(--ink-2); text-decoration:none; line-height:1.55;
+  padding:6px 10px 6px 13px; border-left:2px solid var(--line);
+}
+.sidenav a:hover{color:var(--accent-ink)}
+.sidenav a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.sidenav a.active{
+  color:var(--accent-ink); border-left-color:var(--accent);
+  background:var(--accent-soft); font-weight:700;
+}
+.hero,section.ch{scroll-margin-top:10px}
+@media (max-width: 999px){
+  .sidenav{display:none}
+  .layout{display:block}
+}
+@media (min-width: 1000px){
+  nav.chapmap{display:none}
+}
+
+.masthead{
+  display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  padding-block:18px 14px; border-bottom:1px solid var(--line);
+}
+.masthead .book{font-family:var(--serif); font-weight:700; font-size:15px; letter-spacing:.02em}
+.masthead .part{font-size:12.5px; color:var(--muted); letter-spacing:.12em}
+.masthead a{color:var(--accent-ink); text-decoration:none}
+.masthead a:hover{text-decoration:underline}
+.masthead a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+a.next{color:inherit; text-decoration:none}
+a.next:hover{border-color:var(--accent)}
+a.next:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+.hero{padding-block:44px 28px; border-bottom:1px solid var(--line)}
+.chap-no{
+  display:inline-flex; align-items:center; gap:10px;
+  font-size:12.5px; letter-spacing:.22em; color:var(--accent-ink); font-weight:700;
+}
+.chap-no::after{content:""; width:46px; height:1px; background:var(--accent)}
+.hero h1{
+  font-family:var(--serif); font-weight:900; font-size:clamp(30px,5vw,46px);
+  line-height:1.25; margin:10px 0 4px; letter-spacing:.02em; text-wrap:balance;
+}
+.hero .en{font-size:14px; color:var(--muted); letter-spacing:.08em; margin:0 0 18px}
+.hero .lede{max-width:46em; color:var(--ink-2); margin:0}
+.hero .lede strong{color:var(--ink)}
+.objectives{
+  margin-top:22px; padding:16px 20px; background:var(--surface);
+  border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:0 6px 6px 0;
+}
+.objectives h2{font-size:13px; letter-spacing:.18em; color:var(--accent-ink); margin:0 0 8px; font-weight:700}
+.objectives ul{margin:0; padding-left:1.3em; color:var(--ink-2)}
+.objectives li{margin:3px 0}
+.colorkey{margin-top:12px; font-size:12.5px; color:var(--muted)}
+.colorkey .up{color:var(--up-ink); font-weight:700}
+.colorkey .dn{color:var(--down); font-weight:700}
+.chapmap{display:flex; flex-wrap:wrap; gap:8px; margin-top:20px}
+.chapmap a{
+  font-size:13px; color:var(--ink-2); text-decoration:none;
+  border:1px solid var(--line-2); border-radius:999px; padding:4px 13px; background:var(--surface);
+}
+.chapmap a:hover{border-color:var(--accent); color:var(--accent-ink)}
+.chapmap a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+section.ch{padding-block:40px 8px}
+section.ch + section.ch{border-top:1px solid var(--line)}
+h2.sec{
+  font-family:var(--serif); font-weight:700; font-size:clamp(22px,3.4vw,28px);
+  margin:0 0 2px; line-height:1.35; text-wrap:balance;
+}
+h2.sec .no{color:var(--accent-ink); margin-right:10px; font-feature-settings:"tnum"}
+p.sec-en{font-size:12.5px; letter-spacing:.1em; color:var(--muted); margin:0 0 18px}
+h3{font-size:16.5px; font-weight:700; margin:26px 0 8px}
+h3 .tag{color:var(--accent-ink)}
+p{margin:10px 0}
+.prose{max-width:46em}
+.prose .en-term{color:var(--muted); font-size:.88em}
+.prose ul,.prose ol{padding-left:1.4em; margin:8px 0}
+.prose li{margin:5px 0}
+strong{font-weight:700}
+em{font-style:normal; font-weight:700; color:var(--accent-ink)}
+.up-t{color:var(--up-ink); font-weight:700}
+.dn-t{color:var(--down); font-weight:700}
+
+.cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px; margin:16px 0}
+.card{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:16px 18px;
+}
+.card h4{margin:0 0 6px; font-size:15px}
+.card h4 .en-term{display:block; font-weight:400; font-size:12px; color:var(--muted); letter-spacing:.04em; margin-top:2px}
+.card p{margin:6px 0; font-size:14px; color:var(--ink-2)}
+.card ul{margin:6px 0 0; padding-left:1.2em; font-size:14px; color:var(--ink-2)}
+.card li{margin:3px 0}
+.card .k{display:block; font-size:12px; letter-spacing:.12em; color:var(--muted); font-weight:700; margin-top:8px}
+
+.case,.evidence,.ashare{
+  margin:20px 0; padding:16px 20px 14px; background:var(--surface);
+  border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:0 8px 8px 0;
+}
+.evidence{border-left-color:var(--series2)}
+.ashare{border-left-color:var(--up)}
+.case .label,.evidence .label,.ashare .label{font-size:12px; letter-spacing:.2em; color:var(--accent-ink); font-weight:700; display:block; margin-bottom:6px}
+.evidence .label{color:var(--series2-ink)}
+.ashare .label{color:var(--up-ink)}
+.case h4,.evidence h4,.ashare h4{margin:0 0 6px; font-size:15.5px}
+.case p,.evidence p,.ashare p{margin:7px 0; font-size:14.5px; color:var(--ink-2)}
+.case p:last-child,.evidence p:last-child,.ashare p:last-child{margin-bottom:2px}
+.evidence ul,.ashare ul,.case ul{margin:6px 0; padding-left:1.3em; font-size:14.5px; color:var(--ink-2)}
+.evidence li,.ashare li,.case li{margin:5px 0}
+.case .takeaway{color:var(--ink); font-weight:500}
+.case .takeaway::before{content:"▸ 要点 "; color:var(--accent-ink); font-weight:700; font-size:12.5px; letter-spacing:.05em}
+
+.analogy{
+  margin:18px 0; padding:14px 20px; background:var(--accent-soft); border-radius:8px; max-width:46em;
+}
+.analogy .label{font-size:12px; letter-spacing:.2em; color:var(--accent-ink); font-weight:700; display:block; margin-bottom:4px}
+.analogy p{margin:5px 0; font-size:14.5px; color:var(--ink-2)}
+
+.pitfall{
+  margin:20px 0; padding:14px 20px; border:1px dashed var(--line-2); border-radius:8px; max-width:46em;
+}
+.pitfall .label{font-size:12px; letter-spacing:.2em; color:var(--crit); font-weight:700; display:block; margin-bottom:4px}
+.pitfall p{margin:4px 0; font-size:14.5px; color:var(--ink-2)}
+
+/* 规则卡 */
+.rulecard{
+  margin:22px 0; background:var(--surface); border:1px solid var(--line); border-radius:8px;
+  overflow:hidden; max-width:46em;
+}
+.rulecard .rc-head{
+  padding:10px 18px; background:var(--accent-soft); border-bottom:1px solid var(--line);
+  display:flex; justify-content:space-between; align-items:baseline; gap:10px; flex-wrap:wrap;
+}
+.rulecard .rc-head .label{font-size:12px; letter-spacing:.2em; color:var(--accent-ink); font-weight:700}
+.rulecard .rc-head .rc-name{font-weight:700; color:var(--ink)}
+.rulecard dl{display:grid; grid-template-columns:6.2em minmax(0,1fr); margin:0}
+.rulecard dt{padding:9px 0 9px 18px; font-size:13px; color:var(--muted); font-weight:700; border-top:1px solid var(--line)}
+.rulecard dd{margin:0; padding:9px 18px 9px 8px; font-size:14px; color:var(--ink-2); border-top:1px solid var(--line)}
+.rulecard dl > dt:first-child,.rulecard dl > dt:first-child + dd{border-top:none}
+.rulecard .rc-note{padding:10px 18px; font-size:13px; color:var(--muted); border-top:1px dashed var(--line-2); line-height:1.75}
+
+.formula{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px;
+  padding:12px 18px; margin:14px 0; max-width:46em; overflow-x:auto;
+  font-size:15px; line-height:2;
+}
+.formula .fx{white-space:nowrap}
+.formula sub,.formula sup{font-size:11px}
+.formula .note{font-size:12.5px; color:var(--muted)}
+
+table{border-collapse:collapse; width:100%; font-size:14px; font-variant-numeric:tabular-nums}
+.tablewrap{overflow-x:auto; margin:16px 0; border:1px solid var(--line); border-radius:8px; background:var(--surface)}
+.tablewrap table{min-width:560px}
+th,td{padding:9px 14px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top}
+th{font-size:12.5px; letter-spacing:.08em; color:var(--muted); font-weight:700; white-space:nowrap}
+tr:last-child td{border-bottom:none}
+td.num{white-space:nowrap}
+
+figure{margin:24px 0; background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:18px 18px 12px}
+figure .fig-scroll{overflow-x:auto}
+figure svg{display:block; max-width:100%; height:auto; color:var(--ink)}
+figure .fig-scroll svg{min-width:660px}
+figure .fig-scroll.narrow svg{min-width:0}
+figcaption{font-size:13px; color:var(--muted); margin-top:10px; line-height:1.7}
+figcaption b{color:var(--ink-2); font-weight:700}
+.fig-title{font-size:14px; font-weight:700; margin:0 0 12px}
+.fig-title .fno{color:var(--accent-ink); margin-right:8px}
+.fig-title .sch{font-size:11.5px; font-weight:400; color:var(--muted); border:1px solid var(--line-2); border-radius:999px; padding:1px 8px; margin-left:8px; white-space:nowrap}
+
+/* SVG：通用 */
+svg .node{fill:var(--bg); stroke:var(--line-2); stroke-width:1.2}
+svg .node-hi{fill:var(--accent-soft); stroke:var(--accent)}
+svg .node-up{fill:var(--up-soft); stroke:var(--up)}
+svg .node-dn{fill:var(--down-soft); stroke:var(--down)}
+svg .nt{font:700 12.5px var(--sans); fill:var(--ink)}
+svg .nd{font:400 11px var(--sans); fill:var(--ink-2)}
+svg .edge{stroke:var(--ink-2); stroke-width:1.4; fill:none}
+svg .edge-soft{stroke:var(--muted); stroke-width:1.2; fill:none; stroke-dasharray:4 4}
+svg .edge-acc{stroke:var(--accent); stroke-width:1.6; fill:none}
+svg .elabel{font:400 11.5px var(--sans); fill:var(--muted)}
+svg .grid{stroke:var(--line); stroke-width:1}
+svg .axis{stroke:var(--line-2); stroke-width:1.2}
+svg .tick{font:400 11px var(--sans); fill:var(--muted)}
+svg .atitle{font:400 11.5px var(--sans); fill:var(--muted)}
+svg .pl{font:700 13px var(--sans); fill:var(--ink)}
+svg .pv{font:400 11.5px var(--sans); fill:var(--ink-2)}
+svg .hi{font:700 12px var(--sans); fill:var(--accent-ink)}
+svg .ut{font:700 12px var(--sans); fill:var(--up-ink)}
+svg .dt{font:700 12px var(--sans); fill:var(--down)}
+svg .lg{font:400 11px var(--sans); fill:var(--ink-2)}
+svg .ln1{stroke:var(--series); stroke-width:2.8; fill:none}
+svg .seg1{fill:var(--series)}
+svg .seg2{fill:var(--series2)}
+
+/* SVG：K 线与指标（红涨绿跌） */
+svg .cu{fill:var(--up); stroke:var(--up); stroke-width:1}
+svg .cuh{fill:var(--surface); stroke:var(--up); stroke-width:1.2}
+svg .cd{fill:var(--down); stroke:var(--down); stroke-width:1}
+svg .wu{stroke:var(--up); stroke-width:1.2}
+svg .wd{stroke:var(--down); stroke-width:1.2}
+svg .bu{stroke:var(--up); stroke-width:1.6; fill:none}
+svg .bd{stroke:var(--down); stroke-width:1.6; fill:none}
+svg .vu{fill:var(--up); opacity:.45}
+svg .vd{fill:var(--down); opacity:.45}
+svg .cl{stroke:var(--ink-2); stroke-width:1.8; fill:none}
+svg .ma1{stroke:var(--series); stroke-width:1.7; fill:none}
+svg .ma2{stroke:var(--series2); stroke-width:1.7; fill:none}
+svg .ma3{stroke:var(--series3); stroke-width:1.7; fill:none}
+svg .bb{stroke:var(--series3); stroke-width:1.3; fill:none; stroke-dasharray:5 3}
+svg .bbm{stroke:var(--series3); stroke-width:1; fill:none; opacity:.7}
+svg .dc{stroke:var(--series2); stroke-width:1.4; fill:none}
+svg .ind1{stroke:var(--series); stroke-width:1.6; fill:none}
+svg .ind2{stroke:var(--series2); stroke-width:1.6; fill:none}
+svg .ind3{stroke:var(--series3); stroke-width:1.4; fill:none}
+svg .tl{stroke:var(--accent); stroke-width:2; fill:none}
+svg .tl2{stroke:var(--series2); stroke-width:2; fill:none}
+svg .tld{stroke:var(--accent); stroke-width:1.6; fill:none; stroke-dasharray:6 4}
+svg .sr{stroke:var(--muted); stroke-width:1.2; fill:none; stroke-dasharray:5 4}
+svg .sr-up{stroke:var(--up); stroke-width:1.4; fill:none; stroke-dasharray:6 4}
+svg .sr-dn{stroke:var(--down); stroke-width:1.4; fill:none; stroke-dasharray:6 4}
+svg .zone{fill:var(--accent-soft)}
+svg .zone-up{fill:var(--up-soft)}
+svg .zone-dn{fill:var(--down-soft)}
+svg .dot{fill:var(--accent)}
+svg .dot-up{fill:var(--up)}
+svg .dot-dn{fill:var(--down)}
+svg .px{stroke:var(--up); stroke-width:1.6}
+svg .po{stroke:var(--down); stroke-width:1.6; fill:none}
+
+.recap{margin-top:8px}
+.recap ol{margin:8px 0 0; padding-left:1.4em; max-width:46em; color:var(--ink-2)}
+.recap li{margin:7px 0}
+.recap li b{color:var(--ink)}
+details{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px;
+  padding:12px 18px; margin:10px 0; max-width:46em;
+}
+details summary{cursor:pointer; font-weight:500; color:var(--ink)}
+details summary:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+details[open] summary{color:var(--accent-ink)}
+details .ans{margin-top:8px; padding-top:8px; border-top:1px dashed var(--line); font-size:14.5px; color:var(--ink-2)}
+details .ans p{margin:6px 0}
+
+.next{
+  margin-top:48px; padding:18px 22px; border:1px solid var(--line); border-radius:8px;
+  background:var(--surface); display:flex; justify-content:space-between; align-items:center; gap:14px; flex-wrap:wrap;
+}
+.next .lbl{font-size:12px; letter-spacing:.18em; color:var(--muted)}
+.next .ttl{font-family:var(--serif); font-weight:700; font-size:18px; margin-top:2px}
+.foot{margin-top:26px; font-size:12.5px; color:var(--muted); line-height:1.8}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <span class="book">《金融市场技术分析》学习手册 · Technical Analysis of the Financial Markets (John J. Murphy)</span>
+  <span class="part"><a href="ta-index.html">学习地图</a> · 第五阶段 从分析到交易</span>
+</header>
+
+<div class="layout">
+
+<nav class="sidenav" aria-label="小节导航">
+  <p class="sn-chap">第 13 站 · 资金管理和交易策略</p>
+  <a href="#top">章首 · 学习目标</a>
+  <a href="#s1">16.1 交易的三要素</a>
+  <a href="#s2">16.2 墨菲的资金管理清单</a>
+  <a href="#s3">16.3 止损：认错的位置</a>
+  <a href="#s4">16.4 报酬风险比与期望值</a>
+  <a href="#s5">16.5 下多少注</a>
+  <a href="#s6">16.6 回撤与连败的数学</a>
+  <a href="#s7">16.7 加仓、减仓与多仓位</a>
+  <a href="#s8">16.8 交易战术</a>
+  <a href="#s9">16.9 落地：规则 · 证据 · A 股</a>
+  <a href="#recap">小结 · 术语 · 自测</a>
+</nav>
+
+<main class="article">
+
+<!-- ======================== 章首 ======================== -->
+<div class="hero" id="top">
+  <span class="chap-no">CHAPTER 16 · 第 13 站 / 共 14 站</span>
+  <h1>资金管理和交易策略</h1>
+  <p class="en">Money Management and Trading Tactics</p>
+  <p class="lede">前面十二站解决的是“看”：趋势往哪走、形态怎么认、指标怎么读、信号怎么写成系统。这一站解决的是“押”：<strong>每笔下多少注，错了在哪认，赚了亏了之后怎么调整</strong>。它决定的不是某一笔赚不赚，而是你能不能活到优势兑现的那一天。同一套信号，单笔冒 1% 风险的人稳步向上，冒 10% 的人却可能在一段再平常不过的坏运气里亏掉八成。这一站先把墨菲的资金管理清单、止损、报酬风险比、多仓位和交易战术讲透，再用现代交易者的工具把“<strong>先活下来，再谈赚钱</strong>”算成具体数字：固定比例仓位、ATR 波动率仓位、期望值与 R 倍数、回撤与连亏的概率、凯利上限和组合热度。这是你日后主动交易系统里最不能省的一个模块。</p>
+
+  <div class="objectives">
+    <h2>学习目标</h2>
+    <ul>
+      <li>说清交易成功的三要素，以及为什么资金管理决定能不能活下来</li>
+      <li>准确复述墨菲的四条资金管理上限，并把它们翻译成 A 股账户的版本</li>
+      <li>按图表结构设置止损，看清固定百分比止损的缺陷，会用 ATR 设波动率止损</li>
+      <li>会算报酬风险比、期望值和 R 倍数，识破“高胜率陷阱”</li>
+      <li>会用固定比例法和 ATR 法计算股数，处理 100 股取整和单只市值上限</li>
+      <li>理解回本的不对称、连续亏损的概率、单笔风险与破产风险的关系，以及凯利公式为什么只能当上限</li>
+      <li>掌握金字塔加仓、趋势单位与交易单位，以及“永不摊平”背后的道理</li>
+      <li>在突破入场和回调入场之间做取舍，并把仓位和组合风控写成规则卡</li>
+    </ul>
+  </div>
+  <p class="colorkey">读图约定：本手册遵循 A 股习惯，<span class="up">红色 = 上涨</span>（收盘 ≥ 开盘），<span class="dn">绿色 = 下跌</span>，与欧美软件正好相反。图题标有“示意”的，是为说明原理而构造的数据；标有“模拟”的，是用确定性随机数生成的模拟结果，都不是真实行情。</p>
+
+  <nav class="chapmap" aria-label="本章导览">
+    <a href="#s1">16.1 三要素</a>
+    <a href="#s2">16.2 资金管理清单</a>
+    <a href="#s3">16.3 止损</a>
+    <a href="#s4">16.4 期望值</a>
+    <a href="#s5">16.5 仓位计算</a>
+    <a href="#s6">16.6 回撤与连败</a>
+    <a href="#s7">16.7 加减仓</a>
+    <a href="#s8">16.8 交易战术</a>
+    <a href="#s9">16.9 落地</a>
+    <a href="#recap">小结与自测</a>
+  </nav>
+</div>
+
+<!-- ======================== 16.1 ======================== -->
+<section class="ch" id="s1">
+  <h2 class="sec"><span class="no">16.1</span>交易的三要素：方向、时机、下注</h2>
+  <p class="sec-en">THE THREE ELEMENTS OF SUCCESSFUL TRADING</p>
+
+  <div class="prose">
+    <p>墨菲在这一章开头，把一笔成功的交易拆成三个要素：</p>
+    <ul>
+      <li><strong>价格预测</strong>：判断市场往哪个方向走。全书前面十几章的工具（趋势、形态、量价、均线、摆动指标）大多为这一项服务。</li>
+      <li><strong>时机</strong>：决定具体在哪个价位进、在哪个价位认错离场。方向看对了，入场早了几天，照样可能被一次正常的回调洗出去；在期货这种高杠杆市场，择时几乎就是生死。</li>
+      <li><strong>资金管理</strong>：决定每笔交易投入多少资金、冒多大的风险，以及赚了和亏了之后怎么调整。</li>
+    </ul>
+    <p>前两项是技术分析的本行。墨菲提醒，大多数交易者把精力几乎全花在前两项上，最常被忽视的恰恰是第三项，而它往往是区分赢家和输家的关键。道理很简单：前两项决定<strong>每一笔的胜算</strong>，第三项决定<strong>你能不能撑到胜算兑现</strong>。再好的系统也会连续亏损，亏损来的时候，仓位决定你是皱皱眉头，还是从此出局。</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 16-1</span>交易成功的三要素：前两项管胜算，第三项管生死</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 306" role="img" aria-label="交易成功的三要素：价格预测与时机由技术分析回答，共同决定每笔交易的优势；资金管理决定下多少注，决定能否在连亏中生存、等到优势兑现；长期结果约等于优势乘以交易次数，前提是中途不出局">
+<defs>
+  <marker id="f161-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/></marker>
+</defs>
+<text class="hi" x="240" y="20" text-anchor="middle">技术分析回答：这笔交易有没有胜算</text>
+<line class="edge-acc" x1="20" y1="30" x2="460" y2="30"/>
+<text class="ut" x="600" y="20" text-anchor="middle">资金管理回答：输了还能不能接着玩</text>
+<line class="sr-up" x1="500" y1="30" x2="700" y2="30"/>
+
+<rect class="node" x="20" y="44" width="200" height="92" rx="8"/>
+<text class="nt" x="120" y="68" text-anchor="middle">① 价格预测</text>
+<text class="nd" x="120" y="88" text-anchor="middle">方向：往哪走？</text>
+<text class="nd" x="120" y="106" text-anchor="middle">趋势 · 形态 · 量价 · 指标</text>
+<text class="nd" x="120" y="124" text-anchor="middle">（第 2–11 站）</text>
+
+<rect class="node" x="260" y="44" width="200" height="92" rx="8"/>
+<text class="nt" x="360" y="68" text-anchor="middle">② 时机</text>
+<text class="nd" x="360" y="88" text-anchor="middle">进出：在哪进、在哪认错、在哪走？</text>
+<text class="nd" x="360" y="106" text-anchor="middle">突破 · 回调 · 止损位 · 目标位</text>
+<text class="nd" x="360" y="124" text-anchor="middle">（16.3、16.8 节）</text>
+
+<rect class="node node-hi" x="500" y="44" width="200" height="92" rx="8"/>
+<text class="nt" x="600" y="68" text-anchor="middle">③ 资金管理</text>
+<text class="nd" x="600" y="88" text-anchor="middle">下注：每笔下多少？</text>
+<text class="nd" x="600" y="106" text-anchor="middle">风险比例 · 仓位 · 加减仓</text>
+<text class="nd" x="600" y="124" text-anchor="middle">（16.2、16.5–16.7 节）</text>
+
+<path class="edge" d="M120 136 V170" marker-end="url(#f161-ar)"/>
+<path class="edge" d="M360 136 V170" marker-end="url(#f161-ar)"/>
+<path class="edge" d="M600 136 V170" marker-end="url(#f161-ar)"/>
+
+<rect class="node" x="20" y="174" width="440" height="58" rx="8"/>
+<text class="nt" x="240" y="198" text-anchor="middle">优势：平均每笔能赚多少（期望值）</text>
+<text class="nd" x="240" y="218" text-anchor="middle">胜率 × 平均盈利 − 败率 × 平均亏损（16.4 节）</text>
+
+<rect class="node node-up" x="500" y="174" width="200" height="58" rx="8"/>
+<text class="nt" x="600" y="198" text-anchor="middle">生存：撑到优势兑现</text>
+<text class="nd" x="600" y="218" text-anchor="middle">连亏扛得住，回撤回得来（16.6 节）</text>
+
+<path class="edge" d="M240 232 V248 H600 V232"/>
+<path class="edge" d="M420 248 V258" marker-end="url(#f161-ar)"/>
+<text class="nt" x="420" y="278" text-anchor="middle">长期结果 ≈ 优势 × 交易次数，前提是中途不出局</text>
+<text class="elabel" x="420" y="297" text-anchor="middle">优势为负，下注越大输得越快；优势为正，下注过大也会在一段坏运气里出局</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>价格预测和时机合起来，决定一个交易方法有没有<b>优势</b>，也就是平均每笔能赚多少（16.4 节的期望值）。资金管理不改变优势的大小，它决定的是<b>生存</b>：连续亏损时账户掉多少，回撤之后还能不能爬回来。长期结果大约等于“优势 × 交易次数”，但这个乘法有个前提：中途不能出局。优势为负时，下注越大输得越快；优势为正时，下注过大同样会在一段坏运气里被清场。这张图也是本站的路线图。</figcaption>
+  </figure>
+
+  <div class="prose">
+    <h3>一个思想实验：同样的信号，不同的下注</h3>
+    <p>甲、乙两人使用同一套信号：胜率 40%，赢的时候平均赚 2 份风险，输的时候亏 1 份。甲每笔只冒账户的 1%，乙每笔冒 10%。两人做完同样的 300 笔交易（图 16-9 的模拟）：</p>
+    <ul>
+      <li>甲的账户变成约 1.76 倍，途中最大回撤约 14%，难受，但扛得住；</li>
+      <li>乙的账户最后是约 18 倍，可途中有一段<strong>回撤了约 83%</strong>：从 26 倍跌到不到 5 倍。现实中几乎没有人能在亏掉八成之后，还按原计划一笔一笔地继续下注；</li>
+      <li>更要命的是，如果这套信号的真实胜率只有 35%（历史统计高估 5 个百分点，这很常见），甲最后仍有约 1.13 倍，乙只剩约 0.25 倍。</li>
+    </ul>
+    <p>方向判断、入场时机完全一样，结局天差地别。这就是这一站的主题：<strong>先活下来，再谈赚钱</strong>。</p>
+  </div>
+
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>赌场是世界上最懂资金管理的机构。以轮盘为例，欧式轮盘有 37 个格子（1–36 加一个 0），押红色的胜率是 18/37，1 赔 1，客人每押 1 元，赌场平均只赚约 2.7 分钱；美式轮盘多一个 00，优势也只有约 5.3%。单看一局，赌场输给客人是家常便饭。它稳赚靠两件事：<strong>局数极多</strong>，让微小的优势被大数定律兑现；<strong>每张桌子都有下注上限</strong>，不让任何一个客人一把赢走它承受不起的钱。</p>
+    <p>赌客正好反过来：优势为负，却常常在输了之后加大赌注，想“一把翻本”。交易者要学的是赌场的那一边：先确认自己有正的优势（16.4 节），再用单笔上限和总量上限（16.2、16.5 节）保证坏运气来的时候不会出局。</p>
+  </div>
+
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p>“我看得准，所以可以下重注。”信心和仓位是两回事。你的准确率是从有限的历史样本里估出来的，误差比你以为的大得多（16.9 节会算：100 笔交易估出的 40% 胜率，真实值可能在 30%–50% 之间）。市场惩罚重仓的方式不是“少赚一点”，而是一次出局。长期资本管理公司的合伙人里有诺贝尔经济学奖得主，他们对价差会收敛的判断事后看不少是对的，仓位却让他们没能等到那一天（16.2 节案例）。</p>
+  </div>
+</section>
+
+<!-- ======================== 16.2 ======================== -->
+<section class="ch" id="s2">
+  <h2 class="sec"><span class="no">16.2</span>墨菲的资金管理清单</h2>
+  <p class="sec-en">MURPHY'S MONEY MANAGEMENT GUIDELINES</p>
+
+  <div class="prose">
+    <p>墨菲的资金管理建议是写给期货交易者的。期货是保证金交易：交 10% 左右的保证金就能控制一份合约的全部价值，所以下面说的“投入资金”指的是占用的<strong>保证金</strong>，真正的风险敞口要大好几倍。在这个语境下，他给出了四条上限：</p>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <tr><th>原则</th><th>墨菲的上限</th><th>100 万元期货账户</th><th>背后的道理</th></tr>
+      <tr><td><strong>① 总投入</strong></td><td>投入的资金（保证金）合计不超过总资本的 <strong>50%</strong>，其余放在国库券这类无风险资产里作储备</td><td>保证金合计 ≤ 50 万元</td><td>储备用来应付追加保证金和连续亏损，也给下一次机会留子弹</td></tr>
+      <tr><td><strong>② 单一市场投入</strong></td><td>投入任何单一市场的资金不超过总资本的 <strong>10%–15%</strong></td><td>单一品种保证金 ≤ 10 万–15 万元</td><td>不让一个市场的意外（连续涨跌停、跳空）击穿整个账户</td></tr>
+      <tr><td><strong>③ 单一市场风险</strong></td><td>在任何单一市场上冒的风险（止损被触发时的亏损额）不超过总资本的 <strong>5%</strong></td><td>单笔止损亏损 ≤ 5 万元</td><td>直接限制“错了亏多少”，是四条里最核心的一条</td></tr>
+      <tr><td><strong>④ 市场组</strong></td><td>任何一个市场组（如贵金属、谷物）的保证金合计不超过总资本的 <strong>20%–25%</strong></td><td>同组保证金 ≤ 20 万–25 万元</td><td>同组市场常常同涨同跌，买三个品种可能只是一笔大仓位</td></tr>
+    </table>
+  </div>
+
+  <div class="prose">
+    <p>注意分工：① 和 ② 管“投入多少”（保证金占用），③ 管“冒多大风险”（止损亏损额），④ 管“相关性”。按 10% 的保证金比例算，50 万元保证金背后可能是 500 万元的合约价值，相当于 5 倍杠杆。所以真正兜底的是第 ③ 条：不管合约多大，止损被打掉时最多亏账户的 5%。</p>
+
+    <h3>为什么现代交易者用 1%–2%</h3>
+    <p>5% 是墨菲给的<strong>上限</strong>，不是推荐值。今天大多数个人交易者把单笔风险定在账户的 1%–2%，原因就藏在连续亏损的算术里：</p>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <tr><th>单笔风险</th><th>连亏 5 笔后</th><th>连亏 10 笔后</th><th>10 连亏后回本需要</th></tr>
+      <tr><td>1%</td><td class="num">−4.9%</td><td class="num">−9.6%</td><td class="num">+10.6%</td></tr>
+      <tr><td>2%</td><td class="num">−9.6%</td><td class="num">−18.3%</td><td class="num">+22.4%</td></tr>
+      <tr><td>5%（墨菲的上限）</td><td class="num">−22.6%</td><td class="num">−40.1%</td><td class="num">+67.0%</td></tr>
+      <tr><td>10%</td><td class="num">−41.0%</td><td class="num">−65.1%</td><td class="num">+186.8%</td></tr>
+    </table>
+  </div>
+
+  <div class="prose">
+    <p>10 连亏听起来很极端，16.6 节会算给你看：胜率 40% 的系统做 100 笔交易，至少出现一次 10 连亏的概率约 20%，做 300 笔则超过一半。按 1% 下注，10 连亏只是一次 −9.6% 的回撤；按 5% 下注，账户少了四成，要赚 67% 才能回来。</p>
+
+    <h3>翻译成 A 股账户</h3>
+    <p>A 股普通账户没有杠杆，四条不能照搬，但精神可以直接移植：</p>
+    <ul>
+      <li><strong>储备原则 → 不加杠杆、留有余地。</strong>满仓本身不可怕，可怕的是融资满仓之后遇到连续跌停（16.9 节）。手里留一部分现金，既是缓冲，也是机会来时的子弹。</li>
+      <li><strong>单一市场投入 → 单只股票市值上限，约为账户的 20%。</strong>这个数字不是拍脑袋，16.9 节会从“连续两个跌停”倒推出来。</li>
+      <li><strong>单一市场风险 → 单笔风险 1%，最多 2%。</strong></li>
+      <li><strong>市场组 → 同一行业、同一主题的持仓受限。</strong>比如同一行业最多 2 个仓位。</li>
+    </ul>
+
+    <h3>分散与集中：关键是相关性</h3>
+    <p>墨菲把分散化看作限制风险的一种手段：别把所有钱押在一个市场上。但他也提醒，过度分散同样是问题：仓位分得太碎，真正抓到大行情的那一笔对整个账户几乎没有贡献，你也不可能同时盯好几十个市场。分散到什么程度合适，关键不在“持有几只”，而在<strong>它们会不会一起涨跌</strong>。《投资学》第 7 章（最优风险资产组合）给过一个简洁的结论：n 个大小相同、波动率都是 σ、两两相关系数都是 ρ 的仓位，组合的波动率是</p>
+  </div>
+
+  <div class="formula">
+    <span class="fx">组合波动率 = σ × √（ρ +（1 − ρ）÷ n）</span><br>
+    <span class="note">n = 5 时：ρ = 0 → 单只的 45%；ρ = 0.2 → 60%；ρ = 0.5 → 77%；ρ = 0.8 → 92%</span>
+  </div>
+
+  <div class="prose">
+    <p>五只几乎不相关的股票，组合波动率只有单只的一半不到；五只同板块的券商股（假设两两相关系数约 0.8），组合波动率仍是单只的 92%：<strong>五只券商股约等于一只券商股</strong>。危机时相关性还会集体上升，平时看起来分散的组合，下跌时往往一起跌。</p>
+    <p>把这个思想落到操作上，就是现代交易者常用的<strong>组合热度</strong>（portfolio heat）：把所有持仓“止损被打掉时会亏的钱”加起来，看占账户多少。它是墨菲第 ③、④ 条的合体：单笔风险管住每一笔，热度上限管住总量，相关性提醒你哪些仓位其实是同一笔。</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 16-2</span>组合热度：每笔都守规矩，加起来未必安全<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 348" role="img" aria-label="组合热度示意：20 万元账户的六个持仓，每个仓位的止损风险约为账户的 1%，合计 5.5%，低于 6% 的上限；但其中三只券商股高度相关，合计风险约 2.9%，相当于一个大仓位">
+<text class="atitle" x="20" y="40">持仓</text>
+<text class="atitle" x="84" y="40">入场 → 止损 · 股数</text>
+<text class="atitle" x="290" y="40">止损风险（金额与占账户比例）</text>
+<text class="nt" x="20" y="76">券商 A</text>
+<text class="pv" x="84" y="76">20.00 → 18.40 · 1200 股</text>
+<rect class="seg2" x="290" y="63" width="96" height="18"/>
+<text class="pv" x="394" y="76">1920 元（0.96%）</text>
+<text class="nt" x="20" y="110">券商 B</text>
+<text class="pv" x="84" y="110">15.00 → 13.80 · 1600 股</text>
+<rect class="seg2" x="290" y="97" width="96" height="18"/>
+<text class="pv" x="394" y="110">1920 元（0.96%）</text>
+<text class="nt" x="20" y="144">券商 C</text>
+<text class="pv" x="84" y="144">8.00 → 7.40 · 3300 股</text>
+<rect class="seg2" x="290" y="131" width="99" height="18"/>
+<text class="pv" x="397" y="144">1980 元（0.99%）</text>
+<text class="nt" x="20" y="178">银行 D</text>
+<text class="pv" x="84" y="178">6.00 → 5.70 · 6600 股</text>
+<rect class="seg1" x="290" y="165" width="99" height="18"/>
+<text class="pv" x="397" y="178">1980 元（0.99%）</text>
+<text class="nt" x="20" y="212">白酒 E</text>
+<text class="pv" x="84" y="212">150.00 → 138.00 · 100 股</text>
+<rect class="seg1" x="290" y="199" width="60" height="18"/>
+<text class="pv" x="358" y="212">1200 元（0.60%）</text>
+<text class="nt" x="20" y="246">黄金 ETF</text>
+<text class="pv" x="84" y="246">5.000 → 4.750 · 8000 股</text>
+<rect class="seg1" x="290" y="233" width="100" height="18"/>
+<text class="pv" x="398" y="246">2000 元（1.00%）</text>
+<rect class="seg2" x="20" y="268" width="14" height="10"/>
+<text class="pv" x="40" y="278">券商板块：三只高度相关</text>
+<rect class="seg1" x="200" y="268" width="14" height="10"/>
+<text class="pv" x="220" y="278">其他板块</text>
+<line class="sr-up" x1="560" y1="74" x2="712" y2="74"/>
+<text class="ut" x="712" y="68" text-anchor="end">热度上限 6%</text>
+<rect class="seg2" x="600" y="255.4" width="50" height="34.6" style="stroke:var(--surface);stroke-width:1.5"/>
+<text class="lg" x="658" y="276.7">券商 A</text>
+<rect class="seg2" x="600" y="220.9" width="50" height="34.6" style="stroke:var(--surface);stroke-width:1.5"/>
+<text class="lg" x="658" y="242.2">券商 B</text>
+<rect class="seg2" x="600" y="185.2" width="50" height="35.6" style="stroke:var(--surface);stroke-width:1.5"/>
+<text class="lg" x="658" y="207.1">券商 C</text>
+<rect class="seg1" x="600" y="149.6" width="50" height="35.6" style="stroke:var(--surface);stroke-width:1.5"/>
+<text class="lg" x="658" y="171.4">银行 D</text>
+<rect class="seg1" x="600" y="128" width="50" height="21.6" style="stroke:var(--surface);stroke-width:1.5"/>
+<text class="lg" x="658" y="142.8">白酒 E</text>
+<rect class="seg1" x="600" y="92" width="50" height="36" style="stroke:var(--surface);stroke-width:1.5"/>
+<text class="lg" x="658" y="114">黄金 ETF</text>
+<text class="hi" x="625" y="86" text-anchor="middle">合计 5.5%</text>
+<line class="edge-acc" x1="592" y1="290" x2="592" y2="185.2"/>
+<line class="edge-acc" x1="588" y1="290" x2="596" y2="290"/>
+<line class="edge-acc" x1="588" y1="185.2" x2="596" y2="185.2"/>
+<text class="hi" x="584" y="237.6" text-anchor="end">2.9%</text>
+<text class="pv" x="584" y="253.6" text-anchor="end">券商合计</text>
+<text class="elabel" x="360" y="318" text-anchor="middle">组合热度 = 各仓位止损风险之和：5.5%，没超过 6% 的上限；单笔也都守住了约 1%。</text>
+<text class="elabel" x="360" y="336" text-anchor="middle">问题在于三只券商股会一起涨跌，板块急跌时三个止损同时被打掉，实际是一个约 3% 的大仓位。</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>20 万元账户，六个持仓都按 16.5 节的方法定仓位，每笔止损风险都在 2000 元（1%）上下；白酒股一手就要 1.5 万元，向下取整后只冒了 0.6%。六笔加起来热度 5.5%，没超过 6% 的上限，看起来很守规矩。但三只券商股在同一个板块，板块急跌时三个止损会同时被打掉，相当于一个约 2.9% 的大仓位；如果是跌停开盘，止损根本来不及执行，三只合计 7.44 万元市值，一个跌停就是 7440 元（3.7%）。<b>热度要和相关性一起看</b>：按 16.9 节的组合规则，第三只券商股不该开，去掉它之后热度降到约 4.5%。</figcaption>
+  </figure>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>长期资本管理公司（LTCM，1998 年）：聪明人、对的判断、错的仓位</h4>
+    <p>LTCM 由前所罗门兄弟公司的债券交易负责人约翰·梅里韦瑟于 1994 年创立，合伙人中有后来获得 1997 年诺贝尔经济学奖的迈伦·斯科尔斯和罗伯特·默顿。它的主要策略是“收敛交易”：买入相对便宜的债券、卖出相对昂贵的同类债券，赌两者的价差会回到常态。每笔交易的利润很薄，于是用很高的杠杆放大，1998 年初资产负债表上的杠杆约为 25 倍。</p>
+    <p>1998 年 8 月，俄罗斯政府债务违约，全球资金涌向最安全、流动性最好的资产，LTCM 押注会收窄的各种价差几乎同时扩大。平时看似互不相关的几十个交易，在危机里变成了同一个赌注。短短几个月，基金亏损约 46 亿美元。同年 9 月，纽约联储出面协调十几家大银行注资约 36 亿美元接管，避免它的巨额仓位被强行平仓、冲击整个市场。</p>
+    <p class="takeaway">LTCM 踩中的正是墨菲清单要防的两件事：单个市场的风险太大（杠杆让一次不大的反向波动就伤筋动骨），相关性被低估（危机中所有价差一起走坏）。不少分析认为，其中许多价差在危机过后确实收敛了。<b>看对方向，但仓位大到撑不过中途的波动，结果和看错一样。</b>一句常被归于凯恩斯的话说得好：市场保持非理性的时间，可能比你保持偿付能力的时间更长。</p>
+  </div>
+
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p>“我持有十只股票，已经很分散了。”如果这十只全是新能源、或者全是小盘题材股，它们在板块退潮时会一起跌，十只等于两三只。检查分散程度，不要数个数，要看相关性：同一行业、同一主题、同一驱动因素（比如都靠降息预期）的持仓，要合并计算风险。</p>
+  </div>
+</section>
+
+<!-- ======================== 16.3 ======================== -->
+<section class="ch" id="s3">
+  <h2 class="sec"><span class="no">16.3</span>止损：认错的位置</h2>
+  <p class="sec-en">PROTECTIVE STOPS: WHERE YOU ADMIT YOU ARE WRONG</p>
+
+  <div class="prose">
+    <p>止损是每一笔交易里事先写好的“认错价位”：价格到了这里，说明当初买入的理由已经不成立，离场。注意这个定义里没有“我能承受亏多少钱”。<strong>止损的位置由市场结构决定，亏多少钱由仓位决定</strong>，这句话是本节和 16.5 节的总纲。完整的决策顺序是：</p>
+    <ol>
+      <li>看图，找到让交易逻辑失效的价位，定下止损；</li>
+      <li>算出入场价到止损价的距离；</li>
+      <li>用“愿意亏的钱 ÷ 每股止损距离”反推股数（16.5 节）；</li>
+      <li>检查报酬风险比是否够格（16.4 节），不够就放弃。</li>
+    </ol>
+    <p>四步全部在下单<strong>之前</strong>完成。入场之后再想“止损放哪”，你的判断已经被浮盈浮亏绑架了。</p>
+
+    <h3><span class="tag">方法一</span>基于图表的止损</h3>
+    <p>墨菲主张把保护性止损放在有意义的图表位置上，而不是随手定一个金额或百分比：</p>
+    <ul>
+      <li>上升趋势中做多：放在最近一个回调低点（支撑）的下方；</li>
+      <li>依托趋势线交易：放在趋势线的外侧；</li>
+      <li>突破交易：放在被突破的价位（旧阻力，现在的新支撑）下方；</li>
+      <li>形态交易：放在形态失效的位置，比如头肩底右肩低点的下方（第 4 站）。</li>
+    </ul>
+    <p>为什么是这些位置？支撑之所以是支撑，是因为之前有一批买家在那里出手（第 3 站）。价格跌破它，说明那批买家已经撤了，你买入的理由（“这里有人接”）被市场否决了。反过来，价格在支撑之上的来回波动，都只是正常的噪声。</p>
+    <p>止损不要正好放在支撑价或整数价上，要<strong>留一段缓冲</strong>。第 1 站讲过，大家的止损单扎堆在明显的低点和整数关口附近，价格常常刚好刺穿一下，扫掉这批止损再拉回来。缓冲可以借用第 3 站的 3% 穿越过滤，也可以用 0.5–1 倍 ATR（下面就讲）。</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 16-3</span>同一笔交易，两种止损：图表止损与固定 5% 止损<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 340" role="img" aria-label="示意图：价格突破 10 元阻力后回踩，在 10.60 元买入；固定 5% 止损 10.07 元被一次正常回踩扫掉，而放在支撑下方 3% 的图表止损 9.70 元安然无恙，之后价格上涨到 12.5 元以上">
+<defs><marker id="f163-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/></marker><marker id="f163-ara" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/></marker></defs>
+<!-- kchart: n=72 L=52 step=9.056 x(i)=L+step*(i+0.5) price[8.826,12.826] y∈[14,314] -->
+<line class="axis" x1="52" y1="14" x2="52" y2="314"/>
+<line class="grid" x1="52" y1="301" x2="704" y2="301"/>
+<text class="tick" x="46" y="305" text-anchor="end">9</text>
+<line class="grid" x1="52" y1="226" x2="704" y2="226"/>
+<text class="tick" x="46" y="230" text-anchor="end">10</text>
+<line class="grid" x1="52" y1="150.9" x2="704" y2="150.9"/>
+<text class="tick" x="46" y="154.9" text-anchor="end">11</text>
+<line class="grid" x1="52" y1="75.9" x2="704" y2="75.9"/>
+<text class="tick" x="46" y="79.9" text-anchor="end">12</text>
+<line class="axis" x1="52" y1="314" x2="704" y2="314"/>
+<line class="wd" x1="56.5" y1="288.3" x2="56.5" y2="298.2"/>
+<rect class="cd" x="53.7" y="293.3" width="5.6" height="1"/>
+<line class="wu" x1="65.6" y1="279.2" x2="65.6" y2="300.4"/>
+<rect class="cu" x="62.8" y="283.6" width="5.6" height="11.8"/>
+<line class="wu" x1="74.6" y1="271.4" x2="74.6" y2="287.5"/>
+<rect class="cu" x="71.8" y="275" width="5.6" height="6.9"/>
+<line class="wu" x1="83.7" y1="267.3" x2="83.7" y2="279.9"/>
+<rect class="cu" x="80.9" y="269.7" width="5.6" height="6.9"/>
+<line class="wu" x1="92.8" y1="249.7" x2="92.8" y2="276.5"/>
+<rect class="cu" x="89.9" y="254.9" width="5.6" height="16.7"/>
+<line class="wu" x1="101.8" y1="235.3" x2="101.8" y2="256.1"/>
+<rect class="cu" x="99" y="242.1" width="5.6" height="11.2"/>
+<line class="wu" x1="110.9" y1="226" x2="110.9" y2="253"/>
+<rect class="cu" x="108.1" y="240.5" width="5.6" height="3.9"/>
+<line class="wd" x1="119.9" y1="236.2" x2="119.9" y2="254.9"/>
+<rect class="cd" x="117.1" y="239.2" width="5.6" height="10.9"/>
+<line class="wu" x1="129" y1="241.8" x2="129" y2="259.1"/>
+<rect class="cu" x="126.2" y="249.2" width="5.6" height="2.8"/>
+<line class="wd" x1="138" y1="244.1" x2="138" y2="272.3"/>
+<rect class="cd" x="135.2" y="251.4" width="5.6" height="16.6"/>
+<line class="wd" x1="147.1" y1="261.8" x2="147.1" y2="273.9"/>
+<rect class="cd" x="144.3" y="268.1" width="5.6" height="5.1"/>
+<line class="wd" x1="156.1" y1="268.1" x2="156.1" y2="292.4"/>
+<rect class="cd" x="153.3" y="273.4" width="5.6" height="10.8"/>
+<line class="wu" x1="165.2" y1="271.6" x2="165.2" y2="291"/>
+<rect class="cu" x="162.4" y="272" width="5.6" height="12.9"/>
+<line class="wu" x1="174.3" y1="256.6" x2="174.3" y2="276"/>
+<rect class="cu" x="171.4" y="261.4" width="5.6" height="11.6"/>
+<line class="wu" x1="183.3" y1="256.8" x2="183.3" y2="268.7"/>
+<rect class="cu" x="180.5" y="262.2" width="5.6" height="1.1"/>
+<line class="wu" x1="192.4" y1="244.5" x2="192.4" y2="270.2"/>
+<rect class="cu" x="189.6" y="252.7" width="5.6" height="10.2"/>
+<line class="wu" x1="201.4" y1="240.1" x2="201.4" y2="254.3"/>
+<rect class="cu" x="198.6" y="245.3" width="5.6" height="5.2"/>
+<line class="wu" x1="210.5" y1="226" x2="210.5" y2="250.5"/>
+<rect class="cu" x="207.7" y="237" width="5.6" height="10.8"/>
+<line class="wd" x1="219.5" y1="232.7" x2="219.5" y2="254.4"/>
+<rect class="cd" x="216.7" y="239.3" width="5.6" height="10.4"/>
+<line class="wd" x1="228.6" y1="243.9" x2="228.6" y2="265"/>
+<rect class="cd" x="225.8" y="249.4" width="5.6" height="8"/>
+<line class="wd" x1="237.6" y1="251.9" x2="237.6" y2="262.6"/>
+<rect class="cd" x="234.8" y="256.8" width="5.6" height="1.6"/>
+<line class="wd" x1="246.7" y1="249.1" x2="246.7" y2="271.3"/>
+<rect class="cd" x="243.9" y="257.7" width="5.6" height="7.6"/>
+<line class="wd" x1="255.8" y1="256.2" x2="255.8" y2="282.2"/>
+<rect class="cd" x="252.9" y="264.5" width="5.6" height="14.8"/>
+<line class="wu" x1="264.8" y1="264.8" x2="264.8" y2="278.6"/>
+<rect class="cu" x="262" y="270.3" width="5.6" height="7.7"/>
+<line class="wu" x1="273.9" y1="255.2" x2="273.9" y2="272.2"/>
+<rect class="cu" x="271.1" y="260.6" width="5.6" height="9.7"/>
+<line class="wu" x1="282.9" y1="254.3" x2="282.9" y2="266"/>
+<rect class="cu" x="280.1" y="259.1" width="5.6" height="3.6"/>
+<line class="wu" x1="292" y1="240" x2="292" y2="256.9"/>
+<rect class="cu" x="289.2" y="246.6" width="5.6" height="10.3"/>
+<line class="wu" x1="301" y1="233.9" x2="301" y2="251.7"/>
+<rect class="cu" x="298.2" y="240.1" width="5.6" height="6.1"/>
+<line class="wu" x1="310.1" y1="224.5" x2="310.1" y2="247.3"/>
+<rect class="cu" x="307.3" y="226" width="5.6" height="14.1"/>
+<line class="wu" x1="319.1" y1="207.3" x2="319.1" y2="229.7"/>
+<rect class="cu" x="316.3" y="213" width="5.6" height="10.4"/>
+<line class="wu" x1="328.2" y1="182" x2="328.2" y2="211.9"/>
+<rect class="cu" x="325.4" y="182.5" width="5.6" height="27.8"/>
+<line class="wu" x1="337.3" y1="174.9" x2="337.3" y2="183.5"/>
+<rect class="cu" x="334.4" y="180" width="5.6" height="3"/>
+<line class="wu" x1="346.3" y1="165" x2="346.3" y2="188.2"/>
+<rect class="cu" x="343.5" y="169" width="5.6" height="12.3"/>
+<line class="wu" x1="355.4" y1="157.2" x2="355.4" y2="177.9"/>
+<rect class="cu" x="352.6" y="160.8" width="5.6" height="7.6"/>
+<line class="wu" x1="364.4" y1="142.5" x2="364.4" y2="165.4"/>
+<rect class="cu" x="361.6" y="149.3" width="5.6" height="13.1"/>
+<line class="wu" x1="373.5" y1="135" x2="373.5" y2="153.8"/>
+<rect class="cu" x="370.7" y="136.3" width="5.6" height="15.9"/>
+<line class="wu" x1="382.5" y1="132" x2="382.5" y2="140.7"/>
+<rect class="cu" x="379.7" y="134" width="5.6" height="1"/>
+<line class="wd" x1="391.6" y1="131.1" x2="391.6" y2="138.1"/>
+<rect class="cd" x="388.8" y="132.1" width="5.6" height="5.1"/>
+<line class="wd" x1="400.6" y1="136.1" x2="400.6" y2="158.3"/>
+<rect class="cd" x="397.8" y="139.5" width="5.6" height="17.8"/>
+<line class="wd" x1="409.7" y1="150.3" x2="409.7" y2="170.8"/>
+<rect class="cd" x="406.9" y="156" width="5.6" height="7.4"/>
+<line class="wd" x1="418.8" y1="159.6" x2="418.8" y2="181.4"/>
+<rect class="cd" x="415.9" y="161.8" width="5.6" height="17.6"/>
+<line class="wd" x1="427.8" y1="176.9" x2="427.8" y2="197.4"/>
+<rect class="cd" x="425" y="182.2" width="5.6" height="6.1"/>
+<line class="wd" x1="436.9" y1="185.6" x2="436.9" y2="207"/>
+<rect class="cd" x="434.1" y="186.2" width="5.6" height="16"/>
+<line class="wd" x1="445.9" y1="198.2" x2="445.9" y2="223"/>
+<rect class="cd" x="443.1" y="199.7" width="5.6" height="18.8"/>
+<line class="wu" x1="455" y1="178.7" x2="455" y2="218.5"/>
+<rect class="cu" x="452.2" y="181" width="5.6" height="34.5"/>
+<line class="wu" x1="464" y1="171.9" x2="464" y2="187"/>
+<rect class="cu" x="461.2" y="176.5" width="5.6" height="6"/>
+<line class="wd" x1="473.1" y1="173.4" x2="473.1" y2="190"/>
+<rect class="cd" x="470.3" y="178" width="5.6" height="6.8"/>
+<line class="wd" x1="482.1" y1="181" x2="482.1" y2="196"/>
+<rect class="cd" x="479.3" y="184.7" width="5.6" height="8.3"/>
+<line class="wd" x1="491.2" y1="190" x2="491.2" y2="209.5"/>
+<rect class="cd" x="488.4" y="193" width="5.6" height="12"/>
+<line class="wd" x1="500.3" y1="199" x2="500.3" y2="212.5"/>
+<rect class="cd" x="497.4" y="203.5" width="5.6" height="4.5"/>
+<line class="wd" x1="509.3" y1="201.2" x2="509.3" y2="217"/>
+<rect class="cd" x="506.5" y="207.2" width="5.6" height="6.8"/>
+<line class="wu" x1="518.4" y1="199" x2="518.4" y2="223.7"/>
+<rect class="cu" x="515.6" y="201.2" width="5.6" height="14.3"/>
+<line class="wu" x1="527.4" y1="192.7" x2="527.4" y2="201.6"/>
+<rect class="cu" x="524.6" y="194.2" width="5.6" height="5.4"/>
+<line class="wu" x1="536.5" y1="167.3" x2="536.5" y2="200"/>
+<rect class="cu" x="533.7" y="173.1" width="5.6" height="20.5"/>
+<line class="wu" x1="545.5" y1="159" x2="545.5" y2="177.6"/>
+<rect class="cu" x="542.7" y="162.2" width="5.6" height="8.5"/>
+<line class="wu" x1="554.6" y1="155.4" x2="554.6" y2="163"/>
+<rect class="cu" x="551.8" y="162" width="5.6" height="1"/>
+<line class="wu" x1="563.6" y1="132.1" x2="563.6" y2="167.9"/>
+<rect class="cu" x="560.8" y="141" width="5.6" height="23.1"/>
+<line class="wu" x1="572.7" y1="127" x2="572.7" y2="143.8"/>
+<rect class="cu" x="569.9" y="136.8" width="5.6" height="2.6"/>
+<line class="wu" x1="581.8" y1="124" x2="581.8" y2="136"/>
+<rect class="cu" x="578.9" y="131.2" width="5.6" height="4.3"/>
+<line class="wu" x1="590.8" y1="117.2" x2="590.8" y2="136"/>
+<rect class="cu" x="588" y="124.9" width="5.6" height="6.7"/>
+<line class="wu" x1="599.9" y1="104.9" x2="599.9" y2="128.9"/>
+<rect class="cu" x="597.1" y="105.9" width="5.6" height="21.3"/>
+<line class="wu" x1="608.9" y1="86.4" x2="608.9" y2="110.5"/>
+<rect class="cu" x="606.1" y="93.3" width="5.6" height="14.2"/>
+<line class="wu" x1="618" y1="81" x2="618" y2="102"/>
+<rect class="cu" x="615.2" y="87.5" width="5.6" height="4.2"/>
+<line class="wu" x1="627" y1="75.1" x2="627" y2="90.2"/>
+<rect class="cu" x="624.2" y="79.3" width="5.6" height="7.9"/>
+<line class="wd" x1="636.1" y1="74.3" x2="636.1" y2="91.3"/>
+<rect class="cd" x="633.3" y="79" width="5.6" height="5"/>
+<line class="wu" x1="645.1" y1="73" x2="645.1" y2="86.2"/>
+<rect class="cu" x="642.3" y="76" width="5.6" height="7"/>
+<line class="wu" x1="654.2" y1="56.8" x2="654.2" y2="82.8"/>
+<rect class="cu" x="651.4" y="57.9" width="5.6" height="18.7"/>
+<line class="wd" x1="663.3" y1="60.1" x2="663.3" y2="66.8"/>
+<rect class="cd" x="660.4" y="60.8" width="5.6" height="1.8"/>
+<line class="wu" x1="672.3" y1="48.5" x2="672.3" y2="63.7"/>
+<rect class="cu" x="669.5" y="52.3" width="5.6" height="7.6"/>
+<line class="wu" x1="681.4" y1="46.4" x2="681.4" y2="61.9"/>
+<rect class="cu" x="678.6" y="52.5" width="5.6" height="1"/>
+<line class="wu" x1="690.4" y1="28.4" x2="690.4" y2="51.3"/>
+<rect class="cu" x="687.6" y="35.4" width="5.6" height="14.1"/>
+<line class="wu" x1="699.5" y1="27.6" x2="699.5" y2="39.1"/>
+<rect class="cu" x="696.7" y="37.2" width="5.6" height="1"/>
+<line class="sr" x1="52" y1="226" x2="704" y2="226"/>
+<text class="elabel" x="56" y="221" text-anchor="start">支撑 10.00：前高，阻力变支撑</text>
+<line class="sr-dn" x1="455" y1="220.7" x2="704" y2="220.7"/>
+<text class="dt" x="700" y="215.7" text-anchor="end">固定 5% 止损 10.07</text>
+<line class="tld" x1="455" y1="248.5" x2="704" y2="248.5"/>
+<text class="hi" x="459" y="261.5" text-anchor="start">图表止损 9.70：支撑下方 3%</text>
+<circle class="dot-up" cx="455" cy="181" r="4"/>
+<text class="ut" x="473.1" y="161.9" text-anchor="start">入场 10.60</text>
+<circle class="dot-dn" cx="518.4" cy="223.7" r="4"/>
+<text class="pv" x="699.5" y="241" text-anchor="end">回踩 10.03：扫掉固定止损，支撑没破</text>
+<text class="elabel" x="382.5" y="122" text-anchor="middle">突破后先冲高</text>
+<text class="ut" x="690.4" y="16.4" text-anchor="end">此后涨到 12.5 以上</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>价格向上突破 10.00 元的前高，冲到约 11.2 元后回踩，在 10.04 元附近获得支撑，随后在 10.60 元买入。固定 5% 的止损在 10.07 元，离支撑只差几分钱，入场几天后的一次正常回踩（最低 10.03 元）就把它扫掉了，而支撑其实没破；图表止损放在支撑 10.00 元下方 3% 的 9.70 元，熬过了这次回踩，之后价格涨到 12.5 元以上，按 2200 股算赚了约 4180 元（约 2.1R）。两种止损的风险金额可以完全一样：固定止损每股风险 0.53 元，买 3700 股；图表止损每股风险 0.90 元，只买 2200 股，两者都只冒约 2000 元（账户 1%）。<b>止损放宽，股数减少，风险不变</b>；差别在于一个止损有市场结构撑腰，另一个只是一个数字。</figcaption>
+  </figure>
+
+  <div class="prose">
+    <h3><span class="tag">方法二</span>固定金额 / 固定百分比止损：简单，但和市场无关</h3>
+    <p>“亏 5% 就走”“每笔最多亏 3000 元就走”，这类止损的好处是简单，致命的问题是<strong>它和市场结构毫无关系</strong>：</p>
+    <ul>
+      <li>同样是 5%，对日波动 1% 的银行股是一个很宽的止损，对日波动 4%–5% 的题材股，一天之内就可能被正常波动打掉；</li>
+      <li>它常常落在支撑和阻力之间的“无人区”，被打掉时市场什么都没证明；</li>
+      <li>它让止损服从钱包，而不是服从市场：止损放在了你“亏得起”的地方，而不是你“判断错了”的地方。</li>
+    </ul>
+    <p>墨菲的处理很干脆：先按图表找止损；如果图表止损离入场价太远、按它算出来的风险太大，那就<strong>减少仓位，或者干脆放弃这笔交易</strong>，而不是把止损挪近到一个没有意义的位置。“每笔最多亏 2000 元”这个思想本身没错，它该用在仓位上，而不是用在止损的位置上。</p>
+
+    <h3><span class="tag">方法三</span>基于波动率的止损（ATR）</h3>
+    <p>波动率止损让止损距离随市场的“呼吸幅度”自动伸缩。最常用的尺子是<strong>平均真实波幅 ATR</strong>：</p>
+  </div>
+
+  <div class="formula">
+    <span class="fx">真实波幅 TR = max（当日最高 − 当日最低，｜当日最高 − 昨收｜，｜当日最低 − 昨收｜）</span><br>
+    <span class="fx">ATR(n) = TR 的 n 日平滑平均（常用 n = 14 或 20）</span><br>
+    <span class="fx">波动率止损 = 入场价 − k × ATR，k 通常取 2–3</span><br>
+    <span class="note">用“真实”波幅而不是简单的高减低，是为了把跳空也算进去：昨收 10 元，今天低开在 9.4–9.6 元之间波动，高低差只有 0.2 元，真实波幅却是 0.6 元。</span>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 16-4</span>ATR 止损：市场越躁动，止损退得越远，仓位越小<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 410" role="img" aria-label="示意图：同一只股票前半段波动小、后半段波动大；ATR 从约 0.55 升到约 1.07，收盘价减两倍 ATR 的止损带随之离价格更远；按相同的 2000 元风险，平静期可买 1800 股，动荡期只能买 900 股">
+<defs><marker id="f164-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/></marker><marker id="f164-ara" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/></marker></defs>
+<!-- kchart: n=120 L=52 step=5.433 x(i)=L+step*(i+0.5) price[17.405,25.205] y∈[14,294] -->
+<line class="axis" x1="52" y1="14" x2="52" y2="294"/>
+<line class="grid" x1="52" y1="272.7" x2="704" y2="272.7"/>
+<text class="tick" x="46" y="276.7" text-anchor="end">18</text>
+<line class="grid" x1="52" y1="200.9" x2="704" y2="200.9"/>
+<text class="tick" x="46" y="204.9" text-anchor="end">20</text>
+<line class="grid" x1="52" y1="129" x2="704" y2="129"/>
+<text class="tick" x="46" y="133" text-anchor="end">22</text>
+<line class="grid" x1="52" y1="57.2" x2="704" y2="57.2"/>
+<text class="tick" x="46" y="61.2" text-anchor="end">24</text>
+<line class="axis" x1="52" y1="294" x2="704" y2="294"/>
+<line class="wu" x1="54.7" y1="266.6" x2="54.7" y2="276.6"/>
+<rect class="cu" x="53" y="269.1" width="3.4" height="1.1"/>
+<line class="wd" x1="60.2" y1="262.2" x2="60.2" y2="278.4"/>
+<rect class="cd" x="58.5" y="267.3" width="3.4" height="1.4"/>
+<line class="wu" x1="65.6" y1="255.8" x2="65.6" y2="266.9"/>
+<rect class="cu" x="63.9" y="263" width="3.4" height="3.9"/>
+<line class="wd" x1="71" y1="256.5" x2="71" y2="278"/>
+<rect class="cd" x="69.3" y="259.7" width="3.4" height="10.4"/>
+<line class="wu" x1="76.5" y1="260.4" x2="76.5" y2="275.9"/>
+<rect class="cu" x="74.8" y="268.7" width="3.4" height="5"/>
+<line class="wd" x1="81.9" y1="258.7" x2="81.9" y2="271.9"/>
+<rect class="cd" x="80.2" y="269.1" width="3.4" height="1"/>
+<line class="wu" x1="87.3" y1="248.2" x2="87.3" y2="281.3"/>
+<rect class="cu" x="85.6" y="252.9" width="3.4" height="18"/>
+<line class="wd" x1="92.8" y1="245.7" x2="92.8" y2="267.6"/>
+<rect class="cd" x="91.1" y="255.1" width="3.4" height="4.7"/>
+<line class="wu" x1="98.2" y1="248.2" x2="98.2" y2="259"/>
+<rect class="cu" x="96.5" y="255.1" width="3.4" height="2.5"/>
+<line class="wu" x1="103.6" y1="243.2" x2="103.6" y2="263.3"/>
+<rect class="cu" x="101.9" y="251.8" width="3.4" height="4.7"/>
+<line class="wu" x1="109.1" y1="238.5" x2="109.1" y2="262.6"/>
+<rect class="cu" x="107.4" y="242.5" width="3.4" height="10.4"/>
+<line class="wd" x1="114.5" y1="236.8" x2="114.5" y2="266.6"/>
+<rect class="cd" x="112.8" y="239.6" width="3.4" height="15.8"/>
+<line class="wu" x1="119.9" y1="246.4" x2="119.9" y2="260.8"/>
+<rect class="cu" x="118.2" y="249.7" width="3.4" height="3.6"/>
+<line class="wd" x1="125.4" y1="242.1" x2="125.4" y2="255.8"/>
+<rect class="cd" x="123.7" y="247.9" width="3.4" height="5.4"/>
+<line class="wd" x1="130.8" y1="240.7" x2="130.8" y2="254.7"/>
+<rect class="cd" x="129.1" y="251.1" width="3.4" height="1"/>
+<line class="wu" x1="136.2" y1="226.7" x2="136.2" y2="259.4"/>
+<rect class="cu" x="134.5" y="233.2" width="3.4" height="15.8"/>
+<line class="wd" x1="141.7" y1="233.2" x2="141.7" y2="243.2"/>
+<rect class="cd" x="140" y="236.4" width="3.4" height="1.1"/>
+<line class="wd" x1="147.1" y1="233.5" x2="147.1" y2="242.1"/>
+<rect class="cd" x="145.4" y="235.3" width="3.4" height="5.7"/>
+<line class="wu" x1="152.5" y1="222.8" x2="152.5" y2="241.1"/>
+<rect class="cu" x="150.8" y="227.8" width="3.4" height="12.2"/>
+<line class="wu" x1="158" y1="214.1" x2="158" y2="237.5"/>
+<rect class="cu" x="156.3" y="222.4" width="3.4" height="6.8"/>
+<line class="wd" x1="163.4" y1="211.6" x2="163.4" y2="224.9"/>
+<rect class="cd" x="161.7" y="218.8" width="3.4" height="5"/>
+<line class="wd" x1="168.8" y1="222.8" x2="168.8" y2="240"/>
+<rect class="cd" x="167.1" y="227.4" width="3.4" height="2.2"/>
+<line class="wu" x1="174.3" y1="210.2" x2="174.3" y2="234.2"/>
+<rect class="cu" x="172.6" y="219.9" width="3.4" height="13.3"/>
+<line class="wu" x1="179.7" y1="209.5" x2="179.7" y2="223.5"/>
+<rect class="cu" x="178" y="216.3" width="3.4" height="5.7"/>
+<line class="wu" x1="185.1" y1="209.8" x2="185.1" y2="221"/>
+<rect class="cu" x="183.4" y="217.4" width="3.4" height="1.1"/>
+<line class="wu" x1="190.6" y1="203.4" x2="190.6" y2="224.9"/>
+<rect class="cu" x="188.9" y="208.8" width="3.4" height="7.5"/>
+<line class="wd" x1="196" y1="207" x2="196" y2="219.2"/>
+<rect class="cd" x="194.3" y="207.3" width="3.4" height="10.1"/>
+<line class="wd" x1="201.4" y1="205.2" x2="201.4" y2="231.4"/>
+<rect class="cd" x="199.7" y="216.3" width="3.4" height="8.3"/>
+<line class="wu" x1="206.9" y1="215.6" x2="206.9" y2="228.1"/>
+<rect class="cu" x="205.2" y="216.3" width="3.4" height="10.1"/>
+<line class="wd" x1="212.3" y1="207.7" x2="212.3" y2="229.2"/>
+<rect class="cd" x="210.6" y="213.1" width="3.4" height="15.8"/>
+<line class="wu" x1="217.7" y1="212" x2="217.7" y2="239.3"/>
+<rect class="cu" x="216" y="222.4" width="3.4" height="8.3"/>
+<line class="wd" x1="223.2" y1="215.2" x2="223.2" y2="235"/>
+<rect class="cd" x="221.5" y="224.2" width="3.4" height="7.5"/>
+<line class="wu" x1="228.6" y1="213.1" x2="228.6" y2="241.8"/>
+<rect class="cu" x="226.9" y="221" width="3.4" height="15.1"/>
+<line class="wd" x1="234" y1="210.2" x2="234" y2="239.3"/>
+<rect class="cd" x="232.3" y="219.5" width="3.4" height="13.3"/>
+<line class="wu" x1="239.5" y1="218.4" x2="239.5" y2="235.7"/>
+<rect class="cu" x="237.8" y="224.9" width="3.4" height="8.6"/>
+<line class="wd" x1="244.9" y1="224.2" x2="244.9" y2="239.3"/>
+<rect class="cd" x="243.2" y="224.9" width="3.4" height="7.2"/>
+<line class="wu" x1="250.3" y1="222" x2="250.3" y2="237.1"/>
+<rect class="cu" x="248.6" y="227.8" width="3.4" height="5.4"/>
+<line class="wu" x1="255.8" y1="218.1" x2="255.8" y2="231.4"/>
+<rect class="cu" x="254.1" y="225.6" width="3.4" height="1.8"/>
+<line class="wu" x1="261.2" y1="211.3" x2="261.2" y2="237.1"/>
+<rect class="cu" x="259.5" y="215.6" width="3.4" height="13.6"/>
+<line class="wd" x1="266.6" y1="210.2" x2="266.6" y2="232.4"/>
+<rect class="cd" x="264.9" y="211.3" width="3.4" height="15.1"/>
+<line class="wu" x1="272.1" y1="212.7" x2="272.1" y2="233.2"/>
+<rect class="cu" x="270.4" y="223.8" width="3.4" height="5"/>
+<line class="wu" x1="277.5" y1="201.9" x2="277.5" y2="228.1"/>
+<rect class="cu" x="275.8" y="210.9" width="3.4" height="11.5"/>
+<line class="wd" x1="282.9" y1="196.5" x2="282.9" y2="223.1"/>
+<rect class="cd" x="281.2" y="208" width="3.4" height="9.3"/>
+<line class="wu" x1="288.4" y1="200.5" x2="288.4" y2="218.8"/>
+<rect class="cu" x="286.7" y="204.1" width="3.4" height="13.3"/>
+<line class="wu" x1="293.8" y1="192.6" x2="293.8" y2="206.6"/>
+<rect class="cu" x="292.1" y="195.1" width="3.4" height="9"/>
+<line class="wd" x1="299.2" y1="183.6" x2="299.2" y2="215.9"/>
+<rect class="cd" x="297.5" y="192.6" width="3.4" height="16.5"/>
+<line class="wu" x1="304.7" y1="201.6" x2="304.7" y2="214.5"/>
+<rect class="cu" x="303" y="201.6" width="3.4" height="3.9"/>
+<line class="wu" x1="310.1" y1="192.2" x2="310.1" y2="209.8"/>
+<rect class="cu" x="308.4" y="196.2" width="3.4" height="5.7"/>
+<line class="wd" x1="315.5" y1="197.3" x2="315.5" y2="203"/>
+<rect class="cd" x="313.8" y="197.3" width="3.4" height="2.2"/>
+<line class="wu" x1="321" y1="180.4" x2="321" y2="202.6"/>
+<rect class="cu" x="319.3" y="191.9" width="3.4" height="4.7"/>
+<line class="wd" x1="326.4" y1="189.4" x2="326.4" y2="204.4"/>
+<rect class="cd" x="324.7" y="195.5" width="3.4" height="2.9"/>
+<line class="wu" x1="331.8" y1="183.6" x2="331.8" y2="205.9"/>
+<rect class="cu" x="330.1" y="183.6" width="3.4" height="15.4"/>
+<line class="wd" x1="337.3" y1="182.2" x2="337.3" y2="203"/>
+<rect class="cd" x="335.6" y="186.5" width="3.4" height="6.1"/>
+<line class="wu" x1="342.7" y1="172.5" x2="342.7" y2="201.9"/>
+<rect class="cu" x="341" y="172.8" width="3.4" height="20.1"/>
+<line class="wu" x1="348.1" y1="169.3" x2="348.1" y2="178.2"/>
+<rect class="cu" x="346.4" y="170" width="3.4" height="1.1"/>
+<line class="wu" x1="353.6" y1="164.6" x2="353.6" y2="179.3"/>
+<rect class="cu" x="351.9" y="165.3" width="3.4" height="5.4"/>
+<line class="wu" x1="359" y1="159.2" x2="359" y2="172.5"/>
+<rect class="cu" x="357.3" y="166.4" width="3.4" height="1.8"/>
+<line class="wd" x1="364.4" y1="165.7" x2="364.4" y2="173.9"/>
+<rect class="cd" x="362.7" y="167.5" width="3.4" height="1.8"/>
+<line class="wd" x1="369.9" y1="166" x2="369.9" y2="184"/>
+<rect class="cd" x="368.2" y="170.7" width="3.4" height="3.6"/>
+<line class="wu" x1="375.3" y1="162.8" x2="375.3" y2="180.4"/>
+<rect class="cu" x="373.6" y="171.4" width="3.4" height="5.4"/>
+<line class="wd" x1="380.7" y1="168.2" x2="380.7" y2="210.2"/>
+<rect class="cd" x="379" y="171.4" width="3.4" height="20.8"/>
+<line class="wu" x1="386.2" y1="142.3" x2="386.2" y2="199.4"/>
+<rect class="cu" x="384.5" y="163.2" width="3.4" height="33.4"/>
+<line class="wu" x1="391.6" y1="148.8" x2="391.6" y2="182.9"/>
+<rect class="cu" x="389.9" y="155.3" width="3.4" height="6.5"/>
+<line class="wu" x1="397" y1="138" x2="397" y2="165"/>
+<rect class="cu" x="395.3" y="146.6" width="3.4" height="6.1"/>
+<line class="wu" x1="402.5" y1="112.2" x2="402.5" y2="151.7"/>
+<rect class="cu" x="400.8" y="132.6" width="3.4" height="14.7"/>
+<line class="wd" x1="407.9" y1="120.8" x2="407.9" y2="154.9"/>
+<rect class="cd" x="406.2" y="141.3" width="3.4" height="9"/>
+<line class="wu" x1="413.3" y1="115.8" x2="413.3" y2="173.9"/>
+<rect class="cu" x="411.6" y="135.2" width="3.4" height="22.6"/>
+<line class="wd" x1="418.8" y1="128.3" x2="418.8" y2="163.5"/>
+<rect class="cd" x="417.1" y="135.5" width="3.4" height="12.6"/>
+<line class="wu" x1="424.2" y1="104.3" x2="424.2" y2="143.4"/>
+<rect class="cu" x="422.5" y="117.9" width="3.4" height="21.9"/>
+<line class="wd" x1="429.6" y1="97.8" x2="429.6" y2="135.2"/>
+<rect class="cd" x="427.9" y="117.2" width="3.4" height="4.3"/>
+<line class="wu" x1="435.1" y1="91.7" x2="435.1" y2="122.6"/>
+<rect class="cu" x="433.4" y="103.9" width="3.4" height="14.4"/>
+<line class="wu" x1="440.5" y1="79.9" x2="440.5" y2="117.2"/>
+<rect class="cu" x="438.8" y="93.5" width="3.4" height="7.9"/>
+<line class="wu" x1="445.9" y1="51.5" x2="445.9" y2="105.4"/>
+<rect class="cu" x="444.2" y="70.2" width="3.4" height="32.7"/>
+<line class="wd" x1="451.4" y1="41.8" x2="451.4" y2="117.2"/>
+<rect class="cd" x="449.7" y="60.5" width="3.4" height="34.1"/>
+<line class="wd" x1="456.8" y1="67.3" x2="456.8" y2="128"/>
+<rect class="cd" x="455.1" y="91" width="3.4" height="34.1"/>
+<line class="wu" x1="462.2" y1="105.4" x2="462.2" y2="138"/>
+<rect class="cu" x="460.5" y="114" width="3.4" height="5.4"/>
+<line class="wd" x1="467.7" y1="105.4" x2="467.7" y2="136.9"/>
+<rect class="cd" x="466" y="106.8" width="3.4" height="16.2"/>
+<line class="wd" x1="473.1" y1="115.8" x2="473.1" y2="163.5"/>
+<rect class="cd" x="471.4" y="122.6" width="3.4" height="29.4"/>
+<line class="wu" x1="478.5" y1="126.5" x2="478.5" y2="170.3"/>
+<rect class="cu" x="476.8" y="139.8" width="3.4" height="9"/>
+<line class="wd" x1="484" y1="131.2" x2="484" y2="201.2"/>
+<rect class="cd" x="482.3" y="145.2" width="3.4" height="40.9"/>
+<line class="wd" x1="489.4" y1="165" x2="489.4" y2="186.1"/>
+<rect class="cd" x="487.7" y="179" width="3.4" height="7.2"/>
+<line class="wd" x1="494.8" y1="189" x2="494.8" y2="207.7"/>
+<rect class="cd" x="493.1" y="191.5" width="3.4" height="12.6"/>
+<line class="wd" x1="500.3" y1="195.5" x2="500.3" y2="224.2"/>
+<rect class="cd" x="498.6" y="198.3" width="3.4" height="7.5"/>
+<line class="wu" x1="505.7" y1="155.3" x2="505.7" y2="219.2"/>
+<rect class="cu" x="504" y="176.1" width="3.4" height="32"/>
+<line class="wu" x1="511.1" y1="165" x2="511.1" y2="196.9"/>
+<rect class="cu" x="509.4" y="170.3" width="3.4" height="6.1"/>
+<line class="wd" x1="516.6" y1="165.3" x2="516.6" y2="217"/>
+<rect class="cd" x="514.9" y="172.8" width="3.4" height="24.8"/>
+<line class="wu" x1="522" y1="160.3" x2="522" y2="204.1"/>
+<rect class="cu" x="520.3" y="176.8" width="3.4" height="15.1"/>
+<line class="wd" x1="527.4" y1="165" x2="527.4" y2="205.9"/>
+<rect class="cd" x="525.7" y="185.8" width="3.4" height="1"/>
+<line class="wu" x1="532.9" y1="128.3" x2="532.9" y2="199.1"/>
+<rect class="cu" x="531.2" y="146.6" width="3.4" height="33.4"/>
+<line class="wd" x1="538.3" y1="136.9" x2="538.3" y2="166.4"/>
+<rect class="cd" x="536.6" y="140.5" width="3.4" height="16.5"/>
+<line class="wu" x1="543.7" y1="147.7" x2="543.7" y2="161.7"/>
+<rect class="cu" x="542" y="148.8" width="3.4" height="1.1"/>
+<line class="wu" x1="549.2" y1="117.9" x2="549.2" y2="165"/>
+<rect class="cu" x="547.5" y="133.4" width="3.4" height="17.2"/>
+<line class="wd" x1="554.6" y1="122.9" x2="554.6" y2="168.5"/>
+<rect class="cd" x="552.9" y="130.5" width="3.4" height="17.6"/>
+<line class="wu" x1="560" y1="129" x2="560" y2="147.4"/>
+<rect class="cu" x="558.3" y="129.8" width="3.4" height="14.7"/>
+<line class="wd" x1="565.5" y1="110.4" x2="565.5" y2="129.4"/>
+<rect class="cd" x="563.8" y="121.5" width="3.4" height="3.6"/>
+<line class="wd" x1="570.9" y1="97.1" x2="570.9" y2="154.5"/>
+<rect class="cd" x="569.2" y="119.7" width="3.4" height="23.7"/>
+<line class="wu" x1="576.3" y1="129.8" x2="576.3" y2="154.9"/>
+<rect class="cu" x="574.6" y="131.6" width="3.4" height="18.7"/>
+<line class="wd" x1="581.8" y1="120.4" x2="581.8" y2="147"/>
+<rect class="cd" x="580.1" y="129.8" width="3.4" height="2.9"/>
+<line class="wd" x1="587.2" y1="112.9" x2="587.2" y2="185.1"/>
+<rect class="cd" x="585.5" y="135.9" width="3.4" height="29.8"/>
+<line class="wu" x1="592.6" y1="126.9" x2="592.6" y2="177.5"/>
+<rect class="cu" x="590.9" y="140.5" width="3.4" height="33.4"/>
+<line class="wd" x1="598.1" y1="125.1" x2="598.1" y2="178.2"/>
+<rect class="cd" x="596.4" y="136.2" width="3.4" height="30.5"/>
+<line class="wu" x1="603.5" y1="145.9" x2="603.5" y2="191.2"/>
+<rect class="cu" x="601.8" y="150.6" width="3.4" height="19.7"/>
+<line class="wu" x1="608.9" y1="142.3" x2="608.9" y2="173.6"/>
+<rect class="cu" x="607.2" y="146.3" width="3.4" height="12.9"/>
+<line class="wd" x1="614.4" y1="123.3" x2="614.4" y2="157.4"/>
+<rect class="cd" x="612.7" y="142" width="3.4" height="14.4"/>
+<line class="wd" x1="619.8" y1="144.8" x2="619.8" y2="169.6"/>
+<rect class="cd" x="618.1" y="149.2" width="3.4" height="19.4"/>
+<line class="wd" x1="625.2" y1="158.5" x2="625.2" y2="187.9"/>
+<rect class="cd" x="623.5" y="163.9" width="3.4" height="1.8"/>
+<line class="wu" x1="630.7" y1="144.1" x2="630.7" y2="164.2"/>
+<rect class="cu" x="629" y="161" width="3.4" height="1.8"/>
+<line class="wu" x1="636.1" y1="148.8" x2="636.1" y2="178.2"/>
+<rect class="cu" x="634.4" y="156.7" width="3.4" height="5"/>
+<line class="wu" x1="641.5" y1="124" x2="641.5" y2="153.5"/>
+<rect class="cu" x="639.8" y="140.9" width="3.4" height="8.3"/>
+<line class="wd" x1="647" y1="128.7" x2="647" y2="183.6"/>
+<rect class="cd" x="645.3" y="144.5" width="3.4" height="21.2"/>
+<line class="wu" x1="652.4" y1="112.9" x2="652.4" y2="190.8"/>
+<rect class="cu" x="650.7" y="127.3" width="3.4" height="41.3"/>
+<line class="wu" x1="657.8" y1="90.6" x2="657.8" y2="141.3"/>
+<rect class="cu" x="656.1" y="110" width="3.4" height="20.1"/>
+<line class="wd" x1="663.3" y1="102.8" x2="663.3" y2="162.1"/>
+<rect class="cd" x="661.6" y="109.3" width="3.4" height="35.5"/>
+<line class="wu" x1="668.7" y1="97.1" x2="668.7" y2="147"/>
+<rect class="cu" x="667" y="109.3" width="3.4" height="30.9"/>
+<line class="wu" x1="674.1" y1="91.7" x2="674.1" y2="135.2"/>
+<rect class="cu" x="672.4" y="101" width="3.4" height="11.5"/>
+<line class="wd" x1="679.6" y1="94.9" x2="679.6" y2="111.5"/>
+<rect class="cd" x="677.9" y="103.2" width="3.4" height="5.4"/>
+<line class="wu" x1="685" y1="70.2" x2="685" y2="121.9"/>
+<rect class="cu" x="683.3" y="83.5" width="3.4" height="25.1"/>
+<line class="wu" x1="690.4" y1="69.5" x2="690.4" y2="91.4"/>
+<rect class="cu" x="688.7" y="74.5" width="3.4" height="6.5"/>
+<line class="wd" x1="695.9" y1="52.9" x2="695.9" y2="97.1"/>
+<rect class="cd" x="694.2" y="73.4" width="3.4" height="7.9"/>
+<line class="wu" x1="701.3" y1="26.7" x2="701.3" y2="85.2"/>
+<rect class="cu" x="699.6" y="49" width="3.4" height="32.7"/>
+<line class="axis" x1="52" y1="306" x2="52" y2="384"/>
+<line class="axis" x1="52" y1="384" x2="704" y2="384"/>
+<polyline class="ind1" points="163.4,377.2 168.8,377.4 174.3,376.6 179.7,377.2 185.1,378.3 190.6,377.8 196,378.6 201.4,377.4 206.9,378.3 212.3,377.8 217.7,376.5 223.2,376.3 228.6,374.9 234,373.5 239.5,373.8 244.9,374.5 250.3,375.1 255.8,375.9 261.2,374.9 266.6,374.5 272.1,374.3 277.5,373.3 282.9,372.4 288.4,372.6 293.8,373.5 299.2,371.7 304.7,372.7 310.1,373.1 315.5,374.9 321,374.5 326.4,375.1 331.8,374.7 337.3,374.4 342.7,373 348.1,374.6 353.6,375.2 359,376.1 364.4,377.6 369.9,377.6 375.3,377.7 380.7,374.3 386.2,368.9 391.6,367.1 397,366.4 402.5,363.9 407.9,362.3 413.3,357.3 418.8,355.9 424.2,353.4 429.6,351.8 435.1,351.3 440.5,349.9 445.9,346.2 451.4,339.6 456.8,335.4 462.2,335.5 467.7,335.7 473.1,333.5 478.5,332.1 484,326.9 489.4,329.1 494.8,331 500.3,331.9 505.7,327.6 511.1,328.1 516.6,325.8 522,324.8 527.4,324.2 532.9,319.3 538.3,320.6 543.7,324.1 549.2,322.6 554.6,321.5 560,324.2 565.5,326.7 570.9,323.6 576.3,325.3 581.8,326.8 587.2,321.6 592.6,319.8 598.1,317.7 603.5,316.8 608.9,318 614.4,318.7 619.8,320.7 625.2,321.9 630.7,324.3 636.1,325.3 641.5,325.9 647,323.2 652.4,317.4 657.8,315.8 663.3,313 668.7,311.7 674.1,311.4 679.6,314.9 685,313.3 690.4,316 695.9,315.4 701.3,312.7"/>
+<text class="lg" x="58" y="318">ATR(20)</text>
+<text class="tick" x="217.7" y="401" text-anchor="middle">平静期：ATR 约为股价的 2.7%</text>
+<text class="tick" x="543.7" y="401" text-anchor="middle">动荡期：ATR 约为股价的 4.9%</text>
+<polyline class="tld" points="163.4,260.4 168.8,266.2 174.3,257.2 179.7,252.9 185.1,253.3 190.6,245 196,253.3 201.4,261.2 206.9,252.2 212.3,265.1 217.7,259.7 223.2,269.1 228.6,259.4 234,272.3 239.5,264 244.9,270.9 250.3,266.2 255.8,263.3 261.2,254 266.6,265.1 272.1,262.6 277.5,250.4 282.9,257.6 288.4,243.9 293.8,234.6 299.2,249.7 304.7,241.4 310.1,236 315.5,237.8 321,230.7 326.4,236.8 331.8,222 337.3,231.4 342.7,212.7 348.1,208.8 353.6,203.4 359,204.1 364.4,205.9 369.9,210.9 375.3,208 380.7,231 386.2,205.9 391.6,199.1 397,191.2 402.5,178.6 407.9,197.6 413.3,185.8 418.8,199.8 424.2,171.4 429.6,176.1 435.1,158.8 440.5,149.5 445.9,128.7 451.4,157.8 456.8,191.2 462.2,180 467.7,188.6 473.1,219.2 478.5,208 484,257.9 489.4,256.5 494.8,273 500.3,274.5 505.7,247.5 511.1,241.4 516.6,270.1 522,250.4 527.4,260.4 532.9,223.8 538.3,233.5 543.7,222.8 549.2,208.4 554.6,223.8 560,203.7 565.5,197.3 570.9,217.7 576.3,204.4 581.8,204.8 587.2,241.4 592.6,217.4 598.1,245 603.5,229.6 608.9,224.5 614.4,233.9 619.8,244.7 625.2,241.1 630.7,235 636.1,229.6 641.5,213.4 647,240.3 652.4,205.9 657.8,189.7 663.3,226.3 668.7,191.9 674.1,184 679.6,189 685,165 690.4,154.2 695.9,161.4 701.3,130.8"/>
+<text class="hi" x="386.2" y="217" text-anchor="start">2×ATR 止损带</text>
+<circle class="dot-up" cx="293.8" cy="195.1" r="4"/>
+<line class="sr-dn" x1="293.8" y1="234.6" x2="359" y2="234.6"/>
+<text class="pv" x="163.4" y="107.5" text-anchor="start">平静期：ATR(20) ≈ 0.55（约 2.7%）</text>
+<text class="pv" x="163.4" y="123.7" text-anchor="start">止损距离 2 × 0.55 = 1.10，止损 19.06</text>
+<text class="hi" x="163.4" y="139.8" text-anchor="start">2000 ÷ 1.10 → 买 1800 股</text>
+<circle class="dot-up" cx="592.6" cy="140.5" r="4"/>
+<line class="sr-dn" x1="592.6" y1="217.4" x2="657.8" y2="217.4"/>
+<text class="pv" x="663.3" y="37.5" text-anchor="end">动荡期：ATR(20) ≈ 1.07（约 4.9%）</text>
+<text class="pv" x="663.3" y="53.7" text-anchor="end">止损距离 2 × 1.07 = 2.14，止损 19.54</text>
+<text class="hi" x="663.3" y="69.8" text-anchor="end">2000 ÷ 2.14 → 只买 900 股</text>
+<circle class="dot" cx="293.8" cy="373.5" r="3.5"/>
+<text class="hi" x="293.8" y="366.5" text-anchor="middle">0.55</text>
+<circle class="dot" cx="592.6" cy="319.8" r="3.5"/>
+<text class="hi" x="598.6" y="334.8" text-anchor="start">1.07</text>
+<line class="sr" x1="378" y1="14" x2="378" y2="384"/>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>同一只股票，前半段的 ATR 约为股价的 2.7%，后半段放大到约 4.9%（下方副图）。虚线是“收盘价 − 2 × ATR(20)”的止损带：平静期它紧贴价格，动荡期自动退到更远的地方，给更大的正常波动留出空间。平静期在 20.16 元买入，ATR 约 0.55，止损距离 1.10 元；动荡期在 21.68 元买入，ATR 约 1.07，止损距离 2.14 元。如果两次都用固定的 5%（约 1.0–1.1 元），平静期正合适，动荡期几乎必然被噪声打掉。按同样的 2000 元风险，平静期买 1800 股，动荡期只买 900 股：<b>波动翻倍，仓位减半</b>，这就是 16.5 节波动率仓位的思想。</figcaption>
+  </figure>
+
+  <div class="prose">
+    <p>实践中常把两种方法结合起来：<strong>用图表定止损的位置，用 ATR 检查它是否落在噪声之外</strong>。如果最近的支撑离入场价还不到 1 倍 ATR，那个止损大概率会被日常波动扫掉，要么把止损放到再下面一个支撑，要么等更好的入场点。</p>
+
+    <h3>移动止损与时间止损</h3>
+    <p><strong>移动止损</strong>：行情朝有利方向走之后，把止损跟着往上挪，比如移到最新回调低点的下方，或者用“近期最高收盘价 − 3 × ATR”这类公式。铁律只有一条：<strong>止损只能朝有利方向移动，永远不能往下挪</strong>。往下挪止损，等于在交易进行中修改认错标准，本质上是拒绝认错。</p>
+    <p><strong>时间止损</strong>：入场之后迟迟不动，比如 10 个交易日后价格还在入场价附近徘徊，说明你对“时机”的判断错了。即使没碰到止损也可以离场，把资金和注意力腾给更好的机会。这是现代交易者的常用补充，思路和第 12 站讲的系统出场规则一样：出场条件不只有价格。</p>
+  </div>
+
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>开水果店的老板每天收摊都会扔掉一些烂水果。这不是失败，是这门生意必须付的成本，他早把损耗率算进了定价里。舍不得扔的老板，一个烂水果会把一整箱好水果都捂坏。止损就是交易这门生意的损耗：按计划止损的那一笔亏损是<strong>经营成本</strong>；不止损、死扛到底的那一笔，才是真正的事故。</p>
+  </div>
+
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p>“止损我心里有数，不用设。”所谓心理止损，最后常常变成“再等等”。《投资学》第 12 章讲过处置效应：人在亏损区会变得爱冒险，宁可扛着浮亏，也不愿把它变成实亏。价格跌到止损价时，大脑会给出无数个“再等一天”的理由。对付它的办法是<strong>在冷静时把止损写下来</strong>，能挂条件单就挂（A 股的执行问题见 16.8、16.9 节），并且只允许自己把止损往有利方向挪。</p>
+  </div>
+</section>
+
+<!-- ======================== 16.4 ======================== -->
+<section class="ch" id="s4">
+  <h2 class="sec"><span class="no">16.4</span>报酬风险比与期望值</h2>
+  <p class="sec-en">REWARD-TO-RISK RATIOS AND EXPECTANCY</p>
+
+  <div class="prose">
+    <p>止损告诉你“错了亏多少”，目标位告诉你“对了赚多少”，两者一比，就是<strong>报酬风险比</strong>。墨菲建议，一笔交易的潜在盈利至少要是潜在亏损的 3 倍，也就是报酬风险比至少 3:1。目标位同样来自图表：上方的阻力位、形态的量度目标（第 4、5 站）、回撤比例（第 3 站）。</p>
+    <p>拿图 16-3 那笔交易算一下：入场 10.60 元，图表止损 9.70 元，每股风险 0.90 元；假设上方最近的强阻力在 13.30 元，每股潜在盈利 2.70 元，报酬风险比 = 2.70 ÷ 0.90 = 3:1，刚好合格。如果阻力在 11.80 元，比值只有 1.3:1，按墨菲的标准就该放弃，不管图形看起来多漂亮。</p>
+
+    <h3>为什么是 3:1？</h3>
+    <p>3:1 意味着四次里对一次就能打平（盈亏平衡胜率 25%），这给现实中的三种折损留出了余量：</p>
+    <ul>
+      <li><strong>不是每笔盈利都能到目标</strong>：不少盈利单会在半路被移动止损带走，实际的平均盈利常常只有计划目标的一半到三分之二；</li>
+      <li><strong>成本和滑点</strong>：佣金、印花税、跳空，会把“亏 1R”变成亏 1.1R、1.2R；</li>
+      <li><strong>估计误差</strong>：你对胜率的估计可能偏乐观（16.9 节）。</li>
+    </ul>
+
+    <h3>期望值：把胜率和盈亏比放进同一个公式</h3>
+    <p>只看胜率或只看盈亏比都会误判。决定一个方法值不值得交易的是两者的组合，即<strong>期望值</strong>：平均每笔交易赚多少。</p>
+  </div>
+
+  <div class="formula">
+    <span class="fx">期望值 = 胜率 × 平均盈利 − 败率 × 平均亏损</span><br>
+    <span class="fx">用 R 表示：E = p × W − (1 − p) × L</span><br>
+    <span class="fx">盈亏平衡胜率 = L ÷（W + L）= 1 ÷（1 + 盈亏比）</span><br>
+    <span class="note">1R = 每笔计划承担的风险金额；p 为胜率，W、L 为以 R 计的平均盈利和平均亏损。严格执行止损时 L ≈ 1，盈亏比 b = W ÷ L。</span>
+  </div>
+
+  <div class="prose">
+    <p><strong>R 倍数</strong>是这套语言的基本单位，由交易教育者范·撒普（Van K. Tharp）推广开来：把每笔交易的盈亏除以它的初始风险。例如计划风险 2000 元（1R），最后赚了 5000 元，记作 +2.5R；因为跳空多亏到 2400 元，记作 −1.2R。用 R 记账有两个好处：不同价位、不同仓位的交易可以直接比较；它逼你在入场前就定好止损，否则连 R 都算不出来。看两个例子：</p>
+    <ul>
+      <li><strong>趋势派</strong>：胜率 40%，平均盈利 3R，平均亏损 1R。E = 0.4 × 3 − 0.6 × 1 = <strong>+0.6R</strong>。按 1R = 2000 元，做 100 笔，期望赚 60R = 12 万元（未扣成本，并假设每笔风险金额不变）。十笔错六笔，照样是好方法。</li>
+      <li><strong>“高胜率”派</strong>：胜率 70%，但习惯小赚就跑（平均 +0.4R）、亏了就扛（平均 −1.2R）。E = 0.7 × 0.4 − 0.3 × 1.2 = <strong>−0.08R</strong>。十笔赢七笔，账户却在慢慢流血。这正是处置效应落在账户上的样子。</li>
+    </ul>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 16-5</span>期望值格子：胜率 × 盈亏比，每笔平均赚几个 R</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 372" role="img" aria-label="期望值格子：纵轴是胜率 20% 到 80%，横轴是盈亏比 0.5 到 4，每格写出每笔交易的期望值（以 R 计）；红色为正期望、绿色为负期望；标出胜率 40% 加盈亏比 3 为每笔 +0.6R">
+<text class="atitle" x="405" y="28" text-anchor="middle">盈亏比 = 平均盈利 ÷ 平均亏损（亏损按 1R 计）</text>
+<text class="nt" x="171" y="60" text-anchor="middle">0.5 : 1</text>
+<text class="nt" x="249" y="60" text-anchor="middle">1 : 1</text>
+<text class="nt" x="327" y="60" text-anchor="middle">1.5 : 1</text>
+<text class="nt" x="405" y="60" text-anchor="middle">2 : 1</text>
+<text class="nt" x="483" y="60" text-anchor="middle">2.5 : 1</text>
+<text class="nt" x="561" y="60" text-anchor="middle">3 : 1</text>
+<text class="nt" x="639" y="60" text-anchor="middle">4 : 1</text>
+<text class="nt" x="118" y="97" text-anchor="end">胜率 80%</text>
+<text class="nt" x="118" y="131" text-anchor="end">胜率 70%</text>
+<text class="nt" x="118" y="165" text-anchor="end">胜率 60%</text>
+<text class="nt" x="118" y="199" text-anchor="end">胜率 50%</text>
+<text class="nt" x="118" y="233" text-anchor="end">胜率 40%</text>
+<text class="nt" x="118" y="267" text-anchor="end">胜率 30%</text>
+<text class="nt" x="118" y="301" text-anchor="end">胜率 20%</text>
+<rect class="node" x="132" y="76" width="78" height="34"/>
+<rect class="cu" x="133" y="77" width="76" height="32" style="fill-opacity:0.19;stroke:none"/>
+<text class="nt" x="171" y="97" text-anchor="middle">+0.20R</text>
+<rect class="node" x="210" y="76" width="78" height="34"/>
+<rect class="cu" x="211" y="77" width="76" height="32" style="fill-opacity:0.32;stroke:none"/>
+<text class="nt" x="249" y="97" text-anchor="middle">+0.60R</text>
+<rect class="node" x="288" y="76" width="78" height="34"/>
+<rect class="cu" x="289" y="77" width="76" height="32" style="fill-opacity:0.45;stroke:none"/>
+<text class="nt" x="327" y="97" text-anchor="middle">+1.00R</text>
+<rect class="node" x="366" y="76" width="78" height="34"/>
+<rect class="cu" x="367" y="77" width="76" height="32" style="fill-opacity:0.59;stroke:none"/>
+<text class="nt" x="405" y="97" text-anchor="middle">+1.40R</text>
+<rect class="node" x="444" y="76" width="78" height="34"/>
+<rect class="cu" x="445" y="77" width="76" height="32" style="fill-opacity:0.62;stroke:none"/>
+<text class="nt" x="483" y="97" text-anchor="middle">+1.80R</text>
+<rect class="node" x="522" y="76" width="78" height="34"/>
+<rect class="cu" x="523" y="77" width="76" height="32" style="fill-opacity:0.62;stroke:none"/>
+<text class="nt" x="561" y="97" text-anchor="middle">+2.20R</text>
+<rect class="node" x="600" y="76" width="78" height="34"/>
+<rect class="cu" x="601" y="77" width="76" height="32" style="fill-opacity:0.62;stroke:none"/>
+<text class="nt" x="639" y="97" text-anchor="middle">+3.00R</text>
+<rect class="node" x="132" y="110" width="78" height="34"/>
+<rect class="cu" x="133" y="111" width="76" height="32" style="fill-opacity:0.14;stroke:none"/>
+<text class="nt" x="171" y="131" text-anchor="middle">+0.05R</text>
+<rect class="node" x="210" y="110" width="78" height="34"/>
+<rect class="cu" x="211" y="111" width="76" height="32" style="fill-opacity:0.25;stroke:none"/>
+<text class="nt" x="249" y="131" text-anchor="middle">+0.40R</text>
+<rect class="node" x="288" y="110" width="78" height="34"/>
+<rect class="cu" x="289" y="111" width="76" height="32" style="fill-opacity:0.37;stroke:none"/>
+<text class="nt" x="327" y="131" text-anchor="middle">+0.75R</text>
+<rect class="node" x="366" y="110" width="78" height="34"/>
+<rect class="cu" x="367" y="111" width="76" height="32" style="fill-opacity:0.49;stroke:none"/>
+<text class="nt" x="405" y="131" text-anchor="middle">+1.10R</text>
+<rect class="node" x="444" y="110" width="78" height="34"/>
+<rect class="cu" x="445" y="111" width="76" height="32" style="fill-opacity:0.60;stroke:none"/>
+<text class="nt" x="483" y="131" text-anchor="middle">+1.45R</text>
+<rect class="node" x="522" y="110" width="78" height="34"/>
+<rect class="cu" x="523" y="111" width="76" height="32" style="fill-opacity:0.62;stroke:none"/>
+<text class="nt" x="561" y="131" text-anchor="middle">+1.80R</text>
+<rect class="node" x="600" y="110" width="78" height="34"/>
+<rect class="cu" x="601" y="111" width="76" height="32" style="fill-opacity:0.62;stroke:none"/>
+<text class="nt" x="639" y="131" text-anchor="middle">+2.50R</text>
+<rect class="node" x="132" y="144" width="78" height="34"/>
+<rect class="cd" x="133" y="145" width="76" height="32" style="fill-opacity:0.15;stroke:none"/>
+<text class="nt" x="171" y="165" text-anchor="middle">−0.10R</text>
+<rect class="node" x="210" y="144" width="78" height="34"/>
+<rect class="cu" x="211" y="145" width="76" height="32" style="fill-opacity:0.19;stroke:none"/>
+<text class="nt" x="249" y="165" text-anchor="middle">+0.20R</text>
+<rect class="node" x="288" y="144" width="78" height="34"/>
+<rect class="cu" x="289" y="145" width="76" height="32" style="fill-opacity:0.29;stroke:none"/>
+<text class="nt" x="327" y="165" text-anchor="middle">+0.50R</text>
+<rect class="node" x="366" y="144" width="78" height="34"/>
+<rect class="cu" x="367" y="145" width="76" height="32" style="fill-opacity:0.39;stroke:none"/>
+<text class="nt" x="405" y="165" text-anchor="middle">+0.80R</text>
+<rect class="node" x="444" y="144" width="78" height="34"/>
+<rect class="cu" x="445" y="145" width="76" height="32" style="fill-opacity:0.49;stroke:none"/>
+<text class="nt" x="483" y="165" text-anchor="middle">+1.10R</text>
+<rect class="node" x="522" y="144" width="78" height="34"/>
+<rect class="cu" x="523" y="145" width="76" height="32" style="fill-opacity:0.59;stroke:none"/>
+<text class="nt" x="561" y="165" text-anchor="middle">+1.40R</text>
+<rect class="node" x="600" y="144" width="78" height="34"/>
+<rect class="cu" x="601" y="145" width="76" height="32" style="fill-opacity:0.62;stroke:none"/>
+<text class="nt" x="639" y="165" text-anchor="middle">+2.00R</text>
+<rect class="node" x="132" y="178" width="78" height="34"/>
+<rect class="cd" x="133" y="179" width="76" height="32" style="fill-opacity:0.20;stroke:none"/>
+<text class="nt" x="171" y="199" text-anchor="middle">−0.25R</text>
+<rect class="node" x="210" y="178" width="78" height="34"/>
+<text class="nt" x="249" y="199" text-anchor="middle">0</text>
+<rect class="node" x="288" y="178" width="78" height="34"/>
+<rect class="cu" x="289" y="179" width="76" height="32" style="fill-opacity:0.20;stroke:none"/>
+<text class="nt" x="327" y="199" text-anchor="middle">+0.25R</text>
+<rect class="node" x="366" y="178" width="78" height="34"/>
+<rect class="cu" x="367" y="179" width="76" height="32" style="fill-opacity:0.29;stroke:none"/>
+<text class="nt" x="405" y="199" text-anchor="middle">+0.50R</text>
+<rect class="node" x="444" y="178" width="78" height="34"/>
+<rect class="cu" x="445" y="179" width="76" height="32" style="fill-opacity:0.37;stroke:none"/>
+<text class="nt" x="483" y="199" text-anchor="middle">+0.75R</text>
+<rect class="node" x="522" y="178" width="78" height="34"/>
+<rect class="cu" x="523" y="179" width="76" height="32" style="fill-opacity:0.45;stroke:none"/>
+<text class="nt" x="561" y="199" text-anchor="middle">+1.00R</text>
+<rect class="node" x="600" y="178" width="78" height="34"/>
+<rect class="cu" x="601" y="179" width="76" height="32" style="fill-opacity:0.62;stroke:none"/>
+<text class="nt" x="639" y="199" text-anchor="middle">+1.50R</text>
+<rect class="node" x="132" y="212" width="78" height="34"/>
+<rect class="cd" x="133" y="213" width="76" height="32" style="fill-opacity:0.25;stroke:none"/>
+<text class="nt" x="171" y="233" text-anchor="middle">−0.40R</text>
+<rect class="node" x="210" y="212" width="78" height="34"/>
+<rect class="cd" x="211" y="213" width="76" height="32" style="fill-opacity:0.19;stroke:none"/>
+<text class="nt" x="249" y="233" text-anchor="middle">−0.20R</text>
+<rect class="node" x="288" y="212" width="78" height="34"/>
+<text class="nt" x="327" y="233" text-anchor="middle">0</text>
+<rect class="node" x="366" y="212" width="78" height="34"/>
+<rect class="cu" x="367" y="213" width="76" height="32" style="fill-opacity:0.19;stroke:none"/>
+<text class="nt" x="405" y="233" text-anchor="middle">+0.20R</text>
+<rect class="node" x="444" y="212" width="78" height="34"/>
+<rect class="cu" x="445" y="213" width="76" height="32" style="fill-opacity:0.25;stroke:none"/>
+<text class="nt" x="483" y="233" text-anchor="middle">+0.40R</text>
+<rect class="node" x="522" y="212" width="78" height="34"/>
+<rect class="cu" x="523" y="213" width="76" height="32" style="fill-opacity:0.32;stroke:none"/>
+<text class="nt" x="561" y="233" text-anchor="middle">+0.60R</text>
+<rect class="node" x="600" y="212" width="78" height="34"/>
+<rect class="cu" x="601" y="213" width="76" height="32" style="fill-opacity:0.45;stroke:none"/>
+<text class="nt" x="639" y="233" text-anchor="middle">+1.00R</text>
+<rect class="node" x="132" y="246" width="78" height="34"/>
+<rect class="cd" x="133" y="247" width="76" height="32" style="fill-opacity:0.30;stroke:none"/>
+<text class="nt" x="171" y="267" text-anchor="middle">−0.55R</text>
+<rect class="node" x="210" y="246" width="78" height="34"/>
+<rect class="cd" x="211" y="247" width="76" height="32" style="fill-opacity:0.25;stroke:none"/>
+<text class="nt" x="249" y="267" text-anchor="middle">−0.40R</text>
+<rect class="node" x="288" y="246" width="78" height="34"/>
+<rect class="cd" x="289" y="247" width="76" height="32" style="fill-opacity:0.20;stroke:none"/>
+<text class="nt" x="327" y="267" text-anchor="middle">−0.25R</text>
+<rect class="node" x="366" y="246" width="78" height="34"/>
+<rect class="cd" x="367" y="247" width="76" height="32" style="fill-opacity:0.15;stroke:none"/>
+<text class="nt" x="405" y="267" text-anchor="middle">−0.10R</text>
+<rect class="node" x="444" y="246" width="78" height="34"/>
+<rect class="cu" x="445" y="247" width="76" height="32" style="fill-opacity:0.14;stroke:none"/>
+<text class="nt" x="483" y="267" text-anchor="middle">+0.05R</text>
+<rect class="node" x="522" y="246" width="78" height="34"/>
+<rect class="cu" x="523" y="247" width="76" height="32" style="fill-opacity:0.19;stroke:none"/>
+<text class="nt" x="561" y="267" text-anchor="middle">+0.20R</text>
+<rect class="node" x="600" y="246" width="78" height="34"/>
+<rect class="cu" x="601" y="247" width="76" height="32" style="fill-opacity:0.29;stroke:none"/>
+<text class="nt" x="639" y="267" text-anchor="middle">+0.50R</text>
+<rect class="node" x="132" y="280" width="78" height="34"/>
+<rect class="cd" x="133" y="281" width="76" height="32" style="fill-opacity:0.35;stroke:none"/>
+<text class="nt" x="171" y="301" text-anchor="middle">−0.70R</text>
+<rect class="node" x="210" y="280" width="78" height="34"/>
+<rect class="cd" x="211" y="281" width="76" height="32" style="fill-opacity:0.32;stroke:none"/>
+<text class="nt" x="249" y="301" text-anchor="middle">−0.60R</text>
+<rect class="node" x="288" y="280" width="78" height="34"/>
+<rect class="cd" x="289" y="281" width="76" height="32" style="fill-opacity:0.29;stroke:none"/>
+<text class="nt" x="327" y="301" text-anchor="middle">−0.50R</text>
+<rect class="node" x="366" y="280" width="78" height="34"/>
+<rect class="cd" x="367" y="281" width="76" height="32" style="fill-opacity:0.25;stroke:none"/>
+<text class="nt" x="405" y="301" text-anchor="middle">−0.40R</text>
+<rect class="node" x="444" y="280" width="78" height="34"/>
+<rect class="cd" x="445" y="281" width="76" height="32" style="fill-opacity:0.22;stroke:none"/>
+<text class="nt" x="483" y="301" text-anchor="middle">−0.30R</text>
+<rect class="node" x="522" y="280" width="78" height="34"/>
+<rect class="cd" x="523" y="281" width="76" height="32" style="fill-opacity:0.19;stroke:none"/>
+<text class="nt" x="561" y="301" text-anchor="middle">−0.20R</text>
+<rect class="node" x="600" y="280" width="78" height="34"/>
+<text class="nt" x="639" y="301" text-anchor="middle">0</text>
+<rect class="edge-acc" x="524" y="214" width="74" height="30" style="stroke-width:2.4"/>
+<text class="hi" x="526" y="226">①</text>
+<rect class="edge-acc" x="134" y="112" width="74" height="30" style="stroke-width:2.4"/>
+<text class="hi" x="136" y="124">②</text>
+<rect class="edge-acc" x="602" y="248" width="74" height="30" style="stroke-width:2.4"/>
+<text class="hi" x="604" y="260">③</text>
+<text class="pv" x="24" y="338">① 胜率 40% + 盈亏比 3：每笔 +0.60R，本章的基准例子。　② 胜率 70% + 盈亏比 0.5：只有 +0.05R，扣掉成本就白忙。</text>
+<text class="pv" x="24" y="358">③ 胜率 30% + 盈亏比 4：+0.50R，趋势跟踪系统的典型位置，十笔错七笔照样赚钱。灰格 = 正好打平。</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>每一格是一种“胜率 × 盈亏比”组合下每笔交易的期望值，红色为正、绿色为负、灰色正好打平，颜色越深绝对值越大。三条规律：① 沿着同一行往右，期望值涨得很快，提高盈亏比往往比提高胜率更划算；② 胜率高不保证赚钱，胜率 60% 配 0.5 的盈亏比是负的，70% 也只有 +0.05R，扣掉成本就转负；③ “胜率 30%、盈亏比 4”有 +0.5R，这是典型的趋势跟踪系统，代价是要忍受大量的小亏和漫长的连亏（16.6 节）。<b>用法：</b>把你的回测统计（第 12 站）或交易日志里的数字对到格子上，再减去成本，才是真实的期望值。</figcaption>
+  </figure>
+
+  <div class="prose">
+    <h3>别忘了成本：止损越窄，成本越贵</h3>
+    <p>A 股一个来回的成本，佣金（买卖双向，费率因券商而异）、印花税（卖出时 0.05%）、过户费，再加上滑点，合计大约 0.1%–0.2%。把它换算成 R：止损距离 8% 时，0.15% 的成本只占约 0.02R；止损只有 2% 时，同样的成本就占 0.075R，对一个 +0.2R 的方法来说，一下吃掉三分之一以上。<strong>很窄的止损让报酬风险比看起来很漂亮，但成本和噪声会按比例变贵</strong>，16.8 节讨论日内图精调入场时要记住这一点。</p>
+    <p>回到赌场：欧式轮盘的庄家优势约 2.7%，一个 +0.2R 的交易方法，相当于每冒 1 元风险平均赚 0.2 元，优势比赌场大得多。可惜大多数交易者没有赌场的另外两样东西：足够多的局数，和严格的单注上限。下一节就来补上单注上限。</p>
+  </div>
+
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p>“这个策略胜率 80%，肯定赚钱。”胜率是最容易被包装的数字：只要把止盈放得很近、止损放得很远（或者干脆不止损），胜率可以做得很高，代价是偶尔一笔大亏抹掉几十笔小赚。“不止损死扛”、无限补仓的网格交易，都能画出很漂亮的胜率曲线。评价一个方法，永远同时问四个数：胜率、平均盈利、平均亏损，以及最大的一笔亏损有多大。</p>
+  </div>
+</section>
+
+<!-- ======================== 16.5 ======================== -->
+<section class="ch" id="s5">
+  <h2 class="sec"><span class="no">16.5</span>下多少注：固定比例与波动率仓位</h2>
+  <p class="sec-en">POSITION SIZING: FIXED FRACTIONAL AND VOLATILITY-BASED</p>
+
+  <div class="prose">
+    <p>零件已经备齐：止损给出“每股错了亏多少”，单笔风险比例给出“这一笔总共愿意亏多少”。仓位就是两者相除。</p>
+    <h3><span class="tag">方法一</span>固定比例风险仓位</h3>
+  </div>
+
+  <div class="formula">
+    <span class="fx">风险金额 = 账户净值 × 单笔风险比例（如 1%）</span><br>
+    <span class="fx">股数 = 风险金额 ÷（入场价 − 止损价），向下取整到 100 股</span><br>
+    <span class="fx">检查：股数 × 入场价 ≤ 账户净值 × 单只市值上限（如 20%），超过就按上限买</span><br>
+    <span class="note">向下取整是因为 A 股主板以 100 股（1 手）为买入单位；宁可少冒一点风险，也不多冒。</span>
+  </div>
+
+  <div class="prose">
+    <p>一步一步算一遍。账户 20 万元，单笔风险 1%，乙股票 20.00 元买入，图表止损 18.40 元：</p>
+    <ol>
+      <li>风险金额 = 200000 × 1% = 2000 元；</li>
+      <li>每股止损距离 = 20.00 − 18.40 = 1.60 元；</li>
+      <li>股数 = 2000 ÷ 1.60 = 1250 股，向下取整为 1200 股；</li>
+      <li>实际风险 = 1200 × 1.60 = 1920 元（0.96%）；市值 2.4 万元（12%），低于 4 万元的上限，通过。</li>
+    </ol>
+    <p>同样 2000 元的风险预算，换成止损更宽或更窄的股票，股数完全不同：</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 16-6</span>固定比例仓位：止损宽就少买，止损窄就多买，风险始终约 2000 元<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 326" role="img" aria-label="固定比例仓位示意：20 万元账户每笔风险 2000 元；止损越宽买得越少、止损越窄买得越多，三个长方形宽为市值、高为止损幅度，面积都约等于 2000 元；低波动股票按风险算出的仓位超过 20% 市值上限，被截掉一部分">
+<rect class="node-hi" x="56" y="87" width="80" height="175"/>
+<text class="nt" x="56" y="63">甲：高波动成长股</text>
+<text class="pv" x="56" y="79">40.00 买，35.00 止损（12.5%）</text>
+<text class="pv" x="56" y="280">400 股 · 市值 1.6 万</text>
+<text class="hi" x="56" y="298">风险 2000 元</text>
+<text class="elabel" x="96" y="178.5" text-anchor="middle">面积 = 风险</text>
+<rect class="node-hi" x="214" y="150" width="120" height="112"/>
+<text class="nt" x="214" y="126">乙：普通股票</text>
+<text class="pv" x="214" y="142">20.00 买，18.40 止损（8.0%）</text>
+<text class="pv" x="214" y="280">1200 股 · 市值 2.4 万</text>
+<text class="hi" x="214" y="298">风险 1920 元</text>
+<text class="elabel" x="274" y="210" text-anchor="middle">面积 = 风险</text>
+<rect class="node-hi" x="384" y="206" width="198" height="56"/>
+<rect class="edge-soft" x="582" y="206" width="51" height="56"/>
+<text class="nt" x="384" y="182">丙：低波动银行股</text>
+<text class="pv" x="384" y="198">6.00 买，5.76 止损（4.0%）</text>
+<text class="pv" x="384" y="280">6600 股 · 市值 3.96 万</text>
+<text class="dt" x="384" y="298">风险 1584 元</text>
+<text class="elabel" x="483" y="238" text-anchor="middle">面积 = 风险</text>
+<line class="sr-up" x1="584" y1="160" x2="584" y2="266"/>
+<text class="ut" x="590" y="170">20% 市值上限</text>
+<text class="elabel" x="590" y="186">按风险该买 8300 股</text>
+<text class="elabel" x="586" y="298">（虚线部分被上限砍掉）</text>
+<line class="axis" x1="40" y1="262" x2="700" y2="262"/>
+<text class="elabel" x="360" y="314" text-anchor="middle">宽 = 仓位市值，高 = 止损幅度，面积 = 市值 × 止损幅度 = 止损时亏的钱。三个长方形面积几乎相同：每笔都只冒约 2000 元（账户 1%）。</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>每个长方形的宽是仓位市值，高是止损幅度，面积（市值 × 止损幅度）就是止损被打掉时亏的钱。甲是高波动成长股，止损要放到 12.5% 之外，只能买 400 股（1.6 万元）；乙止损 8%，买 1200 股；丙是低波动银行股，止损只有 4%，按风险算该买 8300 股（约 5 万元），超过了单只 20% 的市值上限，只能买 6600 股，实际风险降到 1584 元。三个长方形面积几乎一样，这就是固定比例法的核心：<b>每一笔交易在账户里的“投票权”相同</b>。还要注意，甲的市值最小，风险却是满额的 2000 元：仓位小不等于风险小。</figcaption>
+  </figure>
+
+  <div class="prose">
+    <p>对比一种很常见的做法：“每只股票都买 5 万元”。按这个办法，甲的止损风险是 5 万 × 12.5% = 6250 元，乙是 4000 元，丙是 2000 元，三笔差了 3 倍多。账户的结果会被那几笔止损宽的交易随机地主宰，而它们并不比别的交易更有把握。固定比例法把每一笔的风险拉平，让系统的统计优势（16.4 节）能均匀地兑现。</p>
+    <p>固定比例法还有一个自动的好处：<strong>账户涨了，每笔的风险金额跟着涨（复利）；账户跌了，跟着自动缩小</strong>。账户从 20 万元跌到 18 万元，1% 就从 2000 元变成 1800 元，不需要靠意志力去“少下一点”。</p>
+
+    <h3><span class="tag">方法二</span>ATR 波动率仓位</h3>
+    <p>如果止损用的是 ATR（16.3 节），仓位公式就变成：</p>
+  </div>
+
+  <div class="formula">
+    <span class="fx">股数 = 账户净值 × 1% ÷（k × ATR），k 通常取 2，向下取整到 100 股</span><br>
+    <span class="note">波动越大，止损越远，股数越少；每笔承担的风险金额不变。</span>
+  </div>
+
+  <div class="prose">
+    <p>用图 16-4 的数字：平静期 ATR 约 0.55 元，止损距离 1.10 元，2000 ÷ 1.10 ≈ 1818，买 1800 股；动荡期 ATR 约 1.07 元，止损距离 2.14 元，2000 ÷ 2.14 ≈ 934，只买 900 股。波动率仓位让不同股票、不同时期的仓位“风险等价”：一只日波动 5% 的股票和一只日波动 1% 的 ETF，在你的账户里造成的起伏差不多大。它还会在市场变得狂躁时自动帮你减仓，而那正是大多数人最容易犯错的时候。</p>
+  </div>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>海龟交易员：仓位规则比入场信号更值钱</h4>
+    <p>1983 年，美国期货交易员理查德·丹尼斯和他的合伙人威廉·埃克哈特打了一个赌：成功的交易能不能教会？丹尼斯登报招募学员，经过短期培训，把一套完整的趋势跟踪规则交给他们，并给每人一笔真实资金去交易。这批学员被称为“海龟”。规则后来被公开，入场信号并不神秘（价格突破过去 20 日或 55 日的最高价），真正的精华在仓位上：</p>
+    <ul>
+      <li>用 <strong>N</strong> 衡量波动，N 基本上就是 20 日 ATR；</li>
+      <li>一个“单位”的大小，让价格波动 1 个 N 时，盈亏正好等于账户的 1%；</li>
+      <li>止损放在入场价 2N 之外，所以每个单位冒约 2% 的风险；</li>
+      <li>行情每朝有利方向走 0.5N 加一个单位，单个市场最多 4 个单位，加仓时把所有单位的止损一起上移；</li>
+      <li>高度相关的一组市场，合计单位数也有上限；账户回撤时，按比例缩小交易规模。</li>
+    </ul>
+    <p class="takeaway">海龟规则几乎就是本站的一张总图：波动率仓位（N）、固定风险比例（1N = 1%）、ATR 止损（2N）、金字塔加仓（每 0.5N 一个单位）、相关性上限（墨菲的“市场组”）和回撤减仓。同一套规则，不同学员的结果并不一样；后来公开规则的当事人认为，差别主要在于能不能在漫长的连亏里照章执行。<b>规则可以抄，纪律抄不来。</b></p>
+  </div>
+
+  <div class="prose">
+    <h3>从单笔到组合：热度上限</h3>
+    <p>单笔风险管住了每一笔，还要管住总量。图 16-2 的组合热度这样算：</p>
+  </div>
+
+  <div class="formula">
+    <span class="fx">组合热度 = Σ 各仓位的 股数 ×（入场价 − 止损价）÷ 账户净值</span><br>
+    <span class="note">止损已经上移到成本价以上的仓位，初始风险为零；更保守的算法用“现价 − 止损价”，把可能回吐的浮盈也算作风险。</span>
+  </div>
+
+  <div class="prose">
+    <p>热度上限没有统一标准，常见取值在 5%–10% 之间，交易作家亚历山大·埃尔德就提出过类似的“6% 规则”。本站的规则卡用 6%。它和单笔 1% 合起来，自动把同时持有的满风险仓位限制在 6 个左右。想再开新仓，要么等某个仓位的止损上移到成本价以上、不再占用热度，要么先平掉一个。这比“感觉仓位有点重”可靠得多。</p>
+  </div>
+</section>
+
+<!-- ======================== 16.6 ======================== -->
+<section class="ch" id="s6">
+  <h2 class="sec"><span class="no">16.6</span>回撤的数学与连败的概率</h2>
+  <p class="sec-en">THE MATH OF DRAWDOWNS AND LOSING STREAKS</p>
+
+  <div class="prose">
+    <h3>回本的不对称：亏得越深，爬得越难</h3>
+    <p>账户亏了一半，再涨一半能回本吗？不能。100 万元亏 50% 剩 50 万元，再涨 50% 只有 75 万元，要涨 100% 才回到 100 万元。原因是亏损发生在大本金上，回本却只能在小本金上赚：</p>
+  </div>
+
+  <div class="formula">
+    <span class="fx">回本所需涨幅 = 1 ÷（1 − 亏损幅度）− 1</span><br>
+    <span class="note">亏 10% → 需赚 11.1%；亏 20% → 25%；亏 30% → 42.9%；亏 50% → 100%；亏 80% → 400%。</span>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 16-7</span>回撤与回本：亏损幅度越大，回本需要的涨幅越陡</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 336" role="img" aria-label="回撤与回本曲线：横轴为亏损幅度，纵轴为回到原点所需的涨幅；亏 10% 需要赚约 11.1%，亏 50% 需要赚 100%，亏 80% 需要赚 400%，曲线越往右越陡">
+<rect class="zone" x="70" y="30" width="155" height="260"/>
+<text class="hi" x="147.5" y="48" text-anchor="middle">回撤 20% 以内</text>
+<text class="pv" x="147.5" y="64" text-anchor="middle">多赚一点就回来</text>
+<line class="grid" x1="70" y1="290" x2="690" y2="290"/>
+<text class="tick" x="62" y="294" text-anchor="end">0%</text>
+<line class="grid" x1="70" y1="225" x2="690" y2="225"/>
+<text class="tick" x="62" y="229" text-anchor="end">100%</text>
+<line class="grid" x1="70" y1="160" x2="690" y2="160"/>
+<text class="tick" x="62" y="164" text-anchor="end">200%</text>
+<line class="grid" x1="70" y1="95" x2="690" y2="95"/>
+<text class="tick" x="62" y="99" text-anchor="end">300%</text>
+<line class="grid" x1="70" y1="30" x2="690" y2="30"/>
+<text class="tick" x="62" y="34" text-anchor="end">400%</text>
+<text class="tick" x="70" y="307" text-anchor="middle">0%</text>
+<text class="tick" x="147.5" y="307" text-anchor="middle">10%</text>
+<text class="tick" x="225" y="307" text-anchor="middle">20%</text>
+<text class="tick" x="302.5" y="307" text-anchor="middle">30%</text>
+<text class="tick" x="380" y="307" text-anchor="middle">40%</text>
+<text class="tick" x="457.5" y="307" text-anchor="middle">50%</text>
+<text class="tick" x="535" y="307" text-anchor="middle">60%</text>
+<text class="tick" x="612.5" y="307" text-anchor="middle">70%</text>
+<text class="tick" x="690" y="307" text-anchor="middle">80%</text>
+<line class="axis" x1="70" y1="30" x2="70" y2="290"/>
+<line class="axis" x1="70" y1="290" x2="690" y2="290"/>
+<text class="atitle" x="690" y="324" text-anchor="end">账户亏损（回撤）幅度</text>
+<text class="atitle" x="76" y="20">回到原点需要的涨幅</text>
+<line class="sr" x1="70" y1="290" x2="690" y2="238"/>
+<text class="elabel" x="550.5" y="241.7" text-anchor="middle">直觉：亏多少、赚多少就回来</text>
+<polyline class="ln1" points="70,290 73.9,289.7 77.8,289.3 81.6,289 85.5,288.7 89.4,288.3 93.3,288 97.1,287.6 101,287.3 104.9,286.9 108.8,286.6 112.6,286.2 116.5,285.9 120.4,285.5 124.3,285.1 128.1,284.7 132,284.3 135.9,284 139.8,283.6 143.6,283.2 147.5,282.8 151.4,282.4 155.3,282 159.1,281.6 163,281.1 166.9,280.7 170.8,280.3 174.6,279.9 178.5,279.4 182.4,279 186.3,278.5 190.1,278.1 194,277.6 197.9,277.2 201.8,276.7 205.6,276.2 209.5,275.7 213.4,275.2 217.3,274.8 221.1,274.3 225,273.8 228.9,273.2 232.8,272.7 236.6,272.2 240.5,271.7 244.4,271.1 248.3,270.6 252.1,270 256,269.5 259.9,268.9 263.8,268.3 267.6,267.8 271.5,267.2 275.4,266.6 279.3,266 283.1,265.3 287,264.7 290.9,264.1 294.8,263.5 298.6,262.8 302.5,262.1 306.4,261.5 310.3,260.8 314.1,260.1 318,259.4 321.9,258.7 325.8,258 329.6,257.3 333.5,256.5 337.4,255.8 341.3,255 345.1,254.2 349,253.4 352.9,252.6 356.8,251.8 360.6,251 364.5,250.2 368.4,249.3 372.3,248.4 376.1,247.6 380,246.7 383.9,245.8 387.8,244.8 391.6,243.9 395.5,242.9 399.4,242 403.3,241 407.1,240 411,238.9 414.9,237.9 418.8,236.8 422.6,235.7 426.5,234.6 430.4,233.5 434.3,232.4 438.1,231.2 442,230 445.9,228.8 449.8,227.5 453.6,226.3 457.5,225 461.4,223.7 465.3,222.3 469.1,221 473,219.6 476.9,218.2 480.8,216.7 484.6,215.2 488.5,213.7 492.4,212.1 496.3,210.6 500.1,208.9 504,207.3 507.9,205.6 511.8,203.8 515.6,202.1 519.5,200.2 523.4,198.4 527.3,196.5 531.1,194.5 535,192.5 538.9,190.4 542.8,188.3 546.6,186.2 550.5,183.9 554.4,181.7 558.3,179.3 562.1,176.9 566,174.4 569.9,171.9 573.8,169.3 577.6,166.6 581.5,163.8 585.4,161 589.3,158 593.1,155 597,151.9 600.9,148.7 604.8,145.3 608.6,141.9 612.5,138.3 616.4,134.7 620.3,130.9 624.1,126.9 628,122.9 631.9,118.6 635.8,114.3 639.6,109.7 643.5,105 647.4,100.1 651.3,95 655.1,89.7 659,84.2 662.9,78.4 666.8,72.4 670.6,66.1 674.5,59.5 678.4,52.7 682.3,45.5 686.1,37.9 690,30"/>
+<circle class="dot" cx="147.5" cy="282.8" r="4"/>
+<circle class="dot" cx="225" cy="273.8" r="4"/>
+<circle class="dot" cx="302.5" cy="262.1" r="4"/>
+<circle class="dot" cx="380" cy="246.7" r="4"/>
+<circle class="dot" cx="457.5" cy="225" r="4"/>
+<circle class="dot" cx="535" cy="192.5" r="4"/>
+<circle class="dot" cx="612.5" cy="138.3" r="4"/>
+<circle class="dot" cx="690" cy="30" r="4"/>
+<text class="hi" x="447.5" y="221" text-anchor="end">亏 50%，要赚 100%</text>
+<text class="hi" x="602.5" y="136.3" text-anchor="end">亏 70%，要赚 233%</text>
+<text class="hi" x="680" y="34" text-anchor="end">亏 80%，要赚 400%</text>
+<text class="nt" x="262" y="62" text-anchor="end">亏损</text>
+<text class="nt" x="282" y="62" text-anchor="middle">→</text>
+<text class="nt" x="302" y="62">回本需要</text>
+<text class="pv" x="262" y="80" text-anchor="end">10%</text>
+<text class="pv" x="282" y="80" text-anchor="middle">→</text>
+<text class="pv" x="302" y="80">11.1%</text>
+<text class="pv" x="262" y="98" text-anchor="end">20%</text>
+<text class="pv" x="282" y="98" text-anchor="middle">→</text>
+<text class="pv" x="302" y="98">25%</text>
+<text class="pv" x="262" y="116" text-anchor="end">30%</text>
+<text class="pv" x="282" y="116" text-anchor="middle">→</text>
+<text class="pv" x="302" y="116">42.9%</text>
+<text class="pv" x="262" y="134" text-anchor="end">40%</text>
+<text class="pv" x="282" y="134" text-anchor="middle">→</text>
+<text class="pv" x="302" y="134">66.7%</text>
+<text class="pv" x="262" y="152" text-anchor="end">50%</text>
+<text class="pv" x="282" y="152" text-anchor="middle">→</text>
+<text class="dt" x="302" y="152">100%</text>
+<text class="pv" x="262" y="170" text-anchor="end">60%</text>
+<text class="pv" x="282" y="170" text-anchor="middle">→</text>
+<text class="dt" x="302" y="170">150%</text>
+<text class="pv" x="262" y="188" text-anchor="end">70%</text>
+<text class="pv" x="282" y="188" text-anchor="middle">→</text>
+<text class="dt" x="302" y="188">233.3%</text>
+<text class="pv" x="262" y="206" text-anchor="end">80%</text>
+<text class="pv" x="282" y="206" text-anchor="middle">→</text>
+<text class="dt" x="302" y="206">400%</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>虚线是直觉（亏多少、赚多少就回来），实线是真相。回撤在 20% 以内时，两条线几乎贴在一起，多赚几个百分点就能回来；过了 30%，曲线开始翘头；到了 50% 以上，需要的涨幅成倍增长。换成时间更直观：亏了 50% 之后，即使每年赚 15%（已经是很好的成绩），也要将近 5 年才能回本。<b>资金管理的首要目标，就是让账户始终待在这条曲线平缓的左半段。</b></figcaption>
+  </figure>
+
+  <div class="prose">
+    <h3>连续亏损：比你想的常见得多</h3>
+    <p>胜率 40% 的系统，每笔亏损的概率是 60%。从现在开始连亏 10 笔的概率是 0.6 的 10 次方，约 0.6%，看起来微乎其微。但问题不是“从现在开始”，而是“接下来几百笔里的某个时候”。机会一多，小概率事件迟早撞上：</p>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <tr><th>交易笔数（胜率 40%）</th><th>至少一次 6 连亏</th><th>至少一次 8 连亏</th><th>至少一次 10 连亏</th></tr>
+      <tr><td>100 笔</td><td class="num">87%</td><td class="num">49%</td><td class="num">20.5%</td></tr>
+      <tr><td>200 笔</td><td class="num">98.5%</td><td class="num">75%</td><td class="num">38%</td></tr>
+      <tr><td>300 笔</td><td class="num">99.8%</td><td class="num">88%</td><td class="num">52%</td></tr>
+      <tr><td>500 笔</td><td class="num">约 100%</td><td class="num">97%</td><td class="num">70.5%</td></tr>
+    </table>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 16-8</span>100 笔交易里，最长一次连亏有几笔？（胜率 40%）</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 312" role="img" aria-label="柱状图：胜率 40% 的系统做 100 笔交易，最长连续亏损笔数的概率分布；最可能是 6 到 8 笔，连亏 8 笔或更多的概率约 49%，至少出现一次 10 连亏的概率约 20%">
+<line class="grid" x1="64" y1="262" x2="700" y2="262"/>
+<text class="tick" x="56" y="266" text-anchor="end">0%</text>
+<line class="grid" x1="64" y1="216.6" x2="700" y2="216.6"/>
+<text class="tick" x="56" y="220.6" text-anchor="end">5%</text>
+<line class="grid" x1="64" y1="171.2" x2="700" y2="171.2"/>
+<text class="tick" x="56" y="175.2" text-anchor="end">10%</text>
+<line class="grid" x1="64" y1="125.8" x2="700" y2="125.8"/>
+<text class="tick" x="56" y="129.8" text-anchor="end">15%</text>
+<line class="grid" x1="64" y1="80.3" x2="700" y2="80.3"/>
+<text class="tick" x="56" y="84.3" text-anchor="end">20%</text>
+<rect class="seg1" x="72.2" y="261.2" width="29.1" height="0.8"/>
+<text class="tick" x="86.7" y="256.2" text-anchor="middle">0.1%</text>
+<text class="tick" x="86.7" y="279" text-anchor="middle">3</text>
+<rect class="seg1" x="117.6" y="240.9" width="29.1" height="21.1"/>
+<text class="tick" x="132.1" y="235.9" text-anchor="middle">2.3%</text>
+<text class="tick" x="132.1" y="279" text-anchor="middle">4</text>
+<rect class="seg1" x="163" y="168.2" width="29.1" height="93.8"/>
+<text class="tick" x="177.6" y="163.2" text-anchor="middle">10%</text>
+<text class="tick" x="177.6" y="279" text-anchor="middle">5</text>
+<rect class="seg1" x="208.5" y="95.3" width="29.1" height="166.7"/>
+<text class="tick" x="223" y="90.3" text-anchor="middle">18%</text>
+<text class="tick" x="223" y="279" text-anchor="middle">6</text>
+<rect class="seg1" x="253.9" y="80.9" width="29.1" height="181.1"/>
+<text class="tick" x="268.4" y="75.9" text-anchor="middle">20%</text>
+<text class="tick" x="268.4" y="279" text-anchor="middle">7</text>
+<rect class="seg2" x="299.3" y="111.4" width="29.1" height="150.6"/>
+<text class="tick" x="313.9" y="106.4" text-anchor="middle">17%</text>
+<text class="tick" x="313.9" y="279" text-anchor="middle">8</text>
+<rect class="seg2" x="344.7" y="153.9" width="29.1" height="108.1"/>
+<text class="tick" x="359.3" y="148.9" text-anchor="middle">12%</text>
+<text class="tick" x="359.3" y="279" text-anchor="middle">9</text>
+<rect class="seg2" x="390.2" y="190.5" width="29.1" height="71.5"/>
+<text class="tick" x="404.7" y="185.5" text-anchor="middle">7.9%</text>
+<text class="tick" x="404.7" y="279" text-anchor="middle">10</text>
+<rect class="seg2" x="435.6" y="216.9" width="29.1" height="45.1"/>
+<text class="tick" x="450.1" y="211.9" text-anchor="middle">5.0%</text>
+<text class="tick" x="450.1" y="279" text-anchor="middle">11</text>
+<rect class="seg2" x="481" y="234.3" width="29.1" height="27.7"/>
+<text class="tick" x="495.6" y="229.3" text-anchor="middle">3.1%</text>
+<text class="tick" x="495.6" y="279" text-anchor="middle">12</text>
+<rect class="seg2" x="526.5" y="245.2" width="29.1" height="16.8"/>
+<text class="tick" x="541" y="240.2" text-anchor="middle">1.9%</text>
+<text class="tick" x="541" y="279" text-anchor="middle">13</text>
+<rect class="seg2" x="571.9" y="251.9" width="29.1" height="10.1"/>
+<text class="tick" x="586.4" y="246.9" text-anchor="middle">1.1%</text>
+<text class="tick" x="586.4" y="279" text-anchor="middle">14</text>
+<rect class="seg2" x="617.3" y="256" width="29.1" height="6"/>
+<text class="tick" x="631.9" y="251" text-anchor="middle">0.7%</text>
+<text class="tick" x="631.9" y="279" text-anchor="middle">15</text>
+<rect class="seg2" x="662.7" y="253.2" width="29.1" height="8.8"/>
+<text class="tick" x="677.3" y="248.2" text-anchor="middle">1.0%</text>
+<text class="tick" x="677.3" y="279" text-anchor="middle">16+</text>
+<line class="axis" x1="64" y1="262" x2="700" y2="262"/>
+<line class="axis" x1="64" y1="44" x2="64" y2="262"/>
+<text class="atitle" x="700" y="298" text-anchor="end">100 笔交易中，最长的一次连续亏损有几笔（胜率 40%，每笔独立）</text>
+<text class="atitle" x="70" y="28">概率</text>
+<line class="edge-acc" x1="295.1" y1="48" x2="696" y2="48"/>
+<line class="edge-acc" x1="295.1" y1="48" x2="295.1" y2="56"/>
+<line class="edge-acc" x1="696" y1="48" x2="696" y2="56"/>
+<text class="hi" x="495.6" y="42" text-anchor="middle">连亏 8 笔或更多：49%，差不多是抛硬币</text>
+<text class="nt" x="78" y="84">平均最长连亏 ≈ 7.9 笔</text>
+<text class="pv" x="78" y="102">至少一次 6 连亏：87%</text>
+<text class="pv" x="78" y="120">至少一次 10 连亏：20.5%</text>
+<text class="elabel" x="78" y="138">对照：“从现在起连亏 10 笔”只有 0.6^10 ≈ 0.6%</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>这是用动态规划精确算出的概率（假设每笔交易相互独立）。胜率 40% 的系统做 100 笔交易，最长的一次连亏最可能是 6–8 笔，平均约 7.9 笔；连亏 8 笔或更多的概率约 49%，差不多是抛硬币。一个粗略的估算：最长连亏大约在 ln（笔数 × 胜率）÷ ln（1 ÷ 败率）附近，100 笔时约 ln 40 ÷ ln 1.67 ≈ 7 笔。<b>用法：</b>实盘之前，先用你的胜率算出“正常的最长连亏”，并确认按你的单笔风险，这样一段连亏造成的回撤你能接受。真遇到了，你就知道这是统计上的正常现象，而不是系统坏了。</figcaption>
+  </figure>
+
+  <div class="prose">
+    <p>实盘里的连亏往往比这张图还长：交易结果并不独立，一个趋势系统进了震荡市，会成串地亏。所以这张图给出的是<strong>下限</strong>，不是上限。</p>
+
+    <h3>同一个系统，不同的下注</h3>
+    <p>现在把连亏和回撤放到资金曲线上。下面的模拟用同一串随机数（同样的运气）、同一个系统（每笔要么赚 2R、要么亏 1R），只改变单笔风险：</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 16-9</span>同一个系统、同样的运气，单笔风险 1%、5%、10% 的资金曲线<span class="sch">模拟</span></p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 388" role="img" aria-label="模拟资金曲线：同一个系统、同一串随机结果，单笔风险分别为 1%、5%、10%；左图胜率 40%，10% 风险的终值最高但最大回撤达 83%；右图胜率只有 35%，10% 风险的账户最后只剩约四分之一，1% 风险仍小幅盈利">
+<rect class="zone" x="198" y="40" width="32.6" height="302"/>
+<line class="grid" x1="48" y1="330.8" x2="344" y2="330.8"/>
+<text class="tick" x="42" y="334.8" text-anchor="end">1/8</text>
+<line class="grid" x1="48" y1="295.8" x2="344" y2="295.8"/>
+<text class="tick" x="42" y="299.8" text-anchor="end">1/4</text>
+<line class="grid" x1="48" y1="260.9" x2="344" y2="260.9"/>
+<text class="tick" x="42" y="264.9" text-anchor="end">1/2</text>
+<line class="sr" x1="48" y1="225.9" x2="344" y2="225.9"/>
+<text class="tick" x="42" y="229.9" text-anchor="end">1</text>
+<line class="grid" x1="48" y1="191" x2="344" y2="191"/>
+<text class="tick" x="42" y="195" text-anchor="end">2</text>
+<line class="grid" x1="48" y1="156.1" x2="344" y2="156.1"/>
+<text class="tick" x="42" y="160.1" text-anchor="end">4</text>
+<line class="grid" x1="48" y1="121.1" x2="344" y2="121.1"/>
+<text class="tick" x="42" y="125.1" text-anchor="end">8</text>
+<line class="grid" x1="48" y1="86.2" x2="344" y2="86.2"/>
+<text class="tick" x="42" y="90.2" text-anchor="end">16</text>
+<line class="grid" x1="48" y1="51.2" x2="344" y2="51.2"/>
+<text class="tick" x="42" y="55.2" text-anchor="end">32</text>
+<text class="tick" x="48" y="358" text-anchor="middle">0</text>
+<text class="tick" x="146.7" y="358" text-anchor="middle">100</text>
+<text class="tick" x="245.3" y="358" text-anchor="middle">200</text>
+<text class="tick" x="344" y="358" text-anchor="middle">300</text>
+<line class="axis" x1="48" y1="40" x2="48" y2="342"/>
+<line class="axis" x1="48" y1="342" x2="344" y2="342"/>
+<polyline class="ma1" points="48,225.9 49,226.4 50,225.4 51,226 51.9,226.5 52.9,225.5 53.9,226 54.9,226.5 55.9,227 56.9,226 57.9,225 58.9,225.5 59.8,226 60.8,226.5 61.8,227 62.8,227.5 63.8,226.5 64.8,225.5 65.8,224.5 66.7,225 67.7,225.5 68.7,226 69.7,225 70.7,224 71.7,223 72.7,222.1 73.7,221.1 74.6,220.1 75.6,219.1 76.6,219.6 77.6,220.1 78.6,220.6 79.6,221.1 80.6,220.1 81.5,219.1 82.5,219.6 83.5,218.6 84.5,219.1 85.5,219.6 86.5,220.1 87.5,220.6 88.5,219.6 89.4,218.6 90.4,217.6 91.4,218.1 92.4,217.1 93.4,217.6 94.4,216.6 95.4,217.2 96.3,217.7 97.3,218.2 98.3,217.2 99.3,216.2 100.3,215.2 101.3,215.7 102.3,216.2 103.3,216.7 104.2,215.7 105.2,216.2 106.2,215.2 107.2,215.7 108.2,214.7 109.2,215.2 110.2,214.2 111.1,214.7 112.1,215.2 113.1,215.7 114.1,216.2 115.1,216.7 116.1,217.3 117.1,217.8 118.1,216.8 119,217.3 120,217.8 121,218.3 122,217.3 123,217.8 124,216.8 125,215.8 125.9,214.8 126.9,215.3 127.9,214.3 128.9,214.8 129.9,213.8 130.9,212.8 131.9,213.3 132.9,212.3 133.8,212.8 134.8,213.3 135.8,213.8 136.8,214.4 137.8,214.9 138.8,213.9 139.8,214.4 140.7,214.9 141.7,215.4 142.7,214.4 143.7,213.4 144.7,213.9 145.7,212.9 146.7,211.9 147.7,212.4 148.6,211.4 149.6,211.9 150.6,212.4 151.6,211.4 152.6,211.9 153.6,210.9 154.6,209.9 155.5,208.9 156.5,207.9 157.5,206.9 158.5,207.4 159.5,207.9 160.5,206.9 161.5,207.5 162.5,208 163.4,208.5 164.4,209 165.4,209.5 166.4,210 167.4,209 168.4,208 169.4,207 170.3,206 171.3,206.5 172.3,207 173.3,207.5 174.3,208 175.3,207 176.3,206 177.3,206.5 178.2,205.5 179.2,206 180.2,206.5 181.2,205.5 182.2,206.1 183.2,205.1 184.2,204.1 185.1,204.6 186.1,203.6 187.1,204.1 188.1,204.6 189.1,205.1 190.1,204.1 191.1,203.1 192.1,203.6 193,204.1 194,204.6 195,203.6 196,204.1 197,203.1 198,202.1 199,202.6 199.9,203.1 200.9,203.6 201.9,202.6 202.9,203.2 203.9,203.7 204.9,204.2 205.9,204.7 206.9,205.2 207.8,205.7 208.8,204.7 209.8,205.2 210.8,205.7 211.8,206.2 212.8,206.7 213.8,207.2 214.7,207.7 215.7,208.2 216.7,207.2 217.7,207.7 218.7,206.7 219.7,207.2 220.7,206.2 221.7,205.3 222.6,205.8 223.6,206.3 224.6,206.8 225.6,207.3 226.6,207.8 227.6,208.3 228.6,208.8 229.5,209.3 230.5,209.8 231.5,208.8 232.5,209.3 233.5,208.3 234.5,208.8 235.5,207.8 236.5,206.8 237.4,205.8 238.4,206.3 239.4,205.3 240.4,205.8 241.4,204.9 242.4,205.4 243.4,205.9 244.3,206.4 245.3,206.9 246.3,205.9 247.3,204.9 248.3,205.4 249.3,205.9 250.3,204.9 251.3,203.9 252.2,202.9 253.2,201.9 254.2,202.4 255.2,201.4 256.2,201.9 257.2,200.9 258.2,199.9 259.1,200.4 260.1,200.9 261.1,199.9 262.1,200.4 263.1,200.9 264.1,199.9 265.1,200.5 266.1,199.5 267,200 268,200.5 269,201 270,200 271,199 272,199.5 273,200 273.9,200.5 274.9,201 275.9,201.5 276.9,202 277.9,202.5 278.9,203 279.9,203.5 280.9,204 281.8,203 282.8,202.1 283.8,201.1 284.8,200.1 285.8,200.6 286.8,199.6 287.8,200.1 288.7,200.6 289.7,201.1 290.7,201.6 291.7,200.6 292.7,201.1 293.7,200.1 294.7,200.6 295.7,201.1 296.6,201.6 297.6,200.6 298.6,201.1 299.6,200.1 300.6,199.1 301.6,199.6 302.6,200.1 303.5,200.7 304.5,199.7 305.5,200.2 306.5,200.7 307.5,199.7 308.5,200.2 309.5,200.7 310.5,201.2 311.4,201.7 312.4,202.2 313.4,202.7 314.4,201.7 315.4,200.7 316.4,201.2 317.4,201.7 318.3,202.2 319.3,202.7 320.3,203.2 321.3,203.8 322.3,202.8 323.3,201.8 324.3,200.8 325.3,201.3 326.2,200.3 327.2,200.8 328.2,201.3 329.2,201.8 330.2,200.8 331.2,199.8 332.2,200.3 333.1,200.8 334.1,201.3 335.1,201.8 336.1,200.8 337.1,199.8 338.1,200.3 339.1,200.8 340.1,199.8 341,198.8 342,197.8 343,198.3 344,197.3"/>
+<polyline class="ma2" points="48,225.9 49,228.5 50,223.7 51,226.3 51.9,228.9 52.9,224.1 53.9,226.7 54.9,229.3 55.9,231.8 56.9,227 57.9,222.2 58.9,224.8 59.8,227.4 60.8,230 61.8,232.6 62.8,235.2 63.8,230.4 64.8,225.6 65.8,220.7 66.7,223.3 67.7,225.9 68.7,228.5 69.7,223.7 70.7,218.9 71.7,214.1 72.7,209.3 73.7,204.5 74.6,199.7 75.6,194.9 76.6,197.5 77.6,200 78.6,202.6 79.6,205.2 80.6,200.4 81.5,195.6 82.5,198.2 83.5,193.4 84.5,196 85.5,198.6 86.5,201.1 87.5,203.7 88.5,198.9 89.4,194.1 90.4,189.3 91.4,191.9 92.4,187.1 93.4,189.7 94.4,184.9 95.4,187.5 96.3,190.1 97.3,192.6 98.3,187.8 99.3,183 100.3,178.2 101.3,180.8 102.3,183.4 103.3,186 104.2,181.2 105.2,183.8 106.2,179 107.2,181.5 108.2,176.7 109.2,179.3 110.2,174.5 111.1,177.1 112.1,179.7 113.1,182.3 114.1,184.9 115.1,187.5 116.1,190 117.1,192.6 118.1,187.8 119,190.4 120,193 121,195.6 122,190.8 123,193.4 124,188.6 125,183.7 125.9,178.9 126.9,181.5 127.9,176.7 128.9,179.3 129.9,174.5 130.9,169.7 131.9,172.3 132.9,167.5 133.8,170.1 134.8,172.7 135.8,175.2 136.8,177.8 137.8,180.4 138.8,175.6 139.8,178.2 140.7,180.8 141.7,183.4 142.7,178.6 143.7,173.8 144.7,176.3 145.7,171.5 146.7,166.7 147.7,169.3 148.6,164.5 149.6,167.1 150.6,169.7 151.6,164.9 152.6,167.5 153.6,162.7 154.6,157.9 155.5,153.1 156.5,148.2 157.5,143.4 158.5,146 159.5,148.6 160.5,143.8 161.5,146.4 162.5,149 163.4,151.6 164.4,154.2 165.4,156.7 166.4,159.3 167.4,154.5 168.4,149.7 169.4,144.9 170.3,140.1 171.3,142.7 172.3,145.3 173.3,147.9 174.3,150.4 175.3,145.6 176.3,140.8 177.3,143.4 178.2,138.6 179.2,141.2 180.2,143.8 181.2,139 182.2,141.6 183.2,136.8 184.2,132 185.1,134.6 186.1,129.7 187.1,132.3 188.1,134.9 189.1,137.5 190.1,132.7 191.1,127.9 192.1,130.5 193,133.1 194,135.7 195,130.8 196,133.4 197,128.6 198,123.8 199,126.4 199.9,129 200.9,131.6 201.9,126.8 202.9,129.4 203.9,131.9 204.9,134.5 205.9,137.1 206.9,139.7 207.8,142.3 208.8,137.5 209.8,140.1 210.8,142.7 211.8,145.2 212.8,147.8 213.8,150.4 214.7,153 215.7,155.6 216.7,150.8 217.7,153.4 218.7,148.6 219.7,151.1 220.7,146.3 221.7,141.5 222.6,144.1 223.6,146.7 224.6,149.3 225.6,151.9 226.6,154.5 227.6,157.1 228.6,159.6 229.5,162.2 230.5,164.8 231.5,160 232.5,162.6 233.5,157.8 234.5,160.4 235.5,155.6 236.5,150.8 237.4,146 238.4,148.5 239.4,143.7 240.4,146.3 241.4,141.5 242.4,144.1 243.4,146.7 244.3,149.3 245.3,151.9 246.3,147.1 247.3,142.3 248.3,144.8 249.3,147.4 250.3,142.6 251.3,137.8 252.2,133 253.2,128.2 254.2,130.8 255.2,126 256.2,128.6 257.2,123.8 258.2,119 259.1,121.6 260.1,124.1 261.1,119.3 262.1,121.9 263.1,124.5 264.1,119.7 265.1,122.3 266.1,117.5 267,120.1 268,122.7 269,125.2 270,120.4 271,115.6 272,118.2 273,120.8 273.9,123.4 274.9,126 275.9,128.6 276.9,131.1 277.9,133.7 278.9,136.3 279.9,138.9 280.9,141.5 281.8,136.7 282.8,131.9 283.8,127.1 284.8,122.3 285.8,124.9 286.8,120 287.8,122.6 288.7,125.2 289.7,127.8 290.7,130.4 291.7,125.6 292.7,128.2 293.7,123.4 294.7,126 295.7,128.5 296.6,131.1 297.6,126.3 298.6,128.9 299.6,124.1 300.6,119.3 301.6,121.9 302.6,124.5 303.5,127.1 304.5,122.2 305.5,124.8 306.5,127.4 307.5,122.6 308.5,125.2 309.5,127.8 310.5,130.4 311.4,133 312.4,135.5 313.4,138.1 314.4,133.3 315.4,128.5 316.4,131.1 317.4,133.7 318.3,136.3 319.3,138.9 320.3,141.4 321.3,144 322.3,139.2 323.3,134.4 324.3,129.6 325.3,132.2 326.2,127.4 327.2,130 328.2,132.6 329.2,135.2 330.2,130.4 331.2,125.6 332.2,128.1 333.1,130.7 334.1,133.3 335.1,135.9 336.1,131.1 337.1,126.3 338.1,128.9 339.1,131.5 340.1,126.7 341,121.8 342,117 343,119.6 344,114.8"/>
+<polyline class="ma3" points="48,225.9 49,231.2 50,222.1 51,227.4 51.9,232.7 52.9,223.5 53.9,228.8 54.9,234.1 55.9,239.4 56.9,230.2 57.9,221 58.9,226.4 59.8,231.7 60.8,237 61.8,242.3 62.8,247.6 63.8,238.4 64.8,229.2 65.8,220 66.7,225.3 67.7,230.6 68.7,236 69.7,226.8 70.7,217.6 71.7,208.4 72.7,199.2 73.7,190 74.6,180.8 75.6,171.6 76.6,176.9 77.6,182.3 78.6,187.6 79.6,192.9 80.6,183.7 81.5,174.5 82.5,179.8 83.5,170.6 84.5,175.9 85.5,181.2 86.5,186.5 87.5,191.9 88.5,182.7 89.4,173.5 90.4,164.3 91.4,169.6 92.4,160.4 93.4,165.7 94.4,156.5 95.4,161.8 96.3,167.1 97.3,172.5 98.3,163.3 99.3,154.1 100.3,144.9 101.3,150.2 102.3,155.5 103.3,160.8 104.2,151.6 105.2,156.9 106.2,147.8 107.2,153.1 108.2,143.9 109.2,149.2 110.2,140 111.1,145.3 112.1,150.6 113.1,155.9 114.1,161.2 115.1,166.5 116.1,171.9 117.1,177.2 118.1,168 119,173.3 120,178.6 121,183.9 122,174.7 123,180 124,170.8 125,161.7 125.9,152.5 126.9,157.8 127.9,148.6 128.9,153.9 129.9,144.7 130.9,135.5 131.9,140.8 132.9,131.6 133.8,136.9 134.8,142.3 135.8,147.6 136.8,152.9 137.8,158.2 138.8,149 139.8,154.3 140.7,159.6 141.7,164.9 142.7,155.7 143.7,146.6 144.7,151.9 145.7,142.7 146.7,133.5 147.7,138.8 148.6,129.6 149.6,134.9 150.6,140.2 151.6,131 152.6,136.3 153.6,127.2 154.6,118 155.5,108.8 156.5,99.6 157.5,90.4 158.5,95.7 159.5,101 160.5,91.8 161.5,97.1 162.5,102.4 163.4,107.8 164.4,113.1 165.4,118.4 166.4,123.7 167.4,114.5 168.4,105.3 169.4,96.1 170.3,86.9 171.3,92.2 172.3,97.6 173.3,102.9 174.3,108.2 175.3,99 176.3,89.8 177.3,95.1 178.2,85.9 179.2,91.2 180.2,96.5 181.2,87.3 182.2,92.7 183.2,83.5 184.2,74.3 185.1,79.6 186.1,70.4 187.1,75.7 188.1,81 189.1,86.3 190.1,77.1 191.1,67.9 192.1,73.3 193,78.6 194,83.9 195,74.7 196,80 197,70.8 198,61.6 199,66.9 199.9,72.2 200.9,77.6 201.9,68.4 202.9,73.7 203.9,79 204.9,84.3 205.9,89.6 206.9,94.9 207.8,100.2 208.8,91 209.8,96.3 210.8,101.7 211.8,107 212.8,112.3 213.8,117.6 214.7,122.9 215.7,128.2 216.7,119 217.7,124.3 218.7,115.1 219.7,120.5 220.7,111.3 221.7,102.1 222.6,107.4 223.6,112.7 224.6,118 225.6,123.3 226.6,128.6 227.6,133.9 228.6,139.3 229.5,144.6 230.5,149.9 231.5,140.7 232.5,146 233.5,136.8 234.5,142.1 235.5,132.9 236.5,123.7 237.4,114.5 238.4,119.9 239.4,110.7 240.4,116 241.4,106.8 242.4,112.1 243.4,117.4 244.3,122.7 245.3,128 246.3,118.8 247.3,109.6 248.3,115 249.3,120.3 250.3,111.1 251.3,101.9 252.2,92.7 253.2,83.5 254.2,88.8 255.2,79.6 256.2,84.9 257.2,75.8 258.2,66.6 259.1,71.9 260.1,77.2 261.1,68 262.1,73.3 263.1,78.6 264.1,69.4 265.1,74.7 266.1,65.5 267,70.9 268,76.2 269,81.5 270,72.3 271,63.1 272,68.4 273,73.7 273.9,79 274.9,84.3 275.9,89.7 276.9,95 277.9,100.3 278.9,105.6 279.9,110.9 280.9,116.2 281.8,107 282.8,97.8 283.8,88.6 284.8,79.4 285.8,84.8 286.8,75.6 287.8,80.9 288.7,86.2 289.7,91.5 290.7,96.8 291.7,87.6 292.7,92.9 293.7,83.7 294.7,89.1 295.7,94.4 296.6,99.7 297.6,90.5 298.6,95.8 299.6,86.6 300.6,77.4 301.6,82.7 302.6,88 303.5,93.3 304.5,84.2 305.5,89.5 306.5,94.8 307.5,85.6 308.5,90.9 309.5,96.2 310.5,101.5 311.4,106.8 312.4,112.1 313.4,117.5 314.4,108.3 315.4,99.1 316.4,104.4 317.4,109.7 318.3,115 319.3,120.3 320.3,125.6 321.3,130.9 322.3,121.7 323.3,112.6 324.3,103.4 325.3,108.7 326.2,99.5 327.2,104.8 328.2,110.1 329.2,115.4 330.2,106.2 331.2,97 332.2,102.3 333.1,107.7 334.1,113 335.1,118.3 336.1,109.1 337.1,99.9 338.1,105.2 339.1,110.5 340.1,101.3 341,92.1 342,83 343,88.3 344,79.1"/>
+<text class="pl" x="48" y="22">估计准确：胜率 40%，盈亏比 2</text>
+<line class="ma1" x1="58" y1="288" x2="78" y2="288"/>
+<text class="lg" x="84" y="292">单笔 1%：终值 1.76 倍，最大回撤 14%</text>
+<line class="ma2" x1="58" y1="305" x2="78" y2="305"/>
+<text class="lg" x="84" y="309">单笔 5%：终值 9.07 倍，最大回撤 56%</text>
+<line class="ma3" x1="58" y1="322" x2="78" y2="322"/>
+<text class="lg" x="84" y="326">单笔 10%：终值 18.4 倍，最大回撤 83%</text>
+<line class="grid" x1="408" y1="330.8" x2="704" y2="330.8"/>
+<text class="tick" x="402" y="334.8" text-anchor="end">1/8</text>
+<line class="grid" x1="408" y1="295.8" x2="704" y2="295.8"/>
+<text class="tick" x="402" y="299.8" text-anchor="end">1/4</text>
+<line class="grid" x1="408" y1="260.9" x2="704" y2="260.9"/>
+<text class="tick" x="402" y="264.9" text-anchor="end">1/2</text>
+<line class="sr" x1="408" y1="225.9" x2="704" y2="225.9"/>
+<text class="tick" x="402" y="229.9" text-anchor="end">1</text>
+<line class="grid" x1="408" y1="191" x2="704" y2="191"/>
+<text class="tick" x="402" y="195" text-anchor="end">2</text>
+<line class="grid" x1="408" y1="156.1" x2="704" y2="156.1"/>
+<text class="tick" x="402" y="160.1" text-anchor="end">4</text>
+<line class="grid" x1="408" y1="121.1" x2="704" y2="121.1"/>
+<text class="tick" x="402" y="125.1" text-anchor="end">8</text>
+<line class="grid" x1="408" y1="86.2" x2="704" y2="86.2"/>
+<text class="tick" x="402" y="90.2" text-anchor="end">16</text>
+<line class="grid" x1="408" y1="51.2" x2="704" y2="51.2"/>
+<text class="tick" x="402" y="55.2" text-anchor="end">32</text>
+<text class="tick" x="408" y="358" text-anchor="middle">0</text>
+<text class="tick" x="506.7" y="358" text-anchor="middle">100</text>
+<text class="tick" x="605.3" y="358" text-anchor="middle">200</text>
+<text class="tick" x="704" y="358" text-anchor="middle">300</text>
+<line class="axis" x1="408" y1="40" x2="408" y2="342"/>
+<line class="axis" x1="408" y1="342" x2="704" y2="342"/>
+<polyline class="ma1" points="408,225.9 409,226.4 410,225.4 411,226 411.9,226.5 412.9,225.5 413.9,226 414.9,226.5 415.9,227 416.9,226 417.9,225 418.9,225.5 419.8,226 420.8,226.5 421.8,227 422.8,227.5 423.8,226.5 424.8,225.5 425.8,224.5 426.7,225 427.7,225.5 428.7,226 429.7,225 430.7,224 431.7,223 432.7,222.1 433.7,221.1 434.6,220.1 435.6,219.1 436.6,219.6 437.6,220.1 438.6,220.6 439.6,221.1 440.6,220.1 441.5,219.1 442.5,219.6 443.5,218.6 444.5,219.1 445.5,219.6 446.5,220.1 447.5,220.6 448.5,221.1 449.4,220.1 450.4,219.1 451.4,219.6 452.4,218.6 453.4,219.1 454.4,218.1 455.4,218.7 456.3,219.2 457.3,219.7 458.3,218.7 459.3,219.2 460.3,218.2 461.3,218.7 462.3,219.2 463.3,219.7 464.2,220.2 465.2,220.7 466.2,219.7 467.2,220.2 468.2,220.7 469.2,221.2 470.2,220.2 471.1,220.7 472.1,221.2 473.1,221.8 474.1,222.3 475.1,222.8 476.1,223.3 477.1,223.8 478.1,224.3 479,224.8 480,225.3 481,225.8 482,226.3 483,226.8 484,225.8 485,224.8 485.9,223.8 486.9,224.3 487.9,223.3 488.9,223.8 489.9,222.8 490.9,221.8 491.9,222.4 492.9,221.4 493.8,221.9 494.8,222.4 495.8,222.9 496.8,223.4 497.8,223.9 498.8,222.9 499.8,223.4 500.7,223.9 501.7,224.4 502.7,223.4 503.7,222.4 504.7,222.9 505.7,221.9 506.7,220.9 507.7,221.4 508.6,220.4 509.6,220.9 510.6,221.4 511.6,220.4 512.6,221 513.6,221.5 514.6,220.5 515.5,219.5 516.5,218.5 517.5,217.5 518.5,218 519.5,218.5 520.5,217.5 521.5,218 522.5,218.5 523.4,219 524.4,219.5 525.4,220 526.4,220.5 527.4,219.5 528.4,218.5 529.4,217.5 530.3,216.5 531.3,217 532.3,217.5 533.3,218 534.3,218.6 535.3,217.6 536.3,216.6 537.3,217.1 538.2,216.1 539.2,216.6 540.2,217.1 541.2,216.1 542.2,216.6 543.2,215.6 544.2,216.1 545.1,216.6 546.1,215.6 547.1,216.1 548.1,216.6 549.1,217.1 550.1,217.6 551.1,216.6 552.1,217.1 553,217.6 554,218.2 555,217.2 556,217.7 557,216.7 558,217.2 559,217.7 559.9,218.2 560.9,218.7 561.9,219.2 562.9,219.7 563.9,220.2 564.9,220.7 565.9,221.2 566.9,221.7 567.8,222.2 568.8,221.2 569.8,221.7 570.8,222.3 571.8,222.8 572.8,223.3 573.8,223.8 574.7,224.3 575.7,224.8 576.7,223.8 577.7,224.3 578.7,223.3 579.7,223.8 580.7,222.8 581.7,221.8 582.6,222.3 583.6,222.8 584.6,223.3 585.6,223.8 586.6,224.3 587.6,224.8 588.6,225.3 589.5,225.9 590.5,226.4 591.5,225.4 592.5,225.9 593.5,224.9 594.5,225.4 595.5,224.4 596.5,223.4 597.4,222.4 598.4,222.9 599.4,221.9 600.4,222.4 601.4,221.4 602.4,221.9 603.4,222.4 604.3,222.9 605.3,223.4 606.3,222.4 607.3,221.4 608.3,221.9 609.3,222.4 610.3,221.4 611.3,220.4 612.2,219.5 613.2,218.5 614.2,219 615.2,218 616.2,218.5 617.2,217.5 618.2,216.5 619.1,217 620.1,217.5 621.1,216.5 622.1,217 623.1,217.5 624.1,216.5 625.1,217 626.1,217.5 627,218 628,218.5 629,219 630,218 631,217 632,217.5 633,218.1 633.9,218.6 634.9,219.1 635.9,219.6 636.9,220.1 637.9,220.6 638.9,221.1 639.9,221.6 640.9,222.1 641.8,221.1 642.8,220.1 643.8,219.1 644.8,218.1 645.8,218.6 646.8,217.6 647.8,218.1 648.7,218.6 649.7,219.1 650.7,219.6 651.7,218.6 652.7,219.2 653.7,218.2 654.7,218.7 655.7,219.2 656.6,219.7 657.6,220.2 658.6,220.7 659.6,219.7 660.6,218.7 661.6,219.2 662.6,219.7 663.5,220.2 664.5,219.2 665.5,219.7 666.5,220.2 667.5,219.2 668.5,219.7 669.5,220.2 670.5,220.7 671.4,221.3 672.4,221.8 673.4,222.3 674.4,222.8 675.4,221.8 676.4,222.3 677.4,222.8 678.3,223.3 679.3,223.8 680.3,224.3 681.3,224.8 682.3,223.8 683.3,224.3 684.3,223.3 685.3,223.8 686.2,222.8 687.2,223.3 688.2,223.8 689.2,224.4 690.2,223.4 691.2,222.4 692.2,222.9 693.1,223.4 694.1,223.9 695.1,224.4 696.1,223.4 697.1,222.4 698.1,222.9 699.1,223.4 700.1,222.4 701,221.4 702,220.4 703,220.9 704,219.9"/>
+<polyline class="ma2" points="408,225.9 409,228.5 410,223.7 411,226.3 411.9,228.9 412.9,224.1 413.9,226.7 414.9,229.3 415.9,231.8 416.9,227 417.9,222.2 418.9,224.8 419.8,227.4 420.8,230 421.8,232.6 422.8,235.2 423.8,230.4 424.8,225.6 425.8,220.7 426.7,223.3 427.7,225.9 428.7,228.5 429.7,223.7 430.7,218.9 431.7,214.1 432.7,209.3 433.7,204.5 434.6,199.7 435.6,194.9 436.6,197.5 437.6,200 438.6,202.6 439.6,205.2 440.6,200.4 441.5,195.6 442.5,198.2 443.5,193.4 444.5,196 445.5,198.6 446.5,201.1 447.5,203.7 448.5,206.3 449.4,201.5 450.4,196.7 451.4,199.3 452.4,194.5 453.4,197.1 454.4,192.3 455.4,194.9 456.3,197.4 457.3,200 458.3,195.2 459.3,197.8 460.3,193 461.3,195.6 462.3,198.2 463.3,200.8 464.2,203.3 465.2,205.9 466.2,201.1 467.2,203.7 468.2,206.3 469.2,208.9 470.2,204.1 471.1,206.7 472.1,209.3 473.1,211.8 474.1,214.4 475.1,217 476.1,219.6 477.1,222.2 478.1,224.8 479,227.4 480,229.9 481,232.5 482,235.1 483,237.7 484,232.9 485,228.1 485.9,223.3 486.9,225.9 487.9,221.1 488.9,223.6 489.9,218.8 490.9,214 491.9,216.6 492.9,211.8 493.8,214.4 494.8,217 495.8,219.6 496.8,222.2 497.8,224.7 498.8,219.9 499.8,222.5 500.7,225.1 501.7,227.7 502.7,222.9 503.7,218.1 504.7,220.7 505.7,215.9 506.7,211.1 507.7,213.7 508.6,208.8 509.6,211.4 510.6,214 511.6,209.2 512.6,211.8 513.6,214.4 514.6,209.6 515.5,204.8 516.5,200 517.5,195.2 518.5,197.8 519.5,200.3 520.5,195.5 521.5,198.1 522.5,200.7 523.4,203.3 524.4,205.9 525.4,208.5 526.4,211.1 527.4,206.2 528.4,201.4 529.4,196.6 530.3,191.8 531.3,194.4 532.3,197 533.3,199.6 534.3,202.2 535.3,197.4 536.3,192.6 537.3,195.2 538.2,190.3 539.2,192.9 540.2,195.5 541.2,190.7 542.2,193.3 543.2,188.5 544.2,191.1 545.1,193.7 546.1,188.9 547.1,191.4 548.1,194 549.1,196.6 550.1,199.2 551.1,194.4 552.1,197 553,199.6 554,202.2 555,197.4 556,199.9 557,195.1 558,197.7 559,200.3 559.9,202.9 560.9,205.5 561.9,208.1 562.9,210.6 563.9,213.2 564.9,215.8 565.9,218.4 566.9,221 567.8,223.6 568.8,218.8 569.8,221.4 570.8,223.9 571.8,226.5 572.8,229.1 573.8,231.7 574.7,234.3 575.7,236.9 576.7,232.1 577.7,234.7 578.7,229.8 579.7,232.4 580.7,227.6 581.7,222.8 582.6,225.4 583.6,228 584.6,230.6 585.6,233.2 586.6,235.8 587.6,238.3 588.6,240.9 589.5,243.5 590.5,246.1 591.5,241.3 592.5,243.9 593.5,239.1 594.5,241.7 595.5,236.9 596.5,232 597.4,227.2 598.4,229.8 599.4,225 600.4,227.6 601.4,222.8 602.4,225.4 603.4,228 604.3,230.6 605.3,233.1 606.3,228.3 607.3,223.5 608.3,226.1 609.3,228.7 610.3,223.9 611.3,219.1 612.2,214.3 613.2,209.5 614.2,212.1 615.2,207.3 616.2,209.9 617.2,205.1 618.2,200.3 619.1,202.8 620.1,205.4 621.1,200.6 622.1,203.2 623.1,205.8 624.1,201 625.1,203.6 626.1,206.2 627,208.7 628,211.3 629,213.9 630,209.1 631,204.3 632,206.9 633,209.5 633.9,212.1 634.9,214.6 635.9,217.2 636.9,219.8 637.9,222.4 638.9,225 639.9,227.6 640.9,230.2 641.8,225.4 642.8,220.6 643.8,215.7 644.8,210.9 645.8,213.5 646.8,208.7 647.8,211.3 648.7,213.9 649.7,216.5 650.7,219.1 651.7,214.3 652.7,216.8 653.7,212 654.7,214.6 655.7,217.2 656.6,219.8 657.6,222.4 658.6,225 659.6,220.2 660.6,215.4 661.6,217.9 662.6,220.5 663.5,223.1 664.5,218.3 665.5,220.9 666.5,223.5 667.5,218.7 668.5,221.3 669.5,223.9 670.5,226.4 671.4,229 672.4,231.6 673.4,234.2 674.4,236.8 675.4,232 676.4,234.6 677.4,237.1 678.3,239.7 679.3,242.3 680.3,244.9 681.3,247.5 682.3,242.7 683.3,245.3 684.3,240.5 685.3,243 686.2,238.2 687.2,240.8 688.2,243.4 689.2,246 690.2,241.2 691.2,236.4 692.2,239 693.1,241.6 694.1,244.2 695.1,246.7 696.1,241.9 697.1,237.1 698.1,239.7 699.1,242.3 700.1,237.5 701,232.7 702,227.9 703,230.5 704,225.7"/>
+<polyline class="ma3" points="408,225.9 409,231.2 410,222.1 411,227.4 411.9,232.7 412.9,223.5 413.9,228.8 414.9,234.1 415.9,239.4 416.9,230.2 417.9,221 418.9,226.4 419.8,231.7 420.8,237 421.8,242.3 422.8,247.6 423.8,238.4 424.8,229.2 425.8,220 426.7,225.3 427.7,230.6 428.7,236 429.7,226.8 430.7,217.6 431.7,208.4 432.7,199.2 433.7,190 434.6,180.8 435.6,171.6 436.6,176.9 437.6,182.3 438.6,187.6 439.6,192.9 440.6,183.7 441.5,174.5 442.5,179.8 443.5,170.6 444.5,175.9 445.5,181.2 446.5,186.5 447.5,191.9 448.5,197.2 449.4,188 450.4,178.8 451.4,184.1 452.4,174.9 453.4,180.2 454.4,171 455.4,176.3 456.3,181.6 457.3,187 458.3,177.8 459.3,183.1 460.3,173.9 461.3,179.2 462.3,184.5 463.3,189.8 464.2,195.1 465.2,200.4 466.2,191.3 467.2,196.6 468.2,201.9 469.2,207.2 470.2,198 471.1,203.3 472.1,208.6 473.1,213.9 474.1,219.2 475.1,224.6 476.1,229.9 477.1,235.2 478.1,240.5 479,245.8 480,251.1 481,256.4 482,261.7 483,267 484,257.8 485,248.7 485.9,239.5 486.9,244.8 487.9,235.6 488.9,240.9 489.9,231.7 490.9,222.5 491.9,227.8 492.9,218.6 493.8,223.9 494.8,229.3 495.8,234.6 496.8,239.9 497.8,245.2 498.8,236 499.8,241.3 500.7,246.6 501.7,251.9 502.7,242.7 503.7,233.6 504.7,238.9 505.7,229.7 506.7,220.5 507.7,225.8 508.6,216.6 509.6,221.9 510.6,227.2 511.6,218 512.6,223.3 513.6,228.7 514.6,219.5 515.5,210.3 516.5,201.1 517.5,191.9 518.5,197.2 519.5,202.5 520.5,193.3 521.5,198.6 522.5,204 523.4,209.3 524.4,214.6 525.4,219.9 526.4,225.2 527.4,216 528.4,206.8 529.4,197.6 530.3,188.4 531.3,193.7 532.3,199.1 533.3,204.4 534.3,209.7 535.3,200.5 536.3,191.3 537.3,196.6 538.2,187.4 539.2,192.7 540.2,198 541.2,188.9 542.2,194.2 543.2,185 544.2,190.3 545.1,195.6 546.1,186.4 547.1,191.7 548.1,197 549.1,202.3 550.1,207.6 551.1,198.5 552.1,203.8 553,209.1 554,214.4 555,205.2 556,210.5 557,201.3 558,206.6 559,211.9 559.9,217.3 560.9,222.6 561.9,227.9 562.9,233.2 563.9,238.5 564.9,243.8 565.9,249.1 566.9,254.4 567.8,259.7 568.8,250.5 569.8,255.9 570.8,261.2 571.8,266.5 572.8,271.8 573.8,277.1 574.7,282.4 575.7,287.7 576.7,278.5 577.7,283.8 578.7,274.7 579.7,280 580.7,270.8 581.7,261.6 582.6,266.9 583.6,272.2 584.6,277.5 585.6,282.8 586.6,288.1 587.6,293.4 588.6,298.8 589.5,304.1 590.5,309.4 591.5,300.2 592.5,305.5 593.5,296.3 594.5,301.6 595.5,292.4 596.5,283.2 597.4,274.1 598.4,279.4 599.4,270.2 600.4,275.5 601.4,266.3 602.4,271.6 603.4,276.9 604.3,282.2 605.3,287.5 606.3,278.3 607.3,269.2 608.3,274.5 609.3,279.8 610.3,270.6 611.3,261.4 612.2,252.2 613.2,243 614.2,248.3 615.2,239.1 616.2,244.4 617.2,235.3 618.2,226.1 619.1,231.4 620.1,236.7 621.1,227.5 622.1,232.8 623.1,238.1 624.1,228.9 625.1,234.2 626.1,239.6 627,244.9 628,250.2 629,255.5 630,246.3 631,237.1 632,242.4 633,247.7 633.9,253 634.9,258.3 635.9,263.7 636.9,269 637.9,274.3 638.9,279.6 639.9,284.9 640.9,290.2 641.8,281 642.8,271.8 643.8,262.6 644.8,253.5 645.8,258.8 646.8,249.6 647.8,254.9 648.7,260.2 649.7,265.5 650.7,270.8 651.7,261.6 652.7,266.9 653.7,257.7 654.7,263.1 655.7,268.4 656.6,273.7 657.6,279 658.6,284.3 659.6,275.1 660.6,265.9 661.6,271.2 662.6,276.5 663.5,281.9 664.5,272.7 665.5,278 666.5,283.3 667.5,274.1 668.5,279.4 669.5,284.7 670.5,290 671.4,295.3 672.4,300.6 673.4,306 674.4,311.3 675.4,302.1 676.4,307.4 677.4,312.7 678.3,318 679.3,323.3 680.3,328.6 681.3,333.9 682.3,324.8 683.3,330.1 684.3,320.9 685.3,326.2 686.2,317 687.2,322.3 688.2,327.6 689.2,332.9 690.2,323.7 691.2,314.5 692.2,319.9 693.1,325.2 694.1,330.5 695.1,335.8 696.1,326.6 697.1,317.4 698.1,322.7 699.1,328 700.1,318.8 701,309.7 702,300.5 703,305.8 704,296.6"/>
+<text class="pl" x="408" y="22">真实优势略差：胜率 35%，盈亏比 2</text>
+<line class="ma1" x1="418" y1="52" x2="438" y2="52"/>
+<text class="lg" x="444" y="56">单笔 1%：终值 1.13 倍，最大回撤 19%</text>
+<line class="ma2" x1="418" y1="69" x2="438" y2="69"/>
+<text class="lg" x="444" y="73">单笔 5%：终值 1.01 倍，最大回撤 69%</text>
+<line class="ma3" x1="418" y1="86" x2="438" y2="86"/>
+<text class="lg" x="444" y="90">单笔 10%：终值 0.25 倍，最大回撤 96%</text>
+<text class="elabel" x="360" y="378" text-anchor="middle">横轴：交易笔数；纵轴：资金倍数（对数刻度）。两图用同一串随机数（种子 77），每笔要么赚 2R、要么亏 1R。</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>左图胜率 40%，期望值 +0.2R。三条曲线经历的是完全相同的输赢顺序，浅色竖带是同一段坏运气（第 152–185 笔）：单笔 1% 的账户回撤约 14%，5% 的回撤约 56%，10% 的回撤约 83%。10% 的终值最高（约 18 倍），但它从 26 倍附近跌到不到 5 倍，现实中很少有人能扛着这样的回撤继续照规则下注。右图只把胜率改成 35%（期望值 +0.05R，仍然是正的）：1% 的账户小幅盈利，5% 的账户折腾 300 笔回到原点，10% 的账户只剩约四分之一。<b>两张图合起来：单笔风险越大，结果越依赖你对优势的估计是否准确，而这个估计恰恰最不可靠。</b>这是确定性随机数生成的模拟，不是真实交易记录；两图的终值恰好落在两万次模拟的中位数上，是有代表性的一条路径。</figcaption>
+  </figure>
+
+  <div class="prose">
+    <p>一条曲线可能是运气，换成两万次模拟看统计结果（每次 300 笔；“曾回撤 ≥ 50%”可以看作实质性的破产，因为要赚 100% 才能回来，大多数人在那之前就放弃了）：</p>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <tr><th>单笔风险</th><th>胜率 40%：300 笔后中位数</th><th>平均最大回撤</th><th>曾回撤 ≥ 50%</th><th>胜率 35%：中位数</th><th>平均最大回撤</th><th>曾回撤 ≥ 50%</th></tr>
+      <tr><td>1%</td><td class="num">1.76 倍</td><td class="num">14%</td><td class="num">约 0%</td><td class="num">1.13 倍</td><td class="num">22%</td><td class="num">0.1%</td></tr>
+      <tr><td>2%</td><td class="num">2.92 倍</td><td class="num">27%</td><td class="num">0.9%</td><td class="num">1.20 倍</td><td class="num">39%</td><td class="num">18%</td></tr>
+      <tr><td>5%</td><td class="num">9.07 倍</td><td class="num">56%</td><td class="num">66%</td><td class="num">1.01 倍</td><td class="num">73%</td><td class="num">95%</td></tr>
+      <tr><td>10%</td><td class="num">18.4 倍</td><td class="num">83%</td><td class="num">99.9%</td><td class="num">0.25 倍</td><td class="num">94%</td><td class="num">100%</td></tr>
+      <tr><td>20%</td><td class="num">1.23 倍</td><td class="num">98%</td><td class="num">100%</td><td class="num">约 0</td><td class="num">99.8%</td><td class="num">100%</td></tr>
+    </table>
+  </div>
+
+  <div class="prose">
+    <p>这张表有三个规律。一，<strong>破产风险随单笔风险急剧上升，而且不是线性的</strong>：从 1% 到 2%，曾经腰斩的概率从几乎为零升到约 1%；到 5% 就是三分之二。二，<strong>收益不会一直随风险增加</strong>：胜率 40% 时，单笔风险从 10% 加到 20%，中位数反而从 18 倍掉到 1.2 倍。三，<strong>优势稍微变差，高风险的那一档最先崩溃</strong>：胜率从 40% 降到 35%，1% 档的中位数从 1.76 倍变成 1.13 倍，10% 档从 18 倍变成 0.25 倍。还有一个容易被忽略的事实：即使是 1% 档，平均最大回撤也有 14%–22%。资金管理做得再好，回撤也是交易的常态。</p>
+
+    <h3>凯利公式：数学给出的上限</h3>
+    <p>第二条规律背后有一个精确的数学答案。1956 年，贝尔实验室的约翰·凯利推导出：在一个优势为正、可以反复下注的游戏里，存在一个让资金<strong>长期复合增长最快</strong>的下注比例。对于“赢了赚 b 倍风险、输了亏掉这份风险”的情形：</p>
+  </div>
+
+  <div class="formula">
+    <span class="fx">凯利比例 f* = p − (1 − p) ÷ b = 期望值（以 R 计）÷ 盈亏比</span><br>
+    <span class="note">p 为胜率，b 为盈亏比；f* 指每笔冒的风险（止损亏损额）占账户的比例。</span>
+  </div>
+
+  <div class="prose">
+    <p>代入本站的系统：胜率 40%、盈亏比 2，f* = 0.4 − 0.6 ÷ 2 = 10%（也就是 0.2R ÷ 2）；胜率 40%、盈亏比 3，f* = 0.4 − 0.6 ÷ 3 = 20%。《投资学》第 27 章（积极型投资组合管理理论）讲过，凯利公式是“对数效用”下的最优仓位，和第 6 章（风险资产配置）的最优仓位 y*、Treynor–Black 模型一脉相承，骨架都是<strong>仓位 = 优势 ÷ 风险</strong>。</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 16-10</span>凯利曲线：单笔风险超过某个点之后，冒险越多，赚得越少</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 334" role="img" aria-label="凯利曲线：横轴为单笔风险比例，纵轴为 100 笔交易后资金的中位数倍数；胜率 40%、盈亏比 2 的系统在 10% 时最高约 2.64 倍，5% 时约 2.09 倍，20% 时只有约 1.07 倍；若真实胜率只有 35%，最优比例降到 2.5%，冒 10% 会亏到约 0.63 倍">
+<rect class="zone-dn" x="318" y="30" width="372" height="258"/>
+<text class="dt" x="504" y="48" text-anchor="middle">超过全凯利：冒的险更大，</text>
+<text class="dt" x="504" y="64" text-anchor="middle">长期增长反而更慢</text>
+<line class="grid" x1="70" y1="288" x2="690" y2="288"/>
+<text class="tick" x="62" y="292" text-anchor="end">0 倍</text>
+<line class="grid" x1="70" y1="245" x2="690" y2="245"/>
+<text class="tick" x="62" y="249" text-anchor="end">0.5 倍</text>
+<line class="sr" x1="70" y1="202" x2="690" y2="202"/>
+<text class="tick" x="62" y="206" text-anchor="end">1 倍</text>
+<line class="grid" x1="70" y1="159" x2="690" y2="159"/>
+<text class="tick" x="62" y="163" text-anchor="end">1.5 倍</text>
+<line class="grid" x1="70" y1="116" x2="690" y2="116"/>
+<text class="tick" x="62" y="120" text-anchor="end">2 倍</text>
+<line class="grid" x1="70" y1="73" x2="690" y2="73"/>
+<text class="tick" x="62" y="77" text-anchor="end">2.5 倍</text>
+<line class="grid" x1="70" y1="30" x2="690" y2="30"/>
+<text class="tick" x="62" y="34" text-anchor="end">3 倍</text>
+<text class="tick" x="70" y="305" text-anchor="middle">0%</text>
+<text class="tick" x="194" y="305" text-anchor="middle">5%</text>
+<text class="tick" x="318" y="305" text-anchor="middle">10%</text>
+<text class="tick" x="442" y="305" text-anchor="middle">15%</text>
+<text class="tick" x="566" y="305" text-anchor="middle">20%</text>
+<text class="tick" x="690" y="305" text-anchor="middle">25%</text>
+<line class="axis" x1="70" y1="30" x2="70" y2="288"/>
+<line class="axis" x1="70" y1="288" x2="690" y2="288"/>
+<text class="atitle" x="690" y="324" text-anchor="end">单笔风险（占账户比例）</text>
+<text class="atitle" x="76" y="18">100 笔交易后资金的典型倍数（中位数）</text>
+<text class="elabel" x="76" y="218">1 倍 = 白忙一场</text>
+<polyline class="ma1" points="70,202 76.2,197.7 82.4,193.2 88.6,188.7 94.8,184.1 101,179.4 107.2,174.7 113.4,170 119.6,165.1 125.8,160.3 132,155.5 138.2,150.6 144.4,145.8 150.6,140.9 156.8,136.1 163,131.4 169.2,126.7 175.4,122 181.6,117.5 187.8,113 194,108.7 200.2,104.5 206.4,100.4 212.6,96.4 218.8,92.6 225,89 231.2,85.5 237.4,82.3 243.6,79.2 249.8,76.4 256,73.8 262.2,71.3 268.4,69.2 274.6,67.3 280.8,65.6 287,64.1 293.2,63 299.4,62 305.6,61.4 311.8,61 318,60.9 324.2,61 330.4,61.4 336.6,62 342.8,62.9 349,64.1 355.2,65.5 361.4,67.2 367.6,69.1 373.8,71.2 380,73.5 386.2,76.1 392.4,78.8 398.6,81.8 404.8,84.9 411,88.3 417.2,91.8 423.4,95.4 429.6,99.2 435.8,103.1 442,107.1 448.2,111.3 454.4,115.5 460.6,119.8 466.8,124.2 473,128.7 479.2,133.2 485.4,137.8 491.6,142.3 497.8,146.9 504,151.5 510.2,156.1 516.4,160.7 522.6,165.2 528.8,169.8 535,174.2 541.2,178.7 547.4,183 553.6,187.3 559.8,191.6 566,195.7 572.2,199.8 578.4,203.8 584.6,207.7 590.8,211.5 597,215.2 603.2,218.8 609.4,222.3 615.6,225.7 621.8,228.9 628,232.1 634.2,235.2 640.4,238.1 646.6,240.9 652.8,243.7 659,246.3 665.2,248.8 671.4,251.1 677.6,253.4 683.8,255.6 690,257.7"/>
+<polyline class="ma2" points="70,202 76.2,201 82.4,200 88.6,199.2 94.8,198.5 101,197.9 107.2,197.4 113.4,197 119.6,196.7 125.8,196.6 132,196.5 138.2,196.6 144.4,196.7 150.6,197 156.8,197.4 163,197.9 169.2,198.5 175.4,199.2 181.6,200 187.8,200.9 194,201.8 200.2,202.9 206.4,204.1 212.6,205.3 218.8,206.6 225,208 231.2,209.5 237.4,211 243.6,212.6 249.8,214.2 256,215.9 262.2,217.6 268.4,219.3 274.6,221.1 280.8,222.9 287,224.8 293.2,226.6 299.4,228.5 305.6,230.3 311.8,232.2 318,234.1 324.2,236 330.4,237.8 336.6,239.7 342.8,241.5 349,243.3 355.2,245.1 361.4,246.9 367.6,248.6 373.8,250.3 380,252 386.2,253.6 392.4,255.2 398.6,256.7 404.8,258.2 411,259.7 417.2,261.1 423.4,262.5 429.6,263.8 435.8,265.1 442,266.4 448.2,267.6 454.4,268.7 460.6,269.8 466.8,270.9 473,271.9 479.2,272.9 485.4,273.8 491.6,274.7 497.8,275.6 504,276.4 510.2,277.1 516.4,277.9 522.6,278.5 528.8,279.2 535,279.8 541.2,280.4 547.4,280.9 553.6,281.4 559.8,281.9 566,282.4 572.2,282.8 578.4,283.2 584.6,283.6 590.8,283.9 597,284.2 603.2,284.6 609.4,284.8 615.6,285.1 621.8,285.3 628,285.6 634.2,285.8 640.4,286 646.6,286.1 652.8,286.3 659,286.5 665.2,286.6 671.4,286.7 677.6,286.8 683.8,287 690,287.1"/>
+<circle class="dot" cx="119.6" cy="165.1" r="4.5"/>
+<text class="hi" x="127.6" y="181.1">2%：1.43 倍</text>
+<circle class="dot" cx="194" cy="108.7" r="4.5"/>
+<text class="hi" x="186" y="98.7" text-anchor="end">半凯利 5%：2.09 倍</text>
+<circle class="dot" cx="318" cy="60.9" r="4.5"/>
+<text class="hi" x="318" y="48.9" text-anchor="middle">全凯利 10%：2.64 倍</text>
+<circle class="dot" cx="566" cy="195.7" r="4.5"/>
+<text class="hi" x="574" y="185.7">2 倍凯利 20%：1.07 倍</text>
+<circle class="dot-dn" cx="132" cy="196.5" r="4.5"/>
+<text class="dt" x="214" y="188">胜率 35% 时，凯利只有 2.5%，最多 1.06 倍</text>
+<circle class="dot-dn" cx="318" cy="234.1" r="4.5"/>
+<text class="dt" x="308" y="258.1" text-anchor="end">同样冒 10%：只剩 0.63 倍</text>
+<line class="ma1" x1="479.2" y1="94" x2="501.2" y2="94"/>
+<text class="lg" x="507.2" y="98">胜率 40%，盈亏比 2（凯利 10%）</text>
+<line class="ma2" x1="479.2" y1="112" x2="501.2" y2="112"/>
+<text class="lg" x="507.2" y="116">胜率 35%，盈亏比 2（凯利 2.5%）</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>蓝线是胜率 40%、盈亏比 2 的系统：单笔风险从 0 往右加，100 笔后的典型结果（中位数）先升后降，在 10%（全凯利）达到最高，约 2.64 倍；冒 5%（半凯利）约 2.09 倍，增长速度约为全凯利的 75%，回撤却小得多；冒到 20%（2 倍凯利）只剩约 1.07 倍，再往右就是负增长。橙线是同一个系统真实胜率只有 35% 的情形：凯利比例缩到 2.5%，最多也只有约 1.06 倍，冒 10% 的人 100 笔后只剩约 0.63 倍。<b>超过凯利的那部分风险，只带来波动，不带来收益。</b></figcaption>
+  </figure>
+
+  <div class="prose">
+    <p>既然凯利是“最优”，为什么几乎没有职业交易者按全凯利下注？</p>
+    <ul>
+      <li><strong>输入是估计出来的。</strong>胜率和盈亏比来自历史统计，误差很大。图 16-10 里，胜率高估 5 个百分点，就足以让你从全凯利滑到 4 倍凯利的危险区。低估优势的代价是少赚，高估优势的代价是亏损，两者很不对称；</li>
+      <li><strong>全凯利的回撤大得惊人。</strong>按连续时间的近似公式，全凯利下注时，账户在某个时候腰斩的概率约 50%；半凯利约 12.5%（0.5 的 3 次方）；</li>
+      <li><strong>亏损可能超过 1R。</strong>跳空、跌停、停牌会让实际亏损远大于止损距离；</li>
+      <li><strong>同时持有多个相关仓位</strong>时，每个都按凯利下注，总风险远超凯利。</li>
+    </ul>
+    <p>所以实践中用的是<strong>分数凯利</strong>：半凯利、四分之一凯利，甚至更低。一个不错的系统（胜率 40%、盈亏比 2）全凯利是 10%，单笔 1%–2% 只相当于十分之一到五分之一凯利。这个折扣不是保守过头，而是给估计误差、肥尾和你的心理承受力留的安全垫。<strong>凯利是天花板，不是目标。</strong></p>
+  </div>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>凯利与索普：从电话线到赌桌</h4>
+    <p>1956 年，贝尔实验室的研究员约翰·凯利发表论文，研究一个能通过有噪声的私人线路提前得到一点比赛消息的赌徒，应该怎样下注才能让财富增长最快，答案就是今天的凯利公式。数学家爱德华·索普把它带到了真实的赌桌上：他在 1962 年出版的《击败庄家》里，用算牌找出 21 点中玩家占优势的时刻，再按凯利的思路决定下注大小，优势大时多押，没有优势时少押。后来，索普又把同样的思想用到了投资上。</p>
+    <p class="takeaway">索普的方法有两个部分：先找到真实的优势（算牌），再决定下注大小（凯利）。只有第二部分没有第一部分，凯利公式算出来是零或负数，它会告诉你别下注；只有第一部分没有第二部分，正的优势也可能被一把重注葬送。交易同理：<b>技术分析负责找优势，资金管理负责决定下注</b>。</p>
+  </div>
+
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p>“亏了就加倍，赢一次就全回来。”这叫马丁格尔策略，是赌场最欢迎的客人。从 1000 元开始，每亏一次翻倍：连亏 6 笔，累计已亏 6.3 万元，第 7 笔要押 6.4 万元；连亏 10 笔，累计亏损超过 102 万元。前面算过，胜率 40% 的系统 100 笔里出现 6 连亏的概率约 87%。加倍下注不改变期望值，只会把“偶尔一段坏运气”变成“迟早一次爆仓”。正确的方向恰恰相反：亏损之后缩小下注（16.7 节）。</p>
+  </div>
+</section>
+
+<!-- ======================== 16.7 ======================== -->
+<section class="ch" id="s7">
+  <h2 class="sec"><span class="no">16.7</span>加仓、减仓与多仓位</h2>
+  <p class="sec-en">AFTER WINS AND LOSSES · PYRAMIDING · MULTIPLE UNITS</p>
+
+  <div class="prose">
+    <h3>盈利和亏损之后：怎么调整下注</h3>
+    <p>墨菲专门讨论过一个实际问题：一段时间顺风顺水，或者连吃败仗之后，仓位该怎么变？他的倾向很明确：<strong>连续亏损之后，缩小交易规模</strong>；连续盈利之后可以适度加大，但要格外谨慎，因为一段好运气最容易让人高估自己。</p>
+    <p>为什么亏损后要减仓，而不是加仓“扳回来”？</p>
+    <ul>
+      <li><strong>回撤可能是信号。</strong>市场也许已经从适合你系统的环境（比如趋势市）切换到不适合的环境（震荡市），继续满额下注，是在不利环境里加大赌注；</li>
+      <li><strong>保护本金的复利能力。</strong>回本曲线（图 16-7）说明，回撤越深越难爬出来，减仓让回撤停留在曲线平缓的一段；</li>
+      <li><strong>保护你自己。</strong>连亏之后人最容易冲动“翻本”，主动减仓是给情绪装刹车。</li>
+    </ul>
+    <p>固定比例法已经自动做了一部分：账户小了，1% 对应的金额就小了。很多交易者还会再加一道“回撤节流阀”：账户从最高点回撤 10%，单笔风险从 1% 降到 0.5%；回撤 20%，暂停开新仓，停下来复盘，分清是正常的统计波动还是系统失效。海龟规则里也有类似的条款。盈利之后加大下注则要慢：固定比例法已经让风险金额随账户自然增长，不必再额外提高比例；真要提高，至少等足够多的新交易证明优势还在。</p>
+
+    <h3>金字塔加仓：只加在赚钱的仓位上</h3>
+    <p>趋势确立、仓位已经盈利时，追加仓位是放大趋势利润的有效办法。墨菲强调两条原则：<strong>只给盈利的仓位加仓</strong>，永远不给亏损的仓位加仓；<strong>每次加的量比上一次少</strong>，底仓最大、越往上越小，像一座金字塔。现代交易者通常再补两条：</p>
+    <ul>
+      <li><strong>加仓之后上移止损</strong>，让整个仓位的总风险不超过最初的 1R，最好让底仓的止损移到成本价以上；</li>
+      <li><strong>加仓要有新的理由</strong>，比如突破新的整理区、回调在支撑处止跌，而不是“又涨了一点”。</li>
+    </ul>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 16-11</span>金字塔、倒金字塔与摊平：同样 1200 股，三种结局<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 320" role="img" aria-label="三种加仓方式对比：金字塔加仓在 10、11、12 元分别买 600、400、200 股，均价 10.67 元，回落到 11.20 元仍赚 640 元；倒金字塔买 200、400、600 股，均价 11.33 元，同样回落就亏 160 元；摊平在 10、9、8 元各买 400 股，跌到 7 元亏 2400 元，而原计划止损只亏 200 元">
+<text class="pl" x="120" y="26" text-anchor="middle">① 金字塔加仓（正确）</text>
+<text class="nd" x="120" y="46" text-anchor="middle">越涨越加，每次加得更少</text>
+<rect class="node-up" x="83" y="182" width="90" height="28"/>
+<text class="nt" x="128" y="200" text-anchor="middle">600</text>
+<text class="pv" x="6" y="200">第 1 笔 @10.00</text>
+<rect class="node-up" x="98" y="138" width="60" height="28"/>
+<text class="nt" x="128" y="156" text-anchor="middle">400</text>
+<text class="pv" x="6" y="156">第 2 笔 @11.00</text>
+<rect class="node-up" x="113" y="94" width="30" height="28"/>
+<text class="nt" x="128" y="112" text-anchor="middle">200</text>
+<text class="pv" x="6" y="112">第 3 笔 @12.00</text>
+<line class="tld" x1="6" y1="166.7" x2="236" y2="166.7"/>
+<line class="sr" x1="6" y1="143.2" x2="236" y2="143.2"/>
+<text class="hi" x="236" y="180.7" text-anchor="end">均价 10.67</text>
+<text class="pv" x="236" y="138.2" text-anchor="end">现价 11.20</text>
+<text class="ut" x="120" y="268" text-anchor="middle">回落到 11.20：仍赚 640 元</text>
+<text class="pl" x="360" y="26" text-anchor="middle">② 倒金字塔（危险）</text>
+<text class="nd" x="360" y="46" text-anchor="middle">越涨越加，每次加得更多</text>
+<rect class="node-up" x="353" y="182" width="30" height="28"/>
+<text class="nt" x="368" y="200" text-anchor="middle">200</text>
+<text class="pv" x="246" y="200">第 1 笔 @10.00</text>
+<rect class="node-up" x="338" y="138" width="60" height="28"/>
+<text class="nt" x="368" y="156" text-anchor="middle">400</text>
+<text class="pv" x="246" y="156">第 2 笔 @11.00</text>
+<rect class="node-up" x="323" y="94" width="90" height="28"/>
+<text class="nt" x="368" y="112" text-anchor="middle">600</text>
+<text class="pv" x="246" y="112">第 3 笔 @12.00</text>
+<line class="tld" x1="246" y1="137.3" x2="476" y2="137.3"/>
+<line class="sr" x1="246" y1="143.2" x2="476" y2="143.2"/>
+<text class="hi" x="476" y="132.3" text-anchor="end">均价 11.33</text>
+<text class="pv" x="476" y="157.2" text-anchor="end">现价 11.20</text>
+<text class="dt" x="360" y="268" text-anchor="middle">回落到 11.20：亏 160 元</text>
+<line class="grid" x1="240" y1="14" x2="240" y2="316"/>
+<text class="pl" x="600" y="26" text-anchor="middle">③ 摊平（大忌）</text>
+<text class="nd" x="600" y="46" text-anchor="middle">越跌越买，均价被拖着往下</text>
+<rect class="node-dn" x="578" y="94" width="60" height="28"/>
+<text class="nt" x="608" y="112" text-anchor="middle">400</text>
+<text class="pv" x="486" y="112">第 1 笔 @10.00</text>
+<rect class="node-dn" x="578" y="138" width="60" height="28"/>
+<text class="nt" x="608" y="156" text-anchor="middle">400</text>
+<text class="pv" x="486" y="156">第 2 笔 @9.00</text>
+<rect class="node-dn" x="578" y="182" width="60" height="28"/>
+<text class="nt" x="608" y="200" text-anchor="middle">400</text>
+<text class="pv" x="486" y="200">第 3 笔 @8.00</text>
+<line class="tld" x1="644" y1="152" x2="716" y2="152"/>
+<text class="hi" x="716" y="166" text-anchor="end">均价 9.00</text>
+<line class="sr-dn" x1="486" y1="130" x2="716" y2="130"/>
+<text class="dt" x="716" y="125" text-anchor="end">止损 9.50</text>
+<line class="sr" x1="486" y1="240" x2="716" y2="240"/>
+<text class="pv" x="716" y="235" text-anchor="end">现价 7.00</text>
+<text class="dt" x="600" y="268" text-anchor="middle">跌到 7.00：亏 2400 元</text>
+<line class="grid" x1="480" y1="14" x2="480" y2="316"/>
+<text class="elabel" x="120" y="290" text-anchor="middle">均价远低于现价，回调有缓冲</text>
+<text class="elabel" x="120" y="306" text-anchor="middle">最大的一笔买在最低处</text>
+<text class="elabel" x="360" y="290" text-anchor="middle">均价被最后一笔拉高，</text>
+<text class="elabel" x="360" y="306" text-anchor="middle">小小回调就把整笔变成亏损</text>
+<text class="elabel" x="600" y="290" text-anchor="middle">原计划 400 股止损只亏 200 元，</text>
+<text class="elabel" x="600" y="306" text-anchor="middle">摊平后亏损放大 12 倍</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>三种方式都买了 1200 股。① 金字塔：600、400、200 股依次买在 10、11、12 元，均价 10.67 元，价格从高处回落到 11.20 元时仍赚 640 元。② 倒金字塔：同样三个价位，买成 200、400、600 股，均价被最后一笔拉到 11.33 元，同样回落到 11.20 元，整笔就亏 160 元。两者看对的方向、加仓的时机完全一样，差别只在<b>最大的一笔买在了哪里</b>。③ 摊平：10、9、8 元各买 400 股，均价 9.00 元，价格继续跌到 7.00 元时亏 2400 元；而如果按原计划在 9.50 元止损，第一笔 400 股只亏 200 元。</figcaption>
+  </figure>
+
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>金字塔加仓像踩着石头过河：前一块石头踩稳了（仓位已经盈利、止损上移），才迈下一步，而且越往河中间步子迈得越小，万一脚下一滑，退回上一块石头就行。摊平则是脚下的石头正在往下沉，你却把另一只脚也踩了上去。</p>
+  </div>
+
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p>“跌了更便宜，补仓摊低成本。”摊平的诱惑来自锚定：你把自己的买入成本当成了这只股票的“价值”。可价格跌破止损，说明市场已经否决了你的判断，这时补仓等于在<strong>证据对你不利的时候加大赌注</strong>。墨菲的原则毫不含糊：永远不要给亏损的仓位加仓。基本面投资者“越跌越买”有时能成功，那是因为他们有估值依据、有事先的仓位预算、有等得起的时间；技术交易者的买入理由是价格行为，价格行为一旦反转，理由就没了。</p>
+  </div>
+
+  <div class="prose">
+    <h3>多仓位：趋势单位与交易单位</h3>
+    <p>墨菲建议，条件允许时用多个单位交易，并给它们分配不同的角色：</p>
+    <ul>
+      <li><strong>交易单位</strong>：到第一个目标位（量度目标、上方阻力）就了结，锁定利润；</li>
+      <li><strong>趋势单位</strong>：用移动止损长期持有，去吃可能出现的大趋势。</li>
+    </ul>
+    <p>算一个例子。沿用图 16-12 的突破交易：12.38 元买入 2000 股，分成两个 1000 股的单位，止损 11.60 元，整笔风险 2000 × 0.78 = 1560 元，记作 1R（每个单位 0.5R）。交易单位在 14.00 元的量度目标了结；之后趋势单位的止损移到成本价 12.38 元，再用移动止损跟踪。</p>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <tr><th>情景</th><th>两个单位（交易 + 趋势）</th><th>全部在目标位了结</th><th>全部当趋势单位持有</th></tr>
+      <tr><td>A：入场后直接打到止损</td><td class="num">−1R</td><td class="num">−1R</td><td class="num">−1R</td></tr>
+      <tr><td>B：到 14.00 元后掉头，趋势单位在成本价出局</td><td class="num">+1.04R</td><td class="num">+2.08R</td><td class="num">0R</td></tr>
+      <tr><td>C：一路涨到 18 元，趋势单位在 17.20 元被移动止损带走</td><td class="num">+4.13R</td><td class="num">+2.08R</td><td class="num">+6.18R</td></tr>
+    </table>
+  </div>
+
+  <div class="prose">
+    <p>两个单位的组合在哪个情景下都不是最好的，但在哪个情景下也都不是最差的：行情半途而废时，交易单位已经落袋；大趋势来临时，趋势单位还在车上。更重要的是心理作用：交易单位了结、趋势单位的止损移到成本价之后，剩下的一半就成了“最坏打平”的免费交易，你才拿得住它。</p>
+  </div>
+</section>
+
+<!-- ======================== 16.8 ======================== -->
+<section class="ch" id="s8">
+  <h2 class="sec"><span class="no">16.8</span>交易战术：突破还是回调</h2>
+  <p class="sec-en">TRADING TACTICS: BREAKOUTS, PULLBACKS AND ORDERS</p>
+
+  <div class="prose">
+    <p>战术是把分析变成订单的最后一步：在哪个价位、用哪种指令、分几次进场。墨菲在这一章和全书各处给出的战术原则，可以整理成下面几条：</p>
+    <ol>
+      <li><strong>顺着中期趋势交易</strong>：用周线和日线确定方向（第 2 站道氏理论、第 3 站趋势）；</li>
+      <li><strong>上升趋势中逢回调买入，下跌趋势中逢反弹卖出</strong>：不在趋势的延伸段追价；</li>
+      <li><strong>在支撑附近买，在阻力附近卖</strong>：买点离支撑越近，止损越近，报酬风险比越好；</li>
+      <li><strong>止损放在支撑下方</strong>（做空则放在阻力上方），入场之前就定好；</li>
+      <li><strong>不要追逐已经大幅延伸的走势</strong>：价格离支撑或均线很远、摆动指标严重超买时（第 9 站），等它回来；</li>
+      <li><strong>突破之后常有回抽</strong>：向上突破后回落到原来的阻力（现在的支撑）附近，是第二次上车的机会；</li>
+      <li><strong>让利润奔跑，截断亏损</strong>；永远不给亏损的仓位加仓；拿不准的时候就不做。</li>
+    </ol>
+
+    <h3>突破入场还是回调入场？</h3>
+    <p>趋势交易者天天面对这个选择：价格突破整理区时立刻追进去，还是等它回抽到突破位再买？两种做法各有代价：</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 16-12</span>同一次突破，两种入场：突破当天追进 vs 等回抽再买<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 340" role="img" aria-label="示意图：同一段区间突破行情的两种入场方式。左图在突破当天收盘 12.38 元买入，止损放在 11.60 元，报酬风险比约 2 比 1；右图等价格回抽到原阻力 12.10 元附近限价买入，止损 11.80 元，报酬风险比约 6 比 1，但强势突破可能不回抽">
+<defs><marker id="f1612-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/></marker><marker id="f1612-ara" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/></marker></defs>
+<!-- kchart: n=72 L=44 step=4.250 x(i)=L+step*(i+0.5) price[9.800,15.400] y∈[36,320] -->
+<line class="axis" x1="44" y1="36" x2="44" y2="320"/>
+<line class="grid" x1="44" y1="309.9" x2="350" y2="309.9"/>
+<text class="tick" x="38" y="313.9" text-anchor="end">10</text>
+<line class="grid" x1="44" y1="208.4" x2="350" y2="208.4"/>
+<text class="tick" x="38" y="212.4" text-anchor="end">12</text>
+<line class="grid" x1="44" y1="107" x2="350" y2="107"/>
+<text class="tick" x="38" y="111" text-anchor="end">14</text>
+<line class="axis" x1="44" y1="320" x2="350" y2="320"/>
+<line class="wu" x1="46.1" y1="284.6" x2="46.1" y2="290.8"/>
+<rect class="cu" x="44.8" y="286" width="2.6" height="4.3"/>
+<line class="wu" x1="50.4" y1="269" x2="50.4" y2="291.4"/>
+<rect class="cu" x="49.1" y="275.3" width="2.6" height="12.1"/>
+<line class="wu" x1="54.6" y1="253.9" x2="54.6" y2="281.4"/>
+<rect class="cu" x="53.3" y="258.8" width="2.6" height="17"/>
+<line class="wu" x1="58.9" y1="241.4" x2="58.9" y2="264"/>
+<rect class="cu" x="57.6" y="244.8" width="2.6" height="14.3"/>
+<line class="wu" x1="63.1" y1="225.8" x2="63.1" y2="250.3"/>
+<rect class="cu" x="61.8" y="228.3" width="2.6" height="16.6"/>
+<line class="wu" x1="67.4" y1="213.7" x2="67.4" y2="231.4"/>
+<rect class="cu" x="66.1" y="216.2" width="2.6" height="12"/>
+<line class="wd" x1="71.6" y1="208.4" x2="71.6" y2="235.1"/>
+<rect class="cd" x="70.3" y="216" width="2.6" height="18.4"/>
+<line class="wd" x1="75.9" y1="231.2" x2="75.9" y2="251.3"/>
+<rect class="cd" x="74.6" y="235.1" width="2.6" height="15.8"/>
+<line class="wd" x1="80.1" y1="249.7" x2="80.1" y2="274"/>
+<rect class="cd" x="78.8" y="250.7" width="2.6" height="17"/>
+<line class="wd" x1="84.4" y1="267" x2="84.4" y2="282.1"/>
+<rect class="cd" x="83.1" y="268.2" width="2.6" height="9.6"/>
+<line class="wd" x1="88.6" y1="270.7" x2="88.6" y2="300.8"/>
+<rect class="cd" x="87.3" y="276.9" width="2.6" height="23.8"/>
+<line class="wu" x1="92.9" y1="277.1" x2="92.9" y2="306.3"/>
+<rect class="cu" x="91.6" y="280.6" width="2.6" height="19.5"/>
+<line class="wu" x1="97.1" y1="265.6" x2="97.1" y2="285.6"/>
+<rect class="cu" x="95.8" y="268.6" width="2.6" height="12.5"/>
+<line class="wu" x1="101.4" y1="254.9" x2="101.4" y2="274.2"/>
+<rect class="cu" x="100.1" y="260.2" width="2.6" height="8.4"/>
+<line class="wu" x1="105.6" y1="238.4" x2="105.6" y2="263.8"/>
+<rect class="cu" x="104.3" y="245.1" width="2.6" height="14.6"/>
+<line class="wu" x1="109.9" y1="227.5" x2="109.9" y2="250.7"/>
+<rect class="cu" x="108.6" y="229.7" width="2.6" height="14.4"/>
+<line class="wu" x1="114.1" y1="209.4" x2="114.1" y2="234.8"/>
+<rect class="cu" x="112.8" y="221.6" width="2.6" height="6.3"/>
+<line class="wd" x1="118.4" y1="222.5" x2="118.4" y2="235.3"/>
+<rect class="cd" x="117.1" y="223.1" width="2.6" height="12.1"/>
+<line class="wd" x1="122.6" y1="230.3" x2="122.6" y2="255.9"/>
+<rect class="cd" x="121.3" y="236.6" width="2.6" height="12.9"/>
+<line class="wd" x1="126.9" y1="245.4" x2="126.9" y2="274.6"/>
+<rect class="cd" x="125.6" y="249.9" width="2.6" height="18.7"/>
+<line class="wd" x1="131.1" y1="263.8" x2="131.1" y2="287.9"/>
+<rect class="cd" x="129.8" y="267.8" width="2.6" height="14.6"/>
+<line class="wd" x1="135.4" y1="279.5" x2="135.4" y2="303.2"/>
+<rect class="cd" x="134.1" y="283.7" width="2.6" height="14.3"/>
+<line class="wu" x1="139.6" y1="286.1" x2="139.6" y2="303.4"/>
+<rect class="cu" x="138.3" y="288.5" width="2.6" height="8.7"/>
+<line class="wu" x1="143.9" y1="275" x2="143.9" y2="293.3"/>
+<rect class="cu" x="142.6" y="277.6" width="2.6" height="10"/>
+<line class="wu" x1="148.1" y1="264.1" x2="148.1" y2="282.8"/>
+<rect class="cu" x="146.8" y="264.4" width="2.6" height="12.5"/>
+<line class="wu" x1="152.4" y1="241.4" x2="152.4" y2="267.2"/>
+<rect class="cu" x="151.1" y="246.7" width="2.6" height="17.9"/>
+<line class="wu" x1="156.6" y1="227.7" x2="156.6" y2="245.5"/>
+<rect class="cu" x="155.3" y="230" width="2.6" height="14.9"/>
+<line class="wu" x1="160.9" y1="210" x2="160.9" y2="232"/>
+<rect class="cu" x="159.6" y="225.2" width="2.6" height="3.7"/>
+<line class="wd" x1="165.1" y1="220.7" x2="165.1" y2="240.2"/>
+<rect class="cd" x="163.8" y="223.8" width="2.6" height="10.2"/>
+<line class="wd" x1="169.4" y1="230.1" x2="169.4" y2="240.6"/>
+<rect class="cd" x="168.1" y="232.5" width="2.6" height="4.9"/>
+<line class="wd" x1="173.6" y1="235.2" x2="173.6" y2="252"/>
+<rect class="cd" x="172.3" y="237.6" width="2.6" height="11.2"/>
+<line class="wd" x1="177.9" y1="247" x2="177.9" y2="263.1"/>
+<rect class="cd" x="176.6" y="247.9" width="2.6" height="10.2"/>
+<line class="wu" x1="182.1" y1="243.1" x2="182.1" y2="263.8"/>
+<rect class="cu" x="180.8" y="245.6" width="2.6" height="13.6"/>
+<line class="wu" x1="186.4" y1="229.1" x2="186.4" y2="248.7"/>
+<rect class="cu" x="185.1" y="235.3" width="2.6" height="10.2"/>
+<line class="wu" x1="190.6" y1="227.5" x2="190.6" y2="236.7"/>
+<rect class="cu" x="189.3" y="228.8" width="2.6" height="5.3"/>
+<line class="wu" x1="194.9" y1="225.2" x2="194.9" y2="231.5"/>
+<rect class="cu" x="193.6" y="226.1" width="2.6" height="4.2"/>
+<line class="wu" x1="199.1" y1="209.5" x2="199.1" y2="227.7"/>
+<rect class="cu" x="197.8" y="214.7" width="2.6" height="11.9"/>
+<line class="wu" x1="203.4" y1="209.4" x2="203.4" y2="220.6"/>
+<rect class="cu" x="202.1" y="211" width="2.6" height="5.6"/>
+<line class="wu" x1="207.6" y1="187.1" x2="207.6" y2="211"/>
+<rect class="cu" x="206.3" y="189.2" width="2.6" height="20.3"/>
+<line class="wu" x1="211.9" y1="173.6" x2="211.9" y2="193"/>
+<rect class="cu" x="210.6" y="180.4" width="2.6" height="7.9"/>
+<line class="wu" x1="216.1" y1="168.1" x2="216.1" y2="179.7"/>
+<rect class="cu" x="214.8" y="175.6" width="2.6" height="3.7"/>
+<line class="wd" x1="220.4" y1="169.6" x2="220.4" y2="185.4"/>
+<rect class="cd" x="219.1" y="175.5" width="2.6" height="5.2"/>
+<line class="wd" x1="224.6" y1="173.8" x2="224.6" y2="201.6"/>
+<rect class="cd" x="223.3" y="179.8" width="2.6" height="16.7"/>
+<line class="wd" x1="228.9" y1="193.7" x2="228.9" y2="205.9"/>
+<rect class="cd" x="227.6" y="197.8" width="2.6" height="6.1"/>
+<line class="wu" x1="233.1" y1="193" x2="233.1" y2="205.6"/>
+<rect class="cu" x="231.8" y="200" width="2.6" height="2.5"/>
+<line class="wd" x1="237.4" y1="193.4" x2="237.4" y2="203.1"/>
+<rect class="cd" x="236.1" y="198.3" width="2.6" height="1.1"/>
+<line class="wu" x1="241.6" y1="180.9" x2="241.6" y2="204.6"/>
+<rect class="cu" x="240.3" y="185" width="2.6" height="13.6"/>
+<line class="wd" x1="245.9" y1="178.3" x2="245.9" y2="189.4"/>
+<rect class="cd" x="244.6" y="183.7" width="2.6" height="3.3"/>
+<line class="wu" x1="250.1" y1="175.9" x2="250.1" y2="191.6"/>
+<rect class="cu" x="248.8" y="178" width="2.6" height="9.8"/>
+<line class="wu" x1="254.4" y1="165.5" x2="254.4" y2="181.8"/>
+<rect class="cu" x="253.1" y="167.4" width="2.6" height="8.8"/>
+<line class="wu" x1="258.6" y1="158.9" x2="258.6" y2="176.3"/>
+<rect class="cu" x="257.3" y="159.4" width="2.6" height="9.6"/>
+<line class="wd" x1="262.9" y1="156.6" x2="262.9" y2="168.6"/>
+<rect class="cd" x="261.6" y="158.3" width="2.6" height="4.4"/>
+<line class="wu" x1="267.1" y1="151.5" x2="267.1" y2="169.3"/>
+<rect class="cu" x="265.8" y="154.2" width="2.6" height="9.5"/>
+<line class="wu" x1="271.4" y1="144.9" x2="271.4" y2="161.9"/>
+<rect class="cu" x="270.1" y="152.3" width="2.6" height="2"/>
+<line class="wu" x1="275.6" y1="134.3" x2="275.6" y2="157.1"/>
+<rect class="cu" x="274.3" y="138.6" width="2.6" height="13.3"/>
+<line class="wd" x1="279.9" y1="130.9" x2="279.9" y2="141.2"/>
+<rect class="cd" x="278.6" y="136.5" width="2.6" height="1"/>
+<line class="wu" x1="284.1" y1="123.1" x2="284.1" y2="142.1"/>
+<rect class="cu" x="282.8" y="129.9" width="2.6" height="9"/>
+<line class="wd" x1="288.4" y1="129.7" x2="288.4" y2="132.9"/>
+<rect class="cd" x="287.1" y="130.2" width="2.6" height="2.3"/>
+<line class="wu" x1="292.6" y1="126" x2="292.6" y2="135"/>
+<rect class="cu" x="291.3" y="127.5" width="2.6" height="3.1"/>
+<line class="wu" x1="296.9" y1="112.4" x2="296.9" y2="132.7"/>
+<rect class="cu" x="295.6" y="120.8" width="2.6" height="5.9"/>
+<line class="wu" x1="301.1" y1="104.4" x2="301.1" y2="123.4"/>
+<rect class="cu" x="299.8" y="111.6" width="2.6" height="9.1"/>
+<line class="wd" x1="305.4" y1="103.1" x2="305.4" y2="120.2"/>
+<rect class="cd" x="304.1" y="111.2" width="2.6" height="2.6"/>
+<line class="wu" x1="309.6" y1="106.5" x2="309.6" y2="116.6"/>
+<rect class="cu" x="308.3" y="112.1" width="2.6" height="2.3"/>
+<line class="wu" x1="313.9" y1="93" x2="313.9" y2="115.4"/>
+<rect class="cu" x="312.6" y="101.4" width="2.6" height="12.8"/>
+<line class="wu" x1="318.1" y1="97" x2="318.1" y2="99.6"/>
+<rect class="cu" x="316.8" y="99.1" width="2.6" height="1"/>
+<line class="wu" x1="322.4" y1="91.1" x2="322.4" y2="108.7"/>
+<rect class="cu" x="321.1" y="96.2" width="2.6" height="5.1"/>
+<line class="wd" x1="326.6" y1="95.1" x2="326.6" y2="110.4"/>
+<rect class="cd" x="325.3" y="96" width="2.6" height="5.9"/>
+<line class="wu" x1="330.9" y1="93.6" x2="330.9" y2="104.1"/>
+<rect class="cu" x="329.6" y="96" width="2.6" height="7"/>
+<line class="wu" x1="335.1" y1="89.7" x2="335.1" y2="100.9"/>
+<rect class="cu" x="333.8" y="94.5" width="2.6" height="2.1"/>
+<line class="wu" x1="339.4" y1="76.2" x2="339.4" y2="100.1"/>
+<rect class="cu" x="338.1" y="83.1" width="2.6" height="9.8"/>
+<line class="wd" x1="343.6" y1="74.8" x2="343.6" y2="91.1"/>
+<rect class="cd" x="342.3" y="81.3" width="2.6" height="4.5"/>
+<line class="wu" x1="347.9" y1="72.3" x2="347.9" y2="92.7"/>
+<rect class="cu" x="346.6" y="80.5" width="2.6" height="5.2"/>
+<line class="sr" x1="44" y1="208.4" x2="203.4" y2="208.4"/>
+<text class="elabel" x="48" y="203.4" text-anchor="start">区间上沿 12.00</text>
+<line class="sr" x1="44" y1="307.3" x2="203.4" y2="307.3"/>
+<line class="sr-up" x1="207.6" y1="107" x2="350" y2="107"/>
+<text class="ut" x="211.6" y="102" text-anchor="start">量度目标 14.00</text>
+<circle class="dot-up" cx="207.6" cy="189.2" r="4"/>
+<text class="ut" x="203.4" y="170.4" text-anchor="end">突破收盘买入 12.38</text>
+<line class="sr-dn" x1="207.6" y1="228.7" x2="350" y2="228.7"/>
+<text class="dt" x="211.6" y="239.7" text-anchor="start">止损 11.60（突破位下方约 3%）</text>
+<text class="pv" x="343.6" y="264.2" text-anchor="end">风险 0.78，报酬 1.62</text>
+<text class="hi" x="343.6" y="282" text-anchor="end">报酬风险比 ≈ 2.1 : 1</text>
+<!-- kchart: n=72 L=404 step=4.250 x(i)=L+step*(i+0.5) price[9.800,15.400] y∈[36,320] -->
+<line class="axis" x1="404" y1="36" x2="404" y2="320"/>
+<line class="grid" x1="404" y1="309.9" x2="710" y2="309.9"/>
+<text class="tick" x="398" y="313.9" text-anchor="end">10</text>
+<line class="grid" x1="404" y1="208.4" x2="710" y2="208.4"/>
+<text class="tick" x="398" y="212.4" text-anchor="end">12</text>
+<line class="grid" x1="404" y1="107" x2="710" y2="107"/>
+<text class="tick" x="398" y="111" text-anchor="end">14</text>
+<line class="axis" x1="404" y1="320" x2="710" y2="320"/>
+<line class="wu" x1="406.1" y1="284.6" x2="406.1" y2="290.8"/>
+<rect class="cu" x="404.8" y="286" width="2.6" height="4.3"/>
+<line class="wu" x1="410.4" y1="269" x2="410.4" y2="291.4"/>
+<rect class="cu" x="409.1" y="275.3" width="2.6" height="12.1"/>
+<line class="wu" x1="414.6" y1="253.9" x2="414.6" y2="281.4"/>
+<rect class="cu" x="413.3" y="258.8" width="2.6" height="17"/>
+<line class="wu" x1="418.9" y1="241.4" x2="418.9" y2="264"/>
+<rect class="cu" x="417.6" y="244.8" width="2.6" height="14.3"/>
+<line class="wu" x1="423.1" y1="225.8" x2="423.1" y2="250.3"/>
+<rect class="cu" x="421.8" y="228.3" width="2.6" height="16.6"/>
+<line class="wu" x1="427.4" y1="213.7" x2="427.4" y2="231.4"/>
+<rect class="cu" x="426.1" y="216.2" width="2.6" height="12"/>
+<line class="wd" x1="431.6" y1="208.4" x2="431.6" y2="235.1"/>
+<rect class="cd" x="430.3" y="216" width="2.6" height="18.4"/>
+<line class="wd" x1="435.9" y1="231.2" x2="435.9" y2="251.3"/>
+<rect class="cd" x="434.6" y="235.1" width="2.6" height="15.8"/>
+<line class="wd" x1="440.1" y1="249.7" x2="440.1" y2="274"/>
+<rect class="cd" x="438.8" y="250.7" width="2.6" height="17"/>
+<line class="wd" x1="444.4" y1="267" x2="444.4" y2="282.1"/>
+<rect class="cd" x="443.1" y="268.2" width="2.6" height="9.6"/>
+<line class="wd" x1="448.6" y1="270.7" x2="448.6" y2="300.8"/>
+<rect class="cd" x="447.3" y="276.9" width="2.6" height="23.8"/>
+<line class="wu" x1="452.9" y1="277.1" x2="452.9" y2="306.3"/>
+<rect class="cu" x="451.6" y="280.6" width="2.6" height="19.5"/>
+<line class="wu" x1="457.1" y1="265.6" x2="457.1" y2="285.6"/>
+<rect class="cu" x="455.8" y="268.6" width="2.6" height="12.5"/>
+<line class="wu" x1="461.4" y1="254.9" x2="461.4" y2="274.2"/>
+<rect class="cu" x="460.1" y="260.2" width="2.6" height="8.4"/>
+<line class="wu" x1="465.6" y1="238.4" x2="465.6" y2="263.8"/>
+<rect class="cu" x="464.3" y="245.1" width="2.6" height="14.6"/>
+<line class="wu" x1="469.9" y1="227.5" x2="469.9" y2="250.7"/>
+<rect class="cu" x="468.6" y="229.7" width="2.6" height="14.4"/>
+<line class="wu" x1="474.1" y1="209.4" x2="474.1" y2="234.8"/>
+<rect class="cu" x="472.8" y="221.6" width="2.6" height="6.3"/>
+<line class="wd" x1="478.4" y1="222.5" x2="478.4" y2="235.3"/>
+<rect class="cd" x="477.1" y="223.1" width="2.6" height="12.1"/>
+<line class="wd" x1="482.6" y1="230.3" x2="482.6" y2="255.9"/>
+<rect class="cd" x="481.3" y="236.6" width="2.6" height="12.9"/>
+<line class="wd" x1="486.9" y1="245.4" x2="486.9" y2="274.6"/>
+<rect class="cd" x="485.6" y="249.9" width="2.6" height="18.7"/>
+<line class="wd" x1="491.1" y1="263.8" x2="491.1" y2="287.9"/>
+<rect class="cd" x="489.8" y="267.8" width="2.6" height="14.6"/>
+<line class="wd" x1="495.4" y1="279.5" x2="495.4" y2="303.2"/>
+<rect class="cd" x="494.1" y="283.7" width="2.6" height="14.3"/>
+<line class="wu" x1="499.6" y1="286.1" x2="499.6" y2="303.4"/>
+<rect class="cu" x="498.3" y="288.5" width="2.6" height="8.7"/>
+<line class="wu" x1="503.9" y1="275" x2="503.9" y2="293.3"/>
+<rect class="cu" x="502.6" y="277.6" width="2.6" height="10"/>
+<line class="wu" x1="508.1" y1="264.1" x2="508.1" y2="282.8"/>
+<rect class="cu" x="506.8" y="264.4" width="2.6" height="12.5"/>
+<line class="wu" x1="512.4" y1="241.4" x2="512.4" y2="267.2"/>
+<rect class="cu" x="511.1" y="246.7" width="2.6" height="17.9"/>
+<line class="wu" x1="516.6" y1="227.7" x2="516.6" y2="245.5"/>
+<rect class="cu" x="515.3" y="230" width="2.6" height="14.9"/>
+<line class="wu" x1="520.9" y1="210" x2="520.9" y2="232"/>
+<rect class="cu" x="519.6" y="225.2" width="2.6" height="3.7"/>
+<line class="wd" x1="525.1" y1="220.7" x2="525.1" y2="240.2"/>
+<rect class="cd" x="523.8" y="223.8" width="2.6" height="10.2"/>
+<line class="wd" x1="529.4" y1="230.1" x2="529.4" y2="240.6"/>
+<rect class="cd" x="528.1" y="232.5" width="2.6" height="4.9"/>
+<line class="wd" x1="533.6" y1="235.2" x2="533.6" y2="252"/>
+<rect class="cd" x="532.3" y="237.6" width="2.6" height="11.2"/>
+<line class="wd" x1="537.9" y1="247" x2="537.9" y2="263.1"/>
+<rect class="cd" x="536.6" y="247.9" width="2.6" height="10.2"/>
+<line class="wu" x1="542.1" y1="243.1" x2="542.1" y2="263.8"/>
+<rect class="cu" x="540.8" y="245.6" width="2.6" height="13.6"/>
+<line class="wu" x1="546.4" y1="229.1" x2="546.4" y2="248.7"/>
+<rect class="cu" x="545.1" y="235.3" width="2.6" height="10.2"/>
+<line class="wu" x1="550.6" y1="227.5" x2="550.6" y2="236.7"/>
+<rect class="cu" x="549.3" y="228.8" width="2.6" height="5.3"/>
+<line class="wu" x1="554.9" y1="225.2" x2="554.9" y2="231.5"/>
+<rect class="cu" x="553.6" y="226.1" width="2.6" height="4.2"/>
+<line class="wu" x1="559.1" y1="209.5" x2="559.1" y2="227.7"/>
+<rect class="cu" x="557.8" y="214.7" width="2.6" height="11.9"/>
+<line class="wu" x1="563.4" y1="209.4" x2="563.4" y2="220.6"/>
+<rect class="cu" x="562.1" y="211" width="2.6" height="5.6"/>
+<line class="wu" x1="567.6" y1="187.1" x2="567.6" y2="211"/>
+<rect class="cu" x="566.3" y="189.2" width="2.6" height="20.3"/>
+<line class="wu" x1="571.9" y1="173.6" x2="571.9" y2="193"/>
+<rect class="cu" x="570.6" y="180.4" width="2.6" height="7.9"/>
+<line class="wu" x1="576.1" y1="168.1" x2="576.1" y2="179.7"/>
+<rect class="cu" x="574.8" y="175.6" width="2.6" height="3.7"/>
+<line class="wd" x1="580.4" y1="169.6" x2="580.4" y2="185.4"/>
+<rect class="cd" x="579.1" y="175.5" width="2.6" height="5.2"/>
+<line class="wd" x1="584.6" y1="173.8" x2="584.6" y2="201.6"/>
+<rect class="cd" x="583.3" y="179.8" width="2.6" height="16.7"/>
+<line class="wd" x1="588.9" y1="193.7" x2="588.9" y2="205.9"/>
+<rect class="cd" x="587.6" y="197.8" width="2.6" height="6.1"/>
+<line class="wu" x1="593.1" y1="193" x2="593.1" y2="205.6"/>
+<rect class="cu" x="591.8" y="200" width="2.6" height="2.5"/>
+<line class="wd" x1="597.4" y1="193.4" x2="597.4" y2="203.1"/>
+<rect class="cd" x="596.1" y="198.3" width="2.6" height="1.1"/>
+<line class="wu" x1="601.6" y1="180.9" x2="601.6" y2="204.6"/>
+<rect class="cu" x="600.3" y="185" width="2.6" height="13.6"/>
+<line class="wd" x1="605.9" y1="178.3" x2="605.9" y2="189.4"/>
+<rect class="cd" x="604.6" y="183.7" width="2.6" height="3.3"/>
+<line class="wu" x1="610.1" y1="175.9" x2="610.1" y2="191.6"/>
+<rect class="cu" x="608.8" y="178" width="2.6" height="9.8"/>
+<line class="wu" x1="614.4" y1="165.5" x2="614.4" y2="181.8"/>
+<rect class="cu" x="613.1" y="167.4" width="2.6" height="8.8"/>
+<line class="wu" x1="618.6" y1="158.9" x2="618.6" y2="176.3"/>
+<rect class="cu" x="617.3" y="159.4" width="2.6" height="9.6"/>
+<line class="wd" x1="622.9" y1="156.6" x2="622.9" y2="168.6"/>
+<rect class="cd" x="621.6" y="158.3" width="2.6" height="4.4"/>
+<line class="wu" x1="627.1" y1="151.5" x2="627.1" y2="169.3"/>
+<rect class="cu" x="625.8" y="154.2" width="2.6" height="9.5"/>
+<line class="wu" x1="631.4" y1="144.9" x2="631.4" y2="161.9"/>
+<rect class="cu" x="630.1" y="152.3" width="2.6" height="2"/>
+<line class="wu" x1="635.6" y1="134.3" x2="635.6" y2="157.1"/>
+<rect class="cu" x="634.3" y="138.6" width="2.6" height="13.3"/>
+<line class="wd" x1="639.9" y1="130.9" x2="639.9" y2="141.2"/>
+<rect class="cd" x="638.6" y="136.5" width="2.6" height="1"/>
+<line class="wu" x1="644.1" y1="123.1" x2="644.1" y2="142.1"/>
+<rect class="cu" x="642.8" y="129.9" width="2.6" height="9"/>
+<line class="wd" x1="648.4" y1="129.7" x2="648.4" y2="132.9"/>
+<rect class="cd" x="647.1" y="130.2" width="2.6" height="2.3"/>
+<line class="wu" x1="652.6" y1="126" x2="652.6" y2="135"/>
+<rect class="cu" x="651.3" y="127.5" width="2.6" height="3.1"/>
+<line class="wu" x1="656.9" y1="112.4" x2="656.9" y2="132.7"/>
+<rect class="cu" x="655.6" y="120.8" width="2.6" height="5.9"/>
+<line class="wu" x1="661.1" y1="104.4" x2="661.1" y2="123.4"/>
+<rect class="cu" x="659.8" y="111.6" width="2.6" height="9.1"/>
+<line class="wd" x1="665.4" y1="103.1" x2="665.4" y2="120.2"/>
+<rect class="cd" x="664.1" y="111.2" width="2.6" height="2.6"/>
+<line class="wu" x1="669.6" y1="106.5" x2="669.6" y2="116.6"/>
+<rect class="cu" x="668.3" y="112.1" width="2.6" height="2.3"/>
+<line class="wu" x1="673.9" y1="93" x2="673.9" y2="115.4"/>
+<rect class="cu" x="672.6" y="101.4" width="2.6" height="12.8"/>
+<line class="wu" x1="678.1" y1="97" x2="678.1" y2="99.6"/>
+<rect class="cu" x="676.8" y="99.1" width="2.6" height="1"/>
+<line class="wu" x1="682.4" y1="91.1" x2="682.4" y2="108.7"/>
+<rect class="cu" x="681.1" y="96.2" width="2.6" height="5.1"/>
+<line class="wd" x1="686.6" y1="95.1" x2="686.6" y2="110.4"/>
+<rect class="cd" x="685.3" y="96" width="2.6" height="5.9"/>
+<line class="wu" x1="690.9" y1="93.6" x2="690.9" y2="104.1"/>
+<rect class="cu" x="689.6" y="96" width="2.6" height="7"/>
+<line class="wu" x1="695.1" y1="89.7" x2="695.1" y2="100.9"/>
+<rect class="cu" x="693.8" y="94.5" width="2.6" height="2.1"/>
+<line class="wu" x1="699.4" y1="76.2" x2="699.4" y2="100.1"/>
+<rect class="cu" x="698.1" y="83.1" width="2.6" height="9.8"/>
+<line class="wd" x1="703.6" y1="74.8" x2="703.6" y2="91.1"/>
+<rect class="cd" x="702.3" y="81.3" width="2.6" height="4.5"/>
+<line class="wu" x1="707.9" y1="72.3" x2="707.9" y2="92.7"/>
+<rect class="cu" x="706.6" y="80.5" width="2.6" height="5.2"/>
+<line class="sr" x1="404" y1="208.4" x2="563.4" y2="208.4"/>
+<text class="elabel" x="408" y="203.4" text-anchor="start">区间上沿 12.00</text>
+<line class="sr" x1="404" y1="307.3" x2="563.4" y2="307.3"/>
+<line class="sr-up" x1="567.6" y1="107" x2="710" y2="107"/>
+<text class="ut" x="571.6" y="102" text-anchor="start">量度目标 14.00</text>
+<polyline class="tld" points="567.6,189.2 576.1,165.3 584.6,145 593.1,127.3"/>
+<text class="elabel" x="593.1" y="48.7" text-anchor="end">虚线：另一种可能，一路不回抽，</text>
+<text class="elabel" x="593.1" y="62.4" text-anchor="end">回调限价单永远等不到成交</text>
+<circle class="dot-up" cx="588.9" cy="203.4" r="4"/>
+<text class="ut" x="703.6" y="243.9" text-anchor="end">回抽到 12.10 限价买入</text>
+<line class="edge" x1="618.6" y1="230.7" x2="591.4" y2="210" marker-end="url(#f1612-ar)"/>
+<line class="sr-dn" x1="580.4" y1="218.6" x2="710" y2="218.6"/>
+<text class="dt" x="706" y="213.6" text-anchor="end">止损 11.80</text>
+<text class="pv" x="703.6" y="264.2" text-anchor="end">风险 0.30，报酬 1.90</text>
+<text class="hi" x="703.6" y="282" text-anchor="end">报酬风险比 ≈ 6.3 : 1</text>
+<text class="pl" x="44" y="22">突破入场：确定能上车，价格差</text>
+<text class="pl" x="404" y="22">回调入场：价格好、止损近，可能踏空</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>同一段区间突破行情：区间 10–12 元，量度目标 = 12 + 2 = 14 元。左图在突破当天收盘 12.38 元买入：上车有保证，但为了躲开常见的回抽，止损要放在突破位下方约 3% 的 11.60 元，每股风险 0.78 元，报酬风险比约 2:1，达不到墨菲的 3:1。右图等价格回抽到原阻力附近，在 12.10 元限价买入，止损放在回抽低点下方的 11.80 元，每股风险只有 0.30 元，报酬风险比约 6:1。代价是右图的虚线：最强的突破往往一路不回头，回调限价单永远等不到成交。<b>入场价只好了 0.28 元，止损距离却缩短了六成</b>，这才是回调入场真正的优势。</figcaption>
+  </figure>
+
+  <div class="tablewrap">
+    <table>
+      <tr><th>比较</th><th>突破入场</th><th>回调入场</th></tr>
+      <tr><td>能否上车</td><td>确定：突破就进</td><td>不确定：强势行情可能根本不回调</td></tr>
+      <tr><td>入场价</td><td>较差</td><td>较好</td></tr>
+      <tr><td>止损距离</td><td>较宽（要躲开回抽）</td><td>较窄（回抽低点就是认错点）</td></tr>
+      <tr><td>报酬风险比</td><td>较低</td><td>较高</td></tr>
+      <tr><td>遇到假突破</td><td>首当其冲，亏一个较宽的止损</td><td>同样会成交后止损，但止损近、亏得少</td></tr>
+      <tr><td>心理难度</td><td>追高的不安</td><td>等待的煎熬、踏空的懊悔</td></tr>
+    </table>
+  </div>
+
+  <div class="prose">
+    <p>一个实用的折中是两者结合，这也正是多仓位的思想：突破时先买一半，保证上车；回抽到支撑时再买另一半，改善均价；如果始终没有回抽，至少有一半仓位在车上。另一个思路是看市场性格：强势的主线品种多用突破入场，震荡偏多的品种多用回调入场。</p>
+
+    <h3>用日内图精调入场</h3>
+    <p>墨菲建议用周线和日线定方向、定大的支撑阻力，再用日内图（比如 60 分钟、30 分钟图）挑选具体的入场时刻。例如日线处于上升趋势、价格回调到支撑附近，这时切到 60 分钟图，等短期的下降趋势线被向上突破、或者出现更高的低点再买入，止损放在日内低点下方。止损更近，同样 1% 的风险可以买更多股；或者说，同样的股数，风险更小。</p>
+    <p>在 A 股要多想一步。T+1 制度下，当天买入的股票当天卖不掉：如果下午价格就跌破了你按 60 分钟图设的止损，你只能等到第二天，而第二天可能低开。所以在 A 股，日内图可以用来<strong>改善入场价</strong>，但仓位最好按“次日才能离场”的最坏情况来算，止损也不宜窄到日内噪声的尺度。别忘了 16.4 节的成本账：止损越窄，成本占 R 的比例越高。</p>
+
+    <h3>几种常用指令</h3>
+    <p>墨菲在这一章也介绍了交易指令。选对指令，本身就是战术的一部分：</p>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <tr><th>指令</th><th>含义</th><th>适合的场合</th></tr>
+      <tr><td>市价单</td><td>立即按当前市场价成交</td><td>必须马上离场时；代价是成交价不确定</td></tr>
+      <tr><td>限价单</td><td>只在指定价格或更好的价格成交</td><td>回调入场（“回到 12.10 元再买”）；可能不成交</td></tr>
+      <tr><td>止损单</td><td>价格触及指定价位后变成市价单；买入止损设在现价之上，卖出止损设在现价之下</td><td>保护性止损；突破入场（“涨过 12.00 元就买”）</td></tr>
+      <tr><td>止损限价单</td><td>价格触及后变成限价单</td><td>想控制成交价；快市中可能成交不了</td></tr>
+      <tr><td>触价单（MIT）</td><td>价格触及后变成市价单，方向与止损单相反：在现价下方买、上方卖</td><td>想在支撑处买入，又不想因为差一点而错过</td></tr>
+    </table>
+  </div>
+
+  <div class="prose">
+    <p>A 股交易所本身不提供止损单。券商客户端里的“条件单”“止损止盈单”，是券商的服务器替你盯盘，价格触发后再报出一笔普通委托。它能帮你克服“下不了手”，但遇到跌停封死、没有买盘的时候，条件单触发了也卖不出去。</p>
+  </div>
+</section>
+
+<!-- ======================== 16.9 ======================== -->
+<section class="ch" id="s9">
+  <h2 class="sec"><span class="no">16.9</span>落地：规则卡、证据与 A 股适配</h2>
+  <p class="sec-en">PUTTING IT TO WORK</p>
+
+  <div class="prose">
+    <p>这一站的规则卡和前面各站不同：它们不产生买卖信号，而是挂在任何一个信号系统后面，决定“下多少”和“总共能下多少”。第一张管单笔，第二张管整个账户。</p>
+  </div>
+
+  <div class="rulecard">
+    <div class="rc-head"><span class="label">规则卡 1</span><span class="rc-name">ATR 波动率仓位（单笔风险 1%）</span></div>
+    <dl>
+      <dt>标的与周期</dt><dd>A 股主板个股或 ETF，日线；可以接在任何已经有入场信号的系统后面（第 8 站均线、第 12 站交易系统）</dd>
+      <dt>过滤条件</dt><dd>剔除 ST 股和近期有停牌、解禁等重大事项的股票；ATR(20) ÷ 收盘价在 1.5%–6% 之间（太低多为停滞，太高波动失控）；成交额足以让你的仓位在一天之内进出</dd>
+      <dt>入场</dt><dd>按上游信号执行，例如收盘价在 60 日均线之上，回调到前高支撑附近后收出阳线，收盘买入（16.8 节的回调入场）</dd>
+      <dt>止损</dt><dd>入场价 − 2 × ATR(20)，并且必须在最近回调低点之下，两者取更低的那个；以收盘价跌破为准，次日开盘卖出</dd>
+      <dt>出场</dt><dd>移动止损：入场以来最高收盘价 − 3 × ATR(20)，只升不降；收盘跌破，次日开盘离场</dd>
+      <dt>仓位</dt><dd>股数 = 账户 × 1% ÷ 止损距离，向下取整到 100 股；单只市值 ≤ 账户 20%（创业板、科创板 ≤ 10%）。例：账户 20 万元，风险 2000 元；21.68 元入场，ATR(20) = 1.07，止损距离 2.14 元，止损 19.54 元；2000 ÷ 2.14 ≈ 934，买 900 股，实际风险 1926 元，市值约 1.95 万元（9.8%）</dd>
+    </dl>
+    <p class="rc-note">1% 是“计划风险”，不是“最大亏损”。T+1 和跌停让实际亏损可能超过 1R：这 900 股如果遇到连续两个跌停（约 −19%），亏损约 19512 × 19% ≈ 3707 元，约为账户的 1.85%。这就是还要单只市值上限的原因：上限 20% 时，连续两个跌停最多亏账户约 3.8%。这张卡只管“下多少”，信号本身好不好，要用第 12 站的方法回测。</p>
+  </div>
+
+  <div class="rulecard">
+    <div class="rc-head"><span class="label">规则卡 2</span><span class="rc-name">组合风控：热度 6% + 回撤节流</span></div>
+    <dl>
+      <dt>标的与周期</dt><dd>整个 A 股账户的全部持仓；每天收盘后检查一次</dd>
+      <dt>过滤条件</dt><dd>同一行业（如申万一级行业）最多 2 个仓位；过去 60 个交易日收益率相关系数高于 0.7 的两只股票，视为同一行业</dd>
+      <dt>入场</dt><dd>只有当“现有组合热度 + 新仓位风险 ≤ 账户 6%”时，才允许开新仓；不满足就等某个仓位的止损上移到成本价以上，或者放弃</dd>
+      <dt>止损</dt><dd>每个仓位入场前设好止损。账户层面：净值从最高点回撤 10%，单笔风险降到 0.5%；回撤 20%，暂停开新仓，复盘；回撤收窄到 5% 以内，单笔风险恢复到 1%</dd>
+      <dt>出场</dt><dd>热度超限时，先减最弱的仓位（离止损最近、或走势最差的那个）；复盘结论若是系统失效，全部离场，停止使用该系统，直到重新检验</dd>
+      <dt>仓位</dt><dd>单笔风险 1%，单只市值 ≤ 20%，不融资。例：图 16-2 的账户热度 5.5%，下一笔新仓的风险最多只能是 1000 元（0.5%）；第三只券商股违反“同一行业最多 2 个仓位”，不该开。账户若从 20 万元的高点回撤到 18 万元，单笔风险降到 900 元（0.5%）</dd>
+    </dl>
+    <p class="rc-note">为什么是 6%：大约 6 个满风险的仓位。即使某天所有止损同时被打掉（不考虑跳空），账户亏 6%，要赚约 6.4% 回来，仍在回本曲线平缓的一段。回撤 10% 降风险、20% 暂停，是给“系统可能失效”和“情绪可能失控”各装一道闸。具体数字可以调，但必须在冷静的时候写死。</p>
+  </div>
+
+  <div class="evidence">
+    <span class="label">证据与怀疑</span>
+    <h4>资金管理的数学是确定的，输入却不是</h4>
+    <ul>
+      <li><strong>凯利公式与分数凯利：</strong>凯利（1956）给出了让长期财富增长率最高的下注比例；布雷曼（Breiman，1961）进一步证明，长期来看按凯利下注的财富会超过任何本质上不同的策略。但这些都是“足够长期”和“参数已知”条件下的结论。另一面同样是数学事实，而且不依赖参数是否精确：超过凯利比例的下注只增加波动、降低增长，到 2 倍凯利时增长几乎为零（图 16-10）。这就是“宁可少押，不可多押”的依据。</li>
+      <li><strong>过度交易的代价：</strong>Barber 和 Odean（2000）分析了美国一家折扣券商 6 万多个家庭账户 1991–1996 年的交易记录，换手率最高的五分之一家庭，扣除成本后的年化收益约 11.4%，同期市场约 17.9%。交易越频繁，成本和过度自信吃掉的越多（《投资学》第 12 章）。资金管理不只是“下多少”，也包括“下几次”。</li>
+      <li><strong>参数估计的误差：</strong>胜率是从样本里估出来的。100 笔交易估出 40% 的胜率，标准误约 4.9 个百分点，95% 置信区间大约是 30%–50%；300 笔时约为 34.5%–45.5%。也就是说，“胜率 40%”和“胜率 35%”在 100 笔样本里根本分不清，而图 16-9 告诉你，这 5 个百分点就决定了 10% 的仓位是暴富还是破产。再加上回测中的数据挖掘偏差（第 12 站），实盘的优势通常比回测差。</li>
+      <li><strong>幸存者偏差：</strong>海龟交易员、重仓翻倍的明星交易者，你听到的都是活下来的人。按全凯利甚至超过凯利下注的人里，总有少数运气好的大赚，他们的故事不能证明这种下注方法是对的。</li>
+    </ul>
+    <p>结论：资金管理是这本书里少数能用数学严格证明的部分，但它的输入（胜率、盈亏比、相关性）全部来自不完美的历史统计。所以实践中的每个数字都要打折：分数凯利、1%–2% 的单笔风险、热度上限，都是在给估计误差留余量。</p>
+  </div>
+
+  <div class="ashare">
+    <span class="label">A 股适配</span>
+    <h4>T+1 和跌停：止损可能执行不了，仓位是最后一道防线</h4>
+    <p>A 股有两个会让止损“失灵”的制度：<strong>T+1</strong>（当天买入、最早次日卖出）和<strong>涨跌停</strong>（跌停封死时没有买盘）。止损价设在 9.50 元，股价可能直接以跌停价 9.00 元开盘并封死一整天，第二天再低开。这时决定亏多少的已经不是止损，而是<strong>你买了多少</strong>。</p>
+    <p>所以 A 股的仓位要算两遍：一遍按止损算“正常情况亏多少”（单笔 1%），一遍按“连续两个跌停”算“灾难情况亏多少”。单只市值上限可以直接倒推：</p>
+    <ul>
+      <li><strong>主板 ±10%：</strong>连续两个跌停约 −19%。如果灾难时单只最多愿意亏账户的 4%，市值上限 = 4% ÷ 19% ≈ 21%，取整为 20%；</li>
+      <li><strong>创业板、科创板 ±20%：</strong>两个跌停约 −36%，同样的 4% 对应的市值上限只有约 11%，取 10%；</li>
+      <li><strong>临近重大事项</strong>（财报、解禁、可能停牌）的股票，跳空风险更大，上限还要再降。</li>
+    </ul>
+  </div>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>2015 年场外配资爆仓潮：跌停让止损失效</h4>
+    <p>2015 年上半年的牛市里，除了场内两融（第 1 站提到，两融余额在 6 月达到约 2.27 万亿元的峰值），还有规模难以统计的场外配资：通过伞形信托、配资公司等渠道，1 元本金可以借到几元钱炒股，杠杆常见 3–5 倍，个别更高。上证指数 6 月 12 日见顶 5178 点后急跌，6 月中旬监管开始清理场外配资，到 7 月初指数已跌到 3500 点附近，不到一个月跌去约三成，其间多次出现上千只股票同时跌停。</p>
+    <p>算一下高杠杆账户的处境（示意数字）：本金 20 万元，配资 80 万元，持仓 100 万元（5 倍杠杆）。假设配资方的平仓线设在总资产 88 万元（借款的 110%），持仓只要跌 12% 就会被强制平仓，本金亏掉 60%。如果股票连续两个跌停，100 万 × 0.9 × 0.9 = 81 万元，早已跌破平仓线，可封死的跌停板上根本卖不出去；等终于能卖时，扣掉 80 万元借款，本金只剩约 1 万元，亏损约 95%。成千上万个这样的账户在跌停打开时被同时强平，卖盘又把更多股票砸向跌停，形成踩踏。</p>
+    <p class="takeaway">这些账户里，不少人对牛市方向的判断一度是对的，也有人设了止损。但在连续跌停面前，止损单只是一张纸，<b>唯一真正起作用的风控是仓位和杠杆本身</b>。A 股的止损可能失灵，仓位不会。</p>
+  </div>
+
+  <div class="ashare">
+    <span class="label">A 股适配</span>
+    <h4>取整、融资与对冲</h4>
+    <ul>
+      <li><strong>100 股取整：</strong>主板买入以 100 股为单位，仓位只能向下取整。小账户买高价股时误差很大：股价 150 元的股票一手就是 1.5 万元，止损 8% 时一手的风险是 1200 元（0.6%），想冒满 1% 也买不了一手半；股价上千元的股票一手就超过 10 万元，对 20 万元的账户来说直接突破市值上限，只能放弃，或改用相关 ETF。科创板的规则不同：单笔买入至少 200 股，超出部分可以按 1 股递增，仓位能算得更精确。</li>
+      <li><strong>融资融券：</strong>融资买入就是加杠杆。本金 10 万元、融资 5 万元，持仓 15 万元；股价跌 20%，持仓剩 12 万元，还掉 5 万元负债，本金只剩 7 万元，亏 30%，比不融资多亏一半。维持担保比例跌破平仓线（多数券商设在 130% 左右）时还会被强制平仓。用了融资，单笔风险和热度都要按<strong>总持仓</strong>而不是本金重新计算。</li>
+      <li><strong>不能做空个股时：</strong>普通投资者几乎无法做空个股，控制系统性风险的工具只有两个。一是<strong>现金比例</strong>：比如大盘跌破长期均线时把总仓位降到一半以下，这是墨菲 50% 储备原则在 A 股的用法。二是<strong>股指期货</strong>（沪深 300 的 IF、中证 500 的 IC、中证 1000 的 IM 等），它有开户门槛（资金约 50 万元，另有知识测试和交易经历要求），一手合约价值也不小：以沪深 300 指数 4000 点计，一手 IF（每点 300 元）约 120 万元，更适合较大的账户用来对冲。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ======================== 小结 ======================== -->
+<section class="ch" id="recap">
+  <h2 class="sec"><span class="no">※</span>本章小结</h2>
+  <p class="sec-en">SUMMARY</p>
+
+  <div class="recap">
+    <ol>
+      <li><b>三要素：</b>价格预测、时机、资金管理。前两项决定每一笔的胜算，第三项决定你能不能撑到胜算兑现；长期结果 ≈ 优势 × 次数，前提是中途不出局。</li>
+      <li><b>墨菲的四条上限（期货语境）：</b>总投入 ≤ 总资本 50%，其余作储备；单一市场投入 ≤ 10%–15%；单一市场风险 ≤ 5%；同一市场组保证金 ≤ 20%–25%。现代个人交易者的单笔风险多用 1%–2%。</li>
+      <li><b>分散看相关性：</b>相关性高的仓位等于同一个仓位（ρ = 0.8 时五只约等于一只）；用组合热度管总量，热度要和相关性一起看。</li>
+      <li><b>止损：</b>位置由市场结构决定（支撑下方、趋势线外、留缓冲），亏多少由仓位决定；固定百分比止损与结构无关；ATR 止损随波动伸缩；止损在入场前确定，只能朝有利方向移动。</li>
+      <li><b>报酬风险比与期望值：</b>墨菲建议至少 3:1；期望值 = 胜率 × 平均盈利 − 败率 × 平均亏损；用 R 倍数记账；警惕高胜率陷阱，别忘了成本按 R 计会随止损变窄而变贵。</li>
+      <li><b>仓位：</b>股数 = 账户 × 风险比例 ÷ 每股止损距离，向下取整到 100 股，受单只市值上限约束；ATR 仓位让波动翻倍时仓位减半；固定比例法让每笔交易的“投票权”相同。</li>
+      <li><b>回撤与连亏：</b>亏 50% 要赚 100%；胜率 40% 时，100 笔里至少一次 8 连亏的概率约一半；单笔风险越大，破产概率非线性地上升，优势一变差，高风险档最先崩溃。</li>
+      <li><b>凯利：</b>f* = p − (1 − p) ÷ b 是长期增长最快的比例，超过它只添波动不添收益；参数有误差、亏损可能超过 1R，所以实践用分数凯利，1%–2% 约为十分之一到五分之一凯利。</li>
+      <li><b>加减仓：</b>亏损后减仓、盈利后慢加；只给盈利仓位加仓，越加越少，加仓后上移止损；永不摊平；趋势单位加交易单位，兼顾落袋和吃趋势。</li>
+      <li><b>战术与 A 股：</b>突破入场确定但止损宽，回调入场报酬风险比高但可能踏空，可分批结合；日内图只用来改善入场价；T+1 和跌停让止损可能失灵，仓位、杠杆和单只市值上限是最后的防线。</li>
+    </ol>
+  </div>
+
+  <h3>核心术语（中英对照）</h3>
+  <div class="tablewrap">
+    <table>
+      <tr><th>中文</th><th>English</th><th>一句话定义</th></tr>
+      <tr><td>资金管理</td><td>money management</td><td>决定每笔投入多少、冒多大风险，以及盈亏之后如何调整</td></tr>
+      <tr><td>仓位规模</td><td>position sizing</td><td>根据风险预算和止损距离算出买多少</td></tr>
+      <tr><td>保护性止损</td><td>protective stop</td><td>事先设定的认错离场价位</td></tr>
+      <tr><td>移动止损</td><td>trailing stop</td><td>随行情有利发展而上移、只升不降的止损</td></tr>
+      <tr><td>时间止损</td><td>time stop</td><td>入场后一定时间内没走出预期就离场</td></tr>
+      <tr><td>报酬风险比</td><td>reward-to-risk ratio</td><td>潜在盈利 ÷ 潜在亏损，墨菲建议至少 3:1</td></tr>
+      <tr><td>胜率</td><td>win rate / hit rate</td><td>盈利交易占全部交易的比例</td></tr>
+      <tr><td>盈亏比</td><td>payoff ratio</td><td>平均盈利 ÷ 平均亏损</td></tr>
+      <tr><td>期望值</td><td>expectancy</td><td>平均每笔交易的盈亏，通常以 R 计</td></tr>
+      <tr><td>R 倍数</td><td>R-multiple</td><td>单笔盈亏 ÷ 初始风险</td></tr>
+      <tr><td>固定比例仓位</td><td>fixed fractional sizing</td><td>每笔冒账户固定比例的风险</td></tr>
+      <tr><td>真实波幅 / 平均真实波幅</td><td>true range / average true range (ATR)</td><td>把跳空计入的单日波幅 / 它的平滑平均</td></tr>
+      <tr><td>波动率仓位</td><td>volatility-based sizing</td><td>用 ATR 定止损距离并反推股数</td></tr>
+      <tr><td>回撤 / 最大回撤</td><td>drawdown / maximum drawdown</td><td>净值从高点下跌的幅度 / 其中最大的一次</td></tr>
+      <tr><td>破产风险</td><td>risk of ruin</td><td>账户跌到无法继续交易（或实质性腰斩）的概率</td></tr>
+      <tr><td>凯利公式</td><td>Kelly criterion</td><td>让长期复合增长率最高的下注比例</td></tr>
+      <tr><td>分数凯利</td><td>fractional Kelly</td><td>按凯利比例的一部分下注，以对冲估计误差</td></tr>
+      <tr><td>组合热度</td><td>portfolio heat</td><td>所有持仓止损风险之和占账户的比例</td></tr>
+      <tr><td>市场组</td><td>market group</td><td>走势高度相关的一组市场，如贵金属、谷物</td></tr>
+      <tr><td>金字塔加仓</td><td>pyramiding</td><td>只给盈利仓位加仓，且越加越少</td></tr>
+      <tr><td>摊平</td><td>averaging down</td><td>给亏损仓位加仓以拉低均价，墨菲明确反对</td></tr>
+      <tr><td>趋势单位 / 交易单位</td><td>trending unit / trading unit</td><td>用移动止损长期持有的部分 / 到第一目标就了结的部分</td></tr>
+      <tr><td>突破入场 / 回调入场</td><td>breakout entry / pullback entry</td><td>突破时追进 / 等回抽到支撑再买</td></tr>
+      <tr><td>限价单 / 止损单</td><td>limit order / stop order</td><td>指定价或更好价成交 / 触价后变市价单</td></tr>
+      <tr><td>马丁格尔</td><td>martingale</td><td>亏损后加倍下注的策略，必然走向爆仓</td></tr>
+    </table>
+  </div>
+
+  <h3>自测（先想后翻）</h3>
+  <details>
+    <summary>Q1 墨菲的四条资金管理原则是什么？它们各自管住哪一类风险？为什么今天的个人交易者多用 1%–2% 而不是 5%？</summary>
+    <div class="ans"><p>四条：① 投入的资金（保证金）合计不超过总资本的 50%，其余作储备；② 投入任何单一市场的资金不超过 10%–15%；③ 在任何单一市场上冒的风险（止损亏损额）不超过 5%；④ 任何一个市场组的保证金合计不超过 20%–25%。①② 管“投入多少”，防止资金被占满、被单一市场击穿；③ 管“错了亏多少”，是核心；④ 管相关性，防止几个看似不同的仓位其实是同一个赌注。</p><p>5% 是上限，不是推荐值。按 5% 下注，10 连亏账户就少了约 40%，要赚 67% 才能回本；而胜率 40% 的系统做 300 笔，至少一次 10 连亏的概率超过一半。按 1% 下注，同样的连亏只是 −9.6%。再考虑胜率估计的误差（100 笔样本的置信区间宽达 ±10 个百分点）和 A 股跳空、跌停让实际亏损超过 1R，1%–2% 才给这些不确定性留出了余量。</p></div>
+  </details>
+  <details>
+    <summary>Q2 为什么止损应该基于图表，而不是固定百分比？如果图表止损离入场价太远，正确的处理是什么？</summary>
+    <div class="ans"><p>止损的意义是“价格到了这里，买入理由就不成立了”。图表止损放在支撑下方、趋势线外侧，价格到那里意味着市场结构真的被破坏，支撑你的那批买家撤了。固定百分比止损和市场结构无关：对高波动股票，它落在正常噪声里，常常被扫掉之后价格再上涨（图 16-3）；对低波动股票，它又可能宽得没必要。它把止损放在了“亏得起”的地方，而不是“判断错了”的地方。</p><p>如果图表止损太远，墨菲的做法是<b>减少仓位或放弃这笔交易</b>，绝不把止损挪近到没有意义的位置。风险金额由仓位控制：止损宽就少买，止损窄就多买，每笔仍只冒 1%。也可以用 ATR 检查：止损距离至少要在 1 倍 ATR 之外，否则大概率被噪声打掉。</p></div>
+  </details>
+  <details>
+    <summary>Q3 系统 A：胜率 35%，平均盈利 2.5R，平均亏损 1R；系统 B：胜率 65%，平均盈利 0.6R，平均亏损 1.2R。各自的期望值是多少？1R = 2000 元时，100 笔各期望赚多少？除了期望值，还要看什么？</summary>
+    <div class="ans"><p>A：E = 0.35 × 2.5 − 0.65 × 1 = 0.875 − 0.65 = <b>+0.225R</b>，100 笔期望赚 22.5R = 4.5 万元。B：E = 0.65 × 0.6 − 0.35 × 1.2 = 0.39 − 0.42 = <b>−0.03R</b>，100 笔期望亏 3R = 6000 元。胜率高的 B 反而是亏钱的系统，这就是高胜率陷阱；它的亏损（1.2R）大于盈利（0.6R），典型的“小赚就跑、亏了就扛”。</p><p>还要看：① 成本：B 的每笔利润很薄，成本占比更高；② 连亏：A 的败率 65%，100 笔里平均最长连亏约 9 笔，至少一次 10 连亏的概率约 37%，你得确认按自己的单笔风险扛得住；③ 样本量：100 笔估出的胜率误差约 ±10 个百分点，A 的胜率若实际只有 30%，期望值就降到 +0.05R；④ 最大单笔亏损和 A 股跳空风险。顺便算一下 A 的凯利比例：0.35 − 0.65 ÷ 2.5 = 9%，单笔 1% 约为九分之一凯利，留了足够的余量。</p></div>
+  </details>
+  <details>
+    <summary>Q4 亏 50% 为什么要赚 100% 才能回本？这对单笔风险和回撤管理意味着什么？</summary>
+    <div class="ans"><p>回本所需涨幅 = 1 ÷（1 − 亏损幅度）− 1。亏损发生在大本金上，回本却只能在小本金上赚：100 万元亏一半剩 50 万元，要再赚 50 万元，相对于 50 万元就是 100%。亏得越深越陡：亏 20% 要赚 25%，亏 50% 要赚 100%，亏 80% 要赚 400%（图 16-7）。换成时间，亏 50% 之后即使年化 15%，也要将近 5 年才回本。</p><p>含义：资金管理的首要目标是让回撤停留在曲线平缓的一段（大约 20% 以内）。具体手段就是本站的工具：小的单笔风险（1% 时 10 连亏只回撤约 10%），组合热度上限（防止很多仓位一起亏），回撤节流阀（回撤 10% 降风险、20% 暂停），以及永不摊平、永不加倍下注。宁可在顺境里少赚一点，也不能让自己掉进需要翻倍才能回本的深坑。</p></div>
+  </details>
+  <details>
+    <summary>Q5 为什么永远不能给亏损的仓位加仓？金字塔加仓和摊平的本质区别是什么？</summary>
+    <div class="ans"><p>价格跌破止损或持续朝不利方向走，说明市场正在否决你的判断。这时加仓，等于在证据对你不利的时候加大赌注，风险敞口越来越大，而认错点却一再后移，最后往往变成无止损的死扛。图 16-11 里，按原计划止损只亏 200 元，摊平到 1200 股再跌到 7 元就亏 2400 元，放大 12 倍。摊平的心理根源是锚定（把成本价当价值）和处置效应（不愿把浮亏变实亏）。</p><p>本质区别在于<b>加仓时市场是在支持你还是在反对你</b>。金字塔加仓发生在仓位盈利、趋势得到确认之后，每次加得比上次少，并且加仓后上移止损，让整个仓位的总风险不超过最初的 1R；摊平发生在仓位亏损、判断被否定之时，风险不断膨胀。还要注意加仓的形状：同样是顺势加仓，倒金字塔（越加越多）会把均价拉到高处，一次小回调就让整笔变亏。</p></div>
+  </details>
+  <details>
+    <summary>Q6 同一个系统（胜率 40%，盈亏比 2），单笔风险 1% 和 5% 长期会有什么差异？请从连亏、回撤和凯利三个角度说明。</summary>
+    <div class="ans"><p><b>连亏：</b>做 300 笔时，至少一次 10 连亏的概率约 52%。1% 时这段连亏回撤约 9.6%；5% 时回撤约 40%，要赚 67% 才能回本。<b>回撤：</b>两万次模拟里，1% 的平均最大回撤约 14%，几乎不会腰斩；5% 的平均最大回撤约 56%，曾经腰斩的概率约 66%。<b>凯利：</b>这个系统的全凯利是 10%，1% 是十分之一凯利，5% 是半凯利。如果参数估计准确，5% 的中位数终值更高（约 9 倍对 1.8 倍）。</p><p>但这个“如果”很脆弱：真实胜率若只有 35%，凯利比例降到 2.5%，5% 就成了 2 倍凯利，300 笔下来中位数约 1.0 倍，平均最大回撤约 73%，白白承受巨大的波动；1% 仍能小幅盈利（约 1.13 倍）。所以 1% 的优势是<b>稳健</b>：它对参数误差不敏感，回撤留在回本曲线平缓的一段，心理上也执行得下去。资金管理选择的不是理论上最赚钱的比例，而是在你可能估错的所有情况下都活得下来的比例。</p></div>
+  </details>
+
+  <a class="next" href="ta-ch19.html">
+    <div>
+      <div class="lbl">NEXT STATION · 第 14 站</div>
+      <div class="ttl">第 19 章 · 全书大会串</div>
+    </div>
+    <div class="lbl">把十三站的工具串成一套从看图到下单的完整流程</div>
+  </a>
+
+  <p class="foot">本页为依据约翰·墨菲《金融市场技术分析》框架整理的原创学习笔记（第 16 章），仅用于教学理解；标“示意”的图表为构造数据，标“模拟”的资金曲线由确定性随机数生成，概率与模拟结果均在本站脚本中计算；研究结论、历史数据与案例为近似表述，以原始文献和官方数据为准。内容不构成任何投资建议。</p>
+</section>
+
+</main>
+</div>
+</div>
+
+<script>
+(function(){
+  var links = Array.prototype.slice.call(document.querySelectorAll('.sidenav a[href^="#"]'));
+  if(!links.length) return;
+  var map = [];
+  links.forEach(function(a){
+    var el = document.getElementById(a.getAttribute('href').slice(1));
+    if(el) map.push([el, a]);
+  });
+  if(!map.length) return;
+  function update(){
+    var y = window.scrollY + 150;
+    var cur = map[0][1];
+    for(var i = 0; i < map.length; i++){
+      if(map[i][0].offsetTop <= y) cur = map[i][1];
+    }
+    map.forEach(function(p){ p[1].classList.toggle('active', p[1] === cur); });
+  }
+  var tick = false;
+  window.addEventListener('scroll', function(){
+    if(!tick){
+      tick = true;
+      requestAnimationFrame(function(){ tick = false; update(); });
+    }
+  }, {passive:true});
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+</body>
+</html>
