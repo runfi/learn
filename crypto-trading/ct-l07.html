@@ -202,7 +202,7 @@
   </div>
   <div class="prose">
     <h3><span class="tag">① </span>怎么读：分位数，别背绝对值</h3>
-    <p>带宽的绝对值会随市场年代漂移：2026-02-12（1 月瀑布之后）BTC 日线带宽高达 44.6%，8 月 15 日只有 4.2%——同一年里差了十倍。所以一切阈值都用历史分位：<strong>带宽跌破近一年 20 分位 ＝ 收口成立</strong>。第 6 课在 ATR 上用过同样的思路（90 分位风险减半线），分位数让规则自动跟着市场校准。</p>
+    <p>带宽的绝对值会随市场年代漂移：2026-02-12（1 月末那轮瀑布之后）BTC 日线带宽高达 44.6%，8 月 15 日只有 4.2%——同一年里差了十倍。所以一切阈值都用历史分位：<strong>带宽跌破近一年 20 分位 ＝ 收口成立</strong>。第 6 课在 ATR 上用过同样的思路（90 分位风险减半线），分位数让规则自动跟着市场校准。</p>
     <h3><span class="tag">② </span>信号规则：三句话</h3>
     <ul>
       <li><strong>收口（带宽 ≤ 近一年 20 分位）</strong>：波动被压到历史低位，一轮放量行情在酝酿——进入"压缩待爆"状态，开始画盘整区、准备模板 B；</li>
@@ -227,7 +227,7 @@
       <div class="stat"><span class="k">收口日之后 20 天带宽</span><span class="v warn" id="bw-exp">—</span><span class="s" id="bw-exp-s">—</span></div>
     </div>
     <p class="lab-msg" id="bw-msg"></p>
-    <figcaption><b>读图：</b>上图是 2026 年以来的 BTC 日线与布林带（参数随滑块重算），下图是带宽，红色虚线是<b>滚动的近一年 20 分位</b>——带宽钻到它下面就算收口。默认参数下看三个标注：2 月中带宽 44.6% 是 1 月瀑布的余波（爆开之后总要慢慢泄气）；7-20 → 8-19 带宽连续 31 天压在 20 分位下方、8-15 摸到年内最窄 4.21%，8-19 一根大阳收盘 69,310 捅破箱体，弹簧向上弹开；而 5 月那次收口（最窄 7.75%）先向上虚晃出 82,829 的新高，随后 6 月一路崩到 58,030。两次收口、两个方向、一真一假——<b>收口管"快了"，不管"往哪"</b>。再把 k 从 2 拖到 3：轨道变宽、带宽数值整体变大，但哪些日子算收口<b>一天都不变</b>——分位数比较里 k 被约掉了；真正改变收口认定的是 N。这就是"参数宁可普通而稳定"的又一个版本。</figcaption>
+    <figcaption><b>读图：</b>上图是 2026 年以来的 BTC 日线与布林带（参数随滑块重算），下图是带宽，红色虚线是<b>滚动的近一年 20 分位</b>——带宽钻到它下面就算收口。默认参数下看三个标注：2 月中带宽 44.6% 是 1 月末瀑布的余波（爆开之后总要慢慢泄气）；7-20 → 8-19 带宽连续 31 天压在 20 分位下方、8-15 摸到年内最窄 4.21%，8-19 一根大阳收盘 69,310 捅破箱体，弹簧向上弹开；而 5 月那次收口（最窄 7.75%）先向上虚晃出 82,829 的新高，随后 6 月一路崩到 58,030。两次收口、两个方向、一真一假——<b>收口管"快了"，不管"往哪"</b>。再把 k 从 2 拖到 3：轨道变宽、带宽数值整体变大，但哪些日子算收口<b>一天都不变</b>——分位数比较里 k 被约掉了；真正改变收口认定的是 N。这就是"参数宁可普通而稳定"的又一个版本。</figcaption>
   </figure>
   <div class="case">
     <span class="label">真实案例</span>
@@ -738,23 +738,20 @@ function condStats(fromISO, toISO, hz){
   var g = CT.makeChart('bw-chart', {panes: [0.32], minBarSpacing: 0.1});
   var cs = g.addCandles(win);
   g.markers(cs, [
-    {time: Date.parse('2026-02-12') / 1000, position: 'aboveBar', shape: 'circle', color: 'muted', text: '带宽 44.6%＝1 月爆口余波'},
+    {time: Date.parse('2026-02-12') / 1000, position: 'aboveBar', shape: 'circle', color: 'muted', text: '带宽 44.6%＝瀑布爆口的余波'},
     {time: Date.parse('2026-05-06') / 1000, position: 'aboveBar', shape: 'arrowDown', color: 'crit', text: '假突破 82,829'},
     {time: Date.parse('2026-08-15') / 1000, position: 'belowBar', shape: 'circle', color: 'series2', text: '年内最窄 4.21%'},
     {time: Date.parse('2026-08-19') / 1000, position: 'belowBar', shape: 'arrowUp', color: 'up', text: '真突破 收 69,310'}
   ]);
   CT.legend('bw-legend', [['accent', '布林上 / 下轨'], ['muted', '中轨'], ['series2', '带宽%（下图）'], ['crit', '近一年 20 分位（滚动）']]);
-  var dyn = [];
-  function clearDyn(){
-    dyn.forEach(function(s){
-      g.chart.removeSeries(s);
-      g.series = g.series.filter(function(it){ return it.s !== s; });
-    });
-    dyn = [];
-  }
+  /* 五条线只建一次，之后用 setData 原地更新——避免反复增删序列拆掉副图 */
+  var sUp = g.addLine([], 'accent', {width: 1, title: '上轨'});
+  var sMid = g.addLine([], 'muted', {width: 1, dashed: true, title: '中轨'});
+  var sDn = g.addLine([], 'accent', {width: 1, title: '下轨'});
+  var sW = g.addLine([], 'series2', {pane: 1, width: 2, title: '带宽%'});
+  var sP = g.addLine([], 'crit', {pane: 1, width: 1, dashed: true, title: '20 分位'});
   var N = 20, K = 2;
   function rebuild(){
-    clearDyn();
     var bl = bollRows(ALL, N, K);
     var first = -1, i, j;
     for(i = 0; i < bl.length; i++){ if(bl[i]){ first = i; break; } }
@@ -778,11 +775,8 @@ function condStats(fromISO, toISO, hz){
       if(bl[i].w <= p20) sqN++;
       if(bl[i].w < minW){ minW = bl[i].w; minT = t; }
     }
-    dyn.push(g.addLine(up, 'accent', {width: 1, title: '上轨'}));
-    dyn.push(g.addLine(mid, 'muted', {width: 1, dashed: true, title: '中轨'}));
-    dyn.push(g.addLine(dn, 'accent', {width: 1, title: '下轨'}));
-    dyn.push(g.addLine(wline, 'series2', {pane: 1, width: 2, title: '带宽%'}));
-    dyn.push(g.addLine(pline, 'crit', {pane: 1, width: 1, dashed: true, title: '20 分位'}));
+    sUp.setData(up); sMid.setData(mid); sDn.setData(dn);
+    sW.setData(wline); sP.setData(pline);
     g.fit();
     var minD = new Date(minT * 1000).toISOString().slice(5, 10).replace('-', '-');
     document.getElementById('bw-min').textContent = minW.toFixed(2) + '%';
@@ -791,7 +785,6 @@ function condStats(fromISO, toISO, hz){
   }
   CT.bindRange('bw-n', function(v){ N = v; rebuild(); });
   CT.bindRange('bw-k', function(v){ K = v; rebuild(); }, function(v){ return (+v).toFixed(2) + 'σ'; });
-  rebuild();
   /* 静态瓦片：收口日之后 20 天带宽扩张（2021 年起，默认参数，页面现算） */
   var s1 = 0, n1 = 0, s0 = 0, n0 = 0, e1 = 0, e0 = 0;
   var c21 = Date.parse('2021-01-01') / 1000;
@@ -832,7 +825,8 @@ function condStats(fromISO, toISO, hz){
   strip('T', 'up'); strip('S', 'series2'); strip('R', 'muted');
   g.fit();
   CT.legend('es-legend', [['series', 'EMA20（方向参考）'], ['up', '趋势态'], ['series2', '压缩待爆态'], ['muted', '震荡态']]);
-  var mkApi = g.markers(cs, []);
+  var mkArr = [];
+  var mkApi = g.markers(cs, mkArr);
   /* 全史对比瓦片（页面现算，与证据块同一算法） */
   var full = condStats('2020-07-01', '2026-10-01', 5);
   document.getElementById('es-cmp').textContent = '+' + full.T.avg.toFixed(2) + '% vs +' + full.R.avg.toFixed(2) + '%';
@@ -850,7 +844,7 @@ function condStats(fromISO, toISO, hz){
     if(d.dt === '2026-08-20' || d.dt === '2026-08-21')
       return '开关的"失语期"：带宽已经炸开（压缩票灭），ADX 还没爬过 25（趋势票未亮）——突破后两天状态退回震荡态。这就是为什么 B 的单必须在压缩态里挂好：<b>等开关表态，起步价贵 11%</b>。';
     if(between(d.dt, '2026-08-22', '2026-09-08') && d.st === 'T')
-      return 'ADX 从 25.5 一路爬到 47.8，趋势态全程绿灯——模板 A 吃回调的黄金期，第 5 课回放过的 9-03 / 9-09 两笔单都落在这段里。';
+      return 'ADX 从 25.5 一路爬到 47.8，趋势态全程绿灯——模板 A 吃回调的黄金期，第 5 课三重滤网放行的 9-03 那笔就落在这段里。';
     if(between(d.dt, '2026-09-09', '2026-09-18') && d.st === 'S')
       return '趋势途中的二次收口：9 月中旬回调把带宽重新压到 20 分位下（5.50%）——中继旗形的形状。随后 9-21 向上再冲 87,385。趋势里的压缩态，突破方向顺大势的概率更高（但依然要等收盘确认）。';
     if(d.dt >= '2026-09-25')
@@ -878,7 +872,11 @@ function condStats(fromISO, toISO, hz){
     document.getElementById('es-st-s').textContent = d.st === 'T' ? '模板 A 开机（方向问三票制）' : d.st === 'S' ? '画箱体、挂模板 B 计划单' : '模板 C 或观望';
     var p = CT.pal();
     var mcolor = d.st === 'T' ? 'up' : d.st === 'S' ? 'series2' : 'muted';
-    mkApi.setMarkers([{time: CT.ts(d.t), position: 'aboveBar', shape: 'circle', color: p[mcolor], text: NAME[d.st], size: 1}]);
+    mkArr.length = 0;
+    mkArr.push({time: d.t, position: 'aboveBar', shape: 'circle', color: mcolor, text: NAME[d.st]});
+    mkApi.setMarkers(mkArr.map(function(m){
+      return {time: CT.ts(m.time), position: m.position, shape: m.shape, color: p[m.color] || m.color, text: m.text, size: 1};
+    }));
     var sp = special(d);
     var base = '<b>' + d.dt + ' · ' + NAME[d.st] + '</b>：' + (sp || (d.st === 'T' ? '趋势票亮：顺势武器开机，回调找模板 A 的入场。' : d.st === 'S' ? '只亮压缩票：波动压在历史低位，画箱体、等爆口——别在弹簧旁边做区间。' : '两票皆灭：没性格的行情，要么按模板 C 的三要素找区间机会，要么观望。'));
     document.getElementById('es-msg').innerHTML = base

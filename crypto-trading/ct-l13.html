@@ -1,0 +1,737 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>币圈短线课 · 第 13 课 宏观事件复盘</title>
+<link rel="stylesheet" href="assets/ct.css">
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <span class="book"><a href="ct-index.html">币圈短线实战课</a></span>
+  <span class="part"><a href="ct-index.html">学习地图</a> · 阶段 2 行情为什么发生</span>
+  <span class="prefs">
+    <button id="btn-updown" type="button" title="切换涨跌配色"></button>
+    <button id="btn-theme" type="button" title="切换深浅主题"></button>
+  </span>
+</header>
+
+<div class="layout">
+
+<nav class="sidenav" aria-label="本课目录">
+  <p class="sn-chap">第 13 课 · 宏观事件复盘</p>
+  <a href="#top">课首</a>
+  <a href="#s1">13.1 怎么复盘：六步与全景图</a>
+  <a href="#s2">13.2 2020-03 新冠：现金荒</a>
+  <a href="#s3">13.3 2022 加息年叠加 FTX</a>
+  <a href="#s4">13.4 2023-03 硅谷银行</a>
+  <a href="#s5">13.5 2024-08 日元套息平仓</a>
+  <a href="#s6">13.6 2024-12 鹰派降息</a>
+  <a href="#s7">13.7 五场风暴的共同语法</a>
+  <a href="#s8">13.8 落地：你的复盘模板</a>
+  <a href="#recap">小结 · 术语 · 自测</a>
+</nav>
+
+<main class="article">
+
+<section class="hero" id="top">
+  <span class="chap-no">LESSON 13 · 第 13 课 / 共 16 课</span>
+  <h1>宏观事件复盘</h1>
+  <p class="en">FIVE MACRO STORMS, REPLAYED CANDLE BY CANDLE</p>
+  <p class="question">本课问题：把第 11 课的理论放到五场真实风暴里走一遍。</p>
+  <p class="lede">第 11 课给了你宏观的理论——预期差、"当下最怕什么"、流动性；第 12 课给了币圈自身的驱动。理论像游泳教程，这一课下水：五场真实风暴，从 2020 年 3 月的现金荒到 2024 年 12 月的鹰派降息，每一场都用 1 小时图一根根放给你看，再回答同一个问题——<strong>假如当时拿着你的 v0.7 系统，会发生什么？</strong>答案有赢有输：有的风暴系统提前让你站在正确一边，有的它全程失明、只能帮你把灾难按成 1R。全部诚实，因为复盘的价值恰恰在于诚实。</p>
+  <div class="objectives">
+    <h2>学完你能做到</h2>
+    <ul>
+      <li>说出复盘六步各写什么，以及为什么前两步必须在"知道结局之前"就写得出来；</li>
+      <li>讲清 2020-03-12 为什么连黄金都在跌，费率 −0.30% 顶格说明什么；</li>
+      <li>用"FTX 崩塌前夜三票全多"这个事实，说出指标系统的盲区和唯一防线；</li>
+      <li>解释"兜底公告是分水岭"，并用 SVB 的四天 +26% 和 FTX 的 73 天作对比；</li>
+      <li>拆解日元套息平仓的传导链，说明为什么你没加杠杆也会挨刀；</li>
+      <li>区分利率决议的"动作"与"路径"，解释降息当天为什么能摔出 −15%；</li>
+      <li>用对照表归纳五场风暴的共同语法：第一波、杠杆环节、修复速度；</li>
+      <li>给下一个数据日写一张预判卡，事后用复盘六步卡对照。</li>
+    </ul>
+  </div>
+  <p class="colorkey">读图约定：本课默认<span class="up">绿涨</span>·<span class="dn">红跌</span>，可用右上角按钮切成红涨绿跌。带 <b>互动</b> 标签的图可以拖动、缩放、切换视野；正文里带虚线下划线和角标的词，点一下原地弹出解释。图表时间轴按你设备的时区显示（北京时间 ＝ UTC+8）；正文里的日期如 2020-03-12 指币安日线的交易日（UTC 口径，收盘在北京时间次日早 8 点），关键时刻会同时标注北京时间。</p>
+  <nav class="chapmap" aria-label="本课小节">
+    <a href="#s1">复盘方法</a><a href="#s2">新冠现金荒</a><a href="#s3">加息年＋FTX</a><a href="#s4">硅谷银行</a><a href="#s5">日元套息</a><a href="#s6">鹰派降息</a><a href="#s7">共同语法</a><a href="#s8">复盘模板</a><a href="#recap">小结</a>
+  </nav>
+</section>
+
+<!-- ================= 13.1 ================= -->
+<section class="ch" id="s1">
+  <h2 class="sec"><span class="no">13.1</span>怎么复盘：六步框架与一张全景图</h2>
+  <p class="sec-en">HOW TO RUN A POST-MORTEM</p>
+  <div class="prose">
+    <p>先说清楚这一课的玩法。五个案例不是五个故事，是<strong>五种类型</strong>：外生冲击、链下暴雷、银行挤兑、跨市场平仓、路径重定价——学的是语法，不是剧情。每个案例都按同样的六步走，你以后自己复盘也按这六步走：</p>
+  </div>
+  <figure>
+    <p class="fig-title"><span class="fno">图 13-1</span>复盘六步：每场风暴都这么拆<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+      <svg viewBox="0 0 720 150" role="img" aria-label="复盘六步流程：事前背景、事件落地、走势回放、因果链拆解、系统对照、一句话教训">
+        <defs>
+          <marker id="f131-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="ar-fill"/></marker>
+        </defs>
+        <rect x="12" y="38" width="100" height="56" rx="8" class="node"/>
+        <text x="62" y="62" text-anchor="middle" class="nt">① 事前背景</text>
+        <text x="62" y="80" text-anchor="middle" class="nd">当时最怕什么</text>
+        <path d="M112 66 L130 66" class="edge" marker-end="url(#f131-ar)"/>
+        <rect x="130" y="38" width="100" height="56" rx="8" class="node-dn"/>
+        <text x="180" y="62" text-anchor="middle" class="nt">② 事件落地</text>
+        <text x="180" y="80" text-anchor="middle" class="nd">和预期差在哪</text>
+        <path d="M230 66 L248 66" class="edge" marker-end="url(#f131-ar)"/>
+        <rect x="248" y="38" width="100" height="56" rx="8" class="node-hi"/>
+        <text x="298" y="62" text-anchor="middle" class="nt">③ 走势回放</text>
+        <text x="298" y="80" text-anchor="middle" class="nd">1 小时图走一遍</text>
+        <path d="M348 66 L366 66" class="edge" marker-end="url(#f131-ar)"/>
+        <rect x="366" y="38" width="100" height="56" rx="8" class="node-hi"/>
+        <text x="416" y="62" text-anchor="middle" class="nt">④ 因果链</text>
+        <text x="416" y="80" text-anchor="middle" class="nd">谁被迫做什么</text>
+        <path d="M466 66 L484 66" class="edge" marker-end="url(#f131-ar)"/>
+        <rect x="484" y="38" width="100" height="56" rx="8" class="node-up"/>
+        <text x="534" y="62" text-anchor="middle" class="nt">⑤ 系统对照</text>
+        <text x="534" y="80" text-anchor="middle" class="nd">v0.7 会说什么</text>
+        <path d="M584 66 L602 66" class="edge" marker-end="url(#f131-ar)"/>
+        <rect x="602" y="38" width="100" height="56" rx="8" class="node-warn"/>
+        <text x="652" y="62" text-anchor="middle" class="nt">⑥ 教训</text>
+        <text x="652" y="80" text-anchor="middle" class="nd">只写一句话</text>
+        <line x1="12" y1="112" x2="230" y2="112" class="sr"/>
+        <line x1="248" y1="112" x2="466" y2="112" class="sr"/>
+        <line x1="484" y1="112" x2="702" y2="112" class="sr"/>
+        <text x="121" y="134" text-anchor="middle" class="nd">事前——预期与仓位</text>
+        <text x="357" y="134" text-anchor="middle" class="nd">事中——价格与传导</text>
+        <text x="593" y="134" text-anchor="middle" class="nd">事后——系统与教训</text>
+      </svg>
+    </div>
+    <figcaption><b>读图：</b>六步里最值钱的是前两步——它们必须在"知道结局之前"就写得出来，这正是第 11 课预判卡的格子；中间两步只认 1 小时图和传导链，禁止用"情绪崩了""主力砸盘"这种万能解释；最后两步把故事变成系统的一部分。注意第④步的标准：因果链的每一环都要写出<b>谁被迫做了什么</b>——自愿的买卖造不成风暴，被迫的才能。</figcaption>
+  </figure>
+  <div class="prose">
+    <p>动手之前，先把五场风暴钉在同一张地图上。下图上半是 BTC 七年走势，下半是同期的美国联邦基金利率——第 11 课说宏观是水位，这张图就是水位计：</p>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 13-2</span>全景：五场风暴与利率周期（2020 → 2026）<span class="real">真实数据</span></p>
+    <div class="lw h480" id="ov-chart"></div>
+    <div class="lw-legend" id="ov-legend"></div>
+    <div class="stats">
+      <div class="stat"><span class="k">利率低点</span><span class="v">0.05%</span><span class="s">2020-04 · 零利率＋无限 QE</span></div>
+      <div class="stat"><span class="k">利率高点</span><span class="v">5.33%</span><span class="s">2023-08 → 2024-08 · 高位平台</span></div>
+      <div class="stat"><span class="k">BTC 同期</span><span class="v">3,622 → 108,367</span><span class="s">2020-03 谷底 → 2024-12 新高</span></div>
+    </div>
+    <figcaption><b>读图：</b>上半是币安 BTCUSDT 永续 2020 年至今的收盘价，下半是美国联邦基金利率（FRED 月度数据）。五支标注就是本课五场风暴：①②发生在利率的两个极端动作段（悬崖式降到零、陡坡式拉到 5.33%），③④⑤全挤在高利率平台期——市场一边猜"何时转向"，一边被各种断裂点偷袭。两个灰点（2024-01 ETF、2025-10 关税）是币圈自身的风暴，归第 14 课。注意风暴之间的大段行情和利率关系松散——<b>宏观决定水位，不决定每天的浪花</b>，这是第 11 课的老话，这张图是它的证据。</figcaption>
+  </figure>
+  <div class="evidence">
+    <span class="label">证据与怀疑</span>
+    <h4>复盘的两个陷阱：事后诸葛与幸存者偏差</h4>
+    <p><strong>陷阱一：事后诸葛。</strong>心理学家 Fischhoff 在 1975 年的经典实验里发现：被告知结局的人，会系统性地高估"我本来就能预测到"的程度，而且这个偏差连提醒都消除不了——所谓"我早知道"效应（hindsight bias）。本课每个案例都是已知结局的叙事，读起来步步必然；但真实的当下只有噪音、谣言和两个方向都说得通的理由。2020-03-12 当晚，"腰斩之后必有报复性反弹"和"流动性危机才刚开始"听起来一样有道理。<strong>陷阱二：幸存者偏差。</strong>本课挑的是五次"真出事了"的日子，没挑那几十次"看起来要出事、结果什么都没发生"的数据日——如果你按出事日的剧本过每一个数据日，大部分时间只是在白白错过行情。两个对策，正好是本课的落地动作：① 事前写<strong>预判卡</strong>（第 11 课），把"我当时怎么想"钉死在纸上，让事后的自己无法篡改记忆；② 事后按<strong>六步卡</strong>复盘（13.8 节），把注意力从"预测对错"挪到"规则有没有保护我"。</p>
+  </div>
+</section>
+
+<!-- ================= 13.2 ================= -->
+<section class="ch" id="s2">
+  <h2 class="sec"><span class="no">13.2</span>案例一 · 2020-03-12 新冠：所有人同时找现金</h2>
+  <p class="sec-en">MARCH 2020 — THE DASH FOR CASH</p>
+  <div class="prose">
+    <h3><span class="tag">① </span>事前背景：狂热刚过，病毒在新闻里还是"别处的事"</h3>
+    <p>2020 年 2 月中，市场还处在狂热的尾巴上：2-13 BTC 摸到 10,540，资金费率在 2-12 打出 +0.30% 的封顶值（第 1 课图 1-7 标注过）——多头挤到了租金的物理上限。2 月下旬起疫情在欧美扩散，美股从历史高点掉头，BTC 跟着从 10,500 一路退到 3-11 收盘 7,938。<strong>当时市场最怕的事</strong>，从"经济放缓"一路升级成"全球停摆＋金融系统断流"——而大多数人的仓位还是按"回调买入"的剧本摆的。</p>
+    <h3><span class="tag">② </span>事件落地：3-12，预期差兑现成现金荒</h3>
+    <p>3-11 世卫宣布"全球大流行"、美国宣布对欧旅行禁令，恐慌从概率变成现实。3-12（北京时间 3-12 晚至 3-13 早）全球市场同步崩溃：美股开盘触发<span class="nt" data-note="cb">熔断</span>——十天内的第二次，之后还有两次；原油、黄金、美债同时下跌。注意这个细节：<strong>连黄金和美债都在跌</strong>——因为这已经不是"避险"，是<span class="nt" data-note="liq-crisis">流动性危机</span>：所有人都在把一切能卖的换成美元现金。BTC 这一天开 7,938、收 4,765，<span class="dn-t">单日 −40%</span>；次日凌晨最低 3,622，两天最大跌幅 <span class="dn-t">−54%</span>。3-13 早 8 点（UTC）那期资金费率打到 −0.30%——和一个月前的 +0.30% 正好是封顶值的两头。</p>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 13-3</span>走势回放：2020-03-08 → 03-17，1 小时图＋资金费率<span class="real">真实数据</span><span class="ia">互动</span></p>
+    <div class="ctrls">
+      <div>
+        <span class="seg-label">视野</span>
+        <span class="seg" id="c1-seg" role="group">
+          <button type="button" data-val="all" aria-pressed="true">十天全景</button>
+          <button type="button" data-val="crash">放大崩盘 30 小时</button>
+        </span>
+      </div>
+    </div>
+    <div class="lw h420" id="c1-chart"></div>
+    <div class="lw-legend" id="c1-legend"></div>
+    <div class="stats">
+      <div class="stat"><span class="k">3-12 单日</span><span class="v dn">−40%</span><span class="s">开 7,938 → 收 4,765</span></div>
+      <div class="stat"><span class="k">3-13 最低</span><span class="v dn">3,622</span><span class="s">两天最大 −54%</span></div>
+      <div class="stat"><span class="k">资金费率</span><span class="v warn">−0.30% 顶格</span><span class="s">3-13 北京 16 点结算 · 封顶值</span></div>
+      <div class="stat"><span class="k">收复暴跌前收盘</span><span class="v">47 天</span><span class="s">4-29 收 8,784 · 兜底后爬回</span></div>
+    </div>
+    <p class="lab-msg" id="c1-msg"></p>
+    <figcaption><b>读图：</b>上半是币安 BTCUSDT 永续 1 小时线，下半是每 8 小时一期的资金费率。两波下跌之间隔着几个小时的平台——当晚无数人在那个平台上"抄底"，然后被第二波带走。还要注意费率的时序：<b>崩盘前它还是正的，崩完才打到 −0.30%</b>——费率是恐慌的体温计，不是预警器（第 10 课讲过它的正确用法是过滤拥挤，不是预测方向）。</figcaption>
+  </figure>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>家里着火的时候，没有人会挑着卖东西——传家宝、金条、手机，<strong>谁能最快换成现金就先卖谁</strong>。2020 年 3 月的全球市场就是这个状态：杠杆基金收到追保电话，卖的不是"不看好的资产"，而是"卖得掉的资产"。BTC 全年无休、随时成交，在现金荒里反而成了先被搬空的货架。所以"避险资产"这个词在流动性危机里会失效：<em>大家缺的不是安全，是现金</em>。</p>
+  </div>
+  <div class="prose">
+    <h3><span class="tag">④ </span>因果链拆解</h3>
+    <ol>
+      <li>疫情全球扩散，"经济停摆"从尾部风险变成基准情形——<strong>预期差巨大</strong>：三周前市场还在定价"小病无碍"；</li>
+      <li>股债商品齐跌，杠杆机构触发追保，<span class="nt" data-note="cascade">连锁平仓</span>启动——被迫卖出一切流动性好的资产换现金；</li>
+      <li>卖压传到币圈：合约多头强平接力（第 1 课图 1-3 的踩踏循环开到最大档），两波垂直下跌，费率 −0.30% 顶格＝空头拥挤到物理上限；</li>
+      <li>3-15 美联储紧急降息至零、3-23 宣布无限量 QE——<span class="nt" data-note="backstop">兜底</span>落地，"金融系统断流"这个最怕的事被央行从桌上拿走；</li>
+      <li>流动性回来，价格花了 47 天爬回 3-11 的起点——<strong>崩用了两天，爬用了一个半月</strong>。</li>
+    </ol>
+    <h3><span class="tag">⑤ </span>假如拿着 v0.7 系统</h3>
+    <ul>
+      <li><strong>三票制与环境开关</strong>：按第 4 课的算法重算，3-11 收盘三票全空（两高 10,019 → 9,204、两低 9,293 → 8,409，收盘压在 EMA20 下方）——风暴前夜，系统早已不许你持有任何多单，要么空仓要么轻仓空单；</li>
+      <li><strong>高波动熔断（第 6 课）</strong>：3-11 的日 ATR14 已达价格的 5.4%，处在近一年 97% 分位——熔断器在崩盘前就已触发，单笔风险自动减半到 0.5%；</li>
+      <li><strong>事件日历（第 3 / 11 课）</strong>：这一场它帮不上忙——疫情不按日历出牌。日历管的是"已知时间的未知结果"，管不了"未知时间的未知事件"，这是它的边界，要诚实承认；</li>
+      <li><strong>1% 仓位＋ATR 止损</strong>：就算你违规拿着多单进 3-12，止损市价单也会在第一波就把你送出场。−40% 的日子滑点会放大，1R 可能变成 1.5R 甚至 2R——但不会是 40R。模板 D（第 10 课）此时的禁令是反向的：费率打到封顶、恐慌极值，<em>也不许追空</em>。</li>
+    </ul>
+    <p>诚实的结论：<strong>系统这一场的成绩是"根本不在场"。</strong>它没有预测病毒，它只是在 2 月的下跌里按规则逐步把你切到空头侧、把仓位缩到半档。至于 3,622 的世纪大底——系统不会让你抄到，第一批多票要等结构确认，那是几周以后的事。躲开 −54%，错过最初的反弹，这笔交换你永远应该做。</p>
+    <h3><span class="tag">⑥ </span>教训一句话</h3>
+    <p><strong>流动性危机里没有避险资产，只有现金；你的任务不是接飞刀，是别站在刀的下面。</strong></p>
+  </div>
+</section>
+
+<!-- ================= 13.3 ================= -->
+<section class="ch" id="s3">
+  <h2 class="sec"><span class="no">13.3</span>案例二 · 2022 加息年叠加 FTX：抽水的年份，一点就炸</h2>
+  <p class="sec-en">2022 — RATE HIKES AND THE FTX COLLAPSE</p>
+  <div class="prose">
+    <h3><span class="tag">① </span>事前背景：整整一年的抽水</h3>
+    <p>把图 13-2 的下半图对准 2022 年：联邦基金利率从 1 月的 0.08% 一路拉到年底 4.10%、次年 8 月见顶 5.33%——这是四十年来最陡的加息。起因是通胀：CPI 同比在 2022-06 摸到 9.0% 的峰值。水位全年下降，BTC 从 2021-11 的高点 69,199 跌到 2022 年底的 16,538，<span class="dn-t">全年 −64%</span>；5 月 LUNA 崩盘（一周内 BTC 从 36,500 砸到 26,631），6 月三箭资本、Celsius 接连倒下。<strong>到 11 月，市场最怕的事已经很具体：下一个倒下的是谁。</strong>每一次暴雷都在教市场问这个问题。</p>
+    <h3><span class="tag">② </span>事件落地：一周崩掉第二大交易所</h3>
+  </div>
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>FTX 崩塌一周：预期差两头打脸</h4>
+    <p>时间线第 12 课背过，这里只看行情怎么消化它：11-02 媒体曝出 Alameda 资产负债表一半押在自家代币 FTT 上；11-06 币安宣布清仓 FTT，挤兑开始；11-08 FTX 停提。当天 16:00（UTC，北京 11-09 凌晨 0 点）传出"币安签意向书收购 FTX"，价格瞬间逼空到 20,685——<strong>一小时后市场就识破了这纸意向书</strong>，掉头跳水，两根 1 小时线 −5.1%、−3.8%。11-09 深夜币安宣布放弃收购，一小时后见 15,463；11-05 收盘 21,290 到这里，<span class="dn-t">四天 −27%</span>。11-10 凌晨两期资金费率 −0.119%、−0.112%——空头愿付重金的恐慌（第 1 课图 1-7 上你见过这个标注）。但这还不是底：<strong>阴跌又磨了两周，11-21 才见当月最低 15,443</strong>，而回到 11-05 的收盘价，要等 73 天后的 2023-01-20。</p>
+    <p class="takeaway">没有人兜底的崩塌没有分水岭：恐慌退潮之后不是反弹，是漫长的阴跌和更漫长的横盘。</p>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 13-4</span>走势回放：2022-11-04 → 11-23，1 小时图＋资金费率<span class="real">真实数据</span><span class="ia">互动</span></p>
+    <div class="ctrls">
+      <div>
+        <span class="seg-label">视野</span>
+        <span class="seg" id="c2-seg" role="group">
+          <button type="button" data-val="all" aria-pressed="true">三周全景</button>
+          <button type="button" data-val="crash">放大崩塌 48 小时</button>
+        </span>
+      </div>
+    </div>
+    <div class="lw h420" id="c2-chart"></div>
+    <div class="lw-legend" id="c2-legend"></div>
+    <div class="stats">
+      <div class="stat"><span class="k">11-05 收盘 → 11-09 低点</span><span class="v dn">−27%</span><span class="s">21,290 → 15,463</span></div>
+      <div class="stat"><span class="k">当月最低</span><span class="v dn">15,443</span><span class="s">11-21 · 低点后 12 天再创新低</span></div>
+      <div class="stat"><span class="k">资金费率</span><span class="v warn">−0.119% / −0.112%</span><span class="s">11-10 连续两期</span></div>
+      <div class="stat"><span class="k">收复 11-05 收盘价</span><span class="v">73 天</span><span class="s">2023-01-20 · 没人兜底，时间磨底</span></div>
+    </div>
+    <p class="lab-msg" id="c2-msg"></p>
+    <figcaption><b>读图：</b>和图 13-3 对比形状：新冠是两根垂直大针，FTX 是<b>阶梯</b>——每一级台阶对应一条新消息（停提、假收购、放弃收购），每条消息砸掉一层幻想。下半的费率在 11-10 打到极值后几天内回到常态：恐慌退得很快，价格却继续阴跌——<b>恐慌是事件，定价是过程</b>。磨到 11-21 的 15,443，那里后来成了整轮熊市的底，但当时没有任何指标告诉你这件事。</figcaption>
+  </figure>
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p><strong>"利空出尽，可以抄底了。"</strong>11-08 深夜，FTX 停提、暴跌 10% 之后，这句话到处都是——当时抄底价约 18,534。结果 11-09 再跌 16.6% 到 15,463；你咬牙扛住，12 天后它又创了 15,443 的新低；你继续扛，账户在水下整整躺到 2023 年 1 月 20 日才回本。"利空出尽"的致命问题是：<strong>你永远不知道还有没有下一只靴子</strong>——当时市场在传 Genesis、DCG、灰度折价，每一个都可能是下一个 FTX。对照 13.5 节：2024-08-05 抄底 48,888 事后看是神来之笔，和这里抄底 18,534 的灾难，<em>在当时的盘面上长得一模一样</em>。系统选择两个都不抄，用"错过"换掉"灾难"。</p>
+  </div>
+  <div class="prose">
+    <h3><span class="tag">④ </span>因果链拆解</h3>
+    <ol>
+      <li>全年加息抽水 → 币价阴跌 → 高杠杆机构的抵押品缩水，Luna、三箭、Celsius 半年内接连倒下——<strong>水位下降，才知道谁在裸泳</strong>；</li>
+      <li>11-02 FTT 占资产负债表一半的消息落地 → "下一个是谁"有了名字——这是预期差的第一次兑现；</li>
+      <li>11-06 最大对手宣布清仓 FTT → 挤兑开始 → 11-08 停提：怕的事从传闻变成事实；</li>
+      <li>11-08 "被收购"的希望出现又在一天内破灭 → 预期差两头打脸：先逼空、再踩踏；</li>
+      <li>资不抵债确认、没有任何人兜底 → 恐慌变成排查（还有谁的钱在 FTX 里）→ 阴跌两周见 15,443，73 天回到起点。</li>
+    </ol>
+    <h3><span class="tag">⑤ </span>假如拿着 v0.7 系统</h3>
+    <ul>
+      <li><strong>三票制</strong>：这是全课最扎心的一个事实——按第 4 课算法重算，2022 年全年三票制只给过 9 天做多，其中 3 天正是 <strong>11-05、11-06、11-07，FTX 崩塌前的最后三天</strong>（10 月的反弹刚好把高低点和均线都拉成多头排列）。如果你按规则在 11-07 进了多单，11-08 的大阴线会把你直接打到止损：<strong>−1R，−100 U，这就是全部损失</strong>；</li>
+      <li><strong>环境开关与熔断</strong>：同样扎心——11-07 的日 ATR14 只有价格的 3.1%，处在近一年 1% 分位。<em>波动仪表盘显示的是一年来最平静的海面</em>。链下的窟窿，价格派的指标一个都看不见；</li>
+      <li><strong>模板 D 禁令（第 10 课）</strong>：崩塌前费率中性、没有过热信号——它也沉默。真正报警的是第 12 课那张清单：平台币闪崩、提现变慢、声明含糊——<strong>交易所征兆 → 无条件撤离</strong>，那是资产安全的防线，不是行情指标；</li>
+      <li><strong>1% 仓位＋ATR 止损</strong>：唯一全程在岗的零件。它不知道 FTX 是什么，它只保证 11-08 那天你亏的是 100 U 而不是本金的一半。11-08 收盘判定退回 flat、此后多票再没凑齐——<strong>系统同样不许你抄底</strong>，上面那条误区里的每一刀，按规则的人一刀都不会挨。</li>
+    </ul>
+    <p>诚实的结论：<strong>这一场系统输了，但输得起。</strong>它在错误的时间给了多票（指标的盲区），用止损认下 1R；然后用 flat 挡住了后面所有的刀。顺带一提，它也没赚到这波大空头——第一张空票要到 11-27 才凑齐，那时 16,423，肉已经不多。复盘不是为了找"本可以赚到"的幻觉，是确认<em>规则在最坏情况下保住了你</em>。</p>
+    <h3><span class="tag">⑥ </span>教训一句话</h3>
+    <p><strong>指标看不见链下的窟窿；你唯一能控制的，是单笔损失的上限和资产放在哪里。</strong></p>
+  </div>
+</section>
+
+<!-- ================= 13.4 ================= -->
+<section class="ch" id="s4">
+  <h2 class="sec"><span class="no">13.4</span>案例三 · 2023-03 硅谷银行：兜底公告是分水岭</h2>
+  <p class="sec-en">MARCH 2023 — SVB AND THE BACKSTOP</p>
+  <div class="prose">
+    <h3><span class="tag">① </span>事前背景：加息的第十二个月，裂缝找上了银行</h3>
+    <p>2023 年 3 月，利率已经加到 4.65%（当月均值）。FTX 寒冬之后，BTC 在 1–2 月从 16,500 反弹到 25,348，3 月初回落到 22,000 一线——按第 4 课的判定，彼时结构票已经转空、均线票还偏多，系统给的是 flat。3-08 老牌加密友好银行 Silvergate 宣布清盘，市场的鼻子开始发酸。<strong>当时最怕的事：挤兑蔓延到更多银行，以及——币圈特有的——稳定币的银行储备出事。</strong></p>
+    <h3><span class="tag">② </span>事件落地：银行倒闭翻译成稳定币恐慌</h3>
+    <p>3-10（周五，恰好也是非农日），美国第 16 大银行硅谷银行被 FDIC 接管——储户挤兑两天就把它挤倒了。BTC 当天低点 19,522，从 3-08 算跌了 10%。真正的币圈剧情在周末上演：USDC 的发行方 Circle 确认有 33 亿美元储备存在 SVB，<strong>USDC 应声<span class="nt" data-note="depeg">脱锚</span>，周末一度跌到约 0.88 美元</strong>——所有用 USDC 计价、做保证金、提供流动性的仓位同时冒烟。3-12（周日）美国财政部、美联储、FDIC 联合声明：储户全额兑付，并推出 <span class="nt" data-note="btfp">BTFP</span> 融资工具。公告落地，USDC 回锚，BTC 从 3-10 低点到 3-14 收盘四天 <span class="up-t">+26%</span>，月底摸到 29,185——从危机低点算 +49%。</p>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 13-5</span>走势回放：2023-03-08 → 03-31，1 小时图＋资金费率<span class="real">真实数据</span><span class="ia">互动</span></p>
+    <div class="ctrls">
+      <div>
+        <span class="seg-label">视野</span>
+        <span class="seg" id="c3-seg" role="group">
+          <button type="button" data-val="week" aria-pressed="true">危机一周</button>
+          <button type="button" data-val="night">放大兜底之夜</button>
+          <button type="button" data-val="month">把三月走完</button>
+        </span>
+      </div>
+    </div>
+    <div class="lw h420" id="c3-chart"></div>
+    <div class="lw-legend" id="c3-legend"></div>
+    <div class="stats">
+      <div class="stat"><span class="k">危机低点</span><span class="v dn">19,522</span><span class="s">3-10 · 与非农同一天</span></div>
+      <div class="stat"><span class="k">兜底后四天</span><span class="v up">+26%</span><span class="s">低点 19,522 → 3-14 收 24,683</span></div>
+      <div class="stat"><span class="k">USDC 最深</span><span class="v warn">≈ 0.88 美元</span><span class="s">周末脱锚 · 公告后回锚</span></div>
+      <div class="stat"><span class="k">月内高点</span><span class="v up">29,185</span><span class="s">3-30 · 低点后 20 天 +49%</span></div>
+    </div>
+    <p class="lab-msg" id="c3-msg"></p>
+    <figcaption><b>读图：</b>这是五场风暴里唯一的 V 型，分水岭精确到小时：3-12 深夜（北京 3-13 早晨）兜底公告前后的那几根阳线。再看下半的费率：全程最低只有 −0.009%，3-14 之后转正——<b>这场风暴里合约杠杆不是主角，稳定币才是</b>。同一场危机，股市死的是银行股，币圈险些死的是"美元替身"——每个市场都会用自己最脆弱的器官去承接同一个宏观冲击。</figcaption>
+  </figure>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>挤兑的逻辑是"别人跑我也得跑"——哪怕你相信银行没问题，你也得抢在别人前面取钱，因为取晚了就真的没了。怎么让所有人停下来？在门口贴一张告示：<strong>"所有存款，国家全赔。"</strong>告示一贴，排队的理由瞬间消失——注意，钱一分还没赔，光是承诺可信，挤兑就停了。这就是兜底公告的魔法：<em>它不解决问题，它删除"现在必须跑"的理由</em>。行情交易的是理由，不是问题本身——所以分水岭出现在公告那一小时，而不是银行清算完成那一天。</p>
+  </div>
+  <div class="prose">
+    <h3><span class="tag">④ </span>因果链拆解</h3>
+    <ol>
+      <li>快速加息让银行持有的长期债券账面巨亏 → SVB 卖债补窟窿的公告吓醒储户 → 挤兑，两天挤倒一家大银行——<strong>加息的裂缝从币圈烧到了银行</strong>；</li>
+      <li>周五接管 → 周末银行关门，Circle 的 33 亿美元被锁在里面 → USDC 脱锚到 0.88——币圈把银行风险翻译成了稳定币风险；</li>
+      <li>周末流动性最薄（第 2 课的心跳图），恐慌折价被放大，连环清算在 USDC 相关的仓位里蔓延；</li>
+      <li>周日晚兜底公告 → "挤兑蔓延"这个最怕的事被拿走，脱锚的理由随之消失 → USDC 回锚，空头回补；</li>
+      <li>市场读出第二层：银行越脆弱，美联储越难继续紧 → "重新放水"预期＋"把钱放在银行体系外面"的叙事 → BTC 四天 +26%、二十天 +49%。</li>
+    </ol>
+    <h3><span class="tag">⑤ </span>假如拿着 v0.7 系统</h3>
+    <ul>
+      <li><strong>三票制与环境开关</strong>：3-09、3-10 的判定都是 flat（均线票多、结构票空，证据不足）——危机最深的那几天，<strong>系统的指令是"不在场"</strong>，你既不会抱着多单挨挤兑，也不会在 19,522 追空被 V 型反转打脸；</li>
+      <li><strong>事件日历</strong>：3-10 本来就是非农日——按第 3 课的纪律，当天前后 30 分钟禁入、事件周按第 11 课操作卡把风险减半。日历没预见 SVB，但它恰好让你在出事那天本来就轻；</li>
+      <li><strong>模板 D 禁令</strong>：费率全程没有极端值，它保持沉默——正确的沉默；真正的警报在第 12 课：<strong>稳定币锚定巡检 → 火警全撤</strong>。周六 USDC 跌破锚定的那一刻，不管你怎么看行情，先把用 USDC 计的资产撤到明朗处再围观；</li>
+      <li><strong>1% 仓位＋ATR 止损</strong>：这场没给它上场机会——最好的风控是本来就没有仓位。</li>
+    </ul>
+    <p>诚实的结论：系统躲开了危机，<strong>也错过了修复的前半段</strong>。V 型反转对确认型系统天生不友好：第一张完整多票要到 3-25 才凑齐（27,447），从低点算已经涨了 40%。你会眼睁睁看着四天 +26% 与你无关——这是"确认"的账单，4 月中价格继续走到 31,000 上方，后半段依然够吃。<em>想吃到 V 的底，只有一个办法：在不确定里下注，而那正是系统禁止的事。</em></p>
+    <h3><span class="tag">⑥ </span>教训一句话</h3>
+    <p><strong>兜底公告是分水岭：政策把"最怕的事"从桌上拿走的那一刻行情就换向——但等结构确认再上车，活着的人从来不缺后半段。</strong></p>
+  </div>
+</section>
+
+<!-- ================= 13.5 ================= -->
+<section class="ch" id="s5">
+  <h2 class="sec"><span class="no">13.5</span>案例四 · 2024-08-05 日元套息平仓：别人的杠杆砸到你头上</h2>
+  <p class="sec-en">AUGUST 2024 — THE YEN CARRY UNWIND</p>
+  <div class="prose">
+    <h3><span class="tag">① </span>事前背景：全世界最便宜的钱，加息了</h3>
+    <p>2024 年 7 月，BTC 还在 70,081 的摆动高点附近，三票制 8-01 当天还是三票全多。真正的故事在太平洋对岸：日本利率常年贴着零，全球机构借日元、换美元、买美股美债和一切风险资产——这笔<span class="nt" data-note="carry">套息交易</span>做了十几年，规模大到没人说得清。7-31 日本央行把利率加到 0.25% 并放鹰，日元开始急升。<strong>当时最怕的事有两件：美国衰退（数据连续走弱），和没人敢量化的那笔套息盘何时拆仓。</strong></p>
+    <h3><span class="tag">② </span>事件落地：非农点火，东京爆炸</h3>
+    <p>8-02（北京 20:30）非农爆冷：新增就业约 11.4 万、失业率升到 4.3%，触发了经验上的衰退警报（萨姆规则）。BTC 当天 −6%，但这只是第一推。真正的瀑布在 8-05 周一：东京股市开盘即崩，日经指数全天 <span class="dn-t">−12%</span>——1987 年以来最大单日跌幅；套息盘全球拆仓，BTC 在亚洲时段 6 小时 <span class="dn-t">−16%</span>，上午见到低点 48,888。从 8-02 开盘 65,329 算，三天最大跌幅 <span class="dn-t">−25%</span>。而事发当周资金费率最低只到 −0.007%——<strong>砸盘的杠杆不在币圈，在东京</strong>。</p>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 13-6</span>走势回放：2024-08-01 → 08-09，1 小时图＋资金费率<span class="real">真实数据</span><span class="ia">互动</span></p>
+    <div class="ctrls">
+      <div>
+        <span class="seg-label">视野</span>
+        <span class="seg" id="c4-seg" role="group">
+          <button type="button" data-val="all" aria-pressed="true">八天全景</button>
+          <button type="button" data-val="asia">放大 8-05 亚洲时段</button>
+        </span>
+      </div>
+    </div>
+    <div class="lw h420" id="c4-chart"></div>
+    <div class="lw-legend" id="c4-legend"></div>
+    <div class="stats">
+      <div class="stat"><span class="k">三天最大</span><span class="v dn">−25%</span><span class="s">8-02 开 65,329 → 8-05 低 48,888</span></div>
+      <div class="stat"><span class="k">最猛 6 小时</span><span class="v dn">−16%</span><span class="s">8-05 北京 8 点 → 14 点</span></div>
+      <div class="stat"><span class="k">当周费率最低</span><span class="v">−0.007%</span><span class="s">合约盘几乎没恐慌</span></div>
+      <div class="stat"><span class="k">收复 65,329</span><span class="v">53 天</span><span class="s">9-27 收 65,750</span></div>
+    </div>
+    <p class="lab-msg" id="c4-msg"></p>
+    <figcaption><b>读图：</b>注意低点出现的钟点：北京 14 点——恰好在日经收盘前后，而不是美盘。五场风暴里只有这场的主战场在亚洲时段：谁的杠杆断了，风暴就跟着谁的时区走。再看费率：全程几乎纹丝不动，和图 13-3、13-4 的深负形成对比——<b>币圈这次不是火源，是消防通道</b>：周末和凌晨唯一开着门的流动性，谁急用钱谁来提。</figcaption>
+  </figure>
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p><strong>"BTC 是数字黄金，股灾和我无关。"</strong>8-05 用 −25% 回答了这句话。原因第 11 课讲过：对全球资金来说 BTC 坐在风险资产那一排，流动性危机时它和纳指的相关性会飙到接近 1；更糟的是它 7×24 开门——<strong>股市熔断可以暂停抛售，币市连暂停键都没有</strong>，周末和凌晨的恐慌全由它先消化（10·10 也是同一个结构，第 14 课细讲）。"等股市企稳再看币圈"在这类风暴里是实用的顺序，反过来，币圈周末的异动也常是下周股市的预告片。</p>
+  </div>
+  <div class="prose">
+    <h3><span class="tag">④ </span>因果链拆解</h3>
+    <ol>
+      <li>借日元买全球资产的套息交易做了十几年，拥挤到成为市场的承重墙——<strong>拥挤本身就是风险，无论方向对错</strong>；</li>
+      <li>7-31 日本加息＋8-02 非农爆冷 → 借钱成本升、买的资产跌，套息盘两头挨打；</li>
+      <li>平仓 ＝ 卖资产、买回日元 → 日元被越买越强 → 剩下的套息头寸亏得更快 → 更多平仓——又一个保证金螺旋，只是这次的"保证金"是日元；</li>
+      <li>周一东京开盘集中释放：日经 −12%，全球风险资产连锁；BTC 作为亚洲早晨唯一流动性充沛的大资产，6 小时被提走 16%；</li>
+      <li>平仓盘与基本面无关，卖完就停：低点当天收盘就拉回 10%；但信心修复用了 53 天——<strong>强制卖出结束得快，自愿买入回来得慢</strong>。</li>
+    </ol>
+    <h3><span class="tag">⑤ </span>假如拿着 v0.7 系统</h3>
+    <ul>
+      <li><strong>三票制</strong>：8-01 三票全多——系统在风暴前是看多的，这一刀躲不开。8-02 收盘判定退回 flat：<strong>之后它不再许你开新多，也不许你周一抄底 48,888</strong>（没错，那次抄底事后看是对的——回看 13.3 节误区里的那句话：它和抄 FTX 的底在当时无法区分）；</li>
+      <li><strong>事件日历＋事件周操作卡（第 3 / 11 课）</strong>：8-02 是非农日——当周单笔风险减半、数据前后禁入；<strong>重仓不过周末</strong>（第 3 课旧规）正好管住 8-03、8-04：周一的瀑布落下时，按规则的人仓位本来就轻；</li>
+      <li><strong>1% 仓位＋ATR 止损</strong>：7 月底进的多单，无论止损挂结构位还是 2×ATR，都会在 8-02 到 8-04 之间被扫——<strong>−1R 离场，损失 100 U 封顶</strong>。8-05 的 ATR 分位冲到 96%，熔断器把后续风险再砍半；</li>
+      <li><strong>模板 D</strong>：事前费率、持仓量都无过热信号——正确的沉默。这场风暴的仪表盘在外汇市场：美元兑日元、以及第 11 课联动仪表盘里的纳指期货，<em>这就是为什么宏观课教你看的不只是币价</em>。</li>
+    </ul>
+    <p>诚实的结论：<strong>系统又输了 1R，又一次输得起。</strong>方向错误无法避免——没有任何币圈指标能预报日本央行。系统的全部贡献是三件事：事件周减档、周末轻仓、止损封顶。三件加起来，把一场 −25% 的风暴变成账户上 −1% 的一行记录。</p>
+    <h3><span class="tag">⑥ </span>教训一句话</h3>
+    <p><strong>你没加杠杆，不代表没人替你加——跨市场的杠杆断裂时，流动性最好的资产最先被卖。</strong></p>
+  </div>
+</section>
+
+<!-- ================= 13.6 ================= -->
+<section class="ch" id="s6">
+  <h2 class="sec"><span class="no">13.6</span>案例五 · 2024-12-18 鹰派降息：降了，为什么还跌</h2>
+  <p class="sec-en">DECEMBER 2024 — THE HAWKISH CUT</p>
+  <div class="prose">
+    <h3><span class="tag">① </span>事前背景：历史新高上的拥挤预期</h3>
+    <p>2024 年 12 月中，BTC 刚创下历史新高：12-17 摸到 108,367。大选后连涨两个月，ETF 资金持续流入（第 12 课），市场定价的是"2025 年继续降息、流动性宽松"的剧本——当时利率 4.48%，期货市场预期来年还有多次降息。<strong>当时最怕的事只有一件：这个宽松剧本被改写。</strong>有意思的是系统的看法：12-17 的判定是 flat——价格在新高，结构票却在弃权（最近两低 90,866 → 90,200 在悄悄降低）。<em>价格的狂热和结构的犹豫同屏出现，这种分歧本身就是信息。</em></p>
+    <h3><span class="tag">② </span>事件落地：动作如期，路径变脸</h3>
+    <p>12-18（北京 12-19 凌晨 3 点）FOMC 如期降息 25 个基点——动作与市场预期分毫不差，照"降息 ＝ 利好"的小学算术，这天应该涨。但同场发布的<span class="nt" data-note="dotplot">点阵图</span>把 2025 年的预期降息从四次砍到两次、上调了通胀预期，发布会的口风也转向谨慎。声明落地的一小时 K 线 −1.9%，发布会再 −1.9%——两小时 −3.8%；台阶式阴跌到 12-20，低点 92,273，三天最大 <span class="dn-t">−15%</span>。全程资金费率没有一期转负。</p>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 13-7</span>走势回放：2024-12-15 → 12-23，1 小时图＋资金费率<span class="real">真实数据</span><span class="ia">互动</span></p>
+    <div class="ctrls">
+      <div>
+        <span class="seg-label">视野</span>
+        <span class="seg" id="c5-seg" role="group">
+          <button type="button" data-val="all" aria-pressed="true">九天全景</button>
+          <button type="button" data-val="night">放大决议夜</button>
+        </span>
+      </div>
+    </div>
+    <div class="lw h420" id="c5-chart"></div>
+    <div class="lw-legend" id="c5-legend"></div>
+    <div class="stats">
+      <div class="stat"><span class="k">决议前夜</span><span class="v">108,367</span><span class="s">12-17 · 当时的历史新高</span></div>
+      <div class="stat"><span class="k">决议后两小时</span><span class="v dn">−3.8%</span><span class="s">104,772 → 100,836</span></div>
+      <div class="stat"><span class="k">三天最大</span><span class="v dn">−15%</span><span class="s">108,367 → 12-20 低 92,273</span></div>
+      <div class="stat"><span class="k">资金费率</span><span class="v">全程未转负</span><span class="s">不是杠杆踩踏 · 是重定价</span></div>
+    </div>
+    <p class="lab-msg" id="c5-msg"></p>
+    <figcaption><b>读图：</b>把这张图和前四张摆在一起看"跌的质感"：没有垂直大针、没有费率恐慌，是一级级走下来的台阶——<b>重定价的跌是讲道理的跌</b>，每一级都是新路径的算术，而不是强平的物理。也正因为没伤到杠杆和叙事，修复快：33 天后（2025-01-20）就重回 108,367 上方。对比案例一的 47 天、案例二的 73 天——跌得越"物理"，爬得越慢。</figcaption>
+  </figure>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>年终奖如期发了一万块，老板递过信封时顺口加一句："明年奖金池减半。"你手里拿着一分不少的钱，心却凉了——今晚你不会去庆祝，你会回家改消费计划。市场也一样：<strong>到手的 25 个基点早就花掉了（提前定价），重新定价的是老板那句话</strong>。这就是<span class="nt" data-note="path">路径预期</span>：资产价格里装的从来不是"这一次"，而是"接下来的一整串"。</p>
+  </div>
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p><strong>"降息 ＝ 放水 ＝ 涨。"</strong>这门课你已经集齐三个反例：2020-03 两次紧急降息，当周照样崩（第 11 课的救火式降息——降息在确认灾难）；2024-12-18 如期降息，三天 −15%（鹰派降息——动作宽松、路径收紧）；只有"经济没大事＋通胀回落"背景下的预防式降息才常对应利多。<strong>同一个动作，三种背景，三种方向</strong>——下次再看到"降息利好"四个字，先问第 11 课那个问题：市场现在最怕什么？这次降息是在回应它、确认它，还是在收走未来的糖？</p>
+  </div>
+  <div class="prose">
+    <h3><span class="tag">④ </span>因果链拆解</h3>
+    <ol>
+      <li>两个月连涨＋历史新高＋"明年继续宽松"的一致预期——拥挤的预期本身就是燃料，只差一根改写剧本的火柴；</li>
+      <li>决议动作（降 25bp）与预期完全一致 → 零信息，没有人为它付新的钱；</li>
+      <li>点阵图砍掉一半的来年降息＋上调通胀预期 → <strong>路径意外，这才是当天真正的"事件"</strong>；</li>
+      <li>高估值、高拥挤的资产按新路径重新折现 → 台阶式下跌三天 −15%；费率全程未转负——卖出的是预期，不是强平单；</li>
+      <li>路径重定价改变台阶高度、不改变当时的牛市叙事 → 33 天后重回新高。跌因为嘴，涨因为钱——ETF 的钱还在流入（第 12 课）。</li>
+    </ol>
+    <h3><span class="tag">⑤ </span>假如拿着 v0.7 系统</h3>
+    <ul>
+      <li><strong>三票制</strong>：12-17 判定 flat（结构票弃权）——决议前夜，系统已经不许开新多。价格创新高而系统说"不做"，多数人会骂它踏空；三天后它替你省下的是 15%；</li>
+      <li><strong>事件日历＋事件周操作卡（第 3 / 11 课）</strong>：FOMC 是日历上最大的字——当天仓位减半或清空、从决议到发布会结束禁止开仓、<strong>事前一晚必须写完预判卡</strong>。预判卡的格子里本来就该有这一行："动作如期，但点阵图鹰派 → 跌，我不接刀"；写过这行字的人，凌晨 3 点不会懵；</li>
+      <li><strong>模板 D 禁令</strong>：12 月中费率平稳、无极端过热——它不会拦你，这一场的防线不在它；<strong>1%＋ATR 止损</strong>：如果你 12 月初就持有多单，三天 −15% 必然触发止损，−1R 或者按移动止损落袋——取决于你入场多早，但都轮不到 92,273 才被动割肉；</li>
+      <li><strong>"不追第一根大 K"（第 11 课）</strong>：决议后第一个小时 −1.9%，追空的人在 12-20 之后的反弹里被夹——操作卡要求等 1 小时收盘的二次确认，这次它又对了。</li>
+    </ul>
+    <p>诚实的结论：<strong>这是五场里 v0.7 防得最漂亮的一场，而且全靠纪律、没靠预测。</strong>结构票的弃权、FOMC 日的减仓、预判卡的剧本——三道闸每一道都平淡无奇，叠在一起让一场 −15% 的重定价只在你的日志里留下一行："事件周，按卡执行，无仓位。"</p>
+    <h3><span class="tag">⑥ </span>教训一句话</h3>
+    <p><strong>利率决议交易的是路径，不是动作：动作可以分毫不差，路径一句话就能让市场重写一年的剧本。</strong></p>
+  </div>
+</section>
+
+<!-- ================= 13.7 ================= -->
+<section class="ch" id="s7">
+  <h2 class="sec"><span class="no">13.7</span>五场风暴的共同语法</h2>
+  <p class="sec-en">THE COMMON GRAMMAR OF FIVE STORMS</p>
+  <div class="prose">
+    <p>五个故事讲完，把它们并排钉在一张表上——横向看，语法就浮出来了：</p>
+  </div>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>风暴</th><th>事件类型</th><th>当时最怕什么</th><th>第一波</th><th>杠杆放大环节</th><th>修复速度</th></tr></thead>
+      <tbody>
+        <tr><td><b>① 2020-03 新冠</b></td><td>外生冲击</td><td>全球停摆＋现金荒</td><td>两天 −54%，垂直</td><td>合约连环强平<br>费率 −0.30% 顶格</td><td>47 天收复<br>（兜底：零利率＋无限 QE）</td></tr>
+        <tr><td><b>② 2022-11 FTX</b></td><td>链下暴雷</td><td>下一个倒的是谁</td><td>四天 −27%，阶梯</td><td>机构互相借贷<br>＋平台币质押</td><td>73 天<br>（没人兜底，时间磨底）</td></tr>
+        <tr><td><b>③ 2023-03 SVB</b></td><td>银行挤兑</td><td>挤兑蔓延＋稳定币储备</td><td>先 −10%，公告后四天 +26%</td><td>稳定币储备<br>（USDC 脱锚 0.88）</td><td>4 天反超<br>（兜底公告当晚反转）</td></tr>
+        <tr><td><b>④ 2024-08 套息平仓</b></td><td>跨市场连锁</td><td>美国衰退＋套息拆仓</td><td>三天 −25%，亚洲时段</td><td>日元套息<br>（场外杠杆）</td><td>53 天<br>（平仓盘卖完即止跌）</td></tr>
+        <tr><td><b>⑤ 2024-12 鹰派降息</b></td><td>路径重定价</td><td>宽松剧本被改写</td><td>三天 −15%，台阶</td><td>几乎没有<br>（费率未转负）</td><td>33 天回新高<br>（方向未变）</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="prose">
+    <p>表里藏着三条横向规律，值得抄进你的交易计划：</p>
+    <ul>
+      <li><strong>崩得快是杠杆，涨得慢是信心。</strong>垂直的跌（①②④）都对应某处杠杆被强拆——强平接力、借贷互爆、套息螺旋；强制卖出是机械过程，几小时到几天就能卖完。而修复靠的是自愿买入，那是心理过程：要么等兜底（①③），要么等时间（②④）。把这条反过来用：<em>看见垂直下跌先问"谁的杠杆断了"，看见缓慢阴跌先问"谁的信心还没回来"</em>；</li>
+      <li><strong>兜底公告是分水岭。</strong>①的 3-23 无限 QE、③的 BTFP：政策把"当下最怕的事"从桌上拿走的那一刻，行情几小时内换向——不需要问题真正解决（公告当晚 SVB 的清算八字没一撇，USDC 已经回锚）。反例是②：没有人兜底 FTX 的债权人，于是没有分水岭，只有阴跌。<em>复盘任何暴跌，先找有没有那张公告；盯任何暴跌，先想谁有能力出那张公告</em>；</li>
+      <li><strong>央行事件交易路径，不是动作。</strong>⑤降息当天跌，①紧急降息当周也跌（救火式），预防式降息才常是利多——第 11 课的三分类在五场里各有标本。动作早被定价，重写价格的是"接下来一整串"的预期。</li>
+    </ul>
+  </div>
+  <div class="keypoint">
+    <span class="label">本课最重要的一句话</span>
+    <p><strong>系统在风暴里的作用，是让你躲开、轻仓、活下来——不是让你精准抄底逃顶。</strong></p>
+    <p>v0.7 的五场成绩单：三场让你根本不在场（①③⑤——空仓或轻空），两场各吃一记 1R（②④——指标对链下和跨市场的炸弹天生失明）。没有一场抄到底，没有一场逃到顶，也没有一场伤到本金的第二位数。这就是真实世界里"好系统"的样子——<em>它不赢风暴，它赢的是风暴过后你还在牌桌上</em>。</p>
+  </div>
+  <div class="stock">
+    <span class="label">股票上怎么对照</span>
+    <h4>同样五场风暴，股票市场怎么挨的</h4>
+    <ul>
+      <li><b>这五场全部同时是股票风暴</b>：2020-03 美股十天四次熔断；2022 年纳指全年约 −33%；2023-03 倒的本来就是银行股；2024-08-05 日经 −12% 是风暴中心；2024-12-18 美股当晚同步大跌——宏观语法全市场通用，这正是第 11 课教你看纳指和美元的原因；</li>
+      <li><b>区别在"减震器"</b>：股市有熔断、有收盘，恐慌被强制分段消化，代价是第二天跳空、你想卖卖不了；币圈 7×24 无熔断，恐慌当场走完，代价是插针更深、周末无人值守。两边的风险总量差不多，<em>分布形状不同</em>；</li>
+      <li><b>A 股的特殊性</b>：涨跌停＋T+1 让"−40% 的一天"不可能出现，但也让"连续一字跌停卖不掉"成为另一种噩梦——流动性危机在 A 股的表现形式是"没有成交"，而不是"价格瀑布"；</li>
+      <li><b>共同的教训</b>：事件日历、仓位上限、止损纪律在股票上同样是防线——只是把"费率、强平"换成"两融、质押盘"去理解杠杆环节。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= 13.8 ================= -->
+<section class="ch" id="s8">
+  <h2 class="sec"><span class="no">13.8</span>落地：你的复盘模板</h2>
+  <p class="sec-en">YOUR POST-MORTEM TEMPLATE</p>
+  <div class="prose">
+    <p>本课你读了五份复盘，从下一场大行情起，复盘得由你自己写。工具就是贯穿全课的那六步——现在把它做成卡片装进系统。规则只有一条：<strong>单日波动超过 ±8% 的行情，48 小时内必须填一张</strong>；拖过 48 小时，事后诸葛就会开始替你改写记忆（13.1 节的 Fischhoff 实验）。</p>
+  </div>
+  <div class="rulecard">
+    <div class="rc-head"><span class="label">规则卡</span><span class="rc-name">复盘六步卡（挂在系统 v0.7 外侧 · 大行情后 48 小时内填写）</span></div>
+    <dl>
+      <dt>① 事前背景</dt><dd>风暴前市场在定价什么剧本？当时最怕什么？我的仓位和判定是什么？——这一步先写，而且要写"当时知道的"，不许掺结局</dd>
+      <dt>② 事件落地</dt><dd>发生了什么？和预期差在哪？是日历内事件（数据、决议）还是日历外事件（暴雷、冲击）？</dd>
+      <dt>③ 走势回放</dt><dd>切 1 小时图从头走一遍：第一波的方向和速度、最猛一段在哪个时段、费率和持仓量做了什么——标上具体时间戳</dd>
+      <dt>④ 因果链拆解</dt><dd>用三到五步写传导：谁被迫做了什么 → 价格如何反应。每一环都要经得起追问"为什么是被迫的"；写不出"被迫"二字的环节，多半是你在编故事</dd>
+      <dt>⑤ 系统对照</dt><dd>v0.7 每个零件当时各会说什么？服从规则的结果是赚是亏？系统在哪里失明？——诚实记录，失明处写清防线是什么（仓位？资产隔离？事件日历？）</dd>
+      <dt>⑥ 教训一句话</dt><dd>只许写一句，写进交易计划书的备注栏。写不成一句话，说明还没想清楚，回到第④步</dd>
+    </dl>
+    <p class="rc-note">这张卡不产生任何交易信号。它的产出是两样东西：一句进入交易计划的教训，和一次"规则到底有没有保护我"的审计。<strong>写复盘的人和读复盘的人，差的不是知识，是肌肉记忆。</strong></p>
+  </div>
+  <div class="sysup">
+    <span class="label">系统升级</span>
+    <h4>你的交易系统：v0.7 ＋ 五场风暴的肌肉记忆（版本号不变）</h4>
+    <p>本课没有新增交易零件——它给 v0.7 的每个零件各补了一枚实战勋章：<strong>事件日历与 FOMC 日纪律</strong>（⑤里值回票价）· <strong>重仓不过周末</strong>（③④的风暴都踩在周末与周一）· <strong>1% 仓位＋ATR 止损</strong>（②④里把灾难按成 1R）· <strong>高波动熔断</strong>（①里崩盘前就减了半档）· <strong>三票制与 flat</strong>（五场里三场让你根本不在场）· <strong>第 12 课的两张清单</strong>（②的交易所征兆、③的稳定币锚定，都是指标看不见的防线）。新装进系统的是一个流程：<strong>事前预判卡 ＋ 事后复盘六步卡</strong>。下一课把镜头转回币圈自身的风暴：2024-01 ETF 获批的"买预期卖事实"、2025-04 与 2025-10 的两场关税冲击——用 1 分钟线、标记价格和持仓量，把史上最大的连环爆仓整夜回放。</p>
+  </div>
+  <div class="task">
+    <span class="label">本周模拟任务</span>
+    <h4>把一场风暴写成你自己的复盘（模拟盘继续跑 v0.7）</h4>
+    <ol>
+      <li><strong>闭卷复盘</strong>：五个案例挑一个，不看本课正文，按复盘六步卡自己写一页（数据就用本课的实验台图，可以缩放），写完再对照正文——重点比对④因果链和⑤系统对照，把漏掉的环节标出来；</li>
+      <li>把复盘六步卡抄进你的交易日志（新建"风暴复盘"分区），并写下触发条件：单日 ±8% 以上，48 小时内必填；</li>
+      <li><strong>预判卡实战</strong>：查第 3 课的日历，找出未来两周内最近的一个数据日（非农 / CPI / FOMC），提前一晚按第 11 课的格式写一张预判卡：市场预期是什么 → 高于 / 符合 / 低于预期各会怎么走 → 我各做什么（多数格子应该写"不做"）；</li>
+      <li>数据落地后 24 小时内对照预判卡：哪格命中、哪格错、行情走的是预期差还是路径——这是你第一张"事前＋事后"配对的复盘，比本课五份都值钱；</li>
+      <li>模拟盘继续按 v0.7 运行：flat 就等待；本周日志里单独加一列"事件窗口纪律执行情况"（前后 30 分钟禁入、事件周减半），周末统计执行率。</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ================= 小结 ================= -->
+<section class="ch recap" id="recap">
+  <h2 class="sec"><span class="no">★</span>本课小结</h2>
+  <p class="sec-en">RECAP</p>
+  <div class="prose">
+    <ol>
+      <li><b>五场风暴五种类型</b>：外生冲击、链下暴雷、银行挤兑、跨市场平仓、路径重定价——但语法相同：预期差点火、"当下最怕"定方向、流动性和杠杆定烈度。</li>
+      <li><b>崩得快是杠杆，涨得慢是信心</b>：垂直下跌对应强制卖出（强平、追保、拆仓），几天卖完；修复靠自愿买入，以月计——除非有兜底。</li>
+      <li><b>兜底公告是分水岭</b>：无限 QE 和 BTFP 都在公告当晚反转行情——政策拿走"最怕的事"就够了，问题不必真解决；没人兜底的 FTX 只能用 73 天磨。</li>
+      <li><b>央行事件交易路径不是动作</b>：如期降息照样 −15%，因为点阵图砍了来年的糖；救火式、预防式、鹰派——同一个动作三种命运。</li>
+      <li><b>指标对链下炸弹失明</b>：FTX 前夜三票全多、波动率在一年最低分位——防线不在图上，在 1% 仓位、ATR 止损和第 12 课的资产隔离清单。</li>
+      <li><b>别人的杠杆也能砸到你</b>：日元套息拆仓让 BTC 六小时 −16%——流动性最好的资产最先被卖，跨市场仪表盘（美元、日元、纳指）是你的雷达。</li>
+      <li><b>v0.7 的五场成绩单</b>：三场不在场、两场 −1R、零场重伤——系统赢的不是风暴，是风暴之后你还在牌桌上。</li>
+      <li><b>复盘的敌人是事后诸葛</b>：事前写预判卡、事后 48 小时内填六步卡，把"我早知道"锁死在证据里。</li>
+    </ol>
+  </div>
+
+  <h3>术语一览（点击正文中的角标词可随时弹出）</h3>
+  <ol class="notes-list" id="notes-list"></ol>
+
+  <h3>自测</h3>
+  <details><summary>1. 2020-03-12 那天，黄金和美债也在跌。这说明市场处于什么状态？这种状态下"BTC 是避险资产"的说法为什么失效？</summary>
+    <div class="ans"><p>连传统避险资产都被抛售，说明市场已从"risk-off"进入流动性危机：杠杆机构被追保，被迫把一切卖得掉的资产换成美元现金——缺的不是安全，是现金。此时资产的命运不由"险不险"决定，由"好不好卖"决定：BTC 全年无休、随时成交，反而先被搬空（当天 −40%、费率 −0.30% 顶格）。判断是否进入这种状态的信号就是"相关性归一"：平时各走各路的资产突然同涨同跌，尤其是避险资产跟着跌。</p></div>
+  </details>
+  <details><summary>2. 按第 4 课算法重算，FTX 崩塌前的 11-05 到 11-07 恰好是 2022 年仅有的 9 个"三票全多"日子里的 3 天。这说明什么？系统在这场风暴里的真正贡献是什么？</summary>
+    <div class="ans"><p>说明价格派指标对链下信息天生失明：交易所资不抵债不会提前出现在 K 线、均线或波动率上——11-07 的 ATR 分位甚至是近一年最低的 1%，仪表盘一片祥和。系统的贡献不在预测，在三件事：① 1% 仓位＋止损把 11-08 的损失封顶在 1R；② 当天收盘判定退回 flat，此后不许抄底——帮你躲过 11-09 的 −16.6% 和之后两周的阴跌；③ 承认盲区的存在，把这类风险交给正确的防线（第 12 课：交易所征兆无条件撤离、资产分散）。赚钱靠系统，活命靠仓位，链下靠隔离——三件事别指望一个工具全干。</p></div>
+  </details>
+  <details><summary>3. SVB 事件里，兜底公告当晚行情就反转了，但 SVB 的清算、储户拿钱都还没发生。为什么价格不等问题解决？</summary>
+    <div class="ans"><p>因为挤兑和恐慌抛售的燃料不是"问题"本身，是"现在必须跑"的理由。公告（储户全额＋BTFP）把"挤兑蔓延、稳定币储备蒸发"这个最怕的事从可能性清单里划掉，跑的理由消失，抛压就停了——USDC 回锚、空头回补、四天 +26%。这是第 11 课"市场交易预期而非事实"的极端版：政策改变的是未来的概率分布，价格对概率即时重定价，对事实的进度不感兴趣。实战含义：暴跌中判断底部，与其盯跌幅，不如盯"谁有能力、有没有意愿出那张公告"。</p></div>
+  </details>
+  <details><summary>4. 2024-08-05 你没有开任何杠杆，BTC 还是六小时跌了 16%。传导链是什么？你的系统里哪三道规则在这场风暴里实际起了作用？</summary>
+    <div class="ans"><p>传导链：日本加息＋美国数据爆冷 → 借日元买资产的套息盘两头亏损被迫平仓 → 平仓要卖资产买回日元 → 日元更强 → 更多平仓（螺旋）→ 全球风险资产连锁下跌，BTC 作为亚洲时段流动性最好、唯一全天开门的大资产先被卖。三道规则：① 事件日历——8-02 是非农日，事件周风险减半、数据前后禁入；② 重仓不过周末——周一的瀑布落下时仓位本来就轻；③ ATR 止损＋1% 仓位——7 月底的多单最迟 8-04 被扫，损失封顶 1R。注意三道全是纪律，没有一道需要你预测日本央行。</p></div>
+  </details>
+  <details><summary>5. 2024-12-18 美联储如期降息 25bp，BTC 却三天最大跌 15%。用"动作与路径"解释；如果当天点阵图维持原预期，你认为行情会怎样？为什么资金费率全程没转负这个细节很重要？</summary>
+    <div class="ans"><p>动作（降 25bp）早被市场定价，落地等于零信息；当天真正的事件是路径——点阵图把 2025 年预期降息从四次砍到两次、上调通胀预期，持有资产的理由被改写，高拥挤的多头预期重新折现，于是跌。若点阵图不变，大概率是"符合预期"的平淡波动甚至惯性新高——跌的不是降息，是那张图。费率未转负说明没有发生强平踩踏：这是预期重定价而非杠杆风暴，所以跌得有序（台阶而非插针）、修复也快（33 天回新高）。读懂"跌的质感"能帮你选剧本：杠杆崩看修复要等信心，重定价崩只要叙事未断、方向往往不变。</p></div>
+  </details>
+  <details><summary>6. 为什么复盘模板要求"事前背景"一步不许掺结局、预判卡必须在事件前一晚写完？分别对抗什么偏差？</summary>
+    <div class="ans"><p>对抗事后诸葛（hindsight bias）：Fischhoff 1975 年的实验表明，知道结局的人会不自觉高估"我本来就能预测到"，连提醒都无法消除——所以唯一可靠的办法是把"当时怎么想"用时间戳钉死：预判卡在事前写，复盘卡 48 小时内写，事后的自己无法篡改。另外还要防幸存者偏差：本课只讲了五次"真出事"的日子，没讲几十次虚惊——如果复盘让你变成每个数据日都如临大敌的惊弓之鸟，它就失败了。预判卡多数格子写"不做"，正是让你练习"大多数事件与我无关"这个结论。</p></div>
+  </details>
+
+  <nav class="pager" aria-label="课程导航">
+    <a class="pg" href="ct-l12.html"><span class="pg-dir">上一课</span><span class="pg-ttl">第 12 课 · 币圈自身的驱动</span></a>
+    <a class="pg pg-toc" href="ct-index.html"><span class="pg-dir">返回</span><span class="pg-ttl">学习地图</span></a>
+    <a class="pg pg-next" href="ct-l14.html"><span class="pg-dir">下一课</span><span class="pg-ttl">第 14 课 · 币圈事件与连环爆仓复盘</span></a>
+  </nav>
+
+  <p class="foot">数据：币安公开历史数据（data.binance.vision），BTCUSDT 永续，已本地化；利率为 FRED（圣路易斯联储）公开的联邦基金有效利率月度数据。文中所有价格、费率、涨跌幅、天数与三票制判定均由本地真实数据按第 4 课算法计算（日线为 UTC 交易日口径）；美股熔断、日经跌幅、USDC 脱锚深度、点阵图变化与政策时间线为公开报道的市场事实。图表组件：TradingView Lightweight Charts™（Apache-2.0）。本讲义仅为学习笔记，不构成投资建议；合约交易风险极高。</p>
+</section>
+
+</main>
+</div>
+
+<!-- ================= 术语弹注内容 ================= -->
+<div class="notes-src" hidden>
+  <section data-note-id="liq-crisis" data-title="流动性危机" data-en="Liquidity Crisis">
+    <p>市场里"必须卖的人"远多于"愿意接的人"的状态：所有资产一起跌、买卖价差拉大、平时互不相关的资产相关性飙向 1。标志性特征是连黄金、国债这类避险资产也遭抛售——因为参与者缺的不是安全，是现金。2020 年 3 月是教科书级样本：两周内全球几乎每类资产都在被换成美元。</p>
+  </section>
+  <section data-note-id="cascade" data-title="连锁平仓" data-en="Margin Call Cascade">
+    <p>杠杆头寸亏损触发追加保证金，被迫卖资产筹钱 → 卖压把价格砸得更低 → 触发更多追保。个人层面它叫连环强平（第 1 课图 1-3）；机构层面是风险平价、套息等策略被迫同步去杠杆。核心特征：下跌本身成为继续下跌的原因——所以叫螺旋，而且只有"被迫"的卖出才有这种自我强化的力量。</p>
+  </section>
+  <section data-note-id="cb" data-title="熔断" data-en="Circuit Breaker">
+    <p>股票市场的强制暂停机制：指数单日跌幅触及阈值（美股为 7% / 13% / 20%）即暂停交易一段时间乃至全天，给市场冷静和补保证金的时间。2020 年 3 月美股十天内触发四次。币圈没有熔断，同样的恐慌只能靠价格自己消化——这是币圈插针更深、速度更快的制度性原因之一。</p>
+  </section>
+  <section data-note-id="backstop" data-title="兜底" data-en="Backstop">
+    <p>政府或央行承诺承接某类最坏损失：储户全额兑付、无限量购债、特殊融资便利等。兜底不需要立刻掏钱——只要承诺可信，"现在必须跑"的理由就消失了，挤兑和恐慌抛售随之停止。本课两个分水岭（2020-03-23 无限 QE、2023-03-12 储户保障＋BTFP）都是兜底公告，行情都在公告当晚换向。</p>
+  </section>
+  <section data-note-id="btfp" data-title="BTFP" data-en="Bank Term Funding Program">
+    <p>美联储 2023-03-12 随 SVB 事件推出的银行定期融资计划：银行可以用国债等抵押品按<b>面值</b>（而不是跌掉的市值）借款最长一年——不必再亏本卖债应付挤兑。它与"储户全额保障"构成当晚的兜底组合拳，也是那轮 V 型反转的起点。对交易者的意义：这类工具公告的时间戳，往往就是行情的分水岭。</p>
+  </section>
+  <section data-note-id="depeg" data-title="脱锚" data-en="Depeg">
+    <p>稳定币偏离 1 美元锚定价。常见诱因是储备资产出问题或遭挤兑：2023-03 USDC 因 33 亿美元储备存在被接管的 SVB，周末一度跌到约 0.88 美元，兜底公告后回锚。对你的提醒有两层：当保证金用的稳定币本身是有风险的资产；稳定币大幅脱锚时按第 12 课的锚定巡检规则先撤再围观，不赌回锚。</p>
+  </section>
+  <section data-note-id="carry" data-title="套息交易" data-en="Carry Trade">
+    <p>借低息货币（多年来主要是日元）、换成高息货币或买入风险资产，赚中间的利差。平时稳定得像印钞机，但借入货币升值或所买资产下跌时两头亏损，被迫平仓——而平仓本身（卖资产、买回日元）会推高借入货币，引发更多平仓。2024-08-05 是近年最大的一次集中拆仓：日经单日 −12%，BTC 六小时 −16%。</p>
+  </section>
+  <section data-note-id="dotplot" data-title="点阵图" data-en="Dot Plot">
+    <p>美联储每季度随决议公布的预测图：每位委员用一个点标出自己认为未来几年政策利率该在哪，市场把点的中位数当作"官方路径"。决议动作符合预期时，点阵图的变化往往才是当天行情的真正驱动——2024-12-18 降息 25bp 如期落地，但点阵图把来年预期降息从四次砍到两次，BTC 三天最大 −15%。查看渠道：美联储官网每季度的 SEP 文件，或财经媒体的即时解读。</p>
+  </section>
+  <section data-note-id="path" data-title="路径预期" data-en="Path Expectations">
+    <p>市场对"未来一连串政策动作"的定价，而不是对下一次动作的定价。资产价格里早已含着"明年降几次息"的假设，所以单次决议即使完全符合预期，只要官方暗示的后续路径改变，价格照样大幅重定价。查看工具：CME FedWatch 能直接读出市场定价的每次会议概率路径（第 11 课的预期差三件套之一）。</p>
+  </section>
+</div>
+
+<script src="assets/lightweight-charts.js"></script>
+<script src="assets/ct.js"></script>
+<script src="assets/ctchart.js"></script>
+<script src="assets/data/klines-BTCUSDT-1d.js"></script>
+<script src="assets/data/klines-BTCUSDT-1h.js"></script>
+<script src="assets/data/funding-BTCUSDT.js"></script>
+<script src="assets/data/fred-FEDFUNDS.js"></script>
+<script>
+(function(){
+'use strict';
+var H1 = CT.get('klines-BTCUSDT-1h');
+var FUND = CT.get('funding-BTCUSDT');
+var T = function(iso){ return Date.parse(iso) / 1000; };
+
+/* ---------- 图 13-2 全景：五场风暴与利率周期 ---------- */
+(function(){
+  var d1 = CT.get('klines-BTCUSDT-1d');
+  var price = d1.map(function(r){ return {time: CT.ts(r[0]), value: r[4]}; });
+  var ff = CT.slice(CT.get('fred-FEDFUNDS'), '2020-01-01').map(function(r){ return {time: CT.ts(r[0]), value: r[1]}; });
+  var g = CT.makeChart('ov-chart', {panes: [0.3], minBarSpacing: 0.02});
+  var area = g.addArea(price, 'series');
+  g.addLine(ff, 'series2', {pane: 1, width: 2, title: '联邦基金利率'});
+  g.markers(area, [
+    {time: T('2020-03-13'), position: 'belowBar', shape: 'arrowUp', color: 'crit', text: '① 新冠 3,622'},
+    {time: T('2022-11-09'), position: 'belowBar', shape: 'arrowUp', color: 'crit', text: '② FTX 15,463'},
+    {time: T('2023-03-13'), position: 'belowBar', shape: 'arrowUp', color: 'up', text: '③ SVB 兜底 +26%'},
+    {time: T('2024-01-11'), position: 'aboveBar', shape: 'circle', color: 'muted', text: 'ETF · 第 14 课'},
+    {time: T('2024-08-05'), position: 'belowBar', shape: 'arrowUp', color: 'crit', text: '④ 套息平仓 48,888'},
+    {time: T('2024-12-18'), position: 'aboveBar', shape: 'arrowDown', color: 'crit', text: '⑤ 鹰派降息'},
+    {time: T('2025-10-10'), position: 'aboveBar', shape: 'circle', color: 'muted', text: '10·10 · 第 14 课'}
+  ]);
+  g.fit();
+  CT.legend('ov-legend', [['series', 'BTC 收盘价（上）'], ['series2', '美国联邦基金利率 %（下·月度）']]);
+})();
+
+/* ---------- 案例实验台共用构造 ---------- */
+function caseLab(cfg){
+  var rows = CT.slice(H1, cfg.from, cfg.to);
+  var fund = CT.slice(FUND, cfg.from, cfg.to).map(function(r){ return {time: CT.ts(r[0]), value: r[1] * 100}; });
+  var g = CT.makeChart(cfg.el, {panes: [0.24], timeVisible: true});
+  var cs = g.addCandles(rows);
+  g.addHist(fund, 'ud', {pane: 1});
+  (cfg.plines || []).forEach(function(L){ g.priceLine(cs, L[0], L[1], L[2], 2); });
+  g.markers(cs, cfg.marks);
+  CT.legend(cfg.legend, cfg.legendItems);
+  var msgEl = document.getElementById(cfg.msg);
+  CT.bindSeg(cfg.seg, function(v){
+    var w = cfg.views[v];
+    if(w.fit){ g.fit(); } else { g.setRange(w.a, w.b); }
+    msgEl.innerHTML = w.msg;
+  });
+}
+
+/* ---------- 图 13-3 案例一 · 2020-03 ---------- */
+caseLab({
+  el: 'c1-chart', seg: 'c1-seg', msg: 'c1-msg', legend: 'c1-legend',
+  from: '2020-03-08', to: '2020-03-18',
+  plines: [[7938, 'accent', '暴跌前夜收盘 7,938']],
+  marks: [
+    {time: T('2020-03-12T10:00:00Z'), position: 'aboveBar', shape: 'arrowDown', color: 'crit', text: '第一波 · 1 小时 −19%'},
+    {time: T('2020-03-12T23:00:00Z'), position: 'aboveBar', shape: 'arrowDown', color: 'crit', text: '第二波 · 强平接力'},
+    {time: T('2020-03-13T02:00:00Z'), position: 'belowBar', shape: 'arrowUp', color: 'series2', text: '最低 3,622'},
+    {time: T('2020-03-13T08:00:00Z'), position: 'belowBar', shape: 'circle', color: 'accent', text: '费率 −0.30% 顶格'}
+  ],
+  legendItems: [['accent', '暴跌前夜收盘 7,938'], ['up', '费率为正：多头付租（下）'], ['down', '费率为负：空头付租（下）']],
+  views: {
+    all: {fit: true, msg: '十天全景：左侧是"还讲道理"的下跌，中间两根垂直通道就是 3-12 的两波，右侧是磨出来的底。注意下方费率的时序——<b>崩盘前它还是正的，崩完才打到 −0.30%</b>：费率是恐慌的体温计，不是预警器。'},
+    crash: {a: '2020-03-12T04:00:00Z', b: '2020-03-13T14:00:00Z', msg: '放大 30 小时：第一波（北京 3-12 晚 18 点起）单根 1 小时线 −19%；中间横了十来个小时——<b>当晚无数人在这个平台上抄底</b>；第二波在美股熔断夜接力，3-13 北京上午 10 点见 3,622。两波结构是流动性危机的典型步态：先是仓促的，再是绝望的。'}
+  }
+});
+
+/* ---------- 图 13-4 案例二 · 2022-11 FTX ---------- */
+caseLab({
+  el: 'c2-chart', seg: 'c2-seg', msg: 'c2-msg', legend: 'c2-legend',
+  from: '2022-11-04', to: '2022-11-23',
+  marks: [
+    {time: T('2022-11-08T16:00:00Z'), position: 'aboveBar', shape: 'circle', color: 'accent', text: '传收购 · 冲高 20,685'},
+    {time: T('2022-11-09T21:00:00Z'), position: 'aboveBar', shape: 'arrowDown', color: 'crit', text: '放弃收购'},
+    {time: T('2022-11-09T22:00:00Z'), position: 'belowBar', shape: 'arrowUp', color: 'series2', text: '低点 15,463'},
+    {time: T('2022-11-10T00:00:00Z'), position: 'belowBar', shape: 'circle', color: 'accent', text: '费率 −0.119%'},
+    {time: T('2022-11-21T21:00:00Z'), position: 'belowBar', shape: 'arrowUp', color: 'crit', text: '月内最低 15,443'}
+  ],
+  legendItems: [['up', '费率为正：多头付租（下）'], ['down', '费率为负：空头付租（下）']],
+  views: {
+    all: {fit: true, msg: '三周全景：11-08、11-09 的阶梯崩塌只是开头——之后没有 V 型，是磨人的阴跌，<b>11-21 才见真正的低点 15,443</b>。费率 11-10 打到 −0.119% 后几天内回常态：恐慌退得快，定价磨得慢。'},
+    crash: {a: '2022-11-08T06:00:00Z', b: '2022-11-10T06:00:00Z', msg: '崩塌 48 小时：16:00（北京 11-09 凌晨 0 点）"同行收购"的消息把价格逼空到 20,685，<b>下一个小时就跳水 −5%</b>——市场用六十分钟识破了这纸意向书；11-09 深夜正式放弃收购，一小时后见 15,463。消息两头打脸，追涨杀跌的人两头挨刀。'}
+  }
+});
+
+/* ---------- 图 13-5 案例三 · 2023-03 SVB ---------- */
+caseLab({
+  el: 'c3-chart', seg: 'c3-seg', msg: 'c3-msg', legend: 'c3-legend',
+  from: '2023-03-08', to: '2023-03-31',
+  marks: [
+    {time: T('2023-03-10T10:00:00Z'), position: 'belowBar', shape: 'arrowUp', color: 'crit', text: '挤兑周五 · 低点 19,522'},
+    {time: T('2023-03-12T22:00:00Z'), position: 'belowBar', shape: 'arrowUp', color: 'up', text: '兜底公告 · BTFP'},
+    {time: T('2023-03-14T13:00:00Z'), position: 'aboveBar', shape: 'circle', color: 'accent', text: '第四天 26,490'},
+    {time: T('2023-03-30T02:00:00Z'), position: 'aboveBar', shape: 'circle', color: 'series2', text: '月内高点 29,185'}
+  ],
+  legendItems: [['up', '费率为正：多头付租（下）'], ['down', '费率为负：空头付租（下）']],
+  views: {
+    week: {a: '2023-03-08T00:00:00Z', b: '2023-03-16T00:00:00Z', msg: '危机一周：3-09、3-10 跌到 19,522，幅度其实只有 −10%——真正的银行股灾在美股盘里；币圈的主战场在周末：USDC 脱锚、流动性最薄，然后周日深夜兜底公告直接把 V 的右边拉了出来。'},
+    night: {a: '2023-03-12T12:00:00Z', b: '2023-03-13T16:00:00Z', msg: '兜底之夜：联合声明在美国时间周日傍晚（北京 3-13 早晨 6 点左右）落地——注意公告前一两个小时价格已经在抢跑，<b>风声永远比公文跑得快</b>；公告落地后一路拉过 22,000，再没回头。'},
+    month: {fit: true, msg: '把三月走完：公告后四天 +26%，月底 29,185——从危机低点算 +49%。下方费率全程没有恐慌（最低仅 −0.009%），3-14 之后转正：<b>这场风暴里合约杠杆不是主角，稳定币才是</b>。'}
+  }
+});
+
+/* ---------- 图 13-6 案例四 · 2024-08 套息平仓 ---------- */
+caseLab({
+  el: 'c4-chart', seg: 'c4-seg', msg: 'c4-msg', legend: 'c4-legend',
+  from: '2024-08-01', to: '2024-08-09',
+  marks: [
+    {time: T('2024-08-02T12:00:00Z'), position: 'aboveBar', shape: 'circle', color: 'crit', text: '非农爆冷 · 北京 20:30'},
+    {time: T('2024-08-05T00:00:00Z'), position: 'aboveBar', shape: 'arrowDown', color: 'crit', text: '东京开盘 · 跳水'},
+    {time: T('2024-08-05T06:00:00Z'), position: 'belowBar', shape: 'arrowUp', color: 'series2', text: '低点 48,888 · 日经收盘'}
+  ],
+  legendItems: [['up', '费率为正：多头付租（下）'], ['down', '费率为负：空头付租（下）']],
+  views: {
+    all: {fit: true, msg: '八天全景：8-02 非农只是第一推（当天 −6%），真正的瀑布在 8-05 周一亚洲时段。下方费率全程几乎没动（最低 −0.007%）——<b>砸盘的杠杆不在币圈，在东京</b>。'},
+    asia: {a: '2024-08-04T18:00:00Z', b: '2024-08-05T16:00:00Z', msg: '放大亚洲时段：北京 8 点（东京 9 点）股市开盘即跳水，6 小时 −16%；低点 48,888 出现在北京 14 点——恰好是日经收盘（全天 −12%）前后。全球都在拆仓，<b>只有币市是 24 小时开门的提款机</b>。'}
+  }
+});
+
+/* ---------- 图 13-7 案例五 · 2024-12 鹰派降息 ---------- */
+caseLab({
+  el: 'c5-chart', seg: 'c5-seg', msg: 'c5-msg', legend: 'c5-legend',
+  from: '2024-12-15', to: '2024-12-23',
+  marks: [
+    {time: T('2024-12-17T14:00:00Z'), position: 'aboveBar', shape: 'circle', color: 'muted', text: '历史新高 108,367'},
+    {time: T('2024-12-18T19:00:00Z'), position: 'aboveBar', shape: 'arrowDown', color: 'crit', text: '降 25bp＋鹰派点阵图'},
+    {time: T('2024-12-20T12:00:00Z'), position: 'belowBar', shape: 'arrowUp', color: 'series2', text: '低点 92,273'}
+  ],
+  legendItems: [['up', '费率为正：多头付租（下）'], ['down', '费率为负：空头付租（下）']],
+  views: {
+    all: {fit: true, msg: '九天全景：12-17 历史新高，12-18 决议夜两小时 −3.8%，此后没有踩踏、没有 V 型，台阶式阴跌到 12-20 的 92,273。<b>下方费率从未转负</b>——这不是杠杆风暴，是预期的重定价。'},
+    night: {a: '2024-12-18T12:00:00Z', b: '2024-12-19T12:00:00Z', msg: '决议夜：北京凌晨 3 点声明＋点阵图落地，第一根 1 小时线 −1.9%，3 点半的发布会再 −1.9%。<b>动作（降 25bp）完全符合预期，被卖的是那张点阵图</b>——市场交易的从来是路径。'}
+  }
+});
+})();
+</script>
+</body>
+</html>

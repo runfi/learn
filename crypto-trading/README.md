@@ -13,8 +13,10 @@ BTC / ETH 永续合约短波段的自编实战课：按“问题”学指标，�
 - `ct-l07.html` — 第 7 课 趋势市还是震荡市（系统 v0.4）
 - `ct-l08.html` — 第 8 课 关键价位在哪（系统 v0.5）
 - `ct-l09.html` — 第 9 课 有多少人在参与（系统 v0.6）
+- `ct-l10.html` — 第 10 课 合约里的人在干什么（系统 v0.7）
 - `ct-l11.html` — 第 11 课 宏观链条：利率、美元与流动性
 - `ct-l12.html` — 第 12 课 币圈自身的驱动
+- `ct-l13.html` — 第 13 课 宏观事件复盘
 - `assets/` — 全站共用资源：
   - `ct.css`、`ct.js`（主题与涨跌配色切换）、`ctchart.js`（图表封装，数据注册 `CT.reg`）
   - `lightweight-charts.js`（TradingView Lightweight Charts v5.2.1 官方 standalone 版，Apache-2.0，许可证见 `LICENSE-lightweight-charts.txt`）

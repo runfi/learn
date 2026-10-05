@@ -1,0 +1,980 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>币圈短线课 · 第 10 课 合约里的人在干什么</title>
+<link rel="stylesheet" href="assets/ct.css">
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <span class="book"><a href="ct-index.html">币圈短线实战课</a></span>
+  <span class="part"><a href="ct-index.html">学习地图</a> · 阶段 1 指标工具箱</span>
+  <span class="prefs">
+    <button id="btn-updown" type="button" title="切换涨跌配色"></button>
+    <button id="btn-theme" type="button" title="切换深浅主题"></button>
+  </span>
+</header>
+
+<div class="layout">
+
+<nav class="sidenav" aria-label="本课目录">
+  <p class="sn-chap">第 10 课 · 合约里的人在干什么</p>
+  <a href="#top">课首</a>
+  <a href="#s1">10.1 只有合约市场有的仪表盘</a>
+  <a href="#s2">10.2 资金费率：拥挤温度计</a>
+  <a href="#s3">10.3 持仓量 OI 四象限</a>
+  <a href="#s4">10.4 多空比：人数不是钱数</a>
+  <a href="#s5">10.5 清算：看不见的雷区</a>
+  <a href="#s6">10.6 落地：模板 D 与系统 v0.7</a>
+  <a href="#recap">小结 · 术语 · 自测</a>
+</nav>
+
+<main class="article">
+
+<section class="hero" id="top">
+  <span class="chap-no">LESSON 10 · 第 10 课 / 共 16 课</span>
+  <h1>合约里的人在干什么</h1>
+  <p class="en">WHO IS DOING WHAT INSIDE THE FUTURES MARKET</p>
+  <p class="question">本课问题：杠杆堆在哪？谁在拥挤？哪里会踩踏？</p>
+  <p class="lede">前面六课的指标全是拿价格和成交量炒出来的菜。但永续合约市场还公开着一套股票玩家做梦都想要的数据：赌桌上押了多少筹码（持仓量）、哪边在交拥挤租金（资金费率）、两边各坐了多少人（多空比）、谁被抬了出去（清算）。第 1 课你把费率和强平当"成本与机制"学过一遍，这一课把它们升级成<strong>信号</strong>——不是告诉你往哪走的信号，而是告诉你<strong>哪里人太挤、别凑过去</strong>的信号。课末装上四模板里的最后一块：模板 D 过热过滤，系统升到 v0.7——<strong>指标工具箱就此装满，阶段 1 毕业</strong>。</p>
+  <div class="objectives">
+    <h2>学完你能做到</h2>
+    <ul>
+      <li>说清为什么 OI、费率、多空比这组仪表盘只有合约市场才有——以及去哪免费看它们；</li>
+      <li>解释费率的绝对值为什么没意义，会用滚动一年分位给"拥挤度"量体温；</li>
+      <li>用自算统计说出极端费率之后市场平均发生什么：均值并不差、左尾明显更肥——所以是禁令，不是做空信号；</li>
+      <li>看懂价格 × OI 四象限，分清"新钱做多"和"空头回补"、"新钱做空"和"多头投降"——回答第 9 课结尾留下的问题；</li>
+      <li>知道多空比是人数比不是钱数比、它为什么几乎是近期跌幅的镜子，预测力弱只做辅助；</li>
+      <li>用"OI 骤降 ＋ 长针"识别清算事件，说出清算地图和磁铁效应的原理；</li>
+      <li>装好模板 D 的三条禁令，把系统升级到 v0.7，给日志加上两个新字段。</li>
+    </ul>
+  </div>
+  <p class="colorkey">读图约定：本课默认<span class="up">绿涨</span>·<span class="dn">红跌</span>，可用右上角按钮切成红涨绿跌。带 <b>互动</b> 标签的图可以拖动、缩放、调参数；正文里带虚线下划线和角标的词，点一下原地弹出解释。图表时间轴按你设备的时区显示（北京时间 ＝ UTC+8）；正文里的日期如 2026-09-21 指币安日线的交易日（UTC 口径，收盘在北京时间次日早 8 点）。</p>
+  <nav class="chapmap" aria-label="本课小节">
+    <a href="#s1">合约仪表盘</a><a href="#s2">资金费率</a><a href="#s3">OI 四象限</a><a href="#s4">多空比</a><a href="#s5">清算雷区</a><a href="#s6">模板 D 与 v0.7</a><a href="#recap">小结</a>
+  </nav>
+</section>
+
+<!-- ================= 10.1 ================= -->
+<section class="ch" id="s1">
+  <h2 class="sec"><span class="no">10.1</span>这组仪表盘，为什么只有合约市场有</h2>
+  <p class="sec-en">THE DASHBOARD ONLY FUTURES MARKETS HAVE</p>
+  <div class="prose">
+    <p>现货市场能看的只有两样：价（多少钱成交）和量（换了多少手）。因为现货买完就提走了，市场不知道你还"押"着什么。合约不一样——第 1 课讲过，<strong>永续合约是赌价格差的合同</strong>：每一张合同必然同时有一个多头和一个空头，而且在平仓之前一直挂在交易所的账上。于是交易所手里天然多出一整套"底牌统计"，而且大头全是公开的：</p>
+    <ul>
+      <li><strong><span class="nt" data-note="oi">持仓量</span>（OI）</strong>：还没平掉的合同总量——赌桌上押着的筹码总额；</li>
+      <li><strong>资金费率</strong>：哪边在给哪边交"拥挤租金"（第 1 课 1.6 节的老朋友）；</li>
+      <li><strong>多空比</strong>：开多的账户和开空的账户，两边各坐了多少人；</li>
+      <li><strong>清算数据</strong>：谁被强平引擎抬出去了（这块只公开一部分，10.5 节细说）。</li>
+    </ul>
+    <p>这些数据不用花钱买：币安的"合约数据"页面全都有，Coinglass 这类聚合站还把各家交易所加总在一起。本课所有图表用的就是币安 BTCUSDT / ETHUSDT 的真实历史数据。</p>
+  </div>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>现货市场像看一场球赛的<strong>比分牌</strong>：几比几（价格）、多少次射门（成交量），完了。合约市场像坐进了<strong>赌场的监控室</strong>：你不光看到比分，还看到每张赌桌上押了多少筹码（OI）、押主队的人多到庄家不得不加收入场费（费率）、两边各坐了多少人（多空比）、谁输光了被保安请出去（清算）。<strong>看监控室不会告诉你下一球谁进，但它能告诉你哪张桌子已经挤到要出事</strong>——这正是本课四样数据的共同用法。</p>
+  </div>
+  <figure>
+    <p class="fig-title"><span class="fno">图 10-1</span>两块仪表盘：现货看得见的，和合约多出来的<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+      <svg viewBox="0 0 720 310" role="img" aria-label="现货市场只有价与量两块仪表，合约市场多出持仓量、资金费率、多空比、清算四块仪表">
+        <defs>
+          <marker id="f101-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="ar-fill"/></marker>
+        </defs>
+        <rect x="16" y="36" width="200" height="226" rx="8" class="node"/>
+        <text x="116" y="62" text-anchor="middle" class="nt">现货市场的仪表盘</text>
+        <rect x="36" y="80" width="160" height="44" rx="5" class="node"/>
+        <text x="116" y="98" text-anchor="middle" class="nt">价格</text>
+        <text x="116" y="116" text-anchor="middle" class="nd">多少钱成交</text>
+        <rect x="36" y="134" width="160" height="44" rx="5" class="node"/>
+        <text x="116" y="152" text-anchor="middle" class="nt">成交量</text>
+        <text x="116" y="170" text-anchor="middle" class="nd">换了多少手</text>
+        <text x="116" y="210" text-anchor="middle" class="nd">买完就提走，</text>
+        <text x="116" y="230" text-anchor="middle" class="nd">没人知道你还押着什么</text>
+        <path d="M216 150 L258 150" class="edge" marker-end="url(#f101-ar)"/>
+        <text x="237" y="140" text-anchor="middle" class="elabel">同一个标的</text>
+        <rect x="258" y="20" width="446" height="258" rx="8" class="node-hi"/>
+        <text x="481" y="46" text-anchor="middle" class="nt">永续合约市场的仪表盘</text>
+        <rect x="278" y="58" width="406" height="38" rx="5" class="node"/>
+        <text x="481" y="82" text-anchor="middle" class="nd">价格 · 成交量——现货也有的两块</text>
+        <rect x="278" y="108" width="196" height="64" rx="5" class="node-up"/>
+        <text x="376" y="132" text-anchor="middle" class="nt">持仓量 OI</text>
+        <text x="376" y="152" text-anchor="middle" class="nd">赌桌上押了多少筹码</text>
+        <rect x="488" y="108" width="196" height="64" rx="5" class="node-warn"/>
+        <text x="586" y="132" text-anchor="middle" class="nt">资金费率</text>
+        <text x="586" y="152" text-anchor="middle" class="nd">哪边在交拥挤租金</text>
+        <rect x="278" y="184" width="196" height="64" rx="5" class="node"/>
+        <text x="376" y="208" text-anchor="middle" class="nt">多空比</text>
+        <text x="376" y="228" text-anchor="middle" class="nd">两边各坐了多少人</text>
+        <rect x="488" y="184" width="196" height="64" rx="5" class="node-dn"/>
+        <text x="586" y="208" text-anchor="middle" class="nt">清算</text>
+        <text x="586" y="228" text-anchor="middle" class="nd">谁被抬了出去</text>
+        <text x="481" y="300" text-anchor="middle" class="nd">四块表全部来自交易所公开数据：币安合约数据页，Coinglass 等聚合多家交易所</text>
+      </svg>
+    </div>
+    <figcaption><b>读图：</b>合约是一直挂在账上的对赌合同，所以交易所看得见全部"底牌统计"——这就是右边四块表的来源。注意它们回答的问题和前六课不同：均线、RSI、ATR 回答"行情长什么样"，这四块表回答<b>"场上的人处于什么状态"</b>——杠杆堆了多少、堆在哪边、挤不挤。状态不预测方向，但状态决定了同样一根阴线是正常回调，还是踩踏的导火索（10·10 之夜就是后者，10.5 节全程回放）。</figcaption>
+  </figure>
+  <div class="prose">
+    <p>第 1 课给这套数据埋过两颗种子：<strong>资金费率 ＝ 拥挤的租金</strong>（图 1-7 的七年全景你已经看过），<strong>强平 ＝ 踩踏的燃料</strong>（图 1-3 的流水线）。当时它们是"成本"和"机制"，今天把它们接上统计，升级成系统里的<span class="nt" data-note="crowded">拥挤交易</span>探测器。先从最成熟的那块表开始：费率。</p>
+  </div>
+</section>
+
+<!-- ================= 10.2 ================= -->
+<section class="ch" id="s2">
+  <h2 class="sec"><span class="no">10.2</span>资金费率：从租金到拥挤温度计</h2>
+  <p class="sec-en">FUNDING RATE AS A CROWDING THERMOMETER</p>
+  <div class="cards">
+    <div class="card">
+      <h4>资金费率过滤器<span class="en-term">Funding Rate Filter</span><span class="fit fit-crypto">仅合约</span></h4>
+      <p><strong>一句话</strong>：把"多头在交多少租"换算成"和过去一年比有多挤"，只在极端分位开口说话——说的还不是"进"，是"别进"。</p>
+      <span class="k">本课参数：日均费率的滚动一年分位；＞90 禁新多，＜10 禁新空</span>
+    </div>
+  </div>
+  <div class="prose">
+    <h3><span class="tag">① </span>绝对值为什么没意义</h3>
+    <p>很多教程教你背数字："费率超过 0.1% 就是过热。"用七年真实数据一算就知道这类死数字多不靠谱——费率的"正常水位"本身在塌方：</p>
+  </div>
+  <div class="tablewrap narrow">
+    <table>
+      <thead><tr><th>年份</th><th>平均每期费率</th><th>折合年化（日合计 ×365）</th></tr></thead>
+      <tbody>
+        <tr><td>2020</td><td>0.0157%</td><td>17.2%</td></tr>
+        <tr><td>2021</td><td><b>0.0280%</b></td><td><b>30.6%</b>——做多一年租金三成</td></tr>
+        <tr><td>2022</td><td>0.0038%</td><td>4.2%</td></tr>
+        <tr><td>2023</td><td>0.0072%</td><td>7.9%</td></tr>
+        <tr><td>2024</td><td>0.0109%</td><td>11.9%</td></tr>
+        <tr><td>2025</td><td>0.0047%</td><td>5.1%</td></tr>
+        <tr><td>2026 前三季</td><td>0.0027%</td><td><b>2.9%</b></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="prose">
+    <p>台阶一路下移——美国现货 ETF 上线后，机构的套利资金把"合约贵于现货"的偏离越压越平。于是同一个 +0.01%，在 2021 年是清淡，在 2026 年已经偏热。<strong>绝对值过时了，解决办法是<span class="nt" data-note="rollpct">滚动分位</span></strong>：拿今天和它自己的"最近一年"比。这一招你在第 6 课已经用过一次——ATR 的"近一年 90 分位"熔断线，同一套算法。</p>
+  </div>
+  <div class="formula">
+    <p class="fx">费率分位（今天）＝ 近 365 天（含今天）中，日均费率低于今天的天数占比 × 100</p>
+    <p class="note">日均费率 ＝ 当天三期费率的平均；打平的日子各算半天。分位 90 ＝ 比过去一年九成的日子都挤。下面实验台的分位线每天都用"过去一年"重新校准，不吃结构漂移的亏。</p>
+  </div>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>判断房租贵不贵，不能只看数字，要看<strong>和这个城市近一年的行情比</strong>：月租五千在小县城是天价，在一线城市是捡漏。费率就是做多这个"城市"的房租——2021 年全城租金暴涨，0.01% 只是地下室价；2026 年全城降租，同一个 0.01% 已经是高档公寓。分位数干的就是中介的活：<strong>告诉你这个价在本地市场排第几</strong>。</p>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 10-2</span>费率分位统计器：极端拥挤之后，市场平均发生了什么<span class="real">真实数据</span><span class="ia">互动</span></p>
+    <div class="ctrls">
+      <label class="rg"><span class="rg-top">过热 / 恐慌阈值（分位）<output>—</output></span>
+        <input type="range" id="fr-t" min="80" max="98" step="1" value="90"></label>
+      <label class="rg"><span class="rg-top">之后观察天数<output>—</output></span>
+        <input type="range" id="fr-k" min="1" max="7" step="1" value="3"></label>
+    </div>
+    <div class="lw h480" id="fr-chart"></div>
+    <div class="lw-legend" id="fr-legend"></div>
+    <div class="stats">
+      <div class="stat"><span class="k">过热组之后的平均收益</span><span class="v" id="fr-hi">—</span><span class="s" id="fr-hi-s">—</span></div>
+      <div class="stat"><span class="k">恐慌组之后的平均收益</span><span class="v" id="fr-lo">—</span><span class="s" id="fr-lo-s">—</span></div>
+      <div class="stat"><span class="k">全样本同期</span><span class="v" id="fr-all">—</span><span class="s" id="fr-all-s">—</span></div>
+      <div class="stat"><span class="k">过热组最深下探（均值）</span><span class="v dn" id="fr-tail">—</span><span class="s" id="fr-tail-s">—</span></div>
+    </div>
+    <p class="lab-msg" id="fr-msg"></p>
+    <figcaption><b>读图：</b>上半是 BTC 日线收盘（2020 年至今），下半那条线是每天的费率分位（0–100），两条虚线是你用滑块定的过热线和恐慌线，所有统计由页面按同一套规则现算（头半年窗口不足一年，分位较粗，分组统计已剔除）。默认设置（阈值 90、看 3 天）下的结果值得盯三秒：<b>过热组之后 3 天平均 +1.08%，比全样本的 +0.42% 还高</b>——因为极端正费率几乎都出现在狂热上涨途中，动量还没死；但最后一格露出了代价：<b>过热组 3 天内平均最深下探 −4.7%（全样本 −3.9%），最差一成达到 −10.7%（全样本 −8.2%）</b>。均值更好、尾巴更毒——这就是"禁新多"而不是"反手做空"的全部理由。数据末端 2026-09-30 的分位是 60，中性。</figcaption>
+  </figure>
+  <div class="prose">
+    <h3><span class="tag">② </span>一成一败：费率过滤的真实面孔</h3>
+    <ul>
+      <li><strong>成功的一面（2021-01-08）</strong>：日均费率分位 99、单日 0.146%（年化 160%）。三天后 BTC 从 40,637 跌到 35,408，<span class="dn-t">−12.9%</span>——在最挤的那天管住不开新多，躲开的就是这种擦枪走火；</li>
+      <li><strong>失败的一面（2021-02-08）</strong>：分位 98，按"过热要跌"的剧本该崩了吧？结果 13 天后涨到 57,487，<span class="up-t">+23.8%</span>。更扎心的是整个 2021 年 1–2 月：59 天里 34 天分位超 90，期间 BTC 从 29,337 涨到 45,163——<strong>"禁新多"这两个月会让你干看着 +54%</strong>。这是这条禁令明码标价的成本；2024 年 2–3 月 ETF 狂热期又重演了一遍（38 天过热、3 月照样冲到 73,128）。</li>
+    </ul>
+    <h3><span class="tag">③ </span>信号规则 · 何时失灵 · 和谁搭配</h3>
+    <ul>
+      <li><strong>信号规则</strong>：费率分位 ＞90 → 不开新多；＜10 → 不开新空。只否决、不发起，已有仓位照旧交给止损止盈管理；</li>
+      <li><strong>何时失灵</strong>：事件雷它完全看不见——10·10 当天分位只有 13，519 前夜（2021-05-18）也只有 66：那两场屠杀是消息引爆的，不是拥挤闷出来的，<strong>防事件靠日历（第 3 课），防拥挤才靠费率</strong>；另外结构漂移在持续压低费率水位，2026 年全年分位超 90 的日子只剩 16 天——这个过滤器正在变成一根很少报警的保险丝，沉默不等于失效，但别指望它常提醒你；</li>
+      <li><strong>和谁搭配</strong>：三票制（第 4 课）管方向、日历（第 3 课）管事件、费率分位管拥挤——三者各看一摊；10.6 节它还会和多空比共振成拥挤警报。</li>
+    </ul>
+  </div>
+  <div class="keypoint">
+    <span class="label">本课最重要的一句话 · 之一</span>
+    <p><strong>费率的绝对值没意义，分位才有意义；极端分位是"危险区"，不是"反转点"。</strong></p>
+    <p>它的正确动作永远是收手，不是出手：过热时不接新多单，恐慌时不追新空单。方向的事，让三票制说话。</p>
+  </div>
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p><strong>"费率这么高，大家都在做多，我反着做空它一把。"</strong>图 10-2 的统计刚刚打过脸：过热组之后 3 天平均 +1.08%，比全样本还高——逆着狂热做空，统计期望是负的，2021 年 1–2 月那种"顶着 99 分位再涨 54%"的行情会把逆势空头送走好几轮。费率过滤是<strong>禁令生成器</strong>：它划掉"不该做"的日子，从不指定"该做"的方向。把禁令当信号，是本课最危险的误读。</p>
+  </div>
+  <div class="evidence">
+    <span class="label">证据与怀疑</span>
+    <h4>这份统计的证据等级：自算、可复算，但别供起来</h4>
+    <p><strong>证据的一面</strong>：图 10-2 不是从哪本书抄的结论，是用你电脑里这份 2020 年至今、2,465 天的币安真实费率现场算的，滑块随便拖、规则完全透明，node 脚本可以逐数复核。"极端正费率之后均值不差、左尾更肥"在三个时代切片里都成立（2020–21、2022–23、2024–26 的过热组均值都不低于全样本）——这不是某一轮牛市的巧合。</p>
+    <p><strong>怀疑的一面</strong>：① 阈值 90 / 10 是看着历史挑的——样本内优化的嫌疑洗不掉，所以把它当"量级"用，别当精确开关（85 或 95 结论方向不变，数字会变）；② 过热日成串出现（2021 年初连续几十天），93–237 天的分组样本实际上只是十几段行情，<em>有效样本比看起来小得多</em>；③ 结构漂移是现在进行时：ETF 后机构套利把费率越压越平，2021 年化 30.6% → 2024 11.9% → 2026 前三季 2.9%，一路下台阶——按历史分布校准的过滤器，对一个正在变形的市场只能算"目前最好的近似"。阶段 5 你学会跑数据后，第一件事就该是用最新数据重算这页。</p>
+  </div>
+</section>
+
+<!-- ================= 10.3 ================= -->
+<section class="ch" id="s3">
+  <h2 class="sec"><span class="no">10.3</span>持仓量 OI：价格 × 筹码的四象限</h2>
+  <p class="sec-en">OPEN INTEREST — THE FOUR QUADRANTS</p>
+  <div class="cards">
+    <div class="card">
+      <h4>持仓量 OI<span class="en-term">Open Interest</span><span class="fit fit-crypto">仅合约</span></h4>
+      <p><strong>一句话</strong>：全市场还没平掉的合约总量——赌桌上押着的筹码总额，和价格的涨跌拼在一起读，能看出"这段行情是谁买出来的"。</p>
+      <span class="k">本课口径：OI 名义价值（USDT 计），日变化取每日最后一个整点</span>
+    </div>
+  </div>
+  <div class="prose">
+    <p>第 9 课结尾留了一个量能回答不了的问题：<strong>这波上涨是新钱进场，还是空头被迫回补？</strong>成交量只知道"有人交易了"，分不清是谁、在干什么。OI 能分清，因为它的加减法是硬规则：</p>
+  </div>
+  <div class="tablewrap narrow">
+    <table>
+      <thead><tr><th>这笔成交的双方</th><th>成交量</th><th>持仓量 OI</th><th>含义</th></tr></thead>
+      <tbody>
+        <tr><td>新开多 遇 新开空</td><td>+1</td><td class="up-t"><b>+1</b></td><td>新钱进场，赌桌加码</td></tr>
+        <tr><td>新开仓 遇 老仓平仓</td><td>+1</td><td>不变</td><td>换手：筹码易主，总量没变</td></tr>
+        <tr><td>平多 遇 平空</td><td>+1</td><td class="dn-t"><b>−1</b></td><td>双双离场，赌桌撤码</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>成交量是赌场一晚上的<strong>流水</strong>，OI 是桌上还压着的<strong>筹码堆</strong>。流水大可以只是同一摞筹码倒来倒去（对敲、换手），筹码堆变高却只有一种可能：<strong>有人往桌上押了新钱</strong>。所以"价格涨了"要追问一句：筹码堆是跟着高了，还是反而矮了？高了，说明涨势有新燃料；矮了，说明推高价格的是<strong>离场的买单</strong>——空头平仓必须买入，但买完人就走了，不会有后续。同一根阳线，两种完全不同的成色。</p>
+  </div>
+  <div class="prose">
+    <p>把"价格涨跌"和"OI 增减"两两组合，就是读合约市场的基本语法——四象限：</p>
+  </div>
+  <figure>
+    <p class="fig-title"><span class="fno">图 10-3</span>价格 × OI 四象限：每一格各是谁在干什么<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+      <svg viewBox="0 0 720 330" role="img" aria-label="价格涨跌与持仓量增减组合出的四个象限及其含义">
+        <line x1="360" y1="34" x2="360" y2="296" class="axis"/>
+        <line x1="56" y1="165" x2="664" y2="165" class="axis"/>
+        <text x="360" y="22" text-anchor="middle" class="tick">价格涨 ↑</text>
+        <text x="360" y="316" text-anchor="middle" class="tick">价格跌 ↓</text>
+        <text x="60" y="156" text-anchor="start" class="tick">← OI 降</text>
+        <text x="660" y="156" text-anchor="end" class="tick">OI 涨 →</text>
+        <rect x="390" y="44" width="246" height="92" rx="8" class="node-up"/>
+        <text x="513" y="72" text-anchor="middle" class="nt">价涨 ＋ OI 涨</text>
+        <text x="513" y="94" text-anchor="middle" class="nd">新钱做多——上涨有燃料</text>
+        <text x="513" y="116" text-anchor="middle" class="ut">健康 · 2026 年 59 天</text>
+        <rect x="84" y="44" width="246" height="92" rx="8" class="node-warn"/>
+        <text x="207" y="72" text-anchor="middle" class="nt">价涨 ＋ OI 降</text>
+        <text x="207" y="94" text-anchor="middle" class="nd">空头回补——离场的买盘</text>
+        <text x="207" y="116" text-anchor="middle" class="wt">上涨虚 · 35 天</text>
+        <rect x="390" y="194" width="246" height="92" rx="8" class="node-dn"/>
+        <text x="513" y="222" text-anchor="middle" class="nt">价跌 ＋ OI 涨</text>
+        <text x="513" y="244" text-anchor="middle" class="nd">新钱做空——真金白银压上</text>
+        <text x="513" y="266" text-anchor="middle" class="dt">压力真 · 26 天</text>
+        <rect x="84" y="194" width="246" height="92" rx="8" class="node"/>
+        <text x="207" y="222" text-anchor="middle" class="nt">价跌 ＋ OI 降</text>
+        <text x="207" y="244" text-anchor="middle" class="nd">多头投降——仓位在出清</text>
+        <text x="207" y="266" text-anchor="middle" class="nd">燃料减少 · 62 天</text>
+      </svg>
+    </div>
+    <figcaption><b>读图：</b>右上角是教科书式的健康上涨：价格和筹码一起增长，多头用新钱铺路。左上角是最容易骗人的格子：价格在涨、筹码在撤——买盘来自<span class="nt" data-note="shortcover">空头回补</span>，烧完就没了。右下角压力是真的：下跌途中还有人加码做空。左下角是<span class="nt" data-note="capitulation">多头投降</span>：价格和筹码一起缩，被套的仓位集中离场——出清说明跌势的燃料在减少，但<b>出清可以持续很久，它不是见底信号</b>。四格天数是 2026 年 4–9 月 BTC 的真实分布（图 10-4 现算）。</figcaption>
+  </figure>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 10-4</span>价格 × OI 双层图：2026 年逐日判象限<span class="real">真实数据</span><span class="ia">互动</span></p>
+    <div class="ctrls">
+      <div>
+        <span class="seg-label">标的</span>
+        <span class="seg" id="qd-sym" role="group">
+          <button type="button" data-val="BTCUSDT" aria-pressed="true">BTC</button>
+          <button type="button" data-val="ETHUSDT">ETH</button>
+        </span>
+      </div>
+      <label class="rg"><span class="rg-top">日期（2026-04-02 → 09-30）<output>—</output></span>
+        <input type="range" id="qd-day" min="0" max="181" step="1" value="181"></label>
+    </div>
+    <div class="lw h480" id="qd-chart"></div>
+    <div class="lw-legend" id="qd-legend"></div>
+    <div class="stats">
+      <div class="stat"><span class="k">当日价格变化</span><span class="v" id="qd-dp">—</span><span class="s">收盘对收盘</span></div>
+      <div class="stat"><span class="k">当日 OI 变化</span><span class="v" id="qd-doi">—</span><span class="s">名义价值，日终对日终</span></div>
+      <div class="stat"><span class="k">象限判定</span><span class="v" id="qd-q">—</span><span class="s" id="qd-q-s">—</span></div>
+      <div class="stat"><span class="k">当日全体多空比</span><span class="v" id="qd-g">—</span><span class="s">人数口径，10.4 节细讲</span></div>
+    </div>
+    <p class="lab-msg" id="qd-msg"></p>
+    <figcaption><b>读图：</b>上为日线 K 线，中为 OI 名义价值（亿 USDT，取每日最后一个整点），下为 OI 日变化率的染色柱。2026 年 BTC 的 OI 在 59 亿（04-02）到 96 亿（09-21 整点峰值）之间走了个来回——<b>筹码堆的高度自己就是一条行情线</b>。拖动日期逐日看判定，再对照几个标注点：05-05 的 OI 周增 24% 与 05-06 的"假突破 ＋ OI 降"（下面的案例细讲）、09-21 的 OI 峰值与 09-23 单日 −9.8% 的出清。切到 ETH：象限分布类似（新钱做多 76 天、出清 66 天），OI 从 6 月底的 35 亿谷值爬回 66 亿——两个标的各读各的表。<b>诚实提示：按 2026 年的统计，四个象限之后一天的平均涨跌都挤在 ±0.4% 以内</b>——象限读的是"现在谁在场上"，不是"明天怎么走"，它进日志、进复盘，不进扳机。</figcaption>
+  </figure>
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>一个假突破的卷宗：合约数据版（2026 年 4–6 月）</h4>
+    <p>第 4 课讲过这笔冤案：<strong>2026-05-06，BTC 冲出摆动高点 82,829，标准的 HH，两周后却翻脸崩向 6 月的 58,605</strong>。当时的结论是"结构不是预言"。现在打开合约数据，这个假突破其实全程亮着灯：</p>
+    <ul>
+      <li><strong>04-14 → 05-05，杠杆跑得比价格快</strong>：D2 警戒（OI 周增 ＞15% 且价格涨幅不足其三分之一）在 2026 年总共只响过四次——04-14、04-17、05-04、05-05，全部挤在这三周里；05-05 当天 OI 周增 23.8%、价格同期只涨 6%，筹码堆的增速是价格的四倍，<strong>杠杆在空转</strong>。对照 8 月下旬：OI 周增同样一度超过 23%，但价格同步涨了 22%——新钱推着价格走，不触发警戒；</li>
+      <li><strong>05-05，拥挤到顶</strong>：OI 攀到 92 亿（5–6 月最高），全体多空比却只有 0.50——全年最低，<strong>人数上空头是多头的两倍</strong>：一边是重杠杆，一边是重拥挤；</li>
+      <li><strong>05-06，露馅的新高</strong>：价格冲出 82,829 的新高，当天 OI 反而缩 6.5%——<strong>价涨 ＋ OI 降，教科书式的空头回补</strong>。推出新高的是被挤爆的空头的平仓买单，不是新钱；</li>
+      <li><strong>之后</strong>：05-15 单日 OI −10.4%（第一波多头出清），05-23 结构翻成 LL（第 4 课讲过），6 月瀑布，OI 从 92 亿一路缩到 06-10 的 61 亿（−34%）。</li>
+    </ul>
+    <p class="takeaway">结构票看脚印，OI 看脚印是谁踩的。回补买单推出来的新高，K 线上和真突破一模一样——分辨它们的唯一办法，是看筹码堆在长高还是在撤退。</p>
+  </div>
+  <div class="prose">
+    <h3><span class="tag">① </span>信号规则 · 何时失灵 · 和谁搭配</h3>
+    <ul>
+      <li><strong>信号规则（本课用法）</strong>：象限每天记进日志当"环境注脚"；唯一硬规则进 10.6 的模板 D——OI 周增 ＞15% 而价格明显跟不上（涨幅不到 OI 增速的三分之一）→ 新仓风险减半；</li>
+      <li><strong>何时失灵</strong>：它是存量数据，分不清"谁"在开平仓（10.4 的多空比补这块）；OI 下降分不清主动平仓和强平（10.5 用针区分）；日度口径会把日内的大起大落抹平——10·10 那种行情要用 5 分钟粒度看（10.5 回放）；顶部的最后一段上涨照样是"价涨 OI 涨"的健康样——09-21 OI 见顶那天，象限还在说新钱做多，<strong>健康不等于不会结束</strong>；</li>
+      <li><strong>和谁搭配</strong>：结构（第 4 课，案例已演示）、量能（第 9 课：量看"动了多少"，OI 看"留下多少"）、费率与多空比（本课，共同拼出拥挤度）。</li>
+    </ul>
+  </div>
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p><strong>"OI 涨 ＝ 看涨。"</strong>OI 不长眼睛：它只说明有人往赌桌上加了筹码，<em>没说加在哪一边</em>——价跌 ＋ OI 涨恰恰是空头在加码（2026 年 6 月底的阴跌就是：06-25、06-30 连续"价跌 OI 涨"，新钱做空压着行情往下走）。永远把 OI 和价格方向拼在一起读，单独的 OI 数字没有方向含义。另一个变种：<strong>把"多头投降"当抄底键</strong>——出清只是燃料减少，5 月中旬出清完还有 6 月一整月的瀑布在后面等着。</p>
+  </div>
+</section>
+
+<!-- ================= 10.4 ================= -->
+<section class="ch" id="s4">
+  <h2 class="sec"><span class="no">10.4</span>多空比：人数比，不是钱数比</h2>
+  <p class="sec-en">LONG / SHORT RATIOS — HEADS, NOT MONEY</p>
+  <div class="cards">
+    <div class="card">
+      <h4>多空比<span class="en-term">Long / Short Ratio</span><span class="fit fit-crypto">仅合约</span></h4>
+      <p><strong>一句话</strong>：开多的账户数与开空的账户数之比——数的是<strong>人头</strong>，不是钱。1.33 ＝ 每 1 个空头账户对着 1.33 个多头账户。</p>
+      <span class="k">本课立场：预测力弱，只当拥挤度仪表，不当反向圣杯</span>
+    </div>
+  </div>
+  <div class="prose">
+    <p>币安公布两个口径，差别大到经常方向相反：</p>
+    <ul>
+      <li><strong>全体多空比</strong>：按<strong>账户数</strong>统计——一个押 100 U 的散户和一个押 1,000 万 U 的大户各算一票，所以它主要反映<strong>散户人群</strong>在干什么；</li>
+      <li><strong><span class="nt" data-note="topratio">大户多空比</span></strong>：只统计持仓量排名前列的账户，按<strong>持仓量</strong>加权——这是钱的站位。</li>
+    </ul>
+    <p>两个口径同一时刻打架是常态。10·10 当晚 OI 见顶时（13:35 UTC），全体多空比 0.90——人数上空头反而多；大户持仓比却是 1.49——钱站在多头。跌到谷底（次日 01:25），全体升到 1.21（抄底的人数涌入），大户升到 2.22。<strong>人数一张脸，钱数另一张脸</strong>——下次看到"多空比"三个字，先问是哪个口径。</p>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 10-5</span>多空比的 2026 年：镜子，不是水晶球<span class="real">真实数据</span><span class="ia">互动</span></p>
+    <div class="ctrls">
+      <div>
+        <span class="seg-label">分组后观察天数</span>
+        <span class="seg" id="ls-k" role="group">
+          <button type="button" data-val="3" aria-pressed="true">3 天</button>
+          <button type="button" data-val="5">5 天</button>
+        </span>
+      </div>
+    </div>
+    <div class="lw h420" id="ls-chart"></div>
+    <div class="lw-legend" id="ls-legend"></div>
+    <div class="stats">
+      <div class="stat"><span class="k">当前全体多空比</span><span class="v" id="ls-now">—</span><span class="s">2026-09-30 · 人数口径</span></div>
+      <div class="stat"><span class="k">当前大户多空比</span><span class="v" id="ls-top">—</span><span class="s">持仓量口径——另一张脸</span></div>
+      <div class="stat"><span class="k">人最多组之后的收益</span><span class="v" id="ls-hi">—</span><span class="s" id="ls-hi-s">—</span></div>
+      <div class="stat"><span class="k">人最少组之后的收益</span><span class="v" id="ls-lo">—</span><span class="s" id="ls-lo-s">—</span></div>
+    </div>
+    <p class="lab-msg" id="ls-msg"></p>
+    <figcaption><b>读图：</b>上为 2026 年 BTC 日线收盘，下为两条多空比：实线是全体（人数），虚线是大户（钱数），水平线是 1（多空相等）。全体多空比全年在 0.50 到 2.88 之间大开大合，而且走势几乎是价格的倒影——<b>页面现算的相关系数：它和"过去 7 天涨跌幅"相关 −0.58</b>。跌得越深，抄底的人数越多；涨得越急，等回调的人越多。所以它读的是"散户在干什么"（爱抄底、怕追高），不是"市场要干什么"。两个标注点是全年的两个极端，10.4 正文用它们埋葬"反指圣杯"。</figcaption>
+  </figure>
+  <div class="prose">
+    <h3><span class="tag">① </span>"散户反指"神话的两记耳光</h3>
+    <p>"人数多的那边必输"是流传最广的合约玄学。2026 年的两个极端日各打了它一巴掌：</p>
+    <ul>
+      <li><strong>2026-05-05，全体多空比 0.50（全年最低）</strong>：人数上空头是多头的两倍。反指信徒会说"人都在空，该涨"——结果两天后就是 82,829 的假突破顶，一个月后 −28%。<strong>这次"人多的那边"（空头）笑到了最后</strong>；</li>
+      <li><strong>2026-06-30，全体多空比 2.88（全年最高）</strong>：抄底人数挤爆，反指信徒做空——当天恰好是 6 月最低收盘 58,605（第 8 课讲过的 60,000 之战正打到最胶着处），随后两个多月涨回 86,579，<span class="up-t">+48%</span>。<strong>这次"人多的那边"（多头）又对了</strong>。</li>
+    </ul>
+    <p>分组统计也一样含糊：把 2026 年按全体多空比分组，比值最高 20% 的日子之后 3 天平均 +0.67%、最低 20% 平均 +0.30%——方向和"反指"剧本相反，但样本只有 37 天，把观察期从 3 天换成 5 天数字就大变脸（图 10-5 的切换按钮自己试）。<strong>结论：预测力弱且不稳定，别靠它选方向</strong>。它的本职工作是拥挤度仪表：和费率同向极端时，升级成 10.6 的拥挤警报。</p>
+  </div>
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p><strong>把多空比当反向圣杯：比值高就做空、低就做多。</strong>它和近期走势相关 −0.58——基本是"过去一周跌了多少"的镜子，拿镜子预测未来，等于拿后视镜开车。正确姿势：① 先分清口径（人数还是钱数）；② 把它当"散户情绪温度计"记进日志；③ 只有在<em>极端值 ＋ 费率同向极端</em>的共振时刻才升级为警报（10.6 模板 D 第三条）——而且警报的内容依然是"别加仓"，不是"反着做"。</p>
+  </div>
+</section>
+
+<!-- ================= 10.5 ================= -->
+<section class="ch" id="s5">
+  <h2 class="sec"><span class="no">10.5</span>清算：看不见的雷区图</h2>
+  <p class="sec-en">LIQUIDATIONS — THE INVISIBLE MINEFIELD</p>
+  <div class="cards">
+    <div class="card">
+      <h4>清算数据<span class="en-term">Liquidations</span><span class="fit fit-crypto">仅合约</span></h4>
+      <p><strong>一句话</strong>：强平引擎的工作记录。全量数据谁都拿不到，但"OI 骤降 ＋ 长针"的指纹和清算地图的簇，足够你画出雷区。</p>
+      <span class="k">本课产出：识别清算事件的代理指纹 ＋ 读清算地图的方法</span>
+    </div>
+  </div>
+  <div class="prose">
+    <p>第 1 课图 1-3 讲过强平的流水线：跌破维持保证金 → 强平引擎用<strong>市价单</strong>清场 → 砸穿薄订单簿 → 更低的价格点燃下一批。但有个尴尬的事实：<strong>交易所只对外推送抽样的强平订单，全量清算数据谁都没有</strong>——所以第三方统计的"10·10 全网强平约 190 亿美元"各家口径不一，只能当量级看（第 1 课就提醒过）。好在我们不需要全量数据，清算事件会留下两个一起出现的指纹：</p>
+    <ul>
+      <li><strong>指纹一：OI 骤降</strong>——仓位被成批抹掉，筹码堆垮塌；</li>
+      <li><strong>指纹二：长针</strong>——强平市价单不问价格只求成交，把薄订单簿打出垂直的影线（第 6 课统计过针长分布）。</li>
+    </ul>
+    <p><strong>两个指纹必须同时出现</strong>：只有 OI 降、没有针，多半是有序的主动平仓（05-06 空头回补那天 OI 缩 6.5%，K 线平平无奇）；又降又带针，才是踩踏。来看史上最大那次踩踏的完整心电图：</p>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 10-6</span>10·10 全程回放：OI 坍塌与插针的同步<span class="real">真实数据</span><span class="ia">互动</span></p>
+    <div class="ctrls">
+      <div>
+        <span class="seg-label">视野</span>
+        <span class="seg" id="rp-view" role="group">
+          <button type="button" data-val="all" aria-pressed="true">两天全景</button>
+          <button type="button" data-val="pin">最猛一小时</button>
+          <button type="button" data-val="fall">坍塌与承接</button>
+        </span>
+      </div>
+    </div>
+    <div class="lw h480" id="rp-chart"></div>
+    <div class="lw-legend" id="rp-legend"></div>
+    <div class="stats">
+      <div class="stat"><span class="k">OI 峰 → 谷</span><span class="v dn">118 亿 → 80 亿</span><span class="s">10-10 13:35 → 10-11 01:25（UTC），−32%</span></div>
+      <div class="stat"><span class="k">最猛一小时</span><span class="v dn">OI −21%</span><span class="s">21:40 前的一小时，五分之一筹码蒸发</span></div>
+      <div class="stat"><span class="k">价格最深</span><span class="v dn">101,516</span><span class="s">21:20 UTC · 日内 −17%，停在 10 万关口上方</span></div>
+      <div class="stat"><span class="k">全网 24 小时强平</span><span class="v warn">约 190 亿美元</span><span class="s">第三方估算，口径不一（第 1 课）</span></div>
+    </div>
+    <p class="lab-msg" id="rp-msg"></p>
+    <figcaption><b>读图：</b>上为币安 BTCUSDT 永续 2025-10-10 至 10-11 的 1 分钟线，下为每 5 分钟一个点的 OI 名义价值（亿 USDT）。三件事值得逐段看：① 13:35（北京 21:35）OI 见顶 118 亿时价格还在 122,000 附近，<b>筹码堆的最高点就是雷埋得最满的时刻</b>；② 最猛一小时里价格的针和 OI 的垂直段完全同步——这就是"OI 骤降 ＋ 长针"双指纹的现场；③ 22:00 价格已弹回 113,000，OI 却继续阴跌到次日凌晨——<b>弹回不等于新钱进场，大量仓位趁反弹继续离场</b>。还要诚实一句：缩掉的 38 亿里既有强平也有被吓跑的主动平仓，OI 分不清这两者——分得清的是针。第 14 课会连同宏观背景把这一夜完整复盘。</figcaption>
+  </figure>
+  <div class="prose">
+    <h3><span class="tag">① </span>平时的清算长什么样：2026 年的三次"排队出场"</h3>
+    <p>不是每次出清都是 10·10 式的踩踏。用 node 扫一遍 2026 年整点数据，单日 OI 降幅最大的三天是：</p>
+  </div>
+  <div class="tablewrap narrow">
+    <table>
+      <thead><tr><th>日期</th><th>OI 单日变化</th><th>当天行情</th><th>之后发生了什么</th></tr></thead>
+      <tbody>
+        <tr><td>2026-04-12</td><td class="dn-t">−11.0%</td><td>收 −3.2%，振幅 3.6%</td><td>跌势就此刹住：4-17 金叉，一周多后涨回 +7%</td></tr>
+        <tr><td>2026-05-15</td><td class="dn-t">−10.4%</td><td>收 −2.4%，振幅 3.7%</td><td>反弹三天又掉头：5-23 破前低，6 月瀑布 −26%</td></tr>
+        <tr><td>2026-09-23</td><td class="dn-t">−9.8%</td><td>收 −2.1%，振幅 4.4%</td><td>出清后横住，到月底再跌约 1%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="prose">
+    <p>三次全是"价跌 ＋ OI 降"的多头出清，但后续三种走法：刹住、继续崩、横住——<strong>出清登记"燃料在减少"这个事实，不按剧本给你反转</strong>。这也呼应第 9 课投降式抛售的纪律：观察标签只记不做，抄底要等三票制、位置和这些合约证据凑齐（第 15 课组装）。</p>
+    <h3><span class="tag">② </span>清算地图：把雷区画出来</h3>
+    <p>既然强平价可以用公式算（第 1 课：强平距离 ≈ 1 ÷ 杠杆），那么只要估计"每个价位附近开了多少仓、用了多大杠杆"，就能反推出<strong>价格走到哪里会引爆多少强平单</strong>。<span class="nt" data-note="liqmap">清算地图</span>（Coinglass 等）干的就是这件事：</p>
+  </div>
+  <figure>
+    <p class="fig-title"><span class="fno">图 10-7</span>清算地图的原理：从杠杆分布到磁铁效应<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+      <svg viewBox="0 0 720 340" role="img" aria-label="清算地图由杠杆分布推算强平价簇，密集簇对价格产生磁铁效应">
+        <defs>
+          <marker id="f107-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="ar-fill"/></marker>
+          <marker id="f107-ac" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="ar-acc"/></marker>
+        </defs>
+        <rect x="24" y="36" width="196" height="60" rx="8" class="node"/>
+        <text x="122" y="60" text-anchor="middle" class="nt">公开的原料</text>
+        <text x="122" y="80" text-anchor="middle" class="nd">OI 变化 · 常用杠杆档位</text>
+        <path d="M122 96 L122 128" class="edge" marker-end="url(#f107-ar)"/>
+        <rect x="24" y="128" width="196" height="60" rx="8" class="node"/>
+        <text x="122" y="152" text-anchor="middle" class="nt">反推每一档的强平价</text>
+        <text x="122" y="172" text-anchor="middle" class="nd">强平距离 ≈ 1 ÷ 杠杆（第 1 课）</text>
+        <path d="M122 188 L122 220" class="edge" marker-end="url(#f107-ar)"/>
+        <rect x="24" y="220" width="196" height="60" rx="8" class="node-hi"/>
+        <text x="122" y="244" text-anchor="middle" class="nt">聚成价格轴上的密度</text>
+        <text x="122" y="264" text-anchor="middle" class="nd">哪里雷多，一目了然</text>
+        <line x1="400" y1="34" x2="400" y2="304" class="axis"/>
+        <line x1="368" y1="168" x2="704" y2="168" class="sr"/>
+        <text x="700" y="160" text-anchor="end" class="pv">现价</text>
+        <rect x="402" y="86" width="64" height="12" rx="2" class="cu"/>
+        <rect x="402" y="112" width="178" height="12" rx="2" class="cu"/>
+        <rect x="402" y="138" width="104" height="12" rx="2" class="cu"/>
+        <text x="596" y="123" text-anchor="start" class="ut">空头的强平价簇在上方</text>
+        <rect x="402" y="196" width="92" height="12" rx="2" class="cd"/>
+        <rect x="402" y="222" width="150" height="12" rx="2" class="cd"/>
+        <rect x="402" y="252" width="226" height="12" rx="2" class="cd"/>
+        <rect x="402" y="280" width="70" height="12" rx="2" class="cd"/>
+        <text x="636" y="247" text-anchor="start" class="wt">密集簇 ＝ 雷区</text>
+        <path d="M430 172 C470 196 480 226 452 252" class="edge-acc" marker-end="url(#f107-ac)"/>
+        <text x="500" y="212" text-anchor="start" class="hi">磁铁效应：价格被吸向密集簇</text>
+        <text x="364" y="326" class="nd">止损簇、整数位、强平簇常叠在同一价位——第 6 课的针、第 8 课的位、这张图是同一件事的三个视角</text>
+      </svg>
+    </div>
+    <figcaption><b>读图：</b>左边是地图的生产线：公开的 OI 和杠杆档位分布 → 按第 1 课的公式反推各档强平价 → 聚成价格轴上的密度图。右边是用法：密集簇是"价格一到就必须成交的被动市价单"堆，对大资金来说是送上门的流动性——打过去既能成交又能引发连锁单，于是价格常被"吸"过去再弹开，这就是<span class="nt" data-note="magnet">磁铁效应</span>。第 8 课引过 Osler 的研究：止损单堆在整数位刚被突破的外侧——止损簇、强平簇、整数关口经常叠在同一个价位上，10·10 的针尖停在 10 万关口上方 1.5% 处，就是三者叠加的现场。</figcaption>
+  </figure>
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p><strong>把清算地图当藏宝图。</strong>两盆冷水：① 它是<em>模型估算</em>——数据商并不知道每个人的真实杠杆和开仓价，只是按常用档位假设出来的分布，簇的位置有误差、金额更是毛估；② 它是<em>公共知识</em>——你看得到的簇，做市商和猎手团队看得更清楚，磁铁效应有一半是这张图自我实现的结果，也随时可能被更大的资金反着利用。正确用法只有防守一条：<strong>知道现价上下哪里雷多，别把止损挂在簇的正中央</strong>（和第 8 课"止损躲开整数位毛边"同一个道理），重仓穿越密集簇之前多想一秒。</p>
+  </div>
+</section>
+
+<!-- ================= 10.6 ================= -->
+<section class="ch" id="s6">
+  <h2 class="sec"><span class="no">10.6</span>落地：模板 D 过热过滤与系统 v0.7</h2>
+  <p class="sec-en">TEMPLATE D AND SYSTEM v0.7</p>
+  <div class="prose">
+    <p>把四块仪表拧成系统零件。先想清楚模板 D 和兄弟们的分工：<strong>模板 A / B / C 是进攻战术</strong>——告诉你在趋势回调、收口突破、区间边缘怎么进场；<strong>模板 D 是宪兵</strong>——它从不告诉你去哪，只在某些日子竖一块牌子：此路封闭。三条禁令，每条都有本课的统计背书：</p>
+  </div>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>禁令</th><th>触发条件</th><th>动作</th><th>依据</th></tr></thead>
+      <tbody>
+        <tr><td><b>D1 费率拥挤</b></td><td>日均费率滚动一年分位 ＞90</td><td>禁开新多</td><td>10.2：之后均值不差，但左尾更肥（最深下探 −4.7% 对 −3.9%，最差一成 −10.7% 对 −8.2%）</td></tr>
+        <tr><td></td><td>分位 ＜10</td><td>禁开新空</td><td>10.2：恐慌组之后 3 天平均 +0.79%、胜率 56%——追空是送流动性</td></tr>
+        <tr><td><b>D2 杠杆空转</b></td><td>OI 周增 ＞15% 且价格同期涨幅不到 OI 增速的三分之一</td><td>新仓风险减半（0.5%）</td><td>10.3：2026 年共触发 4 次，全部堆在 4 月中旬到 5 月初——6 月瀑布的燃料正是那几周堆起来的（但警报比顶部早了三周，所以只减半、不清场）</td></tr>
+        <tr><td><b>D3 拥挤共振</b></td><td>全体多空比进入近半年最高或最低一成，且费率分位同向极端（＞90 或 ＜10）</td><td>拥挤警报：持仓只减不加，不开新仓</td><td>10.4：单独预测力弱，两表同向极端才升级——宁可错过，不站在最挤的一边加注</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="keypoint">
+    <span class="label">本课最重要的一句话 · 之二</span>
+    <p><strong>合约数据是禁令生成器，不是信号生成器——它告诉你哪里别去，从不告诉你去哪。</strong></p>
+    <p>禁令生效的日子，正确动作是：按其余规则管好已有仓位，然后关掉下单页。错过的行情记进日志，那是禁令明码标价的保费。</p>
+  </div>
+  <div class="rulecard">
+    <div class="rc-head"><span class="label">规则卡</span><span class="rc-name">短波段系统 v0.7（在 v0.6 之上新增模板 D 禁令层）</span></div>
+    <dl>
+      <dt>标的与周期</dt><dd>BTC / ETH 的 U 本位永续，模拟盘；日线定方向、4 小时找位置、1 小时扣扳机（第 2 课分工不变）</dd>
+      <dt>过滤条件</dt><dd>方向三票制同向才开仓（第 4 课）；重大事件窗口前后 30 分钟不开新仓（第 3 课）；日线 ATR% 超近一年 90 分位 → 单笔风险减半（第 6 课）；先判环境再选模板（第 7 课）；<b>【本课新增】模板 D 三条禁令：费率分位 ＞90 禁新多、＜10 禁新空；OI 周增 ＞15% 且价格跟不上（涨幅不足 OI 增速三分之一）→ 新仓风险减半；多空比与费率同向极端 → 只减不加</b></dd>
+      <dt>入场</dt><dd>模板 A 顺势回调：4 小时回调到位（第 5 课时机 ＋ 第 8 课关键价位）→ 1 小时触发，缩量回调优先（第 9 课偏好项）；模板 B 收口突破：量能闸 ≥1.5× 前 20 期均量才放行（第 9 课硬规则）；模板 C 区间打法维持第 7 课规则。<b>任何模板都先过 D 禁令再谈入场</b></dd>
+      <dt>止损</dt><dd>结构位外侧与入场价 ∓1.5×ATR(4h) 取更远者；跨周末、清淡时段或事件日改 2×ATR；止损市价单、标记价格触发（第 1、6 课）；<b>【本课新增】挂止损前看一眼清算地图与整数位，避开密集簇的正中央（第 8 课毛边规则的合约版）</b></dd>
+      <dt>出场</dt><dd>TP ≥2R 或到第 8 课关键位分批；趋势单可用吊灯式 3×ATR 跟踪；出现反向三票信号离场</dd>
+      <dt>仓位</dt><dd>名义 ＝ 单笔风险额 ÷ 实际止损距离%；单笔风险 ≤1%（高波动期或 D2 / D3 警戒期 0.5%）；逐仓 ≤5 倍；同时 ≤2 个仓位</dd>
+    </dl>
+    <p class="rc-note">对照 v0.6，本课动的几乎只有"过滤条件"一栏——<strong>D 不改变你怎么进场，只划掉一部分日子</strong>。另注意三条禁令的强度排序：D1 是硬禁令（直接不做），D2、D3 是减速带（减半、只减不加）——因为 10.2 的统计最硬，10.3、10.4 的样本还薄。阈值都不神圣，页内实验台随时可以重新校准。</p>
+  </div>
+  <div class="sysup">
+    <span class="label">系统升级</span>
+    <h4>你的交易系统：v0.6 → v0.7——指标工具箱毕业</h4>
+    <p>本课装进系统的零件：费率分位过滤（D1）· OI 四象限日志（＋D2 杠杆空转警戒）· 多空比拥挤仪表（＋D3 共振警报）· 清算事件的双指纹识别 · 清算地图防守用法。<strong>到这里，七个问题各就各位：</strong>Q1 方向 ＝ 三票制（第 4 课）· Q3 时机 ＝ 回调区（第 5 课）· Q4 波动 ＝ ATR 尺（第 6 课）· Q2 环境 ＝ 趋势 / 震荡开关（第 7 课）· Q5 位置 ＝ 关键位（第 8 课）· Q6 量能 ＝ 量能闸（第 9 课）· Q7 合约数据 ＝ 模板 D 禁令（本课）。<strong>没有新指标要学了</strong>——阶段 3 只做组合与打磨。下一课进入阶段 2：指标回答"发生了什么"，第 11 课开始回答"为什么发生"——利率、美元与流动性怎么一路传导到 BTC 的 K 线上。</p>
+  </div>
+  <div class="stock">
+    <span class="label">股票上怎么对照</span>
+    <h4>股票世界的"远亲"们：同样的问题，粗糙得多的仪表</h4>
+    <ul>
+      <li><b>融资融券余额 ≈ OI 的远亲</b>：A 股两融余额、美股 Margin Debt 也是"场内杠杆总量"，但只有日频甚至月频、滞后公布，而且基本只有多头一侧——币圈的 OI 是实时、双边、逐合约的，这块表合约市场完胜；</li>
+      <li><b>融资买入占比 ≈ 情绪指标</b>：A 股每天公布融资买入额占成交额的比例，逻辑接近"全体多空比"——都是拥挤度读数，预测力同样弱；美股的对应物是期权 Put / Call 比；</li>
+      <li><b>A 股没有资金费率</b>，但融资利率是固定的（约 4–8% 年化）——没有"拥挤自动涨租"的机制，所以 A 股的杠杆拥挤要靠两融余额增速来猜；</li>
+      <li><b>期权未平仓量与期货 OI 同名同源</b>（都叫 Open Interest）：美股玩家盯的 Max Pain、Gamma 墙，和清算地图的磁铁效应异曲同工——都在找"被动单浓度最高的价位"；</li>
+      <li><b>清算瀑布的股票版</b>是融资盘强制平仓（2015 年 A 股去杠杆就是一场慢动作的 10·10）——机制相同，只是股票杠杆低、有涨跌停和熔断，瀑布流得慢一些。</li>
+    </ul>
+  </div>
+  <div class="task">
+    <span class="label">本周模拟任务</span>
+    <h4>给系统接上合约仪表盘（继续模拟盘，系统 v0.7）</h4>
+    <ol>
+      <li><b>日志加两个新字段</b>：从本周起每笔开仓时记录——当天的费率分位（用图 10-2 查）和当日 OI 象限（用图 10-4 查）。不许留空，flat 的日子不用记；</li>
+      <li><b>仪表盘日课</b>：连续 7 天，每天收盘后花 2 分钟打开币安合约数据页（或 Coinglass），抄下 BTC 的当期费率、OI、全体多空比三个数——一周后你会对"正常水位"有手感；</li>
+      <li><b>统计器体检</b>：把图 10-2 的阈值从 85 拖到 95、观察天数从 1 拖到 7，写两句话进日志：过热组的均值什么时候高于全样本？最深下探什么时候明显更深？——这是你第一次亲手检验一条规则的稳健性；</li>
+      <li><b>清算地图周课</b>：周末打开 Coinglass 的 BTC 清算地图，截图存进日志，标出现价上下最近的两个密集簇；下周末对照——价格有没有"路过"它们，路过时发生了什么；</li>
+      <li><b>禁令值班记录</b>：本周若出现费率分位 ＞90 或 ＜10 的日子，记下禁令拦住了你什么动作；若没出现（2026 年它一年只响十几次），写一句"本周禁令全程沉默"——沉默也是数据；</li>
+      <li>继续按 v0.7 跑 2–3 笔模拟单。周末自查：这周的每笔单，六道关（事件 → 环境 → 三票 → D 禁令 → 模板触发 → 止损仓位）是不是都走全了？</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ================= 小结 ================= -->
+<section class="ch recap" id="recap">
+  <h2 class="sec"><span class="no">★</span>本课小结</h2>
+  <p class="sec-en">RECAP</p>
+  <div class="prose">
+    <ol>
+      <li><b>合约市场多出一套底牌统计</b>：OI、费率、多空比、清算——因为每张合约都有对手方且一直挂在账上，交易所看得见全部筹码。它们读"场上的人处于什么状态"，不读"行情往哪走"。</li>
+      <li><b>费率绝对值没意义，分位才有意义</b>：年化从 2021 的 30.6% 塌到 2026 前三季的 2.9%，死数字全部过时——滚动一年分位每天自动重新校准。</li>
+      <li><b>极端正费率之后：均值不差、左尾更肥</b>（3 天平均 +1.08% 对 +0.42%，最深下探 −4.7% 对 −3.9%）——所以是"禁新多"，不是做空信号；恐慌分位同理，"禁新空"。</li>
+      <li><b>费率防不了事件雷</b>：10·10 当天分位 13、519 前夜 66——事件归日历管（第 3 课），拥挤才归费率管。</li>
+      <li><b>OI 四象限读"这段行情是谁买出来的"</b>：新钱做多 / 空头回补 / 新钱做空 / 多头投降。05-06 假突破的新高就是回补买单推的——K 线分不出来，OI 一眼看穿。</li>
+      <li><b>多空比是人数比不是钱数比</b>，和过去一周涨跌相关 −0.58——它是散户行为的镜子，不是反向圣杯：2026 年的两个极端日（0.50 和 2.88）把"人多必输"各打了一巴掌。</li>
+      <li><b>清算事件的双指纹 ＝ OI 骤降 ＋ 长针</b>；清算地图是把强平价簇画在价格轴上的模型估算，磁铁效应 ＝ 价格被被动单密集区吸引——防守用，别当藏宝图。</li>
+      <li><b>模板 D 三条禁令装进 v0.7</b>：费率分位禁新多新空、杠杆空转减半、拥挤共振只减不加——指标工具箱毕业，七个问题各就各位，下一课开始问"为什么"。</li>
+    </ol>
+  </div>
+
+  <h3>术语一览（点击正文中的角标词可随时弹出）</h3>
+  <ol class="notes-list" id="notes-list"></ol>
+
+  <h3>自测</h3>
+  <details><summary>1. 2026-05-06，BTC 冲出新高 82,829（刷新 79,455），但当天 OI 下降 6.5%，前一天全体多空比只有 0.50。用本课的语言完整描述发生了什么？第 4 课的结构票会怎么投？</summary>
+    <div class="ans"><p>前一天的画面是：OI 一周暴增 23.8%（杠杆堆积远快于价格）、多空比 0.50（人数上空头两倍于多头——空头拥挤）。05-06 价格创新高而 OI 缩水，是教科书式的空头回补：被挤爆的空头平仓必须买入，这股"离场的买盘"把价格顶出新高，但买完人就走了，没有后续。结构票看到 HH 会投多——它只认脚印，不问脚印是谁踩的；而 OI 已经亮灯"这个新高没有新钱"。两周后结构翻脸（05-23 LL），6 月崩到 58,605。这正是模板 D 要当否决层的原因：合约数据不推翻结构的"现状描述"，但它看得见结构看不见的成色。</p></div>
+  </details>
+  <details><summary>2. 为什么"费率分位 ＞90 禁新多"不等于"费率分位 ＞90 该做空"？用本课统计里的两组数字回答。</summary>
+    <div class="ans"><p>第一组：过热组之后 3 天平均 +1.08%，全样本 +0.42%——均值反而更高，因为极端正费率几乎都出现在狂热上涨途中，做空是逆着动量送钱（2021 年 1–2 月 34 个过热日、BTC +54%，是逆势空头的墓志铭）。第二组：过热组 3 天内平均最深下探 −4.7%、最差一成 −10.7%，全样本分别是 −3.9% 和 −8.2%——左尾明显更肥。合起来：过热期的多头收益平平但回撤加深，<b>不开新多躲的是不对称的尾部，不是预测下跌</b>；做空则两头都不占。禁令和信号是两种东西。</p></div>
+  </details>
+  <details><summary>3. 清算事件的代理指纹是什么？10·10 的 OI 从 118 亿缩到 80 亿，为什么不能说"38 亿全被强平了"？</summary>
+    <div class="ans"><p>双指纹：OI 骤降（仓位成批消失）＋ 长针（强平市价单砸穿薄订单簿），而且必须同时出现——只降不带针的多半是有序平仓（05-06 回补日 OI 缩 6.5%，K 线平静）。10·10 的 38 亿里混着三种人：被强平的、止损离场的、吓跑的主动平仓——OI 只记录"仓位没了"，分不清怎么没的；而且交易所对外只推送抽样的强平订单，谁都没有全量数据，所以"全网强平约 190 亿美元"只能是第三方估算、各家口径不一。图 10-6 里 22:00 之后价格反弹、OI 继续阴跌的那一段，就是"吓跑的"在离场。</p></div>
+  </details>
+  <details><summary>4. 2026-06-30 全体多空比 2.88（全年最高），"人数多的那边必输"的反指信徒会做空。结果如何？多空比的正确用法是什么？</summary>
+    <div class="ans"><p>当天恰是 6 月最低收盘 58,605（60,000 之战最胶着处），随后两个多月涨回 86,579，约 +48%——反指做空直接撞墙；可反过来 05-05 的 0.50 之后两天就见顶，反指做多一样撞墙。根源：它和"过去 7 天涨跌幅"相关 −0.58，基本是近期走势的镜子（散户爱抄底、怕追高），镜子照不见未来。正确用法：① 分清口径（全体 ＝ 人数，大户 ＝ 钱数，两者常打架）；② 当散户情绪温度计记日志；③ 只有与费率同向极端共振时才触发 D3 警报——而警报内容也只是"只减不加"，永远不是"反着做"。</p></div>
+  </details>
+  <details><summary>5. "价跌 ＋ OI 涨"和"价跌 ＋ OI 降"，哪个说明压力更真？为什么 v0.7 仍不许拿象限当做空信号？</summary>
+    <div class="ans"><p>价跌 ＋ OI 涨压力更真：下跌途中还有新钱加码做空，是真金白银压上来的（2026 年 6 月底的阴跌就是这副面孔）；价跌 ＋ OI 降是多头投降，跌势燃料反而在减少。但 2026 年的统计泼了冷水：四个象限之后一天的平均涨跌全挤在 ±0.4% 以内，小样本里"新钱做空"组次日甚至平均微涨——象限是读"现在谁在场上"的透镜，预测力不够扛一笔交易。所以它进日志、进复盘、进 D2 的增速警戒，不进扳机；方向永远是三票制的事。</p></div>
+  </details>
+  <details><summary>6. 按 v0.7 完整走一遍：明天你想开一笔多单，从环境到挂单要过哪几道关？模板 D 卡在哪一道？</summary>
+    <div class="ans"><p>六道关：① 事件日历——炸点前后 30 分钟不动（第 3 课）；② 环境开关——趋势市还是震荡市，决定用 A / B / C 哪个模板（第 7 课）；③ 方向三票制——三票全多才许找多单（第 4 课）；④ <b>模板 D 禁令——费率分位是否 ＞90、OI 是否在空转、多空比与费率是否同向极端，任一触发就收工或减半</b>；⑤ 模板触发——A 要 4 小时回调到位加 1 小时触发，B 还要过 1.5× 量能闸（第 5、8、9 课）；⑥ 止损与仓位——结构位对 1.5×ATR 取远、避开清算簇正中央，名义 ＝ 风险额 ÷ 止损距离，挂 TP 2R、标记价格触发的止损市价单（第 1、3、6 课）。D 站在方向和入场之间：它从不说"进"，只说"今天别进"——这就是禁令层的位置。</p></div>
+  </details>
+
+  <nav class="pager" aria-label="课程导航">
+    <a class="pg" href="ct-l09.html"><span class="pg-dir">上一课</span><span class="pg-ttl">第 9 课 · 有多少人在参与</span></a>
+    <a class="pg pg-toc" href="ct-index.html"><span class="pg-dir">返回</span><span class="pg-ttl">学习地图</span></a>
+    <a class="pg pg-next" href="ct-l11.html"><span class="pg-dir">下一课</span><span class="pg-ttl">第 11 课 · 宏观链条：利率、美元与流动性</span></a>
+  </nav>
+
+  <p class="foot">数据：币安公开历史数据（data.binance.vision），BTCUSDT / ETHUSDT 永续；持仓量与多空比来自币安合约数据（metrics），已本地化。文中全部统计数字均由本地真实数据计算（日线为 UTC 交易日口径）；清算金额为第三方估算、口径不一。图表组件：TradingView Lightweight Charts™（Apache-2.0）。本讲义仅为学习笔记，不构成投资建议；合约交易风险极高。</p>
+</section>
+
+</main>
+</div>
+
+<!-- ================= 术语弹注内容 ================= -->
+<div class="notes-src" hidden>
+  <section data-note-id="oi" data-title="持仓量" data-en="Open Interest, OI">
+    <p>全市场尚未平仓的合约总量，可按币数计，也可按名义价值（USDT）计——本课图表用后者。每一张未平合约都同时有一个多头和一个空头，所以 OI 衡量"赌桌上押着的筹码总额"，不衡量谁占优。与成交量的区别：换手（老仓换新手）有成交量但 OI 不变；只有双边新开仓让它增加、双边平仓让它减少。第 1 课提过一嘴，本课是完整版。</p>
+  </section>
+  <section data-note-id="crowded" data-title="拥挤交易" data-en="Crowded Trade">
+    <p>太多资金挤在同一侧的持仓。拥挤本身不决定方向对错，但决定掉头时的烈度——出口就那么宽，人人同时跑就是踩踏。费率、多空比、OI 增速都是给拥挤度量体温的仪表；机构研究里"动量崩溃""拥挤因子"说的也是这件事。</p>
+  </section>
+  <section data-note-id="rollpct" data-title="滚动分位" data-en="Rolling Percentile">
+    <p>把今天的读数放回"最近一段时间（本课取 365 天）的全部读数"里排座次，回答"比过去一年里百分之多少的日子高"。绝对阈值会随市场结构变化过时，分位阈值每天都在用最新的一年重新校准。第 6 课 ATR 的"近一年 90 分位"熔断线用的是同一套算法。</p>
+  </section>
+  <section data-note-id="shortcover" data-title="空头回补" data-en="Short Covering">
+    <p>空头平仓必须买入，这股买盘会推高价格——但它是"离场的买"，不是"进场的买"，所以特征是价格涨、持仓量降。回补推出的上涨往往又急又短：燃料是存量空头，烧完就没有后续买盘了。轧空（Short Squeeze）是它的暴力版：价格上冲触发空头止损和强平，回补买盘自我强化。</p>
+  </section>
+  <section data-note-id="capitulation" data-title="多头投降" data-en="Long Capitulation">
+    <p>亏损的多头集中止损、弃仓或被强平，价格与持仓量一起下降——市场在"出清"。出清说明跌势的燃料（被套的多头）在减少，常出现在下跌的中后段；但出清可以一波接一波持续很久，它本身不是见底信号，抄底还需要方向、位置与量能的确认（第 15 课组装）。</p>
+  </section>
+  <section data-note-id="topratio" data-title="大户多空比" data-en="Top Trader Long / Short Ratio">
+    <p>只统计持仓量排名前列的账户、按持仓量加权的多空比——这是"钱数"的站位；与之相对的"全体多空比"按账户数统计，是"人数"的站位。两个口径经常方向相反：10·10 当晚 OI 见顶时全体 0.90、大户 1.49。看多空比先问口径，是本课的基本功。</p>
+  </section>
+  <section data-note-id="liqmap" data-title="清算地图" data-en="Liquidation Map">
+    <p>数据商（Coinglass 等）根据持仓量变化和常用杠杆档位，推算"价格走到哪个价位会触发多少强平单"，画成价格轴上的密度图。它是模型估算而非交易所实况——簇的位置有误差、金额是毛估，但"现价上下哪里雷多"的相对信息仍有防守价值：别把止损挂在密集簇正中央。</p>
+  </section>
+  <section data-note-id="magnet" data-title="磁铁效应" data-en="Magnet Effect">
+    <p>价格像被吸过去一样奔向强平簇、止损簇密集的价位。原因不神秘：那里堆着大量"价格一到就必须成交的被动市价单"，对大资金是送上门的流动性——打过去既能成交又能引发连锁单。它有一半是公共地图自我实现的结果。与第 6 课的止损簇、第 8 课的整数位外侧止损堆，是同一现象的不同侧面。</p>
+  </section>
+</div>
+
+<script src="assets/lightweight-charts.js"></script>
+<script src="assets/ct.js"></script>
+<script src="assets/ctchart.js"></script>
+<script src="assets/data/klines-BTCUSDT-1d.js"></script>
+<script src="assets/data/klines-ETHUSDT-1d.js"></script>
+<script src="assets/data/klines-BTCUSDT-1m.js"></script>
+<script src="assets/data/funding-BTCUSDT.js"></script>
+<script src="assets/data/oi-BTCUSDT.js"></script>
+<script src="assets/data/oi-ETHUSDT.js"></script>
+<script>
+(function(){
+'use strict';
+var fmt = CT.fmtN;
+var DAY = 86400;
+function dstr(t){ return new Date(t * 1000).toISOString().slice(0, 10); }
+function sgn(v, d){ return (v >= 0 ? '+' : '−') + Math.abs(v * 100).toFixed(d === undefined ? 2 : d) + '%'; }
+
+var d1 = CT.get('klines-BTCUSDT-1d');
+var CLOSE = {}, LOW = {};
+d1.forEach(function(r){ var d = dstr(r[0]); CLOSE[d] = r[4]; LOW[d] = r[3]; });
+function fwdRet(d, k){
+  var dk = dstr(Date.parse(d) / 1000 + k * DAY);
+  if(!(d in CLOSE) || !(dk in CLOSE)) return null;
+  return CLOSE[dk] / CLOSE[d] - 1;
+}
+
+/* ---------- 图 10-2 费率分位统计器 ---------- */
+(function(){
+  var fund = CT.get('funding-BTCUSDT');
+  var acc = {}, order = [];
+  fund.forEach(function(r){
+    var d = dstr(r[0]);
+    if(!acc[d]){ acc[d] = []; order.push(d); }
+    acc[d].push(r[1]);
+  });
+  var daily = order.map(function(d){
+    var a = acc[d], s = 0;
+    for(var i = 0; i < a.length; i++) s += a[i];
+    return {d: d, rate: s / a.length};
+  });
+  for(var i = 0; i < daily.length; i++){
+    var win = daily.slice(Math.max(0, i - 364), i + 1);
+    var below = 0, eq = 0;
+    for(var j = 0; j < win.length; j++){
+      if(win[j].rate < daily[i].rate) below++;
+      else if(win[j].rate === daily[i].rate) eq++;
+    }
+    daily[i].pct = (below + eq / 2) / win.length * 100;
+    daily[i].n = win.length;
+  }
+  function worstLow(d, k){
+    var t0 = Date.parse(d) / 1000, lo = Infinity;
+    for(var j = 1; j <= k; j++){
+      var dj = dstr(t0 + j * DAY);
+      if(dj in LOW) lo = Math.min(lo, LOW[dj]);
+    }
+    if(lo === Infinity || !(d in CLOSE)) return null;
+    return lo / CLOSE[d] - 1;
+  }
+  function grp(fil, k){
+    var rets = [], lows = [];
+    for(var i = 0; i < daily.length; i++){
+      var x = daily[i];
+      if(x.n < 180 || !fil(x)) continue;
+      var r = fwdRet(x.d, k);
+      if(r !== null) rets.push(r);
+      var w = worstLow(x.d, k);
+      if(w !== null) lows.push(w);
+    }
+    rets.sort(function(a, b){ return a - b; });
+    lows.sort(function(a, b){ return a - b; });
+    var ms = 0, ml = 0, wins = 0;
+    rets.forEach(function(v){ ms += v; if(v > 0) wins++; });
+    lows.forEach(function(v){ ml += v; });
+    return {
+      n: rets.length,
+      mean: rets.length ? ms / rets.length : 0,
+      win: rets.length ? wins / rets.length : 0,
+      lowMean: lows.length ? ml / lows.length : 0,
+      lowP10: lows.length ? lows[Math.floor(lows.length * 0.1)] : 0
+    };
+  }
+  /* 图表 */
+  var g = CT.makeChart('fr-chart', {panes: [0.34], minBarSpacing: 0.02});
+  var area = g.addArea(d1.map(function(r){ return {time: CT.ts(r[0]), value: r[4]}; }), 'series');
+  var pctLine = g.addLine(daily.map(function(x){
+    return {time: CT.ts(Date.parse(x.d) / 1000), value: x.pct};
+  }), 'series2', {pane: 1, width: 1, title: '费率分位'});
+  var plHi = g.priceLine(pctLine, 90, 'crit', '过热线', 2);
+  var plLo = g.priceLine(pctLine, 10, 'accent', '恐慌线', 2);
+  g.markers(area, [
+    {time: Date.parse('2021-01-08') / 1000, position: 'aboveBar', shape: 'arrowDown', color: 'crit', text: '分位 99 → 3 天 −12.9%'},
+    {time: Date.parse('2021-02-08') / 1000, position: 'aboveBar', shape: 'circle', color: 'series2', text: '分位 98 → 13 天 +23.8%'},
+    {time: Date.parse('2025-10-10') / 1000, position: 'belowBar', shape: 'arrowUp', color: 'accent', text: '事件雷·当天分位仅 13'},
+    {time: Date.parse('2026-09-19') / 1000, position: 'aboveBar', shape: 'arrowDown', color: 'crit', text: '分位 95 → 两天后见顶'}
+  ]);
+  g.fit();
+  CT.legend('fr-legend', [['series', 'BTC 收盘价（上）'], ['series2', '日均费率的滚动一年分位（下，0–100）'], ['crit', '过热线'], ['accent', '恐慌线']]);
+  var T = 90, K = 3;
+  var curPct = daily[daily.length - 1].pct;
+  function paint(){
+    var hi = grp(function(x){ return x.pct > T; }, K);
+    var lo = grp(function(x){ return x.pct < 100 - T; }, K);
+    var all = grp(function(){ return true; }, K);
+    plHi.applyOptions({price: T});
+    plLo.applyOptions({price: 100 - T});
+    var hiEl = document.getElementById('fr-hi');
+    hiEl.textContent = sgn(hi.mean);
+    hiEl.className = 'v ' + (hi.mean >= 0 ? 'up' : 'dn');
+    document.getElementById('fr-hi-s').textContent = '分位＞' + T + '：n＝' + fmt(hi.n, 0) + ' · 胜率 ' + (hi.win * 100).toFixed(0) + '%';
+    var loEl = document.getElementById('fr-lo');
+    loEl.textContent = sgn(lo.mean);
+    loEl.className = 'v ' + (lo.mean >= 0 ? 'up' : 'dn');
+    document.getElementById('fr-lo-s').textContent = '分位＜' + (100 - T) + '：n＝' + fmt(lo.n, 0) + ' · 胜率 ' + (lo.win * 100).toFixed(0) + '%';
+    document.getElementById('fr-all').textContent = sgn(all.mean);
+    document.getElementById('fr-all-s').textContent = 'n＝' + fmt(all.n, 0) + ' · 胜率 ' + (all.win * 100).toFixed(0) + '%';
+    document.getElementById('fr-tail').textContent = sgn(hi.lowMean);
+    document.getElementById('fr-tail-s').textContent = '全样本 ' + sgn(all.lowMean) + '｜最差一成 ' + sgn(hi.lowP10, 1) + ' 对 ' + sgn(all.lowP10, 1);
+    var msg;
+    if(hi.mean >= all.mean){
+      msg = '过热组（分位＞' + T + '）之后 ' + K + ' 天平均 <b>' + sgn(hi.mean) + '</b>，不低于全样本的 ' + sgn(all.mean) + '——<b>极端正费率不是做空信号</b>，狂热往往还有惯性。但看最后一格：同期最深下探 ' + sgn(hi.lowMean) + '（全样本 ' + sgn(all.lowMean) + '）、最差一成 ' + sgn(hi.lowP10, 1) + '（全样本 ' + sgn(all.lowP10, 1) + '）——<b>均值更好、尾巴更毒</b>，这就是只"禁新多"不做空的理由。';
+    }else{
+      msg = '当前阈值下过热组之后 ' + K + ' 天平均 ' + sgn(hi.mean) + '，低于全样本的 ' + sgn(all.mean) + '，且最深下探 ' + sgn(hi.lowMean) + ' 更深——拥挤的代价在这组参数下连均值一起吃掉了。';
+    }
+    msg += '恐慌组（分位＜' + (100 - T) + '）之后平均 ' + sgn(lo.mean) + '、胜率 ' + (lo.win * 100).toFixed(0) + '%——在恐慌底部追新空，统计上是给别人送流动性。注意分组样本成串出现，有效样本比 n 看起来小。数据末端（2026-09-30）的分位是 <b>' + curPct.toFixed(0) + '</b>。';
+    document.getElementById('fr-msg').innerHTML = msg;
+  }
+  CT.bindRange('fr-t', function(v){ T = v; paint(); }, function(v){ return '＞' + v + ' / ＜' + (100 - v); });
+  CT.bindRange('fr-k', function(v){ K = v; paint(); }, function(v){ return v + ' 天'; });
+})();
+
+/* ---------- 图 10-4 价格 × OI 双层图 ---------- */
+(function(){
+  var QCFG = {
+    BTCUSDT: {name: 'BTC', oi: 'oi-BTCUSDT', kl: 'klines-BTCUSDT-1d', marks: [
+      {time: Date.parse('2026-05-05') / 1000, position: 'aboveBar', shape: 'arrowDown', color: 'crit', text: 'OI 周增 24% · 多空比 0.50'},
+      {time: Date.parse('2026-05-06') / 1000, position: 'aboveBar', shape: 'circle', color: 'series2', text: '假突破 82,829 · OI −6.5%'},
+      {time: Date.parse('2026-09-21') / 1000, position: 'aboveBar', shape: 'arrowDown', color: 'crit', text: 'OI 峰值 96 亿'},
+      {time: Date.parse('2026-09-23') / 1000, position: 'belowBar', shape: 'circle', color: 'series2', text: '出清 −9.8%'}
+    ]},
+    ETHUSDT: {name: 'ETH', oi: 'oi-ETHUSDT', kl: 'klines-ETHUSDT-1d', marks: [
+      {time: Date.parse('2026-06-25') / 1000, position: 'belowBar', shape: 'circle', color: 'series2', text: 'OI 谷 35 亿'},
+      {time: Date.parse('2026-09-21') / 1000, position: 'aboveBar', shape: 'arrowDown', color: 'crit', text: 'OI 峰值 66 亿'}
+    ]}
+  };
+  var QNAME = {A: '新钱做多', B: '空头回补', C: '新钱做空', D: '多头投降'};
+  var QCLS = {A: 'v up', B: 'v warn', C: 'v dn', D: 'v warn'};
+  var QSUB = {A: '价涨 ＋ OI 涨：上涨有燃料', B: '价涨 ＋ OI 降：上涨虚', C: '价跌 ＋ OI 涨：压力真', D: '价跌 ＋ OI 降：出清'};
+  var QWHY = {
+    A: '价格和筹码一起长，新钱在铺路——健康，但顶部最后一段也长这样（09-21 就是），健康不等于不会结束。',
+    B: '买盘来自空头平仓，烧完就没了——上涨成色存疑，警惕假突破（05-06 的剧本）。',
+    C: '下跌途中还有新钱加码做空，压力是真金白银——别急着赌反弹。',
+    D: '被套的仓位在集中离场，跌势燃料减少——但出清能持续很久，不是抄底键。'
+  };
+  var DATA = {};
+  function prep(sym){
+    var cfg = QCFG[sym];
+    var kl = CT.slice(CT.get(cfg.kl), '2026-04-01', '2026-10-01');
+    var cm = {};
+    kl.forEach(function(r){ cm[dstr(r[0])] = r[4]; });
+    var oiRows = CT.slice(CT.get(cfg.oi), '2026-04-01');
+    var od = {}, dl = [];
+    oiRows.forEach(function(r){
+      var d = dstr(r[0]);
+      if(!(d in od)) dl.push(d);
+      od[d] = r;
+    });
+    var rows = [], cnt = {A: 0, B: 0, C: 0, D: 0};
+    for(var i = 1; i < dl.length; i++){
+      var d0 = dl[i - 1], d = dl[i];
+      if(!(d0 in cm) || !(d in cm)) continue;
+      var dp = cm[d] / cm[d0] - 1;
+      var doi = od[d][2] / od[d0][2] - 1;
+      var q = dp >= 0 ? (doi >= 0 ? 'A' : 'B') : (doi >= 0 ? 'C' : 'D');
+      cnt[q]++;
+      rows.push({d: d, dp: dp, doi: doi, q: q, glob: od[d][4]});
+    }
+    DATA[sym] = {
+      name: cfg.name, marks: cfg.marks, kl: kl, rows: rows, cnt: cnt,
+      oiLine: dl.map(function(d){ return {time: CT.ts(Date.parse(d) / 1000), value: od[d][2] / 1e8}; }),
+      hist: rows.map(function(x){ return {time: CT.ts(Date.parse(x.d) / 1000), value: x.doi * 100}; })
+    };
+  }
+  prep('BTCUSDT'); prep('ETHUSDT');
+  var g = CT.makeChart('qd-chart', {panes: [0.24, 0.16]});
+  CT.legend('qd-legend', [['series2', 'OI 名义价值（亿 USDT，日终整点）'], ['up', '下图：OI 日增'], ['down', 'OI 日降'], ['accent', '圆点 ＝ 滑块选中的日子']]);
+  var sym = 'BTCUSDT', idx = null, cs = null, mkApi = null, mkArr = [];
+  function build(){
+    g.series.forEach(function(it){ if(it.s) g.chart.removeSeries(it.s); });
+    g.series.length = 0;
+    var D = DATA[sym];
+    cs = g.addCandles(D.kl);
+    g.addLine(D.oiLine, 'series2', {pane: 1, width: 2, title: 'OI'});
+    g.addHist(D.hist, 'ud', {pane: 2});
+    mkArr = [];
+    mkApi = g.markers(cs, mkArr);
+    g.fit();
+  }
+  function paint(){
+    if(idx === null) return;
+    var D = DATA[sym];
+    var v = D.rows[Math.min(idx, D.rows.length - 1)];
+    mkArr.length = 0;
+    D.marks.forEach(function(m){ mkArr.push(m); });
+    mkArr.push({time: Date.parse(v.d) / 1000, position: v.dp >= 0 ? 'aboveBar' : 'belowBar', shape: 'circle', color: 'accent', text: '选中 ' + v.d.slice(5)});
+    mkArr.sort(function(a, b){ return a.time - b.time; });
+    var p = CT.pal();
+    mkApi.setMarkers(mkArr.map(function(m){
+      return {time: CT.ts(m.time), position: m.position, shape: m.shape, color: p[m.color] || m.color, text: m.text, size: 1};
+    }));
+    var dpEl = document.getElementById('qd-dp');
+    dpEl.textContent = sgn(v.dp, 1);
+    dpEl.className = 'v ' + (v.dp >= 0 ? 'up' : 'dn');
+    var doiEl = document.getElementById('qd-doi');
+    doiEl.textContent = sgn(v.doi, 1);
+    doiEl.className = 'v ' + (v.doi >= 0 ? 'up' : 'dn');
+    var qEl = document.getElementById('qd-q');
+    qEl.textContent = QNAME[v.q];
+    qEl.className = QCLS[v.q];
+    document.getElementById('qd-q-s').textContent = QSUB[v.q];
+    document.getElementById('qd-g').textContent = v.glob.toFixed(2);
+    var c = D.cnt;
+    document.getElementById('qd-msg').innerHTML = '<b>' + D.name + ' · ' + v.d + '</b>：' + QWHY[v.q]
+      + '　<em>2026 年 4–9 月 ' + D.rows.length + ' 天的分布：新钱做多 ' + c.A + ' 天 · 空头回补 ' + c.B + ' 天 · 新钱做空 ' + c.C + ' 天 · 多头投降 ' + c.D + ' 天。四个象限之后一天的平均涨跌都在 ±0.4% 以内——象限是透镜，不是扳机。</em>';
+  }
+  CT.bindSeg('qd-sym', function(v){ sym = v; build(); paint(); });
+  CT.bindRange('qd-day', function(v){ idx = v; paint(); }, function(v){
+    var D = DATA[sym];
+    return D.rows[Math.min(v, D.rows.length - 1)].d;
+  });
+})();
+
+/* ---------- 图 10-5 多空比 ---------- */
+(function(){
+  var oiRows = CT.slice(CT.get('oi-BTCUSDT'), '2026-04-01');
+  var od = {}, dl = [];
+  oiRows.forEach(function(r){
+    var d = dstr(r[0]);
+    if(!(d in od)) dl.push(d);
+    od[d] = r;
+  });
+  var g = CT.makeChart('ls-chart', {panes: [0.42]});
+  g.addArea(CT.slice(d1, '2026-04-01', '2026-10-01').map(function(r){
+    return {time: CT.ts(r[0]), value: r[4]};
+  }), 'series');
+  var globLine = g.addLine(dl.map(function(d){
+    return {time: CT.ts(Date.parse(d) / 1000), value: od[d][4]};
+  }), 'series2', {pane: 1, width: 2, title: '全体'});
+  g.addLine(dl.map(function(d){
+    return {time: CT.ts(Date.parse(d) / 1000), value: od[d][3]};
+  }), 'series4', {pane: 1, width: 2, dashed: true, title: '大户'});
+  g.priceLine(globLine, 1, 'muted', '1 ＝ 多空人数相等', 2);
+  var area = g.series[0].s;
+  g.markers(area, [
+    {time: Date.parse('2026-05-05') / 1000, position: 'aboveBar', shape: 'arrowDown', color: 'crit', text: '多空比 0.50 · 两天后见顶'},
+    {time: Date.parse('2026-06-30') / 1000, position: 'belowBar', shape: 'arrowUp', color: 'series2', text: '多空比 2.88 · 6 月最低收盘'}
+  ]);
+  g.fit();
+  CT.legend('ls-legend', [['series', 'BTC 收盘价（上）'], ['series2', '全体多空比（人数口径）'], ['series4', '大户多空比（持仓量口径，虚线）'], ['muted', '1 ＝ 多空相等']]);
+  /* 分组统计 */
+  var days = [];
+  for(var i = 1; i < dl.length; i++){
+    var d0 = dl[i - 1], d = dl[i];
+    if(!(d0 in CLOSE) || !(d in CLOSE)) continue;
+    days.push({d: d, glob: od[d][4]});
+  }
+  var sorted = days.map(function(x){ return x.glob; }).sort(function(a, b){ return a - b; });
+  var qlo = sorted[Math.floor(sorted.length * 0.2)];
+  var qhi = sorted[Math.floor(sorted.length * 0.8)];
+  function lsGrp(fil, k){
+    var rets = [];
+    days.forEach(function(x){
+      if(!fil(x)) return;
+      var r = fwdRet(x.d, k);
+      if(r !== null) rets.push(r);
+    });
+    var s = 0, w = 0;
+    rets.forEach(function(v){ s += v; if(v > 0) w++; });
+    return {n: rets.length, mean: rets.length ? s / rets.length : 0, win: rets.length ? w / rets.length : 0};
+  }
+  /* 相关系数：全体多空比 vs 过去 7 天涨跌幅 */
+  var xs = [], ys = [];
+  for(var j = 7; j < dl.length; j++){
+    var dd = dl[j], d7 = dl[j - 7];
+    if(!(dd in CLOSE) || !(d7 in CLOSE)) continue;
+    xs.push(od[dd][4]);
+    ys.push(CLOSE[dd] / CLOSE[d7] - 1);
+  }
+  var n = xs.length, mx = 0, my = 0;
+  xs.forEach(function(v){ mx += v / n; });
+  ys.forEach(function(v){ my += v / n; });
+  var num = 0, dx = 0, dy = 0;
+  for(var q = 0; q < n; q++){
+    num += (xs[q] - mx) * (ys[q] - my);
+    dx += (xs[q] - mx) * (xs[q] - mx);
+    dy += (ys[q] - my) * (ys[q] - my);
+  }
+  var corr = num / Math.sqrt(dx * dy);
+  var last = od[dl[dl.length - 1]];
+  document.getElementById('ls-now').textContent = last[4].toFixed(2);
+  document.getElementById('ls-top').textContent = last[3].toFixed(2);
+  function paint(k){
+    var hi = lsGrp(function(x){ return x.glob >= qhi; }, k);
+    var lo = lsGrp(function(x){ return x.glob <= qlo; }, k);
+    var all = lsGrp(function(){ return true; }, k);
+    var hiEl = document.getElementById('ls-hi');
+    hiEl.textContent = sgn(hi.mean);
+    hiEl.className = 'v ' + (hi.mean >= 0 ? 'up' : 'dn');
+    document.getElementById('ls-hi-s').textContent = '比值最高 20%（n＝' + hi.n + '）· 胜率 ' + (hi.win * 100).toFixed(0) + '% · 之后 ' + k + ' 天';
+    var loEl = document.getElementById('ls-lo');
+    loEl.textContent = sgn(lo.mean);
+    loEl.className = 'v ' + (lo.mean >= 0 ? 'up' : 'dn');
+    document.getElementById('ls-lo-s').textContent = '比值最低 20%（n＝' + lo.n + '）· 胜率 ' + (lo.win * 100).toFixed(0) + '% · 之后 ' + k + ' 天';
+    document.getElementById('ls-msg').innerHTML = '全体多空比与"过去 7 天涨跌幅"的相关系数：<b>' + corr.toFixed(2) + '</b>（页面现算，n＝' + n + '）——跌得越多，抄底人数越多，它基本是近期走势的倒影。分组收益：人最多组 ' + sgn(hi.mean) + '、人最少组 ' + sgn(lo.mean) + '、全样本 ' + sgn(all.mean) + '（之后 ' + k + ' 天）——方向和"人多必输"的反指剧本相反，但 37 天的小样本换个观察期数字就变脸。<b>镜子照不见未来：当拥挤仪表用，别当方向用。</b>';
+  }
+  CT.bindSeg('ls-k', function(v){ paint(+v); });
+})();
+
+/* ---------- 图 10-6 10·10 全程回放 ---------- */
+(function(){
+  var k1 = CT.get('klines-BTCUSDT-1m');
+  var g = CT.makeChart('rp-chart', {panes: [0.32], timeVisible: true, minBarSpacing: 0.01});
+  var cs = g.addCandles(k1);
+  var oi5 = CT.slice(CT.get('oi-BTCUSDT'), '2025-10-10', '2025-10-12');
+  g.addLine(oi5.map(function(r){
+    return {time: CT.ts(r[0]), value: r[2] / 1e8};
+  }), 'series2', {pane: 1, width: 2, title: 'OI（亿 USDT）'});
+  g.markers(cs, [
+    {time: Date.parse('2025-10-10T13:35:00Z') / 1000, position: 'aboveBar', shape: 'arrowDown', color: 'crit', text: 'OI 峰 118 亿'},
+    {time: Date.parse('2025-10-10T21:20:00Z') / 1000, position: 'belowBar', shape: 'arrowUp', color: 'series2', text: '针尖 101,516'},
+    {time: Date.parse('2025-10-10T21:40:00Z') / 1000, position: 'aboveBar', shape: 'circle', color: 'crit', text: '一小时 OI −21%'},
+    {time: Date.parse('2025-10-11T01:25:00Z') / 1000, position: 'belowBar', shape: 'circle', color: 'accent', text: 'OI 谷 80 亿'}
+  ]);
+  g.fit();
+  CT.legend('rp-legend', [['series2', 'OI 名义价值（亿 USDT，5 分钟一个点）'], ['muted', '上图：1 分钟 K 线（最新价）']]);
+  var MSG = {
+    all: '两天全景：13:35（北京 21:35）OI 见顶 118 亿时，价格还在 122,000 附近谈笑风生——<b>筹码堆最高的时刻，就是雷埋得最满的时刻</b>。十二个小时后，赌桌上三分之一的筹码没了。',
+    pin: '最猛一小时：21:20 那根 1 分钟线最低打到 101,516，同一时刻下图的 OI 曲线近乎垂直——到 21:40 为止的一小时里缩了 21%。这不是"有人在卖"，这是强平引擎在用市价单清场：第 1 课图 1-3 的踩踏流水线全速运转，<b>价格的针和 OI 的崖，是同一件事的两个投影</b>。注意针尖恰好停在 10 万整数关口上方——第 8 课讲过谁在那里接针。',
+    fall: '坍塌与承接：22:00 价格已弹回 113,000，OI 却继续阴跌到次日 01:25 的 80 亿才止住——<b>反弹不等于新钱进场</b>，大量幸存仓位趁反弹离场。缩掉的 38 亿里既有强平也有吓跑的主动平仓：OI 分不清这两者，分得清的是针。'
+  };
+  CT.bindSeg('rp-view', function(v){
+    if(v === 'pin') g.setRange('2025-10-10T20:30:00Z', '2025-10-10T22:15:00Z');
+    else if(v === 'fall') g.setRange('2025-10-10T12:00:00Z', '2025-10-11T06:00:00Z');
+    else g.fit();
+    document.getElementById('rp-msg').innerHTML = MSG[v];
+  });
+})();
+})();
+</script>
+</body>
+</html>
