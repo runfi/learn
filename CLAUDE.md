@@ -16,6 +16,7 @@
 
 - 页面共用 `crypto-trading/assets/` 里的样式 `ct.css`、脚本 `ct.js`（及图表组件、本地化行情数据）。用户上传这些资源文件时放进 `assets/`，保持原文件名；单个文件不得超过 100 MB（GitHub 上限，且 Pages 不支持 Git LFS）。
 - 学习地图的课程行是 `<div class="lesson" data-l="lXX">`，未完成标记为 `<span class="act todo">待制作</span>`，替换成 `<a class="act" href="ct-lXX.html">打开讲义</a>`；「讲义已上线 N / 16 课」由页内脚本按链接数自动计算，不用改。
+- 工具页（如交易日志模板 `ct-journal.html`）直接放在 `crypto-trading/`，学习地图里没有对应的课程行，只需登记到 README。
 - 课程顺序就是课号 1 → 16（没有 `var PATH`）。课内章末导航以用户上传的讲义自带格式为准，不要套用另两本书的 `.pager` 样式块；如需统一，先和用户确认。
 
 ## 上传新章节讲义的固定流程

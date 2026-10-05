@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>币圈短线课 · 交易日志模板 v0</title>
+<link rel="stylesheet" href="assets/ct.css">
+<style>
+pre.copyblock{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px;
+  padding:16px 18px; font-family:var(--mono); font-size:13px; line-height:1.9;
+  overflow-x:auto; max-width:46em; white-space:pre; color:var(--ink-2);
+}
+pre.copyblock b{color:var(--ink)}
+.copybar{display:flex; align-items:center; gap:10px; margin:-6px 0 14px}
+.copybar button{
+  font:inherit; font-size:12.5px; color:var(--accent-ink); background:var(--surface);
+  border:1px solid var(--line-2); border-radius:999px; padding:3px 14px; cursor:pointer;
+}
+.copybar button:hover{border-color:var(--accent)}
+.copybar .done{font-size:12.5px; color:var(--up-ink)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <span class="book"><a href="ct-index.html">币圈短线实战课</a></span>
+  <span class="part"><a href="ct-index.html">学习地图</a> · 工具页 · 交易日志</span>
+  <span class="prefs">
+    <button id="btn-updown" type="button" title="切换涨跌配色"></button>
+    <button id="btn-theme" type="button" title="切换深浅主题"></button>
+  </span>
+</header>
+
+<main class="article" style="max-width:920px">
+
+<section class="hero" id="top">
+  <span class="chap-no">TOOL · 工具页</span>
+  <h1>交易日志模板 v0</h1>
+  <p class="en">YOUR TRADING JOURNAL, VERSION 0</p>
+  <p class="lede">配合第 1 课任务使用的起步版日志。原则只有一条：<strong>每一笔都在下单前写好"计划"三行，平仓后如实补"执行"三行。</strong>字段会随课程长大（第 3 课加 R 记账，第 4 课加三票判定，第 6 课止损改 ATR），到第 16 课升级成完整的交易计划书 + 日志体系。用什么工具都行——纸、Excel、Notion、手机备忘录；关键是别用记忆代替记录。</p>
+</section>
+
+<section class="ch" id="s1">
+  <h2 class="sec"><span class="no">1</span>单笔记录模板（复制就能用）</h2>
+  <p class="sec-en">PER-TRADE TEMPLATE</p>
+  <div class="prose">
+    <p>每笔一段，九行。<strong>前五行必须在下单前写完</strong>——写不出来就说明这单不该下；后四行平仓后 24 小时内补上。</p>
+  </div>
+  <div class="copybar"><button type="button" id="copy1">复制模板</button><span class="done" id="done1"></span></div>
+  <pre class="copyblock" id="tpl1"><b>── 单号 #001 ─────────────────────────</b>
+日期时间：2026-__-__ __:__（北京时间）
+标的方向：BTCUSDT 永续 · 多 / 空 · 模拟盘
+进场理由：体验单（第 1 课任务）／后续写信号依据
+<b>计划</b>：入场 ______｜止损 ______（−__%）｜止盈 ______（≥2 倍止损距离）
+仓位：名义 ______ U｜杠杆 __×（≤5）｜这笔最多亏 ______ U（≤本金 1%）
+<b>执行</b>：实际入场 ______｜离场时间 ______｜离场价 ______｜盈亏 ______ U
+按计划执行？：是 / 否（哪一步偏了：____________）
+情绪一句话：________________________________
+教训一句话：________________________________</pre>
+  <div class="prose">
+    <h3>字段说明与升级路线</h3>
+  </div>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>字段</th><th>为什么要记</th><th>以后怎么升级</th></tr></thead>
+      <tbody>
+        <tr><td>进场理由</td><td>逼自己说清"凭什么下这单"；写不出 ＝ 不下</td><td>第 4 课起写三票判定，第 5 课起写三重滤网三层状态</td></tr>
+        <tr><td>计划三项（入场/止损/止盈）</td><td>止损价是整条日志的灵魂：<b>下单前定，下单后不许往不利方向挪</b></td><td>第 6 课止损改"结构位外 ＋ 1.5×ATR"</td></tr>
+        <tr><td>仓位与最大亏损</td><td>核对有没有超 1% 风险预算</td><td>第 3 课起亏损按 R 记（100 U ＝ 1R），盈亏写 ±__R</td></tr>
+        <tr><td>按计划执行？</td><td><b>整本日志最重要的一列。</b>复盘只评这列，不评盈亏</td><td>不变，永远是核心</td></tr>
+        <tr><td>情绪一句话</td><td>把"想撤止损""想补仓"这类冲动写下来，它们就弱了一半</td><td>第 16 课配心理检查清单</td></tr>
+        <tr><td>教训一句话</td><td>只写一条，宁缺毋滥；攒多了就是你的私人规则库</td><td>以后做量化，这列就是策略想法的矿</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p><strong>只记赚的、不记亏的；或者事后补写"当时的理由"。</strong>日志的价值全在诚实。亏单和违规单恰恰是最有信息量的记录——按计划亏掉的 100 U 是学费，计划外亏掉的 100 U 才是事故，而日志是唯一能把两者分开的工具。</p>
+  </div>
+</section>
+
+<section class="ch" id="s2">
+  <h2 class="sec"><span class="no">2</span>填好的示例：一笔合格，一笔违规</h2>
+  <p class="sec-en">TWO WORKED EXAMPLES</p>
+  <pre class="copyblock"><b>── 单号 #001 ─────────────────────────</b>
+日期时间：2026-10-06 21:40（北京时间）
+标的方向：BTCUSDT 永续 · 多 · 模拟盘
+进场理由：体验单（第 1 课任务）
+<b>计划</b>：入场 83,600｜止损 81,930（−2.0%）｜止盈 86,940（2 倍止损距离）
+仓位：名义 5,000 U｜杠杆 3×（逐仓）｜这笔最多亏 100 U（1%）
+<b>执行</b>：实际入场 83,650｜离场 10-07 09:10｜离场价 81,930｜盈亏 −103 U
+按计划执行？：<b>是</b>（止损市价单自动触发，没有手动干预）
+情绪一句话：半夜跌下来时想撤掉止损"再给它一点空间"，忍住了
+教训一句话：进场前没看事件日历，第二天早上正好有数据——下次先查
+
+<b>── 单号 #002 ─────────────────────────</b>
+日期时间：2026-10-08 22:15（北京时间）
+标的方向：ETHUSDT 永续 · 空 · 模拟盘
+进场理由：体验单（看它涨太多想空一下 ←这不算理由，记下来警示自己）
+<b>计划</b>：入场 3,120｜止损 3,180（−1.9%）｜止盈 3,000（2 倍止损距离）
+仓位：名义 5,200 U｜杠杆 3×｜这笔最多亏 100 U
+<b>执行</b>：实际入场 3,118｜离场 10-08 23:50｜离场价 3,164｜盈亏 −77 U
+按计划执行？：<b>否</b>——没到止损 3,180 就手动平了，怕它"马上插针"
+情绪一句话：进场就后悔，全程盯盘，心态被 5 分钟 K 线牵着走
+教训一句话：理由写不清的单就不该下；下了又不敢按计划持有，等于双重违规</pre>
+  <div class="prose">
+    <p>注意 #002 的盈亏（−77 U）其实比 #001（−103 U）<em>好看</em>，但它是一笔坏交易：理由空洞、执行走样。<strong>评过程，不评单笔结果</strong>——这是整门课反复强调的裁判标准。</p>
+  </div>
+</section>
+
+<section class="ch" id="s3">
+  <h2 class="sec"><span class="no">3</span>每周复盘模板（周日晚，15 分钟）</h2>
+  <p class="sec-en">WEEKLY REVIEW</p>
+  <div class="copybar"><button type="button" id="copy2">复制模板</button><span class="done" id="done2"></span></div>
+  <pre class="copyblock" id="tpl2"><b>── 第 __ 周复盘（____-__-__ ~ __-__）──</b>
+1. 本周共 __ 笔；按计划执行 __ 笔（执行率 __%）←目标先看这里
+2. 总盈亏 ____ U；其中"按计划的亏损"__ U ＝ 学费，"违规造成的盈亏"__ U ＝ 事故
+3. 违规清单：每笔违规一行，写触发它的情绪（怕回撤 / 想回本 / 怕踏空…）
+4. 最好的一笔是哪笔？好在过程哪里（不是因为它赚得多）
+5. 下周只改一件事：________________________________</pre>
+  <div class="prose">
+    <ul>
+      <li><strong>执行率是唯一要追的指标</strong>：模拟期目标 ≥90%。课程设定的转实盘门槛（模拟 20–30 笔、绝大多数按规则执行）就是看它；</li>
+      <li>第 5 条强制只改一件事——一次改一个变量，你才知道是什么起了作用（这也是以后做量化的习惯）；</li>
+      <li>每月底多加一问：本月累计亏损到 6% 了吗？到了就停手到下月（第 3 课的刹车规则）。</li>
+    </ul>
+  </div>
+  <p class="foot">本页是第 16 课完整日志体系的起步版。配套课程：<a href="ct-l01.html">第 1 课 合约怎么运作</a> · <a href="ct-index.html">学习地图</a></p>
+</section>
+
+</main>
+</div>
+
+<script src="assets/ct.js"></script>
+<script>
+(function(){
+  'use strict';
+  function wire(btnId, preId, doneId){
+    var b = document.getElementById(btnId);
+    if(!b) return;
+    b.addEventListener('click', function(){
+      var txt = document.getElementById(preId).innerText;
+      function ok(){ document.getElementById(doneId).textContent = '已复制，去粘贴吧'; setTimeout(function(){ document.getElementById(doneId).textContent = ''; }, 3000); }
+      try{
+        navigator.clipboard.writeText(txt).then(ok, fallback);
+      }catch(e){ fallback(); }
+      function fallback(){
+        var ta = document.createElement('textarea');
+        ta.value = txt; document.body.appendChild(ta); ta.select();
+        try{ document.execCommand('copy'); ok(); }catch(e){}
+        ta.remove();
+      }
+    });
+  }
+  wire('copy1', 'tpl1', 'done1');
+  wire('copy2', 'tpl2', 'done2');
+})();
+</script>
+</body>
+</html>
