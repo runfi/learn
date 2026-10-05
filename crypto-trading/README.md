@@ -9,6 +9,7 @@ BTC / ETH 永续合约短波段的自编实战课：按“问题”学指标，�
 - `ct-l03.html` — 第 3 课 风险、仓位与事件日历
 - `ct-l04.html` — 第 4 课 现在往哪走（系统 v0.1）
 - `ct-l05.html` — 第 5 课 涨过头了吗（系统 v0.2）
+- `ct-l06.html` — 第 6 课 价格平时晃多大（系统 v0.3）
 - `assets/` — 全站共用资源（待上传）：
   - `ct.css`、`ct.js`、`ctchart.js`、`lightweight-charts.js`
   - `data/`：`funding-BTCUSDT.js`、`klines-BTCUSDT-1d.js`、`klines-BTCUSDT-1h.js`、`klines-BTCUSDT-4h.js`、`klines-ETHUSDT-1d.js`、`klines-ETHUSDT-1m.js`、`mark-ETHUSDT-1m.js`

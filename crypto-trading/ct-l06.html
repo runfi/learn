@@ -1,0 +1,799 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>币圈短线课 · 第 6 课 价格平时晃多大</title>
+<link rel="stylesheet" href="assets/ct.css">
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <span class="book"><a href="ct-index.html">币圈短线实战课</a></span>
+  <span class="part"><a href="ct-index.html">学习地图</a> · 阶段 1 指标工具箱</span>
+  <span class="prefs">
+    <button id="btn-updown" type="button" title="切换涨跌配色"></button>
+    <button id="btn-theme" type="button" title="切换深浅主题"></button>
+  </span>
+</header>
+
+<div class="layout">
+
+<nav class="sidenav" aria-label="本课目录">
+  <p class="sn-chap">第 6 课 · 价格平时晃多大</p>
+  <a href="#top">课首</a>
+  <a href="#s1">6.1 波动是市场的呼吸</a>
+  <a href="#s2">6.2 ATR：给呼吸装一把尺</a>
+  <a href="#s3">6.3 用 ATR 放止损</a>
+  <a href="#s4">6.4 ATR 仓位公式</a>
+  <a href="#s5">6.5 针长统计：币圈特供</a>
+  <a href="#s6">6.6 落地：系统 v0.3</a>
+  <a href="#recap">小结 · 术语 · 自测</a>
+</nav>
+
+<main class="article">
+
+<section class="hero" id="top">
+  <span class="chap-no">LESSON 06 · 第 6 课 / 共 16 课</span>
+  <h1>价格平时晃多大</h1>
+  <p class="en">VOLATILITY AND ATR: MEASURING THE MARKET'S BREATH</p>
+  <p class="question">本课问题：止损放哪，才不会被市场的正常呼吸扫掉？</p>
+  <p class="lede">第 1 课你见过 10·10 那根针，第 2 课你知道了清淡时段的针更深，第 3 课你学会了"仓位 ＝ 风险 ÷ 止损距离"。但那条公式里一直缺一块：<strong>止损距离到底该是多少？</strong>放太近，市场打个喷嚏就把你扫出场，之后行情按你的方向走——这叫被"正常呼吸"误伤；放太远，每次止损都是重伤。这一课给你一把量呼吸的尺：ATR。学完之后，你的止损和仓位都不再是拍脑袋的数字，而是<strong>由市场当前的波动自动算出来</strong>——波动大，仓位自动缩小、止损自动放远；波动小，反过来。这是整个系统从 v0.2 到 v0.3 最重要的一次升级。</p>
+  <div class="objectives">
+    <h2>学完你能做到</h2>
+    <ul>
+      <li>说清真实波幅 TR 和 ATR 怎么算、为什么要把跳空算进去，并用 ATR% 跨价位、跨品种比较波动；</li>
+      <li>在七年长历史图上指出波动的"聚集"习性，解释为什么高波动期要减仓等它冷却；</li>
+      <li>按"结构位外侧与入场价 ∓1.5×ATR 取更远者"给任何一笔单放止损，并说出这条规则的数据依据；</li>
+      <li>用真实回测说出止损距离和被扫率的关系，算清自己每笔单在交多少"呼吸税"；</li>
+      <li>用 ATR 仓位公式把单笔风险钉死在 1%：波动翻倍，仓位自动减半；</li>
+      <li>用针长统计说出 1.5–2 倍缓冲防得住什么（99% 的常态针）、防不住什么（事件针）；</li>
+      <li>把系统升级到 v0.3：止损与仓位全面 ATR 化，外加一个高波动"风险减半"开关。</li>
+    </ul>
+  </div>
+  <p class="colorkey">读图约定：默认<span class="up">绿涨</span>·<span class="dn">红跌</span>，右上角可切换。带 <b>互动</b> 标签的图可拖动调参；虚线下划线词点击弹出解释。图表时间轴按你设备的时区显示（北京时间 ＝ UTC+8）。</p>
+  <nav class="chapmap" aria-label="本课小节">
+    <a href="#s1">波动是呼吸</a><a href="#s2">ATR 这把尺</a><a href="#s3">ATR 放止损</a><a href="#s4">ATR 仓位</a><a href="#s5">针长统计</a><a href="#s6">系统 v0.3</a><a href="#recap">小结</a>
+  </nav>
+</section>
+
+<!-- ================= 6.1 ================= -->
+<section class="ch" id="s1">
+  <h2 class="sec"><span class="no">6.1</span>波动是市场的呼吸</h2>
+  <p class="sec-en">VOLATILITY IS HOW THE MARKET BREATHES</p>
+  <div class="prose">
+    <p>先建立一个感觉：<strong>"2% 的波动"这句话本身没有任何含义，要看它发生在什么市场状态里。</strong>两个都来自真实数据的数字：</p>
+    <ul>
+      <li>2026 年 8 月中旬，BTC 平静得像一潭死水，日均真实波幅一度只有 <strong>1.95%</strong>——2% 就是一整天的全部行情；</li>
+      <li>2025-10-10 当晚，BTC 日内从 122,497 砸到 101,517（−17%），振幅超过 2% 的<strong>1 分钟 K 线</strong>就有 12 根，最猛的一根（UTC 21:19）一分钟之内从 109,568 打到 102,194，振幅 7.1%。</li>
+    </ul>
+    <p>同一个 2%，在平静期是大新闻，在暴跌夜只是一次眨眼。所以"止损放 2%"这种固定百分比规则（我们 v0.0 的临时办法）天生有病：<strong>平静期它太松，狂暴期它贴脸</strong>。要治这个病，先得给"市场现在晃多大"找一个随行情自动更新的度量。</p>
+    <h3>第一步：一根 K 线的真实波幅 TR</h3>
+    <p>最朴素的度量是"今天最高减最低"。但它漏了一种情况：昨天收盘之后价格<strong>跳</strong>到了另一个位置开盘——对隔夜休市的股票来说这是家常便饭。<span class="nt" data-note="tr">真实波幅</span>把跳空补上：三个候选距离取最大。</p>
+  </div>
+  <div class="formula">
+    <p class="fx">TR ＝ max（ 今高 − 今低，|今高 − 昨收|，|今低 − 昨收| ）</p>
+    <p class="note">三个候选分别对应：普通日、向上跳空日、向下跳空日。见下图。</p>
+  </div>
+  <figure>
+    <p class="fig-title"><span class="fno">图 6-1</span>TR 为什么要把跳空算进去：三种日子，三把尺<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+      <svg viewBox="0 0 720 300" role="img" aria-label="真实波幅三种情形：普通日取今高减今低，跳空日把昨收到今日极值的距离也算进来">
+        <!-- 面板一：普通日 -->
+        <text x="110" y="28" text-anchor="middle" class="nt">① 普通日</text>
+        <line x1="60" y1="120" x2="60" y2="205" class="edge"/>
+        <rect x="48" y="135" width="24" height="55" rx="2" class="node-up"/>
+        <text x="60" y="222" text-anchor="middle" class="tick">昨天</text>
+        <line x1="118" y1="90" x2="118" y2="215" class="edge"/>
+        <rect x="106" y="110" width="24" height="80" rx="2" class="node-dn"/>
+        <text x="118" y="232" text-anchor="middle" class="tick">今天</text>
+        <line x1="150" y1="90" x2="150" y2="215" class="edge-acc"/>
+        <line x1="144" y1="90" x2="156" y2="90" class="edge-acc"/>
+        <line x1="144" y1="215" x2="156" y2="215" class="edge-acc"/>
+        <text x="162" y="156" class="hi">TR＝今高−今低</text>
+        <!-- 面板二：向上跳空 -->
+        <text x="360" y="28" text-anchor="middle" class="nt">② 向上跳空</text>
+        <line x1="310" y1="150" x2="310" y2="230" class="edge"/>
+        <rect x="298" y="165" width="24" height="50" rx="2" class="node-up"/>
+        <text x="310" y="247" text-anchor="middle" class="tick">昨天</text>
+        <line x1="298" y1="165" x2="420" y2="165" class="edge-soft"/>
+        <text x="372" y="180" class="elabel">昨收</text>
+        <line x1="368" y1="55" x2="368" y2="128" class="edge"/>
+        <rect x="356" y="70" width="24" height="45" rx="2" class="node-up"/>
+        <text x="368" y="52" text-anchor="middle" class="elabel">跳过的缺口也是风险</text>
+        <line x1="400" y1="55" x2="400" y2="165" class="edge-acc"/>
+        <line x1="394" y1="55" x2="406" y2="55" class="edge-acc"/>
+        <line x1="394" y1="165" x2="406" y2="165" class="edge-acc"/>
+        <text x="412" y="115" class="hi">TR＝今高−昨收</text>
+        <!-- 面板三：向下跳空 -->
+        <text x="590" y="28" text-anchor="middle" class="nt">③ 向下跳空</text>
+        <line x1="545" y1="60" x2="545" y2="140" class="edge"/>
+        <rect x="533" y="75" width="24" height="50" rx="2" class="node-dn"/>
+        <text x="545" y="54" text-anchor="middle" class="tick">昨天</text>
+        <line x1="533" y1="125" x2="650" y2="125" class="edge-soft"/>
+        <text x="600" y="118" class="elabel">昨收</text>
+        <line x1="600" y1="170" x2="600" y2="245" class="edge"/>
+        <rect x="588" y="185" width="24" height="45" rx="2" class="node-dn"/>
+        <text x="600" y="262" text-anchor="middle" class="tick">今天</text>
+        <line x1="632" y1="125" x2="632" y2="245" class="edge-acc"/>
+        <line x1="626" y1="125" x2="638" y2="125" class="edge-acc"/>
+        <line x1="626" y1="245" x2="638" y2="245" class="edge-acc"/>
+        <text x="644" y="190" class="hi">TR＝昨收−今低</text>
+      </svg>
+    </div>
+    <figcaption><b>读图：</b>橙色竖线就是 TR 量出的距离。情形②③里，今天的 K 线本身可能很短，但从昨收跳到今天的落点，这段路你的持仓是实打实走过的——风险度量必须把它算进来。这是 Wilder 1978 年设计 TR 时针对股票和商品期货的核心修正。<b>币圈 24 小时连续交易，几乎没有跳空</b>（第 2 课讲过，消息不是跳过去而是当场用大 K 线走完），所以在币圈 TR 基本就等于"高减低"；但等你把这套方法搬回股票（本课结尾对照），跳空修正就是生死攸关的了。</figcaption>
+  </figure>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>把市场想成一个呼吸的生物：平静期浅而匀的呼吸，狂暴期粗重的喘气。你的止损是贴在它胸口的一根针——<strong>贴得比呼吸的起伏还近，它正常喘口气就会碰到针</strong>，和行情方向对不对毫无关系。所以止损距离的第一问不是"我愿意亏多少"，而是"它现在一次呼吸有多深"。量呼吸深度的听诊器，就是下一节的 ATR。</p>
+  </div>
+</section>
+
+<!-- ================= 6.2 ================= -->
+<section class="ch" id="s2">
+  <h2 class="sec"><span class="no">6.2</span>ATR：给呼吸装一把尺</h2>
+  <p class="sec-en">AVERAGE TRUE RANGE</p>
+  <div class="cards">
+    <div class="card">
+      <h4>ATR<span class="en-term">Average True Range</span><span class="fit fit-all">股票通用</span></h4>
+      <p><strong>一句话：ATR ＝ 最近 N 根 K 线真实波幅的平均，告诉你"这个市场现在一根 K 线平时晃多大"。</strong>N 默认 14。它不指方向、不给买卖信号——它是一把<strong>尺</strong>，所有周期、所有品种通用。</p>
+      <span class="k">用途：定止损距离 · 定仓位 · 识别波动状态</span>
+    </div>
+    <div class="card">
+      <h4>ATR%<span class="en-term">ATR / Price</span></h4>
+      <p>ATR 除以现价。BTC 在 83,000 时 ATR＝2,300 和在 5,000 时 ATR＝780，绝对值没法比，换成 2.7% 和 15.6% 立刻可比。<strong>本课一律用 ATR% 说话</strong>，跨价位、跨品种、跨年代都成立。</p>
+      <span class="k">一条经验：日线 ATR% 大约是 4 小时 ATR% 的 2–3 倍</span>
+    </div>
+  </div>
+  <div class="formula">
+    <p class="fx">ATR ＝ TR 的 <span class="nt" data-note="wilder">Wilder 平均</span>（N＝14）　　ATR% ＝ ATR ÷ 收盘价</p>
+    <p class="note">Wilder 平均是一种平滑办法：今天的 ATR ＝（昨天的 ATR × 13 ＋ 今天的 TR）÷ 14。效果是反应比简单平均更稳、更"钝"——这个钝既是优点（不被单根 K 线带偏）也是缺点（6.5 节会算它钝到什么程度）。</p>
+  </div>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>ATR 是一座城市的"近两周日均温差"。它不告诉你明天是升温还是降温（方向），只告诉你<strong>这座城市眼下一天之内正常要晃动几度</strong>——决定你出门该不该带外套（止损距离）、行李箱该装多厚的衣服（仓位）。搬到另一座城市（换品种、换周期），先看它的温差，再决定怎么穿——这就是 ATR% 跨市场可比的意义。</p>
+  </div>
+  <div class="prose">
+    <h3>七年的呼吸记录：波动会"聚集"</h3>
+    <p>把 BTC 上市以来每天的 ATR% 画出来，你会看到它不是杂乱的噪音，而是一座座分明的山峰：2020-03 新冠瀑布、2021-05 的 519、2022-11 的 FTX、2025-10 的 10·10。更重要的是山峰的形状——<strong>波动不是一天爆完就回去，而是起来之后黏一阵子</strong>。这个现象叫<span class="nt" data-note="vol-cluster">波动聚集</span>，是金融市场最稳健的统计规律之一。自己缩放看看：</p>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 6-2</span>BTC 七年波动全景：日线 ＋ ATR% 副图<span class="real">真实数据</span><span class="ia">互动</span></p>
+    <div class="ctrls">
+      <div>
+        <span class="seg-label">视野</span>
+        <span class="seg" id="v-range" role="group">
+          <button type="button" data-val="all" aria-pressed="true">全程</button>
+          <button type="button" data-val="2020">2020-03 瀑布</button>
+          <button type="button" data-val="2021">2021-519</button>
+          <button type="button" data-val="2022">2022-FTX</button>
+          <button type="button" data-val="2025">2025-10·10</button>
+        </span>
+      </div>
+    </div>
+    <div class="lw h480" id="v-chart"></div>
+    <div class="lw-legend" id="v-legend"></div>
+    <div class="stats">
+      <div class="stat"><span class="k">当前日 ATR%</span><span class="v" id="v-now">—</span><span class="s">数据末端 2026-09-30</span></div>
+      <div class="stat"><span class="k">近一年中位数</span><span class="v" id="v-med">—</span><span class="s">一半日子比它平静</span></div>
+      <div class="stat"><span class="k">近一年 90 分位</span><span class="v warn" id="v-p90">—</span><span class="s">v0.3 的风险减半线</span></div>
+      <div class="stat"><span class="k">波动的黏性</span><span class="v" id="v-stick">—</span><span class="s">高 / 低波动日之后 5 天的平均 ATR%</span></div>
+    </div>
+    <p class="lab-msg" id="v-msg"></p>
+    <figcaption><b>读图：</b>上半是 BTC 日线全史，下半这条线是每天的 ATR%（14 日）。四个标注点是四座波动山峰：2020-03-16 顶到 15.6%、2021-05-23 顶到 15.4%、2022-11-11 顶到 6.7%、10·10 之后在 2025-10-17 摸到 4.1%。注意两件事：① 山峰都<b>不是一根细刺，而是一座有坡度的山</b>——波动起来之后要黏好几周才降回去，这就是"暴跌次日别急着满仓抄底"的统计学理由；② 七年里 ATR% 的台阶整体在下移（2021 年全年中位数 6.3%，2026 年只有 3.1%），市场在变大变钝——所以一切阈值都要用<span class="nt" data-note="quantile">分位数</span>（比如"近一年 90 分位"）而不是写死的数字。红色虚线就是当前的近一年 90 分位，它是 6.6 节系统 v0.3 里"风险减半"开关的触发线。</figcaption>
+  </figure>
+  <div class="evidence">
+    <span class="label">证据与怀疑</span>
+    <h4>波动聚集：教科书级的规律，和它靠不住的地方</h4>
+    <p>"大变动后面往往跟着大变动，小变动后面跟着小变动"——这是 Mandelbrot（1963，棉花价格研究）最早写下的观察，Engle（1982）据此建立 <span class="nt" data-note="arch">ARCH 模型</span>并因此获得 2003 年诺贝尔经济学奖。它在几乎所有市场、所有年代都复现，是金融时间序列最经得起检验的"典型事实"。用你电脑里这份 BTC 数据自算：日收益率的<em>方向</em>几乎不可预测（一阶自相关 −0.07，约等于零），但日收益率的<em>幅度</em>自相关显著为正（滞后 1 天 0.16，滞后 5 天仍有 0.11）——涨跌猜不到，<strong>"明天大概晃多大"却有相当的可预测性</strong>，这正是 ATR 定止损、定仓位有效的统计根基。要怀疑的一面：① ATR 是滞后的平均数，它描述的是"刚过去的两周"，对<strong>还没发生的第一击</strong>毫无预警——10·10 当天早上，ATR% 还停在 2.5% 的常态值；② <span class="nt" data-note="regime">制度切换</span>会让历史分布一夜作废——现货 ETF 上线、重大监管事件、市场结构变化之后，老的分位数线要重新画。所以 ATR 是尺子，不是水晶球。</p>
+  </div>
+  <div class="prose">
+    <h3>什么时候失灵、和谁搭配</h3>
+    <ul>
+      <li><strong>失灵一：事件的第一击。</strong>ATR 量的是常态呼吸，消息落地的那一根针可以是它的 10 倍（6.5 节有精确数字）。事件风险靠第 3 课的日历和仓位管，不靠 ATR；</li>
+      <li><strong>失灵二：状态切换的头几天。</strong>Wilder 平均要十来根 K 线才能跟上新状态——暴跌后第一周，按"旧 ATR"算的止损和仓位都会偏小偏近，宁可先减半风险（v0.3 新规则）；</li>
+      <li><strong>搭配：</strong>ATR 自己不产生信号，它给别的零件供"尺度"——给结构位止损供缓冲（6.3）、给仓位公式供分母（6.4）、给第 7 课的环境判断供波动状态。<em>方向看趋势（第 4 课），时机看回调（第 5 课），尺度看 ATR（本课）——各管一摊。</em></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= 6.3 ================= -->
+<section class="ch" id="s3">
+  <h2 class="sec"><span class="no">6.3</span>用 ATR 放止损：别给市场交呼吸税</h2>
+  <p class="sec-en">ATR-BASED STOPS</p>
+  <div class="prose">
+    <p>v0.0 的止损规则是"入场价 ∓2%"。现在可以说清它病在哪了：用本课数据算，<strong>同一个 2% 在 2026 年 8 月的平静期等于 3.3 倍 ATR</strong>（太远，白白压低盈亏比），<strong>在 10·10 次日的狂暴期只有 0.8 倍 ATR</strong>（贴脸，余震一口就能吃掉）。固定百分比不懂市场状态，ATR 懂。v0.3 的止损规则：</p>
+  </div>
+  <div class="formula">
+    <p class="fx">做多止损 ＝ 两个候选取更低者：① <span class="nt" data-note="structure">结构位</span>（最近摆动低点）外侧　② 入场价 − k × ATR(4h)</p>
+    <p class="fx">做空止损 ＝ 两个候选取更高者：① 结构位（最近摆动高点）外侧　② 入场价 ＋ k × ATR(4h)</p>
+    <p class="note">k 从 1.5 起步；要跨清淡时段、周末或事件日持仓，取 2（第 2 课的心跳图告诉你为什么）。逻辑：止损首先要放在"行情证明你错了"的位置（结构位外），然后检查这个位置离入场至少有 1.5 倍呼吸的缓冲——<strong>两个条件都满足，取更远的那个</strong>。触发价选标记价格、挂止损市价单，第 1 课的老规矩不变。</p>
+  </div>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>止损放太近，相当于给市场交<span class="nt" data-note="breath-tax">呼吸税</span>：每次它正常喘气，你就被扫出场交一次钱——手续费、滑点、再加上"刚被扫就看着行情按你的方向飞走"的心态损耗。税率有多高？不用猜，下面用近半年的真实 4 小时数据把它<strong>一格一格量出来</strong>。</p>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 6-3</span>止损距离回测器：k 倍 ATR 对被扫率的真实曲线<span class="real">真实数据</span><span class="ia">互动</span></p>
+    <div class="ctrls">
+      <label class="rg"><span class="rg-top">止损倍数 k × ATR<output>1.50×</output></span>
+        <input type="range" id="bt-k" min="0.5" max="3" step="0.25" value="1.5"></label>
+      <label class="rg"><span class="rg-top">持有期 N 根 4 小时线<output>18 根＝3 天</output></span>
+        <input type="range" id="bt-n" min="6" max="42" step="6" value="18"></label>
+    </div>
+    <div class="bars" id="bt-bars"></div>
+    <div class="stats">
+      <div class="stat"><span class="k">被扫率</span><span class="v warn" id="bt-swept">—</span><span class="s">持有期内碰到止损的比例</span></div>
+      <div class="stat"><span class="k">存活单平均收益</span><span class="v" id="bt-surv">—</span><span class="s">没被扫的单，到期平仓</span></div>
+      <div class="stat"><span class="k">全部单平均收益</span><span class="v" id="bt-all">—</span><span class="s">含被扫单，已扣 0.07% 手续费</span></div>
+      <div class="stat"><span class="k">样本</span><span class="v" id="bt-cnt">—</span><span class="s">BTCUSDT 4h · 2026-04→09</span></div>
+    </div>
+    <p class="lab-msg" id="bt-msg"></p>
+    <figcaption><b>读图：</b>回测规则：2026-04 至 09 的每根 4 小时线收盘都模拟进一笔单——收盘价在 EMA20 之上做多、之下做空，止损挂在 k×ATR 之外，持有 N 根后市价离场。横条是各档 k 的被扫率：持有 3 天时，<b>k 从 0.5 拉到 2.5，被扫率从 86% 降到 38%</b>。三个诚实的提醒：① 止损成交按理想触发价计算、没算滑点——现实里 k 越小被扫越频繁，滑点税越重，小 k 的真实成绩比这里更难看；② 存活单平均收益反而是小 k 更高（4.2% 对 1.8%），这是<b>幸存者偏差</b>：贴脸止损下只有立刻起飞的单才活得下来，别被它骗了，看"全部单平均"才算总账；③ 这是"每根都进场"的扫描统计，不是真实资金曲线，它回答的唯一问题是：<b>在这个市场的呼吸节奏里，多宽的缓冲才躲得开正常晃动</b>。答案：1.25–1.75 倍附近，总账最好——这就是规则里 k＝1.5 的出处。</figcaption>
+  </figure>
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p><strong>"止损放近点，亏的时候亏得少，这是省钱。"</strong>恰恰相反，这是把一次大税拆成无数次小税。k＝0.5 时单次止损只亏 0.6% 左右，但 86% 的单都要交一次，外加每次 0.07% 的手续费和插针时刻最肥的滑点——而且每次被扫后你都面临"要不要追回去"的决策，错一次就把省下的全吐回去。<strong>止损的使命是挡住"你看错了"的行情，不是挡住"市场在喘气"的行情。</strong>距离远近由市场的呼吸定，亏多亏少由仓位定——这两件事分开，是本课最核心的观念手术。</p>
+  </div>
+  <div class="keypoint">
+    <span class="label">本课最重要的一句话</span>
+    <p><strong>止损距离是市场定的（结构位 ＋ 呼吸缓冲），你只负责用仓位把它折算成固定的 1%。</strong></p>
+    <p>新手的顺序是"我想亏 100 块 → 止损放 1%"——于是天天被扫。正确的顺序是"市场呼吸 1.2%、结构位在 2% 外 → 止损放 2% → 仓位缩到让这 2% 刚好等于 100 块"。距离服从市场，金额服从纪律。</p>
+  </div>
+  <div class="prose">
+    <p>最后回到那个晚上。10·10 的针第 1 课看过了，这次我们带着 ATR 的尺子回去，看看两种止损在同一笔单里的生死：</p>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 6-4</span>10·10 复盘：同一笔多单，贴脸止损 vs 1.5×ATR 止损<span class="real">真实数据</span><span class="ia">互动</span></p>
+    <div class="ctrls">
+      <div>
+        <span class="seg-label">视野</span>
+        <span class="seg" id="rp-view" role="group">
+          <button type="button" data-val="all" aria-pressed="true">全程</button>
+          <button type="button" data-val="zoom">放大余震两天</button>
+        </span>
+      </div>
+    </div>
+    <div class="lw h420" id="rp-chart"></div>
+    <div class="lw-legend" id="rp-legend"></div>
+    <div class="stats">
+      <div class="stat"><span class="k">入场（10-10 日线收盘）</span><span class="v" id="rp-entry">—</span><span class="s">北京 10-11 早 8 点</span></div>
+      <div class="stat"><span class="k">贴脸 −2% 止损</span><span class="v dn" id="rp-tight">—</span><span class="s">北京 10-11 下午 3 点被扫</span></div>
+      <div class="stat"><span class="k">1.5×ATR 止损</span><span class="v" id="rp-atr">—</span><span class="s" id="rp-atr-s">—</span></div>
+      <div class="stat"><span class="k">10-13 收盘</span><span class="v up" id="rp-after">—</span><span class="s">距入场 +2.13%</span></div>
+    </div>
+    <p class="lab-msg" id="rp-msg"></p>
+    <figcaption><b>读图：</b>一张图里装着 ATR 止损的一败一胜。<b>败</b>：最左边那根 UTC 21 点的 1 小时线，下影相当于当时 ATR 的 10.5 倍——事件针面前，什么止损都挡不住，这是 ATR 的能力边界（好在有止损的人亏的是 1R，没止损的人亏的是整个保证金）。<b>胜</b>：暴跌之后在日线收盘 112,715 进场的多单，v0.0 的 −2% 止损（110,461）第二天下午就被余震扫掉，随后价格涨回 115,000 上方；按当时已经膨胀的 4h ATR（2,705 U）放的 1.5 倍止损（108,658）距余震最低点还有 843 U 的余量，活到了 10-13 的 +2.13%。<b>区别不是运气，是后者量过呼吸再下的针。</b></figcaption>
+  </figure>
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>10·10 次日的多单：两种止损、两种命运（数字全部可在图 6-4 复核）</h4>
+    <p>设定：暴跌当夜尘埃落定后，你判断恐慌过度，10-10 日线收盘（112,715，北京 10-11 早 8 点）进多单，账户 10,000 U、单笔风险 1%＝100 U。<strong>方案 A（v0.0 老办法）</strong>：止损 −2% 挂 110,461，名义仓位 100 ÷ 2% ＝ 5,000 U。<strong>方案 B（v0.3 新办法）</strong>：当时 4h ATR ＝ 2,705 U（3.6%，比平时肥两倍——波动聚集还没散），止损挂 112,715 − 1.5 × 2,705 ＝ 108,658，名义仓位 100 ÷ 3.6% ＝ 2,778 U。结局：10-11 下午（北京 15 点）一波余震砸到 110,022，<strong>方案 A 出局，实亏 100 U</strong>；余震最深到 109,501（北京 10-12 凌晨 5 点），离方案 B 的止损还差 843 U——<strong>方案 B 活着</strong>，到 10-13 收盘 115,112 已浮盈约 59 U。注意方案 B 赢得并不"多"——仓位小了近一半，这是它为宽止损付的对价；它赢的是<strong>不被余震洗出局的资格</strong>。</p>
+    <p class="takeaway">暴跌后的第一周，ATR 还在高位，公式会自动让你"小仓位 ＋ 宽止损"进场——这恰好就是老手在余震期的手动做法，现在它是你系统的默认行为。</p>
+  </div>
+  <div class="prose">
+    <p>延伸一句：把"k×ATR 止损"挂在<strong>最高点回撤</strong>而不是入场价上，就得到移动止损版本——<span class="nt" data-note="chandelier">吊灯止损</span>，趋势单的常用出场法，第 15 课组装模板时会再见到它。</p>
+  </div>
+</section>
+
+<!-- ================= 6.4 ================= -->
+<section class="ch" id="s4">
+  <h2 class="sec"><span class="no">6.4</span>ATR 仓位公式：风险恒定的闭环</h2>
+  <p class="sec-en">VOLATILITY-ADJUSTED POSITION SIZING</p>
+  <div class="prose">
+    <p>止损放远了，仓位必须同步缩小，否则"单笔最多亏 1%"就破了。第 3 课给过总公式"仓位 ＝ 单笔风险 ÷ 止损距离"，本课只是把分母换成 ATR 的语言——<strong>同一条公式，止损距离具体化了</strong>：</p>
+  </div>
+  <div class="formula">
+    <p class="fx">名义价值 ＝ 单笔风险额 ÷（ k × ATR% ）　　数量 ＝ 名义价值 ÷ 现价</p>
+    <p class="note">例：本金 10,000 U、风险 1%＝100 U、4h ATR%＝1.1%、k＝1.5 → 止损距离 1.65% → 名义 ＝ 100 ÷ 1.65% ≈ 6,061 U。若按结构位算出的实际距离比 1.65% 更远，用实际距离代入。海龟交易法则用的就是这套思路（他们管 ATR 叫 N，用 2N 定止损和仓位单元）——这是经过半个世纪检验的老手艺，不是本课发明。</p>
+  </div>
+  <div class="prose">
+    <p>这条公式装进系统后，会出现一个漂亮的自动行为：<strong>波动大 → 分母大 → 仓位自动小；波动小 → 仓位自动大。你的每笔单无论市场状态如何，风险都钉死在 100 U。</strong>感受一下：</p>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 6-5</span>ATR 仓位计算器：波动翻倍，仓位自动减半<span class="ia">互动</span></p>
+    <div class="ctrls">
+      <label class="rg"><span class="rg-top">账户本金（USDT）<output>10,000</output></span>
+        <input type="range" id="pos-acct" min="2000" max="50000" step="1000" value="10000"></label>
+      <label class="rg"><span class="rg-top">单笔风险<output>1.00%</output></span>
+        <input type="range" id="pos-risk" min="0.25" max="2" step="0.25" value="1"></label>
+      <label class="rg"><span class="rg-top">当前 4h ATR%<output>1.10%</output></span>
+        <input type="range" id="pos-atr" min="0.3" max="4" step="0.05" value="1.1"></label>
+      <label class="rg"><span class="rg-top">止损倍数 k<output>1.50×</output></span>
+        <input type="range" id="pos-k" min="1" max="2.5" step="0.25" value="1.5"></label>
+    </div>
+    <div class="stats">
+      <div class="stat"><span class="k">止损距离</span><span class="v" id="pos-dist">—</span><span class="s">k × ATR%</span></div>
+      <div class="stat"><span class="k">名义仓位</span><span class="v" id="pos-notional">—</span><span class="s" id="pos-notional-s">—</span></div>
+      <div class="stat"><span class="k">折合数量</span><span class="v" id="pos-qty">—</span><span class="s" id="pos-qty-s">—</span></div>
+      <div class="stat"><span class="k">5 倍杠杆下保证金</span><span class="v" id="pos-margin">—</span><span class="s" id="pos-margin-s">—</span></div>
+    </div>
+    <p class="lab-msg" id="pos-msg"></p>
+    <figcaption><b>读图：</b>ATR% 滑块的默认值取自数据末端（2026-09-30）的真实值：币安 BTCUSDT 永续 4h ATR14 ＝ 909 U，除以收盘价 83,577 约 1.09%。把它拉到 2.2%——名义仓位恰好减半；拉到 0.55%——仓位翻倍。<b>这就是"风险恒定"的含义：市场晃得越凶，你的敞口越小，单笔亏损永远是同一个数。</b>最后一格顺便验证第 1 课的安全带：5 倍逐仓的强平距离约 19.5%，永远躺在止损的十倍开外——止损先于强平，天经地义。</figcaption>
+  </figure>
+  <div class="prose">
+    <p>固定仓位和 ATR 仓位的差距，放到两种真实市场状态里看最清楚（数字取自真实数据：平静期＝2026-08-18，狂暴期＝10·10 次日）：</p>
+  </div>
+  <div class="tablewrap narrow">
+    <table>
+      <thead><tr><th>市场状态</th><th>4h ATR%</th><th>1.5×ATR 止损距离</th><th>ATR 仓位（风险 100 U）</th><th>固定 8,000 U 仓位的实际风险</th></tr></thead>
+      <tbody>
+        <tr><td><b>平静期</b> 2026-08-18</td><td>0.61%</td><td>0.91%</td><td>名义约 11,000 U</td><td>73 U ＝ 本金 0.7%</td></tr>
+        <tr><td><b>狂暴期</b> 2025-10-11</td><td>2.40%</td><td>3.60%</td><td>名义 2,778 U</td><td><b>288 U ＝ 本金 2.9%</b></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="prose">
+    <p>固定仓位的人在平静期胆子太小、在狂暴期胆子太大——<strong>而且自己毫无感觉</strong>，因为他每次下的"手数"是一样的。ATR 仓位把这 4 倍的风险漂移自动熨平。</p>
+  </div>
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p><strong>"行情大的时候机会也大，应该加仓搏一把，怎么反而减仓？"</strong>这句话把"波动"和"优势"混为一谈了。波动大意味着你的止损更远、同样仓位的亏损更大，但你的<em>胜率并没有变高</em>——凭什么风险预算要涨？狂暴期真正的机会红利，体现在"同样 1% 风险能换到更大的绝对波段"上，而不是靠放大风险去赌。回看 519 和 10·10 的清算名单：死的不是没机会的人，是高波动期不缩仓的人。</p>
+  </div>
+</section>
+
+<!-- ================= 6.5 ================= -->
+<section class="ch" id="s5">
+  <h2 class="sec"><span class="no">6.5</span>针长统计：币圈特供<span class="fit fit-crypto">仅合约</span></h2>
+  <p class="sec-en">WICK STATISTICS: A CRYPTO SPECIAL</p>
+  <div class="prose">
+    <p>"1.5–2 倍缓冲"不该是信仰，应该是统计。币圈的止损杀手是<strong>下影针</strong>（第 1 课讲过它的制造流程：止损市价单 → 砸穿薄订单簿 → 连环强平），那就直接去量它：把近半年每一根 K 线的下影长度除以当时的 ATR，看看针长的分布到底什么样——<strong>你的缓冲要盖过多少针，1.5 倍够不够</strong>。</p>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 6-6</span>下影针长分布：多少根针能越过你的缓冲<span class="real">真实数据</span><span class="ia">互动</span></p>
+    <div class="ctrls">
+      <div>
+        <span class="seg-label">样本</span>
+        <span class="seg" id="wk-src" role="group">
+          <button type="button" data-val="h1" aria-pressed="true">1 小时 · 近半年</button>
+          <button type="button" data-val="h4">4 小时 · 近半年</button>
+          <button type="button" data-val="oct">1 小时 · 2025-10（含 10·10）</button>
+        </span>
+      </div>
+    </div>
+    <div class="bars" id="wk-bars"></div>
+    <div class="stats">
+      <div class="stat"><span class="k">样本量</span><span class="v" id="wk-n">—</span><span class="s" id="wk-n-s">—</span></div>
+      <div class="stat"><span class="k">不超过 1.5×ATR 的针</span><span class="v up" id="wk-in15">—</span><span class="s">1.5 倍缓冲盖得住的部分</span></div>
+      <div class="stat"><span class="k">超过 2×ATR 的针</span><span class="v" id="wk-over2">—</span><span class="s">2 倍缓冲也挡不住的部分</span></div>
+      <div class="stat"><span class="k">最肥的一根</span><span class="v warn" id="wk-max">—</span><span class="s" id="wk-max-s">—</span></div>
+    </div>
+    <p class="lab-msg" id="wk-msg"></p>
+    <figcaption><b>读图：</b>横条是"下影线长度 ÷ 针出现前一根的 ATR14"落在各区间的比例。近半年的 1 小时线上：86% 的针不到 0.5 倍 ATR，<b>99.4% 不超过 1.5 倍</b>，超过 2 倍的只有千分之一点四——这就是 k＝1.5 的数据依据：它用 1.5 倍的距离，买到了对 99% 以上常态针的免疫。切到"4 小时"看：分布形状几乎一模一样——<b>呼吸的形状不挑周期</b>，同一个 k 在你的三张地图上通用。再切到 2025-10：分布大体还是乖的，但最右边多出一根 10.5 倍的怪物（10-10 UTC 21 点那根）——<b>分布管常态，尾部管生死</b>；常态靠 ATR 缓冲，尾部靠小仓位、靠日历、靠"下单即挂止损"保住 1R 底线。</figcaption>
+  </figure>
+  <div class="prose">
+    <h3>两个顺手的发现</h3>
+    <ul>
+      <li><strong>清淡时段的针，相对 ATR 并不更肥。</strong>我们本想用数据证明"凌晨的针更长"，结果近半年 1 小时样本里，北京凌晨 4–7 点的针超过 1.5×ATR 的比例是 0.55%，其余时段反而是 0.60%——因为 ATR 自己会跟着心跳缩放，清淡时段它也低。那第 2 课"清淡时段要多留余量"错了吗？没错——它防的不是常态针，而是<strong>一旦出现大单冲击，薄订单簿会把针放大到统计表之外</strong>（10·10 恰好落在美盘消息时段，但 519 的最低点就砸在亚洲深夜）。尾部事件在直方图里只是右边可怜的一小格，在账户里却是全部——这正是"跨清淡时段和周末持仓用 k＝2"的理由：多出来的 0.5 倍不是买常态保险，是买尾部折扣；</li>
+      <li><strong>止损触发价必须用标记价格。</strong>针长统计量的是全市场的真针；第 1 课讲过，单一交易所还会有自己的假针（流动性真空），最新价触发的止损连假针都躲不过。标记价格触发 ＋ 止损市价执行 ＋ 1.5×ATR 距离，三件套一起，才算把"被扫"这件事管到位。</li>
+    </ul>
+  </div>
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p><strong>"我用了 ATR 止损，这下插针扫不到我了。"</strong>把 6.5 节的直方图再看一眼：1.5×ATR 盖住的是 99.4% 的<em>常态针</em>，而 10·10 那根是 10.5 倍。ATR 止损把"无谓被扫"从家常便饭降到小概率，但它不是护身符——<strong>真正保住你账户的是那套组合拳</strong>：事件日历避开已知炸点（第 3 课）、ATR 公式在高波动期自动缩仓（本课）、止损市价单保证无论如何离场（第 1 课）。每一层挡一类风险，谁也替代不了谁。</p>
+  </div>
+  <div class="stock">
+    <span class="label">股票上怎么对照</span>
+    <h4>ATR 是全市场通用件，但股票的"针"长在别处</h4>
+    <ul>
+      <li><b>ATR 止损、ATR 仓位完全通用</b>：这套方法本来就诞生于股票和商品期货（Wilder 1978），海龟们用它交易的也是期货。A 股用日线 ATR 同样好使；</li>
+      <li><b>跳空取代插针</b>：股票隔夜休市，风险以开盘跳空的形式一次性兑现——TR 公式里"含昨收"的两项就是为它准备的。注意跳空可以<em>直接跳过你的止损价</em>，止损单按开盘价成交，实际亏损可能大于 1R——这是股票版的"滑点税"，重仓过夜、过财报日之前要想到；</li>
+      <li><b>A 股的涨跌停是另一种尾部</b>：连续跌停时止损单根本无法成交，ATR 在"流动性消失"面前和在 10·10 面前一样无能为力——任何市场里，尾部风险最终都只能靠仓位管；</li>
+      <li><b>针长统计这个角度是币圈特供</b>：24 小时连续交易 ＋ 杠杆清算瀑布，才让"下影针 ÷ ATR"成为一个值得天天盯的统计量。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= 6.6 ================= -->
+<section class="ch" id="s6">
+  <h2 class="sec"><span class="no">6.6</span>落地：系统 v0.3——止损与仓位全面 ATR 化</h2>
+  <p class="sec-en">SYSTEM v0.3</p>
+  <div class="rulecard">
+    <div class="rc-head"><span class="label">规则卡</span><span class="rc-name">短波段系统 v0.3（在 v0.2 之上修改两项、新增一项）</span></div>
+    <dl>
+      <dt>标的与周期</dt><dd>BTC / ETH 的 U 本位永续，模拟盘；日线定方向、4 小时找位置、1 小时扣扳机（第 2 课分工不变）</dd>
+      <dt>过滤条件</dt><dd>只顺日线方向做（第 4 课）；重大事件窗口前后 30 分钟不开新仓（第 3 课）；<b>【本课新增】日线 ATR% 超过近一年 90 分位（当前约 4.9%）时，单笔风险减半为 0.5%</b>——波动聚集期先求活，再求赚</dd>
+      <dt>入场</dt><dd>维持 v0.2 模板 A：日线方向明确 → 4 小时回调到位（第 5 课的时机信号）→ 1 小时突破入场</dd>
+      <dt>止损</dt><dd><b>【本课修改】结构位外侧与入场价 ∓1.5×ATR(4h) 两者取更远者</b>；跨清淡时段、周末或事件日持仓改用 2×ATR；触发按标记价格，挂止损市价单（第 1 课规矩不变）</dd>
+      <dt>出场</dt><dd>止盈目标 ≥2 倍止损距离（2R）；移动止损与分批减仓维持第 3 课纪律，趋势单可改用吊灯式 3×ATR 回撤出场（第 15 课细化）</dd>
+      <dt>仓位</dt><dd><b>【本课修改】名义价值 ＝ 单笔风险额 ÷ 实际止损距离%</b>（不低于 k×ATR%）；单笔风险 ≤1%（高波动期 0.5%）；逐仓 ≤5 倍；同时 ≤2 个仓位</dd>
+    </dl>
+    <p class="rc-note">对照 v0.2 的变化就一句话：原来"止损 ∓2%、仓位按固定距离算"，现在<strong>距离由结构位和 ATR 定，仓位由距离反推</strong>——市场状态变了，系统自己会变，不再需要你"感觉最近行情大"。</p>
+  </div>
+  <div class="sysup">
+    <span class="label">系统升级</span>
+    <h4>你的交易系统：v0.2 → v0.3</h4>
+    <p>本课装进系统的零件：ATR 这把尺（量呼吸）· ATR 化止损（结构位 ＋ 1.5–2 倍缓冲，取更远者）· ATR 化仓位（风险恒定公式，波动大自动小仓）· 高波动熔断（ATR% 超近一年 90 分位 → 风险减半）。至此，v0.1 的方向、v0.2 的时机、v0.3 的尺度各就各位。下一课 v0.4 解决一个更上游的问题：<strong>现在到底是趋势市还是震荡市</strong>——不同的市场状态，该用完全不同的打法。</p>
+  </div>
+  <div class="task">
+    <span class="label">本周模拟任务</span>
+    <h4>把止损和仓位全部换成 ATR 口径（继续模拟盘）</h4>
+    <ol>
+      <li><b>存量改造</b>：把手上所有模拟仓的止损按 v0.3 重算一遍——逐笔记录"旧止损、新止损、两者差几个 ATR"。凡是旧止损贴在 1.5×ATR 以内的，当场改过来；这份对照表就是你对"呼吸税"的第一次体检；</li>
+      <li><b>新单走流程</b>：本周每笔新单，下单前先抄三个数：当前 4h ATR%、选用的 k、算出的名义与数量，写进交易日志再下单。一周后统计：有没有哪笔单的仓位是"手滑"而不是公式给的？</li>
+      <li><b>建立基准</b>：把图 6-6 的分布结论抄进日志首页（例如"1h 下影针 99.4% 不超过 1.5×ATR"）。以后每次止损被扫，先对照基准问一句：这是千分之六的正常呼吸税，还是我把止损放错了位置？——前者该认，后者该改。</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ================= 小结 ================= -->
+<section class="ch recap" id="recap">
+  <h2 class="sec"><span class="no">★</span>本课小结</h2>
+  <p class="sec-en">RECAP</p>
+  <div class="prose">
+    <ol>
+      <li><b>波动要用市场自己的尺量</b>：同一个 2%，平静期是一整天（2026-08 日 ATR% 低至 1.95%），10·10 当晚只是一根 1 分钟线。固定百分比止损天生有病。</li>
+      <li><b>TR 含跳空、ATR 是 TR 的 Wilder 平均</b>；币圈几乎无跳空，但方法通用；跨价位比较一律用 ATR%。</li>
+      <li><b>波动会聚集</b>：方向难测，幅度有惯性——大波动后面跟着大波动。暴跌次日别急着满仓，ATR% 超近一年 90 分位时风险减半。</li>
+      <li><b>止损 ＝ 结构位外侧与入场 ∓1.5×ATR 取更远者</b>；清淡时段、周末、事件日用 2 倍；触发按标记价格、用止损市价单。</li>
+      <li><b>贴脸止损是在交呼吸税</b>：真实回测里 k＝0.5 的被扫率 86%，k 拉到 2.5 降到 38%；总账最好的区间就在 1.25–1.75 倍附近。</li>
+      <li><b>仓位 ＝ 单笔风险 ÷（k×ATR%）</b>：波动翻倍仓位减半，每笔单的风险钉死在 1%。和第 3 课是同一条公式，分母从拍脑袋换成了量出来的呼吸。</li>
+      <li><b>1.5 倍缓冲的依据是针长统计</b>：近半年 1 小时下影针 99.4% 不超过 1.5×ATR——但 10·10 那根是 10.5 倍。分布管常态，尾部靠小仓位和日历。</li>
+      <li><b>距离服从市场，金额服从纪律</b>：止损放哪由结构和呼吸定，亏多少由仓位定——这两件事分开，被扫就不再是玄学。</li>
+    </ol>
+  </div>
+
+  <h3>术语一览（点击正文中的角标词可随时弹出）</h3>
+  <ol class="notes-list" id="notes-list"></ol>
+
+  <h3>自测</h3>
+  <details><summary>1. 入场 80,000 做多，4h ATR ＝ 800（1%），最近摆动低点 79,100。止损放哪？本金 10,000 U、风险 1%、k＝1.5，仓位开多大？</summary>
+    <div class="ans"><p>两个候选：结构位外侧约 79,100 下方一点；入场 − 1.5×ATR ＝ 80,000 − 1,200 ＝ 78,800。取更远（更低）者 → 止损 78,800，距离 1.5%。仓位：名义 ＝ 100 ÷ 1.5% ≈ 6,667 U，数量 ≈ 6,667 ÷ 80,000 ≈ 0.083 枚。注意顺序：先由市场（结构 ＋ ATR）定距离，再由距离反推仓位——不是先想开多少仓，再把止损塞进去。</p></div>
+  </details>
+  <details><summary>2. 图 6-3 里 k＝0.5 的"存活单平均收益"高达 4.2%，远超 k＝2.5 的 1.8%。能不能据此说"贴脸止损其实更好"？</summary>
+    <div class="ans"><p>不能，这是幸存者偏差：k＝0.5 时 86% 的单被扫掉了，活下来的全是进场后立刻起飞、一步没回头的幸运单，它们的平均收益当然漂亮。算总账要看"全部单平均收益"（含被扫单、扣手续费）——那一栏里 k＝1.25–1.75 的中间档最好。而且回测还没算滑点：止损越贴脸、触发越频繁，而止损市价单恰恰在插针时刻滑点最肥，现实里小 k 比回测更惨。任何时候看到"淘汰率极高的样本里幸存者成绩极好"，先想幸存者偏差。</p></div>
+  </details>
+  <details><summary>3. 复述 10·10 次日那笔多单的案例：−2% 止损和 1.5×ATR 止损各自的结局？既然宽止损活了下来，为什么不干脆用 3 倍、5 倍 ATR？</summary>
+    <div class="ans"><p>入场 112,715：−2% 止损挂 110,461，被 10-11 下午的余震（最低 110,022）扫掉，实亏 1R；1.5×ATR 止损挂 108,658（当时 ATR 已膨胀到 2,705 U），余震最深 109,501 没碰到它，到 10-13 浮盈 +2.13%。不无限放宽的原因：仓位公式里距离在分母上——k 翻倍，仓位减半，同样的行情赚的钱也减半；而且止损放到结构位之外更远处就失去了"行情证明我错了"的含义，变成单纯扛单。k 的选择是被扫率和资金效率的平衡，回测显示 1.25–1.75 附近总账最好，这才是 1.5 的出处。</p></div>
+  </details>
+  <details><summary>4. 什么是波动聚集？说出它写进你系统 v0.3 的那条具体规则，以及背后的数据。</summary>
+    <div class="ans"><p>波动聚集：大变动后面倾向跟着大变动，小变动后面跟着小变动（Mandelbrot 1963 提出，Engle 的 ARCH 模型形式化）。用 BTC 日线自算：收益率方向几乎不可预测（自相关 −0.07），但幅度的自相关显著为正（滞后 1 天 0.16）；落在最高十分位的高波动日之后 5 天，ATR% 平均仍有 8.4%，而低波动日之后只有 2.5%——波动起来会黏一阵。写进系统的规则：日线 ATR% 超过近一年 90 分位（当前约 4.9%）时，单笔风险从 1% 减半到 0.5%，等它降回去再恢复。</p></div>
+  </details>
+  <details><summary>5. ATR 在哪三种情况下会"失灵"？各举一个本课出现过的实例。</summary>
+    <div class="ans"><p>① 事件的第一击：ATR 是过去 14 根的平均，对突发消息零预警——10·10 当天早上日 ATR% 还是 2.5% 的常态值，当晚的 1 小时针却是当时 ATR 的 10.5 倍；② 状态切换的头几天：Wilder 平均要十来根 K 线才跟得上，暴跌后第一周按"旧 ATR"算的止损偏近、仓位偏大，所以 v0.3 配了风险减半开关；③ 制度切换：ETF 上线、重大监管变化会改变市场结构，历史分布和分位数线作废，要重新校准。共同结论：ATR 是量常态呼吸的尺子，不是预测尾部的水晶球——尾部靠仓位、日历和止损纪律兜底。</p></div>
+  </details>
+  <details><summary>6. 为什么 v0.3 规定止损"触发按标记价格、挂止损市价单"？这和针长统计是什么关系？</summary>
+    <div class="ans"><p>针长统计量的是全市场共振的"真针"，1.5×ATR 缓冲对付的就是它们。但第 1 课讲过，单一交易所还会出现自己的"假针"（本所流动性真空砸出的瞬时深坑，标记价格纹丝不动）——用最新价触发止损，假针也能扫掉你，缓冲白留了；按标记价格触发就对假针免疫。而选止损市价单而不是止损限价单，是因为止损的使命是"无论如何离场"：暴跌中限价单可能永远挂不进去，形同裸奔。三件套各管一环：ATR 距离防真针误伤，标记价格触发防假针误触，市价执行保证真到了位置一定走得掉。</p></div>
+  </details>
+
+  <nav class="pager" aria-label="课程导航">
+    <a class="pg" href="ct-l05.html"><span class="pg-dir">上一课</span><span class="pg-ttl">第 5 课 · 涨过头了吗</span></a>
+    <a class="pg pg-toc" href="ct-index.html"><span class="pg-dir">返回</span><span class="pg-ttl">学习地图</span></a>
+    <a class="pg pg-next" href="ct-l07.html"><span class="pg-dir">下一课</span><span class="pg-ttl">第 7 课 · 趋势市还是震荡市</span></a>
+  </nav>
+
+  <p class="foot">数据：币安公开历史数据（data.binance.vision），BTCUSDT 永续，已本地化；图 6-2 为 2020-01 至 2026-09 日线实算，图 6-3 / 6-6 为页内真实数据统计，图 6-4 为 2025-10 真实 1 小时线。图表组件：TradingView Lightweight Charts™（Apache-2.0）。本讲义仅为学习笔记，不构成投资建议；合约交易风险极高。</p>
+</section>
+
+</main>
+</div>
+
+<!-- ================= 术语弹注内容 ================= -->
+<div class="notes-src" hidden>
+  <section data-note-id="tr" data-title="真实波幅" data-en="True Range, TR">
+    <p>一根 K 线的"真实"活动范围：max（今高−今低，|今高−昨收|，|今低−昨收|）。比单纯的"高减低"多算了跳空缺口——隔夜跳过去的那段路，持仓者是实打实承受了的。Wilder 1978 年在《New Concepts in Technical Trading Systems》中提出，同书还贡献了 RSI 和 ADX。</p>
+  </section>
+  <section data-note-id="wilder" data-title="Wilder 平均" data-en="Wilder Smoothing">
+    <p>Wilder 发明的递推平滑：今值 ＝（昨均值 ×（N−1）＋ 今数据）÷ N。等价于一条较慢的指数平均（约相当于 2N−1 期 EMA），特点是稳、钝、省计算——1978 年的交易员要用手摇计算器按出每天的指标。ATR、RSI、ADX 用的都是它。</p>
+  </section>
+  <section data-note-id="vol-cluster" data-title="波动聚集" data-en="Volatility Clustering">
+    <p>金融时间序列的典型事实：大幅变动倾向于扎堆出现，小幅变动也扎堆——市场在"安静状态"和"狂暴状态"之间切换，而不是每天独立抽签。最早由 Mandelbrot（1963）在棉花价格里记录。对交易者的含义：今天的波动是明天波动最好的预测器之一，所以 ATR 定的止损和仓位才有前瞻价值。</p>
+  </section>
+  <section data-note-id="arch" data-title="ARCH 模型" data-en="ARCH, Autoregressive Conditional Heteroskedasticity">
+    <p>Engle 1982 年提出的计量模型：让收益率的方差（波动）随时间变化、并依赖于近期的扰动大小——把"波动聚集"写成了可估计的数学。后续的 GARCH 家族是量化风控的基石，Engle 因此获 2003 年诺贝尔经济学奖。你可以把 ATR 看成它的一个朴素的民间近亲。</p>
+  </section>
+  <section data-note-id="quantile" data-title="分位数" data-en="Quantile / Percentile">
+    <p>把一堆数从小到大排队后按位置取值：90 分位 ＝ 比 90% 的样本都大的那个值。用分位数而不是固定阈值的好处：市场的"大 / 小"标准会漂移（BTC 的 4% 日波动在 2020 年稀松平常、在 2026 年已算狂暴），分位数让规则自动跟着当前状态走。</p>
+  </section>
+  <section data-note-id="structure" data-title="结构位" data-en="Swing High / Low">
+    <p>行情里肉眼可见的摆动高低点——多头最近一次被打回的地方、空头最近一次被顶回的地方。止损放在结构位外侧的含义是："价格连这里都破了，我的进场逻辑就被证伪了"。怎么系统地找结构位和支撑阻力，第 8 课专门讲；本课先用"最近一个明显的摆动低 / 高点"。</p>
+  </section>
+  <section data-note-id="breath-tax" data-title="呼吸税" data-en="'Breathing Tax'（本课自造词）">
+    <p>本课自造的说法，不是行业术语：止损距离小于市场正常波动幅度时，你会被与方向无关的日常晃动反复扫损——这些损失不是"看错方向"的成本，而是给市场的正常呼吸交的税。税率 ＝ 被扫率 ×（止损亏损 ＋ 手续费 ＋ 滑点），图 6-3 的回测器就是在量它。</p>
+  </section>
+  <section data-note-id="regime" data-title="制度切换" data-en="Regime Change">
+    <p>市场运行规则发生结构性变化：参与者构成、监管框架、产品结构（如现货 ETF 上线）、宏观环境的大转折。统计上的表现是：切换前拟合的分布、相关性、分位数在切换后集体失效。一切基于历史数据的参数（包括本课的 k 和 90 分位线）都要在制度切换后重新校准。</p>
+  </section>
+  <section data-note-id="chandelier" data-title="吊灯止损" data-en="Chandelier Exit">
+    <p>移动止损的一种：止损线挂在"进场以来最高点 − n×ATR"（做多，常用 n＝3），像吊灯一样从最高点垂下来，随新高上移、永不下移。由交易员 Chuck LeBeau 提出、经 Elder 的书普及。和本课固定在入场价上的初始止损相比，它解决的是"趋势单怎么让利润奔跑"的出场问题。</p>
+  </section>
+</div>
+
+<script src="assets/lightweight-charts.js"></script>
+<script src="assets/ct.js"></script>
+<script src="assets/ctchart.js"></script>
+<script src="assets/data/klines-BTCUSDT-1d.js"></script>
+<script src="assets/data/klines-BTCUSDT-4h.js"></script>
+<script src="assets/data/klines-BTCUSDT-1h.js"></script>
+<script>
+(function(){
+'use strict';
+var fmt = CT.fmtN;
+
+/* 本页通用：按行索引对齐的 EMA / ATR（含预热期 null），
+   与报告中的 node 对算脚本逐行一致 */
+function emaArr(rows, n){
+  var k = 2 / (n + 1), e = null, out = [];
+  for(var i = 0; i < rows.length; i++){
+    var v = rows[i][4];
+    e = e === null ? v : v * k + e * (1 - k);
+    out.push(i >= n - 1 ? e : null);
+  }
+  return out;
+}
+function atrArr(rows, n){
+  var out = [], a = null;
+  for(var i = 0; i < rows.length; i++){
+    var h = rows[i][2], l = rows[i][3], pc = i ? rows[i - 1][4] : rows[i][1];
+    var tr = Math.max(h - l, Math.abs(h - pc), Math.abs(l - pc));
+    if(i < n){ a = (a === null ? 0 : a) + tr / n; }
+    else{ a = (a * (n - 1) + tr) / n; }
+    out.push(i >= n - 1 ? a : null);
+  }
+  return out;
+}
+
+var D = CT.get('klines-BTCUSDT-1d');
+var H4 = CT.get('klines-BTCUSDT-4h');
+var H1 = CT.get('klines-BTCUSDT-1h');
+
+/* ---------- 图 6-2 七年波动全景 ---------- */
+(function(){
+  var atrD = atrArr(D, 14);
+  var ap = [];                         // {t 原始秒, p ATR%}
+  for(var i = 0; i < D.length; i++){
+    if(atrD[i] !== null) ap.push({t: D[i][0], p: atrD[i] / D[i][4] * 100});
+  }
+  var g = CT.makeChart('v-chart', {panes: [0.34], minBarSpacing: 0.02});
+  var cs = g.addCandles(D);
+  var line = g.addLine(ap.map(function(x){ return {time: CT.ts(x.t), value: x.p}; }),
+    'series2', {pane: 1, width: 2, title: 'ATR14%'});
+  /* 近一年（最后 365 个值）的中位数与 90 分位 */
+  var yr = ap.slice(-365).map(function(x){ return x.p; }).sort(function(a, b){ return a - b; });
+  var med = yr[Math.floor(yr.length / 2)];
+  var q90y = yr[Math.floor(yr.length * 0.9)];
+  g.priceLine(line, q90y, 'crit', '近一年 90 分位', 2);
+  g.markers(cs, [
+    {time: Date.parse('2020-03-16') / 1000, position: 'aboveBar', shape: 'arrowDown', color: 'crit', text: '15.6%'},
+    {time: Date.parse('2021-05-23') / 1000, position: 'aboveBar', shape: 'arrowDown', color: 'crit', text: '15.4%'},
+    {time: Date.parse('2022-11-11') / 1000, position: 'aboveBar', shape: 'arrowDown', color: 'crit', text: '6.7%'},
+    {time: Date.parse('2025-10-17') / 1000, position: 'aboveBar', shape: 'arrowDown', color: 'crit', text: '4.1%'}
+  ]);
+  g.fit();
+  CT.legend('v-legend', [['series2', '日 ATR%（下副图）'], ['crit', '近一年 90 分位 ＝ v0.3 风险减半线']]);
+  /* 波动黏性：全史最高 / 最低十分位波动日之后 5 天的平均 ATR% */
+  var ps = ap.map(function(x){ return x.p; }).slice().sort(function(a, b){ return a - b; });
+  var q90 = ps[Math.floor(ps.length * 0.9)], q10 = ps[Math.floor(ps.length * 0.1)];
+  var hiS = 0, hiN = 0, loS = 0, loN = 0;
+  for(var j = 0; j < ap.length - 5; j++){
+    if(ap[j].p >= q90){ hiS += ap[j + 5].p; hiN++; }
+    if(ap[j].p <= q10){ loS += ap[j + 5].p; loN++; }
+  }
+  document.getElementById('v-now').textContent = ap[ap.length - 1].p.toFixed(2) + '%';
+  document.getElementById('v-med').textContent = med.toFixed(2) + '%';
+  document.getElementById('v-p90').textContent = q90y.toFixed(2) + '%';
+  document.getElementById('v-stick').textContent = (hiS / hiN).toFixed(1) + '% ↔ ' + (loS / loN).toFixed(1) + '%';
+  var msgs = {
+    all: '全程视角：ATR% 的山峰一座比一座矮——市场在长大变钝。所以别背"4% 算大"这类死数字，用<b>分位数</b>说话：红色虚线（近一年 90 分位）就是 v0.3 的风险减半线，它每天都在跟着市场重新校准。',
+    2020: '2020-03 新冠瀑布：3-12 从 7,969 一路砸到 4,347，次日再探 3,622；ATR% 一天之内从 5% 蹿到 14%、3-16 顶到 15.6%，随后<b>黏到 4 月底</b>才降回 5% 以下。如果你在暴跌次日就按"行情该结束了"满仓抄底，接下来几周每一次 10% 级的余震都在扫你。',
+    2021: '2021 年 5 月：519 当天 −34%，ATR% 顶到 15.4%。注意山峰的右坡——波动降回 5% 以下<b>花了整整三个月</b>（8 月下旬才回去）。高波动期间 ATR 公式给出的仓位只有常态的几分之一，这不是胆小，是让每笔单的风险依旧等于 100 U。',
+    2022: '2022-11 FTX 崩盘：ATR% 顶峰"只有"6.7%，但它一周内从 3% 翻倍上来。看绝对值不吓人、看倍数惊人——这就是用 ATR% 和分位数而不是绝对价差衡量波动的原因。',
+    2025: '2025-10·10：单日 −17% 把日 ATR% 从 2.5% 推到 3.8%，一周后摸到 4.1%。注意 ATR 的钝：暴跌<b>当天</b>它还只反映了一部分——Wilder 平均要十来天才完全跟上新状态。这个滞后正是 v0.3 要配"风险减半"开关的原因：开关看的是分位数越线，不等 ATR 慢慢爬。'
+  };
+  CT.bindSeg('v-range', function(v){
+    if(v === 'all') g.fit();
+    else if(v === '2020') g.setRange('2020-01-15', '2020-06-01');
+    else if(v === '2021') g.setRange('2021-03-15', '2021-08-01');
+    else if(v === '2022') g.setRange('2022-09-15', '2023-01-15');
+    else g.setRange('2025-09-01', '2026-01-01');
+    document.getElementById('v-msg').innerHTML = msgs[v];
+  });
+})();
+
+/* ---------- 图 6-3 止损距离回测器 ---------- */
+(function(){
+  var rows = CT.slice(H4, '2026-03-01', '2026-10-01');   // 预热从 3 月起
+  var ema = emaArr(rows, 20);
+  var atr = atrArr(rows, 14);
+  var START = Date.parse('2026-04-01') / 1000;           // 统计从 4 月起
+  var FEE = 0.07;                                        // 限价进 + 止损市价出（第 1 课）
+  function run(k, N){
+    var tot = 0, stopped = 0, survPnl = 0, allPnl = 0;
+    for(var i = 0; i < rows.length - N; i++){
+      if(rows[i][0] < START) continue;
+      if(ema[i] === null || atr[i] === null) continue;
+      var entry = rows[i][4];
+      var dir = entry >= ema[i] ? 1 : -1;
+      var stop = entry - dir * k * atr[i];
+      var hit = false, exit = null;
+      for(var j = i + 1; j <= i + N; j++){
+        if(dir > 0 && rows[j][3] <= stop){ hit = true; exit = stop; break; }
+        if(dir < 0 && rows[j][2] >= stop){ hit = true; exit = stop; break; }
+      }
+      if(!hit) exit = rows[i + N][4];
+      var pnl = dir * (exit - entry) / entry * 100;
+      tot++;
+      if(hit) stopped++; else survPnl += pnl;
+      allPnl += pnl;
+    }
+    return {
+      tot: tot,
+      swept: stopped / tot * 100,
+      surv: tot - stopped ? survPnl / (tot - stopped) : 0,
+      allNet: allPnl / tot - FEE
+    };
+  }
+  /* 样本内平均 ATR%，供解说折算距离 */
+  var aSum = 0, aCnt = 0;
+  for(var i = 0; i < rows.length; i++){
+    if(rows[i][0] >= START && atr[i] !== null){ aSum += atr[i] / rows[i][4] * 100; aCnt++; }
+  }
+  var avgAtrPct = aSum / aCnt;
+  var curK = 1.5, curN = 18;
+  var KS = [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5];
+  function paint(){
+    var html = '';
+    for(var x = 0; x < KS.length; x++){
+      var r = run(KS[x], curN);
+      var cur = Math.abs(KS[x] - curK) < 0.01;
+      html += '<div class="bar"><span>' + KS[x].toFixed(2) + '×</span>'
+        + '<span class="track"><span class="fill ' + (cur ? 'dn' : '') + '" style="width:' + r.swept.toFixed(1) + '%"></span></span>'
+        + '<span class="val">被扫 ' + r.swept.toFixed(1) + '%</span></div>';
+    }
+    document.getElementById('bt-bars').innerHTML = html;
+    var c = run(curK, curN);
+    document.getElementById('bt-swept').textContent = c.swept.toFixed(1) + '%';
+    document.getElementById('bt-surv').textContent = (c.surv >= 0 ? '+' : '') + c.surv.toFixed(2) + '%';
+    var allEl = document.getElementById('bt-all');
+    allEl.textContent = (c.allNet >= 0 ? '+' : '−') + Math.abs(c.allNet).toFixed(3) + '%';
+    allEl.className = 'v ' + (c.allNet >= 0 ? 'up' : 'dn');
+    document.getElementById('bt-cnt').textContent = fmt(c.tot, 0) + ' 笔';
+    var dist = curK * avgAtrPct;
+    var msg = '当前设置：止损距离约 ' + curK.toFixed(2) + ' × ' + avgAtrPct.toFixed(2) + '%（样本内平均 ATR%）＝ <b>' + dist.toFixed(2) + '%</b>，持有 ' + (curN / 6) + ' 天，被扫率 <b>' + c.swept.toFixed(1) + '%</b>。';
+    if(curK <= 0.75){
+      msg += ' 呼吸税沉重：十笔里八九笔死于正常晃动，每次还要再交手续费和滑点——止损挡住的不是错误，是呼吸本身。';
+    }else if(curK >= 2.5){
+      msg += ' 被扫率是低了，但别忘了对价：每次被扫实亏 ' + dist.toFixed(1) + '%，而且 6.4 节的公式会把仓位缩小到 1.5 倍设置的 ' + (1.5 / curK * 100).toFixed(0) + '%——同样的行情，赚得也少了。距离不是越远越好，是"刚好盖过呼吸"最好。';
+    }else{
+      msg += ' 这个区间（1.25–1.75 倍）在本样本里总账最好：缓冲盖得过大部分正常晃动，又没把仓位摊得太薄——v0.3 规则里 k＝1.5 的出处就在这。';
+    }
+    document.getElementById('bt-msg').innerHTML = msg;
+  }
+  CT.bindRange('bt-k', function(v){ curK = v; paint(); }, function(v){ return v.toFixed(2) + '×'; });
+  CT.bindRange('bt-n', function(v){ curN = v; paint(); }, function(v){ return v + ' 根＝' + (v / 6) + ' 天'; });
+})();
+
+/* ---------- 图 6-4 10·10 复盘 ---------- */
+(function(){
+  var rows = CT.slice(H1, '2025-10-10T12:00:00Z', '2025-10-14T00:00:00Z');
+  var dRow = null;
+  for(var i = 0; i < D.length; i++){ if(D[i][0] === Date.parse('2025-10-10') / 1000){ dRow = D[i]; break; } }
+  var entry = dRow[4];                               // 112,714.9
+  var atr4f = atrArr(H4, 14);
+  var i20 = -1;
+  for(var j = 0; j < H4.length; j++){ if(H4[j][0] === Date.parse('2025-10-10T20:00:00Z') / 1000){ i20 = j; break; } }
+  var A = atr4f[i20];                                // 入场时已知的 4h ATR ≈ 2,705
+  var stopT = entry * 0.98;                          // 贴脸 −2%
+  var stopA = entry - 1.5 * A;                       // 1.5×ATR
+  var g = CT.makeChart('rp-chart', {timeVisible: true});
+  var cs = g.addCandles(rows);
+  g.priceLine(cs, entry, 'accent', '入场', 0);
+  g.priceLine(cs, stopT, 'crit', '贴脸 −2%', 2);
+  g.priceLine(cs, stopA, 'series2', '1.5×ATR', 2);
+  g.markers(cs, [
+    {time: Date.parse('2025-10-10T21:00:00Z') / 1000, position: 'belowBar', shape: 'arrowUp', color: 'crit', text: '事件针＝10.5×ATR'},
+    {time: Date.parse('2025-10-11T07:00:00Z') / 1000, position: 'belowBar', shape: 'circle', color: 'crit', text: '−2% 被扫'},
+    {time: Date.parse('2025-10-11T21:00:00Z') / 1000, position: 'belowBar', shape: 'arrowUp', color: 'series2', text: '余震最低 109,501'}
+  ]);
+  g.fit();
+  CT.legend('rp-legend', [['accent', '入场 112,715'], ['crit', '贴脸止损（−2%）'], ['series2', '1.5×ATR 止损']]);
+  document.getElementById('rp-entry').textContent = fmt(entry, 0);
+  document.getElementById('rp-tight').textContent = fmt(stopT, 0) + ' 被扫';
+  document.getElementById('rp-atr').textContent = fmt(stopA, 0) + ' 存活';
+  document.getElementById('rp-atr-s').textContent = '距余震最低还有 ' + fmt(109501 - stopA, 0) + ' U';
+  document.getElementById('rp-after').textContent = fmt(115112, 0);
+  document.getElementById('rp-msg').innerHTML = '两条虚线之间约 ' + fmt(stopT - stopA, 0) + ' U 的距离，就是"拍脑袋的 2%"和"量过呼吸的 1.5×ATR"的全部差别——当时 4h ATR ＝ ' + fmt(A, 0) + ' U（3.6%），余震的正常深度本来就超过 2%。<b>先量呼吸，再下针。</b>';
+  CT.bindSeg('rp-view', function(v){
+    if(v === 'zoom') g.setRange('2025-10-10T22:00:00Z', '2025-10-12T18:00:00Z');
+    else g.fit();
+  });
+})();
+
+/* ---------- 图 6-5 ATR 仓位计算器 ---------- */
+(function(){
+  var LASTC = D[D.length - 1][4];                    // 83,577
+  var acct = 10000, risk = 1, atrPct = 1.1, k = 1.5;
+  function paint(){
+    var dist = k * atrPct;                           // 止损距离 %
+    var riskU = acct * risk / 100;
+    var raw = riskU / dist * 100;                    // 名义
+    var cap = Math.min(raw, acct * 5);
+    var capped = cap < raw;
+    var qty = cap / LASTC;
+    var margin5 = cap / 5;
+    var liqDist = (1 / 5 - 0.005) * 100;             // 19.5%
+    document.getElementById('pos-dist').textContent = dist.toFixed(2) + '%';
+    document.getElementById('pos-notional').textContent = fmt(cap, 0) + ' U';
+    document.getElementById('pos-notional-s').textContent = capped
+      ? '公式给 ' + fmt(raw, 0) + '，被 5 倍杠杆上限截断'
+      : '＝ ' + fmt(riskU, 0) + ' U ÷ ' + dist.toFixed(2) + '%';
+    document.getElementById('pos-qty').textContent = qty.toFixed(4) + ' BTC';
+    document.getElementById('pos-qty-s').textContent = '按现价 ' + fmt(LASTC, 0) + '（2026-09-30 收盘）';
+    document.getElementById('pos-margin').textContent = fmt(margin5, 0) + ' U';
+    document.getElementById('pos-margin-s').textContent = '强平距离 ' + liqDist.toFixed(1) + '% ＝ 止损的 ' + (liqDist / dist).toFixed(1) + ' 倍';
+    var half = riskU / (k * atrPct * 2) * 100;
+    document.getElementById('pos-msg').innerHTML = (capped
+      ? '波动太小、距离太近，公式想开 ' + fmt(raw, 0) + ' U 但被"逐仓 ≤5 倍"的安全带截断了——<b>风险上限和杠杆上限，谁更严听谁的。</b>'
+      : '试试把 ATR% 拉到 ' + (atrPct * 2).toFixed(2) + '%（波动翻倍）：名义会正好缩到 ' + fmt(half, 0) + ' U——<b>仓位减半，单笔风险不变，还是 ' + fmt(riskU, 0) + ' U</b>。')
+      + ' 若按结构位算出的实际止损距离比 ' + dist.toFixed(2) + '% 更远，用实际距离代入分母。';
+  }
+  CT.bindRange('pos-acct', function(v){ acct = v; paint(); }, function(v){ return fmt(v, 0); });
+  CT.bindRange('pos-risk', function(v){ risk = v; paint(); }, function(v){ return v.toFixed(2) + '%'; });
+  CT.bindRange('pos-atr', function(v){ atrPct = v; paint(); }, function(v){ return v.toFixed(2) + '%'; });
+  CT.bindRange('pos-k', function(v){ k = v; paint(); }, function(v){ return v.toFixed(2) + '×'; });
+})();
+
+/* ---------- 图 6-6 下影针长分布 ---------- */
+(function(){
+  var SRC = {
+    h1: {rows: CT.slice(H1, '2026-04-01', '2026-10-01'), name: 'BTCUSDT 1h · 2026-04→09'},
+    h4: {rows: CT.slice(H4, '2026-04-01', '2026-10-01'), name: 'BTCUSDT 4h · 2026-04→09'},
+    oct: {rows: CT.slice(H1, '2025-10-01', '2025-11-01'), name: 'BTCUSDT 1h · 2025-10'}
+  };
+  var LBL = ['0–0.5×', '0.5–1×', '1–1.5×', '1.5–2×', '2–2.5×', '2.5–3×', '>3×'];
+  function dist(rows){
+    var atr = atrArr(rows, 14);
+    var b = [0, 0, 0, 0, 0, 0, 0], n = 0, over15 = 0, over2 = 0, mx = 0, mxT = 0;
+    var quietN = 0, quietOver = 0, actN = 0, actOver = 0;
+    for(var i = 15; i < rows.length; i++){
+      var prevAtr = atr[i - 1];
+      if(prevAtr === null) continue;
+      var w = Math.min(rows[i][1], rows[i][4]) - rows[i][3];
+      var q = w / prevAtr;
+      n++;
+      b[Math.min(Math.floor(q / 0.5), 6)]++;
+      if(q > 1.5) over15++;
+      if(q > 2) over2++;
+      if(q > mx){ mx = q; mxT = rows[i][0]; }
+      var hr = Math.floor(rows[i][0] / 3600) % 24;
+      if(hr >= 20 && hr < 23){ quietN++; if(q > 1.5) quietOver++; }
+      else{ actN++; if(q > 1.5) actOver++; }
+    }
+    return {b: b, n: n, over15: over15, over2: over2, mx: mx, mxT: mxT,
+      quiet: quietOver / quietN * 100, act: actOver / actN * 100};
+  }
+  function show(v){
+    var s = SRC[v], r = dist(s.rows);
+    var maxShare = 0, shares = [], x;
+    for(x = 0; x < 7; x++){ shares.push(r.b[x] / r.n * 100); if(shares[x] > maxShare) maxShare = shares[x]; }
+    var html = '';
+    for(x = 0; x < 7; x++){
+      html += '<div class="bar"><span>' + LBL[x] + '</span>'
+        + '<span class="track"><span class="fill ' + (x >= 3 ? 'dn' : '') + '" style="width:' + (shares[x] / maxShare * 100).toFixed(1) + '%"></span></span>'
+        + '<span class="val">' + shares[x].toFixed(1) + '%（' + fmt(r.b[x], 0) + ' 根）</span></div>';
+    }
+    document.getElementById('wk-bars').innerHTML = html;
+    document.getElementById('wk-n').textContent = fmt(r.n, 0) + ' 根';
+    document.getElementById('wk-n-s').textContent = s.name;
+    document.getElementById('wk-in15').textContent = (100 - r.over15 / r.n * 100).toFixed(1) + '%';
+    document.getElementById('wk-over2').textContent = (r.over2 / r.n * 100).toFixed(2) + '%';
+    var d = new Date(r.mxT * 1000);
+    document.getElementById('wk-max').textContent = r.mx.toFixed(1) + '×ATR';
+    document.getElementById('wk-max-s').textContent = d.toISOString().slice(0, 10) + ' ' + d.toISOString().slice(11, 16) + ' UTC';
+    var msg;
+    if(v === 'h1'){
+      msg = '近半年的常态呼吸：<b>' + (100 - r.over15 / r.n * 100).toFixed(1) + '% 的下影针不超过 1.5×ATR</b>——1.5 倍缓冲买到的就是这份免疫。顺带检验第 2 课的直觉：清淡时段（北京凌晨 4–7 点）超过 1.5× 的针占 ' + r.quiet.toFixed(2) + '%，其余时段 ' + r.act.toFixed(2) + '%——<b>相对当时的 ATR，清淡时段的针并不更肥</b>，因为 ATR 自己也跟着心跳缩放了；清淡时段真正的威胁是统计表外的尾部冲击。';
+    }else if(v === 'h4'){
+      msg = '换到 4 小时：分布形状和 1 小时几乎一个模子——<b>呼吸的形状不挑周期</b>。所以 k＝1.5 不需要按周期另调，直接跟着你放止损用的那个周期的 ATR 走就行（v0.3 用 4h）。';
+    }else{
+      msg = '把 10·10 所在的整月放进来：<b>' + (100 - r.over15 / r.n * 100).toFixed(1) + '% 的针依旧乖乖待在 1.5×ATR 以内</b>，但最右边那根 ' + r.mx.toFixed(1) + '× 的怪物（10-10 UTC 21 点）单枪匹马说明了一切——<b>分布管常态，尾部管生死</b>。对付它的不是更宽的止损，是小仓位、事件意识和"下单即挂止损"锁死的 1R 底线。';
+    }
+    document.getElementById('wk-msg').innerHTML = msg;
+  }
+  CT.bindSeg('wk-src', show);
+})();
+})();
+</script>
+</body>
+</html>
