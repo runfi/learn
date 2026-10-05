@@ -1,0 +1,2444 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>技术分析 · 第12章 日本蜡烛图</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700;900&family=Noto+Sans+SC:wght@400;500;700&display=swap">
+<style>
+/* 《金融市场技术分析》讲义共享样式：双栏（212px 侧栏 + 正文），沿用《投资学》手册模板；
+   新增：红涨绿跌的 K 线配色、图表注释类、规则卡 / 证据与怀疑 / A 股适配 / 打个比方 四种讲义块 */
+:root{
+  --bg:#f5f6f7;
+  --surface:#ffffff;
+  --ink:#171a20;
+  --ink-2:#4a5160;
+  --muted:#858c9b;
+  --line:#e2e5ea;
+  --line-2:#c9ced6;
+  --accent:#1d5fad;
+  --accent-ink:#174e8f;
+  --accent-soft:#eaf1fa;
+  --series:#2a78d6;
+  --series2:#eb6834;
+  --series2-ink:#b4501f;
+  --series3:#8a5fd1;
+  --up:#d63a3a;
+  --up-ink:#b42f2f;
+  --up-soft:rgba(214,58,58,.09);
+  --down:#14905a;
+  --down-soft:rgba(20,144,90,.10);
+  --crit:#d03b3b;
+  --crit-soft:rgba(208,59,59,.07);
+  --serif:"Noto Serif SC","Songti SC",serif;
+  --sans:"Noto Sans SC","Microsoft YaHei",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#101215; --surface:#181b20; --ink:#eef0f3; --ink-2:#c0c5cf; --muted:#8a909d;
+    --line:#282c33; --line-2:#3a3f48;
+    --accent:#5a96e3; --accent-ink:#79abec; --accent-soft:#1c2a3d;
+    --series:#3987e5; --series2:#e0703f; --series2-ink:#f0915f; --series3:#a585e8;
+    --up:#ec6262; --up-ink:#f08080; --up-soft:rgba(236,98,98,.13);
+    --down:#2fb87a; --down-soft:rgba(47,184,122,.13);
+    --crit:#e66767; --crit-soft:rgba(230,103,103,.10);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#101215; --surface:#181b20; --ink:#eef0f3; --ink-2:#c0c5cf; --muted:#8a909d;
+  --line:#282c33; --line-2:#3a3f48;
+  --accent:#5a96e3; --accent-ink:#79abec; --accent-soft:#1c2a3d;
+  --series:#3987e5; --series2:#e0703f; --series2-ink:#f0915f; --series3:#a585e8;
+  --up:#ec6262; --up-ink:#f08080; --up-soft:rgba(236,98,98,.13);
+  --down:#2fb87a; --down-soft:rgba(47,184,122,.13);
+  --crit:#e66767; --crit-soft:rgba(230,103,103,.10);
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:var(--sans); font-size:15.5px; line-height:1.85;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1190px; margin:0 auto; padding-inline:20px; padding-block:0 72px}
+
+.layout{display:grid; grid-template-columns:212px minmax(0,1fr); gap:44px; align-items:start}
+.article{max-width:920px; min-width:0}
+.sidenav{
+  position:sticky; top:16px; max-height:calc(100vh - 32px); overflow-y:auto;
+  padding-block:40px 16px; font-size:13px;
+}
+.sidenav .sn-chap{
+  margin:0 0 10px; padding-left:13px; font-size:11.5px; letter-spacing:.14em;
+  color:var(--muted); font-weight:700;
+}
+.sidenav a{
+  display:block; color:var(--ink-2); text-decoration:none; line-height:1.55;
+  padding:6px 10px 6px 13px; border-left:2px solid var(--line);
+}
+.sidenav a:hover{color:var(--accent-ink)}
+.sidenav a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.sidenav a.active{
+  color:var(--accent-ink); border-left-color:var(--accent);
+  background:var(--accent-soft); font-weight:700;
+}
+.hero,section.ch{scroll-margin-top:10px}
+@media (max-width: 999px){
+  .sidenav{display:none}
+  .layout{display:block}
+}
+@media (min-width: 1000px){
+  nav.chapmap{display:none}
+}
+
+.masthead{
+  display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  padding-block:18px 14px; border-bottom:1px solid var(--line);
+}
+.masthead .book{font-family:var(--serif); font-weight:700; font-size:15px; letter-spacing:.02em}
+.masthead .part{font-size:12.5px; color:var(--muted); letter-spacing:.12em}
+.masthead a{color:var(--accent-ink); text-decoration:none}
+.masthead a:hover{text-decoration:underline}
+.masthead a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+a.next{color:inherit; text-decoration:none}
+a.next:hover{border-color:var(--accent)}
+a.next:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+.hero{padding-block:44px 28px; border-bottom:1px solid var(--line)}
+.chap-no{
+  display:inline-flex; align-items:center; gap:10px;
+  font-size:12.5px; letter-spacing:.22em; color:var(--accent-ink); font-weight:700;
+}
+.chap-no::after{content:""; width:46px; height:1px; background:var(--accent)}
+.hero h1{
+  font-family:var(--serif); font-weight:900; font-size:clamp(30px,5vw,46px);
+  line-height:1.25; margin:10px 0 4px; letter-spacing:.02em; text-wrap:balance;
+}
+.hero .en{font-size:14px; color:var(--muted); letter-spacing:.08em; margin:0 0 18px}
+.hero .lede{max-width:46em; color:var(--ink-2); margin:0}
+.hero .lede strong{color:var(--ink)}
+.objectives{
+  margin-top:22px; padding:16px 20px; background:var(--surface);
+  border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:0 6px 6px 0;
+}
+.objectives h2{font-size:13px; letter-spacing:.18em; color:var(--accent-ink); margin:0 0 8px; font-weight:700}
+.objectives ul{margin:0; padding-left:1.3em; color:var(--ink-2)}
+.objectives li{margin:3px 0}
+.colorkey{margin-top:12px; font-size:12.5px; color:var(--muted)}
+.colorkey .up{color:var(--up-ink); font-weight:700}
+.colorkey .dn{color:var(--down); font-weight:700}
+.chapmap{display:flex; flex-wrap:wrap; gap:8px; margin-top:20px}
+.chapmap a{
+  font-size:13px; color:var(--ink-2); text-decoration:none;
+  border:1px solid var(--line-2); border-radius:999px; padding:4px 13px; background:var(--surface);
+}
+.chapmap a:hover{border-color:var(--accent); color:var(--accent-ink)}
+.chapmap a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+section.ch{padding-block:40px 8px}
+section.ch + section.ch{border-top:1px solid var(--line)}
+h2.sec{
+  font-family:var(--serif); font-weight:700; font-size:clamp(22px,3.4vw,28px);
+  margin:0 0 2px; line-height:1.35; text-wrap:balance;
+}
+h2.sec .no{color:var(--accent-ink); margin-right:10px; font-feature-settings:"tnum"}
+p.sec-en{font-size:12.5px; letter-spacing:.1em; color:var(--muted); margin:0 0 18px}
+h3{font-size:16.5px; font-weight:700; margin:26px 0 8px}
+h3 .tag{color:var(--accent-ink)}
+p{margin:10px 0}
+.prose{max-width:46em}
+.prose .en-term{color:var(--muted); font-size:.88em}
+.prose ul,.prose ol{padding-left:1.4em; margin:8px 0}
+.prose li{margin:5px 0}
+strong{font-weight:700}
+em{font-style:normal; font-weight:700; color:var(--accent-ink)}
+.up-t{color:var(--up-ink); font-weight:700}
+.dn-t{color:var(--down); font-weight:700}
+
+.cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px; margin:16px 0}
+.card{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:16px 18px;
+}
+.card h4{margin:0 0 6px; font-size:15px}
+.card h4 .en-term{display:block; font-weight:400; font-size:12px; color:var(--muted); letter-spacing:.04em; margin-top:2px}
+.card p{margin:6px 0; font-size:14px; color:var(--ink-2)}
+.card ul{margin:6px 0 0; padding-left:1.2em; font-size:14px; color:var(--ink-2)}
+.card li{margin:3px 0}
+.card .k{display:block; font-size:12px; letter-spacing:.12em; color:var(--muted); font-weight:700; margin-top:8px}
+
+.case,.evidence,.ashare{
+  margin:20px 0; padding:16px 20px 14px; background:var(--surface);
+  border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:0 8px 8px 0;
+}
+.evidence{border-left-color:var(--series2)}
+.ashare{border-left-color:var(--up)}
+.case .label,.evidence .label,.ashare .label{font-size:12px; letter-spacing:.2em; color:var(--accent-ink); font-weight:700; display:block; margin-bottom:6px}
+.evidence .label{color:var(--series2-ink)}
+.ashare .label{color:var(--up-ink)}
+.case h4,.evidence h4,.ashare h4{margin:0 0 6px; font-size:15.5px}
+.case p,.evidence p,.ashare p{margin:7px 0; font-size:14.5px; color:var(--ink-2)}
+.case p:last-child,.evidence p:last-child,.ashare p:last-child{margin-bottom:2px}
+.evidence ul,.ashare ul,.case ul{margin:6px 0; padding-left:1.3em; font-size:14.5px; color:var(--ink-2)}
+.evidence li,.ashare li,.case li{margin:5px 0}
+.case .takeaway{color:var(--ink); font-weight:500}
+.case .takeaway::before{content:"▸ 要点 "; color:var(--accent-ink); font-weight:700; font-size:12.5px; letter-spacing:.05em}
+
+.analogy{
+  margin:18px 0; padding:14px 20px; background:var(--accent-soft); border-radius:8px; max-width:46em;
+}
+.analogy .label{font-size:12px; letter-spacing:.2em; color:var(--accent-ink); font-weight:700; display:block; margin-bottom:4px}
+.analogy p{margin:5px 0; font-size:14.5px; color:var(--ink-2)}
+
+.pitfall{
+  margin:20px 0; padding:14px 20px; border:1px dashed var(--line-2); border-radius:8px; max-width:46em;
+}
+.pitfall .label{font-size:12px; letter-spacing:.2em; color:var(--crit); font-weight:700; display:block; margin-bottom:4px}
+.pitfall p{margin:4px 0; font-size:14.5px; color:var(--ink-2)}
+
+/* 规则卡 */
+.rulecard{
+  margin:22px 0; background:var(--surface); border:1px solid var(--line); border-radius:8px;
+  overflow:hidden; max-width:46em;
+}
+.rulecard .rc-head{
+  padding:10px 18px; background:var(--accent-soft); border-bottom:1px solid var(--line);
+  display:flex; justify-content:space-between; align-items:baseline; gap:10px; flex-wrap:wrap;
+}
+.rulecard .rc-head .label{font-size:12px; letter-spacing:.2em; color:var(--accent-ink); font-weight:700}
+.rulecard .rc-head .rc-name{font-weight:700; color:var(--ink)}
+.rulecard dl{display:grid; grid-template-columns:6.2em minmax(0,1fr); margin:0}
+.rulecard dt{padding:9px 0 9px 18px; font-size:13px; color:var(--muted); font-weight:700; border-top:1px solid var(--line)}
+.rulecard dd{margin:0; padding:9px 18px 9px 8px; font-size:14px; color:var(--ink-2); border-top:1px solid var(--line)}
+.rulecard dl > dt:first-child,.rulecard dl > dt:first-child + dd{border-top:none}
+.rulecard .rc-note{padding:10px 18px; font-size:13px; color:var(--muted); border-top:1px dashed var(--line-2); line-height:1.75}
+
+.formula{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px;
+  padding:12px 18px; margin:14px 0; max-width:46em; overflow-x:auto;
+  font-size:15px; line-height:2;
+}
+.formula .fx{white-space:nowrap}
+.formula sub,.formula sup{font-size:11px}
+.formula .note{font-size:12.5px; color:var(--muted)}
+
+table{border-collapse:collapse; width:100%; font-size:14px; font-variant-numeric:tabular-nums}
+.tablewrap{overflow-x:auto; margin:16px 0; border:1px solid var(--line); border-radius:8px; background:var(--surface)}
+.tablewrap table{min-width:560px}
+th,td{padding:9px 14px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top}
+th{font-size:12.5px; letter-spacing:.08em; color:var(--muted); font-weight:700; white-space:nowrap}
+tr:last-child td{border-bottom:none}
+td.num{white-space:nowrap}
+
+figure{margin:24px 0; background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:18px 18px 12px}
+figure .fig-scroll{overflow-x:auto}
+figure svg{display:block; max-width:100%; height:auto; color:var(--ink)}
+figure .fig-scroll svg{min-width:660px}
+figure .fig-scroll.narrow svg{min-width:0}
+figcaption{font-size:13px; color:var(--muted); margin-top:10px; line-height:1.7}
+figcaption b{color:var(--ink-2); font-weight:700}
+.fig-title{font-size:14px; font-weight:700; margin:0 0 12px}
+.fig-title .fno{color:var(--accent-ink); margin-right:8px}
+.fig-title .sch{font-size:11.5px; font-weight:400; color:var(--muted); border:1px solid var(--line-2); border-radius:999px; padding:1px 8px; margin-left:8px; white-space:nowrap}
+
+/* SVG：通用 */
+svg .node{fill:var(--bg); stroke:var(--line-2); stroke-width:1.2}
+svg .node-hi{fill:var(--accent-soft); stroke:var(--accent)}
+svg .node-up{fill:var(--up-soft); stroke:var(--up)}
+svg .node-dn{fill:var(--down-soft); stroke:var(--down)}
+svg .nt{font:700 12.5px var(--sans); fill:var(--ink)}
+svg .nd{font:400 11px var(--sans); fill:var(--ink-2)}
+svg .edge{stroke:var(--ink-2); stroke-width:1.4; fill:none}
+svg .edge-soft{stroke:var(--muted); stroke-width:1.2; fill:none; stroke-dasharray:4 4}
+svg .edge-acc{stroke:var(--accent); stroke-width:1.6; fill:none}
+svg .elabel{font:400 11.5px var(--sans); fill:var(--muted)}
+svg .grid{stroke:var(--line); stroke-width:1}
+svg .axis{stroke:var(--line-2); stroke-width:1.2}
+svg .tick{font:400 11px var(--sans); fill:var(--muted)}
+svg .atitle{font:400 11.5px var(--sans); fill:var(--muted)}
+svg .pl{font:700 13px var(--sans); fill:var(--ink)}
+svg .pv{font:400 11.5px var(--sans); fill:var(--ink-2)}
+svg .hi{font:700 12px var(--sans); fill:var(--accent-ink)}
+svg .ut{font:700 12px var(--sans); fill:var(--up-ink)}
+svg .dt{font:700 12px var(--sans); fill:var(--down)}
+svg .lg{font:400 11px var(--sans); fill:var(--ink-2)}
+svg .ln1{stroke:var(--series); stroke-width:2.8; fill:none}
+svg .seg1{fill:var(--series)}
+svg .seg2{fill:var(--series2)}
+
+/* SVG：K 线与指标（红涨绿跌） */
+svg .cu{fill:var(--up); stroke:var(--up); stroke-width:1}
+svg .cuh{fill:var(--surface); stroke:var(--up); stroke-width:1.2}
+svg .cd{fill:var(--down); stroke:var(--down); stroke-width:1}
+svg .wu{stroke:var(--up); stroke-width:1.2}
+svg .wd{stroke:var(--down); stroke-width:1.2}
+svg .bu{stroke:var(--up); stroke-width:1.6; fill:none}
+svg .bd{stroke:var(--down); stroke-width:1.6; fill:none}
+svg .vu{fill:var(--up); opacity:.45}
+svg .vd{fill:var(--down); opacity:.45}
+svg .cl{stroke:var(--ink-2); stroke-width:1.8; fill:none}
+svg .ma1{stroke:var(--series); stroke-width:1.7; fill:none}
+svg .ma2{stroke:var(--series2); stroke-width:1.7; fill:none}
+svg .ma3{stroke:var(--series3); stroke-width:1.7; fill:none}
+svg .bb{stroke:var(--series3); stroke-width:1.3; fill:none; stroke-dasharray:5 3}
+svg .bbm{stroke:var(--series3); stroke-width:1; fill:none; opacity:.7}
+svg .dc{stroke:var(--series2); stroke-width:1.4; fill:none}
+svg .ind1{stroke:var(--series); stroke-width:1.6; fill:none}
+svg .ind2{stroke:var(--series2); stroke-width:1.6; fill:none}
+svg .ind3{stroke:var(--series3); stroke-width:1.4; fill:none}
+svg .tl{stroke:var(--accent); stroke-width:2; fill:none}
+svg .tl2{stroke:var(--series2); stroke-width:2; fill:none}
+svg .tld{stroke:var(--accent); stroke-width:1.6; fill:none; stroke-dasharray:6 4}
+svg .sr{stroke:var(--muted); stroke-width:1.2; fill:none; stroke-dasharray:5 4}
+svg .sr-up{stroke:var(--up); stroke-width:1.4; fill:none; stroke-dasharray:6 4}
+svg .sr-dn{stroke:var(--down); stroke-width:1.4; fill:none; stroke-dasharray:6 4}
+svg .zone{fill:var(--accent-soft)}
+svg .zone-up{fill:var(--up-soft)}
+svg .zone-dn{fill:var(--down-soft)}
+svg .dot{fill:var(--accent)}
+svg .dot-up{fill:var(--up)}
+svg .dot-dn{fill:var(--down)}
+svg .px{stroke:var(--up); stroke-width:1.6}
+svg .po{stroke:var(--down); stroke-width:1.6; fill:none}
+
+.recap{margin-top:8px}
+.recap ol{margin:8px 0 0; padding-left:1.4em; max-width:46em; color:var(--ink-2)}
+.recap li{margin:7px 0}
+.recap li b{color:var(--ink)}
+details{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px;
+  padding:12px 18px; margin:10px 0; max-width:46em;
+}
+details summary{cursor:pointer; font-weight:500; color:var(--ink)}
+details summary:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+details[open] summary{color:var(--accent-ink)}
+details .ans{margin-top:8px; padding-top:8px; border-top:1px dashed var(--line); font-size:14.5px; color:var(--ink-2)}
+details .ans p{margin:6px 0}
+
+.next{
+  margin-top:48px; padding:18px 22px; border:1px solid var(--line); border-radius:8px;
+  background:var(--surface); display:flex; justify-content:space-between; align-items:center; gap:14px; flex-wrap:wrap;
+}
+.next .lbl{font-size:12px; letter-spacing:.18em; color:var(--muted)}
+.next .ttl{font-family:var(--serif); font-weight:700; font-size:18px; margin-top:2px}
+.foot{margin-top:26px; font-size:12.5px; color:var(--muted); line-height:1.8}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <span class="book">《金融市场技术分析》学习手册 · Technical Analysis of the Financial Markets (John J. Murphy)</span>
+  <span class="part"><a href="ta-index.html">学习地图</a> · 第二阶段 价格行为</span>
+</header>
+
+<div class="layout">
+
+<nav class="sidenav" aria-label="小节导航">
+  <p class="sn-chap">第 7 站 · 日本蜡烛图</p>
+  <a href="#top">章首 · 学习目标</a>
+  <a href="#s1">12.1 从米市到你的行情软件</a>
+  <a href="#s2">12.2 单根 K 线</a>
+  <a href="#s3">12.3 反转信号（上）</a>
+  <a href="#s4">12.4 反转信号（下）</a>
+  <a href="#s5">12.5 持续信号</a>
+  <a href="#s6">12.6 位置决定意义</a>
+  <a href="#s7">12.7 落地：规则 · 证据 · A 股</a>
+  <a href="#recap">小结 · 术语 · 自测</a>
+</nav>
+
+<main class="article">
+
+<!-- ======================== 章首 ======================== -->
+<div class="hero" id="top">
+  <span class="chap-no">CHAPTER 12 · 第 7 站 / 共 14 站</span>
+  <h1>日本蜡烛图</h1>
+  <p class="en">Japanese Candlesticks · 学习顺序提前到价格行为阶段</p>
+  <p class="lede">前面几站，你一直在用“广角镜头”看市场：几十上百根 K 线连成的趋势、头肩形、三角形，再配上成交量。这一站把镜头推到最近，只看<strong>一根到三根 K 线</strong>。原书第 12 章排在指标之后，本手册把它提前到这里，因为它和形态、量价说的是同一件事：<strong>买卖双方的力量对比正在发生什么变化</strong>，只是时间尺度更短。这一站要回答三个问题：一根 K 线在说什么？为什么同一个形状出现在高位和低位，意义完全相反？怎样把 K 线信号嵌进支撑阻力、趋势、成交量这些西方工具里？先记住本站的结论：<strong>K 线是放大镜，不是望远镜</strong>。它擅长告诉你多空力量刚刚发生了什么转折，却不会告诉你行情会走多远。</p>
+
+  <div class="objectives">
+    <h2>学习目标</h2>
+    <ul>
+      <li>了解蜡烛图的来历（米市传说与尼森西传），知道墨菲本章的知识来源</li>
+      <li>把每根 K 线读成“一天的多空战报”：实体、影线、阴阳各自说明什么</li>
+      <li>认出基本 K 线：大阳线、大阴线、纺锤线、十字星，以及长腿、墓碑、蜻蜓三种十字星</li>
+      <li>掌握主要反转形态的形状标准、所需的位置背景，以及哪些必须等确认</li>
+      <li>认识两类持续信号：窗口，以及上升三法与下降三法</li>
+      <li>理解“位置决定意义”：把 K 线与支撑阻力、趋势线、回撤位、成交量、摆动指标结合，并明白 K 线为什么不给价格目标</li>
+      <li>写出一张“支撑位锤子线”规则卡，知道学术检验对 K 线的结论</li>
+      <li>处理 A 股特有的问题：收涨的阴线、集合竞价跳空、涨跌停 K 线、中文俗称对照</li>
+    </ul>
+  </div>
+  <p class="colorkey">读图约定：本手册遵循 A 股习惯，<span class="up">红色 = 上涨</span>（收盘 ≥ 开盘），<span class="dn">绿色 = 下跌</span>，与欧美软件正好相反。图题标有“示意”的，是为说明原理而构造的数据，不是真实行情。</p>
+
+  <nav class="chapmap" aria-label="本章导览">
+    <a href="#s1">12.1 来历与战报</a>
+    <a href="#s2">12.2 单根 K 线</a>
+    <a href="#s3">12.3 反转（上）</a>
+    <a href="#s4">12.4 反转（下）</a>
+    <a href="#s5">12.5 持续信号</a>
+    <a href="#s6">12.6 位置决定意义</a>
+    <a href="#s7">12.7 落地</a>
+    <a href="#recap">小结与自测</a>
+  </nav>
+</div>
+
+<!-- ======================== 12.1 ======================== -->
+<section class="ch" id="s1">
+  <h2 class="sec"><span class="no">12.1</span>从米市到你的行情软件</h2>
+  <p class="sec-en">FROM RICE MARKETS TO YOUR SCREEN</p>
+
+  <div class="prose">
+    <p>你在 A 股软件里天天看的 K 线，英文叫 candlestick chart，直译是“蜡烛图”：粗粗的实体像蜡烛，上下的细线像烛芯。中国投资者对它熟得不能再熟，但它在西方普及，满打满算只有三十多年。</p>
+
+    <h3>传说与史实</h3>
+    <p>蜡烛图的来历通常追溯到 18 世纪日本大阪的堂岛米市。那里的大米交易发展出了米券的远期买卖，常被称为世界上最早的有组织期货市场之一。故事的主角是出羽国酒田的米商<strong>本间宗久</strong>，相传他靠研究米价背后的人心发了大财，日本流传的“酒田战法”也挂在他的名下。</p>
+    <p>这里要谨慎：<strong>没有可靠史料证明本间宗久画过蜡烛图</strong>。比较稳妥的说法是，本间宗久留下的是一套关于市场心理的交易思想，蜡烛图的画法是后来才逐步定型的，具体年代并无定论。把一套工具挂在一位传奇人物名下，是交易界的老传统，听听就好。</p>
+    <p>可以确定的是它怎样来到西方：<strong>1990 年前后，史蒂夫·尼森</strong><span class="en-term">（Steve Nison）</span>系统地把蜡烛图介绍给西方交易者，1991 年出版《日本蜡烛图技术》，1994 年又出版续作 <span class="en-term">Beyond Candlesticks</span>。墨菲本章的内容主要基于尼森的工作，本站讲到的形态定义和判读规则，基本都出自尼森，再经墨菲提炼。</p>
+  </div>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>一位美国分析师的“意外发现”</h4>
+    <p>20 世纪 80 年代后期，尼森还是美林证券的一名技术分析师。他从一位日本经纪人那里第一次接触到这种图，被那些生动的形态名称吸引：乌云盖顶、启明星、三只乌鸦。此后他花了几年时间搜集和翻译日文资料，1989 年前后开始在期货杂志上发表介绍文章，1991 年出版专著。这本书在西方一炮而红，之后几乎所有行情软件都把蜡烛图作为标准画法之一。</p>
+    <p class="takeaway">尼森从一开始就强调，蜡烛图不是要取代西方技术分析，而是<b>补充</b>：它和美式柱线图用的是同样四个价格（第 1 站图 1-7），却能更快地看出短期转折。墨菲接受的也是这个定位，所以本章的落脚点是“K 线 + 西方工具”。这也是学它的正确姿势：多学一种语言，而不是换一套信仰。</p>
+  </div>
+
+  <div class="prose">
+    <h3>每根 K 线都是一份战报</h3>
+    <p>读 K 线的关键，是把四个价格还原成这一天里发生的事：</p>
+    <ul>
+      <li><strong>开盘价</strong>：隔夜消化完所有消息后的第一次表态。A 股的开盘价由 9:15–9:25 的集合竞价决定；</li>
+      <li><strong>收盘价</strong>：全天博弈的最终结果，谁守住了阵地。第 1 站说过，它是一天中最重要的价格；</li>
+      <li><strong>实体</strong>：从开盘到收盘的净胜负。阳线说明多方赢了这一天，阴线说明空方赢了；实体越长，赢得越彻底；</li>
+      <li><strong>影线</strong>：盘中曾经打到、却没守住的价格。上影线是多方攻上去又被打回来的地方，下影线是空方砸下去又被买回来的地方。<strong>影线记录的是被市场拒绝的价格</strong>。</li>
+    </ul>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 12-1</span>一天的多空战报：盘中走势怎样压缩成一根 K 线<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 316" role="img" aria-label="示意图：三种盘中走势分别压缩成三根 K 线。一路上攻得到大阳线；先被猛砸再全部收复得到锤子线；先冲高再全部回落得到射击之星">
+<text class="pl" x="120" y="24" text-anchor="middle">① 大阳线：多方一路推进</text>
+<line class="axis" x1="20" y1="246" x2="146" y2="246"/>
+<line class="grid" x1="83" y1="56" x2="83" y2="246"/>
+<polyline class="cl" points="20,206 26.3,213.7 32.6,217 42.7,200.5 51.5,186.2 61.6,189.5 72.9,164.2 83,151 93.1,142.2 103.2,123.5 114.5,109.2 124.6,101.5 133.4,85 139.7,74 146,79.5"/>
+<circle class="dot" cx="20" cy="206" r="3.5"/>
+<circle class="dot" cx="146" cy="79.5" r="3.5"/>
+<line class="edge-soft" x1="152" y1="74" x2="172" y2="74"/>
+<line class="edge-soft" x1="152" y1="217" x2="172" y2="217"/>
+<line class="wu" x1="188" y1="74" x2="188" y2="217" style="stroke-width:2"/>
+<rect class="cu" x="177" y="79.5" width="22" height="126.5"/>
+<text class="elabel" x="204" y="83.5">收</text>
+<text class="elabel" x="204" y="210">开</text>
+<text class="tick" x="20" y="264" text-anchor="middle">9:30</text>
+<text class="tick" x="83" y="264" text-anchor="middle">午间</text>
+<text class="tick" x="146" y="264" text-anchor="middle">15:00</text>
+<text class="nd" x="120" y="288" text-anchor="middle">开盘后略作试探，随即一路上攻，</text>
+<text class="nd" x="120" y="304" text-anchor="middle">收在全天高点附近</text>
+<text class="pl" x="360" y="24" text-anchor="middle">② 锤子线：先砸后收复</text>
+<line class="axis" x1="260" y1="246" x2="386" y2="246"/>
+<line class="grid" x1="323" y1="56" x2="323" y2="246"/>
+<polyline class="cl" points="260,107 267.6,115.8 275.1,140 285.2,167.5 295.3,195 305.4,217 312.9,228 323,219.2 333.1,195 343.2,167.5 354.5,142.2 364.6,123.5 373.4,107 379.7,96 386,100.4"/>
+<circle class="dot" cx="260" cy="107" r="3.5"/>
+<circle class="dot" cx="386" cy="100.4" r="3.5"/>
+<line class="edge-soft" x1="392" y1="96" x2="412" y2="96"/>
+<line class="edge-soft" x1="392" y1="228" x2="412" y2="228"/>
+<line class="wu" x1="428" y1="96" x2="428" y2="228" style="stroke-width:2"/>
+<rect class="cu" x="417" y="100.4" width="22" height="6.6"/>
+<text class="elabel" x="444" y="107.7">开≈收</text>
+<text class="tick" x="260" y="264" text-anchor="middle">9:30</text>
+<text class="tick" x="323" y="264" text-anchor="middle">午间</text>
+<text class="tick" x="386" y="264" text-anchor="middle">15:00</text>
+<text class="nd" x="360" y="288" text-anchor="middle">开盘后空方猛砸，午后多方</text>
+<text class="nd" x="360" y="304" text-anchor="middle">把失地全部买回</text>
+<text class="pl" x="600" y="24" text-anchor="middle">③ 射击之星：先冲后回落</text>
+<line class="axis" x1="500" y1="246" x2="626" y2="246"/>
+<line class="grid" x1="563" y1="56" x2="563" y2="246"/>
+<polyline class="cl" points="500,184 507.6,189.5 515.1,170.8 525.2,145.5 535.3,112.5 545.4,79.5 552.9,63 563,79.5 573.1,107 583.2,134.5 594.5,151 604.6,162 613.4,170.8 619.7,177.4 626,175.2"/>
+<circle class="dot" cx="500" cy="184" r="3.5"/>
+<circle class="dot" cx="626" cy="175.2" r="3.5"/>
+<line class="edge-soft" x1="632" y1="63" x2="652" y2="63"/>
+<line class="edge-soft" x1="632" y1="189.5" x2="652" y2="189.5"/>
+<line class="wu" x1="668" y1="63" x2="668" y2="189.5" style="stroke-width:2"/>
+<rect class="cu" x="657" y="175.2" width="22" height="8.8"/>
+<text class="elabel" x="684" y="183.6">开≈收</text>
+<text class="tick" x="500" y="264" text-anchor="middle">9:30</text>
+<text class="tick" x="563" y="264" text-anchor="middle">午间</text>
+<text class="tick" x="626" y="264" text-anchor="middle">15:00</text>
+<text class="nd" x="600" y="288" text-anchor="middle">开盘后多方猛冲，高位撞上</text>
+<text class="nd" x="600" y="304" text-anchor="middle">大量卖盘，收回开盘附近</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>三个交易日的盘中路径（左侧折线）分别压缩成右边的三根 K 线。① 开盘后多方一路推进，得到实体很长、影线很短的大阳线；② 开盘后先被猛砸、午后全部收复，得到下影线很长的锤子线；③ 先冲高、再全部回落，得到上影线很长的射击之星。注意 ② 和 ③ 的实体几乎一样小，<b>真正的信息都在影线里</b>。压缩也有代价：K 线只记下四个价格，盘中先冲高还是先探底这类路径细节都丢掉了，所以读 K 线永远是<b>推断</b>，不是录像回放。</figcaption>
+  </figure>
+
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>一根 K 线就像一场球赛的赛后战报，只写四个数：开场比分、全场最大领先、全场最大落后、终场比分。大阳线是“开场就压着打，一路赢到终场”；锤子线是“上半场一度落后三球，下半场全部扳回”。从战报里读不出每个进球的细节，但能读出<strong>士气</strong>：一支落后三球还能扳回的球队，下一场多半不好对付。K 线分析读的正是这种士气的转变。</p>
+  </div>
+</section>
+
+<!-- ======================== 12.2 ======================== -->
+<section class="ch" id="s2">
+  <h2 class="sec"><span class="no">12.2</span>单根 K 线：实体、影线与十字星</h2>
+  <p class="sec-en">SINGLE CANDLES: REAL BODIES, SHADOWS AND DOJI</p>
+
+  <div class="prose">
+    <p>单根 K 线的信息量有限，但它是所有组合形态的字母表。读一根 K 线，只看三个读数：</p>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <h4>读数一：实体长短 = 力度 <span class="en-term">Real body</span></h4>
+      <p>实体长，说明一方从开盘到收盘一直占上风；实体短，说明开盘和收盘差不多，谁也没赢多少。</p>
+      <p><span class="k">注意</span>“长短”是相对的：要和这只股票最近一二十根 K 线比，不和别的股票比。</p>
+    </div>
+    <div class="card">
+      <h4>读数二：阴阳 = 开盘到收盘谁赢 <span class="en-term">White / black candle</span></h4>
+      <p>收盘高于开盘是阳线（A 股画红色，西方画空心或白色）；收盘低于开盘是阴线（A 股画绿色，西方画实心或黑色）。</p>
+      <p><span class="k">注意</span>阴阳只比较当天的开盘和收盘，<strong>不和前一天比</strong>。12.7 节会讲由此引出的“收涨的阴线”。</p>
+    </div>
+    <div class="card">
+      <h4>读数三：影线 = 被拒绝的价格 <span class="en-term">Upper / lower shadow</span></h4>
+      <p>长上影线说明高处有人在卖，长下影线说明低处有人在买。影线越长，那个方向上的拒绝就越坚决。</p>
+      <p><span class="k">注意</span>影线的含义高度依赖位置，同一根长下影线，在低位是支撑的证据，在高位是抛压的证据。</p>
+    </div>
+  </div>
+
+  <div class="prose">
+    <h3>大阳线、大阴线与纺锤线</h3>
+    <p><strong>大阳线</strong>开在全天低点附近、收在高点附近，实体很长、影线很短，表示多方从头到尾掌控局面；<strong>大阴线</strong>正好相反。如果连影线都没有，开盘就是最低价、收盘就是最高价，A 股俗称“光头光脚”，日文叫 marubozu。</p>
+    <p>但要留意位置：在长期上涨的末端突然出现一根特别大的阳线，未必是力量的证明，也可能是最后一批买家集中冲进来的“高潮”（第 6 站讲过高潮成交量）。</p>
+    <p><strong>纺锤线</strong><span class="en-term">（spinning top）</span>的实体很小，上下影线可长可短，颜色不重要。它表示多空拉锯、谁也没赢。在一段趋势里，它的意义是“原来占上风的一方，今天没能继续赢”。连续上涨几天后出现纺锤线，是多头开始乏力的第一个迹象，但也仅此而已，它本身不是卖出信号。</p>
+
+    <h3>十字星：开盘等于收盘</h3>
+    <p>十字星<span class="en-term">（doji）</span>的开盘价与收盘价相同或几乎相同，实体缩成一条横线。它说的是：<strong>今天多空打成了平手</strong>。“几乎相同”要相对地看，实务中常把实体不超过全天振幅一成的 K 线当作十字星，这是常用尺度，不是墨菲的硬规定。</p>
+    <p>十字星本身不预示方向，它的意义来自<strong>它打断了什么</strong>：</p>
+    <ul>
+      <li>一根长阳之后出现十字星，日本人说市场“累了”：前一天还压倒性占优的多方，今天只打成平手。这是上涨趋势最常见的预警之一；</li>
+      <li>尼森观察到，十字星在顶部比在底部更有用。上涨需要源源不断的买盘来推动，买卖一旦打平就很危险；下跌却可以靠自身的重量继续，所以底部的十字星更需要后续确认；</li>
+      <li>如果一个市场天天出十字星，单个十字星就没什么意义。A 股的低价股尤其如此：3 元的股票最小变动 1 分钱就是 0.33%，开盘价和收盘价“撞上”的概率天然更高。</li>
+    </ul>
+
+    <h3>三种特殊的十字星</h3>
+    <p><strong>长腿十字</strong>：上下影线都很长，开盘与收盘落在中间。全天剧烈争夺，最后回到原点，常出现在转折点附近。</p>
+    <p><strong>墓碑十字</strong>：开盘、收盘、最低价三价相同，只有一根长上影线，形似倒写的 T。多方把价格一路推高，收盘前又全部丢掉，像一块墓碑立在高处。出现在上涨之后偏看跌。</p>
+    <p><strong>蜻蜓十字</strong>：开盘、收盘、最高价三价相同，只有一根长下影线，形似 T 字。空方一度大举砸盘，收盘前被多方全部收复。出现在下跌之后偏看涨。</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 12-2</span>基本 K 线与十字星家族<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 500" role="img" aria-label="八种基本 K 线：大阳线、大阴线、阳纺锤线、阴纺锤线、十字星、长腿十字、墓碑十字、蜻蜓十字">
+<defs><marker id="f122-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/></marker><marker id="f122-ara" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/></marker></defs>
+<!-- kchart: n=1 L=30 step=120.000 x(i)=L+step*(i+0.5) price[9.000,11.000] y∈[32,204] -->
+<line class="axis" x1="30" y1="32" x2="30" y2="204"/>
+<line class="grid" x1="30" y1="204" x2="150" y2="204"/>
+<line class="grid" x1="30" y1="161" x2="150" y2="161"/>
+<line class="grid" x1="30" y1="118" x2="150" y2="118"/>
+<line class="grid" x1="30" y1="75" x2="150" y2="75"/>
+<line class="grid" x1="30" y1="32" x2="150" y2="32"/>
+<line class="axis" x1="30" y1="204" x2="150" y2="204"/>
+<line class="wu" x1="90" y1="56.1" x2="90" y2="183.4"/>
+<rect class="cu" x="78" y="61.2" width="24" height="117"/>
+<!-- kchart: n=1 L=210 step=120.000 x(i)=L+step*(i+0.5) price[9.000,11.000] y∈[32,204] -->
+<line class="axis" x1="210" y1="32" x2="210" y2="204"/>
+<line class="grid" x1="210" y1="204" x2="330" y2="204"/>
+<line class="grid" x1="210" y1="161" x2="330" y2="161"/>
+<line class="grid" x1="210" y1="118" x2="330" y2="118"/>
+<line class="grid" x1="210" y1="75" x2="330" y2="75"/>
+<line class="grid" x1="210" y1="32" x2="330" y2="32"/>
+<line class="axis" x1="210" y1="204" x2="330" y2="204"/>
+<line class="wd" x1="270" y1="56.1" x2="270" y2="183.4"/>
+<rect class="cd" x="258" y="61.2" width="24" height="117"/>
+<!-- kchart: n=1 L=390 step=120.000 x(i)=L+step*(i+0.5) price[9.000,11.000] y∈[32,204] -->
+<line class="axis" x1="390" y1="32" x2="390" y2="204"/>
+<line class="grid" x1="390" y1="204" x2="510" y2="204"/>
+<line class="grid" x1="390" y1="161" x2="510" y2="161"/>
+<line class="grid" x1="390" y1="118" x2="510" y2="118"/>
+<line class="grid" x1="390" y1="75" x2="510" y2="75"/>
+<line class="grid" x1="390" y1="32" x2="510" y2="32"/>
+<line class="axis" x1="390" y1="204" x2="510" y2="204"/>
+<line class="wu" x1="450" y1="75" x2="450" y2="162.7"/>
+<rect class="cu" x="438" y="111.1" width="24" height="13.8"/>
+<!-- kchart: n=1 L=570 step=120.000 x(i)=L+step*(i+0.5) price[9.000,11.000] y∈[32,204] -->
+<line class="axis" x1="570" y1="32" x2="570" y2="204"/>
+<line class="grid" x1="570" y1="204" x2="690" y2="204"/>
+<line class="grid" x1="570" y1="161" x2="690" y2="161"/>
+<line class="grid" x1="570" y1="118" x2="690" y2="118"/>
+<line class="grid" x1="570" y1="75" x2="690" y2="75"/>
+<line class="grid" x1="570" y1="32" x2="690" y2="32"/>
+<line class="axis" x1="570" y1="204" x2="690" y2="204"/>
+<line class="wd" x1="630" y1="70.7" x2="630" y2="165.3"/>
+<rect class="cd" x="618" y="111.1" width="24" height="13.8"/>
+<!-- kchart: n=1 L=30 step=120.000 x(i)=L+step*(i+0.5) price[9.000,11.000] y∈[282,454] -->
+<line class="axis" x1="30" y1="282" x2="30" y2="454"/>
+<line class="grid" x1="30" y1="454" x2="150" y2="454"/>
+<line class="grid" x1="30" y1="411" x2="150" y2="411"/>
+<line class="grid" x1="30" y1="368" x2="150" y2="368"/>
+<line class="grid" x1="30" y1="325" x2="150" y2="325"/>
+<line class="grid" x1="30" y1="282" x2="150" y2="282"/>
+<line class="axis" x1="30" y1="454" x2="150" y2="454"/>
+<line class="wu" x1="90" y1="335.3" x2="90" y2="400.7"/>
+<rect class="cu" x="78" y="368" width="24" height="1"/>
+<!-- kchart: n=1 L=210 step=120.000 x(i)=L+step*(i+0.5) price[9.000,11.000] y∈[282,454] -->
+<line class="axis" x1="210" y1="282" x2="210" y2="454"/>
+<line class="grid" x1="210" y1="454" x2="330" y2="454"/>
+<line class="grid" x1="210" y1="411" x2="330" y2="411"/>
+<line class="grid" x1="210" y1="368" x2="330" y2="368"/>
+<line class="grid" x1="210" y1="325" x2="330" y2="325"/>
+<line class="grid" x1="210" y1="282" x2="330" y2="282"/>
+<line class="axis" x1="210" y1="454" x2="330" y2="454"/>
+<line class="wu" x1="270" y1="299.2" x2="270" y2="436.8"/>
+<rect class="cu" x="258" y="368" width="24" height="1"/>
+<!-- kchart: n=1 L=390 step=120.000 x(i)=L+step*(i+0.5) price[9.000,11.000] y∈[282,454] -->
+<line class="axis" x1="390" y1="282" x2="390" y2="454"/>
+<line class="grid" x1="390" y1="454" x2="510" y2="454"/>
+<line class="grid" x1="390" y1="411" x2="510" y2="411"/>
+<line class="grid" x1="390" y1="368" x2="510" y2="368"/>
+<line class="grid" x1="390" y1="325" x2="510" y2="325"/>
+<line class="grid" x1="390" y1="282" x2="510" y2="282"/>
+<line class="axis" x1="390" y1="454" x2="510" y2="454"/>
+<line class="wu" x1="450" y1="311.2" x2="450" y2="428.2"/>
+<rect class="cu" x="438" y="428.2" width="24" height="1"/>
+<!-- kchart: n=1 L=570 step=120.000 x(i)=L+step*(i+0.5) price[9.000,11.000] y∈[282,454] -->
+<line class="axis" x1="570" y1="282" x2="570" y2="454"/>
+<line class="grid" x1="570" y1="454" x2="690" y2="454"/>
+<line class="grid" x1="570" y1="411" x2="690" y2="411"/>
+<line class="grid" x1="570" y1="368" x2="690" y2="368"/>
+<line class="grid" x1="570" y1="325" x2="690" y2="325"/>
+<line class="grid" x1="570" y1="282" x2="690" y2="282"/>
+<line class="axis" x1="570" y1="454" x2="690" y2="454"/>
+<line class="wu" x1="630" y1="311.2" x2="630" y2="428.2"/>
+<rect class="cu" x="618" y="311.2" width="24" height="1"/>
+<text class="pl" x="90" y="20" text-anchor="middle">大阳线</text>
+<text class="nd" x="90" y="226" text-anchor="middle">开在低位、收在高位：</text>
+<text class="nd" x="90" y="242" text-anchor="middle">多方全天占上风</text>
+<text class="pl" x="270" y="20" text-anchor="middle">大阴线</text>
+<text class="nd" x="270" y="226" text-anchor="middle">开在高位、收在低位：</text>
+<text class="nd" x="270" y="242" text-anchor="middle">空方全天占上风</text>
+<text class="pl" x="450" y="20" text-anchor="middle">纺锤线（阳）</text>
+<text class="nd" x="450" y="226" text-anchor="middle">实体小、影线不短：</text>
+<text class="nd" x="450" y="242" text-anchor="middle">多空拉锯，谁也没赢</text>
+<text class="pl" x="630" y="20" text-anchor="middle">纺锤线（阴）</text>
+<text class="nd" x="630" y="226" text-anchor="middle">颜色不重要：</text>
+<text class="nd" x="630" y="242" text-anchor="middle">关键是实体“小”</text>
+<text class="pl" x="90" y="270" text-anchor="middle">十字星</text>
+<text class="nd" x="90" y="476" text-anchor="middle">开盘 = 收盘：</text>
+<text class="nd" x="90" y="492" text-anchor="middle">多空打平，犹豫不决</text>
+<text class="pl" x="270" y="270" text-anchor="middle">长腿十字</text>
+<text class="nd" x="270" y="476" text-anchor="middle">上下影线都很长：</text>
+<text class="nd" x="270" y="492" text-anchor="middle">激烈争夺后回到原点</text>
+<text class="pl" x="450" y="270" text-anchor="middle">墓碑十字</text>
+<text class="nd" x="450" y="476" text-anchor="middle">冲高后跌回开盘价：</text>
+<text class="nd" x="450" y="492" text-anchor="middle">出现在顶部偏看跌</text>
+<text class="pl" x="630" y="270" text-anchor="middle">蜻蜓十字</text>
+<text class="nd" x="630" y="476" text-anchor="middle">探底后收回开盘价：</text>
+<text class="nd" x="630" y="492" text-anchor="middle">出现在底部偏看涨</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>上排四根按实体大小区分：大阳线、大阴线是“一边倒”，两根纺锤线是“拉锯”。下排四根都是十字星（开盘 = 收盘），区别全在影线：普通十字星影线适中；长腿十字上下都长，争夺最激烈；墓碑十字只有上影线，记录了一次失败的上攻；蜻蜓十字只有下影线，记录了一次失败的下砸。十字星的颜色无关紧要（图中按“收盘 ≥ 开盘”画成红色）。<b>同一根 K 线，放在不同的位置，意义可能完全相反</b>，下一节从锤子线开始讲这个道理。</figcaption>
+  </figure>
+
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p>“十字星就是变盘信号。”这是流传最广的误解之一。十字星只说明多空今天打平，打平之后谁赢，它不知道。在横盘震荡、成交清淡的行情里，十字星多如牛毛，几乎没有信息量。值得注意的十字星要满足三个条件：前面有一段明显的趋势；出现在关键阻力或支撑附近；次日走势给出确认。少一个条件，它就只是一根普通的 K 线。</p>
+  </div>
+</section>
+
+<!-- ======================== 12.3 ======================== -->
+<section class="ch" id="s3">
+  <h2 class="sec"><span class="no">12.3</span>反转信号（上）：锤子、上吊、吞没、乌云与刺透</h2>
+  <p class="sec-en">REVERSAL PATTERNS (I)</p>
+
+  <div class="prose">
+    <p>从这一节开始讲反转形态。所有 K 线反转形态都有三个共同点，先记住它们，后面的十几个形态就不用死背：</p>
+    <ol>
+      <li><strong>必须先有趋势可以反转。</strong>这和第 4 站（第 5 章 主要反转形态）的第一条前提完全一样。顶部形态只在上涨之后有意义，底部形态只在下跌之后有意义；哪怕只是一段短期趋势，也得有。</li>
+      <li><strong>“反转”的意思是“趋势可能改变”，不一定是掉头。</strong>尼森特别强调，K 线反转信号出现后，原趋势也可能只是停下来转入横盘。所以它更适合用来<strong>平仓、收紧止损</strong>；用来反向开仓，需要更多证据。</li>
+      <li><strong>有的形态必须等确认。</strong>确认通常指下一根 K 线的收盘朝信号方向走。规则很朴素：形态本身越含糊，越需要确认。</li>
+    </ol>
+
+    <h3><span class="tag">形态一</span>锤子线与上吊线：同一个形状</h3>
+    <p>这是理解“位置决定意义”最好的入口。锤子线和上吊线长得一模一样，形状标准有三条：</p>
+    <ul>
+      <li>实体位于全天价格区间的上端，阴阳都可以；</li>
+      <li>下影线很长，<strong>至少是实体高度的 2 倍</strong>；</li>
+      <li>没有上影线，或者上影线极短。</li>
+    </ul>
+    <p>下影线越长、上影线越短、实体越小，信号越强。区别只在位置：<strong>出现在下跌之后叫锤子线（看涨），出现在上涨之后叫上吊线（看跌）</strong>。</p>
+    <p>用战报的方式读就明白了。<strong>锤子线</strong>：价格已经跌了一段，开盘后空方继续猛砸，砸出新低和一根长长的下影线；但多方在低位把抛盘全部接住，收盘回到开盘附近。空方用尽全力也没能守住低位，这一仗空方输了。锤子线的日文名称大意是“试探水深”，市场在这一天摸了一下底有多深。</p>
+    <p><strong>上吊线</strong>：价格已经涨了一段，形状相同，故事却不同。收盘虽然回到了高位，盘中那根长下影线说明：<strong>这段上涨里，第一次出现了大规模的抛售</strong>。卖压虽然被吸收了，却已经暴露出来。</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 12-3</span>同一个形状：低位叫锤子线，高位叫上吊线<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 292" role="img" aria-label="左为放大的锤子线及其尺寸标准；中为下跌末端出现的锤子线，次日收盘高于其最高价确认；右为上涨末端出现的形状相同的上吊线，次日阴线收在其实体下方确认">
+<defs><marker id="f123-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/></marker><marker id="f123-ara" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/></marker></defs>
+<!-- kchart: n=10 L=252 step=21.800 x(i)=L+step*(i+0.5) price[8.910,10.840] y∈[34,242] -->
+<line class="axis" x1="252" y1="34" x2="252" y2="242"/>
+<line class="grid" x1="252" y1="232.3" x2="470" y2="232.3"/>
+<line class="grid" x1="252" y1="178.4" x2="470" y2="178.4"/>
+<line class="grid" x1="252" y1="124.5" x2="470" y2="124.5"/>
+<line class="grid" x1="252" y1="70.6" x2="470" y2="70.6"/>
+<line class="axis" x1="252" y1="242" x2="470" y2="242"/>
+<line class="wd" x1="262.9" y1="55.6" x2="262.9" y2="78.2"/>
+<rect class="cd" x="256.1" y="58.8" width="13.5" height="18.3"/>
+<line class="wd" x1="284.7" y1="75" x2="284.7" y2="93.3"/>
+<rect class="cd" x="277.9" y="77.1" width="13.5" height="14"/>
+<line class="wd" x1="306.5" y1="87.9" x2="306.5" y2="111.6"/>
+<rect class="cd" x="299.7" y="92.2" width="13.5" height="16.2"/>
+<line class="wd" x1="328.3" y1="103" x2="328.3" y2="124.5"/>
+<rect class="cd" x="321.5" y="107.3" width="13.5" height="15.1"/>
+<line class="wd" x1="350.1" y1="119.1" x2="350.1" y2="133.2"/>
+<rect class="cd" x="343.3" y="122.4" width="13.5" height="9.7"/>
+<line class="wd" x1="371.9" y1="128.8" x2="371.9" y2="145"/>
+<rect class="cd" x="365.1" y="133.2" width="13.5" height="8.6"/>
+<line class="wd" x1="393.7" y1="138.5" x2="393.7" y2="157.9"/>
+<rect class="cd" x="386.9" y="142.8" width="13.5" height="14"/>
+<line class="wu" x1="415.5" y1="162.2" x2="415.5" y2="208.6"/>
+<rect class="cu" x="408.7" y="164.4" width="13.5" height="8.6"/>
+<line class="wu" x1="437.3" y1="129.9" x2="437.3" y2="165.5"/>
+<rect class="cu" x="430.5" y="134.2" width="13.5" height="26.9"/>
+<line class="wu" x1="459.1" y1="114.8" x2="459.1" y2="140.7"/>
+<rect class="cu" x="452.3" y="119.1" width="13.5" height="17.2"/>
+<text class="ut" x="415.5" y="226.6" text-anchor="middle">锤子线</text>
+<text class="pv" x="437.3" y="121.9" text-anchor="middle">确认</text>
+<!-- kchart: n=10 L=492 step=21.800 x(i)=L+step*(i+0.5) price[9.220,10.680] y∈[34,242] -->
+<line class="axis" x1="492" y1="34" x2="492" y2="242"/>
+<line class="grid" x1="492" y1="202.1" x2="710" y2="202.1"/>
+<line class="grid" x1="492" y1="130.9" x2="710" y2="130.9"/>
+<line class="grid" x1="492" y1="59.6" x2="710" y2="59.6"/>
+<line class="axis" x1="492" y1="242" x2="710" y2="242"/>
+<line class="wu" x1="502.9" y1="193.6" x2="502.9" y2="220.6"/>
+<rect class="cu" x="496.1" y="196.4" width="13.5" height="18.5"/>
+<line class="wu" x1="524.7" y1="173.6" x2="524.7" y2="202.1"/>
+<rect class="cu" x="517.9" y="177.9" width="13.5" height="18.5"/>
+<line class="wu" x1="546.5" y1="152.2" x2="546.5" y2="177.9"/>
+<rect class="cu" x="539.7" y="156.5" width="13.5" height="19.9"/>
+<line class="wu" x1="568.3" y1="133.7" x2="568.3" y2="163.6"/>
+<rect class="cu" x="561.5" y="136.6" width="13.5" height="21.4"/>
+<line class="wu" x1="590.1" y1="120.9" x2="590.1" y2="140.8"/>
+<rect class="cu" x="583.3" y="126.6" width="13.5" height="11.4"/>
+<line class="wu" x1="611.9" y1="103.8" x2="611.9" y2="130.9"/>
+<rect class="cu" x="605.1" y="110.9" width="13.5" height="17.1"/>
+<line class="wu" x1="633.7" y1="91" x2="633.7" y2="116.6"/>
+<rect class="cu" x="626.9" y="93.8" width="13.5" height="15.7"/>
+<line class="wd" x1="655.5" y1="68.2" x2="655.5" y2="130.9"/>
+<rect class="cd" x="648.7" y="71" width="13.5" height="11.4"/>
+<line class="wd" x1="677.3" y1="88.1" x2="677.3" y2="126.6"/>
+<rect class="cd" x="670.5" y="93.8" width="13.5" height="27.1"/>
+<line class="wd" x1="699.1" y1="115.2" x2="699.1" y2="145.1"/>
+<rect class="cd" x="692.3" y="120.9" width="13.5" height="17.1"/>
+<text class="dt" x="655.5" y="59.2" text-anchor="middle">上吊线</text>
+<text class="pv" x="677.3" y="143.6" text-anchor="middle">确认</text>
+<text class="pl" x="120" y="20" text-anchor="middle">放大：锤子线的标准</text>
+<line class="wu" x1="70" y1="64" x2="70" y2="212.8" style="stroke-width:2"/>
+<rect class="cu" x="56" y="70" width="28" height="34"/>
+<line class="edge" x1="96" y1="70" x2="96" y2="104"/>
+<line class="edge" x1="92" y1="70" x2="100" y2="70"/>
+<line class="edge" x1="92" y1="104" x2="100" y2="104"/>
+<line class="edge-acc" x1="96" y1="107" x2="96" y2="212.8"/>
+<line class="edge" x1="92" y1="212.8" x2="100" y2="212.8"/>
+<text class="pv" x="104" y="91">实体</text>
+<text class="hi" x="104" y="158">下影线 ≥ 2 × 实体</text>
+<text class="elabel" x="104" y="175">（图中约 3 倍）</text>
+<text class="pv" x="104" y="52">上影线很短或没有</text>
+<text class="elabel" x="104" y="66">（≤ 0.3 × 实体）</text>
+<text class="nd" x="120" y="266" text-anchor="middle">实体在全天区间的上端，阴阳均可；</text>
+<text class="nd" x="120" y="282" text-anchor="middle">下影越长、实体越小，信号越强</text>
+<text class="pl" x="360" y="20" text-anchor="middle">下跌之后：锤子线（看涨）</text>
+<text class="nd" x="360" y="266" text-anchor="middle">空方砸出新低却守不住，</text>
+<text class="nd" x="360" y="282" text-anchor="middle">次日收在锤子线最高价之上</text>
+<text class="pl" x="600" y="20" text-anchor="middle">上涨之后：上吊线（看跌）</text>
+<text class="nd" x="600" y="266" text-anchor="middle">同样的形状，暴露出第一波大抛压，</text>
+<text class="nd" x="600" y="282" text-anchor="middle">次日收在其实体下方才算确认</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>左边是放大的标准形状：下影线至少是实体的 2 倍，上影线几乎没有。中图出现在连续下跌之后，砸出新低又收回，次日收盘站上锤子线的最高价，确认多方接手；右图同样的形状出现在连续上涨之后，就成了上吊线，次日低开并收在它的实体下方，确认卖压占了上风。两根 K 线的形状<b>完全相同</b>，意义却相反，唯一的区别是之前走过的路。</figcaption>
+  </figure>
+
+  <div class="prose">
+    <h3>为什么上吊线必须确认</h3>
+    <p>墨菲特别提醒：上吊线需要看跌的确认。原因在形状本身：上吊线收盘在全天高位，单看这一天，多方其实赢了，看跌只是一种推测。尼森给的确认标准是：<strong>次日收盘低于上吊线的实体</strong>，低开更好。</p>
+    <p>这个标准背后有清楚的交易者逻辑。上吊线当天在开盘价或收盘价附近买入的人，都以为回落已经被买回、上涨还会继续；如果第二天价格收在上吊线实体之下，<strong>这一整天的买家全部被套</strong>。按《投资学》第 12 章讲的处置效应和损失厌恶，他们当中很多人会在反弹时急着解套卖出，新的卖压就这样产生了。反过来，如果第二天继续收高，那根“上吊线”就只是一次被成功吸收的洗盘。</p>
+    <p>锤子线本身已经收复了失地，信号相对独立，墨菲没有像对上吊线那样强调确认。但在实战中，等次日收盘站上锤子线的最高价再动手，能过滤掉相当一部分失败的情形，12.7 节的规则卡就是这样写的。</p>
+  </div>
+
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>上吊线像体检时第一次查出血压偏高。人看起来好好的（收盘在高位），但指标第一次越线了（盘中出现大抛压）。医生不会凭一次读数就下诊断，而是让你过几天复查：复查还高，才算确诊（次日收在实体下方）；复查正常，就当是那天没睡好（洗盘）。锤子线则像一个摔倒后自己站起来的人，站起来这件事本身就说明了很多。</p>
+  </div>
+
+  <div class="prose">
+    <h3><span class="tag">形态二</span>吞没形态：第二根把第一根整个吞下</h3>
+    <p>吞没形态<span class="en-term">（engulfing pattern）</span>由两根颜色相反的 K 线组成，尼森列出的条件有三条：</p>
+    <ul>
+      <li>之前有一段可以辨认的趋势，哪怕只是短期趋势；</li>
+      <li>第二根的<strong>实体</strong>完全包住第一根的实体，影线不算；</li>
+      <li>两根颜色相反。例外是第一根为十字星，这时它的颜色无所谓。</li>
+    </ul>
+    <p><strong>看涨吞没</strong>出现在下跌之后：第一天是一根小阴线，空方还在赢，但赢得不多；第二天低开在第一天收盘之下，空方又砸了一下，随后多方全面反击，收盘越过第一天的开盘价。结果是：<strong>过去两天里所有卖出的人都卖在了低处，所有在这两天做空的人全部被套</strong>。<strong>看跌吞没</strong>是镜像：上涨之后，一根小阳线被一根高开低走的大阴线吞没。A 股俗称“穿头破脚”，或者更直白的“阳包阴”“阴包阳”。</p>
+    <p>下面几种情况会让吞没形态更可靠：第一根实体很小、第二根实体很长，力量对比越悬殊越好；出现在一段持久或急速的行情之后；第二根成交量很大；第二根一口气吞没了不止一根实体。</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 12-4</span>看涨吞没与看跌吞没<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 322" role="img" aria-label="左：下跌末端，小阴线之后出现一根实体完全包住它的大阳线，构成看涨吞没；右：上涨末端，小阳线之后出现实体完全包住它的大阴线，构成看跌吞没；两例第二根都放量">
+<defs><marker id="f124-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/></marker><marker id="f124-ara" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/></marker></defs>
+<!-- kchart: n=13 L=12 step=26.000 x(i)=L+step*(i+0.5) price[9.460,11.170] y∈[34,220] -->
+<line class="axis" x1="12" y1="34" x2="12" y2="220"/>
+<line class="grid" x1="12" y1="215.6" x2="350" y2="215.6"/>
+<line class="grid" x1="12" y1="161.3" x2="350" y2="161.3"/>
+<line class="grid" x1="12" y1="106.9" x2="350" y2="106.9"/>
+<line class="grid" x1="12" y1="52.5" x2="350" y2="52.5"/>
+<line class="axis" x1="12" y1="220" x2="350" y2="220"/>
+<rect class="zone" x="246" y="168.9" width="52" height="10.9"/>
+<line class="wd" x1="25" y1="48.1" x2="25" y2="67.7"/>
+<rect class="cd" x="16.9" y="52.5" width="16.1" height="12"/>
+<line class="wd" x1="51" y1="60.1" x2="51" y2="84"/>
+<rect class="cd" x="42.9" y="64.5" width="16.1" height="15.2"/>
+<line class="wd" x1="77" y1="76.4" x2="77" y2="92.7"/>
+<rect class="cd" x="68.9" y="79.7" width="16.1" height="8.7"/>
+<line class="wd" x1="103" y1="87.3" x2="103" y2="106.9"/>
+<rect class="cd" x="94.9" y="89.5" width="16.1" height="14.1"/>
+<line class="wd" x1="129" y1="100.4" x2="129" y2="122.1"/>
+<rect class="cd" x="120.9" y="103.6" width="16.1" height="15.2"/>
+<line class="wd" x1="155" y1="113.4" x2="155" y2="128.6"/>
+<rect class="cd" x="146.9" y="117.8" width="16.1" height="8.7"/>
+<line class="wd" x1="181" y1="122.1" x2="181" y2="147.1"/>
+<rect class="cd" x="172.9" y="126.5" width="16.1" height="15.2"/>
+<line class="wd" x1="207" y1="140.6" x2="207" y2="155.8"/>
+<rect class="cd" x="198.9" y="142.8" width="16.1" height="9.8"/>
+<line class="wd" x1="233" y1="146" x2="233" y2="170"/>
+<rect class="cd" x="224.9" y="151.5" width="16.1" height="14.1"/>
+<line class="wd" x1="259" y1="165.6" x2="259" y2="184.1"/>
+<rect class="cd" x="250.9" y="168.9" width="16.1" height="10.9"/>
+<line class="wu" x1="285" y1="151.5" x2="285" y2="191.7"/>
+<rect class="cu" x="276.9" y="154.7" width="16.1" height="32.6"/>
+<line class="wu" x1="311" y1="135.2" x2="311" y2="160.2"/>
+<rect class="cu" x="302.9" y="139.5" width="16.1" height="16.3"/>
+<line class="wu" x1="337" y1="122.1" x2="337" y2="143.9"/>
+<rect class="cu" x="328.9" y="127.5" width="16.1" height="12"/>
+<line class="axis" x1="12" y1="232" x2="12" y2="272"/>
+<line class="axis" x1="12" y1="272" x2="350" y2="272"/>
+<rect class="vd" x="16.9" y="252.9" width="16.1" height="19.1"/>
+<rect class="vd" x="42.9" y="254.9" width="16.1" height="17.1"/>
+<rect class="vd" x="68.9" y="253.9" width="16.1" height="18.1"/>
+<rect class="vd" x="94.9" y="255.5" width="16.1" height="16.5"/>
+<rect class="vd" x="120.9" y="255.1" width="16.1" height="16.9"/>
+<rect class="vd" x="146.9" y="254.1" width="16.1" height="17.9"/>
+<rect class="vd" x="172.9" y="255.8" width="16.1" height="16.2"/>
+<rect class="vd" x="198.9" y="254.4" width="16.1" height="17.6"/>
+<rect class="vd" x="224.9" y="255.3" width="16.1" height="16.7"/>
+<rect class="vd" x="250.9" y="255.6" width="16.1" height="16.4"/>
+<rect class="vu" x="276.9" y="235" width="16.1" height="37"/>
+<rect class="vu" x="302.9" y="252.2" width="16.1" height="19.8"/>
+<rect class="vu" x="328.9" y="254.8" width="16.1" height="17.2"/>
+<text class="lg" x="18" y="244">成交量</text>
+<text class="pv" x="259" y="202.1" text-anchor="middle">①</text>
+<text class="pv" x="285" y="209.7" text-anchor="middle">②</text>
+<text class="hi" x="300.6" y="246" text-anchor="start">放量</text>
+<!-- kchart: n=13 L=372 step=26.000 x(i)=L+step*(i+0.5) price[8.850,10.190] y∈[34,220] -->
+<line class="axis" x1="372" y1="34" x2="372" y2="220"/>
+<line class="grid" x1="372" y1="199.2" x2="710" y2="199.2"/>
+<line class="grid" x1="372" y1="129.8" x2="710" y2="129.8"/>
+<line class="grid" x1="372" y1="60.4" x2="710" y2="60.4"/>
+<line class="axis" x1="372" y1="220" x2="710" y2="220"/>
+<rect class="zone" x="606" y="78.4" width="52" height="12.5"/>
+<line class="wu" x1="385" y1="188.1" x2="385" y2="206.1"/>
+<rect class="cu" x="376.9" y="192.2" width="16.1" height="8.3"/>
+<line class="wu" x1="411" y1="174.2" x2="411" y2="197.8"/>
+<rect class="cu" x="402.9" y="178.4" width="16.1" height="15.3"/>
+<line class="wu" x1="437" y1="160.3" x2="437" y2="185.3"/>
+<rect class="cu" x="428.9" y="164.5" width="16.1" height="16.7"/>
+<line class="wu" x1="463" y1="145" x2="463" y2="170"/>
+<rect class="cu" x="454.9" y="150.6" width="16.1" height="12.5"/>
+<line class="wu" x1="489" y1="129.8" x2="489" y2="154.8"/>
+<rect class="cu" x="480.9" y="133.9" width="16.1" height="16.7"/>
+<line class="wu" x1="515" y1="121.4" x2="515" y2="138.1"/>
+<rect class="cu" x="506.9" y="122.8" width="16.1" height="12.5"/>
+<line class="wu" x1="541" y1="109" x2="541" y2="128.4"/>
+<rect class="cu" x="532.9" y="114.5" width="16.1" height="9.7"/>
+<line class="wu" x1="567" y1="99.2" x2="567" y2="117.3"/>
+<rect class="cu" x="558.9" y="102" width="16.1" height="12.5"/>
+<line class="wu" x1="593" y1="90.9" x2="593" y2="107.6"/>
+<rect class="cu" x="584.9" y="95.1" width="16.1" height="8.3"/>
+<line class="wu" x1="619" y1="72.9" x2="619" y2="95.1"/>
+<rect class="cu" x="610.9" y="78.4" width="16.1" height="12.5"/>
+<line class="wd" x1="645" y1="63.1" x2="645" y2="111.7"/>
+<rect class="cd" x="636.9" y="68.7" width="16.1" height="38.9"/>
+<line class="wd" x1="671" y1="102" x2="671" y2="132.6"/>
+<rect class="cd" x="662.9" y="109" width="16.1" height="19.4"/>
+<line class="wd" x1="697" y1="121.4" x2="697" y2="146.4"/>
+<rect class="cd" x="688.9" y="127" width="16.1" height="15.3"/>
+<line class="axis" x1="372" y1="232" x2="372" y2="272"/>
+<line class="axis" x1="372" y1="272" x2="710" y2="272"/>
+<rect class="vu" x="376.9" y="256.8" width="16.1" height="15.2"/>
+<rect class="vu" x="402.9" y="254" width="16.1" height="18"/>
+<rect class="vu" x="428.9" y="254" width="16.1" height="18"/>
+<rect class="vu" x="454.9" y="256.5" width="16.1" height="15.5"/>
+<rect class="vu" x="480.9" y="256.5" width="16.1" height="15.5"/>
+<rect class="vu" x="506.9" y="256.2" width="16.1" height="15.8"/>
+<rect class="vu" x="532.9" y="256.3" width="16.1" height="15.7"/>
+<rect class="vu" x="558.9" y="253.8" width="16.1" height="18.2"/>
+<rect class="vu" x="584.9" y="257" width="16.1" height="15"/>
+<rect class="vu" x="610.9" y="256" width="16.1" height="16"/>
+<rect class="vd" x="636.9" y="235" width="16.1" height="37"/>
+<rect class="vd" x="662.9" y="252.6" width="16.1" height="19.4"/>
+<rect class="vd" x="688.9" y="254.3" width="16.1" height="17.7"/>
+<text class="lg" x="378" y="244">成交量</text>
+<text class="pv" x="619" y="63.9" text-anchor="middle">①</text>
+<text class="pv" x="645" y="54.1" text-anchor="middle">②</text>
+<text class="hi" x="660.6" y="246" text-anchor="start">放量</text>
+<text class="pl" x="180" y="20" text-anchor="middle">看涨吞没（下跌之后）</text>
+<text class="nd" x="180" y="298" text-anchor="middle">② 低开后一路上攻，阳线实体把 ① 的阴线实体整个包住；</text>
+<text class="nd" x="180" y="314" text-anchor="middle">浅色带 = 第一根的实体范围，影线不算</text>
+<text class="pl" x="540" y="20" text-anchor="middle">看跌吞没（上涨之后）</text>
+<text class="nd" x="540" y="298" text-anchor="middle">② 高开后一路下跌，阴线实体把 ① 的阳线实体整个包住；</text>
+<text class="nd" x="540" y="314" text-anchor="middle">第二根实体越长、成交量越大，信号越强</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>浅色带是第一根 K 线实体的范围，第二根的实体把这条带子整个盖住，这就是“吞没”。只比实体，不比影线。两例的第二根都明显放量，说明这次反击有大量资金参与。它和第 3 站（第 4 章 趋势的基本概念）讲的西方“外包日”“关键反转日”很像，但西方看的是最高最低价以及收盘相对前一天的位置，日本看的是开盘到收盘的实体。所以一个看跌吞没不一定伴随创新高。两套标准各有侧重，同时出现时分量最重。</figcaption>
+  </figure>
+
+  <div class="prose">
+    <h3><span class="tag">形态三</span>乌云盖顶与刺透形态：为什么一定要“过半”</h3>
+    <p><strong>乌云盖顶</strong><span class="en-term">（dark cloud cover）</span>出现在上涨之后：第一天是一根坚挺的阳线；第二天开盘<strong>高于第一天的最高价</strong>，也就是跳到了上影线之上，但随后一路下跌，收盘接近当天最低，并且<strong>深入第一天阳线实体的一半以下</strong>。深入得越多，见顶的可能越大。如果第二天干脆收在第一天的开盘价之下，它就升级成了看跌吞没。所以可以把乌云盖顶理解为“没吞完的吞没”。</p>
+    <p>为什么是一半？把第一天的阳线实体想象成多方当天攻下的阵地。第二天高开，多方一度更加得意；可到收盘时，空方不但夺回了高开的部分，还把前一天的阵地抢走了一半以上。<strong>过半</strong>意味着力量对比真正翻转：前一天后半段买进的人全部被套，第二天开盘追高的人更是套在了最高处。如果只收回实体的两三成，多方仍然守着大部分阵地，那只是一次普通的回落。</p>
+    <p>以下情况会加强乌云盖顶的信号：第二天高开在一个重要阻力之上又跌回来，等于一次假突破；第二天开盘时成交量很大，说明大量买家在高位追进后被套；第一天的阳线又长又有力。</p>
+    <p><strong>刺透形态</strong><span class="en-term">（piercing pattern）</span>是它的镜像，出现在下跌之后：第一天长阴线，第二天低开在第一天最低价之下，随后被拉起，收盘升过阴线实体的中点。A 股俗称“曙光初现”。尼森对刺透形态比对乌云盖顶更严格：收盘<strong>必须</strong>升过中点；只刺进一点点的几种变体，反而被日本交易者看成下跌还会继续的信号。</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 12-5</span>乌云盖顶与刺透形态：以实体中点为界<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 292" role="img" aria-label="左：上涨中一根长阳线之后，次日高开在其最高价之上，却收在阳线实体中点之下，构成乌云盖顶；右：下跌中一根长阴线之后，次日低开在其最低价之下，却收在阴线实体中点之上，构成刺透形态">
+<defs><marker id="f125-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/></marker><marker id="f125-ara" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/></marker></defs>
+<!-- kchart: n=14 L=12 step=24.143 x(i)=L+step*(i+0.5) price[8.810,10.440] y∈[34,242] -->
+<line class="axis" x1="12" y1="34" x2="12" y2="242"/>
+<line class="grid" x1="12" y1="217.8" x2="350" y2="217.8"/>
+<line class="grid" x1="12" y1="154" x2="350" y2="154"/>
+<line class="grid" x1="12" y1="90.1" x2="350" y2="90.1"/>
+<line class="axis" x1="12" y1="242" x2="350" y2="242"/>
+<line class="wu" x1="24.1" y1="206.3" x2="24.1" y2="220.3"/>
+<rect class="cu" x="16.6" y="207.5" width="15" height="10.2"/>
+<line class="wu" x1="48.2" y1="189.7" x2="48.2" y2="210.1"/>
+<rect class="cu" x="40.7" y="193.5" width="15" height="12.8"/>
+<line class="wu" x1="72.4" y1="180.7" x2="72.4" y2="197.3"/>
+<rect class="cu" x="64.9" y="184.6" width="15" height="8.9"/>
+<line class="wu" x1="96.5" y1="171.8" x2="96.5" y2="188.4"/>
+<rect class="cu" x="89" y="175.6" width="15" height="7.7"/>
+<line class="wu" x1="120.6" y1="164.2" x2="120.6" y2="179.5"/>
+<rect class="cu" x="113.2" y="168" width="15" height="7.7"/>
+<line class="wu" x1="144.8" y1="147.6" x2="144.8" y2="171.8"/>
+<rect class="cu" x="137.3" y="152.7" width="15" height="14"/>
+<line class="wu" x1="168.9" y1="142.5" x2="168.9" y2="156.5"/>
+<rect class="cu" x="161.4" y="145" width="15" height="8.9"/>
+<line class="wu" x1="193.1" y1="129.7" x2="193.1" y2="148.8"/>
+<rect class="cu" x="185.6" y="134.8" width="15" height="10.2"/>
+<line class="wu" x1="217.2" y1="115.7" x2="217.2" y2="141.2"/>
+<rect class="cu" x="209.7" y="122" width="15" height="14"/>
+<line class="wu" x1="241.4" y1="73.6" x2="241.4" y2="122"/>
+<rect class="cu" x="233.9" y="77.4" width="15" height="42.1"/>
+<line class="wd" x1="265.5" y1="62.1" x2="265.5" y2="110.6"/>
+<rect class="cd" x="258" y="64.6" width="15" height="42.1"/>
+<line class="wd" x1="289.6" y1="104.2" x2="289.6" y2="127.2"/>
+<rect class="cd" x="282.2" y="109.3" width="15" height="14"/>
+<line class="wd" x1="313.8" y1="119.5" x2="313.8" y2="139.9"/>
+<rect class="cd" x="306.3" y="123.3" width="15" height="12.8"/>
+<line class="wd" x1="337.9" y1="131" x2="337.9" y2="152.7"/>
+<rect class="cd" x="330.4" y="136.1" width="15" height="12.8"/>
+<line class="tld" x1="229.3" y1="99.1" x2="350" y2="99.1"/>
+<text class="hi" x="346" y="94.1" text-anchor="end">实体中点</text>
+<text class="pv" x="265.5" y="53.1" text-anchor="middle">高开</text>
+<!-- kchart: n=14 L=372 step=24.143 x(i)=L+step*(i+0.5) price[9.200,11.240] y∈[34,242] -->
+<line class="axis" x1="372" y1="34" x2="372" y2="242"/>
+<line class="grid" x1="372" y1="211.4" x2="710" y2="211.4"/>
+<line class="grid" x1="372" y1="160.4" x2="710" y2="160.4"/>
+<line class="grid" x1="372" y1="109.5" x2="710" y2="109.5"/>
+<line class="grid" x1="372" y1="58.5" x2="710" y2="58.5"/>
+<line class="axis" x1="372" y1="242" x2="710" y2="242"/>
+<line class="wd" x1="384.1" y1="56.4" x2="384.1" y2="72.7"/>
+<rect class="cd" x="376.6" y="58.5" width="15" height="12.2"/>
+<line class="wd" x1="408.2" y1="64.6" x2="408.2" y2="84"/>
+<rect class="cd" x="400.7" y="69.7" width="15" height="10.2"/>
+<line class="wd" x1="432.4" y1="78.9" x2="432.4" y2="97.2"/>
+<rect class="cd" x="424.9" y="80.9" width="15" height="13.3"/>
+<line class="wd" x1="456.5" y1="90.1" x2="456.5" y2="110.5"/>
+<rect class="cd" x="449" y="94.2" width="15" height="12.2"/>
+<line class="wd" x1="480.6" y1="101.3" x2="480.6" y2="120.7"/>
+<rect class="cd" x="473.2" y="105.4" width="15" height="13.3"/>
+<line class="wd" x1="504.8" y1="116.6" x2="504.8" y2="129.8"/>
+<rect class="cd" x="497.3" y="119.6" width="15" height="8.2"/>
+<line class="wd" x1="528.9" y1="124.7" x2="528.9" y2="141.1"/>
+<rect class="cd" x="521.4" y="126.8" width="15" height="13.3"/>
+<line class="wd" x1="553.1" y1="138" x2="553.1" y2="155.3"/>
+<rect class="cd" x="545.6" y="141.1" width="15" height="12.2"/>
+<line class="wd" x1="577.2" y1="153.3" x2="577.2" y2="168.6"/>
+<rect class="cd" x="569.7" y="154.3" width="15" height="10.2"/>
+<line class="wd" x1="601.4" y1="164.5" x2="601.4" y2="203.3"/>
+<rect class="cd" x="593.9" y="166.5" width="15" height="33.6"/>
+<line class="wu" x1="625.5" y1="173.7" x2="625.5" y2="213.5"/>
+<rect class="cu" x="618" y="176.7" width="15" height="33.6"/>
+<line class="wu" x1="649.6" y1="158.4" x2="649.6" y2="178.8"/>
+<rect class="cu" x="642.2" y="161.5" width="15" height="13.3"/>
+<line class="wu" x1="673.8" y1="148.2" x2="673.8" y2="165.5"/>
+<rect class="cu" x="666.3" y="152.3" width="15" height="9.2"/>
+<line class="wu" x1="697.9" y1="140" x2="697.9" y2="156.4"/>
+<rect class="cu" x="690.4" y="144.1" width="15" height="8.2"/>
+<line class="tld" x1="589.3" y1="183.9" x2="710" y2="183.9"/>
+<text class="hi" x="706" y="196.9" text-anchor="end">实体中点</text>
+<text class="pv" x="625.5" y="231.5" text-anchor="middle">低开</text>
+<text class="pl" x="180" y="20" text-anchor="middle">乌云盖顶（上涨之后）</text>
+<text class="nd" x="180" y="266" text-anchor="middle">高开在前一根最高价之上，收盘跌破阳线实体中点：</text>
+<text class="nd" x="180" y="282" text-anchor="middle">多头前一天赢下的阵地，一天丢掉一大半</text>
+<text class="pl" x="540" y="20" text-anchor="middle">刺透形态（下跌之后）</text>
+<text class="nd" x="540" y="266" text-anchor="middle">低开在前一根最低价之下，收盘升过阴线实体中点：</text>
+<text class="nd" x="540" y="282" text-anchor="middle">不过中点就不算数，尼森对刺透尤其严格</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>虚线是第一根长 K 线实体的中点。左图第二根高开在前一根最高价之上，收盘却跌到中点下方，吃掉了阳线实体约七成；右图第二根低开在前一根最低价之下，收盘升过中点，收回了阴线实体约七成。判断时只看收盘价和中点的位置关系，不看盘中。记住三档强度：没到中点，信号不成立；过了中点，是乌云盖顶或刺透；越过第一根的开盘价，就升级为吞没。</figcaption>
+  </figure>
+
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p>“看到锤子线就抄底。”锤子线只说明<strong>今天</strong>空方没能守住低位，并不保证明天不会再跌。在一段凌厉的下跌趋势中途，锤子线经常出现，然后被下一根大阴线轻松跌破。动手之前先问三个问题：下面有没有支撑（12.6 节）？次日有没有确认？锤子线的最低价被跌破时，你认不认错？第三个问题最重要，锤子线最大的价值，恰恰是给了你一个清清楚楚的认错位置。</p>
+  </div>
+</section>
+
+<!-- ======================== 12.4 ======================== -->
+<section class="ch" id="s4">
+  <h2 class="sec"><span class="no">12.4</span>反转信号（下）：星线、孕线、平头与三兵三鸦</h2>
+  <p class="sec-en">REVERSAL PATTERNS (II)</p>
+
+  <div class="prose">
+    <h3><span class="tag">形态四</span>星线：趋势的急刹车</h3>
+    <p>“星”是一根小实体（阴阳不论），它和前面那根长实体之间<strong>有跳空</strong>：两者的实体不重叠，影线重叠没关系。星的出现说明，前一天还在全力推进的一方，今天突然推不动了，多空陷入僵持。它本身只是一个刹车信号，加上第三根 K 线，才构成完整的反转形态。</p>
+    <ul>
+      <li><strong>启明星</strong><span class="en-term">（morning star）</span>，A 股叫“早晨之星”，出现在下跌之后：① 一根长阴线；② 向下跳空的小实体，即星；③ 一根阳线，收盘深入第一根阴线实体之内。名字取自黎明前的那颗亮星：它一出现，太阳就快升起了。</li>
+      <li><strong>黄昏星</strong><span class="en-term">（evening star）</span>，出现在上涨之后：① 一根长阳线；② 向上跳空的小实体；③ 一根阴线，收盘深入第一根阳线实体之内。</li>
+      <li><strong>十字星形态</strong><span class="en-term">（doji star）</span>：如果中间那颗星是十字星，就叫早晨十字星或黄昏十字星，信号比普通星线更强。在上涨中，一根长阳之后向上跳空的十字星本身就是警告；第三天一根长阴收进第一根的实体，黄昏十字星就完成了。</li>
+    </ul>
+    <p>第三根最好收过第一根实体的一半；星与第三根之间最好也有跳空，但这一点不是必要条件。还有一种罕见的极端版本叫“弃婴”：星是十字星，而且它和前后两根之间连<strong>影线</strong>都不重叠，像一座孤岛，和第 3 站讲的岛形反转是同一个意思。</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 12-6</span>启明星、黄昏星与黄昏十字星<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 292" role="img" aria-label="三个三根 K 线组合：下跌末端的启明星，上涨末端的黄昏星，以及中间一根是十字星的黄昏十字星">
+<defs><marker id="f126-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/></marker><marker id="f126-ara" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/></marker></defs>
+<!-- kchart: n=12 L=12 step=18.167 x(i)=L+step*(i+0.5) price[9.140,10.830] y∈[34,242] -->
+<line class="axis" x1="12" y1="34" x2="12" y2="242"/>
+<line class="grid" x1="12" y1="197.7" x2="230" y2="197.7"/>
+<line class="grid" x1="12" y1="136.2" x2="230" y2="136.2"/>
+<line class="grid" x1="12" y1="74.6" x2="230" y2="74.6"/>
+<line class="axis" x1="12" y1="242" x2="230" y2="242"/>
+<line class="wd" x1="21.1" y1="56.2" x2="21.1" y2="70.9"/>
+<rect class="cd" x="15.5" y="61.1" width="11.3" height="8.6"/>
+<line class="wd" x1="39.3" y1="64.8" x2="39.3" y2="91.8"/>
+<rect class="cd" x="33.6" y="70.9" width="11.3" height="16"/>
+<line class="wd" x1="57.4" y1="83.2" x2="57.4" y2="99.2"/>
+<rect class="cd" x="51.8" y="86.9" width="11.3" height="9.8"/>
+<line class="wd" x1="75.6" y1="93.1" x2="75.6" y2="112.8"/>
+<rect class="cd" x="70" y="98" width="11.3" height="9.8"/>
+<line class="wd" x1="93.8" y1="100.5" x2="93.8" y2="118.9"/>
+<rect class="cd" x="88.1" y="105.4" width="11.3" height="8.6"/>
+<line class="wd" x1="111.9" y1="111.5" x2="111.9" y2="125.1"/>
+<rect class="cd" x="106.3" y="112.8" width="11.3" height="11.1"/>
+<line class="wd" x1="130.1" y1="120.2" x2="130.1" y2="139.8"/>
+<rect class="cd" x="124.5" y="122.6" width="11.3" height="13.5"/>
+<line class="wd" x1="148.3" y1="128.8" x2="148.3" y2="147.2"/>
+<rect class="cd" x="142.6" y="133.7" width="11.3" height="8.6"/>
+<line class="wd" x1="166.4" y1="142.3" x2="166.4" y2="194"/>
+<rect class="cd" x="160.8" y="144.8" width="11.3" height="44.3"/>
+<line class="wu" x1="184.6" y1="195.2" x2="184.6" y2="211.2"/>
+<rect class="cu" x="179" y="198.9" width="11.3" height="4.9"/>
+<line class="wu" x1="202.8" y1="149.7" x2="202.8" y2="194"/>
+<rect class="cu" x="197.1" y="154.6" width="11.3" height="36.9"/>
+<line class="wu" x1="220.9" y1="137.4" x2="220.9" y2="159.5"/>
+<rect class="cu" x="215.3" y="142.3" width="11.3" height="12.3"/>
+<text class="ut" x="184.6" y="229.2" text-anchor="middle">星</text>
+<!-- kchart: n=12 L=252 step=18.167 x(i)=L+step*(i+0.5) price[9.180,10.800] y∈[34,242] -->
+<line class="axis" x1="252" y1="34" x2="252" y2="242"/>
+<line class="grid" x1="252" y1="200.9" x2="470" y2="200.9"/>
+<line class="grid" x1="252" y1="136.7" x2="470" y2="136.7"/>
+<line class="grid" x1="252" y1="72.5" x2="470" y2="72.5"/>
+<line class="axis" x1="252" y1="242" x2="470" y2="242"/>
+<line class="wu" x1="261.1" y1="198.3" x2="261.1" y2="220.2"/>
+<rect class="cu" x="255.5" y="200.9" width="11.3" height="12.8"/>
+<line class="wu" x1="279.3" y1="190.6" x2="279.3" y2="206"/>
+<rect class="cu" x="273.6" y="194.5" width="11.3" height="6.4"/>
+<line class="wu" x1="297.4" y1="185.5" x2="297.4" y2="199.6"/>
+<rect class="cu" x="291.8" y="188.1" width="11.3" height="7.7"/>
+<line class="wu" x1="315.6" y1="177.8" x2="315.6" y2="193.2"/>
+<rect class="cu" x="310" y="180.4" width="11.3" height="9"/>
+<line class="wu" x1="333.8" y1="167.5" x2="333.8" y2="186.8"/>
+<rect class="cu" x="328.1" y="168.8" width="11.3" height="11.6"/>
+<line class="wu" x1="351.9" y1="157.3" x2="351.9" y2="176.5"/>
+<rect class="cu" x="346.3" y="161.1" width="11.3" height="9"/>
+<line class="wu" x1="370.1" y1="149.6" x2="370.1" y2="166.2"/>
+<rect class="cu" x="364.5" y="152.1" width="11.3" height="7.7"/>
+<line class="wu" x1="388.3" y1="131.6" x2="388.3" y2="153.4"/>
+<rect class="cu" x="382.6" y="136.7" width="11.3" height="15.4"/>
+<line class="wu" x1="406.4" y1="84.1" x2="406.4" y2="136.7"/>
+<rect class="cu" x="400.8" y="87.9" width="11.3" height="46.2"/>
+<line class="wu" x1="424.6" y1="64.8" x2="424.6" y2="80.2"/>
+<rect class="cu" x="419" y="72.5" width="11.3" height="3.9"/>
+<line class="wd" x1="442.8" y1="80.2" x2="442.8" y2="126.4"/>
+<rect class="cd" x="437.1" y="82.8" width="11.3" height="39.8"/>
+<line class="wd" x1="460.9" y1="118.7" x2="460.9" y2="141.9"/>
+<rect class="cd" x="455.3" y="123.9" width="11.3" height="14.1"/>
+<text class="dt" x="424.6" y="55.8" text-anchor="middle">星</text>
+<!-- kchart: n=12 L=492 step=18.167 x(i)=L+step*(i+0.5) price[9.200,11.050] y∈[34,242] -->
+<line class="axis" x1="492" y1="34" x2="492" y2="242"/>
+<line class="grid" x1="492" y1="208.3" x2="710" y2="208.3"/>
+<line class="grid" x1="492" y1="152.1" x2="710" y2="152.1"/>
+<line class="grid" x1="492" y1="95.8" x2="710" y2="95.8"/>
+<line class="grid" x1="492" y1="39.6" x2="710" y2="39.6"/>
+<line class="axis" x1="492" y1="242" x2="710" y2="242"/>
+<line class="wu" x1="501.1" y1="203.8" x2="501.1" y2="220.6"/>
+<rect class="cu" x="495.5" y="208.3" width="11.3" height="11.2"/>
+<line class="wu" x1="519.3" y1="195.9" x2="519.3" y2="211.6"/>
+<rect class="cu" x="513.6" y="199.3" width="11.3" height="7.9"/>
+<line class="wu" x1="537.4" y1="185.8" x2="537.4" y2="204.9"/>
+<rect class="cu" x="531.8" y="186.9" width="11.3" height="12.4"/>
+<line class="wu" x1="555.6" y1="174.5" x2="555.6" y2="188"/>
+<rect class="cu" x="550" y="176.8" width="11.3" height="10.1"/>
+<line class="wu" x1="573.8" y1="163.3" x2="573.8" y2="179"/>
+<rect class="cu" x="568.1" y="167.8" width="11.3" height="7.9"/>
+<line class="wu" x1="591.9" y1="150.9" x2="591.9" y2="170"/>
+<rect class="cu" x="586.3" y="154.3" width="11.3" height="13.5"/>
+<line class="wu" x1="610.1" y1="138.6" x2="610.1" y2="158.8"/>
+<rect class="cu" x="604.5" y="141.9" width="11.3" height="11.2"/>
+<line class="wu" x1="628.3" y1="128.4" x2="628.3" y2="144.2"/>
+<rect class="cu" x="622.6" y="130.7" width="11.3" height="10.1"/>
+<line class="wu" x1="646.4" y1="83.5" x2="646.4" y2="130.7"/>
+<rect class="cu" x="640.8" y="86.8" width="11.3" height="41.6"/>
+<line class="wu" x1="664.6" y1="65.5" x2="664.6" y2="81.2"/>
+<rect class="cu" x="659" y="74.5" width="11.3" height="1"/>
+<line class="wd" x1="682.8" y1="80.1" x2="682.8" y2="121.7"/>
+<rect class="cd" x="677.1" y="82.3" width="11.3" height="36"/>
+<line class="wd" x1="700.9" y1="113.8" x2="700.9" y2="135.2"/>
+<rect class="cd" x="695.3" y="119.4" width="11.3" height="12.4"/>
+<text class="dt" x="664.6" y="56.5" text-anchor="middle">十字星</text>
+<text class="pl" x="120" y="20" text-anchor="middle">启明星（早晨之星）</text>
+<text class="nd" x="120" y="266" text-anchor="middle">长阴 → 跳空小实体 → 长阳，</text>
+<text class="nd" x="120" y="282" text-anchor="middle">第三根收进第一根实体一半以上</text>
+<text class="pl" x="360" y="20" text-anchor="middle">黄昏星</text>
+<text class="nd" x="360" y="266" text-anchor="middle">长阳 → 跳空小实体 → 长阴，</text>
+<text class="nd" x="360" y="282" text-anchor="middle">第三根收进第一根实体一半以下</text>
+<text class="pl" x="600" y="20" text-anchor="middle">黄昏十字星</text>
+<text class="nd" x="600" y="266" text-anchor="middle">中间那颗星是十字星：</text>
+<text class="nd" x="600" y="282" text-anchor="middle">比普通黄昏星更值得重视</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>三个形态都是“长实体 → 跳空的小实体 → 反方向的长实体”。第一根说明原趋势还很强；第二根说明趋势方在跳空之后推不动了；第三根说明对手已经接过主动权，并且收复了第一根实体的一大半。黄昏十字星中间那颗星开盘等于收盘，僵持得最彻底，所以分量更重。这类三根 K 线的形态自带确认，第三根就是确认，不必再等第四根。</figcaption>
+  </figure>
+
+  <div class="prose">
+    <h3><span class="tag">形态五</span>射击之星与倒锤子线：锤子线的倒影</h3>
+    <p>把锤子线上下颠倒，就得到另一对同形异名的 K 线：小实体位于全天区间的下端，<strong>长上影线至少是实体的 2 倍</strong>，几乎没有下影线。</p>
+    <p><strong>射击之星</strong><span class="en-term">（shooting star）</span>出现在上涨之后，最好和前一根实体之间有跳空。战报是这样的：开盘后多方猛冲，却在高位撞上大量卖盘，收盘回到开盘附近，上方的空气突然变稀薄了。尼森认为它通常不像黄昏星那样是重大的反转信号，更像一个警告。A 股也叫它“流星线”。</p>
+    <p><strong>倒锤子线</strong><span class="en-term">（inverted hammer）</span>是同样的形状出现在下跌之后，意义更含糊：多方冲了一次没站住，算不上胜利。所以它<strong>必须等确认</strong>：次日开盘高于倒锤子线的实体，并且收盘走高。确认的逻辑和上吊线正好相反：倒锤子线当天做空的人，第二天一开盘就被套，他们的回补买盘会继续推高价格。</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 12-7</span>射击之星与倒锤子线<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 292" role="img" aria-label="左：上涨末端出现长上影线、小实体的射击之星，次日阴线确认；右：下跌末端出现形状相同的倒锤子线，次日高开高走确认">
+<defs><marker id="f127-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/></marker><marker id="f127-ara" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/></marker></defs>
+<!-- kchart: n=12 L=12 step=28.167 x(i)=L+step*(i+0.5) price[9.000,10.750] y∈[34,242] -->
+<line class="axis" x1="12" y1="34" x2="12" y2="242"/>
+<line class="grid" x1="12" y1="242" x2="350" y2="242"/>
+<line class="grid" x1="12" y1="182.6" x2="350" y2="182.6"/>
+<line class="grid" x1="12" y1="123.1" x2="350" y2="123.1"/>
+<line class="grid" x1="12" y1="63.7" x2="350" y2="63.7"/>
+<line class="axis" x1="12" y1="242" x2="350" y2="242"/>
+<line class="wu" x1="26.1" y1="201.6" x2="26.1" y2="220.6"/>
+<rect class="cu" x="17.4" y="206.3" width="17.5" height="10.7"/>
+<line class="wu" x1="54.3" y1="188.5" x2="54.3" y2="207.5"/>
+<rect class="cu" x="45.5" y="190.9" width="17.5" height="15.5"/>
+<line class="wu" x1="82.4" y1="177.8" x2="82.4" y2="195.6"/>
+<rect class="cu" x="73.7" y="180.2" width="17.5" height="9.5"/>
+<line class="wu" x1="110.6" y1="168.3" x2="110.6" y2="186.1"/>
+<rect class="cu" x="101.9" y="171.9" width="17.5" height="9.5"/>
+<line class="wu" x1="138.8" y1="158.8" x2="138.8" y2="176.6"/>
+<rect class="cu" x="130" y="161.2" width="17.5" height="11.9"/>
+<line class="wu" x1="166.9" y1="150.5" x2="166.9" y2="167.1"/>
+<rect class="cu" x="158.2" y="151.7" width="17.5" height="9.5"/>
+<line class="wu" x1="195.1" y1="137.4" x2="195.1" y2="156.4"/>
+<rect class="cu" x="186.4" y="139.8" width="17.5" height="13.1"/>
+<line class="wu" x1="223.3" y1="124.3" x2="223.3" y2="144.5"/>
+<rect class="cu" x="214.5" y="127.9" width="17.5" height="13.1"/>
+<line class="wu" x1="251.4" y1="111.3" x2="251.4" y2="131.5"/>
+<rect class="cu" x="242.7" y="114.8" width="17.5" height="14.3"/>
+<line class="wd" x1="279.6" y1="64.9" x2="279.6" y2="106.5"/>
+<rect class="cd" x="270.9" y="98.2" width="17.5" height="7.1"/>
+<line class="wd" x1="307.8" y1="111.3" x2="307.8" y2="136.2"/>
+<rect class="cd" x="299" y="114.8" width="17.5" height="17.8"/>
+<line class="wd" x1="335.9" y1="129.1" x2="335.9" y2="152.9"/>
+<rect class="cd" x="327.2" y="132.7" width="17.5" height="15.5"/>
+<text class="dt" x="279.6" y="55.9" text-anchor="middle">射击之星</text>
+<!-- kchart: n=12 L=372 step=28.167 x(i)=L+step*(i+0.5) price[9.400,11.020] y∈[34,242] -->
+<line class="axis" x1="372" y1="34" x2="372" y2="242"/>
+<line class="grid" x1="372" y1="229.2" x2="710" y2="229.2"/>
+<line class="grid" x1="372" y1="165" x2="710" y2="165"/>
+<line class="grid" x1="372" y1="100.8" x2="710" y2="100.8"/>
+<line class="grid" x1="372" y1="36.6" x2="710" y2="36.6"/>
+<line class="axis" x1="372" y1="242" x2="710" y2="242"/>
+<line class="wd" x1="386.1" y1="55.8" x2="386.1" y2="81.5"/>
+<rect class="cd" x="377.4" y="62.2" width="17.5" height="14.1"/>
+<line class="wd" x1="414.3" y1="71.2" x2="414.3" y2="98.2"/>
+<rect class="cd" x="405.5" y="76.4" width="17.5" height="15.4"/>
+<line class="wd" x1="442.4" y1="87.9" x2="442.4" y2="105.9"/>
+<rect class="cd" x="433.7" y="93.1" width="17.5" height="10.3"/>
+<line class="wd" x1="470.6" y1="98.2" x2="470.6" y2="116.2"/>
+<rect class="cd" x="461.9" y="103.3" width="17.5" height="11.6"/>
+<line class="wd" x1="498.8" y1="108.5" x2="498.8" y2="132.9"/>
+<rect class="cd" x="490" y="112.3" width="17.5" height="19.3"/>
+<line class="wd" x1="526.9" y1="127.7" x2="526.9" y2="153.4"/>
+<rect class="cd" x="518.2" y="132.9" width="17.5" height="16.7"/>
+<line class="wd" x1="555.1" y1="147" x2="555.1" y2="165"/>
+<rect class="cd" x="546.4" y="150.8" width="17.5" height="9"/>
+<line class="wd" x1="583.3" y1="158.5" x2="583.3" y2="181.7"/>
+<rect class="cd" x="574.5" y="159.8" width="17.5" height="18"/>
+<line class="wd" x1="611.4" y1="176.5" x2="611.4" y2="193.2"/>
+<rect class="cd" x="602.7" y="179.1" width="17.5" height="11.6"/>
+<line class="wu" x1="639.6" y1="172.7" x2="639.6" y2="211.2"/>
+<rect class="cu" x="630.9" y="202.2" width="17.5" height="7.7"/>
+<line class="wu" x1="667.8" y1="158.5" x2="667.8" y2="198.3"/>
+<rect class="cu" x="659" y="162.4" width="17.5" height="32.1"/>
+<line class="wu" x1="695.9" y1="141.9" x2="695.9" y2="167.5"/>
+<rect class="cu" x="687.2" y="147" width="17.5" height="15.4"/>
+<text class="ut" x="639.6" y="229.2" text-anchor="middle">倒锤子线</text>
+<text class="pl" x="180" y="20" text-anchor="middle">射击之星（上涨之后）</text>
+<text class="nd" x="180" y="266" text-anchor="middle">冲高后被打回开盘附近：上方的卖盘露了脸；</text>
+<text class="nd" x="180" y="282" text-anchor="middle">最好与前一根实体之间有跳空</text>
+<text class="pl" x="540" y="20" text-anchor="middle">倒锤子线（下跌之后）</text>
+<text class="nd" x="540" y="266" text-anchor="middle">同样的形状出现在低位，意义更含糊：</text>
+<text class="nd" x="540" y="282" text-anchor="middle">必须等次日高开高走来确认</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>两根 K 线形状相同：长上影线、小实体、几乎没有下影线。左图在上涨之后跳空出现，长上影线记录了一次被高位卖盘打回的冲锋，次日阴线收在它的实体下方，警告成立；右图在下跌之后出现，次日高开高走、收在它的最高价之上，才算确认。把它和图 12-3 放在一起，就得到四个“同形异名”：<b>形状决定你该看什么，位置决定它是什么意思</b>。</figcaption>
+  </figure>
+
+  <div class="tablewrap">
+    <table>
+      <tr><th>形状</th><th>出现在下跌之后</th><th>出现在上涨之后</th></tr>
+      <tr><td>长下影线，小实体在区间上端</td><td><span class="up-t">锤子线</span>：看涨，等确认更稳</td><td><span class="dn-t">上吊线</span>：看跌，必须确认</td></tr>
+      <tr><td>长上影线，小实体在区间下端</td><td><span class="up-t">倒锤子线</span>：看涨，必须确认</td><td><span class="dn-t">射击之星</span>：看跌警告</td></tr>
+    </table>
+  </div>
+
+  <div class="prose">
+    <h3><span class="tag">形态六</span>孕线与十字孕线：力气泄了</h3>
+    <p>孕线<span class="en-term">（harami）</span>是吞没形态的反面：第一根是长实体，第二根是小实体，<strong>完全落在第一根的实体之内</strong>。harami 是日文里“怀孕”的古语，长实体像母亲，小实体像腹中的胎儿，A 股俗称“身怀六甲”。两根的颜色通常相反，但这不是必要条件。</p>
+    <p>它的含义是：前一天还在大步推进的趋势，今天突然缩成一个小区间，<strong>力气泄了</strong>。和吞没相比，孕线是更弱的信号，它更多地说明趋势<strong>停顿</strong>，常常转入横盘，而不是立刻掉头。和西方的“内包日”比，内包日比的是最高最低价，孕线比的是实体。</p>
+    <p>如果孕在里面的是一根十字星，就叫<strong>十字孕线</strong><span class="en-term">（harami cross）</span>，A 股俗称“十字胎”。前一天还一边倒，今天彻底打平，墨菲书中把它看作比普通孕线更重要的反转信号。</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 12-8</span>孕线与十字孕线<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 292" role="img" aria-label="左：上涨末端一根长阳线之后，出现一根实体完全落在其实体之内的小阴线，构成看跌孕线；右：下跌末端长阴线之后出现一根落在其实体之内的十字星，构成看涨十字孕线">
+<defs><marker id="f128-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/></marker><marker id="f128-ara" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/></marker></defs>
+<!-- kchart: n=13 L=12 step=26.000 x(i)=L+step*(i+0.5) price[9.100,10.810] y∈[34,242] -->
+<line class="axis" x1="12" y1="34" x2="12" y2="242"/>
+<line class="grid" x1="12" y1="193.3" x2="350" y2="193.3"/>
+<line class="grid" x1="12" y1="132.5" x2="350" y2="132.5"/>
+<line class="grid" x1="12" y1="71.7" x2="350" y2="71.7"/>
+<line class="axis" x1="12" y1="242" x2="350" y2="242"/>
+<rect class="zone" x="246" y="65.6" width="52" height="47.4"/>
+<line class="wu" x1="25" y1="209.2" x2="25" y2="220.1"/>
+<rect class="cu" x="16.9" y="212.8" width="16.1" height="6.1"/>
+<line class="wu" x1="51" y1="200.6" x2="51" y2="218.9"/>
+<rect class="cu" x="42.9" y="203.1" width="16.1" height="9.7"/>
+<line class="wu" x1="77" y1="184.8" x2="77" y2="205.5"/>
+<rect class="cu" x="68.9" y="189.7" width="16.1" height="14.6"/>
+<line class="wu" x1="103" y1="172.7" x2="103" y2="192.1"/>
+<rect class="cu" x="94.9" y="176.3" width="16.1" height="14.6"/>
+<line class="wu" x1="129" y1="159.3" x2="129" y2="177.5"/>
+<rect class="cu" x="120.9" y="161.7" width="16.1" height="14.6"/>
+<line class="wu" x1="155" y1="145.9" x2="155" y2="162.9"/>
+<rect class="cu" x="146.9" y="152" width="16.1" height="9.7"/>
+<line class="wu" x1="181" y1="135" x2="181" y2="154.4"/>
+<rect class="cu" x="172.9" y="136.2" width="16.1" height="13.4"/>
+<line class="wu" x1="207" y1="120.4" x2="207" y2="141"/>
+<rect class="cu" x="198.9" y="122.8" width="16.1" height="13.4"/>
+<line class="wu" x1="233" y1="111.8" x2="233" y2="126.4"/>
+<rect class="cu" x="224.9" y="115.5" width="16.1" height="7.3"/>
+<line class="wu" x1="259" y1="62" x2="259" y2="115.5"/>
+<rect class="cu" x="250.9" y="65.6" width="16.1" height="47.4"/>
+<line class="wd" x1="285" y1="72.9" x2="285" y2="92.4"/>
+<rect class="cd" x="276.9" y="77.8" width="16.1" height="9.7"/>
+<line class="wd" x1="311" y1="81.4" x2="311" y2="105.8"/>
+<rect class="cd" x="302.9" y="88.7" width="16.1" height="10.9"/>
+<line class="wd" x1="337" y1="92.4" x2="337" y2="117.9"/>
+<rect class="cd" x="328.9" y="99.7" width="16.1" height="12.2"/>
+<text class="dt" x="285" y="63.9" text-anchor="middle">孕线</text>
+<!-- kchart: n=13 L=372 step=26.000 x(i)=L+step*(i+0.5) price[9.120,10.910] y∈[34,242] -->
+<line class="axis" x1="372" y1="34" x2="372" y2="242"/>
+<line class="grid" x1="372" y1="197.8" x2="710" y2="197.8"/>
+<line class="grid" x1="372" y1="139.7" x2="710" y2="139.7"/>
+<line class="grid" x1="372" y1="81.6" x2="710" y2="81.6"/>
+<line class="axis" x1="372" y1="242" x2="710" y2="242"/>
+<rect class="zone" x="606" y="167.6" width="52" height="43"/>
+<line class="wd" x1="385" y1="56.1" x2="385" y2="80.5"/>
+<rect class="cd" x="376.9" y="59.6" width="16.1" height="16.3"/>
+<line class="wd" x1="411" y1="72.3" x2="411" y2="95.6"/>
+<rect class="cd" x="402.9" y="75.8" width="16.1" height="15.1"/>
+<line class="wd" x1="437" y1="84" x2="437" y2="101.4"/>
+<rect class="cd" x="428.9" y="88.6" width="16.1" height="10.5"/>
+<line class="wd" x1="463" y1="93.3" x2="463" y2="115.3"/>
+<rect class="cd" x="454.9" y="97.9" width="16.1" height="15.1"/>
+<line class="wd" x1="489" y1="109.5" x2="489" y2="122.3"/>
+<rect class="cd" x="480.9" y="111.9" width="16.1" height="9.3"/>
+<line class="wd" x1="515" y1="115.3" x2="515" y2="129.3"/>
+<rect class="cd" x="506.9" y="120" width="16.1" height="7"/>
+<line class="wd" x1="541" y1="124.6" x2="541" y2="137.4"/>
+<rect class="cd" x="532.9" y="127" width="16.1" height="8.1"/>
+<line class="wd" x1="567" y1="135.1" x2="567" y2="156"/>
+<rect class="cd" x="558.9" y="137.4" width="16.1" height="15.1"/>
+<line class="wd" x1="593" y1="151.4" x2="593" y2="167.6"/>
+<rect class="cd" x="584.9" y="153.7" width="16.1" height="11.6"/>
+<line class="wd" x1="619" y1="165.3" x2="619" y2="214.1"/>
+<rect class="cd" x="610.9" y="167.6" width="16.1" height="43"/>
+<line class="wu" x1="645" y1="182.7" x2="645" y2="200.2"/>
+<rect class="cu" x="636.9" y="192" width="16.1" height="1"/>
+<line class="wu" x1="671" y1="171.1" x2="671" y2="193.2"/>
+<rect class="cu" x="662.9" y="174.6" width="16.1" height="15.1"/>
+<line class="wu" x1="697" y1="156" x2="697" y2="179.3"/>
+<rect class="cu" x="688.9" y="160.7" width="16.1" height="13.9"/>
+<text class="ut" x="652.8" y="232.1" text-anchor="middle">十字孕线</text>
+<text class="pl" x="180" y="20" text-anchor="middle">看跌孕线（上涨之后）</text>
+<text class="nd" x="180" y="266" text-anchor="middle">长阳之后，小实体缩在它的实体之内：</text>
+<text class="nd" x="180" y="282" text-anchor="middle">上涨的力气突然泄了，常转入横盘</text>
+<text class="pl" x="540" y="20" text-anchor="middle">看涨十字孕线（下跌之后）</text>
+<text class="nd" x="540" y="266" text-anchor="middle">孕在里面的是十字星：</text>
+<text class="nd" x="540" y="282" text-anchor="middle">比普通孕线更值得重视</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>浅色带标出第一根长 K 线的实体范围，第二根的实体完全缩在带子里面。这是孕线和吞没的根本区别：吞没是第二根“大过”第一根，孕线是第二根“小于”第一根。左图长阳之后的小阴线让上涨戛然而止，随后转入偏弱的横盘；右图长阴之后的十字星说明空方的猛攻突然停了，比普通孕线更值得注意。孕线不需要跳空，这一点也和星线不同。</figcaption>
+  </figure>
+
+  <div class="prose">
+    <h3><span class="tag">形态七</span>平头顶部与平头底部：同一价位被拒绝两次</h3>
+    <p>平头顶部<span class="en-term">（tweezer tops）</span>又称镊子顶，是两根或几根 K 线的<strong>最高价相同</strong>；平头底部则是最低价相同，形状像镊子的两个尖。这些 K 线可以相邻，也可以相隔一两根。它其实是一个微缩版的双重顶或双重底（第 4 站）：价格两次来到同一个位置，两次被打回去。</p>
+    <p>单独出现的平头分量不重，在日线上也很常见。它的价值在于<strong>叠加</strong>：如果构成平头的第二根 K 线同时是上吊线、射击之星，或者两根一起构成乌云盖顶、看跌吞没、孕线，信号就强得多。</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 12-9</span>平头顶部与平头底部<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 292" role="img" aria-label="左：上涨末端两根相邻 K 线的最高价完全相同，构成平头顶部；右：下跌末端相隔一根的两根 K 线最低价完全相同，构成平头底部">
+<defs><marker id="f129-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/></marker><marker id="f129-ara" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/></marker></defs>
+<!-- kchart: n=13 L=12 step=26.000 x(i)=L+step*(i+0.5) price[9.080,10.810] y∈[34,242] -->
+<line class="axis" x1="12" y1="34" x2="12" y2="242"/>
+<line class="grid" x1="12" y1="191.5" x2="350" y2="191.5"/>
+<line class="grid" x1="12" y1="131.4" x2="350" y2="131.4"/>
+<line class="grid" x1="12" y1="71.3" x2="350" y2="71.3"/>
+<line class="axis" x1="12" y1="242" x2="350" y2="242"/>
+<line class="wu" x1="25" y1="198.7" x2="25" y2="220.4"/>
+<rect class="cu" x="16.9" y="203.5" width="16.1" height="12"/>
+<line class="wu" x1="51" y1="190.3" x2="51" y2="207.1"/>
+<rect class="cu" x="42.9" y="193.9" width="16.1" height="10.8"/>
+<line class="wu" x1="77" y1="177.1" x2="77" y2="195.1"/>
+<rect class="cu" x="68.9" y="180.7" width="16.1" height="12"/>
+<line class="wu" x1="103" y1="165.1" x2="103" y2="185.5"/>
+<rect class="cu" x="94.9" y="167.5" width="16.1" height="14.4"/>
+<line class="wu" x1="129" y1="149.4" x2="129" y2="168.7"/>
+<rect class="cu" x="120.9" y="154.2" width="16.1" height="12"/>
+<line class="wu" x1="155" y1="136.2" x2="155" y2="160.2"/>
+<rect class="cu" x="146.9" y="141" width="16.1" height="15.6"/>
+<line class="wu" x1="181" y1="124.2" x2="181" y2="142.2"/>
+<rect class="cu" x="172.9" y="126.6" width="16.1" height="13.2"/>
+<line class="wu" x1="207" y1="110.9" x2="207" y2="130.2"/>
+<rect class="cu" x="198.9" y="114.6" width="16.1" height="12"/>
+<line class="wu" x1="233" y1="97.7" x2="233" y2="117"/>
+<rect class="cu" x="224.9" y="101.3" width="16.1" height="14.4"/>
+<line class="wu" x1="259" y1="65.3" x2="259" y2="102.5"/>
+<rect class="cu" x="250.9" y="70.1" width="16.1" height="30.1"/>
+<line class="wd" x1="285" y1="65.3" x2="285" y2="96.5"/>
+<rect class="cd" x="276.9" y="72.5" width="16.1" height="20.4"/>
+<line class="wd" x1="311" y1="89.3" x2="311" y2="109.7"/>
+<rect class="cd" x="302.9" y="94.1" width="16.1" height="12"/>
+<line class="wd" x1="337" y1="101.3" x2="337" y2="123"/>
+<rect class="cd" x="328.9" y="106.1" width="16.1" height="13.2"/>
+<line class="sr-dn" x1="238.2" y1="65.3" x2="305.8" y2="65.3"/>
+<text class="dt" x="272" y="55.3" text-anchor="middle">最高价相同</text>
+<!-- kchart: n=13 L=372 step=26.000 x(i)=L+step*(i+0.5) price[9.290,10.900] y∈[34,242] -->
+<line class="axis" x1="372" y1="34" x2="372" y2="242"/>
+<line class="grid" x1="372" y1="214.9" x2="710" y2="214.9"/>
+<line class="grid" x1="372" y1="150.3" x2="710" y2="150.3"/>
+<line class="grid" x1="372" y1="85.7" x2="710" y2="85.7"/>
+<line class="axis" x1="372" y1="242" x2="710" y2="242"/>
+<line class="wd" x1="385" y1="56" x2="385" y2="77.9"/>
+<rect class="cd" x="376.9" y="58.5" width="16.1" height="15.5"/>
+<line class="wd" x1="411" y1="68.9" x2="411" y2="90.8"/>
+<rect class="cd" x="402.9" y="75.3" width="16.1" height="9"/>
+<line class="wd" x1="437" y1="80.5" x2="437" y2="99.9"/>
+<rect class="cd" x="428.9" y="84.4" width="16.1" height="12.9"/>
+<line class="wd" x1="463" y1="92.1" x2="463" y2="111.5"/>
+<rect class="cd" x="454.9" y="97.3" width="16.1" height="11.6"/>
+<line class="wd" x1="489" y1="103.8" x2="489" y2="119.3"/>
+<rect class="cd" x="480.9" y="108.9" width="16.1" height="7.8"/>
+<line class="wd" x1="515" y1="116.7" x2="515" y2="133.5"/>
+<rect class="cd" x="506.9" y="118" width="16.1" height="9"/>
+<line class="wd" x1="541" y1="121.9" x2="541" y2="142.5"/>
+<rect class="cd" x="532.9" y="127" width="16.1" height="12.9"/>
+<line class="wd" x1="567" y1="139.9" x2="567" y2="158"/>
+<rect class="cd" x="558.9" y="141.2" width="16.1" height="10.3"/>
+<line class="wd" x1="593" y1="147.7" x2="593" y2="173.5"/>
+<rect class="cd" x="584.9" y="152.9" width="16.1" height="16.8"/>
+<line class="wd" x1="619" y1="169.7" x2="619" y2="211"/>
+<rect class="cd" x="610.9" y="172.2" width="16.1" height="33.6"/>
+<line class="wu" x1="645" y1="187.7" x2="645" y2="208.4"/>
+<rect class="cu" x="636.9" y="192.9" width="16.1" height="11.6"/>
+<line class="wu" x1="671" y1="174.8" x2="671" y2="211"/>
+<rect class="cu" x="662.9" y="177.4" width="16.1" height="18.1"/>
+<line class="wu" x1="697" y1="156.7" x2="697" y2="181.3"/>
+<rect class="cu" x="688.9" y="161.9" width="16.1" height="14.2"/>
+<line class="sr-up" x1="598.2" y1="211" x2="691.8" y2="211"/>
+<text class="ut" x="645" y="230" text-anchor="middle">最低价相同</text>
+<text class="pl" x="180" y="20" text-anchor="middle">平头顶部（镊子顶）</text>
+<text class="nd" x="180" y="266" text-anchor="middle">两次冲到同一价位都被打回：</text>
+<text class="nd" x="180" y="282" text-anchor="middle">第二根同时是孕线，信号叠加</text>
+<text class="pl" x="540" y="20" text-anchor="middle">平头底部（镊子底）</text>
+<text class="nd" x="540" y="266" text-anchor="middle">两个低点可以相邻，也可以相隔一两根：</text>
+<text class="nd" x="540" y="282" text-anchor="middle">单独出现分量轻，要找其他信号叠加</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>左图两根相邻 K 线的最高价完全相同：第一天冲到这个价位，第二天又冲到同一价位被打回，而且第二根缩在第一根的实体之内，平头顶部与孕线叠加在一起。右图两个低点相隔一根 K 线，最低价完全相同，第二次探底被迅速买回。图中是精确相等，现实中只要非常接近就可以，越“整齐”越好。</figcaption>
+  </figure>
+
+  <div class="prose">
+    <h3><span class="tag">形态八</span>三只乌鸦与红三兵：连续三天的溃退或推进</h3>
+    <p><strong>三只乌鸦</strong><span class="en-term">（three black crows）</span>出现在高位或上涨之后：连续三根较长的阴线，每根都收在当天最低价附近，每根都开在前一根的实体之内，收盘一根比一根低。日本人用乌鸦这种不祥之鸟来命名它，说的是高位的多头连续三天溃退。</p>
+    <p><strong>红三兵</strong><span class="en-term">（three advancing white soldiers）</span>是镜像，原书叫“三个白兵”，A 股因为阳线是红色而叫“红三兵”：下跌或底部横盘之后，连续三根阳线，每根收在高点附近，每根开在前一根实体之内或附近，收盘逐级抬高，像士兵整齐地向前推进。</p>
+    <p>要留心后面几根的“精气神”。如果阳线实体越来越小、上影线越来越长，说明推进正在受阻，尼森把这类变体叫作“前方受阻”和“停顿”形态，它们反而是上涨乏力的警告。另一个常识：三只乌鸦如果出现在已经大跌之后，往往来得太晚，这时追空的风险收益很差。</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 12-10</span>红三兵与三只乌鸦<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 292" role="img" aria-label="左：下跌后在底部横盘，随后出现三根逐级抬高、收在高点附近的阳线，即红三兵；右：上涨到高位后，出现三根逐级走低、收在低点附近的阴线，即三只乌鸦">
+<defs><marker id="f1210-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/></marker><marker id="f1210-ara" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/></marker></defs>
+<!-- kchart: n=12 L=12 step=28.167 x(i)=L+step*(i+0.5) price[9.860,11.170] y∈[34,242] -->
+<line class="axis" x1="12" y1="34" x2="12" y2="242"/>
+<line class="grid" x1="12" y1="219.8" x2="350" y2="219.8"/>
+<line class="grid" x1="12" y1="140.4" x2="350" y2="140.4"/>
+<line class="grid" x1="12" y1="61" x2="350" y2="61"/>
+<line class="axis" x1="12" y1="242" x2="350" y2="242"/>
+<line class="wd" x1="26.1" y1="84.8" x2="26.1" y2="119.7"/>
+<rect class="cd" x="17.4" y="91.2" width="17.5" height="22.2"/>
+<line class="wd" x1="54.3" y1="108.6" x2="54.3" y2="140.4"/>
+<rect class="cd" x="45.5" y="115" width="17.5" height="20.6"/>
+<line class="wd" x1="82.4" y1="129.3" x2="82.4" y2="153.1"/>
+<rect class="cd" x="73.7" y="134" width="17.5" height="14.3"/>
+<line class="wd" x1="110.6" y1="143.6" x2="110.6" y2="164.2"/>
+<rect class="cd" x="101.9" y="148.3" width="17.5" height="9.5"/>
+<line class="wd" x1="138.8" y1="151.5" x2="138.8" y2="184.8"/>
+<rect class="cd" x="130" y="157.8" width="17.5" height="20.6"/>
+<line class="wd" x1="166.9" y1="175.3" x2="166.9" y2="202.3"/>
+<rect class="cd" x="158.2" y="181.7" width="17.5" height="19.1"/>
+<line class="wd" x1="195.1" y1="191.2" x2="195.1" y2="216.6"/>
+<rect class="cd" x="186.4" y="200.7" width="17.5" height="6.4"/>
+<line class="wu" x1="223.3" y1="194.4" x2="223.3" y2="219.8"/>
+<rect class="cu" x="214.5" y="200.7" width="17.5" height="6.4"/>
+<line class="wu" x1="251.4" y1="153.1" x2="251.4" y2="208.7"/>
+<rect class="cu" x="242.7" y="157.8" width="17.5" height="46"/>
+<line class="wu" x1="279.6" y1="111.8" x2="279.6" y2="186.4"/>
+<rect class="cu" x="270.9" y="116.6" width="17.5" height="65.1"/>
+<line class="wu" x1="307.8" y1="70.5" x2="307.8" y2="146.7"/>
+<rect class="cu" x="299" y="75.3" width="17.5" height="66.7"/>
+<line class="wu" x1="335.9" y1="62.6" x2="335.9" y2="94.3"/>
+<rect class="cu" x="327.2" y="68.9" width="17.5" height="9.5"/>
+<text class="ut" x="251.4" y="144.1" text-anchor="middle">①</text>
+<text class="ut" x="279.6" y="102.8" text-anchor="middle">②</text>
+<text class="ut" x="307.8" y="61.5" text-anchor="middle">③</text>
+<!-- kchart: n=12 L=372 step=28.167 x(i)=L+step*(i+0.5) price[8.770,10.000] y∈[34,242] -->
+<line class="axis" x1="372" y1="34" x2="372" y2="242"/>
+<line class="grid" x1="372" y1="203.1" x2="710" y2="203.1"/>
+<line class="grid" x1="372" y1="160.8" x2="710" y2="160.8"/>
+<line class="grid" x1="372" y1="118.6" x2="710" y2="118.6"/>
+<line class="grid" x1="372" y1="76.3" x2="710" y2="76.3"/>
+<line class="grid" x1="372" y1="34" x2="710" y2="34"/>
+<line class="axis" x1="372" y1="242" x2="710" y2="242"/>
+<line class="wu" x1="386.1" y1="154.1" x2="386.1" y2="172.7"/>
+<rect class="cu" x="377.4" y="157.4" width="17.5" height="13.5"/>
+<line class="wu" x1="414.3" y1="130.4" x2="414.3" y2="165.9"/>
+<rect class="cu" x="405.5" y="137.2" width="17.5" height="22"/>
+<line class="wu" x1="442.4" y1="120.2" x2="442.4" y2="142.2"/>
+<rect class="cu" x="433.7" y="123.6" width="17.5" height="13.5"/>
+<line class="wu" x1="470.6" y1="100" x2="470.6" y2="128.7"/>
+<rect class="cu" x="461.9" y="105" width="17.5" height="18.6"/>
+<line class="wu" x1="498.8" y1="84.7" x2="498.8" y2="113.5"/>
+<rect class="cu" x="490" y="88.1" width="17.5" height="18.6"/>
+<line class="wu" x1="526.9" y1="69.5" x2="526.9" y2="96.6"/>
+<rect class="cu" x="518.2" y="76.3" width="17.5" height="13.5"/>
+<line class="wu" x1="555.1" y1="59.4" x2="555.1" y2="84.7"/>
+<rect class="cu" x="546.4" y="69.5" width="17.5" height="6.8"/>
+<line class="wd" x1="583.3" y1="56" x2="583.3" y2="81.3"/>
+<rect class="cd" x="574.5" y="69.5" width="17.5" height="6.8"/>
+<line class="wd" x1="611.4" y1="67.8" x2="611.4" y2="120.2"/>
+<rect class="cd" x="602.7" y="72.9" width="17.5" height="42.3"/>
+<line class="wd" x1="639.6" y1="86.4" x2="639.6" y2="160.8"/>
+<rect class="cd" x="630.9" y="91.5" width="17.5" height="64.3"/>
+<line class="wd" x1="667.8" y1="127" x2="667.8" y2="204.8"/>
+<rect class="cd" x="659" y="132.1" width="17.5" height="67.6"/>
+<line class="wu" x1="695.9" y1="182.8" x2="695.9" y2="213.3"/>
+<rect class="cu" x="687.2" y="193" width="17.5" height="5.1"/>
+<text class="dt" x="611.4" y="138.2" text-anchor="middle">①</text>
+<text class="dt" x="639.6" y="178.8" text-anchor="middle">②</text>
+<text class="dt" x="667.8" y="222.8" text-anchor="middle">③</text>
+<text class="pl" x="180" y="20" text-anchor="middle">红三兵（三个白兵）</text>
+<text class="nd" x="180" y="266" text-anchor="middle">三根阳线逐级抬高，各自开在前一根实体内、</text>
+<text class="nd" x="180" y="282" text-anchor="middle">收在高点附近：多方连续三天稳步推进</text>
+<text class="pl" x="540" y="20" text-anchor="middle">三只乌鸦</text>
+<text class="nd" x="540" y="266" text-anchor="middle">三根阴线逐级走低，各自开在前一根实体内、</text>
+<text class="nd" x="540" y="282" text-anchor="middle">收在低点附近：高位的多头连续三天溃退</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>左图在下跌后的底部横盘之后，三根阳线依次开在前一根实体之内、收在高点附近，每天都把阵地向前推一段；右图在高位横盘之后，三根阴线依次开在前一根实体之内、收在低点附近，每天都比前一天退得更远。三根 K 线的形态确认得慢，第三根收盘时价格往往已经走了一大段，所以它更适合用来判断<b>趋势已经改变</b>，而不是捕捉最低点或最高点。</figcaption>
+  </figure>
+
+  <div class="prose">
+    <h3>反转形态速查表</h3>
+  </div>
+  <div class="tablewrap">
+    <table>
+      <tr><th>形态</th><th>根数</th><th>出现位置</th><th>形状要点</th><th>确认</th></tr>
+      <tr><td>锤子线</td><td>1</td><td>下跌之后</td><td>下影线 ≥ 实体 2 倍，几乎没有上影线</td><td>宜等次日收盘站上其最高价</td></tr>
+      <tr><td>上吊线</td><td>1</td><td>上涨之后</td><td>形状同锤子线</td><td>必须：次日收在其实体下方</td></tr>
+      <tr><td>射击之星</td><td>1</td><td>上涨之后</td><td>上影线 ≥ 实体 2 倍，几乎没有下影线，最好跳空</td><td>宜确认</td></tr>
+      <tr><td>倒锤子线</td><td>1</td><td>下跌之后</td><td>形状同射击之星</td><td>必须：次日高开并收高</td></tr>
+      <tr><td>看涨 / 看跌吞没</td><td>2</td><td>下跌 / 上涨之后</td><td>第二根实体完全包住第一根实体，颜色相反</td><td>本身较强</td></tr>
+      <tr><td>乌云盖顶</td><td>2</td><td>上涨之后</td><td>高开过前一根最高价，收盘深入阳线实体一半以下</td><td>深入越多越强</td></tr>
+      <tr><td>刺透形态</td><td>2</td><td>下跌之后</td><td>低开破前一根最低价，收盘升过阴线实体一半</td><td>不过半不成立</td></tr>
+      <tr><td>孕线 / 十字孕线</td><td>2</td><td>趋势之后</td><td>第二根实体（或十字星）落在第一根实体之内</td><td>较弱，多指向停顿</td></tr>
+      <tr><td>平头顶部 / 底部</td><td>2 根以上</td><td>上涨 / 下跌之后</td><td>最高价 / 最低价相同</td><td>需与其他信号叠加</td></tr>
+      <tr><td>启明星 / 黄昏星</td><td>3</td><td>下跌 / 上涨之后</td><td>长实体 + 跳空小实体 + 反向长实体，收进第一根实体</td><td>第三根即确认</td></tr>
+      <tr><td>十字星形态</td><td>3</td><td>同上</td><td>中间的星为十字星</td><td>强于普通星线</td></tr>
+      <tr><td>红三兵 / 三只乌鸦</td><td>3</td><td>底部 / 高位</td><td>三根同色长实体，开在前一根实体内，收在极端附近</td><td>留意后几根是否乏力</td></tr>
+    </table>
+  </div>
+
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p>“形态背得越多，看盘越准。”尼森的书里有几十种形态，网上的“K 线大全”能列出上百种。形态越多，越容易在任何一张图上找到“依据”：想买的时候总能看到看涨形态，想卖的时候总能看到看跌形态。这是确认偏差在作怪，再加上《投资学》第 12 章讲的过度自信，危害更大。更好的做法是只精通上面这张表，把功夫花在 12.6 节的“位置”上。</p>
+  </div>
+</section>
+
+<!-- ======================== 12.5 ======================== -->
+<section class="ch" id="s5">
+  <h2 class="sec"><span class="no">12.5</span>持续信号：窗口与三法</h2>
+  <p class="sec-en">CONTINUATION PATTERNS: WINDOWS AND THREE METHODS</p>
+
+  <div class="prose">
+    <p>K 线不只会报告转折，也会报告“趋势还在，只是歇一歇”。墨菲介绍了两类持续形态。</p>
+
+    <h3>窗口：日本人眼中的缺口</h3>
+    <p>日本交易者把西方的价格缺口叫作<strong>窗口</strong><span class="en-term">（window）</span>。定义和第 3 站一样严格：<strong>上升窗口</strong>是今天的最低价高于昨天的最高价，两根 K 线之间留下一段完全没有成交的空白；<strong>下降窗口</strong>是今天的最高价低于昨天的最低价。</p>
+    <p>日本人对窗口的用法很朴素：<strong>顺着窗口的方向做</strong>。上升窗口是看涨的持续信号，下降窗口是看跌的持续信号。更实用的是它的支撑阻力作用：</p>
+    <ul>
+      <li>上升窗口是支撑区。日本有句话叫“回调止于窗口”：价格回落时，往往在窗口附近止跌；</li>
+      <li>下降窗口是阻力区，反弹常在窗口附近受阻；</li>
+      <li>失效标准看<strong>收盘</strong>：收盘跌破上升窗口的下沿（也就是跳空前一天的最高价），这个窗口的看涨意义就作废了；下降窗口反之。盘中跌进窗口、收盘又站回来，不算失效。</li>
+    </ul>
+    <p>这和第 3 站的缺口理论是两个视角。西方按出现的位置把缺口分成普通、突破、中继、衰竭四类，重点是判断行情处在哪个阶段；日本的窗口理论不做分类，重点是把缺口当作<strong>支撑阻力</strong>来用。两者可以叠加：一个放量的突破缺口，回踩时守住了窗口下沿，是很强的组合信号。日本交易者还有一种经验说法：连续出现三个上升窗口之后，行情往往过度延伸，要提防回调。</p>
+
+    <h3>上升三法与下降三法：趋势里的一次深呼吸</h3>
+    <p><strong>上升三法</strong><span class="en-term">（rising three methods）</span>一般由五根 K 线组成：</p>
+    <ol>
+      <li>一根长阳线；</li>
+      <li>随后是一组小实体的 K 线，理想情况是三根，通常是阴线，逆着趋势小幅回落，但<strong>始终没有跑出第一根长阳的高低区间</strong>；</li>
+      <li>最后一根长阳线，开盘高于前一根的收盘，收盘高于第一根长阳的收盘价，创出新高。</li>
+    </ol>
+    <p>用战报来读：多方一天猛攻之后需要休整，空方趁机反扑了三天，却连第一天的阵地都没能夺回，最低价始终没跌破那根长阳的最低点。然后多方用一根长阳收复全部失地并创出新高，休整结束。<strong>下降三法</strong>是镜像：长阴之后，几根小阳线在长阴的区间内反弹，最后一根长阴创出新低。它和第 5 站（第 6 章 持续形态）的旗形是同一种行为：急速行情之后，一段小幅、缩量的逆向整理。</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 12-11</span>上升窗口作为支撑；上升三法<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 292" role="img" aria-label="左：上涨中出现一个上升窗口，之后的回调跌进窗口却收盘守住窗口下沿，随后继续上涨；右：上升三法，一根长阳之后三根小阴线都没有跌出长阳的区间，最后一根长阳收出新高">
+<defs><marker id="f1211-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/></marker><marker id="f1211-ara" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/></marker></defs>
+<!-- kchart: n=21 L=12 step=18.000 x(i)=L+step*(i+0.5) price[8.800,10.640] y∈[34,242] -->
+<line class="axis" x1="12" y1="34" x2="12" y2="242"/>
+<line class="grid" x1="12" y1="219.4" x2="390" y2="219.4"/>
+<line class="grid" x1="12" y1="162.9" x2="390" y2="162.9"/>
+<line class="grid" x1="12" y1="106.3" x2="390" y2="106.3"/>
+<line class="grid" x1="12" y1="49.8" x2="390" y2="49.8"/>
+<line class="axis" x1="12" y1="242" x2="390" y2="242"/>
+<rect class="zone-up" x="156" y="138" width="234" height="19.2"/>
+<line class="wu" x1="21" y1="209.2" x2="21" y2="221.7"/>
+<rect class="cu" x="15.4" y="211.5" width="11.2" height="6.8"/>
+<line class="wu" x1="39" y1="195.7" x2="39" y2="214.9"/>
+<rect class="cu" x="33.4" y="200.2" width="11.2" height="12.4"/>
+<line class="wu" x1="57" y1="193.4" x2="57" y2="207"/>
+<rect class="cu" x="51.4" y="196.8" width="11.2" height="5.7"/>
+<line class="wu" x1="75" y1="188.9" x2="75" y2="197.9"/>
+<rect class="cu" x="69.4" y="191.1" width="11.2" height="4.5"/>
+<line class="wu" x1="93" y1="184.3" x2="93" y2="196.8"/>
+<rect class="cu" x="87.4" y="186.6" width="11.2" height="5.7"/>
+<line class="wu" x1="111" y1="176.4" x2="111" y2="187.7"/>
+<rect class="cu" x="105.4" y="177.6" width="11.2" height="7.9"/>
+<line class="wu" x1="129" y1="167.4" x2="129" y2="182.1"/>
+<rect class="cu" x="123.4" y="169.7" width="11.2" height="9"/>
+<line class="wu" x1="147" y1="157.2" x2="147" y2="175.3"/>
+<rect class="cu" x="141.4" y="161.7" width="11.2" height="7.9"/>
+<line class="wu" x1="165" y1="105.2" x2="165" y2="138"/>
+<rect class="cu" x="159.4" y="108.6" width="11.2" height="21.5"/>
+<line class="wu" x1="183" y1="92.8" x2="183" y2="112"/>
+<rect class="cu" x="177.4" y="96.2" width="11.2" height="12.4"/>
+<line class="wu" x1="201" y1="80.3" x2="201" y2="99.6"/>
+<rect class="cu" x="195.4" y="83.7" width="11.2" height="12.4"/>
+<line class="wu" x1="219" y1="66.8" x2="219" y2="88.3"/>
+<rect class="cu" x="213.4" y="70.2" width="11.2" height="13.6"/>
+<line class="wu" x1="237" y1="56.6" x2="237" y2="71.3"/>
+<rect class="cu" x="231.4" y="62.3" width="11.2" height="7.9"/>
+<line class="wd" x1="255" y1="57.7" x2="255" y2="79.2"/>
+<rect class="cd" x="249.4" y="62.3" width="11.2" height="13.6"/>
+<line class="wd" x1="273" y1="72.4" x2="273" y2="95"/>
+<rect class="cd" x="267.4" y="75.8" width="11.2" height="15.8"/>
+<line class="wd" x1="291" y1="87.1" x2="291" y2="106.3"/>
+<rect class="cd" x="285.4" y="91.7" width="11.2" height="11.3"/>
+<line class="wd" x1="309" y1="100.7" x2="309" y2="149.3"/>
+<rect class="cd" x="303.4" y="103" width="11.2" height="28.3"/>
+<line class="wu" x1="327" y1="118.8" x2="327" y2="134.6"/>
+<rect class="cu" x="321.4" y="122.2" width="11.2" height="9"/>
+<line class="wu" x1="345" y1="110.9" x2="345" y2="124.4"/>
+<rect class="cu" x="339.4" y="114.3" width="11.2" height="7.9"/>
+<line class="wu" x1="363" y1="96.2" x2="363" y2="116.5"/>
+<rect class="cu" x="357.4" y="99.6" width="11.2" height="14.7"/>
+<line class="wu" x1="381" y1="81.5" x2="381" y2="101.8"/>
+<rect class="cu" x="375.4" y="84.9" width="11.2" height="13.6"/>
+<text class="ut" x="192" y="173.2" text-anchor="start">上升窗口 = 支撑区</text>
+<text class="pv" x="318" y="153.3" text-anchor="start">回调止于窗口</text>
+<!-- kchart: n=11 L=412 step=27.091 x(i)=L+step*(i+0.5) price[9.100,10.910] y∈[34,242] -->
+<line class="axis" x1="412" y1="34" x2="412" y2="242"/>
+<line class="grid" x1="412" y1="196" x2="710" y2="196"/>
+<line class="grid" x1="412" y1="138.6" x2="710" y2="138.6"/>
+<line class="grid" x1="412" y1="81.1" x2="710" y2="81.1"/>
+<line class="axis" x1="412" y1="242" x2="710" y2="242"/>
+<rect class="zone" x="547.5" y="91.5" width="108.4" height="62.1"/>
+<line class="wu" x1="425.5" y1="191.4" x2="425.5" y2="211"/>
+<rect class="cu" x="417.1" y="196" width="16.8" height="11.5"/>
+<line class="wu" x1="452.6" y1="184.5" x2="452.6" y2="201.8"/>
+<rect class="cu" x="444.2" y="186.8" width="16.8" height="10.3"/>
+<line class="wu" x1="479.7" y1="166.2" x2="479.7" y2="189.1"/>
+<rect class="cu" x="471.3" y="170.8" width="16.8" height="14.9"/>
+<line class="wu" x1="506.8" y1="160.4" x2="506.8" y2="176.5"/>
+<rect class="cu" x="498.4" y="163.9" width="16.8" height="9.2"/>
+<line class="wu" x1="533.9" y1="151.2" x2="533.9" y2="169.6"/>
+<rect class="cu" x="525.5" y="152.4" width="16.8" height="11.5"/>
+<line class="wu" x1="561" y1="91.5" x2="561" y2="153.5"/>
+<rect class="cu" x="552.6" y="96.1" width="16.8" height="54"/>
+<line class="wd" x1="588.1" y1="97.2" x2="588.1" y2="114.4"/>
+<rect class="cd" x="579.7" y="100.7" width="16.8" height="10.3"/>
+<line class="wd" x1="615.2" y1="107.5" x2="615.2" y2="127.1"/>
+<rect class="cd" x="606.8" y="111" width="16.8" height="11.5"/>
+<line class="wd" x1="642.3" y1="119" x2="642.3" y2="138.6"/>
+<rect class="cd" x="633.9" y="122.5" width="16.8" height="11.5"/>
+<line class="wu" x1="669.4" y1="67.3" x2="669.4" y2="135.1"/>
+<rect class="cu" x="661" y="70.8" width="16.8" height="60.9"/>
+<line class="wu" x1="696.5" y1="55.8" x2="696.5" y2="75.4"/>
+<rect class="cu" x="688.1" y="60.4" width="16.8" height="10.3"/>
+<text class="pv" x="615.2" y="171.5" text-anchor="middle">三根小阴线：休整</text>
+<text class="pl" x="200" y="20" text-anchor="middle">上升窗口：回调的支撑</text>
+<text class="nd" x="200" y="266" text-anchor="middle">“回调止于窗口”：只要收盘不跌破窗口下沿，</text>
+<text class="nd" x="200" y="282" text-anchor="middle">上涨的判断就继续有效</text>
+<text class="pl" x="560" y="20" text-anchor="middle">上升三法</text>
+<text class="nd" x="560" y="266" text-anchor="middle">小 K 线都留在第一根长阳的区间里，</text>
+<text class="nd" x="560" y="282" text-anchor="middle">最后一根长阳收出新高：休整结束</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>左图的跳空在两根 K 线之间留下一段空白（红色浅带）。之后的回调一度跌进窗口，最低价已经低于窗口上沿，但收盘守住了窗口下沿，随后重拾升势，这就是“回调止于窗口”。右图的浅色方框是第一根长阳的高低区间，三根小阴线在框里缓缓回落，像一次深呼吸；最后一根长阳收出新高，确认休整结束。两种形态说的是同一件事：<b>趋势方还握着主动权</b>。</figcaption>
+  </figure>
+
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p>“缺口必补，所以看到向上跳空就该做空，等它回补。”这句股市谚语害人不浅。日本的窗口理论恰恰相反：上升窗口是<strong>支撑</strong>，顺着窗口的方向做才是正道。窗口被回补的那一刻，往往不是做空的好时机，而是检验支撑的时刻：守住了，趋势继续；收盘跌破窗口下沿，才说明判断要改。第 3 站也讲过，突破缺口和中继缺口常常很长时间都不回补。</p>
+  </div>
+</section>
+
+<!-- ======================== 12.6 ======================== -->
+<section class="ch" id="s6">
+  <h2 class="sec"><span class="no">12.6</span>位置决定意义：K 线 + 西方工具</h2>
+  <p class="sec-en">CANDLESTICKS AND WESTERN TECHNICAL TOOLS</p>
+
+  <div class="prose">
+    <p>到这里你应该已经注意到：几乎每个形态的定义里，都有一句“出现在上涨之后”或“出现在下跌之后”。这不是附加条件，而是形态的一部分。墨菲对本章的总结也落在这里：<strong>不要孤立地使用 K 线形态</strong>，要把它们放进西方技术分析的框架里。K 线是短期信号，它的意义要靠更大的结构来赋予。</p>
+  </div>
+
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>一个 K 线形态就像一个词，位置是它的语境。“你可真行”这四个字，在颁奖典礼上是夸奖，在打碎花瓶之后是挖苦。脱离语境查字典，你会把挖苦当夸奖；脱离位置看形态，你会把上吊线当成锤子线。K 线分析的功夫，一半在认字，一半在读语境，而后一半更难。</p>
+  </div>
+
+  <div class="prose">
+    <h3><span class="tag">一</span>在关键位置出现，才有分量</h3>
+    <p>同样一根锤子线，出现在重要支撑上和出现在“半空中”，含义天差地别。支撑位之所以重要，是因为那里<strong>本来就有理由出现买盘</strong>：前期低点或前期高点（角色互换，第 3 站）、上升趋势线、50% 等百分比回撤位、长期均线（第 8 站）附近，都挂着大量等待的买单和空头的回补单。锤子线是这些买盘<strong>真的出手了</strong>的现场证据。在半空中，锤子线背后没有这支“援军”，多方的一次反击很可能只是空头短暂的获利了结。</p>
+    <p>反过来也一样：上吊线、看跌吞没、黄昏星出现在前期高点、下降趋势线、整数关口等阻力附近，比出现在上涨途中的任意位置可靠得多。</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 12-12</span>同一个锤子线：在支撑位有效，在半空中无效<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 334" role="img" aria-label="左：上升趋势回调到前高与 50% 回撤重合的 12.50 支撑，出现放量锤子线并获次日确认，止损放在锤子线低点下方，目标看前高 15.00；右：下跌途中半空中出现的锤子线，附近没有支撑，次日即收在其实体下方，下跌继续">
+<defs><marker id="f1212-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/></marker><marker id="f1212-ara" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/></marker></defs>
+<!-- kchart: n=50 L=44 step=6.120 x(i)=L+step*(i+0.5) price[9.500,15.400] y∈[34,232] -->
+<line class="axis" x1="44" y1="34" x2="44" y2="232"/>
+<line class="grid" x1="44" y1="215.2" x2="350" y2="215.2"/>
+<text class="tick" x="38" y="219.2" text-anchor="end">10</text>
+<line class="grid" x1="44" y1="148.1" x2="350" y2="148.1"/>
+<text class="tick" x="38" y="152.1" text-anchor="end">12</text>
+<line class="grid" x1="44" y1="81" x2="350" y2="81"/>
+<text class="tick" x="38" y="85" text-anchor="end">14</text>
+<line class="axis" x1="44" y1="232" x2="350" y2="232"/>
+<line class="wu" x1="47.1" y1="209.9" x2="47.1" y2="215.2"/>
+<rect class="cu" x="45.2" y="211.2" width="3.8" height="1.3"/>
+<line class="wu" x1="53.2" y1="202.5" x2="53.2" y2="214.5"/>
+<rect class="cu" x="51.3" y="205.8" width="3.8" height="6.4"/>
+<line class="wu" x1="59.3" y1="194.4" x2="59.3" y2="209.5"/>
+<rect class="cu" x="57.4" y="197.1" width="3.8" height="9.1"/>
+<line class="wu" x1="65.4" y1="187.7" x2="65.4" y2="200.1"/>
+<rect class="cu" x="63.5" y="189.7" width="3.8" height="7.7"/>
+<line class="wu" x1="71.5" y1="179.6" x2="71.5" y2="192.7"/>
+<rect class="cu" x="69.6" y="181" width="3.8" height="8.7"/>
+<line class="wu" x1="77.7" y1="173.3" x2="77.7" y2="182.7"/>
+<rect class="cu" x="75.8" y="174.6" width="3.8" height="6"/>
+<line class="wu" x1="83.8" y1="165.2" x2="83.8" y2="174.6"/>
+<rect class="cu" x="81.9" y="168.2" width="3.8" height="6"/>
+<line class="wu" x1="89.9" y1="158.8" x2="89.9" y2="168.9"/>
+<rect class="cu" x="88" y="161.2" width="3.8" height="7.4"/>
+<line class="wu" x1="96" y1="153.8" x2="96" y2="164.9"/>
+<rect class="cu" x="94.1" y="154.5" width="3.8" height="6.7"/>
+<line class="wu" x1="102.1" y1="142.4" x2="102.1" y2="157.5"/>
+<rect class="cu" x="100.2" y="143.1" width="3.8" height="11.7"/>
+<line class="wu" x1="108.3" y1="131.3" x2="108.3" y2="137.7"/>
+<rect class="cu" x="106.4" y="135.3" width="3.8" height="2.3"/>
+<line class="wd" x1="114.4" y1="137.7" x2="114.4" y2="144.4"/>
+<rect class="cd" x="112.5" y="140" width="3.8" height="1"/>
+<line class="wd" x1="120.5" y1="138.7" x2="120.5" y2="148.8"/>
+<rect class="cd" x="118.6" y="140.7" width="3.8" height="5"/>
+<line class="wd" x1="126.6" y1="142.4" x2="126.6" y2="156.8"/>
+<rect class="cd" x="124.7" y="145.8" width="3.8" height="7.7"/>
+<line class="wd" x1="132.7" y1="148.8" x2="132.7" y2="159.2"/>
+<rect class="cd" x="130.8" y="153.1" width="3.8" height="3.7"/>
+<line class="wu" x1="138.9" y1="145.4" x2="138.9" y2="160.2"/>
+<rect class="cu" x="137" y="146.8" width="3.8" height="9.4"/>
+<line class="wu" x1="145" y1="139.4" x2="145" y2="149.8"/>
+<rect class="cu" x="143.1" y="141.1" width="3.8" height="4.4"/>
+<line class="wu" x1="151.1" y1="130.3" x2="151.1" y2="142.1"/>
+<rect class="cu" x="149.2" y="130.7" width="3.8" height="11.1"/>
+<line class="wu" x1="157.2" y1="116.9" x2="157.2" y2="135.7"/>
+<rect class="cu" x="155.3" y="120.9" width="3.8" height="10.7"/>
+<line class="wu" x1="163.3" y1="110.9" x2="163.3" y2="125.3"/>
+<rect class="cu" x="161.4" y="114.2" width="3.8" height="6.7"/>
+<line class="wu" x1="169.5" y1="100.8" x2="169.5" y2="117.6"/>
+<rect class="cu" x="167.6" y="103.8" width="3.8" height="9.7"/>
+<line class="wu" x1="175.6" y1="91.4" x2="175.6" y2="108.5"/>
+<rect class="cu" x="173.7" y="94.4" width="3.8" height="10.1"/>
+<line class="wu" x1="181.7" y1="86.7" x2="181.7" y2="98.8"/>
+<rect class="cu" x="179.8" y="88.7" width="3.8" height="5"/>
+<line class="wu" x1="187.8" y1="79.6" x2="187.8" y2="92.4"/>
+<rect class="cu" x="185.9" y="81.7" width="3.8" height="6.4"/>
+<line class="wu" x1="193.9" y1="72.6" x2="193.9" y2="85.3"/>
+<rect class="cu" x="192" y="72.9" width="3.8" height="8.1"/>
+<line class="wu" x1="200.1" y1="56.8" x2="200.1" y2="74.9"/>
+<rect class="cu" x="198.2" y="60.8" width="3.8" height="12.1"/>
+<line class="wu" x1="206.2" y1="49.1" x2="206.2" y2="59.8"/>
+<rect class="cu" x="204.3" y="49.4" width="3.8" height="9.7"/>
+<line class="wd" x1="212.3" y1="47.4" x2="212.3" y2="65.2"/>
+<rect class="cd" x="210.4" y="49.1" width="3.8" height="13.8"/>
+<line class="wd" x1="218.4" y1="58.8" x2="218.4" y2="72.9"/>
+<rect class="cd" x="216.5" y="61.2" width="3.8" height="7"/>
+<line class="wd" x1="224.5" y1="65.5" x2="224.5" y2="72.9"/>
+<rect class="cd" x="222.6" y="67.2" width="3.8" height="3.4"/>
+<line class="wd" x1="230.7" y1="68.9" x2="230.7" y2="81"/>
+<rect class="cd" x="228.8" y="70.9" width="3.8" height="7.7"/>
+<line class="wd" x1="236.8" y1="77.3" x2="236.8" y2="89"/>
+<rect class="cd" x="234.9" y="78" width="3.8" height="7.4"/>
+<line class="wd" x1="242.9" y1="84.3" x2="242.9" y2="95.4"/>
+<rect class="cd" x="241" y="86" width="3.8" height="6"/>
+<line class="wd" x1="249" y1="87.7" x2="249" y2="102.8"/>
+<rect class="cd" x="247.1" y="92.1" width="3.8" height="8.4"/>
+<line class="wd" x1="255.1" y1="98.8" x2="255.1" y2="108.5"/>
+<rect class="cd" x="253.2" y="99.8" width="3.8" height="7"/>
+<line class="wd" x1="261.3" y1="107.2" x2="261.3" y2="116.2"/>
+<rect class="cd" x="259.4" y="107.8" width="3.8" height="7.7"/>
+<line class="wd" x1="267.4" y1="111.9" x2="267.4" y2="123.3"/>
+<rect class="cd" x="265.5" y="112.9" width="3.8" height="9.1"/>
+<line class="wu" x1="273.5" y1="121.3" x2="273.5" y2="138"/>
+<rect class="cu" x="271.6" y="121.9" width="3.8" height="2.7"/>
+<line class="wu" x1="279.6" y1="114.5" x2="279.6" y2="123.9"/>
+<rect class="cu" x="277.7" y="116.2" width="3.8" height="5"/>
+<line class="wu" x1="285.7" y1="108.2" x2="285.7" y2="116.2"/>
+<rect class="cu" x="283.8" y="111.2" width="3.8" height="5"/>
+<line class="wu" x1="291.9" y1="100.1" x2="291.9" y2="112.2"/>
+<rect class="cu" x="290" y="103.8" width="3.8" height="7.7"/>
+<line class="wu" x1="298" y1="97.8" x2="298" y2="107.5"/>
+<rect class="cu" x="296.1" y="99.1" width="3.8" height="4.4"/>
+<line class="wu" x1="304.1" y1="92.7" x2="304.1" y2="100.8"/>
+<rect class="cu" x="302.2" y="94.1" width="3.8" height="4.7"/>
+<line class="wu" x1="310.2" y1="85" x2="310.2" y2="95.1"/>
+<rect class="cu" x="308.3" y="88.7" width="3.8" height="5.7"/>
+<line class="wu" x1="316.3" y1="83.3" x2="316.3" y2="90.7"/>
+<rect class="cu" x="314.4" y="87" width="3.8" height="2.7"/>
+<line class="wu" x1="322.5" y1="78" x2="322.5" y2="90.7"/>
+<rect class="cu" x="320.6" y="81.3" width="3.8" height="6.7"/>
+<line class="wu" x1="328.6" y1="77.6" x2="328.6" y2="84"/>
+<rect class="cu" x="326.7" y="79" width="3.8" height="2.3"/>
+<line class="wu" x1="334.7" y1="69.2" x2="334.7" y2="78.6"/>
+<rect class="cu" x="332.8" y="71.6" width="3.8" height="6.4"/>
+<line class="wu" x1="340.8" y1="64.9" x2="340.8" y2="73.9"/>
+<rect class="cu" x="338.9" y="68.2" width="3.8" height="3.4"/>
+<line class="wu" x1="346.9" y1="60.2" x2="346.9" y2="68.6"/>
+<rect class="cu" x="345" y="62.2" width="3.8" height="5.7"/>
+<line class="axis" x1="44" y1="244" x2="44" y2="284"/>
+<line class="axis" x1="44" y1="284" x2="350" y2="284"/>
+<rect class="vu" x="45.2" y="264.5" width="3.8" height="19.5"/>
+<rect class="vu" x="51.3" y="263.5" width="3.8" height="20.5"/>
+<rect class="vu" x="57.4" y="263.5" width="3.8" height="20.5"/>
+<rect class="vu" x="63.5" y="263.5" width="3.8" height="20.5"/>
+<rect class="vu" x="69.6" y="263.5" width="3.8" height="20.5"/>
+<rect class="vu" x="75.8" y="267.2" width="3.8" height="16.8"/>
+<rect class="vu" x="81.9" y="263.5" width="3.8" height="20.5"/>
+<rect class="vu" x="88" y="260.2" width="3.8" height="23.8"/>
+<rect class="vu" x="94.1" y="257.9" width="3.8" height="26.1"/>
+<rect class="vu" x="100.2" y="260.2" width="3.8" height="23.8"/>
+<rect class="vu" x="106.4" y="263.7" width="3.8" height="20.3"/>
+<rect class="vd" x="112.5" y="266.5" width="3.8" height="17.5"/>
+<rect class="vd" x="118.6" y="267.8" width="3.8" height="16.2"/>
+<rect class="vd" x="124.7" y="266.5" width="3.8" height="17.5"/>
+<rect class="vd" x="130.8" y="265.5" width="3.8" height="18.5"/>
+<rect class="vu" x="137" y="257.3" width="3.8" height="26.7"/>
+<rect class="vu" x="143.1" y="257.7" width="3.8" height="26.3"/>
+<rect class="vu" x="149.2" y="265.1" width="3.8" height="18.9"/>
+<rect class="vu" x="155.3" y="258.7" width="3.8" height="25.3"/>
+<rect class="vu" x="161.4" y="264.9" width="3.8" height="19.1"/>
+<rect class="vu" x="167.6" y="255.7" width="3.8" height="28.3"/>
+<rect class="vu" x="173.7" y="265.3" width="3.8" height="18.7"/>
+<rect class="vu" x="179.8" y="258.1" width="3.8" height="25.9"/>
+<rect class="vu" x="185.9" y="262" width="3.8" height="22"/>
+<rect class="vu" x="192" y="260.4" width="3.8" height="23.6"/>
+<rect class="vu" x="198.2" y="263.1" width="3.8" height="20.9"/>
+<rect class="vu" x="204.3" y="257.9" width="3.8" height="26.1"/>
+<rect class="vd" x="210.4" y="259" width="3.8" height="25"/>
+<rect class="vd" x="216.5" y="259.6" width="3.8" height="24.4"/>
+<rect class="vd" x="222.6" y="263.3" width="3.8" height="20.7"/>
+<rect class="vd" x="228.8" y="261" width="3.8" height="23"/>
+<rect class="vd" x="234.9" y="257.7" width="3.8" height="26.3"/>
+<rect class="vd" x="241" y="263.3" width="3.8" height="20.7"/>
+<rect class="vd" x="247.1" y="260" width="3.8" height="24"/>
+<rect class="vd" x="253.2" y="258.3" width="3.8" height="25.7"/>
+<rect class="vd" x="259.4" y="261.2" width="3.8" height="22.8"/>
+<rect class="vd" x="265.5" y="265.5" width="3.8" height="18.5"/>
+<rect class="vu" x="271.6" y="247" width="3.8" height="37"/>
+<rect class="vu" x="277.7" y="251.8" width="3.8" height="32.2"/>
+<rect class="vu" x="283.8" y="262.4" width="3.8" height="21.6"/>
+<rect class="vu" x="290" y="260.4" width="3.8" height="23.6"/>
+<rect class="vu" x="296.1" y="265.1" width="3.8" height="18.9"/>
+<rect class="vu" x="302.2" y="258.7" width="3.8" height="25.3"/>
+<rect class="vu" x="308.3" y="260.8" width="3.8" height="23.2"/>
+<rect class="vu" x="314.4" y="263.7" width="3.8" height="20.3"/>
+<rect class="vu" x="320.6" y="265.9" width="3.8" height="18.1"/>
+<rect class="vu" x="326.7" y="265.9" width="3.8" height="18.1"/>
+<rect class="vu" x="332.8" y="261.8" width="3.8" height="22.2"/>
+<rect class="vu" x="338.9" y="262.2" width="3.8" height="21.8"/>
+<rect class="vu" x="345" y="258.1" width="3.8" height="25.9"/>
+<text class="lg" x="50" y="256">成交量</text>
+<line class="sr" x1="59.3" y1="131.3" x2="350" y2="131.3"/>
+<line class="sr-up" x1="193.9" y1="47.4" x2="350" y2="47.4"/>
+<text class="ut" x="346" y="42.4" text-anchor="end">目标：前高 15.00</text>
+<line class="sr-dn" x1="261.3" y1="142.1" x2="350" y2="142.1"/>
+<text class="dt" x="346" y="154.1" text-anchor="end">止损 12.18</text>
+<text class="hi" x="47.1" y="52.5" text-anchor="start">支撑 12.50 =</text>
+<text class="hi" x="47.1" y="66.6" text-anchor="start">前高（角色互换）</text>
+<text class="hi" x="47.1" y="80.6" text-anchor="start">+ 50% 回撤</text>
+<line class="edge" x1="71.5" y1="89.4" x2="71.5" y2="128" marker-end="url(#f1212-ara)"/>
+<text class="ut" x="269.8" y="142" text-anchor="end">锤子线 →</text>
+<!-- kchart: n=49 L=404 step=6.245 x(i)=L+step*(i+0.5) price[10.770,15.530] y∈[34,232] -->
+<line class="axis" x1="404" y1="34" x2="404" y2="232"/>
+<line class="grid" x1="404" y1="222.4" x2="710" y2="222.4"/>
+<text class="tick" x="398" y="226.4" text-anchor="end">11</text>
+<line class="grid" x1="404" y1="180.8" x2="710" y2="180.8"/>
+<text class="tick" x="398" y="184.8" text-anchor="end">12</text>
+<line class="grid" x1="404" y1="139.2" x2="710" y2="139.2"/>
+<text class="tick" x="398" y="143.2" text-anchor="end">13</text>
+<line class="grid" x1="404" y1="97.6" x2="710" y2="97.6"/>
+<text class="tick" x="398" y="101.6" text-anchor="end">14</text>
+<line class="grid" x1="404" y1="56" x2="710" y2="56"/>
+<text class="tick" x="398" y="60" text-anchor="end">15</text>
+<line class="axis" x1="404" y1="232" x2="710" y2="232"/>
+<line class="wu" x1="407.1" y1="47.3" x2="407.1" y2="55.2"/>
+<rect class="cu" x="405.2" y="51.5" width="3.9" height="2.5"/>
+<line class="wd" x1="413.4" y1="47.3" x2="413.4" y2="65.6"/>
+<rect class="cd" x="411.4" y="53.6" width="3.9" height="5.8"/>
+<line class="wu" x1="419.6" y1="55.2" x2="419.6" y2="59.8"/>
+<rect class="cu" x="417.7" y="55.2" width="3.9" height="4.6"/>
+<line class="wd" x1="425.9" y1="51.5" x2="425.9" y2="62.7"/>
+<rect class="cd" x="423.9" y="54.8" width="3.9" height="5.4"/>
+<line class="wd" x1="432.1" y1="56.9" x2="432.1" y2="68.1"/>
+<rect class="cd" x="430.2" y="58.5" width="3.9" height="3.3"/>
+<line class="wd" x1="438.3" y1="55.2" x2="438.3" y2="71.9"/>
+<rect class="cd" x="436.4" y="61.5" width="3.9" height="4.2"/>
+<line class="wd" x1="444.6" y1="63.9" x2="444.6" y2="77.7"/>
+<rect class="cd" x="442.7" y="65.2" width="3.9" height="10.4"/>
+<line class="wu" x1="450.8" y1="70.2" x2="450.8" y2="79.8"/>
+<rect class="cu" x="448.9" y="73.9" width="3.9" height="2.1"/>
+<line class="wu" x1="457.1" y1="68.1" x2="457.1" y2="76.4"/>
+<rect class="cu" x="455.1" y="72.7" width="3.9" height="1"/>
+<line class="wu" x1="463.3" y1="65.2" x2="463.3" y2="74.3"/>
+<rect class="cu" x="461.4" y="66.4" width="3.9" height="5"/>
+<line class="wu" x1="469.6" y1="62.3" x2="469.6" y2="70.2"/>
+<rect class="cu" x="467.6" y="64.4" width="3.9" height="3.7"/>
+<line class="wu" x1="475.8" y1="61.5" x2="475.8" y2="66"/>
+<rect class="cu" x="473.9" y="63.9" width="3.9" height="1.2"/>
+<line class="wd" x1="482.1" y1="59.4" x2="482.1" y2="71.4"/>
+<rect class="cd" x="480.1" y="62.7" width="3.9" height="7.9"/>
+<line class="wu" x1="488.3" y1="69.4" x2="488.3" y2="76.4"/>
+<rect class="cu" x="486.4" y="72.3" width="3.9" height="1"/>
+<line class="wd" x1="494.6" y1="69.8" x2="494.6" y2="79.3"/>
+<rect class="cd" x="492.6" y="70.6" width="3.9" height="7.9"/>
+<line class="wd" x1="500.8" y1="71.9" x2="500.8" y2="81"/>
+<rect class="cd" x="498.9" y="77.7" width="3.9" height="2.1"/>
+<line class="wd" x1="507" y1="78.1" x2="507" y2="88.1"/>
+<rect class="cd" x="505.1" y="78.9" width="3.9" height="7.9"/>
+<line class="wd" x1="513.3" y1="84.7" x2="513.3" y2="96.4"/>
+<rect class="cd" x="511.3" y="88.1" width="3.9" height="6.2"/>
+<line class="wd" x1="519.5" y1="88.5" x2="519.5" y2="96.8"/>
+<rect class="cd" x="517.6" y="93.1" width="3.9" height="2.5"/>
+<line class="wd" x1="525.8" y1="93.1" x2="525.8" y2="101.4"/>
+<rect class="cd" x="523.8" y="96.4" width="3.9" height="3.7"/>
+<line class="wd" x1="532" y1="99.7" x2="532" y2="112.2"/>
+<rect class="cd" x="530.1" y="100.6" width="3.9" height="7.1"/>
+<line class="wd" x1="538.3" y1="107.2" x2="538.3" y2="119.3"/>
+<rect class="cd" x="536.3" y="107.6" width="3.9" height="6.2"/>
+<line class="wu" x1="544.5" y1="105.1" x2="544.5" y2="115.5"/>
+<rect class="cu" x="542.6" y="110.5" width="3.9" height="2.5"/>
+<line class="wd" x1="550.8" y1="105.5" x2="550.8" y2="121.4"/>
+<rect class="cd" x="548.8" y="111" width="3.9" height="9.2"/>
+<line class="wd" x1="557" y1="120.1" x2="557" y2="123.8"/>
+<rect class="cd" x="555.1" y="120.5" width="3.9" height="2.1"/>
+<line class="wu" x1="563.2" y1="120.1" x2="563.2" y2="128.4"/>
+<rect class="cu" x="561.3" y="121.8" width="3.9" height="1"/>
+<line class="wd" x1="569.5" y1="117.2" x2="569.5" y2="127.2"/>
+<rect class="cd" x="567.6" y="121.8" width="3.9" height="3.7"/>
+<line class="wd" x1="575.7" y1="120.9" x2="575.7" y2="134.7"/>
+<rect class="cd" x="573.8" y="125.1" width="3.9" height="4.6"/>
+<line class="wd" x1="582" y1="128" x2="582" y2="134.7"/>
+<rect class="cd" x="580" y="128.4" width="3.9" height="5.4"/>
+<line class="wd" x1="588.2" y1="132.2" x2="588.2" y2="140.1"/>
+<rect class="cd" x="586.3" y="132.6" width="3.9" height="2.5"/>
+<line class="wu" x1="594.5" y1="136.3" x2="594.5" y2="158"/>
+<rect class="cu" x="592.5" y="137.2" width="3.9" height="4.2"/>
+<line class="wd" x1="600.7" y1="137.6" x2="600.7" y2="150.1"/>
+<rect class="cd" x="598.8" y="139.2" width="3.9" height="9.2"/>
+<line class="wd" x1="607" y1="148.4" x2="607" y2="160.9"/>
+<rect class="cd" x="605" y="148.4" width="3.9" height="7.1"/>
+<line class="wd" x1="613.2" y1="151.3" x2="613.2" y2="164.2"/>
+<rect class="cd" x="611.3" y="155" width="3.9" height="6.2"/>
+<line class="wd" x1="619.4" y1="158" x2="619.4" y2="167.1"/>
+<rect class="cd" x="617.5" y="160" width="3.9" height="4.6"/>
+<line class="wu" x1="625.7" y1="159.2" x2="625.7" y2="170"/>
+<rect class="cu" x="623.8" y="163.8" width="3.9" height="1"/>
+<line class="wd" x1="631.9" y1="160.5" x2="631.9" y2="172.1"/>
+<rect class="cd" x="630" y="162.5" width="3.9" height="7.1"/>
+<line class="wd" x1="638.2" y1="169.6" x2="638.2" y2="175.8"/>
+<rect class="cd" x="636.2" y="170" width="3.9" height="4.6"/>
+<line class="wd" x1="644.4" y1="172.1" x2="644.4" y2="180"/>
+<rect class="cd" x="642.5" y="175.4" width="3.9" height="1.2"/>
+<line class="wd" x1="650.7" y1="175.8" x2="650.7" y2="180.8"/>
+<rect class="cd" x="648.7" y="177.1" width="3.9" height="1.7"/>
+<line class="wd" x1="656.9" y1="177.1" x2="656.9" y2="187.5"/>
+<rect class="cd" x="655" y="180" width="3.9" height="5"/>
+<line class="wd" x1="663.2" y1="182.5" x2="663.2" y2="189.6"/>
+<rect class="cd" x="661.2" y="184.2" width="3.9" height="4.6"/>
+<line class="wd" x1="669.4" y1="187.5" x2="669.4" y2="194.1"/>
+<rect class="cd" x="667.5" y="187.9" width="3.9" height="2.5"/>
+<line class="wd" x1="675.7" y1="190.4" x2="675.7" y2="199.1"/>
+<rect class="cd" x="673.7" y="190.4" width="3.9" height="5"/>
+<line class="wd" x1="681.9" y1="192.5" x2="681.9" y2="202.5"/>
+<rect class="cd" x="680" y="195" width="3.9" height="5"/>
+<line class="wd" x1="688.1" y1="198.7" x2="688.1" y2="205.4"/>
+<rect class="cd" x="686.2" y="201.2" width="3.9" height="1.2"/>
+<line class="wu" x1="694.4" y1="199.6" x2="694.4" y2="207"/>
+<rect class="cu" x="692.5" y="202.5" width="3.9" height="1"/>
+<line class="wd" x1="700.6" y1="198.7" x2="700.6" y2="205.4"/>
+<rect class="cd" x="698.7" y="203.3" width="3.9" height="1.2"/>
+<line class="wd" x1="706.9" y1="200.4" x2="706.9" y2="215.4"/>
+<rect class="cd" x="704.9" y="205.4" width="3.9" height="8.7"/>
+<line class="axis" x1="404" y1="244" x2="404" y2="284"/>
+<line class="axis" x1="404" y1="284" x2="710" y2="284"/>
+<rect class="vu" x="405.2" y="263.7" width="3.9" height="20.3"/>
+<rect class="vd" x="411.4" y="263.7" width="3.9" height="20.3"/>
+<rect class="vu" x="417.7" y="263.7" width="3.9" height="20.3"/>
+<rect class="vd" x="423.9" y="263.7" width="3.9" height="20.3"/>
+<rect class="vd" x="430.2" y="263.7" width="3.9" height="20.3"/>
+<rect class="vd" x="436.4" y="263.7" width="3.9" height="20.3"/>
+<rect class="vd" x="442.7" y="263.7" width="3.9" height="20.3"/>
+<rect class="vu" x="448.9" y="248.7" width="3.9" height="35.3"/>
+<rect class="vu" x="455.1" y="258" width="3.9" height="26"/>
+<rect class="vu" x="461.4" y="254.8" width="3.9" height="29.2"/>
+<rect class="vu" x="467.6" y="258" width="3.9" height="26"/>
+<rect class="vu" x="473.9" y="256.8" width="3.9" height="27.2"/>
+<rect class="vd" x="480.1" y="252.8" width="3.9" height="31.3"/>
+<rect class="vu" x="486.4" y="257.7" width="3.9" height="26.3"/>
+<rect class="vd" x="492.6" y="251.3" width="3.9" height="32.7"/>
+<rect class="vd" x="498.9" y="253" width="3.9" height="31"/>
+<rect class="vd" x="505.1" y="247" width="3.9" height="37"/>
+<rect class="vd" x="511.3" y="248.4" width="3.9" height="35.6"/>
+<rect class="vd" x="517.6" y="258" width="3.9" height="26"/>
+<rect class="vd" x="523.8" y="259.1" width="3.9" height="24.9"/>
+<rect class="vd" x="530.1" y="248.4" width="3.9" height="35.6"/>
+<rect class="vd" x="536.3" y="253.6" width="3.9" height="30.4"/>
+<rect class="vu" x="542.6" y="250.7" width="3.9" height="33.3"/>
+<rect class="vd" x="548.8" y="248.1" width="3.9" height="35.9"/>
+<rect class="vd" x="555.1" y="249.9" width="3.9" height="34.1"/>
+<rect class="vu" x="561.3" y="248.4" width="3.9" height="35.6"/>
+<rect class="vd" x="567.6" y="257.1" width="3.9" height="26.9"/>
+<rect class="vd" x="573.8" y="259.4" width="3.9" height="24.6"/>
+<rect class="vd" x="580" y="250.1" width="3.9" height="33.9"/>
+<rect class="vd" x="586.3" y="257.1" width="3.9" height="26.9"/>
+<rect class="vu" x="592.5" y="253.6" width="3.9" height="30.4"/>
+<rect class="vd" x="598.8" y="250.7" width="3.9" height="33.3"/>
+<rect class="vd" x="605" y="260" width="3.9" height="24"/>
+<rect class="vd" x="611.3" y="249" width="3.9" height="35"/>
+<rect class="vd" x="617.5" y="249.9" width="3.9" height="34.1"/>
+<rect class="vu" x="623.8" y="258.5" width="3.9" height="25.5"/>
+<rect class="vd" x="630" y="256.5" width="3.9" height="27.5"/>
+<rect class="vd" x="636.2" y="255.9" width="3.9" height="28.1"/>
+<rect class="vd" x="642.5" y="257.4" width="3.9" height="26.6"/>
+<rect class="vd" x="648.7" y="250.4" width="3.9" height="33.6"/>
+<rect class="vd" x="655" y="258" width="3.9" height="26"/>
+<rect class="vd" x="661.2" y="255.1" width="3.9" height="28.9"/>
+<rect class="vd" x="667.5" y="255.9" width="3.9" height="28.1"/>
+<rect class="vd" x="673.7" y="260.6" width="3.9" height="23.4"/>
+<rect class="vd" x="680" y="253.9" width="3.9" height="30.1"/>
+<rect class="vd" x="686.2" y="247" width="3.9" height="37"/>
+<rect class="vu" x="692.5" y="258" width="3.9" height="26"/>
+<rect class="vd" x="698.7" y="248.1" width="3.9" height="35.9"/>
+<rect class="vd" x="704.9" y="250.7" width="3.9" height="33.3"/>
+<text class="lg" x="410" y="256">成交量</text>
+<text class="pv" x="700.6" y="56" text-anchor="end">半空中：附近没有支撑，</text>
+<text class="pv" x="700.6" y="70.2" text-anchor="end">成交量也不放大</text>
+<text class="ut" x="590.7" y="162" text-anchor="end">锤子线 →</text>
+<text class="pl" x="180" y="20" text-anchor="middle">有效：关键支撑上的锤子线</text>
+<text class="nd" x="180" y="312" text-anchor="middle">位置、成交量、次日确认三样齐全；</text>
+<text class="nd" x="180" y="328" text-anchor="middle">止损看锤子线低点，目标交给前高</text>
+<text class="pl" x="540" y="20" text-anchor="middle">无效：半空中的锤子线</text>
+<text class="nd" x="540" y="312" text-anchor="middle">形状一样标准，但背后没有“援军”：</text>
+<text class="nd" x="540" y="328" text-anchor="middle">次日收在实体下方，信号作废</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>左图的上升趋势从 10.00 涨到 15.00 后回调，回到 12.50 附近：这里既是前期高点（阻力变支撑），又恰好是这轮涨幅的 50% 回撤，两种西方工具指向同一个价位。锤子线的下影线刺穿 12.50 后收回，当天放量，次日收盘站上锤子线的最高价，位置、成交量、确认三样齐全。止损放在锤子线最低价下方（12.18），目标不是 K 线给的，而是前高 15.00。顺带一提，15.00 那个高点处恰好是一个看跌吞没。右图的锤子线形状同样标准，但它出现在下跌途中，上下都没有参照，成交量平平，次日就收在它的实体下方，下跌继续。左图的数字就是 12.7 节规则卡里的例子。</figcaption>
+  </figure>
+
+  <div class="prose">
+    <h3><span class="tag">二</span>成交量、摆动指标与周期：给信号加砝码</h3>
+    <p><strong>成交量</strong>（第 6 站 · 第 7 章 交易量和持仓量）告诉你有多少人参与了这次转折。看涨吞没的第二根、锤子线当天、刺透形态的第二天放出大量，说明反击有大量真金白银参与；缩量的反转形态，可能只是少数人的短线拉锯。</p>
+    <p><strong>摆动指标</strong>（第 9 站 · 第 10 章 摆动指数和相反意见理论）告诉你行情有没有走过头。墨菲书中介绍了一种过滤思路：只在随机指标等摆动指标处于超卖区时，才采纳看涨的 K 线信号；只在超买区时，才采纳看跌信号。这样能剔除大量出现在趋势中途、毫无意义的形态。这个思路通常归功于格雷格·莫里斯<span class="en-term">（Greg Morris）</span>。</p>
+    <p><strong>周期</strong>也是砝码。周线上的一根锤子线，代表一整周的多空较量，比日线上的锤子线分量重得多；日线上的看涨信号，如果和周线的上升趋势同向，也比逆势信号可靠。这正是第 1 站说的：长周期定方向，短周期找时机。</p>
+
+    <h3><span class="tag">三</span>K 线不给目标，但给止损</h3>
+    <p>K 线形态有一个天然的短板：<strong>它们不提供价格目标</strong>。第 4 站的头肩形可以量出最小目标，K 线做不到。锤子线只能告诉你“空方这一仗输了”，不能告诉你多方会反攻到哪里。所以目标要交给西方工具：前期高低点、阻力位、趋势通道、形态的量度目标。</p>
+    <p>它的长处在另一头：<strong>K 线天然给出止损位</strong>。尼森的说法是，锤子线、看涨吞没的最低点会成为支撑，射击之星、看跌吞没的最高点会成为阻力。逻辑很直接：锤子线讲的故事是“多方守住了这个低点”，一旦收盘跌破，故事就被证伪了。用 K 线极值做止损，用西方工具定目标，就能在入场之前算出风险收益比。以图 12-12 左图为例：入场 12.95，止损 12.18，每股风险 0.77 元；目标 14.90，潜在收益 1.95 元，风险收益比约 2.5。</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 12-13</span>K 线信号的五道关</p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 274" role="img" aria-label="流程图：一个 K 线信号依次经过趋势背景、关键位置、形态质量、确认四道筛选，全部通过后才制定交易计划，止损放在 K 线极值之外，目标由西方工具给出，仓位按风险反推；任何一道没通过就不交易">
+<defs><marker id="f1213-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/></marker></defs>
+<text class="pl" x="360" y="22" text-anchor="middle">一个 K 线信号要连过五道关，才值得下单</text>
+<rect class="node" x="6" y="40" width="122" height="136" rx="8"/>
+<text class="nt" x="67" y="66" text-anchor="middle">① 趋势背景</text>
+<text class="nd" x="67" y="94" text-anchor="middle">前面有可反转的趋势？</text>
+<text class="nd" x="67" y="113" text-anchor="middle">顶部信号看涨势之后，</text>
+<text class="nd" x="67" y="132" text-anchor="middle">底部信号看跌势之后；</text>
+<text class="nd" x="67" y="151" text-anchor="middle">横盘中间的信号降级</text>
+<line class="edge" x1="130" y1="108" x2="147" y2="108" marker-end="url(#f1213-ar)"/>
+<text class="elabel" x="139" y="100" text-anchor="middle">是</text>
+<line class="edge-soft" x1="67" y1="178" x2="67" y2="218" marker-end="url(#f1213-ar)"/>
+<text class="elabel" x="74" y="202">否</text>
+<rect class="node" x="150" y="40" width="122" height="136" rx="8"/>
+<text class="nt" x="211" y="66" text-anchor="middle">② 关键位置</text>
+<text class="nd" x="211" y="94" text-anchor="middle">靠近支撑或阻力吗？</text>
+<text class="nd" x="211" y="113" text-anchor="middle">趋势线、回撤位、</text>
+<text class="nd" x="211" y="132" text-anchor="middle">均线都算关键位；</text>
+<text class="nd" x="211" y="151" text-anchor="middle">周线上的位更重要</text>
+<line class="edge" x1="274" y1="108" x2="291" y2="108" marker-end="url(#f1213-ar)"/>
+<text class="elabel" x="283" y="100" text-anchor="middle">是</text>
+<line class="edge-soft" x1="211" y1="178" x2="211" y2="218" marker-end="url(#f1213-ar)"/>
+<text class="elabel" x="218" y="202">否</text>
+<rect class="node" x="294" y="40" width="122" height="136" rx="8"/>
+<text class="nt" x="355" y="66" text-anchor="middle">③ 形态质量</text>
+<text class="nd" x="355" y="94" text-anchor="middle">形状够不够标准：</text>
+<text class="nd" x="355" y="113" text-anchor="middle">影线与实体的比例、</text>
+<text class="nd" x="355" y="132" text-anchor="middle">吞没或深入的程度；</text>
+<text class="nd" x="355" y="151" text-anchor="middle">越标准越可靠</text>
+<line class="edge" x1="418" y1="108" x2="435" y2="108" marker-end="url(#f1213-ar)"/>
+<text class="elabel" x="427" y="100" text-anchor="middle">是</text>
+<line class="edge-soft" x1="355" y1="178" x2="355" y2="218" marker-end="url(#f1213-ar)"/>
+<text class="elabel" x="362" y="202">否</text>
+<rect class="node" x="438" y="40" width="122" height="136" rx="8"/>
+<text class="nt" x="499" y="66" text-anchor="middle">④ 确认</text>
+<text class="nd" x="499" y="94" text-anchor="middle">次日收盘是否确认？</text>
+<text class="nd" x="499" y="113" text-anchor="middle">成交量是否放大？</text>
+<text class="nd" x="499" y="132" text-anchor="middle">摆动指标是否处在</text>
+<text class="nd" x="499" y="151" text-anchor="middle">超买或超卖区？</text>
+<line class="edge" x1="562" y1="108" x2="579" y2="108" marker-end="url(#f1213-ar)"/>
+<text class="elabel" x="571" y="100" text-anchor="middle">是</text>
+<line class="edge-soft" x1="499" y1="178" x2="499" y2="218" marker-end="url(#f1213-ar)"/>
+<text class="elabel" x="506" y="202">否</text>
+<rect class="node-hi" x="582" y="40" width="122" height="136" rx="8"/>
+<text class="nt" x="643" y="66" text-anchor="middle">⑤ 交易计划</text>
+<text class="nd" x="643" y="94" text-anchor="middle">止损：K 线极值之外</text>
+<text class="nd" x="643" y="113" text-anchor="middle">目标：西方工具给出</text>
+<text class="nd" x="643" y="132" text-anchor="middle">仓位：按风险反推</text>
+<text class="nd" x="643" y="151" text-anchor="middle">风险收益比 ≥ 2</text>
+<line class="edge-acc" x1="643" y1="178" x2="643" y2="218" marker-end="url(#f1213-ar)"/>
+<rect class="node-up" x="582" y="222" width="122" height="40" rx="8"/>
+<text class="nt" x="643" y="247" text-anchor="middle">按规则卡执行</text>
+<rect class="node-dn" x="6" y="222" width="554" height="40" rx="8"/>
+<text class="nt" x="283" y="247" text-anchor="middle">任何一道没过：不交易，最多放进观察名单</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>前四道关回答“这个信号值不值得理会”，第五道关回答“怎么做”。第一道关淘汰的形态最多：没有趋势可反转的“反转形态”根本不成立。第二、第四道关是西方工具的用武之地，支撑阻力、趋势线、回撤位、均线、成交量、摆动指标都在这里出场。第五道关体现了两者的分工：<b>K 线负责告诉你在哪里认错，西方工具负责告诉你目标在哪</b>。这张流程图就是下一节规则卡的骨架。</figcaption>
+  </figure>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>把 K 线交给计算机：Marshall、Young 和 Rose 的检验</h4>
+    <p>2006 年，Marshall、Young 和 Rose 在《银行与金融期刊》<span class="en-term">（Journal of Banking &amp; Finance）</span>发表了一项研究，标题直截了当：蜡烛图交易策略能为投资者创造价值吗？他们用道琼斯工业指数成分股 1992–2002 年的数据，把一批常见的单根和多根 K 线形态写成计算机规则，形态一出现就按信号方向持有一段时间，再用自助法（bootstrap）生成大量随机序列做对照，检验这些信号的收益是否超出运气所能解释的范围。</p>
+    <p>结论很干脆：<strong>没有发现蜡烛图策略能为投资者创造价值的证据</strong>。</p>
+    <p class="takeaway">这项研究检验的，正是“孤立地使用 K 线”：只要形状符合就交易，不看位置、不看趋势、不看成交量。它的失败恰好印证了墨菲的提醒。它没有回答的问题是：把 K 线放进五道关的框架之后，是否有用？这要等你在第 12 站（第 15 章 计算机和交易系统）用自己的数据去检验。</p>
+  </div>
+
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p>“出了早晨之星，能涨到哪？”K 线回答不了这个问题。很多人凭 K 线信号入场，却没有事先想好目标和止损，结果是赚一点就跑（因为没有目标），亏了就扛（因为没有认错点）。正确的顺序反过来：先用西方工具找到目标和支撑阻力，算出风险收益比够不够，再用 K 线信号决定<strong>什么时候</strong>扣扳机。另一个常见错误是在 1 分钟、5 分钟图上套用 K 线形态：周期越短，一根 K 线背后的成交越少，噪声越大，形态越不可靠。</p>
+  </div>
+</section>
+
+<!-- ======================== 12.7 ======================== -->
+<section class="ch" id="s7">
+  <h2 class="sec"><span class="no">12.7</span>落地：规则卡、证据与 A 股适配</h2>
+  <p class="sec-en">PUTTING IT TO WORK</p>
+
+  <div class="prose">
+    <p>K 线形态天生是“定性”的：多长算长影线？多小算小实体？要把它变成规则，第一步是<strong>把每个形容词换成数字</strong>。下面这张规则卡把图 12-13 的五道关落成了可以执行、也可以回测的条件。</p>
+  </div>
+
+  <div class="rulecard">
+    <div class="rc-head"><span class="label">规则卡</span><span class="rc-name">支撑位锤子线（顺势回调买入）</span></div>
+    <dl>
+      <dt>标的与周期</dt><dd>日均成交额 1 亿元以上的 A 股个股或 ETF；周线定方向，日线找信号</dd>
+      <dt>过滤条件</dt><dd>① 周线收盘价在 30 周均线之上，且 30 周均线向上；② 日线从近期高点回调，最低价进入关键支撑区：前期高点或平台（角色互换），或本轮涨幅的 50% 回撤位，上下 2% 以内；③ 入场价到前高的距离，至少是止损距离的 2 倍</dd>
+      <dt>入场</dt><dd>支撑区出现锤子线：下影线 ≥ 实体 2 倍，上影线 ≤ 实体 0.3 倍；次日（确认日）收盘价高于锤子线最高价：14:57 时价格仍在锤子线最高价之上，就在收盘集合竞价（14:57–15:00）买入。例：前高 12.50 恰为 10.00→15.00 的 50% 回撤；锤子线开 12.70、高 12.80、低 12.30、收 12.78（实体 0.08，下影线 0.40，上影线 0.02）；确认日收 12.95，买入。确认日一字涨停买不到，就放弃本次信号</dd>
+      <dt>止损</dt><dd>锤子线最低价下方 1%：12.30 × 0.99 ≈ 12.18。收盘跌破即在次日开盘卖出。T+1 制度下买入当天无法止损；如果次日跌停无法成交，实际亏损会超过计划，这是 A 股必须接受的尾部风险</dd>
+      <dt>出场</dt><dd>目标交给西方工具：前高 15.00 是第一阻力，价格到 14.90 卖出一半；剩余仓位在收盘跌破 10 日最低价时全部卖出。入场后 10 个交易日仍未涨到 13.70（约 1 倍止损距离）以上，按时间止损离场</dd>
+      <dt>仓位</dt><dd>每笔风险 = 账户的 1%。账户 20 万元，每笔最多亏 2000 元；每股风险 12.95 − 12.18 = 0.77 元；2000 ÷ 0.77 ≈ 2597 股，向下取整为 2500 股（市值约 3.24 万元）。风险收益比：（14.90 − 12.95）÷ 0.77 ≈ 2.5，满足过滤条件 ③</dd>
+    </dl>
+    <p class="rc-note">每一项都来自本章：锤子线的量化定义、等待确认、以 K 线极值做止损，来自 K 线本身；支撑、目标和趋势过滤，来自西方工具（第 3 站的支撑阻力与回撤，第 8 站的均线）。两处细节：① 实体接近零时（蜻蜓十字），“倍数”会失真，可改用“下影线 ≥ 全天振幅的 2/3、上影线 ≤ 全天振幅的 10%”；② 这张卡有没有效，要等第 12 站用历史数据回测，仓位细节在第 13 站（第 16 章 资金管理和交易策略）展开。下面的证据会告诉你，别抱太高的期望。</p>
+  </div>
+
+  <div class="evidence">
+    <span class="label">证据与怀疑</span>
+    <h4>K 线经得起统计检验吗？</h4>
+    <ul>
+      <li><strong>美股：没有发现价值。</strong>Marshall、Young 和 Rose（2006）检验道琼斯成分股 1992–2002 年的数据，没有发现蜡烛图策略能创造价值的证据（见 12.6 节案例）。</li>
+      <li><strong>发源地日本：同样不乐观。</strong>Marshall、Young 和 Cahan（2008）用类似方法检验日本大盘股，也没有发现稳定的盈利能力。蜡烛图在它的故乡也没能通过检验。</li>
+      <li><strong>也有正面结果。</strong>Caginalp 和 Laurent（1998）研究标普 500 成分股，发现部分三根 K 线的反转形态在样本外仍有统计上显著的短期预测力；也有研究在部分亚洲市场发现个别形态有短期预测力，但扣除交易成本后往往不稳定。</li>
+      <li><strong>最大的隐患是数据窥探。</strong>K 线形态有几十上百种，每种还有“多长算长、多近算近”的参数选择，再乘上不同的持有期和市场，研究者可以做成百上千次检验。按 5% 的显著性水平，每做 100 次检验，即使全是噪声，也会冒出约 5 个“显著”结果。这正是《投资学》第 11 章警告的数据挖掘问题：<strong>形态越多，越容易“偶然有效”</strong>。</li>
+      <li><strong>为什么可能短暂有效？</strong>K 线记录的是短期情绪的转折：被套的买家急于回本卖出（处置效应、损失厌恶，《投资学》第 12 章），恐慌之后的抛压衰竭。这些行为确实存在，但它们制造的优势很小、持续很短，很容易被交易成本和滑点吃掉。</li>
+    </ul>
+    <p>结论：把 K 线当作独立的“赚钱信号”，证据不支持；把它当作<strong>描述多空力量的语言</strong>和<strong>放置止损的锚点</strong>，嵌进趋势、支撑阻力、成交量的框架里，才是它合理的位置。它到底有没有用，要用你自己市场、自己规则的数据去检验。</p>
+  </div>
+
+  <div class="ashare">
+    <span class="label">A 股适配</span>
+    <h4>“收涨的阴线”和“收跌的阳线”</h4>
+    <p>A 股软件上，同一屏里有两套红绿：K 线的颜色看<strong>开盘与收盘</strong>（阴阳），涨跌幅的颜色看<strong>收盘与昨收</strong>（涨跌）。两者经常打架：高开低走、但收盘仍高于昨收，就是一根绿色的阴线配一个红色的涨幅；低开高走、收盘仍低于昨收，就是一根红色的阳线配一个绿色的跌幅。</p>
+    <p>K 线分析<strong>只认阴阳，不认涨跌</strong>。原因还是回到战报：阴阳记录的是“今天开盘之后谁赢了”，涨跌幅里却混进了隔夜跳空的成分。高开低走的阴线说明，开盘时追进去的人当天全部亏钱，这是空方赢下的一天，不管涨跌幅显示什么颜色。</p>
+  </div>
+
+  <figure>
+    <p class="fig-title"><span class="fno">图 12-14</span>A 股读图三陷阱：收涨的阴线、收跌的阳线、高开不等于窗口<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 720 292" role="img" aria-label="三个 A 股读图陷阱：高开 8% 后回落、收涨 3% 却是阴线；低开 8% 后拉起、收跌 3% 却是阳线；高开后盘中跌回昨日区间不算窗口，全天最低价高于昨日最高价才是窗口">
+<defs><marker id="f1214-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--ink-2)"/></marker><marker id="f1214-ara" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/></marker></defs>
+<!-- kchart: n=6 L=40 step=31.667 x(i)=L+step*(i+0.5) price[9.400,11.000] y∈[34,242] -->
+<line class="axis" x1="40" y1="34" x2="40" y2="242"/>
+<line class="grid" x1="40" y1="229" x2="230" y2="229"/>
+<text class="tick" x="34" y="233" text-anchor="end">9.5</text>
+<line class="grid" x1="40" y1="164" x2="230" y2="164"/>
+<text class="tick" x="34" y="168" text-anchor="end">10.0</text>
+<line class="grid" x1="40" y1="99" x2="230" y2="99"/>
+<text class="tick" x="34" y="103" text-anchor="end">10.5</text>
+<line class="grid" x1="40" y1="34" x2="230" y2="34"/>
+<text class="tick" x="34" y="38" text-anchor="end">11.0</text>
+<line class="axis" x1="40" y1="242" x2="230" y2="242"/>
+<line class="wu" x1="55.8" y1="197.8" x2="55.8" y2="222.5"/>
+<rect class="cu" x="46" y="203" width="19.6" height="10.4"/>
+<line class="wd" x1="87.5" y1="190" x2="87.5" y2="210.8"/>
+<rect class="cd" x="77.7" y="203" width="19.6" height="5.2"/>
+<line class="wu" x1="119.2" y1="182.2" x2="119.2" y2="212.1"/>
+<rect class="cu" x="109.4" y="186.1" width="19.6" height="22.1"/>
+<line class="wu" x1="150.8" y1="177" x2="150.8" y2="196.5"/>
+<rect class="cu" x="141" y="183.5" width="19.6" height="2.6"/>
+<line class="wu" x1="182.5" y1="157.5" x2="182.5" y2="190"/>
+<rect class="cu" x="172.7" y="164" width="19.6" height="19.5"/>
+<line class="wd" x1="214.2" y1="52.2" x2="214.2" y2="135.4"/>
+<rect class="cd" x="204.4" y="60" width="19.6" height="65"/>
+<line class="sr" x1="40" y1="164" x2="230" y2="164"/>
+<text class="elabel" x="44" y="159" text-anchor="start">昨收 10.00</text>
+<text class="ut" x="46.3" y="67.8" text-anchor="start">比昨收涨 3.0%</text>
+<text class="dt" x="46.3" y="91.2" text-anchor="start">收盘 &lt; 开盘：阴线</text>
+<!-- kchart: n=6 L=280 step=31.667 x(i)=L+step*(i+0.5) price[9.000,10.600] y∈[34,242] -->
+<line class="axis" x1="280" y1="34" x2="280" y2="242"/>
+<line class="grid" x1="280" y1="242" x2="470" y2="242"/>
+<text class="tick" x="274" y="246" text-anchor="end">9.0</text>
+<line class="grid" x1="280" y1="177" x2="470" y2="177"/>
+<text class="tick" x="274" y="181" text-anchor="end">9.5</text>
+<line class="grid" x1="280" y1="112" x2="470" y2="112"/>
+<text class="tick" x="274" y="116" text-anchor="end">10.0</text>
+<line class="grid" x1="280" y1="47" x2="470" y2="47"/>
+<text class="tick" x="274" y="51" text-anchor="end">10.5</text>
+<line class="axis" x1="280" y1="242" x2="470" y2="242"/>
+<line class="wd" x1="295.8" y1="57.4" x2="295.8" y2="79.5"/>
+<rect class="cd" x="286" y="65.2" width="19.6" height="7.8"/>
+<line class="wu" x1="327.5" y1="62.6" x2="327.5" y2="83.4"/>
+<rect class="cu" x="317.7" y="67.8" width="19.6" height="5.2"/>
+<line class="wd" x1="359.2" y1="65.2" x2="359.2" y2="88.6"/>
+<rect class="cd" x="349.4" y="67.8" width="19.6" height="18.2"/>
+<line class="wd" x1="390.8" y1="78.2" x2="390.8" y2="99"/>
+<rect class="cd" x="381" y="86" width="19.6" height="6.5"/>
+<line class="wd" x1="422.5" y1="86" x2="422.5" y2="118.5"/>
+<rect class="cd" x="412.7" y="92.5" width="19.6" height="19.5"/>
+<line class="wu" x1="454.2" y1="140.6" x2="454.2" y2="223.8"/>
+<rect class="cu" x="444.4" y="151" width="19.6" height="65"/>
+<line class="sr" x1="280" y1="112" x2="470" y2="112"/>
+<text class="elabel" x="284" y="107" text-anchor="start">昨收 10.00</text>
+<text class="dt" x="286.3" y="187.4" text-anchor="start">比昨收跌 3.0%</text>
+<text class="ut" x="286.3" y="210.8" text-anchor="start">收盘 &gt; 开盘：阳线</text>
+<!-- kchart: n=5 L=520 step=38.000 x(i)=L+step*(i+0.5) price[9.600,10.800] y∈[34,242] -->
+<line class="axis" x1="520" y1="34" x2="520" y2="242"/>
+<line class="grid" x1="520" y1="172.7" x2="710" y2="172.7"/>
+<text class="tick" x="514" y="176.7" text-anchor="end">10.0</text>
+<line class="grid" x1="520" y1="86" x2="710" y2="86"/>
+<text class="tick" x="514" y="90" text-anchor="end">10.5</text>
+<line class="axis" x1="520" y1="242" x2="710" y2="242"/>
+<rect class="zone-up" x="634" y="106.8" width="76" height="34.7"/>
+<line class="wu" x1="539" y1="172.7" x2="539" y2="216"/>
+<rect class="cu" x="527.2" y="181.3" width="23.6" height="26"/>
+<line class="wd" x1="577" y1="120.7" x2="577" y2="186.5"/>
+<rect class="cd" x="565.2" y="129.3" width="23.6" height="34.7"/>
+<line class="wu" x1="615" y1="141.5" x2="615" y2="176.1"/>
+<rect class="cu" x="603.2" y="146.7" width="23.6" height="17.3"/>
+<line class="wu" x1="653" y1="65.2" x2="653" y2="106.8"/>
+<rect class="cu" x="641.2" y="72.1" width="23.6" height="22.5"/>
+<line class="wu" x1="691" y1="51.3" x2="691" y2="86"/>
+<rect class="cu" x="679.2" y="58.3" width="23.6" height="13.9"/>
+<text class="pv" x="577" y="204.5" text-anchor="middle">非窗口</text>
+<text class="ut" x="672" y="157.5" text-anchor="middle">窗口</text>
+<text class="pl" x="120" y="20" text-anchor="middle">① 收涨的阴线</text>
+<text class="nd" x="120" y="266" text-anchor="middle">高开 8% 后一路回落，收涨 3%：</text>
+<text class="nd" x="120" y="282" text-anchor="middle">涨幅显示红色，K 线却是绿的</text>
+<text class="pl" x="360" y="20" text-anchor="middle">② 收跌的阳线</text>
+<text class="nd" x="360" y="266" text-anchor="middle">低开 8% 后一路拉起，收跌 3%：</text>
+<text class="nd" x="360" y="282" text-anchor="middle">涨幅显示绿色，K 线却是红的</text>
+<text class="pl" x="600" y="20" text-anchor="middle">③ 高开 ≠ 窗口</text>
+<text class="nd" x="600" y="266" text-anchor="middle">左：高开后跌回昨日区间，没有窗口；</text>
+<text class="nd" x="600" y="282" text-anchor="middle">右：全天最低价高于昨日最高价</text>
+</svg>
+    </div>
+    <figcaption><b>读图：</b>① 昨收 10.00，今天高开 8% 到 10.80，随后一路回落，收 10.30：涨幅 +3.0% 显示红色，K 线却是一根实体 0.50 元的绿色阴线。② 镜像：低开 8% 后被一路拉起，收跌 3.0%，却是一根红色阳线。③ 集合竞价让 A 股的高开、低开非常普遍，但高开不等于窗口：左边那天高开后盘中跌回了昨日区间，没有留下空白；右边那天全天最低价都高于昨日最高价，才是真正的上升窗口。只有后一种，才能按 12.5 节当作支撑来用。</figcaption>
+  </figure>
+
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>2024 年 10 月 8 日：收涨约 4.6% 的阴线</h4>
+    <p>第 1 站讲过这段行情：9 月 24 日政策组合拳出台后，上证指数从 9 月 18 日约 2690 点的低点一路急涨，9 月 30 日收于约 3336 点。国庆长假后的 10 月 8 日，指数以约 3674 点开盘，比前一天收盘高出约 10%，而<strong>开盘价就是全天最高点</strong>。随后指数震荡回落，收于约 3490 点；当天沪深两市成交额约 3.5 万亿元，创下历史纪录。</p>
+    <p>这一天怎么读？按涨跌幅，它收涨约 4.6%，行情软件里是红色的；按 K 线定义，收盘约 3490 低于开盘约 3674，<strong>是一根实体约 184 点（约 5%）的阴线</strong>。很多人把它描述成“冲高回落的长上影线”，严格说并不准确：开盘即最高，它几乎没有上影线。那种“长上影线”的感觉，来自把前一天收盘到当天高点之间的跳空也算了进去。它真正的含义是：三周急涨约 36% 之后，在历史天量之下（第 6 站把这一天当作“买入高潮”的典型场景），所有在开盘附近追进的资金，当天全部被套。</p>
+    <p>次日 10 月 9 日，上证指数大跌约 6.6%，收于约 3259 点，跌回 9 月 30 日收盘价之下，节后跳空留下的窗口被完全回补。按 12.5 节的标准，这个上升窗口的支撑宣告失效。</p>
+    <p class="takeaway">两个教训。第一，<b>收涨不等于阳线</b>，K 线只看开盘与收盘。第二，这根阴线值得重视，不是因为它的形状，而是因为它同时具备了位置（急涨之后）、成交量（历史天量）和后续确认（次日长阴回补窗口），正是图 12-13 五道关的逻辑。事后看清楚很容易，当天能做的只是：持仓者收紧止损，空仓者不追高。</p>
+  </div>
+
+  <div class="ashare">
+    <span class="label">A 股适配</span>
+    <h4>涨跌停让 K 线“变形”</h4>
+    <p>第 1 站图 1-12 的四种涨跌停 K 线，套用日本形态时要格外小心，因为价格被制度截断了，影线和实体都不再是自由博弈的结果：</p>
+    <ul>
+      <li><strong>一字涨停 / 一字跌停</strong>：开高低收四价相同，样子比十字星还“平”，但它的意思不是犹豫，而是买盘（或卖盘）多到根本成交不了；</li>
+      <li><strong>T 字涨停</strong>：形似蜻蜓十字，表示开板后抛压被吸收、重新封板。它接近锤子线“收复失地”的含义，但发生在涨停价上，不能套用“底部看涨”的规则；</li>
+      <li><strong>炸板</strong>：摸到涨停又被砸开，留下长上影线，形似射击之星，在连续涨停后的高位出现时尤其危险；</li>
+      <li><strong>地天板</strong>：从跌停拉到涨停，是比任何看涨吞没都极端的一根大阳线，说明情绪已经走到极端，次日的波动往往同样剧烈。</li>
+    </ul>
+    <p>经验规则：<strong>凡是触及涨跌停的 K 线，日本形态的比例标准都要打折扣</strong>，先看封板质量和成交量，再谈形态。另外，开盘价由集合竞价一次性决定，隔夜消息会集中反映到开盘价上，所以个股日线上的跳空和窗口并不少见，其中不少回补得也快；用 12.5 节“收盘跌破窗口下沿才算失效”的标准，可以过滤掉大部分盘中的噪声。</p>
+  </div>
+
+  <div class="ashare">
+    <span class="label">A 股适配</span>
+    <h4>中文俗称对照</h4>
+    <p>A 股交易者给 K 线形态起了很多生动的名字。看中文资料时，先把俗称翻译回本章的定义，再按本章的标准（形状、位置、确认）去检验：</p>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <tr><th>本章名称</th><th>A 股常见叫法</th><th>提醒</th></tr>
+      <tr><td>吞没形态</td><td>穿头破脚；阳包阴 / 阴包阳</td><td>只比实体，不比影线</td></tr>
+      <tr><td>刺透形态</td><td>曙光初现</td><td>收盘必须过半</td></tr>
+      <tr><td>乌云盖顶</td><td>乌云盖顶</td><td>收在开盘价之下就升级为吞没</td></tr>
+      <tr><td>启明星 / 黄昏星</td><td>早晨之星 / 黄昏之星</td><td>中间为十字星时叫早晨十字星 / 黄昏十字星</td></tr>
+      <tr><td>锤子线</td><td>锤头线；长下影线又叫“金针探底”</td><td>下跌之后才算</td></tr>
+      <tr><td>上吊线</td><td>吊颈线</td><td>必须确认</td></tr>
+      <tr><td>倒锤子线</td><td>倒锤头</td><td>必须确认</td></tr>
+      <tr><td>射击之星</td><td>射击之星、流星线</td><td>上涨之后才算</td></tr>
+      <tr><td>孕线 / 十字孕线</td><td>身怀六甲 / 十字胎</td><td>信号较弱，多指向停顿</td></tr>
+      <tr><td>平头顶部 / 底部</td><td>平顶 / 平底</td><td>需叠加其他信号</td></tr>
+      <tr><td>墓碑十字 / 蜻蜓十字</td><td>倒 T 字线 / T 字线</td><td>涨停 T 字板另当别论</td></tr>
+      <tr><td>红三兵 / 三只乌鸦</td><td>红三兵 / 三只乌鸦</td><td>留意后几根是否乏力</td></tr>
+      <tr><td>窗口</td><td>跳空缺口</td><td>高开不等于窗口</td></tr>
+    </table>
+  </div>
+
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p>A 股流传一种叫“仙人指路”的说法：上涨途中出现一根带长上影线的小 K 线，被解读为“主力试盘”，后市看涨。它和射击之星的形状几乎一样，解读却正好相反。哪个对？都可能对，也都可能错，因为<strong>形状本身不决定方向</strong>。区分它们靠的是本章反复强调的东西：位置（是在阻力下方受阻，还是刚刚突破之后）、成交量，以及下一根 K 线的收盘。不等确认、不设止损，就把“仙人指路”当成买入理由，等于把一个模糊信号当成了确定答案。</p>
+  </div>
+</section>
+
+<!-- ======================== 小结 ======================== -->
+<section class="ch" id="recap">
+  <h2 class="sec"><span class="no">※</span>本章小结</h2>
+  <p class="sec-en">SUMMARY</p>
+
+  <div class="recap">
+    <ol>
+      <li><b>来历：</b>相传与 18 世纪日本米市和本间宗久有关，但史料存疑；1990 年前后由尼森系统引入西方，墨菲本章主要基于尼森的工作。</li>
+      <li><b>读法：</b>每根 K 线是一天的多空战报：实体是开盘到收盘的净胜负，影线是被市场拒绝的价格；阴阳只比较开盘与收盘。</li>
+      <li><b>单根 K 线：</b>大阳线、大阴线是一边倒，纺锤线是拉锯；十字星是打平，意义取决于它打断了什么，在顶部比底部更有用；墓碑十字在顶部偏看跌，蜻蜓十字在底部偏看涨。</li>
+      <li><b>反转形态的共同前提：</b>先有趋势可反转；“反转”可能只是停顿；形态越含糊，越需要确认。</li>
+      <li><b>同形异名：</b>锤子线与上吊线、倒锤子线与射击之星，形状相同，位置决定意义；上吊线和倒锤子线必须确认。</li>
+      <li><b>两根和三根的反转：</b>吞没（实体包住）、乌云盖顶与刺透（以实体中点为界）、孕线（实体缩在里面）、平头（同一价位被拒两次）、启明星与黄昏星（跳空的星加反向长实体）、三兵三鸦（连续三天推进或溃退）。</li>
+      <li><b>持续形态：</b>上升窗口是支撑、下降窗口是阻力，收盘穿越窗口的另一侧才算失效；上升三法、下降三法是趋势中的一次休整。</li>
+      <li><b>位置决定意义：</b>K 线是短期信号，必须结合支撑阻力、趋势线、回撤位、成交量、摆动指标和更长的周期；K 线不提供价格目标，但天然给出止损位。</li>
+      <li><b>证据：</b>孤立地使用 K 线，美股和日本的检验都没有发现稳定的价值；形态众多带来数据窥探的风险。把它当语言和止损锚点，嵌进框架里使用。</li>
+      <li><b>A 股：</b>收涨的阴线与收跌的阳线；高开不等于窗口；涨跌停让形态变形；俗称先翻译回定义，再按标准检验。</li>
+    </ol>
+  </div>
+
+  <h3>核心术语（中英对照）</h3>
+  <div class="tablewrap">
+    <table>
+      <tr><th>中文</th><th>English</th><th>一句话定义</th></tr>
+      <tr><td>蜡烛图（K 线图）</td><td>candlestick chart</td><td>用实体和影线表示开高低收的图表</td></tr>
+      <tr><td>实体 / 影线</td><td>real body / shadow</td><td>开盘到收盘的粗段 / 最高最低价延伸出的细线</td></tr>
+      <tr><td>阳线 / 阴线</td><td>white (bullish) / black (bearish) candle</td><td>收盘高于 / 低于开盘，与昨收无关</td></tr>
+      <tr><td>光头光脚</td><td>marubozu</td><td>没有影线或影线极短的大阳线、大阴线</td></tr>
+      <tr><td>纺锤线</td><td>spinning top</td><td>实体小、多空拉锯的 K 线</td></tr>
+      <tr><td>十字星</td><td>doji</td><td>开盘价与收盘价相同或几乎相同</td></tr>
+      <tr><td>长腿 / 墓碑 / 蜻蜓十字</td><td>long-legged / gravestone / dragonfly doji</td><td>上下影线都长 / 只有上影线 / 只有下影线的十字星</td></tr>
+      <tr><td>锤子线</td><td>hammer</td><td>下跌后出现的长下影线小实体，看涨</td></tr>
+      <tr><td>上吊线</td><td>hanging man</td><td>上涨后出现的同形 K 线，看跌，必须确认</td></tr>
+      <tr><td>射击之星</td><td>shooting star</td><td>上涨后出现的长上影线小实体，看跌</td></tr>
+      <tr><td>倒锤子线</td><td>inverted hammer</td><td>下跌后出现的同形 K 线，必须确认</td></tr>
+      <tr><td>吞没形态</td><td>engulfing pattern</td><td>第二根实体完全包住第一根实体</td></tr>
+      <tr><td>乌云盖顶</td><td>dark cloud cover</td><td>高开后收盘深入前一根阳线实体一半以下</td></tr>
+      <tr><td>刺透形态</td><td>piercing pattern</td><td>低开后收盘升过前一根阴线实体一半</td></tr>
+      <tr><td>启明星 / 黄昏星</td><td>morning star / evening star</td><td>长实体、跳空小实体、反向长实体组成的三根反转</td></tr>
+      <tr><td>十字星形态</td><td>doji star</td><td>星线中间那颗星为十字星的版本</td></tr>
+      <tr><td>弃婴</td><td>abandoned baby</td><td>前后都有跳空、连影线也不重叠的十字星形态</td></tr>
+      <tr><td>孕线 / 十字孕线</td><td>harami / harami cross</td><td>第二根实体（或十字星）落在第一根实体之内</td></tr>
+      <tr><td>平头顶部 / 底部</td><td>tweezer tops / bottoms</td><td>最高价 / 最低价相同的两根或几根 K 线</td></tr>
+      <tr><td>三只乌鸦</td><td>three black crows</td><td>高位连续三根收在低点附近的阴线</td></tr>
+      <tr><td>红三兵</td><td>three advancing white soldiers</td><td>底部连续三根收在高点附近的阳线</td></tr>
+      <tr><td>窗口</td><td>window (rising / falling)</td><td>日本对价格缺口的称呼，上升窗口是支撑</td></tr>
+      <tr><td>上升三法 / 下降三法</td><td>rising / falling three methods</td><td>长实体后几根小 K 线在其区间内休整，再顺势突破</td></tr>
+      <tr><td>确认</td><td>confirmation</td><td>用下一根 K 线的收盘检验上一个信号</td></tr>
+    </table>
+  </div>
+
+  <h3>自测（先想后翻）</h3>
+  <details>
+    <summary>Q1 锤子线和上吊线形状一模一样，为什么一个看涨、一个看跌？</summary>
+    <div class="ans"><p>形状只记录了“盘中被砸、收盘收回”这件事，含义取决于交易者在这个位置的处境。<b>下跌之后</b>，持续的卖压在当天达到高潮，砸出新低，但低位出现了足以吸收全部抛盘的买家，收盘收回，说明卖方的力量可能已经耗尽，空方的最后一击失败了。<b>上涨之后</b>，此前一路上涨几乎没有像样的抛压，这一天第一次出现大规模抛售；虽然被买回，却说明高位已经有人在大量兑现，而当天在高位买入的人处境脆弱，一旦价格回落，他们就会变成新的卖盘。所以上吊线的“看跌”只是一种推测，需要次日确认；锤子线的“看涨”则有当天收复失地的事实撑腰。</p></div>
+  </details>
+  <details>
+    <summary>Q2 为什么上吊线需要确认？确认的标准是什么，背后是什么逻辑？</summary>
+    <div class="ans"><p>上吊线收在全天高位，单看当天多方赢了，看跌的含义只是“卖压暴露”的推测。尼森的确认标准是：<b>次日收盘低于上吊线的实体</b>，低开更强。逻辑在于被套的人：上吊线当天在开盘、收盘附近买入的人，次日收盘时全部亏损，按《投资学》第 12 章的处置效应和损失厌恶，他们会在反弹时急于解套，形成新的卖压。如果次日继续收高，说明卖压确实被吸收了，这根 K 线只是一次洗盘，看跌的假设被证伪。这也说明了“确认”的本质：<b>用下一根 K 线去检验上一根 K 线讲的故事</b>。</p></div>
+  </details>
+  <details>
+    <summary>Q3 乌云盖顶为什么要求阴线收盘深入阳线实体一半以下？只深入 20% 呢？收在阳线开盘价之下呢？</summary>
+    <div class="ans"><p>阳线实体代表多方前一天赢下的阵地。收盘过半，意味着空方一天之内夺回了大部分阵地，前一天后半段买进的人全部被套，力量对比真正翻转；再加上第二天是高开在前一天最高价之上，开盘追高的人也全部套在最高处，被困的买家很多，后续卖压很重。只深入 20%，多方仍守着八成阵地，可能只是高开之后的正常回落，信号不成立。收在阳线开盘价之下，则把整个阳线实体都吞掉，升级为看跌吞没，信号更强。三档：<b>不到一半（不成立）→ 过半（乌云盖顶）→ 全部（看跌吞没）</b>。刺透形态同理，而且尼森对“过半”的要求更严。</p></div>
+  </details>
+  <details>
+    <summary>Q4 你持有的股票今天高开 6%，收盘涨 1%，软件上 K 线是绿色、涨幅是红色。这是阳线还是阴线？对你意味着什么？</summary>
+    <div class="ans"><p>是阴线。阴阳只比较当天的开盘与收盘，收盘低于开盘就是阴线，与昨收无关；涨跌幅才比较收盘与昨收。这种“收涨的阴线”说明，隔夜的利好被开盘价一次性兑现了，开盘之后空方占了上风，开盘附近追进去的人当天全部亏钱。它有多重要，要看位置和成交量：如果出现在一段急涨之后、伴随天量，像 2024 年 10 月 8 日的上证指数那样，就是值得重视的警告，持仓者应当收紧止损；如果出现在刚刚突破的位置且成交量平平，分量就轻得多。总之，别被红色的涨幅安慰。</p></div>
+  </details>
+  <details>
+    <summary>Q5 为什么说 K 线不提供价格目标？用锤子线做多时，止损和目标分别从哪里来？请给一个数字例子。</summary>
+    <div class="ans"><p>K 线形态描述的是一两天内多空力量的转折，它反映“谁赢了这一仗”，却不包含“战线会推进多远”的信息；它也不像头肩形那样有可以量度的形态高度。所以目标要交给西方工具：前期高点、阻力位、通道上轨、形态的量度目标。止损恰恰是 K 线的长处：锤子线讲的故事是“多方守住了这个低点”，收盘跌破低点，故事就被证伪，止损放在低点下方即可。例：锤子线最低 12.30，止损 12.18；确认日收盘 12.95 入场；前高 15.00 是阻力，目标 14.90。每股风险 0.77 元，潜在收益 1.95 元，风险收益比约 2.5。如果前高只在 13.80，目标设在 13.70，潜在收益只有 0.75 元，风险收益比不到 1，这个信号再标准也应该放弃。</p></div>
+  </details>
+  <details>
+    <summary>Q6 三个形状同样标准的看涨吞没：(a) 长期下跌后，出现在周线级别的前期低点上，第二根放出近期最大量，随机指标处于超卖区；(b) 出现在一个持续两个月的横盘区间正中间；(c) 出现在上升趋势中一次小回调的末尾，但离上方前高只有 2%。你最重视哪个？为什么？</summary>
+    <div class="ans"><p>最重视 (a)。它通过了全部五道关：有趋势可以反转，位于关键支撑，形态标准，放量且指标超卖；止损放在形态低点下方，目标看上方的阻力，风险收益比通常理想。(b) 没有可以反转的趋势，第一道关就被淘汰，横盘中间的吞没只是区间里的来回。(c) 最有意思：在上升趋势中，回调末端的看涨形态其实是<b>顺势</b>信号，方向没有问题；但上方 2% 就是前高阻力，目标空间太小，而止损放在形态低点下方可能就有 2%–3%，风险收益比不到 1，按规则卡的过滤条件 ③ 应该放弃，或者等它放量突破前高之后再考虑。结论：<b>形状相同，价值取决于位置和风险收益比</b>。</p></div>
+  </details>
+
+  <a class="next" href="ta-ch09.html">
+    <div>
+      <div class="lbl">NEXT STATION · 第 8 站</div>
+      <div class="ttl">第 9 章 · 移动平均线</div>
+    </div>
+    <div class="lbl">进入第三阶段 · 把“趋势”变成一条可以计算的线</div>
+  </a>
+
+  <p class="foot">本页为依据约翰·墨菲《金融市场技术分析》框架整理的原创学习笔记（第 12 章），仅用于教学理解；标“示意”的图表为构造数据，研究结论与历史数据为近似表述，以原始文献和官方数据为准。内容不构成任何投资建议。</p>
+</section>
+
+</main>
+</div>
+</div>
+
+<script>
+(function(){
+  var links = Array.prototype.slice.call(document.querySelectorAll('.sidenav a[href^="#"]'));
+  if(!links.length) return;
+  var map = [];
+  links.forEach(function(a){
+    var el = document.getElementById(a.getAttribute('href').slice(1));
+    if(el) map.push([el, a]);
+  });
+  if(!map.length) return;
+  function update(){
+    var y = window.scrollY + 150;
+    var cur = map[0][1];
+    for(var i = 0; i < map.length; i++){
+      if(map[i][0].offsetTop <= y) cur = map[i][1];
+    }
+    map.forEach(function(p){ p[1].classList.toggle('active', p[1] === cur); });
+  }
+  var tick = false;
+  window.addEventListener('scroll', function(){
+    if(!tick){
+      tick = true;
+      requestAnimationFrame(function(){ tick = false; update(); });
+    }
+  }, {passive:true});
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+</body>
+</html>
