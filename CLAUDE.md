@@ -10,7 +10,7 @@
 |---|---|---|---|---|---|
 | 《投资学》Bodie–Kane–Marcus | `investments/` | `investments-index.html` | `investments-chXX.html` | `讲义待制作` | 已改为「15 份讲义全部就绪 ✓」 |
 | 《金融市场技术分析》Murphy | `technical-analysis/` | `ta-index.html` | `ta-chXX.html`（两位编号，附录待定） | `讲义待生成` | 已改为「14 份讲义全部就绪 ✓」 |
-| 《币圈短线实战课》（自编课程） | `crypto-trading/` | `ct-index.html` | `ct-lXX.html`（两位编号，按课号） | `待制作` | 页内脚本自动统计，无需手改 |
+| 《币圈短线实战课》（自编课程） | `crypto-trading/` | `ct-index.html` | `ct-lXX.html`（两位编号，按课号） | `待制作`（16 课已全部上线） | 页内脚本自动统计，无需手改 |
 
 ### 币圈短线实战课的特殊之处
 

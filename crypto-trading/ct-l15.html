@@ -1,0 +1,891 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>币圈短线课 · 第 15 课 组合原则与四套模板</title>
+<link rel="stylesheet" href="assets/ct.css">
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <span class="book"><a href="ct-index.html">币圈短线实战课</a></span>
+  <span class="part"><a href="ct-index.html">学习地图</a> · 阶段 3 组合成体系</span>
+  <span class="prefs">
+    <button id="btn-updown" type="button" title="切换涨跌配色"></button>
+    <button id="btn-theme" type="button" title="切换深浅主题"></button>
+  </span>
+</header>
+
+<div class="layout">
+
+<nav class="sidenav" aria-label="本课目录">
+  <p class="sn-chap">第 15 课 · 组合原则与四套模板</p>
+  <a href="#top">课首</a>
+  <a href="#s1">15.1 组合四原则</a>
+  <a href="#s2">15.2 决策流水线总图</a>
+  <a href="#s3">15.3 模板 A · 顺势回调</a>
+  <a href="#s4">15.4 模板 B · 收口突破</a>
+  <a href="#s5">15.5 模板 C · 区间往返</a>
+  <a href="#s6">15.6 模板 D · 过热过滤</a>
+  <a href="#s7">15.7 调度实验台</a>
+  <a href="#s8">15.8 毕业：系统 v1.0</a>
+  <a href="#recap">小结 · 术语 · 自测</a>
+</nav>
+
+<main class="article">
+
+<section class="hero" id="top">
+  <span class="chap-no">LESSON 15 · 第 15 课 / 共 16 课</span>
+  <h1>组合原则与四套模板</h1>
+  <p class="en">FOUR PLAYBOOKS, ONE MACHINE — SYSTEM v1.0</p>
+  <p class="question">本课问题：零件都有了，怎么拧成一台不打架的机器？</p>
+  <p class="lede">十一课下来，你的工作台上摆满了零件：三票制、回调区、ATR 尺、环境开关、位带、量能闸、合约仪表盘……每个零件单独都讲过"怎么用、何时失灵"，但它们凑在一起会打架：突破信号让你买，超买读数让你卖；三票看多，费率分位喊停。本课只干一件事——<strong>定宪法</strong>：谁回答什么问题、打架时谁说了算；然后把全部零件收敛成四张终稿模板卡和一条每日决策流水线。系统从 v0.7 升到 <strong>v1.0</strong>：不是加新零件，是让旧零件从此不再打架。</p>
+  <div class="objectives">
+    <h2>学完你能做到</h2>
+    <ul>
+      <li>背出组合四原则，并用冲突裁决序在 30 秒内排解"两套模板同时想开单"的打架；</li>
+      <li>画出每日决策流水线的九道工位，说出每道工位的零件来自哪一课；</li>
+      <li>把 A／B／C／D 四张终稿模板卡抄成自己的话，说清各自的适用环境、失效条件和互相的边界；</li>
+      <li>识别并修复"参数漂移"：同一条规则在不同课的措辞差异，知道终稿以哪个版本为准、为什么；</li>
+      <li>用调度实验台查出 2026 年任何一天"系统让你干什么"，并与自己的日课判定对答案；</li>
+      <li>说清回放验证和回测的区别，不把课堂示例当成"系统赚钱"的证据；</li>
+      <li>从本周起只按系统 v1.0 下单，日志新增"激活模板"列，向 20–30 笔转实盘考核进发。</li>
+    </ul>
+  </div>
+  <p class="colorkey">读图约定：本课默认<span class="up">绿涨</span>·<span class="dn">红跌</span>，可用右上角按钮切成红涨绿跌。带 <b>互动</b> 标签的图可以拖动、缩放、调参数；正文里带虚线下划线和角标的词，点一下原地弹出解释。图表时间轴按你设备的时区显示（北京时间 ＝ UTC+8）；正文里的日期如 2026-08-19 指币安日线的交易日（UTC 口径，收盘在北京时间次日早 8 点）。</p>
+  <nav class="chapmap" aria-label="本课小节">
+    <a href="#s1">组合四原则</a><a href="#s2">流水线总图</a><a href="#s3">模板 A</a><a href="#s4">模板 B</a><a href="#s5">模板 C</a><a href="#s6">模板 D</a><a href="#s7">调度实验台</a><a href="#s8">毕业 v1.0</a><a href="#recap">小结</a>
+  </nav>
+</section>
+
+<!-- ================= 15.1 ================= -->
+<section class="ch" id="s1">
+  <h2 class="sec"><span class="no">15.1</span>组合四原则：先定宪法，再谈零件</h2>
+  <p class="sec-en">FOUR RULES OF ASSEMBLY</p>
+  <div class="prose">
+    <p>第 10 课结束时说过：<strong>七个问题各就各位，没有新指标要学了</strong>。先把库存清点一遍——每个零件回答且只回答一个问题，这正是它们能被组装的前提：</p>
+  </div>
+  <div class="tablewrap">
+    <table class="narrow">
+      <thead><tr><th>问题</th><th>定稿零件</th><th>来源</th><th>流水线工位</th></tr></thead>
+      <tbody>
+        <tr><td>Q1 方向</td><td>三票制（EMA20 对 60 · 收盘对 EMA20 · 高低点结构）</td><td>第 4 课</td><td>第 ② 步</td></tr>
+        <tr><td>Q2 环境</td><td>环境开关（ADX 趋势票 ＋ 带宽压缩票 → T／S／R）</td><td>第 7 课</td><td>第 ① 步</td></tr>
+        <tr><td>Q3 时机</td><td>回调区（4h RSI 多 40–50／空 50–60）＋ 1 小时触发</td><td>第 5 课</td><td>第 ④ 步</td></tr>
+        <tr><td>Q4 波动</td><td>ATR 尺（止损距离 · 仓位 · 高波动熔断）</td><td>第 6 课</td><td>第 ⑦ 步</td></tr>
+        <tr><td>Q5 位置</td><td>位带（水平带 · fib 区 · HVN／整数关口）</td><td>第 8 课</td><td>第 ④ 步</td></tr>
+        <tr><td>Q6 量能</td><td>量能闸（≥1.5× 均量）＋ 缩量回调偏好</td><td>第 9 课</td><td>第 ⑤ 步</td></tr>
+        <tr><td>Q7 合约数据</td><td>模板 D 三条禁令（费率分位 · OI · 多空比）</td><td>第 10 课</td><td>第 ⑥ 步</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="prose">
+    <h3>原则一：每个指标只回答一个问题，<span class="nt" data-note="tongzu">同族指标</span>不叠加</h3>
+    <p>上表每一行占一个"坑"，坑和坑之间不许互相抢活。最容易犯的错是把<strong>同一族</strong>的指标叠着用：RSI 超卖了再看一眼 KDJ——KDJ 当然也超卖，它们本来就是拿同一段收盘价算出来的近亲。你以为拿到了两个证据，其实是被同一句话说服了两次。第 5 课已经开过先例：<strong>RSI 与 KDJ 二选一</strong>。v1.0 把这条升级成通则：</p>
+  </div>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>家族</th><th>成员（本课程讲过的）</th><th>v1.0 里留谁</th><th>为什么</th></tr></thead>
+      <tbody>
+        <tr><td>动能／超买超卖</td><td>RSI · KDJ</td><td>RSI（14）</td><td>第 5 课二选一的先例：同一句话不说两遍</td></tr>
+        <tr><td>趋势方向</td><td>EMA · SMA · MACD 线</td><td>EMA20／60</td><td>MACD 线本就是两条 EMA 的差——叠上等于自己引用自己</td></tr>
+        <tr><td>波动幅度</td><td>ATR · 布林带宽</td><td>两个都留，各管一摊</td><td>ATR 量距离（止损与仓位），带宽量收口（环境压缩票）——问题不同，不算叠加</td></tr>
+        <tr><td>量能</td><td>成交额 · OBV · VWAP</td><td>成交额为主</td><td>OBV 只当警报（收紧防守），VWAP 只当执行工具——都不进开仓判定（第 9 课）</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="prose">
+    <h3>原则二：多周期分工，大周期有否决权</h3>
+    <p>第 2 课定的分工从没变过：<strong>日线定方向和环境，4 小时找位置，1 小时扣扳机</strong>。组装时要补一句狠话：<strong>分工是单向的——小周期永远没资格推翻大周期</strong>。1 小时图再漂亮的金叉，日线三票不齐就是废纸；反过来，日线三票齐了，1 小时不给触发你也不许追。第 5 课三重滤网的"大周期一票否决"就是这条原则的第一次落地，v1.0 把它写进每一张卡。</p>
+    <h3>原则三：<span class="nt" data-note="caijue">冲突裁决序</span>——环境 ＞ 方向 ＞ 信号</h3>
+    <p>零件再好，打架时没有裁判就是一地鸡毛。v1.0 的裁决序只有一行，按优先级从高到低：</p>
+  </div>
+  <p class="formula">环境开关（第 7 课）　＞　方向三票（第 4 课）　＞　入场信号（第 5／8／9 课）　　任何一层拿不准 ＝ <span class="nt" data-note="flatstate">flat 观望</span></p>
+  <div class="prose">
+    <p>为什么是这个顺序？因为它们各管一层"允许"：环境说<strong>今天这类打法有没有资格上场</strong>，方向说<strong>允许押哪一边</strong>，信号只说<strong>现在这一秒进不进</strong>。层级低的永远只能在层级高的发的"牌照"范围内行事——第 7 课算过那笔账：同一套金叉，趋势里 +19.7%，震荡里 −21.6%。信号没有错，错的是没问过环境就上场。而"拿不准 ＝ flat"不是和稀泥：flat 是四种输出里唯一不花钱的，错过的行情不扣你的钱，做错的行情才扣。</p>
+    <h3>原则四：指标 3–4 个封顶</h3>
+    <p>一张图上超过四个指标，就会出现"总有一个在点头"的幻觉——想做多的人总能找到那个点头的。v1.0 每张模板卡用到的判定指标都不超过 4 个（数数看：A 用 EMA×2＋RSI＋量能；B 用带宽＋位带＋量能；C 用位带＋RSI）。<strong>少不是将就，是刻意的</strong>：指标越少，责任越清楚；哪个零件坏了，日志一查就知道。</p>
+  </div>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <h4>一支球队，不是十一个前锋</h4>
+    <p>把指标全叠在图上猛看信号，就像把十一个人全派去抢球——人人都想射门，没人守门，球还没过中场就丢了。像样的球队先定阵型（环境开关：今天打攻势还是守势），再定核心（方向三票：往哪个球门进攻），最后才轮到临门一脚（入场信号）。而教练的权威必须高于球星的手感：球星说"我感觉能进"（信号漂亮），教练说"现在是防守时间"（环境不对）——<strong>听教练的。球星的手感是真的，但教练看的是全场。</strong></p>
+  </div>
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>2026-08-19：同一根 K 线，B 说买、C 说卖——裁决序 30 秒定案</h4>
+    <p>当天北京时间 20–24 点那根 4 小时线：开 64,479，收 68,524，一举捅穿压了一个多月的箱体上沿 65,483（第 7 课画的 62,229／65,483 箱体），成交 116 亿 USDT，是前 20 期均量的 <strong>11.8 倍</strong>（第 9 课核过的全样本最大表态）。此刻两张卡同时想出牌：<strong>模板 B 说买</strong>——收口 31 天后的收盘爆口，量能闸全开；<strong>模板 C 说卖</strong>——价格触到区间上沿，4 小时 RSI 已经飙到 85（页内用本地数据复算：收盘时 85.1），"触上沿 ＋ 超买做空"的字面条件全齐。</p>
+    <p>翻裁决序，案子 30 秒审完：当天环境开关是<strong>压缩待爆态</strong>（带宽 8.68%，刚好压在近一年 20 分位上——页内同算法复算一致）。第 7 课的规则写得明明白白：<strong>压缩待爆态禁用 C</strong>——弹簧旁边不打盹；而 S 态恰恰是 B 的主场。所以 C 连出牌的资格都没有，根本轮不到"谁的信号更强"的辩论。结局：随后 24 小时再涨 5.7%，15 天 +18.7%，一路到 9-21 的 87,385——在上沿做空的人，是给这轮主升抬的轿。</p>
+    <p class="takeaway">模板打架时，答案不在信号强弱里，在牌照里：先问环境发了谁的牌。裁决序排好了，冲突就不是辩论题，是查表题。</p>
+  </div>
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <h4>"信号越多越保险"——叠加谬误</h4>
+    <p>把 RSI、KDJ、MACD 柱、布林下轨全叠上，等四个都点头再买，感觉万无一失？两个坑：① 四个里有三个是动能族近亲，"四票"实际是一票（见原则一）——证据没变多，错觉变多了；② 条件每加一个，满足的样本就少一截，等到"历史上每次都涨"的完美组合出现时，往往只剩十几个样本——第 5 课的参数统计器让你亲手撞过这堵墙：<strong>条件堆出来的漂亮战绩，大概率是过拟合，不是圣杯</strong>。真正的加保险是跨族共振（位置 ＋ 量能 ＋ 合约数据），不是同族合唱。</p>
+  </div>
+  <div class="keypoint">
+    <span class="label">本课最重要的一句话</span>
+    <p><strong>系统的灵魂不在任何一个零件，而在零件打架时谁说了算——裁决序背下来：环境 ＞ 方向 ＞ 信号，拿不准 ＝ flat。</strong></p>
+    <p>裁决序必须现在、冷静时写死。等持仓浮亏时再裁决，裁判永远偏向你想下的那张单。</p>
+  </div>
+  <figure>
+    <p class="fig-title"><span class="fno">图 15-1</span>四套模板一张地图：环境发牌照，D 管否决<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+      <svg viewBox="0 0 720 340" role="img" aria-label="环境开关三态分别对应模板 A、B、C，模板 D 作为禁令层覆盖全部，第四种输出是观望">
+        <defs>
+          <marker id="f151-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="ar-fill"/></marker>
+        </defs>
+        <rect x="16" y="14" width="688" height="58" rx="10" class="node-warn"/>
+        <text x="360" y="38" text-anchor="middle" class="nt">模板 D 过热过滤（第 10 课）——盖在所有打法上面的禁令层</text>
+        <text x="360" y="58" text-anchor="middle" class="nd">D1 费率分位＞90 禁新多／＜10 禁新空 · D2 杠杆空转减半 · D3 拥挤共振只减不加</text>
+        <rect x="40" y="96" width="176" height="34" rx="8" class="node-hi"/>
+        <text x="128" y="118" text-anchor="middle" class="nt">趋势态 T（第 7 课）</text>
+        <rect x="272" y="96" width="176" height="34" rx="8" class="node-hi"/>
+        <text x="360" y="118" text-anchor="middle" class="nt">压缩待爆态 S</text>
+        <rect x="504" y="96" width="176" height="34" rx="8" class="node-hi"/>
+        <text x="592" y="118" text-anchor="middle" class="nt">震荡态 R</text>
+        <path d="M128 130 L128 152" class="edge" marker-end="url(#f151-ar)"/>
+        <path d="M360 130 L360 152" class="edge" marker-end="url(#f151-ar)"/>
+        <path d="M592 130 L592 152" class="edge" marker-end="url(#f151-ar)"/>
+        <rect x="28" y="152" width="200" height="112" rx="10" class="node-up"/>
+        <text x="128" y="176" text-anchor="middle" class="nt">A 顺势回调</text>
+        <text x="128" y="196" text-anchor="middle" class="nd">三票定向（第 4 课）</text>
+        <text x="128" y="214" text-anchor="middle" class="nd">位带＋回调区（第 8／5 课）</text>
+        <text x="128" y="232" text-anchor="middle" class="nd">缩量偏好（第 9 课）</text>
+        <text x="128" y="250" text-anchor="middle" class="nd">风险 1% · 吃趋势中段</text>
+        <rect x="260" y="152" width="200" height="112" rx="10" class="node-hi"/>
+        <text x="360" y="176" text-anchor="middle" class="nt">B 收口突破</text>
+        <text x="360" y="196" text-anchor="middle" class="nd">箱体画法（第 8 课）</text>
+        <text x="360" y="214" text-anchor="middle" class="nd">收盘爆口（第 7 课）</text>
+        <text x="360" y="232" text-anchor="middle" class="nd">量能闸 ≥1.5×（第 9 课）</text>
+        <text x="360" y="250" text-anchor="middle" class="nd">风险 1% · 接趋势出生</text>
+        <rect x="492" y="152" width="200" height="112" rx="10" class="node"/>
+        <text x="592" y="176" text-anchor="middle" class="nt">C 区间往返</text>
+        <text x="592" y="196" text-anchor="middle" class="nd">三要素（第 7 课）</text>
+        <text x="592" y="214" text-anchor="middle" class="nd">位带边沿＋RSI（第 8／5 课）</text>
+        <text x="592" y="232" text-anchor="middle" class="nd">恒半仓 0.5% · 事件日禁用</text>
+        <text x="592" y="250" text-anchor="middle" class="nd">挣均值回归的小钱</text>
+        <rect x="16" y="286" width="688" height="38" rx="8" class="node"/>
+        <text x="360" y="310" text-anchor="middle" class="nd">第四种输出：观望——没牌照、拿不准、被 D 拦下，统统走这里；加上三张卡"等不来入场"的日子，等待才是系统的主旋律（实测见图 15-3／15-4）</text>
+      </svg>
+    </div>
+    <figcaption><b>读图：</b>这张地图就是 v1.0 的组织架构：环境开关站在最上游发牌照——趋势态只发给 A，压缩待爆只发给 B，震荡态只发给 C；三张卡互为备胎、绝不同时上场。模板 D 不在三选一的队列里，它横在所有人头上，只有否决权没有提案权。记住四个格子之外那条灰色长条：观望不是"系统没意见"，是和 A／B／C 并列的第四种输出，而且是最常见的一种。</figcaption>
+  </figure>
+</section>
+
+<!-- ================= 15.2 ================= -->
+<section class="ch" id="s2">
+  <h2 class="sec"><span class="no">15.2</span>决策流水线总图：九道工位，一天一遍</h2>
+  <p class="sec-en">THE DAILY DECISION PIPELINE</p>
+  <div class="prose">
+    <p>宪法定了，还要有生产线。下面这张图把 v1.0 的一天从头到尾画成九道工位——从北京早 8 点日线收盘后的<span class="nt" data-note="diaodu">调度</span>日课，到一笔单带着止损止盈进场、再落进日志。每道工位只问一个问题，问题的答案只有"过"与"不过"；<strong>不过，就从右边的匝道下去——观望，明天再来</strong>。流水线的意义不在复杂，恰恰在于：任何时刻你只需要回答眼前这一道工位的问题，而不是同时权衡七件事。</p>
+  </div>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <h4>总装车间的质检工序</h4>
+    <p>汽车总装线上，底盘、发动机、刹车各有各的质检工位，顺序是定死的：没过底盘检的车，不会被送去测刹车。要是允许工人"看这台车顺眼"就跳过两道工序，那出厂的就不是车，是抽奖券。你过去几周的亏损单，十有八九就是跳了工序的车：信号（第 ④ 步）看顺眼了，直接跳过环境（第 ① 步）和方向（第 ② 步）把它开出了厂。流水线不比你聪明，它只是<strong>不许跳步</strong>——这一条就值回全部票价。</p>
+  </div>
+  <figure>
+    <p class="fig-title"><span class="fno">图 15-2</span>系统 v1.0 每日决策流水线：九道工位与一条观望匝道<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+      <svg viewBox="0 0 720 960" role="img" aria-label="从日线收盘到日志的九道决策工位，每道工位标注来源课号，右侧是观望匝道">
+        <defs>
+          <marker id="f152-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="ar-fill"/></marker>
+        </defs>
+        <rect x="96" y="18" width="330" height="58" rx="10" class="node"/>
+        <text x="418" y="36" text-anchor="end" class="elabel">第 3 课</text>
+        <text x="261" y="42" text-anchor="middle" class="nt">日课起点：日线收盘后（北京早 8 点）</text>
+        <text x="261" y="62" text-anchor="middle" class="nd">先翻事件日历——窗口前后 30 分钟不开新仓</text>
+        <path d="M426 47 L560 47 L560 108" class="edge-soft" marker-end="url(#f152-ar)"/>
+        <text x="470" y="40" text-anchor="middle" class="elabel">事件窗口内</text>
+        <path d="M261 76 L261 108" class="edge" marker-end="url(#f152-ar)"/>
+
+        <circle cx="62" cy="137" r="14" class="node-hi"/><text x="62" y="142" text-anchor="middle" class="nt">①</text>
+        <rect x="96" y="108" width="330" height="58" rx="10" class="node-hi"/>
+        <text x="418" y="126" text-anchor="end" class="elabel">第 7 课</text>
+        <text x="261" y="132" text-anchor="middle" class="nt">环境开关：今天什么天气</text>
+        <text x="261" y="152" text-anchor="middle" class="nd">ADX 趋势票 ＋ 带宽压缩票 → T／S／R</text>
+        <path d="M261 166 L261 198" class="edge" marker-end="url(#f152-ar)"/>
+
+        <circle cx="62" cy="227" r="14" class="node-hi"/><text x="62" y="232" text-anchor="middle" class="nt">②</text>
+        <rect x="96" y="198" width="330" height="58" rx="10" class="node"/>
+        <text x="418" y="216" text-anchor="end" class="elabel">第 4 课</text>
+        <text x="261" y="222" text-anchor="middle" class="nt">方向三票：允许押哪边（只服务 A）</text>
+        <text x="261" y="242" text-anchor="middle" class="nd">均线 · 价格 · 结构，三票同向才算数</text>
+        <path d="M426 227 L508 227" class="edge-soft" marker-end="url(#f152-ar)"/>
+        <text x="467" y="220" text-anchor="middle" class="elabel">票不齐</text>
+        <path d="M261 256 L261 288" class="edge" marker-end="url(#f152-ar)"/>
+
+        <circle cx="62" cy="317" r="14" class="node-hi"/><text x="62" y="322" text-anchor="middle" class="nt">③</text>
+        <rect x="96" y="288" width="330" height="58" rx="10" class="node-hi"/>
+        <text x="418" y="306" text-anchor="end" class="elabel">本课</text>
+        <text x="261" y="312" text-anchor="middle" class="nt">选模板：T→A ｜ S→B ｜ R→C</text>
+        <text x="261" y="332" text-anchor="middle" class="nd">只挑一张卡，不混用——调度到此完成</text>
+        <path d="M261 346 L261 378" class="edge" marker-end="url(#f152-ar)"/>
+
+        <circle cx="62" cy="407" r="14" class="node-hi"/><text x="62" y="412" text-anchor="middle" class="nt">④</text>
+        <rect x="96" y="378" width="330" height="58" rx="10" class="node"/>
+        <text x="418" y="396" text-anchor="end" class="elabel">第 8／5 课</text>
+        <text x="261" y="402" text-anchor="middle" class="nt">位与触发：到位了吗、扣扳机了吗</text>
+        <text x="261" y="422" text-anchor="middle" class="nd">A 位带共振＋回调区＋1h 触发 · B 边界爆口 · C 触边＋超卖超买</text>
+        <path d="M426 407 L508 407" class="edge-soft" marker-end="url(#f152-ar)"/>
+        <text x="467" y="400" text-anchor="middle" class="elabel">位不到</text>
+        <path d="M261 436 L261 468" class="edge" marker-end="url(#f152-ar)"/>
+
+        <circle cx="62" cy="497" r="14" class="node-hi"/><text x="62" y="502" text-anchor="middle" class="nt">⑤</text>
+        <rect x="96" y="468" width="330" height="58" rx="10" class="node"/>
+        <text x="418" y="486" text-anchor="end" class="elabel">第 9 课</text>
+        <text x="261" y="492" text-anchor="middle" class="nt">量能闸：有人跟着投票吗</text>
+        <text x="261" y="512" text-anchor="middle" class="nd">B 硬闸 ≥1.5× 均量 · A 缩量回调加分、放量降级</text>
+        <path d="M426 497 L508 497" class="edge-soft" marker-end="url(#f152-ar)"/>
+        <text x="467" y="490" text-anchor="middle" class="elabel">闸不过</text>
+        <path d="M261 526 L261 558" class="edge" marker-end="url(#f152-ar)"/>
+
+        <circle cx="62" cy="587" r="14" class="node-hi"/><text x="62" y="592" text-anchor="middle" class="nt">⑥</text>
+        <rect x="96" y="558" width="330" height="58" rx="10" class="node-warn"/>
+        <text x="418" y="576" text-anchor="end" class="elabel">第 10 课</text>
+        <text x="261" y="582" text-anchor="middle" class="nt">D 禁令终审：今天这桌挤不挤</text>
+        <text x="261" y="602" text-anchor="middle" class="nd">D1 费率分位 · D2 杠杆空转 · D3 拥挤共振</text>
+        <path d="M426 587 L508 587" class="edge-dn" marker-end="url(#f152-ar)"/>
+        <text x="467" y="580" text-anchor="middle" class="elabel">命中</text>
+        <path d="M261 616 L261 648" class="edge" marker-end="url(#f152-ar)"/>
+
+        <circle cx="62" cy="677" r="14" class="node-hi"/><text x="62" y="682" text-anchor="middle" class="nt">⑦</text>
+        <rect x="96" y="648" width="330" height="58" rx="10" class="node"/>
+        <text x="418" y="666" text-anchor="end" class="elabel">第 6／3 课</text>
+        <text x="261" y="672" text-anchor="middle" class="nt">仓位与止损：亏多少说了算</text>
+        <text x="261" y="692" text-anchor="middle" class="nd">距离按模板卡定 · 名义 ＝ 风险额 ÷ 距离% · 1%（警戒 0.5%）</text>
+        <path d="M261 706 L261 738" class="edge" marker-end="url(#f152-ar)"/>
+
+        <circle cx="62" cy="767" r="14" class="node-hi"/><text x="62" y="772" text-anchor="middle" class="nt">⑧</text>
+        <rect x="96" y="738" width="330" height="58" rx="10" class="node"/>
+        <text x="418" y="756" text-anchor="end" class="elabel">第 1 课</text>
+        <text x="261" y="762" text-anchor="middle" class="nt">下单：TP／SL 与仓单一起提交</text>
+        <text x="261" y="782" text-anchor="middle" class="nd">止损市价单 · 标记价格触发 · 下单即挂，无一例外</text>
+        <path d="M261 796 L261 828" class="edge" marker-end="url(#f152-ar)"/>
+
+        <circle cx="62" cy="857" r="14" class="node-hi"/><text x="62" y="862" text-anchor="middle" class="nt">⑨</text>
+        <rect x="96" y="828" width="330" height="58" rx="10" class="node-up"/>
+        <text x="418" y="846" text-anchor="end" class="elabel">工具页</text>
+        <text x="261" y="852" text-anchor="middle" class="nt">日志：环境／三票／模板／量能／分位</text>
+        <text x="261" y="872" text-anchor="middle" class="nd">新增"激活模板"列——明天的你要来查账</text>
+
+        <rect x="508" y="108" width="180" height="570" rx="12" class="node-warn"/>
+        <text x="598" y="140" text-anchor="middle" class="nt">观望匝道</text>
+        <text x="598" y="164" text-anchor="middle" class="nd">flat 也是指令</text>
+        <text x="598" y="186" text-anchor="middle" class="nd">任何一关拿不准</text>
+        <text x="598" y="206" text-anchor="middle" class="nd">就从这里下去</text>
+        <text x="598" y="228" text-anchor="middle" class="nd">不罚款 · 不记过</text>
+        <text x="598" y="250" text-anchor="middle" class="nd">明天早 8 点再来</text>
+        <text x="598" y="650" text-anchor="middle" class="nd">2026 年实测：</text>
+        <text x="598" y="668" text-anchor="middle" class="nd">走这条道的日子最多</text>
+        <text x="360" y="930" text-anchor="middle" class="wt">裁决序写在每道工位的墙上：环境 ＞ 方向 ＞ 信号；同一时间最多 2 个仓位（第 3 课）</text>
+      </svg>
+    </div>
+    <figcaption><b>读图：</b>这是本课的核心图，v1.0 的一天全在里面：9 道工位、6 个来源课号、1 条观望匝道。三个读法：① 工位顺序就是裁决序的物理形态——环境（①）在方向（②）前面，方向在信号（④⑤）前面，谁也别想插队；② 匝道只进不出——今天从任何一关下了匝道，就不许盘中"再看看"爬回来，判定每天收盘后只做一次（第 7 课的老规矩）；③ D 终审（⑥）看的三块仪表都是日级数据，其实晨检时就能知道结果，流水线把它画在下单前，是让你养成"手指碰下单键之前最后看一眼拥挤度"的肌肉记忆。第 ⑦⑧⑨ 步没有匝道出口——能走到这里的单必须走完，半途而废的单比不下单更伤系统。</figcaption>
+  </figure>
+  <div class="prose">
+    <p>流水线上每个零件都经过所在课的回放检验，但有一处顺序要交代清楚：第 10 课说"任何模板都先过 D 禁令再谈入场"，本图却把 D 放在第 ⑥ 位——矛盾吗？不矛盾。D 的三块仪表（费率分位、OI 周增、多空比）都是<strong>日级状态</strong>，一天只变一次，放在第 ① 步看还是第 ⑥ 步看，结论完全一样。v1.0 的定稿是两头都看：<strong>晨检时和环境开关一起看一眼（今天有没有禁令），下单前终审再确认一次（禁令还在不在）</strong>——这也是"收敛参数漂移"的第一个例子，15.3 起你会看到更多。</p>
+  </div>
+</section>
+
+<!-- ================= 15.3 ================= -->
+<section class="ch" id="s3">
+  <h2 class="sec"><span class="no">15.3</span>模板 A · 顺势回调：三重滤网终稿</h2>
+  <p class="sec-en">PLAYBOOK A — PULLBACK WITH THE TREND</p>
+  <div class="prose">
+    <p>A 是系统的主力武器，也是零件来源最多的一张卡：骨架是第 4 课的三票制，时机是第 5 课的回调区，位置是第 8 课的位带，量能偏好是第 9 课补的。四课拼起来，难免出现<span class="nt" data-note="paramdrift">参数漂移</span>——同一条规则在不同课的措辞悄悄走了样。写终稿前先把三处漂移钉死：</p>
+    <ul>
+      <li><strong>止损锚</strong>：第 6 课写"结构位外侧"，第 8 课改成"所依托位带的另一侧"。以更晚的第 8 课为准——"结构位"三个字太泛，位带才是 A 入场理由的本体，止损就该挂在"入场理由作废"的地方；</li>
+      <li><strong>出场条款</strong>：第 8／9 课是完整版（下一个位带与 2R 取其近、盈亏比不足 1.5 倍放弃、反向三票离场），第 10 课简写成"TP ≥2R 或到关键位分批"。第 10 课没有标注修改、重心在禁令层，判定为简写而非改规则——终稿恢复完整版，并把"到位可分批"吸收进来。顺带把一处断档接上：v0.2 的文字里"反向三票离场"消失过一版，v0.6 又回来了——终稿明确它一直有效；</li>
+      <li><strong>吊灯式出场</strong>：第 6 课预告"第 15 课细化"，现在兑现——趋势单浮盈达到 1R 后，可把固定止盈改为<span class="nt" data-note="chandelier">吊灯式止损</span>：挂在入场以来最高价（做空为最低价）∓3×ATR(4h) 处，随行情逐根收紧，<strong>只紧不松</strong>。二选一要在下单时写进计划：要么 2R 固定止盈，要么 1R 后转吊灯，不许盘中临时起意换法。</li>
+    </ul>
+  </div>
+  <div class="rulecard">
+    <div class="rc-head"><span class="label">规则卡</span><span class="rc-name">模板 A · 顺势回调（终稿，收敛自第 4／5／8／9 课）</span></div>
+    <dl>
+      <dt>标的与周期</dt><dd>BTC / ETH 的 U 本位永续；日线定方向与环境，4 小时找位置，1 小时扣扳机；逐仓 ≤5 倍，模拟盘</dd>
+      <dt>过滤条件</dt><dd>环境开关 ＝ 趋势态（第 7 课）；方向三票同向（EMA20 对 60 / 收盘对 EMA20 / 高低点结构，第 4 课）；D 禁令沉默（第 10 课）；事件窗口外（第 3 课）——四个闸全开才有 A 的牌照</dd>
+      <dt>入场</dt><dd>4 小时回调"到位"＝落进至少两类证据的共振区（日线位带 / fib 38.2–61.8% 区 / HVN 边缘或整数关口，第 8 课）且 4h RSI 回到回调区（多 40–50 / 空 50–60，第 5 课）→ 等 1 小时收盘收复最近显著摆动点（左右各 3 根、1.5% 门槛，第 4 课口径）才进场；缩量回调加分，回调段放量 ≥1.5× 均量则降级或放弃（第 9 课）。位不到不进，盘中临时"发现"的位不算</dd>
+      <dt>止损</dt><dd>所依托位带另一侧之外，与入场价 ∓1.5×ATR(4h) 两者取更远者；跨周末、清淡时段或事件日改 2×ATR（第 6 课）；避开清算簇与整数位正中央（第 10 课毛边规则）；止损市价单、标记价格触发（第 1 课）</dd>
+      <dt>出场</dt><dd>目标 ＝ 下一个位带与 2R 取其近者，先到哪个按哪个离场（到位可分批）；目标距离不足 1.5 倍止损距离的，这笔放弃（第 3 课期望值关）；出现反向三票信号市价离场；趋势单浮盈 ≥1R 后可转吊灯式 3×ATR(4h)，只紧不松（本课细化）</dd>
+      <dt>仓位</dt><dd>名义 ＝ 单笔风险额 ÷ 实际止损距离%；单笔风险 ≤1%（高波动熔断或 D2 / D3 警戒期 0.5%，减半不叠乘）；同时 ≤2 个仓位</dd>
+    </dl>
+    <p class="rc-note">这张卡回答的问题只有一个：<strong>趋势中段的回调，哪一脚踩进去</strong>。它和 B 的边界：A 吃趋势的"中段"，B 接趋势的"出生"——突破当天是 B 的单，突破成功、环境转入趋势态之后的第一次回调才轮到 A。</p>
+  </div>
+  <div class="prose">
+    <h3><span class="nt" data-note="replayver">回放验证</span>：9 月三单，v1.0 只认一单</h3>
+    <p>第 5 课的图 5-7 用真实数据回放过 2026-08-01 → 09-30 共 61 个交易日：三票同向只有 12 天，叠加回调区剩 9 天，等到 1 小时触发只剩 <strong>3 天</strong>——9-03、9-09、9-12，全是做多。按 v0.2 管理的战绩：9-03 触发 77,783、止损 76,703 外、当天摸到 2R 止盈 79,945（<span class="up-t">+2R</span>）；9-09 触发 79,136 后行情掉头（<span class="dn-t">−1R</span>）；9-12 止损距离只有 0.4%，一根普通的针就扫掉了（<span class="dn-t">−1R</span>）。两个月合计打平。</p>
+    <p>现在用 v1.0 的流水线重审这三笔（本页 15.7 的调度器用第 7 课同一套算法逐日复算过）：9-03 当天环境是趋势态，牌照齐全，<strong>这笔成立</strong>；而 <strong>9-09 和 9-12 两天环境已退入压缩待爆态</strong>——9 月中旬那次趋势途中的二次收口（第 7 课讲过的中继旗形）。S 态不发 A 的牌照，这两笔在第 ① 道工位就被拦下，根本走不到触发。另外补一刀：9-12 那个 0.4% 的贴脸止损，在 v0.3 之后本来就不合法——1.5×ATR 下限会把它推远。<strong>同一段行情、同一组信号，61 天里 v0.2 出手三次赚亏相抵，v1.0 出手一次 +2R</strong>——环境闸拦掉的不是机会，是亏损的大头。这就是组装的意义：零件没换，裁决序让它们不再互相拆台。</p>
+    <h3>适用与失效</h3>
+    <ul>
+      <li><strong>最好用的时候</strong>：环境开关进入趋势态后的第 2–5 周（如 2026-08-22 → 09-08，ADX 从 25.5 爬到 47.8 的那段，第 7 课称为"模板 A 的黄金期"）；</li>
+      <li><strong>最危险的时候</strong>：趋势的头尾。头部：三票刚齐时常常已错过主升第一脚（第 4 课"8-31 才到齐"的确认代价，这是特性不是故障）；尾部：ADX 高位拐头、带宽重新收口，回调会"到位"但不再弹起——所以环境判定每天要重做，昨天的牌照今天作废；</li>
+      <li><strong>与 C 的边界</strong>：A 的回调买在趋势里的位带上（顺大势），C 的低吸买在震荡区间的下沿（无大势）。形状像，牌照完全不同——分不清就看第 ① 道工位的输出。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= 15.4 ================= -->
+<section class="ch" id="s4">
+  <h2 class="sec"><span class="no">15.4</span>模板 B · 收口突破：在弹簧爆开的瞬间上车</h2>
+  <p class="sec-en">PLAYBOOK B — SQUEEZE BREAKOUT</p>
+  <div class="prose">
+    <p>B 的零件来自三课：第 7 课的收口识别与突破雏形、第 8 课的箱体画法、第 9 课的量能闸。终稿前钉死两处漂移：</p>
+    <ul>
+      <li><strong>突破的参照物</strong>：第 7 课的案例以箱体上沿 65,483 为界，第 9 课的同一天案例用的是 4 小时唐奇安口径"前 20 根最高点 65,058"——两套口径差 0.7%，8-19 那根爆口 K 线一口吞掉了两个位，所以当时没暴露矛盾，但规则必须唯一。<strong>终稿：以第 8 课四步画法画出的盘整区边界带为准</strong>（摆动点聚类成带、触碰 ≥2）；画不出清晰箱体，就没有 B 的单——唐奇安通道只作图表上的辅助参考，不作入场依据；</li>
+      <li><strong>确认周期</strong>：第 7 课写"日线或 4 小时收盘突破"。终稿保留两档并补上配套：用哪个周期确认，量能闸就在哪个周期上量（突破 K 线成交额对该周期前 20 期均量）；4 小时确认进得早、假信号多，日线确认进得晚、更扎实——选哪档写进计划单，不许事后换口径。</li>
+    </ul>
+  </div>
+  <div class="rulecard">
+    <div class="rc-head"><span class="label">规则卡</span><span class="rc-name">模板 B · 收口突破（终稿，收敛自第 7／8／9 课）</span></div>
+    <dl>
+      <dt>标的与周期</dt><dd>BTC / ETH 的 U 本位永续；日线判环境，突破确认用 4 小时或日线收盘（下单前在计划单里二选一，量能闸同周期衡量）；逐仓 ≤5 倍，模拟盘</dd>
+      <dt>过滤条件</dt><dd>环境开关 ＝ 压缩待爆态（日线带宽 ≤ 近一年 20 分位，第 7 课）；盘整区已按第 8 课四步画法成带（上下沿、触碰 ≥2）——画不出有形箱体就没有 B；D 禁令沉默；事件窗口外。<b>计划单必须事先写好</b>：边界价、止损价、目标价、仓位算式，缺一行不许挂单</dd>
+      <dt>入场</dt><dd>收盘价突破盘整区边界带外侧 → 顺突破方向进场；<b>量能闸（硬条件）：突破 K 线成交额 ≥1.5× 前 20 期均量</b>，不足只观察、记日志等二次机会——哪怕之后涨上天也不追（第 9 课的统计：这种"错过"长期是划算的）</dd>
+      <dt>止损</dt><dd>盘整区中轨与入场价 ∓1.5×ATR(4h) 两者取更近者（第 7 课——B 的止损不许深过箱体中线）；跨周末或事件日 2×ATR 的全局条款照用；避开清算簇与整数位正中央；止损市价单、标记价格触发</dd>
+      <dt>出场</dt><dd>目标 ＝ 下一个位带与 2R 取其近者（突破方向上常是真空带——真空带里不设目标，改用 2R）；浮盈 ≥1R 后可转吊灯式 3×ATR(4h)（突破单最该吃趋势的全程）；出现反向三票信号市价离场</dd>
+      <dt>仓位</dt><dd>名义 ＝ 单笔风险额 ÷ 实际止损距离%；单笔风险 ≤1%（熔断或警戒期 0.5%，不叠乘）；同时 ≤2 个仓位</dd>
+    </dl>
+    <p class="rc-note">B 是四张卡里唯一"买在没人敢买的位置"的：突破那一刻价格创了一个多月新高，追进去违反全部直觉。支撑你扣扳机的不是胆子，是两道闸：收口（弹簧确实拧紧过）＋ 量能（确实有人跟着投票）。两道闸都过，剩下的交给止损。</p>
+  </div>
+  <div class="prose">
+    <h3>回放验证：一成一败，闸门两面</h3>
+    <p><strong>成的一面（2026-08-19）</strong>：带宽连续 31 天压在近一年 20 分位下方、8-15 收到年内最窄的 4.21%——弹簧拧到极限。8-19 北京 20–24 点那根 4 小时线开 64,479、收 68,524，捅穿箱体上沿 65,483，成交 116 亿 USDT ＝ 前 20 期均量的 <strong>11.8 倍</strong>，量能闸全开。之后 24 小时再涨 5.7%，日线收 69,310 起步 15 天 +18.7%，一路到 9-21 的 87,385。注意第 7 课算过的时间账：突破当天 ADX 才 15.0，等它爬过 25（8-22，收 77,085）再追，起步价贵 11%——<strong>B 存在的意义，就是在 ADX 还没睡醒时接住趋势的出生</strong>。</p>
+    <p><strong>败的一面（2026-04-11）</strong>：北京 4-12 凌晨那根 4 小时线收 73,636，刚探过突破位 73,450 不到 0.3%，成交额 17.3 亿，连均量（18.5 亿）都没够到——倍数 <strong>0.94</strong>，清淡时段的无人区突破。下一根就收回 73,013，24 小时后 −3.5%。v0.5 的 B 会追进去吃一记标准止损；v0.6 加了量能闸之后，它根本进不了候选名单。<strong>一道 1.5× 的闸，把这两笔分到了两个世界。</strong></p>
+    <h3>适用与失效</h3>
+    <ul>
+      <li><strong>失语期是特性</strong>：爆口后带宽炸开（压缩票灭）、ADX 没跟上（趋势票未亮），环境会退回震荡态一两天（2026-08-20／21 就是）——所以 B 的单必须在压缩态里提前挂好计划单，等开关表态再动手，起步价就贵了；</li>
+      <li><strong>与 A 的交接棒</strong>：突破成功、环境转入趋势态后，加仓机会归 A 管（等第一次回调到位），不许用 B 的名义追第二脚；</li>
+      <li><strong>最大的敌人是假突破</strong>：量能闸挡概率不挡个案——它会放过 04-11，也会错过某些缩量真突破（第 9 课原话）。止损挂在中轨与 1.5×ATR 取更近者，就是为"闸也看走眼"的那次准备的。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= 15.5 ================= -->
+<section class="ch" id="s5">
+  <h2 class="sec"><span class="no">15.5</span>模板 C · 区间往返：震荡期的"别手痒基金"</h2>
+  <p class="sec-en">PLAYBOOK C — RANGE ROTATION</p>
+  <div class="prose">
+    <p>C 是第 7 课的雏形加第 8 课的位带画法，漂移最少，但有两个前课没盖章的空档，本课裁定补上：</p>
+    <ul>
+      <li><strong>高波动熔断期 C 禁用</strong>：第 6 课的熔断（日线 ATR% 超近一年 90 分位 → 风险减半）撞上 C 的"恒半仓 0.5%"怎么算——0.25% 吗？终稿裁定：<strong>不叠乘，熔断期 C 直接禁用</strong>。理由不是算术，是逻辑：ATR% 爆表的"震荡"是瀑布式宽幅洗盘，区间边沿随时被打穿，C 赖以生存的"安静的均值回归"根本不存在；</li>
+      <li><strong>震荡态＋三票同向怎么办</strong>：环境说没性格、三票却齐了——两套仪表打架（15.7 的回放里 2026 年有 26 天这种日子）。终稿裁定：<strong>观望</strong>。三票同向说明方向力量已经很强，这时区间的"下沿"随时变成趋势的起点，逆票方向的触边单是接飞刀，顺票方向又没有 A 的位与触发体系撑腰——按宪法，拿不准 ＝ flat。</li>
+    </ul>
+  </div>
+  <div class="rulecard">
+    <div class="rc-head"><span class="label">规则卡</span><span class="rc-name">模板 C · 区间往返（终稿，收敛自第 7／8 课＋本课两处裁定）</span></div>
+    <dl>
+      <dt>标的与周期</dt><dd>BTC / ETH 的 U 本位永续；日线判环境与画区间，4 小时为主战周期（触边与 RSI 都看 4 小时）；逐仓 ≤5 倍，模拟盘</dd>
+      <dt>过滤条件</dt><dd>三要素一个不能少（第 7 课）：① 确认的震荡态（环境开关 R，且三票不齐——同向则观望，本课裁定）；② 区间上下沿按第 8 课画法成带且各被触碰 ≥2 次；③ RSI 给出超卖超买。另加三条禁用令：<b>事件日全日禁用；压缩待爆态禁用；高波动熔断期禁用（本课裁定）</b>；D 禁令沉默</dd>
+      <dt>入场</dt><dd>价格触到区间下沿带且 4h RSI ＜35 → 做多；触到上沿带且 4h RSI ＞65 → 镜像做空。只在边沿做，区间中部永远不动手</dd>
+      <dt>止损</dt><dd>区间边沿带外 1×ATR(4h)——留出"针刺穿边沿"的缓冲（下沿被针捅破是常态，不是区间失效）；止损市价单、标记价格触发</dd>
+      <dt>出场</dt><dd>到区间中轨减半、到对侧边沿清仓——逆势单不恋战，不等"万一变趋势"</dd>
+      <dt>仓位</dt><dd><b>恒为半份风险 0.5%</b>（C 的常态即半仓，与警戒期减半同额、不再叠减）；名义 ＝ 风险额 ÷ 止损距离%；同时 ≤2 个仓位</dd>
+    </dl>
+    <p class="rc-note">C 是逆势打法：进场那刻你在跟当下的动能对着干，赚的只是"弹回中轨"的小段。它的收益量级天生小——第 7 课那笔标准单，半仓风险赚约 0.9% 账户。<strong>它存在的主要价值不是赚钱，是在漫长震荡期给你的手找点守规矩的事做</strong>，免得你拿 A 的武器在绞肉机里发挥。</p>
+  </div>
+  <div class="prose">
+    <h3>回放验证：3 月那笔教科书单</h3>
+    <p>2026 年 2 月底到 4 月是教科书式震荡段（环境开关全程无趋势票）：上沿 74,047／75,999，下沿 65,569 一带。3-21、3-22 日 4 小时 RSI 两次跌破 35，但价格还在 68,500——<strong>只有超卖、没到位置，不是 C 的入场</strong>（工位 ④ 拦下）。3-27 下午 4 点收盘的 4 小时线：收 66,663、踩进下沿带、RSI 29.7——位置与时机同到，按卡做多；止损 ＝ 下沿 65,569 外 1×ATR（当时 4h ATR ＝ 1,154）＝ 64,415，半份风险 50 U，名义约 1,480 U。3-29 价格最深插到 64,918，跌破下沿、离止损只剩 500 刀——<strong>那 1×ATR 的缓冲买的就是这一下</strong>；随后均值回归兑现，4-7 冲过区间中轨 70,784，到目标减半或清仓，<span class="up-t">+1.8R</span>，持有 11 天。15.7 的调度器复算：3-27 当天判定正是"震荡态＋三票不齐 → C 可区间"——卡与行情严丝合缝。</p>
+    <h3>适用与失效</h3>
+    <ul>
+      <li><strong>最好用的时候</strong>：成形已久、边沿触碰多次的宽区间中后段（2026 年 3 月、1 月末都是）；</li>
+      <li><strong>必然失效的时刻</strong>：区间的最后一次触边——总有一次"下沿"不弹了，直接走成破位。所以止损永不省略、到中轨先减半、绝不加仓摊平；</li>
+      <li><strong>三条禁用令的共同逻辑</strong>：事件、压缩、熔断都是"区间随时作废"的环境——C 赚的是秩序钱，没有秩序就收摊。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= 15.6 ================= -->
+<section class="ch" id="s6">
+  <h2 class="sec"><span class="no">15.6</span>模板 D · 过热过滤：只会说"不"的裁判</h2>
+  <p class="sec-en">PLAYBOOK D — CROWDING VETO</p>
+  <div class="prose">
+    <p>D 和前三张卡不是一个物种：<strong>它不产生入场，只产生禁令</strong>。第 10 课装的三条禁令原样收编，没有参数漂移，但要把它在流水线里的身份讲透：A／B／C 是轮流上场的选手，D 是常驻裁判——哪天它开口，说的永远是"这桌太挤，别加注"，从不是"该进场了"。把 D 的禁令读成反向信号（费率爆表就做空），是第 10 课统计明确打过脸的误读：极端正费率之后 3 天平均 +1.08%，比全样本还高。</p>
+  </div>
+  <div class="rulecard">
+    <div class="rc-head"><span class="label">规则卡</span><span class="rc-name">模板 D · 过热过滤（终稿，收敛自第 10 课）</span></div>
+    <dl>
+      <dt>标的与周期</dt><dd>BTC / ETH 永续的日级合约仪表：资金费率（当天三期均值）、OI、全体多空比；每日晨检与下单前终审各看一次（结论同一天内不变）</dd>
+      <dt>过滤条件</dt><dd>三条禁令，强度分两档：<b>D1（硬禁令）</b>费率滚动一年分位 ＞90 → 禁开新多；＜10 → 禁开新空。<b>D2（减速带）</b>OI 周增 ＞15% 且价格涨幅不足 OI 增速三分之一 → 新仓风险减半。<b>D3（减速带）</b>全体多空比进入近半年最高或最低一成，且费率分位同向极端 → 持仓只减不加、不开新仓</dd>
+      <dt>入场</dt><dd><b>不产生</b>。D 永远不说"进"，只说"别进"——禁令当反向信号用是本课点名的危险误读</dd>
+      <dt>止损</dt><dd>不另设。已有仓位维持原止损止盈不动；给新仓挂止损时避开清算地图密集簇与整数位的正中央（第 10 课毛边规则）</dd>
+      <dt>出场</dt><dd>警戒期允许的主动操作只有减仓与止盈；禁令不强制平仓——已有仓位的生死仍归各自的 TP / SL 管</dd>
+      <dt>仓位</dt><dd>D1 命中方向的新仓 ＝ 0；D2 / D3 警戒期新仓风险 0.5%（与高波动熔断不叠乘，一律取 0.5% 下限）</dd>
+    </dl>
+    <p class="rc-note">三条禁令的强度排序有讲究：D1 是硬禁令，因为第 10 课的分位统计样本最硬（极端之后均值不差、但左尾肥得多：最深下探 −4.7% 对 −3.9%）；D2、D3 只是减速带，因为样本还薄。阈值都不神圣——第 10 课的统计器随时可以重新校准，但校准只能发生在盘后，由日志发起。</p>
+  </div>
+  <div class="prose">
+    <h3>回放验证：05-05，系统看多，D 说不</h3>
+    <p>这是全年最值钱的一次否决。2026-05-05 那天，流水线前两道工位全是绿灯：环境趋势态、三票齐多——A 的牌照亮着（15.7 的调度器可查）。但 D 终审三块仪表全在冒烟：<strong>D2 响</strong>——OI 周增 23.8%、价格同期只涨 6%，筹码堆的增速是价格的四倍，杠杆在空转（第 10 课已核，2026 年 D2 全年只响过四次，全挤在这三周）；<strong>D3 成立</strong>——全体多空比 0.50 为全年最低（人数最挤的一成），费率分位同日只有 4.5（＜10，同向极端；本课用本地费率数据复算）。按卡输出：<strong>只减不加，不开任何新仓</strong>。两天后就是 82,829 的假突破顶，一个月 −28%。那张"三票齐多"的牌照，D 一票否决——这一票就是模板 D 存在的全部理由。</p>
+    <p>两句诚实的补充。其一：同一天 D1 的方向是"禁新空"（费率分位 4.5），而行情随后暴跌——<strong>禁令拦的是"最挤的一边"，不是"错的一边"</strong>：空头的 28% 利润同样与你无关，D 卖的是"不在出事的桌上"的保险，不是水晶球。其二：D 对事件雷完全免疫——10·10 当天费率分位只有 13（第 10 课已核，本课复算 13.3），519 前夜也只有 66：消息引爆的屠杀归日历管（第 3 课），拥挤闷出来的事故才归 D 管。两道防线，谁也替不了谁。</p>
+  </div>
+</section>
+
+<!-- ================= 15.7 ================= -->
+<section class="ch" id="s7">
+  <h2 class="sec"><span class="no">15.7</span>调度实验台：2026 年，系统每天让你干什么</h2>
+  <p class="sec-en">THE DISPATCHER — A FULL-YEAR REPLAY</p>
+  <div class="prose">
+    <p>四张卡都定稿了，最后一个问题：它们合体之后，日子过起来到底什么样？下面这台机器把 v1.0 的调度层放回 2026 年逐日重演：环境开关用第 7 课图 7-4 的同一套算法（ADX 趋势票＋带宽压缩票），方向三票用第 4 课判定器的同一套算法（第 5 课图 5-7 移植过的那份），D1 用第 10 课的滚动一年费率分位——<strong>三套算法都不是本课新写的，是把前课的成稿原样搬来对表</strong>。拖动日期，看每天的调度结论，和你记忆里的行情对一对。</p>
+  </div>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <h4>医院的分诊台</h4>
+    <p>调度层就是急诊的分诊台：病人（行情）进门，先量生命体征（环境两票、三票、费率分位），然后分科——外科（A）、骨科（B）、内科（C），或者"回家观察"（flat）。分诊台不做手术，但它决定了今天哪把刀有资格出鞘。最反直觉的是：<strong>好医院的分诊台，大多数病人都被劝回家观察了</strong>——不是医术不行，是动刀的标准高。你拖完下面这一年就会发现，你的系统也是这样一家医院。</p>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 15-3</span>模板调度回放：拖动日期，看系统当天发谁的牌照<span class="real">真实数据</span><span class="ia">互动</span></p>
+    <div class="ctrls">
+      <label class="rg"><span class="rg-top">日期（2026-01-01 → 09-30）<output>—</output></span>
+        <input type="range" id="dd-day" min="0" max="272" step="1" value="230"></label>
+    </div>
+    <div class="lw h420" id="dd-chart"></div>
+    <div class="lw-legend" id="dd-legend"></div>
+    <div class="stats">
+      <div class="stat"><span class="k">① 环境开关（第 7 课）</span><span class="v" id="dd-env">—</span><span class="s" id="dd-env-s">—</span></div>
+      <div class="stat"><span class="k">② 方向三票（第 4 课）</span><span class="v" id="dd-vote">—</span><span class="s" id="dd-vote-s">—</span></div>
+      <div class="stat"><span class="k">③ 激活模板（本课）</span><span class="v" id="dd-tpl">—</span><span class="s" id="dd-tpl-s">—</span></div>
+      <div class="stat"><span class="k">⑥ D1 禁令（第 10 课）</span><span class="v" id="dd-d1">—</span><span class="s" id="dd-d1-s">—</span></div>
+    </div>
+    <p class="lab-msg" id="dd-msg"></p>
+    <figcaption><b>读图：</b>上图是 2026 年 1–9 月的真实日线，下方色带是每天的调度结论（A 待回调／B 待突破／C 可区间／观望），圆点是当前选中的日子。四块瓦片对应流水线的 ①②③⑥ 四道工位；①②③ 完全由页面按前课算法现算，⑥ 只装了 D1 一条——D2／D3 要用 OI 和多空比，本地只有 2026-04 之后的小时档，05-05 那天的 D2／D3 判定见 15.6 的回放。几个必拖的日子：01-31（三票转齐空，A 做空也是 A）、03-27（C 的教科书日）、05-05（牌照亮着、D 说不）、08-19（S 态爆口）、08-22（T 态但票不齐——观望 9 天的确认代价）、09-09（二次收口拦下 v0.2 的亏损单）。<b>注意"激活模板"不等于"今天下单"</b>：A 还要等回调到位，B 还要等爆口过闸，C 还要等触边超卖——牌照只是入场资格的第一关。</figcaption>
+  </figure>
+  <figure>
+    <p class="fig-title"><span class="fno">图 15-4</span>2026 年调度体检报告：273 天，谁的牌照发得最多<span class="real">真实数据</span></p>
+    <div class="bars" id="yb-bars"></div>
+    <figcaption><b>读图：</b>数字由页面按同一套算法现算（与图 15-3 同源）。三个解读：① "C 可区间"天数最多，但它是"允许"不是"指令"——还差触边＋超卖两道关，真正成单的屈指可数（3 月那笔就是 107 天里熬出来的）；② 直接观望的 57 天拆开看：31 天是趋势态但三票不齐（光 8 月底到 9 月初就 9 天——确认的代价），26 天是震荡态但三票同向（本课裁定观望的那个空档）；③ 牌照天数不等于下单天数：本课各节回放里真正走完九道工位的单，8–9 月的 61 天窗口 1 笔、3 月区间 1 笔、8-19 爆口 1 笔——<b>第 4 课说 flat 占三分之二是常态，v1.0 的出手只会更挑。等待不是系统的故障，是系统的工作成果</b>。D1 两行是另一个口径：2026 年禁新多只响了 16 天（费率水位整体塌掉，第 10 课讲过的结构漂移），禁新空 48 天——禁令沉默的日子远多于报警，沉默也是数据。</figcaption>
+  </figure>
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <h4>"哪个模板最近赚钱就全职用哪个"——追最热的过拟合</h4>
+    <p>8 月 B 吃了一波 18%，于是天天找箱体画突破；9 月 A 的回调单顺手，于是满屏找回调。<strong>模板由今天的环境决定，不由上一笔的盈亏决定</strong>——上一笔赚钱只说明上一个环境和模板匹配过，而环境是会换的：8-19 之后带宽炸开，全市场一个多月都没有合格的收口，这时硬找出来的"箱体"全是过拟合的产物。调度器每天只回答一次"今天谁上场"，你的手感、战绩、直觉都不在它的输入变量里——这不是无视你的经验，是替你挡住"手热了就梭哈"的那条老路。</p>
+  </div>
+  <div class="evidence">
+    <span class="label">证据与怀疑</span>
+    <h4>先泼冷水：本课所有"回放验证"都不是回测</h4>
+    <p>四张卡各配了真实回放，每个数字都能溯源——但它们证明的只是<strong>"规则可执行、数字可追溯"，不是"系统期望值为正"</strong>。三个硬伤必须钉在这里：① <strong>样本少得可怜</strong>：全课回放加起来约 7 笔。对照第 3 课的连亏概率表——胜率 50% 的系统 100 笔内出现 5 连亏的概率是 81%——7 笔连一次"正常霉运"都装不下，更谈不上估计胜率；② <strong>案例是挑过的</strong>：为了教学清楚，示例多来自 8–9 月主升段和 3 月标准震荡段这类"模板长相标准"的窗口；2024 年 2–3 月那种顶着 38 天过热分位照涨的行情、2026 年 6 月那种瀑布，都没进展品柜；③ <strong>成本没有逐笔扣</strong>：taker 费、资金费、滑点在第 1、3 课单独算过账，但回放盈亏里没扣——短线系统的毛利常常就是被这三样吃掉的。真正的检验在两步之外：先用模拟盘攒 20–30 笔真样本（阶段 4），再把规则卡写成代码、在扣全成本的数据上回测（阶段 5，学习地图的"下一程"）。<strong>在那之前，v1.0 的身份是"每个决定都有出处的可执行草稿"，不是"被证明赚钱的策略"</strong>——这句话请抄进日志扉页。</p>
+  </div>
+</section>
+
+<!-- ================= 15.8 ================= -->
+<section class="ch" id="s8">
+  <h2 class="sec"><span class="no">15.8</span>毕业：系统 v1.0 总则</h2>
+  <p class="sec-en">GRADUATION — SYSTEM v1.0</p>
+  <div class="keypoint">
+    <span class="label">里程碑</span>
+    <p><strong>今天是整门课的第二个里程碑：你的交易系统 v1.0 组装完成。</strong></p>
+    <p>第 4 课那天你拿到第一台能开的车，之后每课换一个零件；今天四张终稿卡互相咬合、九道工位各司其职——从"今天做不做"到"亏多少离场"，每一步都有规则、有出处、有日志可查，没有一步留给临场发挥。它还不是"被证明赚钱的机器"（15.7 刚泼过冷水），但它已经是<strong>"每个决定都有出处的机器"</strong>——这两者的距离，由接下来 20–30 笔模拟单来丈量。</p>
+  </div>
+  <div class="rulecard">
+    <div class="rc-head"><span class="label">规则卡</span><span class="rc-name">系统 v1.0 总则（总调度规则——细则见 15.3–15.6 四张模板卡）</span></div>
+    <dl>
+      <dt>标的与周期</dt><dd>BTC / ETH 的 U 本位永续，模拟盘（转实盘须过考核，见任务 ⑤）；日线定方向与环境、4 小时找位置、1 小时扣扳机；调度每天收盘后（北京早 8 点）只做一次，盘中不改判；已有仓位不受当日判定变化影响，交给各自的 TP / SL 管理（第 4 课老规矩）</dd>
+      <dt>过滤条件</dt><dd>按流水线顺序：① 事件窗口前后 30 分钟不开新仓，C 整个事件日禁用（第 3 课）；② 环境开关发牌照——T→A、S→B、R→C（第 7 课）；③ 方向三票只服务 A（第 4 课）；④ 高波动熔断：日线 ATR% 超近一年 90 分位 → 风险减半、C 禁用（第 6 课＋本课裁定）；⑤ D 三条禁令终审一切新仓（第 10 课）；⑥ <b>冲突裁决序：环境 ＞ 方向 ＞ 信号；任何一层拿不准 ＝ flat</b></dd>
+      <dt>入场</dt><dd>只按当日激活的那一张模板卡执行（A 回调到位＋触发 / B 爆口过量能闸 / C 触边＋超卖超买）；判定指标每卡 ≤4 个，同族不叠加；没有牌照的信号再漂亮也不是信号</dd>
+      <dt>止损</dt><dd>锚位按各卡规定（A 位带另一侧 / B 箱体中轨取更近 / C 边沿外 1×ATR），一律与 ∓k×ATR(4h) 校验（A / B 1.5×、跨周末与事件日 2×）；避开清算簇与整数位正中央；止损市价单、标记价格触发、下单即挂（第 1 课铁律）；止损只许收紧不许放宽</dd>
+      <dt>出场</dt><dd>A / B：下一个位带与 2R 取其近（不足 1.5R 的单放弃；到位可分批），浮盈 ≥1R 的趋势单可转吊灯式 3×ATR(4h)，反向三票市价离场；C：中轨减半、对侧清仓；离场方式在下单时写定，盘中不换法</dd>
+      <dt>仓位</dt><dd>名义 ＝ 单笔风险额 ÷ 实际止损距离%；单笔风险 ≤1% ＝ 100 U（熔断 / D2 / D3 警戒 0.5%，C 恒 0.5%，各类减半不叠乘）；逐仓 ≤5 倍；同时 ≤2 个仓位；月度回撤 −6% → 停开新仓只复盘（第 3 课）</dd>
+    </dl>
+    <p class="rc-note">这张总卡只写调度与公共条款，细则全在四张模板卡里——<strong>把五张卡打印出来贴在屏幕边，这就是你的系统的全部物理形态</strong>。参数不神圣：1.5×、90 分位、40–50 区……每个阈值都来自有限样本。它们的下一次修订只能由交易日志发起（第 16 课教怎么发起），不能由盘中的情绪发起。</p>
+  </div>
+  <div class="sysup">
+    <span class="label">系统升级</span>
+    <h4>你的交易系统：v0.7 → v1.0——从安全带到完整机器</h4>
+    <p>本课装进系统的零件：组合四原则 · 冲突裁决序（环境 ＞ 方向 ＞ 信号）· 九道工位流水线 · 四张终稿模板卡 · 调度日课与"激活模板"日志列 · 吊灯式出场细则（第 6 课的预告兑现）· 十余处参数漂移的大扫除（各卡注明）。回头看这一路：v0.0 只是一条安全带（第 1 课），v0.1 是第一台能开的车（第 4 课），之后时机（v0.2）、尺度（v0.3）、环境（v0.4）、位置（v0.5）、量能（v0.6）、禁令（v0.7）一课一个零件——<strong>今天，从 v0.0 的安全带到 v1.0 的完整机器，没有一个零件是多余的，也没有一个零件单独能开</strong>。下一课是最后一课：给机器配驾驶员手册——交易计划书、日志模板、连亏处置与交易心理。系统管行情，计划书管你。</p>
+  </div>
+  <div class="stock">
+    <span class="label">股票上怎么对照</span>
+    <h4>组合思想全市场通用，四张卡各有折扣</h4>
+    <ul>
+      <li><b>裁决序、同族不叠加、3–4 个封顶——纯思想，一字不改照搬</b>；三重滤网和"大周期否决"本来就是股票书的发明（Elder），股票档位常用"周线定方向、日线找位置、60 分钟扣扳机"；</li>
+      <li><b>环境开关直接可用</b>：ADX 与带宽的算法对 A 股指数、个股一字不改；但个股受涨跌停和题材轮动影响，震荡态占比更高，C 类打法的出场纪律更要紧；</li>
+      <li><b>模板 B 要给 T+1 让步</b>：放量突破买入当天不能卖，假突破的止损要隔夜才执行——止损距离的不确定性更大，仓位公式更保守（第 5 课讲过）；涨停板上的"缩量"还是强势信号，量能闸的读法要反过来（第 9 课对照过）；</li>
+      <li><b>模板 C 在 T+1 下做不了日内往返</b>：退一档做日线级别的宽箱体，或者干脆放弃 C——别硬做；</li>
+      <li><b>模板 D 没有直接对应物</b>：A 股拿两融余额增速当 OI 的远亲、融资买入占比当多空比的远亲，日频且滞后；资金费率这块表股票市场根本没有（第 10 课的对照表）——所以股票玩家防拥挤主要靠位置和量能，这是合约玩家多出来的一副牌。</li>
+    </ul>
+  </div>
+  <div class="task">
+    <span class="label">本周模拟任务</span>
+    <h4>v1.0 上线第一周（全程模拟盘）</h4>
+    <ol>
+      <li><b>抄卡</b>：把 15.3–15.6 四张终稿卡各抄一页"自己的话"——不许复制粘贴，抄完和原卡对照找漏。讲不出来的条款，就是还没懂的条款；</li>
+      <li><b>日课换版</b>：每天北京早 8 点后，日志先写调度三行——环境态（ADX 与带宽读数）、三票判定、D1 费率分位——再写结论"今天激活：＿＿"。<b>日志从本周起新增"激活模板"列</b>，flat 的日子也要写（写"观望"）；</li>
+      <li><b>只按 v1.0 下单</b>：本周 2–3 笔模拟单，每笔第一行写激活模板与牌照来源（什么环境态、哪几票）；没牌照的手痒单照旧记进第 5 课开的"被滤掉的冲动"页——那一页本周起按模板归档，看看谁最常勾引你；</li>
+      <li><b>对答案</b>：把图 15-3 拖过本周每一天，和自己的日课判定对照；连错两天，回 15.7 和第 7 课重读判定规则——是你算错了还是理解错了，日志里写清楚；</li>
+      <li><b>启动毕业考核</b>：从本周起累计"按卡执行"的笔数——<b>模拟满 20–30 笔、绝大多数合规（评过程，不评单笔盈亏），转 1 万元实盘、每笔风险 100 元</b>（阶段 4 门槛，第 1 课定下）；第 3 课的月度 −6% 停手纪律同步生效。合规率不到九成就重新计数——考官是日志，不是你的感觉。</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ================= 小结 ================= -->
+<section class="ch recap" id="recap">
+  <h2 class="sec"><span class="no">★</span>本课小结</h2>
+  <p class="sec-en">RECAP</p>
+  <div class="prose">
+    <ol>
+      <li><b>组合四原则</b>：每个指标只回答一个问题（七问七坑）；多周期分工且大周期有否决权；冲突裁决序环境 ＞ 方向 ＞ 信号、拿不准 ＝ flat；指标 3–4 个封顶、同族不叠加。</li>
+      <li><b>每日流水线九道工位</b>：日历 → 环境 → 三票 → 选模板 → 位与触发 → 量能闸 → D 终审 → 仓位止损 → 下单与日志；每道只问一个问题，不过就走观望匝道，判定一天只做一次。</li>
+      <li><b>模板 A 顺势回调</b>：趋势态＋三票齐才有牌照；位带共振＋RSI 回调区＋1 小时触发；止损挂位带另一侧与 1.5×ATR 取更远；9 月回放：v0.2 三单打平，v1.0 的环境闸砍掉两笔亏损只留 +2R。</li>
+      <li><b>模板 B 收口突破</b>：压缩态挂计划单，收盘爆口＋量能闸 ≥1.5× 硬条件；止损不深过箱体中轨；08-19 的 11.8 倍量放行与 04-11 的 0.94 倍量拦截是闸门的两面。</li>
+      <li><b>模板 C 区间往返</b>：三要素缺一不可，恒半仓、中轨减半对侧清仓；事件日、压缩态、熔断期三重禁用；它是震荡期的"别手痒基金"，不是暴富工具。</li>
+      <li><b>模板 D 只产生禁令</b>：费率分位硬禁令＋杠杆空转与拥挤共振两条减速带；05-05 那一票否决躲过假突破顶；事件雷归日历管，拥挤才归 D 管。</li>
+      <li><b>2026 年调度实测</b>：A 59 天、B 50 天、C 107 天、观望 57 天——"可以做"远多于"真下单"，等待是系统的工作成果；回放验证 ≠ 回测，期望值要靠模拟 20–30 笔和阶段 5 的代码回测说话。</li>
+      <li><b>v1.0 里程碑</b>：从 v0.0 安全带到完整机器；参数修订只能由日志发起；下一课配驾驶员手册——交易计划书与心理。</li>
+    </ol>
+  </div>
+
+  <h3>术语一览（点击正文中的角标词可随时弹出）</h3>
+  <ol class="notes-list" id="notes-list"></ol>
+
+  <h3>自测</h3>
+  <details><summary>1. 震荡态里出现一组教科书级的三重滤网做多信号：三票齐、RSI 回到 45、1 小时也触发了。做不做？为什么裁决序把环境排在最前面？</summary>
+    <div class="ans"><p>不做。裁决序是环境 ＞ 方向 ＞ 信号：震荡态不发 A 的牌照，后面两层的灯再亮也轮不到表决。把环境排最前，是因为它决定的是"这类打法今天有没有资格上场"——第 7 课的统计：同一套顺势信号，趋势里 +19.7%、震荡里 −21.6%，信号本身没变，变的是地形。活例子就在本课：9-09、9-12 两笔三层全过的单（v0.2 放行，各亏 1R），在 v1.0 里被环境闸拦在第一道工位——61 天窗口里只放行 9-03 一笔 +2R。</p></div>
+  </details>
+  <details><summary>2. 2026-08-19 那根 4 小时线，模板 B 说买、模板 C 说卖。用裁决序说清为什么系统的答案是唯一的。</summary>
+    <div class="ans"><p>第一步查环境：当天是压缩待爆态（带宽 8.68%，压在近一年 20 分位上）。第二步查牌照：S 态只发 B 的牌照，而且 C 的规则里明写"压缩待爆态禁用"——弹簧旁边不打盹。所以 C 连出牌资格都没有，不存在"两个信号谁更强"的辩论。第三步 B 自己过闸：收盘 68,524 爆出箱体上沿 65,483，量能 11.8 倍远超 1.5× 硬闸——放行做多。注意裁决在当晚就能完成，不需要"事后知道涨了 18.7%"——裁决序的价值正在于它不依赖后见之明。</p></div>
+  </details>
+  <details><summary>3. RSI、KDJ、随机指标同时显示超卖，算几个证据？为什么 v1.0 规定每张卡的判定指标不超过 4 个？</summary>
+    <div class="ans"><p>算一个。三者都是动能族近亲，用同一段收盘价算出来，同涨同落是数学必然——它们"一致"不提供任何新信息，只提供被同一句话说服三次的错觉。真正的证据共振必须跨族：位置（价格停在哪）＋量能（多少钱在动）＋合约数据（场上的人什么状态）才是三个独立维度。封顶 3–4 个的另一半理由是责任制：指标越少，亏损单复盘时越容易定位哪个零件失灵；一张叠了八个指标的图，永远"总有一个在点头"，也永远查不清是谁的责任。</p></div>
+  </details>
+  <details><summary>4. v1.0 规定 C 恒用 0.5% 风险，高波动熔断又规定风险减半。ATR% 爆表的震荡日，C 是不是用 0.25% 做？</summary>
+    <div class="ans"><p>不是——那天 C 根本不许做。本课的收敛裁定：各类减半规则不叠乘（0.5% 是统一下限），而熔断期 C 直接禁用。理由不是算术是逻辑：C 赚的是"安静区间里的均值回归"，ATR% 超近一年 90 分位的"震荡"是瀑布式宽幅洗盘，边沿随时被整段打穿——区间假设本身已不成立，仓位算得再小也是在错误的地图上开车。同理还有两条禁用令：事件日（消息可以瞬间作废区间）和压缩待爆态（弹簧随时爆开）。三条禁用令的共同逻辑：没有秩序，就没有 C。</p></div>
+  </details>
+  <details><summary>5. 2026-05-05，环境趋势态、三票齐多——系统"看多"，为什么 v1.0 不让你开多单？随后一个月跌了 28%，做空的钱跟你有关系吗？</summary>
+    <div class="ans"><p>因为 D 终审否决了：D2 响（OI 周增 23.8%、价格只涨 6%——杠杆空转，2026 年全年只响四次的警报）；D3 成立（全体多空比 0.50 全年最低＋费率分位 4.5 同向极端）——按卡"只减不加、不开新仓"。这一票把你摁在假突破顶（两天后 82,829）的门外。做空的 28% 与你无关：同一天 D1 还在"禁新空"（分位 4.5 ＜10）——禁令拦的是"最挤的一边"，不是"错的一边"。D 卖的是"不在出事的桌上"的保险，保费是两头的机会，保单是你的本金。想赚那 28%，需要的是另一套（本课程没教的）做空体系，不是把禁令反着读。</p></div>
+  </details>
+  <details><summary>6. "本课四张卡都配了真实回放，所以系统期望值为正。"这句话错在哪里？要让它变对，还缺哪两步？</summary>
+    <div class="ans"><p>回放验证证明的是"规则可执行、数字可追溯"，不是"期望值为正"。三个硬伤：样本只有约 7 笔（胜率 50% 的系统 100 笔内出现 5 连亏的概率都有 81%，7 笔什么都说明不了）；案例为教学挑选过（主升段和标准震荡段进了展品柜，38 天过热照涨和瀑布行情没进）；成本没逐笔扣（手续费＋资金费＋滑点常常就是短线系统的全部毛利）。缺的两步：① 阶段 4——模拟盘攒 20–30 笔不挑不拣的真样本，评执行合规率；② 阶段 5——把规则卡写成代码，在扣全成本的历史数据上回测，处理前视偏差与过拟合。在那之前，对 v1.0 的正确态度是：严格执行、如实记录、随时准备被数据修理。</p></div>
+  </details>
+
+  <nav class="pager" aria-label="课程导航">
+    <a class="pg pg-prev" href="ct-l14.html"><span class="pg-dir">上一课</span><span class="pg-ttl">第 14 课 · 币圈事件与连环爆仓复盘</span></a>
+    <a class="pg pg-toc" href="ct-index.html"><span class="pg-dir">返回</span><span class="pg-ttl">学习地图</span></a>
+    <a class="pg pg-next" href="ct-l16.html"><span class="pg-dir">下一课</span><span class="pg-ttl">第 16 课 · 交易计划、日志与心理</span></a>
+  </nav>
+
+  <p class="foot">数据：币安公开历史数据（data.binance.vision），BTCUSDT 永续，已本地化；图 15-3 / 15-4 的环境态、三票判定与费率分位由页面按第 4 / 7 / 10 课同一套算法用本地数据现场重算（日线为 UTC 交易日口径），各模板回放的价格与盈亏引自第 5 / 7 / 9 / 10 课的已核案例。图表组件：TradingView Lightweight Charts™（Apache-2.0）。本讲义仅为学习笔记，不构成投资建议；合约交易风险极高。</p>
+</section>
+
+</main>
+</div>
+
+<!-- ================= 术语弹注内容 ================= -->
+<div class="notes-src" hidden>
+  <section data-note-id="caijue" data-title="冲突裁决序" data-en="Arbitration Order">
+    <p>当两条规则给出相反指令时，预先规定"谁说了算"的优先级清单。本系统只有一行：环境开关 ＞ 方向三票 ＞ 入场信号，任何一层拿不准，输出一律是观望。裁决序必须在冲突发生之前、头脑冷静时写死——等持仓浮亏时再临场裁决，裁判永远偏向你想下的那张单。</p>
+  </section>
+  <section data-note-id="tongzu" data-title="同族指标" data-en="Indicator Family">
+    <p>用同一类原始数据、回答同一个问题的指标群，例如 RSI 与 KDJ（都拿近期收盘价算动能）。同族指标高度相关，叠着用不增加独立证据，只增加"被同一句话说服两次"的错觉——统计上叫共线性。真正的证据共振要跨族：位置、量能、合约数据才是互相独立的维度。</p>
+  </section>
+  <section data-note-id="diaodu" data-title="调度" data-en="Dispatch">
+    <p>系统每天开盘前决定"今天哪张模板卡有上场资格"的过程：输入是环境态与三票判定，输出是 A／B／C／观望四者之一。调度在前、信号在后——没拿到牌照的模板，信号再漂亮也不许出牌。调度一天只做一次（收盘后），盘中行情再热闹也不改判。</p>
+  </section>
+  <section data-note-id="flatstate" data-title="观望（flat）" data-en="Flat / Stand Aside">
+    <p>系统四种输出里唯一不花钱的一种。它不是"系统没意见"，而是明确指令：今天不开新仓。错过的行情不扣你的钱，做错的行情才扣——第 4 课起 flat 天数就占三分之二，v1.0 只多不少。把"等待"当成持仓之外的另一种仓位来执行，是系统交易者和无头苍蝇的分水岭。</p>
+  </section>
+  <section data-note-id="replayver" data-title="回放验证" data-en="Replay Walk-through">
+    <p>把一条规则放回真实历史行情里逐根 K 线走一遍，检查规则可执行、数字可追溯、结局如实记录。它验证的是规则的"可操作性"，不是"期望值"——样本少、案例经过挑选、成本未逐笔扣除，所以回放验证不能替代回测。两者的关系像试驾和碰撞测试：试驾证明车能开，碰撞测试才证明车安全。</p>
+  </section>
+  <section data-note-id="paramdrift" data-title="参数漂移" data-en="Specification Drift">
+    <p>同一条规则在系统多次升级中，措辞或参数悄悄走样的现象——例如止损锚从"结构位外侧"（第 6 课）漂成"位带另一侧"（第 8 课），或完整的出场条款被后面的课简写掉一半。软件工程里的对应物是文档与代码不同步。治法只有一个：定期收敛成唯一的终稿版本，声明旧表述全部作废——本课 15.3–15.6 干的就是这件事。</p>
+  </section>
+  <section data-note-id="chandelier" data-title="吊灯式止损" data-en="Chandelier Exit">
+    <p>跟踪止损的一种：止损价挂在"入场以来最高价（做空为最低价）∓3×ATR"处，像吊灯一样吊在行情的天花板上，随新高逐根上移、永不下移（只紧不松）。由 Chuck Le Beau 提出、经 Elder《以交易为生》推广。本课定稿其启用条件：浮盈 ≥1R 的趋势单，可在下单计划里用它替代固定 2R 止盈，用小段回吐换趋势全程。</p>
+  </section>
+</div>
+
+<script src="assets/lightweight-charts.js"></script>
+<script src="assets/ct.js"></script>
+<script src="assets/ctchart.js"></script>
+<script src="assets/data/klines-BTCUSDT-1d.js"></script>
+<script src="assets/data/funding-BTCUSDT.js"></script>
+<script>
+'use strict';
+/* ================= 公共算法：全部移植自前课成稿 =================
+   三票制：第 4 课判定器（经第 5 课图 5-7 的移植版，逐位一致）
+   环境开关：第 7 课图 7-4（ADX 趋势票 ＋ 带宽压缩票）
+   D1 费率分位：第 10 课图 10-2（滚动一年、打平各算半天） */
+function dISO(t){ return new Date(t * 1000).toISOString().slice(0, 10); }
+function fmt(x, d){ return x.toLocaleString('en-US', {minimumFractionDigits: d || 0, maximumFractionDigits: d || 0}); }
+
+function emaArr(rows, n){
+  var k = 2 / (n + 1), e = null, out = [], i, v;
+  for(i = 0; i < rows.length; i++){
+    v = rows[i][4];
+    e = e === null ? v : v * k + e * (1 - k);
+    out.push(i >= n - 1 ? e : null);
+  }
+  return out;
+}
+function rawSwings(rows, K){
+  var piv = [], i, j;
+  for(i = K; i < rows.length - K; i++){
+    var isH = true, isL = true;
+    for(j = i - K; j <= i + K; j++){
+      if(j === i) continue;
+      if(rows[j][2] >= rows[i][2]) isH = false;
+      if(rows[j][3] <= rows[i][3]) isL = false;
+    }
+    if(isH) piv.push({i: i, type: 'H', price: rows[i][2], confirmI: i + K});
+    if(isL) piv.push({i: i, type: 'L', price: rows[i][3], confirmI: i + K});
+  }
+  return piv;
+}
+function cleanSwings(piv, minPct){
+  var out = [];
+  for(var k = 0; k < piv.length; k++){
+    var p = piv[k];
+    if(!out.length){ out.push(p); continue; }
+    var last = out[out.length - 1];
+    if(p.type === last.type){
+      if(p.type === 'H' ? p.price > last.price : p.price < last.price) out[out.length - 1] = p;
+    }else{
+      if(Math.abs(p.price / last.price - 1) < minPct) continue;
+      out.push(p);
+    }
+  }
+  return out;
+}
+function adxRows(rows, n){
+  var out = new Array(rows.length).fill(null);
+  var atrW = null, pW = null, mW = null, adxW = null;
+  for(var i = 1; i < rows.length; i++){
+    var h = rows[i][2], l = rows[i][3], pc = rows[i - 1][4];
+    var tr = Math.max(h - l, Math.abs(h - pc), Math.abs(l - pc));
+    var upM = rows[i][2] - rows[i - 1][2];
+    var dnM = rows[i - 1][3] - rows[i][3];
+    var pdm = (upM > dnM && upM > 0) ? upM : 0;
+    var mdm = (dnM > upM && dnM > 0) ? dnM : 0;
+    if(i <= n){
+      atrW = (atrW === null ? 0 : atrW) + tr / n;
+      pW = (pW === null ? 0 : pW) + pdm / n;
+      mW = (mW === null ? 0 : mW) + mdm / n;
+    }else{
+      atrW = (atrW * (n - 1) + tr) / n;
+      pW = (pW * (n - 1) + pdm) / n;
+      mW = (mW * (n - 1) + mdm) / n;
+    }
+    if(i < n) continue;
+    var p = atrW ? 100 * pW / atrW : 0, m = atrW ? 100 * mW / atrW : 0;
+    var dx = (p + m) ? 100 * Math.abs(p - m) / (p + m) : 0;
+    if(i < 2 * n){ adxW = (adxW === null ? 0 : adxW) + dx / n; }
+    else{ adxW = (adxW * (n - 1) + dx) / n; }
+    out[i] = {adx: i >= 2 * n - 1 ? adxW : null, pdi: p, mdi: m};
+  }
+  return out;
+}
+function bollRows(rows, n, k){
+  var out = new Array(rows.length).fill(null);
+  for(var i = n - 1; i < rows.length; i++){
+    var sum = 0, j;
+    for(j = i - n + 1; j <= i; j++) sum += rows[j][4];
+    var m = sum / n, sq = 0;
+    for(j = i - n + 1; j <= i; j++) sq += Math.pow(rows[j][4] - m, 2);
+    var sd = Math.sqrt(sq / n);
+    out[i] = {mid: m, w: m ? (2 * k * sd) / m * 100 : 0};
+  }
+  return out;
+}
+function p20Rows(bolls){
+  var out = new Array(bolls.length).fill(null), first = -1, i, j;
+  for(i = 0; i < bolls.length; i++){ if(bolls[i]){ first = i; break; } }
+  for(i = first; i < bolls.length; i++){
+    var lo = Math.max(first, i - 364), vals = [];
+    for(j = lo; j <= i; j++) vals.push(bolls[j].w);
+    vals.sort(function(a, b){ return a - b; });
+    out[i] = vals[Math.floor(vals.length * 0.2)];
+  }
+  return out;
+}
+
+var DD = CT.get('klines-BTCUSDT-1d');
+var E20 = emaArr(DD, 20), E60 = emaArr(DD, 60);
+var PIV = rawSwings(DD, 3);
+var ADX = adxRows(DD, 14), BOLL = bollRows(DD, 20, 2), P20 = p20Rows(BOLL);
+
+function verdictAt(i){
+  var cl = cleanSwings(PIV.filter(function(s){ return s.confirmI <= i; }), 0.03);
+  var hs = cl.filter(function(s){ return s.type === 'H'; }).slice(-2);
+  var ls = cl.filter(function(s){ return s.type === 'L'; }).slice(-2);
+  var v3 = 0;
+  if(hs.length === 2 && ls.length === 2){
+    var hh = hs[1].price > hs[0].price, hl = ls[1].price > ls[0].price;
+    v3 = hh && hl ? 1 : (!hh && !hl ? -1 : 0);
+  }
+  var v1 = E20[i] > E60[i] ? 1 : -1;
+  var v2 = DD[i][4] > E20[i] ? 1 : -1;
+  var dir = (v1 === 1 && v2 === 1 && v3 === 1) ? 1 : (v1 === -1 && v2 === -1 && v3 === -1) ? -1 : 0;
+  return {v1: v1, v2: v2, v3: v3, dir: dir};
+}
+function stateAt(i){
+  var a = ADX[i], b = BOLL[i];
+  if(!a || a.adx === null || !b || P20[i] === null) return null;
+  var a3 = ADX[i - 3];
+  var trend = a.adx > 25 && a3 && a3.adx !== null && a.adx > a3.adx;
+  return trend ? 'T' : (b.w <= P20[i] ? 'S' : 'R');
+}
+
+/* D1：滚动一年费率分位 */
+var FPCT = (function(){
+  var fund = CT.get('funding-BTCUSDT');
+  var acc = {}, order = [];
+  fund.forEach(function(r){
+    var d = dISO(r[0]);
+    if(!acc[d]){ acc[d] = []; order.push(d); }
+    acc[d].push(r[1]);
+  });
+  var daily = order.map(function(d){
+    var a = acc[d], s = 0;
+    for(var i = 0; i < a.length; i++) s += a[i];
+    return {d: d, v: s / a.length};
+  });
+  var by = {};
+  for(var i = 0; i < daily.length; i++){
+    var win = daily.slice(Math.max(0, i - 364), i + 1);
+    var below = 0, eq = 0;
+    for(var j = 0; j < win.length; j++){
+      if(win[j].v < daily[i].v) below++;
+      else if(win[j].v === daily[i].v) eq++;
+    }
+    by[daily[i].d] = (below + eq / 2) / win.length * 100;
+  }
+  return by;
+})();
+
+/* 调度表：2026-01-01 → 09-30 */
+var SCHED = [];
+var CNT = {A: 0, B: 0, C: 0, W: 0}, CNTD = {long: 0, short: 0}, WSPLIT = {T: 0, R: 0}, D1CNT = {hot: 0, cold: 0};
+(function(){
+  var a = Date.parse('2026-01-01') / 1000, b = Date.parse('2026-10-01') / 1000;
+  for(var i = 0; i < DD.length; i++){
+    var t = DD[i][0];
+    if(t < a || t >= b) continue;
+    var d = dISO(t), st = stateAt(i), vd = verdictAt(i), pct = FPCT[d];
+    var tpl;
+    if(st === 'T' && vd.dir !== 0) tpl = 'A';
+    else if(st === 'S') tpl = 'B';
+    else if(st === 'R' && vd.dir === 0) tpl = 'C';
+    else tpl = 'W';
+    CNT[tpl]++;
+    if(tpl === 'A') CNTD[vd.dir === 1 ? 'long' : 'short']++;
+    if(tpl === 'W') WSPLIT[st]++;
+    var d1 = 0;
+    if(pct !== undefined){
+      if(pct > 90){ d1 = 1; D1CNT.hot++; }
+      else if(pct < 10){ d1 = -1; D1CNT.cold++; }
+    }
+    SCHED.push({d: d, t: t, i: i, st: st, vd: vd, tpl: tpl, pct: pct, d1: d1});
+  }
+})();
+
+/* ========== 图 15-3 调度回放 ========== */
+(function(){
+  var rows = CT.slice(DD, '2026-01-01', '2026-10-01');
+  var g = CT.makeChart('dd-chart', {panes: [0.14]});
+  var cs = g.addCandles(rows);
+  function strip(code, color){
+    g.addHist(SCHED.filter(function(x){ return x.tpl === code; })
+      .map(function(x){ return {time: CT.ts(x.t), value: 1}; }), color, {pane: 1});
+  }
+  strip('A', 'series'); strip('B', 'series2'); strip('C', 'series3'); strip('W', 'muted');
+  g.fit();
+  CT.legend('dd-legend', [['series', 'A 待回调'], ['series2', 'B 待突破'], ['series3', 'C 可区间'], ['muted', '观望']]);
+  var mkArr = [];
+  var mkApi = g.markers(cs, mkArr);
+  var TPLCOLOR = {A: 'series', B: 'series2', C: 'series3', W: 'muted'};
+  var NAME = {T: '趋势态', S: '压缩待爆', R: '震荡态'};
+
+  function between(d, x, y){ return d >= x && d <= y; }
+  function special(x){
+    if(between(x.d, '2026-01-31', '2026-02-10'))
+      return 'A 的牌照也发给空头：1-31 三票转齐空（收盘 78,707），六天后 59,800（第 7 课）——这段趋势态是向下的，A 待回调 ＝ 等反弹到位做空。';
+    if(between(x.d, '2026-03-20', '2026-03-31'))
+      return 'C 的主场：区间 65,569–75,999 成形已久。3-21 / 3-22 RSI 超卖但价格没到下沿——工位 ④ 拦下；3-27 触下沿 66,663 ＋ RSI 29.7，那笔 +1.8R（第 7 课回放，本课 15.5 收编为终稿案例）。';
+    if(between(x.d, '2026-05-03', '2026-05-12'))
+      return '全年最值钱的否决：调度说 A 多，D 终审说不——05-05 OI 周增 23.8%（D2）＋ 多空比 0.50 与费率分位 4.5 同向极端（D3）→ 只减不加。05-07 假突破顶 82,829，一个月 −28%（15.6 的回放）。';
+    if(between(x.d, '2026-07-20', '2026-08-18'))
+      return '连续压缩——B 的猎场：带宽压在 20 分位下，画好 62,229 / 65,483 箱体，把计划单（边界 / 止损 / 目标 / 仓位）写进日志，然后等。准备好的人在 8-19 只是执行。';
+    if(x.d === '2026-08-19')
+      return '爆口日：收盘 69,310 捅穿上沿，4 小时量能 11.8×，量能闸全开——B 进场。同一根 K 线上 C 的"触上沿＋超买做空"字面条件也全齐，但 S 态禁用 C，连出牌资格都没有（15.1 的案例）。';
+    if(between(x.d, '2026-08-20', '2026-08-21'))
+      return '失语期：带宽炸开、ADX 未醒，牌子写着 C——但箱体刚被炸掉，画不出有形区间（三要素第 ② 条不成立），实际动作 ＝ 观望 ＋ 按 B 的规则管理持仓。';
+    if(between(x.d, '2026-08-22', '2026-08-30'))
+      return 'T 态亮灯但结构票迟到（8-31 才齐）——观望 9 天，完整错过 +7% 的单日主升。这是确认的代价，第 4 课算过这笔账：确认慢，但它把你挡在更多假信号外面。';
+    if(x.d >= '2026-08-31' && x.d <= '2026-09-08')
+      return '模板 A 的黄金期：三票齐 ＋ 趋势态，ADX 一路爬向 47.8。9-03 回调到位触发，当天 +2R（第 5 课回放）——v1.0 在 61 天窗口里放行的唯一一笔 A 单。';
+    if(between(x.d, '2026-09-09', '2026-09-18'))
+      return '趋势途中的二次收口：环境退入 S 态。v0.2 曾在 9-09 / 9-12 放行两笔三重滤网单（各 −1R），v1.0 的环境闸把它们拦在第 ① 道工位——这两天的正确动作是给 B 画中继旗形的箱体。';
+    if(x.d >= '2026-09-25')
+      return '退回震荡、三票也散——两套独立仪表盘同时转谨慎（第 7 课的收尾判例）。系统收工，等下一程：这正是 09-30 数据末端的状态。';
+    return null;
+  }
+  var idx = 230;
+  function paint(){
+    var x = SCHED[Math.min(idx, SCHED.length - 1)];
+    var a = ADX[x.i], a3 = ADX[x.i - 3], b = BOLL[x.i];
+    var eEnv = document.getElementById('dd-env');
+    eEnv.textContent = NAME[x.st] || '—';
+    eEnv.className = 'v' + (x.st === 'T' ? ' up' : x.st === 'S' ? ' warn' : '');
+    document.getElementById('dd-env-s').textContent = 'ADX ' + a.adx.toFixed(1) + '（3 天前 ' + (a3 && a3.adx !== null ? a3.adx.toFixed(1) : '—') + '）· 带宽 ' + b.w.toFixed(2) + '% / 20 分位 ' + P20[x.i].toFixed(2) + '%';
+    var vn = ['均线', '价格', '结构'];
+    var voteTxt = [x.vd.v1, x.vd.v2, x.vd.v3].map(function(v, i2){ return vn[i2] + (v === 1 ? '多' : v === -1 ? '空' : '弃'); }).join(' · ');
+    var eV = document.getElementById('dd-vote');
+    eV.textContent = x.vd.dir === 1 ? '齐多' : x.vd.dir === -1 ? '齐空' : '不齐';
+    eV.className = 'v' + (x.vd.dir === 1 ? ' up' : x.vd.dir === -1 ? ' dn' : '');
+    document.getElementById('dd-vote-s').textContent = voteTxt;
+    var eT = document.getElementById('dd-tpl');
+    var tplTxt = {A: 'A 待回调', B: 'B 待突破', C: 'C 可区间', W: '观望'}[x.tpl];
+    if(x.tpl === 'A') tplTxt += x.vd.dir === 1 ? '（多）' : '（空）';
+    eT.textContent = tplTxt;
+    eT.className = 'v' + (x.tpl === 'A' ? (x.vd.dir === 1 ? ' up' : ' dn') : x.tpl === 'B' ? ' warn' : '');
+    document.getElementById('dd-tpl-s').textContent = x.tpl === 'A' ? '等 4h 回调到位带 ＋ 1h 触发' : x.tpl === 'B' ? '画箱体、挂计划单、等爆口过闸' : x.tpl === 'C' ? '区间有形才做：触边 ＋ 超卖超买、半仓' : (x.st === 'T' ? '有性格但票不齐——A 差一票' : '两套仪表打架——按宪法 flat');
+    var eD = document.getElementById('dd-d1');
+    eD.textContent = x.d1 === 1 ? '禁新多' : x.d1 === -1 ? '禁新空' : '沉默';
+    eD.className = 'v' + (x.d1 !== 0 ? ' dn' : '');
+    document.getElementById('dd-d1-s').textContent = x.pct !== undefined ? '费率分位 ' + x.pct.toFixed(1) + '（滚动一年）' : '—';
+    var p = CT.pal();
+    mkArr.length = 0;
+    mkArr.push({time: x.t, position: 'aboveBar', shape: 'circle', color: TPLCOLOR[x.tpl], text: tplTxt});
+    mkApi.setMarkers(mkArr.map(function(m){
+      return {time: CT.ts(m.time), position: m.position, shape: m.shape, color: p[m.color] || m.color, text: m.text, size: 1};
+    }));
+    var sp = special(x);
+    var base = '<b>' + x.d + ' · ' + tplTxt + '</b>：' + (sp || (x.tpl === 'A' ? '顺势武器开机——但牌照不等于单子，回调不到位带就继续等。' : x.tpl === 'B' ? '弹簧在拧紧——计划单比反应快，先写后等。' : x.tpl === 'C' ? '没性格的行情——有形区间就做往返，画不出就观望。' : '今天走匝道——flat 不罚款，明早 8 点再来。'));
+    document.getElementById('dd-msg').innerHTML = base
+      + '　<em>2026 年 ' + SCHED.length + ' 天：A ' + CNT.A + ' 天（多 ' + CNTD.long + ' / 空 ' + CNTD.short + '）· B ' + CNT.B + ' 天 · C ' + CNT.C + ' 天 · 观望 ' + CNT.W + ' 天。</em>';
+  }
+  g.onRestyle(paint);
+  CT.bindRange('dd-day', function(v){ idx = v; paint(); }, function(v){
+    return SCHED[Math.min(v, SCHED.length - 1)].d;
+  });
+  paint();
+})();
+
+/* ========== 图 15-4 年度体检条形图 ========== */
+(function(){
+  var n = SCHED.length;
+  var rowsDef = [
+    ['A 待回调', CNT.A, ''],
+    ['B 待突破', CNT.B, ''],
+    ['C 可区间', CNT.C, ''],
+    ['观望', CNT.W, ''],
+    ['D1 禁新多', D1CNT.hot, 'dn'],
+    ['D1 禁新空', D1CNT.cold, 'dn']
+  ];
+  var max = 0;
+  rowsDef.forEach(function(r){ if(r[1] > max) max = r[1]; });
+  var html = '';
+  rowsDef.forEach(function(r){
+    html += '<div class="bar"><span>' + r[0] + '</span>'
+      + '<span class="track"><span class="fill ' + r[2] + '" style="width:' + (r[1] / max * 100).toFixed(1) + '%"></span></span>'
+      + '<span class="val">' + r[1] + ' 天 · ' + (r[1] / n * 100).toFixed(1) + '%</span></div>';
+  });
+  document.getElementById('yb-bars').innerHTML = html;
+})();
+</script>
+</body>
+</html>

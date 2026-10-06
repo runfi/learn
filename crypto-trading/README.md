@@ -17,6 +17,9 @@ BTC / ETH 永续合约短波段的自编实战课：按“问题”学指标，�
 - `ct-l11.html` — 第 11 课 宏观链条：利率、美元与流动性
 - `ct-l12.html` — 第 12 课 币圈自身的驱动
 - `ct-l13.html` — 第 13 课 宏观事件复盘
+- `ct-l14.html` — 第 14 课 币圈事件与连环爆仓复盘
+- `ct-l15.html` — 第 15 课 组合原则与四套模板
+- `ct-l16.html` — 第 16 课 交易计划、日志与心理
 - `assets/` — 全站共用资源：
   - `ct.css`、`ct.js`（主题与涨跌配色切换）、`ctchart.js`（图表封装，数据注册 `CT.reg`）
   - `lightweight-charts.js`（TradingView Lightweight Charts v5.2.1 官方 standalone 版，Apache-2.0，许可证见 `LICENSE-lightweight-charts.txt`）

@@ -1,0 +1,846 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>币圈短线课 · 第 14 课 币圈事件与连环爆仓复盘</title>
+<link rel="stylesheet" href="assets/ct.css">
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <span class="book"><a href="ct-index.html">币圈短线实战课</a></span>
+  <span class="part"><a href="ct-index.html">学习地图</a> · 阶段 2 行情为什么发生</span>
+  <span class="prefs">
+    <button id="btn-updown" type="button" title="切换涨跌配色"></button>
+    <button id="btn-theme" type="button" title="切换深浅主题"></button>
+  </span>
+</header>
+
+<div class="layout">
+
+<nav class="sidenav" aria-label="本课目录">
+  <p class="sn-chap">第 14 课 · 币圈事件与连环爆仓复盘</p>
+  <a href="#top">课首</a>
+  <a href="#s1">14.1 案例六 · ETF 获批</a>
+  <a href="#s2">14.2 案例七 · 关税 1.0</a>
+  <a href="#s3">14.3 案例八 · 10·10 放大镜</a>
+  <a href="#s4">14.4 出清之后的修复交易</a>
+  <a href="#s5">14.5 落地：决策树与毕业</a>
+  <a href="#recap">小结 · 术语 · 自测</a>
+</nav>
+
+<main class="article">
+
+<section class="hero" id="top">
+  <span class="chap-no">LESSON 14 · 第 14 课 / 共 16 课</span>
+  <h1>币圈事件与连环爆仓复盘</h1>
+  <p class="en">THREE CRYPTO STORMS, ONE RECORD LIQUIDATION NIGHT</p>
+  <p class="question">本课问题：没有宏观大事，币圈为什么也会一夜腰斩？插针到底是怎么长出来的？</p>
+  <p class="lede">上一课的五场风暴都有宏观的名字：病毒、利率、银行、日元。这一课的三场，剧本全写在币圈自己身上：一个所有人盼了十年的利好，落地那天见顶（2024-01 现货 ETF）；一个躲不开的政策黑箱，三天 −16% 之后又 V 形收复（2025-04 关税 1.0）；以及 2025-10-10——史上最大的连环爆仓，一分钟 7,375 美元的瀑布。前两场沿用第 13 课的六步复盘；第三场我们换上放大镜：<strong>把第 1 课那张强平流水线图逐帧对回真实的 1 分钟数据</strong>——每一格发生在几点、读数是多少、标记价格那一夜救了谁。看完这一课，"插针"对你不再是阴谋故事，而是一台你能拆开的机器。阶段 2 到此毕业。</p>
+  <div class="objectives">
+    <h2>学完你能做到</h2>
+    <ul>
+      <li>用"买预期、卖事实"完整解释 ETF 获批后的 −21%，并说出修复为什么迟到六周；</li>
+      <li>对比关税 1.0 与 2.0：同一类消息，为什么一次是三天阴跌、一次是一分钟 7% 的瀑布；</li>
+      <li>把 10·10 之夜逐帧对回第 1 课的强平流水线：每一格发生在几点、读数是多少；</li>
+      <li>用 BTC 与 ETH 的 1 分钟对照说出插针深度和流动性的关系，以及标记价格那一夜真实救了谁、普通止损单死在哪里；</li>
+      <li>读出 OI 坍塌曲线与每一波针的同步，解释"价格反弹时 OI 继续下降"说明什么；</li>
+      <li>按三类证据检查单（OI 出清＋费率转负或归零＋投降量能）复盘 10-11 到 10-13，并说清它为什么不是抄底信号；</li>
+      <li>画出八场风暴共用的决策树：遇到突发行情先问哪三个问题；</li>
+      <li>给阶段 2 做毕业总结：系统在风暴里的角色到底是什么。</li>
+    </ul>
+  </div>
+  <p class="colorkey">读图约定：本课默认<span class="up">绿涨</span>·<span class="dn">红跌</span>，可用右上角按钮切成红涨绿跌。带 <b>互动</b> 标签的图可以拖动、缩放、切换视野；正文里带虚线下划线和角标的词，点一下原地弹出解释。图表时间轴按你设备的时区显示（北京时间 ＝ UTC+8）；正文里的日期如 2025-10-10 指币安日线的交易日（UTC 口径，收盘在北京时间次日早 8 点），关键时刻会同时标注北京时间。</p>
+  <nav class="chapmap" aria-label="本课小节">
+    <a href="#s1">ETF 获批</a><a href="#s2">关税 1.0</a><a href="#s3">10·10 放大镜</a><a href="#s4">修复交易</a><a href="#s5">决策树与毕业</a><a href="#recap">小结</a>
+  </nav>
+</section>
+
+<!-- ================= 14.1 ================= -->
+<section class="ch" id="s1">
+  <h2 class="sec"><span class="no">14.1</span>案例六 · 2024-01 ETF 获批：教科书级的买预期、卖事实</h2>
+  <p class="sec-en">JANUARY 2024 — BUY THE RUMOR, SELL THE NEWS</p>
+  <div class="prose">
+    <p>编号接着上一课排：宏观五场是案例一到五，这三场是六、七、八，复盘六步照旧——①事前背景写"当时在定价什么"，②事件落地找预期差，③切小周期回放，④因果链只认"谁被迫做了什么"，⑤对照 v0.7，⑥教训一句话。</p>
+    <h3><span class="tag">① </span>事前背景：一个被买了三个月的"确定利好"</h3>
+    <p>2023 年的币圈刚从 FTX 的废墟里爬出来。6 月，全球最大资产管理公司贝莱德递交现货 BTC ETF 申请；8 月，灰度在诉讼里胜了 SEC；到 10 月，"获批"从悬念变成了倒计时——主流分析师口径的获批概率被抬到九成以上（公开报道口径），决定日人人都知道：1 月 10 日前后。于是钱提前进场：<strong>BTC 从 2023-10-01 收盘的 27,981 涨到获批当天（01-10）收盘的 46,663，三个月 +67%</strong>——这整段上涨，买的全是"将要获批"这四个字。第 11 课讲过<span class="nt" data-note="brsn">买预期、卖事实</span>的机制原型，这里是它在币圈最干净的标本。预期挤到什么程度？01-09（北京 1-10 凌晨 5 点）SEC 的官方账号被盗，一条假的"已批准"帖子让价格一小时内冲 48,100、辟谣后砸到 44,417——<strong>一条假消息就能掀起 8% 的浪，说明全场的仓位都压在同一个剧本上</strong>。</p>
+    <h3><span class="tag">② </span>事件落地：如期获批，预期差等于零</h3>
+    <p>01-10（北京 1-11 清晨），SEC 正式批准 11 只现货 BTC ETF——和市场赌的分毫不差。回忆第 11 课的铁律：<strong>行情只对意外付钱，共识早在价格里</strong>。这一次没有意外，于是事件日只剩一个动作：兑现。01-11 北京晚上 22 点半，美股开盘、ETF 开始交易——<strong>头一个小时冲出 49,028，这根 1 小时线就是之后整整一个月的最高价</strong>；下一个小时 −4.4%。01-12 单日 −7.7% 收 42,789；两周后的 01-23 见 38,545——从 49,028 算 <span class="dn-t">−21%</span>。利好真落地了、管道真接通了，价格却跌掉五分之一。</p>
+  </div>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>盼了一年的生日礼物，拆开包装那一刻，期待值瞬间清零——礼物还是那个礼物，但"期待"没了，而市场为之付钱的恰恰是期待。更准确地说：提前三个月买入的人，买的是"获批"这个事件本身；事件兑现，他们的交易就<em>完成</em>了，接下来的动作只有卖出。<strong>利好落地的那一刻，场内最大的一股力量，是来兑奖的人。</strong>接棒的买家（通过 ETF 进场的传统资金）当然存在，但他们走的是开户、合规、配置的流程，以周和月计——两边的时间差，就是中间那 −21% 的坑。</p>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 14-1</span>走势回放：买预期的三个月，卖事实的两周<span class="real">真实数据</span><span class="ia">互动</span></p>
+    <div class="ctrls">
+      <div>
+        <span class="seg-label">视野</span>
+        <span class="seg" id="a-seg" role="group">
+          <button type="button" data-val="rumor" aria-pressed="true">买预期全程（日线）</button>
+          <button type="button" data-val="land">获批前后 96 小时（1 小时）</button>
+          <button type="button" data-val="fact">卖事实两周（1 小时）</button>
+        </span>
+      </div>
+    </div>
+    <div class="lw h420" id="a-chart"></div>
+    <div class="lw-legend" id="a-legend"></div>
+    <div class="stats">
+      <div class="stat"><span class="k">买预期的腿</span><span class="v up">+67%</span><span class="s">2023-10-01 收盘 27,981 → 获批日收盘 46,663</span></div>
+      <div class="stat"><span class="k">卖事实的腿</span><span class="v dn">−21%</span><span class="s">01-11 顶 49,028 → 01-23 低 38,545</span></div>
+      <div class="stat"><span class="k">获批日的合约端</span><span class="v warn">费率分位 76</span><span class="s">偏热未到禁令；ATR 分位 95——熔断已触发</span></div>
+      <div class="stat"><span class="k">两个月后</span><span class="v up">73,881</span><span class="s">03-14 · 较 01-23 低点 +92%</span></div>
+    </div>
+    <p class="lab-msg" id="a-msg"></p>
+    <figcaption><b>读图：</b>上为币安 BTCUSDT 永续，下为每 8 小时一期的资金费率。三个视野各讲半句话：日线视野看"预期怎么被买完"——三个月 +67% 的腿里，利好一天都还没发生；96 小时视野看"事实怎么兑现"——假帖插针、正式获批、ETF 开始交易的头一个小时就是顶；两周视野看"卖事实的全程"——没有恐慌瀑布，是温和但不回头的阴跌，<b>费率全程为正、从未恐慌</b>：卖出的是兑现盘，不是强平单。这个形状和第 13 课案例五（鹰派降息）同类：重定价的跌，讲道理、修复也快。</figcaption>
+  </figure>
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p><strong>"ETF 是天大的利好，获批还跌，一定是主力骗散户出货。"</strong>不需要任何阴谋，账就能算平：获批前夜费率分位 76、三个月 +67%——场内挤满了为"获批"进场的短线仓位；事件如期落地＝零预期差＝没有新钱为它付钱；于是先动手的是兑现的人，叠加 <span class="nt" data-note="gbtc">GBTC</span> 的高费率老持有人借获批之机持续转出（公开报道口径），而接棒的 ETF <span class="nt" data-note="netflow">净流入</span>要走传统资金的流程、以周计。卖压即时、买力迟到——价格当然先跌。"主力出货"的故事什么都能解释，所以什么都解释不了；<em>预期差＋资金流时间差</em>这套机制，却能告诉你下次该看什么。</p>
+  </div>
+  <div class="prose">
+    <h3><span class="tag">④ </span>因果链拆解</h3>
+    <ol>
+      <li>获批概率被炒到九成以上、三个月 +67%——<strong>利好被完全提前定价</strong>，事件本身只剩兑现价值；</li>
+      <li>如期获批＝零预期差 → 为"获批"进场的短线资金开始获利了结——他们的交易在落地那一刻已经完成；</li>
+      <li>GBTC 从信托转为 ETF，高费率让老持有人获批后大举赎回转出（公开报道口径）——一股额外的、机械的卖压；</li>
+      <li>真正的新买家要走流程：券商上架、顾问合规、机构配置——<strong>管道效应是以周和月计的慢变量</strong>（第 12 课），头两周接不住即时的卖压；</li>
+      <li>1 月底起 ETF 净流入持续转正，38,545 止跌；此后管道开始兑现，03-14 冲到 73,881——<strong>利好最终全兑现了，只是迟到六周</strong>。跌的是时间差，不是逻辑错。</li>
+    </ol>
+    <h3><span class="tag">⑤ </span>假如拿着 v0.7 系统</h3>
+    <ul>
+      <li><strong>三票制</strong>：按第 4 课算法重算，01-09 到 01-11 的判定都是 flat——均线两票全多，<em>结构票弃权</em>（高点 44,484 → 45,950 在抬、低点 41,283 → 40,333 在降，互相打架）。狂欢的顶点，系统不许你追；随后整段 −21% 的下坡，判定一路 flat——<strong>系统不在场</strong>；</li>
+      <li><strong>事件日历（第 3 / 12 课）</strong>：第 12 课滤镜卡白纸黑字——批准类决定日视同重大数据日，窗口前后不开新仓。1 月 10 日是全市场都写在日历上的日子；</li>
+      <li><strong>模板 D 与熔断</strong>：获批日费率分位 76，D1 没响（禁令线是 90）——合约端挤，但没挤到极端；真正亮灯的是第 6 课的高波动熔断：ATR 分位 95，就算有票也只许半档风险；</li>
+      <li><strong>错过与上车</strong>：第一张完整多票要等到 <strong>02-26（收盘 54,512）</strong>——比 49,028 的"卖事实之顶"还高 11%，听起来像追高；但这张票之后一路骑到 03-14 的 73,881，<span class="up-t">+35%</span> 的区间够吃。买预期的腿没吃到、卖事实的坑没掉进去、修复的后半段上了车——确认式系统的标准成绩单。</li>
+    </ul>
+    <p>诚实的结论：<strong>这一场系统赢在"弃权"。</strong>结构票打架不是缺陷，是信息——价格新高、低点却在降，说明推新高的买盘没有宽度（第 10 课你已经知道去哪验证：05-06 假突破那天 OI 在缩，同一个道理）。</p>
+    <h3><span class="tag">⑥ </span>教训一句话</h3>
+    <p><strong>人人都知道的利好不是利好：事件如期落地的那一刻，场内只剩"兑现"这一个动作。</strong></p>
+  </div>
+</section>
+
+<!-- ================= 14.2 ================= -->
+<section class="ch" id="s2">
+  <h2 class="sec"><span class="no">14.2</span>案例七 · 2025-04 关税 1.0：意外冲击与 V 形修复</h2>
+  <p class="sec-en">APRIL 2025 — TARIFF SHOCK AND THE V-SHAPED RECOVERY</p>
+  <div class="prose">
+    <h3><span class="tag">① </span>事前背景：日期已知，内容是黑箱</h3>
+    <p>2025 年 3 月底，BTC 在 82,000 到 88,000 之间横了几周（04-01 收 85,121），三票制自 4 月起给的判定一直是 flat——均线两票已空、结构票还抬着，证据打架。华盛顿预告了 4 月 2 日的"对等关税"发布会：<strong>和 ETF 正相反——那次是内容确定、只等日期；这次是日期确定、内容黑箱</strong>。税率可以是 10%，也可以是 50%，没有任何指标帮你定价一个还没公布的数字。当时市场最怕的事：税率远超预期，把"通胀回升＋全球贸易萎缩"两个怕同时推上桌。</p>
+    <h3><span class="tag">② </span>事件落地：税率表超预期，三天 −16%，然后一个帖子 V 形反转</h3>
+    <p>04-02 北京时间 4-03 凌晨 4 点（美股盘后），"解放日"税率表公布，幅度全面高于市场预期（公开报道口径）——负向预期差，而且巨大。有意思的是公布那一小时的 K 线：<strong>先插上 88,500 的高点，然后掉头</strong>——市场花了几十分钟才读完那张逐国税率表，当天收 82,485。随后美股两天历史级大跌（公开报道口径），币圈作为 7×24 的市场替周末值班：04-06 周日深夜一腿砸到 77,111，04-07 亚洲时段（北京 15 点）见 <strong>74,457——从 88,500 算 −16%</strong>。然后反转来得和冲击一样突然：04-09 北京 4-10 凌晨 1 点，"对多数国家暂停加征 90 天"的帖子落地，一根 1 小时线 <span class="up-t">+5.0%</span>（78,228 → 82,162），当天从最低 74,578 收到 82,588。04-25 摸到 95,770——<strong>从反转日收盘算 16 天 +16%，一场完整的 <span class="nt" data-note="vrev">V 形反转</span></strong>。</p>
+  </div>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>事件雷像马路上的"鬼探头"：行人从视觉盲区里突然窜出来，<strong>任何驾驶技术都预测不了他</strong>。你能做的只有两件事，而且都发生在他出现之前——控制车速（仓位），系好安全带（止损）。这一场还有个镜像教训：探头的人也可能突然缩回去（90 天暂停）——<em>猛打方向盘躲避（恐慌追空）的人，会在他缩回去的瞬间撞上护栏</em>。车速慢的人，两个方向的意外都伤不到。</p>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 14-2</span>走势回放：2025-04-01 → 04-25，1 小时图＋资金费率<span class="real">真实数据</span><span class="ia">互动</span></p>
+    <div class="ctrls">
+      <div>
+        <span class="seg-label">视野</span>
+        <span class="seg" id="b-seg" role="group">
+          <button type="button" data-val="all" aria-pressed="true">全月全景</button>
+          <button type="button" data-val="land">放大解放日</button>
+          <button type="button" data-val="vday">放大反转夜</button>
+        </span>
+      </div>
+    </div>
+    <div class="lw h420" id="b-chart"></div>
+    <div class="lw-legend" id="b-legend"></div>
+    <div class="stats">
+      <div class="stat"><span class="k">解放日（04-02）</span><span class="v dn">高 88,500 收 82,485</span><span class="s">公布时先插高，再掉头</span></div>
+      <div class="stat"><span class="k">第一腿</span><span class="v dn">−16%</span><span class="s">88,500 → 04-07 低 74,457 · 周末补刀</span></div>
+      <div class="stat"><span class="k">反转日（04-09）</span><span class="v up">低 74,578 → 收 82,588</span><span class="s">90 天暂停 · 17 点那根 +5.0%</span></div>
+      <div class="stat"><span class="k">16 天后</span><span class="v up">95,770</span><span class="s">04-25 · 自反转日收盘 +16%</span></div>
+    </div>
+    <p class="lab-msg" id="b-msg"></p>
+    <figcaption><b>读图：</b>上为币安 BTCUSDT 永续 1 小时线，下为资金费率。两个细节值得盯住：① 跌的质感——最大的一根 1 小时阴线只有 −2.8%，费率全程最低仅 −0.004%，和 10·10 的一分钟 7% 完全是两个物种：这是一场"讲道理"的重定价叠加周末薄流动性，强平有，但没形成自我强化的瀑布；② 反转的时刻——74,578 的低点出现在 04-09 早上，而 +5% 的反转帖在晚上（北京 4-10 凌晨 1 点）才落地，<b>低点不是被预测出来的，是被一个无法预测的帖子砸出来的</b>。两头都是帖子，两头都无法提前定价。</figcaption>
+  </figure>
+  <div class="prose">
+    <h3><span class="tag">④ </span>因果链拆解</h3>
+    <ol>
+      <li>税率表远超预期 → 负向预期差巨大，且事前<strong>无法定价</strong>（黑箱内容，指标与费率全体失声——04-02 费率分位仅 11）；</li>
+      <li>"通胀回升＋贸易萎缩"两个怕同时上桌 → 全球风险资产一起重定价，BTC 坐在风险资产那一排（第 11 课），跟跌没得商量；</li>
+      <li>股市有收盘和熔断，币圈 7×24——<strong>周末的恐慌全由币圈先消化</strong>（第 2 课心跳 ＋ 第 13 课案例四同款结构）：04-06 周日深夜的那一腿，薄订单簿把卖压放大；</li>
+      <li>杠杆踩踏放大第一腿，但量级有限——没有极端拥挤的费率、没有历史级的 OI 高位，强平接力烧完就停，跌成阶梯而不是瀑布；</li>
+      <li>政策反转和政策冲击来自同一支笔——90 天暂停一帖落地，"最怕的事"被作者亲手收走一半 → 空头回补＋风险资产齐涨，V 形右边拉出。对照第 13 课案例三：<strong>SVB 的分水岭是央行的兜底公告，这里的分水岭是政策作者自己的撤回</strong>——盯暴跌，先想谁有能力出那张公告。</li>
+    </ol>
+    <h3><span class="tag">⑤ </span>假如拿着 v0.7 系统</h3>
+    <ul>
+      <li><strong>三票制</strong>：04-01 起判定一路 flat（票型从两多一空翻成两空一多，始终凑不齐）——<strong>整场过山车系统都不在场</strong>：没抱着多单挨 −16%，也没在 74,500 一带追空、被一小时 +5% 的反转打脸；</li>
+      <li><strong>事件日历＋事件周操作卡（第 3 / 11 课）</strong>：发布会日期全市场提前知道——当周单笔风险减半、公布窗口禁入；<strong>重仓不过周末</strong>管住了 04-05、04-06：周日深夜的腿落下时，按规则的人仓位本来就轻；</li>
+      <li><strong>不追第一根大 K（第 11 课）</strong>：两头都用得上——解放日那根先冲 88,500 的假动作，和反转夜 17 点那根 +5%。操作卡要求等 1 小时收盘二次确认：确认之后从 82,588 到 95,770 依然有 +16% 可做，<em>错过第一根大 K 的成本，远小于接错方向的成本</em>；</li>
+      <li><strong>错过的账也要记</strong>：第一张完整多票要到 05-01（收盘 96,423）才到齐——V 形的底部和右侧主升，确认式系统整段错过（第 13 课 SVB 的结论原样复现：<em>想吃到 V 的底，只能在不确定里下注，而那正是系统禁止的事</em>）。</li>
+    </ul>
+    <p>诚实的结论：<strong>系统这一场的成绩是零收益、零损失。</strong>对一场 −16% 再 +28% 的过山车来说，两个零就是胜利——它把生存交给了事前的规则，而不是当晚的反应速度。</p>
+    <h3><span class="tag">⑥ </span>教训一句话</h3>
+    <p><strong>事件雷无法预测，能被管理的只有事前的仓位和止损；冲击与反转一样突然——两头都别追第一根大 K。</strong></p>
+  </div>
+</section>
+
+<!-- ================= 14.3 ================= -->
+<section class="ch" id="s3">
+  <h2 class="sec"><span class="no">14.3</span>案例八 · 2025-10-10 关税 2.0：史上最大连环爆仓，逐帧回放</h2>
+  <p class="sec-en">OCTOBER 10, 2025 — THE GREAT CASCADE, FRAME BY FRAME</p>
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>10·10 档案（浓缩版）</h4>
+    <p>2025-10-06，BTC 刚创下 126,208 的历史新高。四天后的周五：北京 21 点起，加征关税的威胁在新闻里发酵，六小时温和阴跌 −4.8%；美股收盘后税率数字正式落地（公开报道口径），北京凌晨 5:13 到 5:20 的七分钟里市场垂直坠落——<strong>21:19（UTC）那一分钟，BTC 从 109,568 直落 102,194，高低差 7,375 美元</strong>；针尖停在 101,517，日内 <span class="dn-t">−17%</span>，收盘拉回 112,715。ETH 从 4,392 砸到 3,400（<span class="dn-t">−22.6%</span>）。币安 BTCUSDT 的持仓量从 118 亿 USDT 坍到 80 亿（−32%），全网 24 小时强平约 190 亿美元（第三方估算口径）——公认加密史上最大的一次<span class="nt" data-note="cascade">连环爆仓</span>。</p>
+    <p class="takeaway">第 1 课拿这一夜当机制教材，第 10 课拿它当 OI 教材；这一节把它拆到 1 分钟——因为它是你这辈子大概率还会再遇到的那类夜晚。</p>
+  </div>
+  <div class="prose">
+    <h3><span class="tag">① </span>事前背景：仪表盘一片祥和，筹码堆在天上</h3>
+    <p>复盘的第一步永远是"当时在定价什么"。10 月上旬的答案近乎于：什么都不怕。历史新高刚创四天；日 ATR% 只有 2.46%，处在近一年 <strong>14 分位</strong>——一年里最平静的海面之一（第 13 课 FTX 前夜的 1% 分位，你应该起鸡皮疙瘩了）；费率分位 21，D 禁令全体沉默。唯一堆得高的是筹码：币安 BTCUSDT 的 OI 在 112 到 128 亿 USDT 之间徘徊——作为参照，2026 年全年的 OI 峰值也不过 96 亿（第 10 课）——<strong>满桌的筹码配上满场的平静</strong>。背景里有一根引线：10-09，稀土出口管制的消息已经见报（公开报道口径），市场没当回事。还有一个黑色幽默：按第 4 课算法，<strong>整个十月新高行情三票制都在 flat 干瞪眼，直到 10-09 收盘三票才终于到齐</strong>——多头信号在北京 10-10 早 8 点生效，十三个小时后，风暴落地。</p>
+    <h3><span class="tag">② </span>事件落地：一段阴跌、一次加速、七分钟瀑布</h3>
+    <p>10-10 的下跌分三段，三段的物理性质完全不同。<strong>第一段（北京 21 点起，UTC 13:00–19:00）</strong>：威胁性帖子发酵，六小时从日内高点 122,497 阴跌到 116,605，−4.8%——跌得还"讲道理"，每根 1 小时线都不超过 −1.2%。<strong>第二段（北京凌晨 4 点，UTC 20:00，恰是美股收盘）</strong>：加速，一小时 −2.1%，20:50 起 OI 开始成批消失。<strong>第三段（北京 5:13–5:20）</strong>：100% 关税的帖子正式落地（公开报道口径），强平流水线全速运转——21:19 一分钟 7,375 美元，21:20 针尖 101,517。然后是漫长的余波：价格一小时内弹回 113,000，OI 却继续阴跌到次日上午才见底。21 点（UTC）那一个小时成交了 <strong>145 亿 USDT——平时一小时的 19 倍</strong>。</p>
+    <h3><span class="tag">③ </span>走势回放：先对图纸，再看实况</h3>
+    <p>第 1 课图 1-3 画过强平的流水线，当时它是示意图。现在把 10·10 的真实读数逐帧填进去——<strong>这张图就是本课的中心</strong>：</p>
+  </div>
+  <figure>
+    <p class="fig-title"><span class="fno">图 14-3</span>强平流水线逐帧对号：图 1-3 × 10·10 实况<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+      <svg viewBox="0 0 720 332" role="img" aria-label="把第 1 课的强平流水线六个环节与 10·10 当夜的真实时间戳和读数一一对应">
+        <defs>
+          <marker id="f143-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="ar-fill"/></marker>
+        </defs>
+        <rect x="12" y="26" width="162" height="74" rx="8" class="node"/>
+        <text x="93" y="48" text-anchor="middle" class="nt">① 价格走弱</text>
+        <text x="93" y="68" text-anchor="middle" class="nd">北京 21 点起 · 六小时 −4.8%</text>
+        <text x="93" y="86" text-anchor="middle" class="nd">122,497 → 116,605</text>
+        <path d="M174 63 L192 63" class="edge" marker-end="url(#f143-ar)"/>
+        <rect x="192" y="26" width="162" height="74" rx="8" class="node-warn"/>
+        <text x="273" y="48" text-anchor="middle" class="nt">② 贴近死线</text>
+        <text x="273" y="68" text-anchor="middle" class="nd">美股收盘后加速 −2.1%</text>
+        <text x="273" y="86" text-anchor="middle" class="nd">凌晨 4:50 起 OI 成批消失</text>
+        <path d="M354 63 L372 63" class="edge" marker-end="url(#f143-ar)"/>
+        <rect x="372" y="26" width="162" height="74" rx="8" class="node-dn"/>
+        <text x="453" y="48" text-anchor="middle" class="nt">③ 引擎接管</text>
+        <text x="453" y="68" text-anchor="middle" class="nd">凌晨 5:13–5:20 垂直坠落</text>
+        <text x="453" y="86" text-anchor="middle" class="nd">最猛一分钟 −7,375 U</text>
+        <path d="M534 63 L552 63" class="edge" marker-end="url(#f143-ar)"/>
+        <rect x="552" y="26" width="156" height="74" rx="8" class="node-dn"/>
+        <text x="630" y="48" text-anchor="middle" class="nt">④ 吃穿订单簿</text>
+        <text x="630" y="68" text-anchor="middle" class="nd">最新价偏离标记价</text>
+        <text x="630" y="86" text-anchor="middle" class="nd">BTC −1.33% · ETH −1.48%</text>
+        <path d="M630 100 C630 150 380 162 290 152 L285 151" class="edge-dn" marker-end="url(#f143-ar)"/>
+        <text x="468" y="172" text-anchor="middle" class="wt">⑤ 连环循环：一小时 OI −21% · 全网强平约 190 亿美元（第三方估算）</text>
+        <path d="M453 100 L453 216" class="edge-soft" marker-end="url(#f143-ar)"/>
+        <rect x="282" y="216" width="236" height="76" rx="8" class="node-hi"/>
+        <text x="400" y="240" text-anchor="middle" class="nt">标记价格限幅（保护层）</text>
+        <text x="400" y="260" text-anchor="middle" class="nd">针尖 101,517 · 判生死的标记价 101,878</text>
+        <text x="400" y="278" text-anchor="middle" class="nd">强平价在两者之间的多头，活了下来</text>
+        <path d="M518 254 L556 254" class="edge-soft" marker-end="url(#f143-ar)"/>
+        <rect x="556" y="216" width="152" height="76" rx="8" class="node"/>
+        <text x="632" y="240" text-anchor="middle" class="nt">⑥ 兜底层</text>
+        <text x="632" y="260" text-anchor="middle" class="nd">保险基金消耗 · 部分合约</text>
+        <text x="632" y="278" text-anchor="middle" class="nd">触发 ADL（公开报道口径）</text>
+        <text x="16" y="240" class="nd">时间为北京时间（10-11 凌晨）；</text>
+        <text x="16" y="260" class="nd">全部读数来自本地 1 分钟 · 5 分钟</text>
+        <text x="16" y="280" class="nd">真实数据，下面两个实验台可逐帧核对。</text>
+      </svg>
+    </div>
+    <figcaption><b>读图：</b>六个环节和第 1 课图 1-3 一一对应，只是每格多了时间戳和读数。注意两件事：① 前两格花了七个小时，后两格只花了七分钟——<b>流水线不是匀速的，它在贴近死线的地方突然换挡</b>，因为强平是自我点燃的：每一批市价单都把下一批推过线；② 第⑤格的循环跑得再凶，也被两层东西兜住——标记价格限幅决定"判死刑用哪个价"，保险基金和 <span class="nt" data-note="adl">ADL</span> 决定穿仓的窟窿谁来填。机器凶，但它有设计好的刹车片——看懂刹车片在哪，你就知道该把自己放在哪一侧。</figcaption>
+  </figure>
+  <div class="prose">
+    <p>流水线里最值得放大的是第④格：<strong>插针的深度不是恐慌的函数，是流动性的函数</strong>。同一夜、同一条流水线，BTC 和 ETH 的针却不一样深——用双标的 1 分钟对照把它量出来：</p>
+  </div>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>深夜的火灾里，人群能不能安全撤离，取决于门有多宽。BTC 的订单簿是双开的大门，ETH 的窄一号，山寨币的只是一条门缝——<strong>同样的人流（强平市价单），门越窄，挤压越惨烈</strong>。所以那一夜 BTC 偏离标记价最深 −1.33%，ETH 到 −1.48%，而一批山寨币的最新价瞬间偏离了百分之几十（第三方行情页的公开记录）。记住这个顺序：<em>恐慌决定有多少人涌向门口，门宽决定踩死多少人</em>——这就是为什么本课程只让你做 BTC 和 ETH。</p>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 14-4</span>双标的放大镜：BTC vs ETH 的 1 分钟，最新价与标记价<span class="real">真实数据</span><span class="ia">互动</span></p>
+    <div class="ctrls">
+      <div>
+        <span class="seg-label">标的</span>
+        <span class="seg" id="m-sym" role="group">
+          <button type="button" data-val="BTC" aria-pressed="true">BTC</button>
+          <button type="button" data-val="ETH">ETH</button>
+        </span>
+      </div>
+      <div>
+        <span class="seg-label">视野</span>
+        <span class="seg" id="m-view" role="group">
+          <button type="button" data-val="storm" aria-pressed="true">最猛 70 分钟</button>
+          <button type="button" data-val="pin">针尖 20 分钟</button>
+          <button type="button" data-val="all">两天全景</button>
+        </span>
+      </div>
+    </div>
+    <div class="lw h480" id="m-chart"></div>
+    <div class="lw-legend" id="m-legend"></div>
+    <div class="stats">
+      <div class="stat"><span class="k">最新价最低 / 标记价最低</span><span class="v dn" id="m-pin">—</span><span class="s" id="m-pin-s">—</span></div>
+      <div class="stat"><span class="k">最深单分钟偏离</span><span class="v warn" id="m-dev">—</span><span class="s" id="m-dev-s">—</span></div>
+      <div class="stat"><span class="k">日内最大跌幅</span><span class="v dn" id="m-range">—</span><span class="s">当日最高 → 最低</span></div>
+      <div class="stat"><span class="k">OI 坍塌（本所）</span><span class="v dn" id="m-oi">—</span><span class="s" id="m-oi-s">—</span></div>
+    </div>
+    <p class="lab-msg" id="m-msg"></p>
+    <figcaption><b>读图：</b>上为 1 分钟 K 线（最新价）与橙色的标记价格线，下为"最新价收盘对标记价的偏离%"。平时两条线焊在一起、偏离贴着 0 走；瀑布的那几分钟里它们被强行扯开——<b>K 线的针扎得比标记价深，差出来的部分就是强平市价单在薄订单簿里的挤压</b>。切到 ETH 对比同一时刻：偏离更深、针更长、OI 坍得更狠（−39% 对 −32%）——门更窄。实战的两个推论都在第 1 课讲过、这里用数据钉死：<b>止损触发价选标记价格</b>（最新价触发的止损会在针尖被扫掉、以惨价成交）；<b>强平价贴着针尖算的人</b>（比如 101,600 的多头），因为判定用标记价（最低 101,878）而活了下来。</figcaption>
+  </figure>
+  <div class="prose">
+    <p>第⑤格的循环要用另一块仪表看：OI。第 10 课图 10-6 看过两天全景，这里把镜头推进到坍塌的两个小时，加上一条 5 分钟增减柱——<strong>每一波针，对应 OI 的每一级台阶</strong>：</p>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 14-5</span>OI 坍塌与每一波针的同步：两小时特写<span class="real">真实数据</span><span class="ia">互动</span></p>
+    <div class="ctrls">
+      <div>
+        <span class="seg-label">视野</span>
+        <span class="seg" id="o-seg" role="group">
+          <button type="button" data-val="zoom" aria-pressed="true">坍塌两小时</button>
+          <button type="button" data-val="fall">承接与余波</button>
+          <button type="button" data-val="all">两天全景</button>
+        </span>
+      </div>
+    </div>
+    <div class="lw h480" id="o-chart"></div>
+    <div class="lw-legend" id="o-legend"></div>
+    <div class="stats">
+      <div class="stat"><span class="k">OI 峰 → 谷</span><span class="v dn">118 → 80 亿</span><span class="s">13:35 → 次日 01:25（UTC）· −32%</span></div>
+      <div class="stat"><span class="k">最猛一小时</span><span class="v dn">−21%</span><span class="s">20:40 → 21:40 · 五分之一筹码蒸发</span></div>
+      <div class="stat"><span class="k">最大的三根 5 分钟</span><span class="v dn">−7.6% / −7.3% / −5.2%</span><span class="s">21:50 · 21:15 · 21:40——全贴着针</span></div>
+      <div class="stat"><span class="k">21 点那一小时成交</span><span class="v warn">145 亿 USDT</span><span class="s">平时一小时的 19 倍</span></div>
+    </div>
+    <p class="lab-msg" id="o-msg"></p>
+    <figcaption><b>读图：</b>上为 1 分钟 K 线，中为 OI 名义价值（5 分钟一个点），下为 OI 的 5 分钟变化率柱。两小时特写里能看到全景图上看不到的三件事：① 价格的每一根长针都踩着一根 OI 深红柱——<b>针和 OI 的崖是同一件事的两个投影</b>（第 10 课双指纹的逐帧版）；② 坍塌不是一条直线：21:20 和 21:45 OI 两次短暂回跳——要么是有人在针尖上开新仓对赌，要么是极端时刻交易所快照的噪声，<b>量级看台阶，别抠单点</b>；③ 切到"承接与余波"：价格 22 点已弹回 113,000，OI 却继续阴跌到次日上午——弹回不等于新钱进场，大量幸存仓位趁反弹离场（第 10 课的老结论，这里看得更清楚）。</figcaption>
+  </figure>
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p><strong>"插到 101,517 又两小时拉回 113,000——这是交易所联合庄家插针收割。"</strong>阴谋论最大的代价是让你学不到任何东西。这根针的每一段都有公开数据和机制对应：满桌筹码（OI 118 亿）＋突发利空 → 第一批强平 → 市价单吃穿周五深夜的薄订单簿（21 点一小时成交 145 亿，平时的 19 倍）→ 更低的价格点燃下一批（一小时 OI −21%）→ 卖压来自"必须卖的人"，卖完就停 → 价格弹回。全程不需要任何一个坏人团伙，只需要第 1 课的流水线和第 2 课的流动性作息。<em>把它理解成操纵，你的对策是骂街；把它理解成机器，你的对策是仓位、止损触发价和"重仓不过周末"</em>——只有后者救命。顺带杀死另一个幻想：<strong>"下次我提前做空赚它一把"</strong>——当天费率分位 13、ATR 分位 14，没有任何仪表事先报警，事件雷不给任何人提前上车的机会。</p>
+  </div>
+  <div class="prose">
+    <h3><span class="tag">④ </span>因果链拆解</h3>
+    <ol>
+      <li>历史新高四天＋OI 历史级高位＝满桌筹码；而费率分位 21、ATR 分位 14——<strong>拥挤堆在仓位里，不在情绪仪表上</strong>，事件雷没有预警灯；</li>
+      <li>周五晚间关税威胁发酵 → 第一段阴跌六小时 −4.8%，把一批高杠杆多头<em>推到死线附近</em>——还没人爆，但保险丝已经拉直；</li>
+      <li>美股收盘抽走对冲通道，税率数字正式落地 → 第一批强平引爆，市价单砸进周五深夜的薄订单簿——流水线第③④格，七分钟走完；</li>
+      <li>强平连环自燃（一小时 OI −21%）→ 必须卖的人卖完，价格两小时弹回 11,000 美元——<strong>强制卖出是机械过程，结束得和开始一样突然</strong>（第 13 课的横向规律原样成立）；</li>
+      <li>标记价格限幅把"判死刑的价"和针尖隔开 0.3% 到 0.7%，保险基金与 ADL 兜住穿仓——机器的刹车片全部启用（公开报道口径）；</li>
+      <li>反弹途中 OI 继续阴跌到次日上午 80 亿见底——被吓跑的钱比被强平的更多，赌桌上三分之一的筹码一夜撤离。</li>
+    </ol>
+    <h3><span class="tag">⑤ </span>假如拿着 v0.7 系统：这一夜的生死，前一天晚上已经决定</h3>
+    <ul>
+      <li><strong>三票制的黑色幽默</strong>：整个十月新高行情系统都 flat（结构票不确认），偏偏 10-09 收盘三票到齐——信号北京 10-10 早 8 点生效，当晚风暴落地。和第 13 课 FTX 前夜三票全多一样：<strong>价格派指标对事件雷天生失明，多票不是护身符</strong>。两种推演：若当天模板 A 的扳机没响（回调一路没有企稳触发，这在单边阴跌里是常态），你毫发无伤；若白天真进了多单——入场约 121,600，周五仓按 2×ATR(4h) 挂止损在 118,600 一带，<strong>北京 23 点就被扫出场</strong>——那时下跌还"讲道理"，滑点正常，损失 −1R ＝ −100 U。瀑布是六个小时之后的事，<em>你已经在场外睡觉了</em>；</li>
+      <li><strong>周五晚＋重仓不过周末（第 3 课）</strong>：风暴精确踩在周五美盘到周六凌晨——这条 2021 年就写进安全守则的老规矩，这一夜值回它所有的无聊；</li>
+      <li><strong>D 禁令的诚实边界（第 10 课）</strong>：当天费率分位只有 13——模板 D 防拥挤，不防事件。防住你的不是任何预测，是三件下单前的事：<strong>1% 风险上限、ATR 止损、标记价格触发</strong>；</li>
+      <li><strong>最坏情况推演（1% 风险口径）</strong>：假设最倒霉的剧本——BTC、ETH 两个仓位同时在场（规则上限），止损都在瀑布段触发、滑点让 1R 变 2R：损失 ＝ 2 × 2R ＝ 400 U，<strong>本金的 4%</strong>，疼但完整。对照另一个世界：1 万 U 名义、5 倍杠杆的逐仓多单，强平距离约 19.5%——拿 ETH 的，标记价 −21.5% 直接击穿，<strong>保证金整仓归零</strong>；拿 BTC 的，以三个多百分点的余量擦线活了下来——那不叫安全，叫运气。两个世界的差别，不在当晚的手速，在 10 月 9 日晚上你把多大的仓位带进了周五。</li>
+    </ul>
+  </div>
+  <div class="keypoint">
+    <span class="label">本课最重要的一句话</span>
+    <p><strong>活下来靠的是下单前的决定，不是当晚的反应。</strong></p>
+    <p>10·10 之夜从威胁帖到针尖只有八个小时，瀑布本身只有七分钟——没有任何人来得及"临场应对"。仓位上限、止损触发价、要不要带仓过周五，这三个决定全部做在风暴之前；风暴当晚你唯一该做的事，是别碰下单页。</p>
+  </div>
+  <div class="prose">
+    <h3><span class="tag">⑥ </span>教训一句话</h3>
+    <p><strong>插针是流水线的产物，不是阴谋的产物；它的深度由流动性决定，你的生死由下单前的三个决定决定。</strong></p>
+  </div>
+</section>
+
+<!-- ================= 14.4 ================= -->
+<section class="ch" id="s4">
+  <h2 class="sec"><span class="no">14.4</span>出清之后：修复交易的三类证据（观察练习）</h2>
+  <p class="sec-en">AFTER THE FLUSH — A CHECKLIST, NOT A SIGNAL</p>
+  <div class="prose">
+    <p>每场踩踏过后，都有人问同一个问题：跌完了吗？第 10 课给过半个答案——<span class="nt" data-note="flush">出清</span>只登记"燃料在减少"这个事实，不按剧本给你反转。这一节把另外半个答案补全：所谓<span class="nt" data-note="repair">修复交易</span>，入场券不是"跌得够惨"，而是<strong>三类证据凑齐</strong>：</p>
+  </div>
+  <div class="cards">
+    <div class="card">
+      <h4>证据一 · OI 出清</h4>
+      <p>筹码堆真的空了：OI 从峰值大幅坍塌后<strong>停在低位、不再回补</strong>——被套的杠杆走光，跌势失去燃料。</p>
+      <span class="k">去哪看：币安合约数据 / Coinglass 的 OI 曲线</span>
+    </div>
+    <div class="card">
+      <h4>证据二 · 费率转负或归零</h4>
+      <p>拥挤的多头租客走光：费率从正值跌到零轴附近甚至转负，<strong>分位滑进低位区</strong>——没人抢着付租做多了。</p>
+      <span class="k">去哪看：图 10-2 的分位线 / 交易所费率页</span>
+    </div>
+    <div class="card">
+      <h4>证据三 · 投降量能</h4>
+      <p>最后一批人缴械的脚印：恐慌时段的成交额放大到平时的若干倍（第 9 课的投降式抛售标签）——<strong>想走的人集中走完了</strong>。</p>
+      <span class="k">去哪看：小时级成交额对比平时均值</span>
+    </div>
+  </div>
+  <div class="prose">
+    <p>拿 10·10 之后的三天，把这张检查单逐项核一遍——所有读数都来自真实数据：</p>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 14-6</span>检查单实战：10-10 → 10-15，三类证据各在哪天到位<span class="real">真实数据</span><span class="ia">互动</span></p>
+    <div class="ctrls">
+      <div>
+        <span class="seg-label">逐项核对</span>
+        <span class="seg" id="r-seg" role="group">
+          <button type="button" data-val="ev1" aria-pressed="true">证据① OI 出清</button>
+          <button type="button" data-val="ev2">证据② 费率转负</button>
+          <button type="button" data-val="ev3">证据③ 量能与结论</button>
+        </span>
+      </div>
+    </div>
+    <div class="lw h480" id="r-chart"></div>
+    <div class="lw-legend" id="r-legend"></div>
+    <div class="stats">
+      <div class="stat"><span class="k">证据① OI</span><span class="v">118 → 80 亿（−32%）</span><span class="s">10-11 上午见底，到 10-13 只回到 88 亿</span></div>
+      <div class="stat"><span class="k">证据② 费率</span><span class="v">10-12 转负</span><span class="s">北京 8 点 −0.0031% · 24 点 −0.0109% · 日分位 0</span></div>
+      <div class="stat"><span class="k">证据③ 量能</span><span class="v warn">19 倍</span><span class="s">瀑布一小时 145 亿 · 全天为平日 3.3 倍</span></div>
+      <div class="stat"><span class="k">凑齐之后</span><span class="v" id="r-after">+2.1%</span><span class="s">10-13 收 115,112——然后 11-21 见 80,600</span></div>
+    </div>
+    <p class="lab-msg" id="r-msg"></p>
+    <figcaption><b>读图：</b>上为 1 小时 K 线，中为资金费率，下为 OI。三类证据在 10-12 前后全部到位：OI 出清且不回补、费率转负＋分位打到一年最低的 0、投降量能早在 10-10 夜里就放完。此后三天价格确实修复了 +2.1%——<b>然后呢？10-14 起重新回落，10-17 均线死叉（第 4 课图 4-4 标注过那次死叉），10-24 三票制给出的方向是空，11-21 BTC 见 80,600</b>。检查单没有失灵——它说的是"踩踏结束了"，它从来没说过"方向向上"。出清之后的市场像烧完的林地：火确实灭了，但接下来是重新长树还是继续荒着，由别的东西决定。</figcaption>
+  </figure>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>消防队判断"火灭了"有一张检查单：灰烬冷却（OI 出清——燃料烧完了）、人群散尽（费率归零转负——没人再抢着往里冲）、最后一批逃生者的脚印（投降量能——想走的都走完了）。三项凑齐，可以宣布火场安全。<strong>但"火灭了"和"这里值得重建"是两份完全不同的报告</strong>——重建要看图纸、看地段、看资金，对应到交易里就是三票制、关键位和你的模板触发。把消防报告当成开工许可，是修复交易最常见的死法。</p>
+  </div>
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p><strong>"三类证据凑齐了，满仓抄底。"</strong>10·10 这一场就是反例：证据 10-12 凑齐，价格 10-13 只修复了 +2.1%，随后一个月跌到 80,600——凑齐检查单的那天离后来的低点还有 <span class="dn-t">−30%</span>。检查单的正确用法只有一种：把该标的加入<strong>观察名单</strong>，等三票制重新给出方向、等模板给出触发，再按 1% 风险进场——第 13 课说过，确认式系统吃不到 V 的底，这是设计，不是缺陷。它换来的是：当"出清之后继续跌"的剧本出现时（FTX 之后、10·10 之后），你不在刀下。</p>
+  </div>
+  <div class="evidence">
+    <span class="label">证据与怀疑</span>
+    <h4>为什么没有"清算后平均上涨"的统计表：样本根本不够</h4>
+    <p>你可能期待这一节给一张"大清算之后 N 天平均涨 X%"的统计表。我们算了，但要先给结论：<strong>这类统计在极端事件上不可靠，别背数字。</strong>用本地 2020 年至今的 2,465 个交易日自算：日内振幅超过 15% 的只有 45 天，收盘跌超 10% 的只有 <strong>13 天</strong>。这 13 天之后 3 天的平均收益 +2.1%、中位数 +2.0%——听起来不错？看散布：最好 +12.4%，最差 −9.3%；再换个观察期，1 天后平均 +4.7%，5 天后只剩 +0.9%、最差 −15.6%——<strong>观察窗一挪，结论就变脸，这是小样本的典型症状</strong>。13 个样本还横跨三轮完全不同的市场结构（零利率、加息、ETF 时代），连"同一个总体"都算不上。对照第 13 课的事后诸葛实验（Fischhoff 1975）：极端事件的复盘最容易事后找出"必然规律"，而统计学在这里只说一句话——<em>n ＝ 13，闭嘴</em>。所以本课给的是机制检查单（出清、费率、量能，每项都有可观察的机制含义），不是收益率承诺。</p>
+  </div>
+</section>
+
+<!-- ================= 14.5 ================= -->
+<section class="ch" id="s5">
+  <h2 class="sec"><span class="no">14.5</span>落地：三场对照、八场决策树、阶段 2 毕业</h2>
+  <p class="sec-en">THE DECISION TREE AND YOUR STAGE-2 DIPLOMA</p>
+  <div class="prose">
+    <p>先把三场币圈风暴钉在一张表上，和第 13 课的五场对齐语法：</p>
+  </div>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>风暴</th><th>事件类型</th><th>预期状态</th><th>第一波</th><th>杠杆放大环节</th><th>修复</th><th>最像的宏观场</th></tr></thead>
+      <tbody>
+        <tr><td><b>⑥ 2024-01 ETF</b></td><td>利好如期落地</td><td>被完全定价<br>（概率九成以上）</td><td>两周 −21%<br>温和阴跌</td><td>轻微——费率未负<br>主角是现货资金轮换</td><td>六周见底<br>两个月后新高（管道兑现）</td><td>⑤ 鹰派降息<br>（重定价式下跌）</td></tr>
+        <tr><td><b>⑦ 2025-04 关税 1.0</b></td><td>意外冲击</td><td>日期已知<br>内容黑箱</td><td>三天 −16%<br>阶梯＋周末腿</td><td>有限——最大 1 小时 −2.8%<br>费率几乎没动</td><td>政策撤回当天 V 形<br>16 天收复</td><td>③ SVB（公告分水岭）<br>＋④ 套息（风险资产连锁）</td></tr>
+        <tr><td><b>⑧ 2025-10 关税 2.0</b></td><td>意外冲击<br>（周五深夜）</td><td>完全无法定价</td><td>一夜 −17%<br>一分钟 7,375 U</td><td>史上最大——OI −32%<br>全网强平约 190 亿美元</td><td>三天 +2% 的假修复<br>一个月后更低（80,600）</td><td>① 新冠（垂直＋强平）<br>下半场像 ② FTX（没人兜底）</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="prose">
+    <p>八场摆在一起，横向规律已经不新鲜了——第 13 课的三条（崩得快是杠杆、兜底公告是分水岭、央行交易路径）这三场全部复用。币圈三场额外贡献了两条：<strong>利好如期落地走"卖事实"剧本，默认先跌</strong>（⑥）；<strong>插针深度是流动性的函数</strong>，时点（周五深夜）和标的（门有多宽）比恐慌本身更决定针有多深（⑧）。把八场的共同语法压缩成一张决策树——下次突发行情落地，先问三个问题再碰任何按钮：</p>
+  </div>
+  <figure>
+    <p class="fig-title"><span class="fno">图 14-7</span>突发行情三问：八场风暴共用的决策树<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+      <svg viewBox="0 0 720 420" role="img" aria-label="遇到突发行情先问三个问题：谁被迫在卖、谁能把最怕的事拿走、我的事前规则生效了吗">
+        <defs>
+          <marker id="f147-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="ar-fill"/></marker>
+        </defs>
+        <rect x="236" y="10" width="248" height="40" rx="8" class="node-warn"/>
+        <text x="360" y="35" text-anchor="middle" class="nt">突发大行情落地（±5% 或垂直大 K）</text>
+        <path d="M360 50 L360 72" class="edge" marker-end="url(#f147-ar)"/>
+        <rect x="12" y="72" width="150" height="88" rx="8" class="node-hi"/>
+        <text x="87" y="100" text-anchor="middle" class="nt">问题一</text>
+        <text x="87" y="122" text-anchor="middle" class="nd">谁在被迫卖？</text>
+        <text x="87" y="142" text-anchor="middle" class="nd">看针 · 看 OI · 看费率</text>
+        <path d="M162 116 L186 116" class="edge" marker-end="url(#f147-ar)"/>
+        <rect x="186" y="72" width="256" height="88" rx="8" class="node-dn"/>
+        <text x="314" y="96" text-anchor="middle" class="nt">杠杆被强拆（机械）</text>
+        <text x="314" y="116" text-anchor="middle" class="nd">垂直大针 · OI 骤降 · 快崩快停</text>
+        <text x="314" y="136" text-anchor="middle" class="nd">卖完即止，修复看信心</text>
+        <text x="314" y="154" text-anchor="middle" class="elabel">① 新冠 · ④ 套息 · ⑧ 10·10</text>
+        <rect x="454" y="72" width="256" height="88" rx="8" class="node"/>
+        <text x="582" y="96" text-anchor="middle" class="nt">预期在重定价（讲道理）</text>
+        <text x="582" y="116" text-anchor="middle" class="nd">台阶阴跌 · 费率不负 · OI 平稳</text>
+        <text x="582" y="136" text-anchor="middle" class="nd">跌到新路径算完为止</text>
+        <text x="582" y="154" text-anchor="middle" class="elabel">⑤ 鹰派降息 · ⑥ ETF 卖事实</text>
+        <path d="M360 160 L360 182" class="edge" marker-end="url(#f147-ar)"/>
+        <rect x="12" y="182" width="150" height="88" rx="8" class="node-hi"/>
+        <text x="87" y="210" text-anchor="middle" class="nt">问题二</text>
+        <text x="87" y="232" text-anchor="middle" class="nd">谁能把"最怕的事"</text>
+        <text x="87" y="252" text-anchor="middle" class="nd">从桌上拿走？</text>
+        <path d="M162 226 L186 226" class="edge" marker-end="url(#f147-ar)"/>
+        <rect x="186" y="182" width="256" height="88" rx="8" class="node-up"/>
+        <text x="314" y="206" text-anchor="middle" class="nt">有，而且可信</text>
+        <text x="314" y="226" text-anchor="middle" class="nd">央行 · 财政 · 政策作者本人</text>
+        <text x="314" y="246" text-anchor="middle" class="nd">盯公告——那是分水岭</text>
+        <text x="314" y="264" text-anchor="middle" class="elabel">③ SVB 兜底 · ⑦ 90 天暂停</text>
+        <rect x="454" y="182" width="256" height="88" rx="8" class="node"/>
+        <text x="582" y="206" text-anchor="middle" class="nt">没有人</text>
+        <text x="582" y="226" text-anchor="middle" class="nd">没人兜底 ＝ 没有分水岭</text>
+        <text x="582" y="246" text-anchor="middle" class="nd">别等 V 形，阴跌磨底</text>
+        <text x="582" y="264" text-anchor="middle" class="elabel">② FTX · ⑧ 10·10 的下半场</text>
+        <path d="M360 270 L360 292" class="edge" marker-end="url(#f147-ar)"/>
+        <rect x="12" y="292" width="150" height="88" rx="8" class="node-hi"/>
+        <text x="87" y="320" text-anchor="middle" class="nt">问题三</text>
+        <text x="87" y="342" text-anchor="middle" class="nd">我下单前的规则</text>
+        <text x="87" y="362" text-anchor="middle" class="nd">都生效了吗？</text>
+        <path d="M162 336 L186 336" class="edge" marker-end="url(#f147-ar)"/>
+        <rect x="186" y="292" width="256" height="88" rx="8" class="node-up"/>
+        <text x="314" y="316" text-anchor="middle" class="nt">生效了 → 照卡执行</text>
+        <text x="314" y="336" text-anchor="middle" class="nd">止损认 1R · flat 不接刀</text>
+        <text x="314" y="356" text-anchor="middle" class="nd">不追第一根大 K · 检查单只观察</text>
+        <rect x="454" y="292" width="256" height="88" rx="8" class="node-warn"/>
+        <text x="582" y="316" text-anchor="middle" class="nt">没生效 → 先补纪律</text>
+        <text x="582" y="336" text-anchor="middle" class="nd">现在的动作是减仓和挂止损</text>
+        <text x="582" y="356" text-anchor="middle" class="nd">不是复仇交易</text>
+        <text x="360" y="404" text-anchor="middle" class="nd">三个问题都不预测行情——它们只决定你接下来"不做什么"。</text>
+      </svg>
+    </div>
+    <figcaption><b>读图：</b>这棵树是八场风暴的全部家当。问题一判"跌的质感"：机械踩踏（针＋OI 崖）卖完就停、但修复以周计；重定价（台阶）要跌到新剧本算完为止。问题二判"有没有分水岭"：有兜底者就盯公告时间戳，没有就别幻想 V 形。问题三最重要，也最容易被忘记——因为它问的不是市场，是你自己。注意三问的输出全是<b>禁止项</b>：不接刀、不追 K、不复仇——和模板 D 一个脾气：风暴里的正确动作清单，几乎全由"不"组成。</figcaption>
+  </figure>
+  <div class="rulecard">
+    <div class="rc-head"><span class="label">规则卡</span><span class="rc-name">突发行情应对卡（挂在系统 v0.7 外侧 · 单日 ±5% 或垂直大 K 时生效）</span></div>
+    <dl>
+      <dt>标的与周期</dt><dd>BTC / ETH 的 U 本位永续，模拟盘；v0.7 主系统照常运转，本卡只在突发大行情落地时叠加生效；判断仍只认日线三票与 1 小时回放，分钟图只用于复盘</dd>
+      <dt>过滤条件</dt><dd>事件雷不可预测，防线全在事前：重仓不过周末与 FOMC（第 3 课）· 事件周单笔风险减半（第 11 课）· D 禁令照常（第 10 课）；行情落地后先过决策树三问（图 14-7），再碰下单页</dd>
+      <dt>入场</dt><dd>不追第一根大 K，反转消息同样不追（第 11 课，案例七两头验证）；修复方向的新单必须等三票制重新给方向＋模板触发——三类证据检查单只产生观察名单，不产生订单</dd>
+      <dt>止损</dt><dd>已有仓位的止损一律不外移、不撤单；止损市价单、标记价格触发（第 1 课，10·10 之夜的保命配置）；风暴后的新单按 2×ATR 口径放宽止损（第 6 课），并避开清算簇与整数位正中央（第 8 / 10 课）</dd>
+      <dt>出场</dt><dd>持仓逆风：按事件周卡第一时间减半，收盘跌破事件前关键位则清仓（第 11 课）；持仓顺风：按原止盈与跟踪止损执行，禁止临场加码——风暴夜的所有"灵感"默认无效</dd>
+      <dt>仓位</dt><dd>单笔风险 ≤1%（事件周 0.5%）· 逐仓 ≤5 倍 · 同时 ≤2 个仓位——这一行就是 10·10 推演里 −4% 和归零的全部差别</dd>
+    </dl>
+    <p class="rc-note">这张卡没有一个字在预测行情，它只是把八场风暴的教训翻译成"事前已经做完、事中照着念"的清单。<strong>风暴夜唯一需要的新决定，是不做新决定。</strong></p>
+  </div>
+  <div class="sysup">
+    <span class="label">系统升级</span>
+    <h4>你的交易系统：v0.7 ＋ 阶段 2 毕业（版本号不变）</h4>
+    <p>和第 13 课一样，本课没有新增交易零件——它给 v0.7 的零件补完了币圈侧的实战勋章：<strong>事前仓位纪律</strong>（⑧里把 −17% 之夜按成最多 −4% 的推演）· <strong>批准类决定日进日历</strong>（⑥的获批日，第 12 课滤镜卡的条款第一次实战）· <strong>不追第一根大 K</strong>（⑦的冲击与反转两头验证）· <strong>三票制的弃权与 flat</strong>（⑥⑦让你根本不在场）· <strong>标记价格触发止损</strong>（⑧之夜真实救人的配置）· <strong>第 10 课的出清框架</strong>（本课升级成修复观察检查单）。新挂上系统外侧的是两件装置：<strong>突发行情三问决策树 ＋ 修复交易观察检查单</strong>——都不产生信号，只划掉错误动作。至此阶段 2 的四课全部完成：第 11 课装了宏观滤镜，第 12 课装了币圈滤镜，第 13、14 课用八场风暴给每个零件做了压力测试。<strong>"行情为什么发生"你已经有了一套可操作的答案；下一课进入阶段 3——把 v0.7 的全部零件组装成 v1.0 的四张模板规则卡。</strong></p>
+  </div>
+  <div class="stock">
+    <span class="label">股票上怎么对照</span>
+    <h4>三场风暴的股票译文</h4>
+    <ul>
+      <li><b>"卖事实"在股票市场天天上演</b>：财报超预期当天高开低走、新股上市首日破发、纳入指数的生效日见顶——机制同源：预期被提前买完，事件日只剩兑现。A 股的"利好出尽是利空"就是这条语法的民间版本；</li>
+      <li><b>GBTC 的原型是封闭式基金</b>：份额不能赎回 → 二级市场价格长期偏离净值——封闭式基金折溢价是股票世界研究了近百年的老现象；转成 ETF（可申赎）后折价消失，套在里面的人获得出口，于是集中离场——这股卖压的逻辑完全可以用股票知识读懂；</li>
+      <li><b>连环爆仓的股票版</b>：2015 年 A 股配资盘强制平仓——同一台流水线，只是有涨跌停和 T+1 当减速带：瀑布变成连续一字跌停，跌得慢，但<em>想走也走不掉</em>；币圈插针深但随时能成交，两种制度各付各的代价（第 13 课说过：风险总量差不多，分布形状不同）；</li>
+      <li><b>股票没有"两套价格"</b>：单一交易所撮合，没有标记价格与最新价之分，也就没有"针尖扫最新价止损"这类事故——但美股盘前盘后的薄流动性插针、A 股集合竞价的异动，和币圈凌晨的针是近亲；</li>
+      <li><b>通用的部分最值钱</b>：事件日历、仓位上限、不追第一根大 K、兜底公告是分水岭——这四条搬到任何市场都不用改一个字。</li>
+    </ul>
+  </div>
+  <div class="task">
+    <span class="label">本周模拟任务</span>
+    <h4>给阶段 2 交毕业作业（模拟盘继续跑 v0.7）</h4>
+    <ol>
+      <li><strong>闭卷复盘 10·10</strong>：不看本课正文，按第 13 课的复盘六步卡写一页，重点是④因果链的时间戳（几点开始阴跌、几点加速、针落在哪一分钟）；写完对照图 14-3 逐帧批改；</li>
+      <li><strong>算两个世界的账单</strong>：假设 10-09 晚你持有 1 万 U 名义、5 倍杠杆的 ETH 多单 vs 按 v0.7 的 1% 风险＋2×ATR 止损持仓——分别写出 10-10 之夜的结局（用第 1 课的强平公式和本课⑤的推演核对）；再用 BTC 算一遍，看看"擦线没爆"离"归零"有多近，把三个数字抄在交易计划书第一页；</li>
+      <li>把<strong>三问决策树</strong>抄进交易日志的"风暴复盘"分区，和六步卡放在一起；约定：下一次单日 ±5% 行情，48 小时内先答三问、再填六步；</li>
+      <li><strong>周五收盘例行检查</strong>：本周若有仓位要跨周末，执行"重仓不过周末"并在日志记一行——这是 10·10 教的最便宜的一条命；</li>
+      <li><strong>检查单观察练习</strong>：挑第 13 课的案例一（2020-03）或案例二（FTX），用图 10-2 与本课图 14-6 的方法核对三类证据各在哪天到位、到位之后行情走了哪条路——只观察、只记录，不下单；</li>
+      <li>模拟盘继续按 v0.7 运行；日志新增一栏"<strong>假如今晚出事</strong>"：每笔持仓写一行最大损失推演（1R × 滑点 2 倍 × 仓位数）——写不出口的数字，就是该减仓的信号。</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ================= 小结 ================= -->
+<section class="ch recap" id="recap">
+  <h2 class="sec"><span class="no">★</span>本课小结</h2>
+  <p class="sec-en">RECAP</p>
+  <div class="prose">
+    <ol>
+      <li><b>三场币圈风暴补齐八场</b>：ETF 获批（买预期卖事实）、关税 1.0（意外冲击＋V 形）、10·10（史上最大连环爆仓）——语法与宏观五场同源：预期差点火，流动性与杠杆定烈度。</li>
+      <li><b>人人都知道的利好不是利好</b>：获批如期落地＝零预期差，先动手的是兑现盘和 GBTC 抛压，接棒的管道资金以周计——时间差就是那 −21% 的坑；利好最终兑现，但迟到六周。</li>
+      <li><b>事件雷只有两个可控项</b>：事前仓位与事前止损；政策的冲击与撤回同样突然，两头都不追第一根大 K——错过第一根的成本，远小于接错方向的成本。</li>
+      <li><b>插针是流水线的产物，不是阴谋</b>：阴跌把仓位推到死线 → 强平市价单 × 周五深夜的薄订单簿 → 连环自燃。深度由流动性决定：BTC 偏离最深 −1.33%，ETH −1.48%，山寨币更惨——这就是只做 BTC / ETH 的理由。</li>
+      <li><b>标记价格判生死</b>：针尖 101,517，判强平的标记价最低 101,878——强平价夹在中间的多头活了下来；用最新价触发的止损单在针尖被扫、以惨价成交。止损触发价永远选标记价格。</li>
+      <li><b>OI 与针同步</b>：最猛一小时 OI −21%、两天 −32%；价格弹回时 OI 继续下降——弹回不等于新钱进场，是幸存者在离场。</li>
+      <li><b>修复交易三类证据</b>：OI 出清＋费率转负或归零＋投降量能——10·10 后三证 10-12 凑齐，但它只宣布"踩踏结束"，不宣布方向：一个月后 BTC 见 80,600。检查单产生观察名单，方向永远归三票制。</li>
+      <li><b>阶段 2 毕业</b>：宏观定水位（L11）、币圈内因定浪（L12）、八场风暴给语法（L13 / L14）；系统在风暴里的角色不是预测，是让你活着见到下一个周一——活下来靠的是下单前的决定。</li>
+    </ol>
+  </div>
+
+  <h3>术语一览（点击正文中的角标词可随时弹出）</h3>
+  <ol class="notes-list" id="notes-list"></ol>
+
+  <h3>自测</h3>
+  <details><summary>1. ETF 获批是真利好、管道后来也真的兑现了（两个月后新高 73,881），为什么获批后还是跌了 21%？说出三股力量和它们的时间差。</summary>
+    <div class="ans"><p>三股力量：① 兑现盘——三个月 +67% 的仓位买的就是"获批"本身，事件如期落地＝零预期差，他们的交易完成，只剩卖出，当天就动手；② GBTC 抛压——高费率的老持有人借转 ETF 之机赎回转出（公开报道口径），也是即时的；③ 接棒的 ETF 净流入——真金白银但走传统流程，以周和月计。前两股卖压即时、第三股买力迟到，时间差 ≈ 六周，价格就在这六周里挖出 −21% 的坑。核心语法：市场交易预期差，不交易事件本身——人人都知道的利好，落地那天只剩兑现价值。</p></div>
+  </details>
+  <details><summary>2. 关税 1.0 与 2.0 都是突发关税消息，为什么一场是三天 −16% 的阶梯、另一场是一分钟 7,375 美元的瀑布？至少说出三个差异变量。</summary>
+    <div class="ans"><p>① 仓位状态：2025-04 前市场横盘数周、没有历史级的筹码堆；10·10 前 BTC 历史新高四天、OI 在 118 亿的高位——雷埋得满不满，决定能不能连环；② 时点与流动性：解放日落地在美股盘后但工作日，10·10 的正式税率落在周五深夜——第 2 课的心跳图告诉你那是订单簿最薄的时段之一；③ 落地方式：关税 1.0 是发布会逐国公布、市场花几十分钟消化，关税 2.0 是一个帖子一次性落地，强平流水线在七分钟内走完③④两格。同样的消息类型，烈度由"杠杆堆多高 × 门有多窄 × 引信有多短"决定——这就是案例八要用放大镜的原因。</p></div>
+  </details>
+  <details><summary>3. 10·10 那晚，强平价 101,600 的 BTC 多头活了下来，而在 102,000 挂了"最新价触发止损市价单"的人被扫了。用两套价格解释，并说出你的系统因此固定的两个设置。</summary>
+    <div class="ans"><p>那一夜最新价最低插到 101,517，但判定强平的标记价格最低只到 101,878——强平价 101,600 夹在两者之间：标记价没碰到它，仓位安全。而最新价触发的止损单在针尖经过 102,000 时被激活、变成市价单在瀑布里成交，成交价可能远低于 102,000。两个固定设置（第 1 课定的，本课用数据钉死）：① 止损触发价类型一律选标记价格——它由多家现货加权而来，单所的针扎不歪它；② 止损用市价单而不是限价单——触发要难骗，执行要坚决。顺带记住量级：BTC 最新价对标记价的最深单分钟偏离是 −1.33%，ETH 是 −1.48%——止损挂得离强平簇和整数位太近，就是把自己放进这 1.5% 的绞肉区。</p></div>
+  </details>
+  <details><summary>4. 图 14-5 里，22 点价格已经弹回 113,000，OI 却一路阴跌到次日上午的 80 亿才见底。这段"价格涨、OI 降"说明什么？为什么不能说"38 亿全被强平了"？</summary>
+    <div class="ans"><p>价涨＋OI 降是第 10 课四象限里的"离场驱动"：推动反弹的买盘主要来自平仓（空头回补＋幸存多头趁反弹撤退），不是新钱进场——赌桌上的筹码在持续撤离，说明惊魂未定、没人急着重新下注。38 亿的坍塌里混着三种人：被强平的、止损离场的、被吓跑主动平仓的——OI 只记录"仓位没了"，分不清怎么没的（分得清的是针：针＋OI 崖同时出现的那部分才指向强平）；而且交易所只对外推送抽样强平数据，谁都没有全量，所以"全网 190 亿美元"只能是第三方估算、口径不一。这也是图 14-6 证据①要求"OI 停在低位不回补"的原因：出清不出清，看的是坍塌之后筹码堆回不回来。</p></div>
+  </details>
+  <details><summary>5. 10-12 那天，修复交易的三类证据全部凑齐，价格也确实修复到 115,112。如果你当时据此满仓抄底，一个月后会发生什么？检查单到底在检查什么？</summary>
+    <div class="ans"><p>一个月后 BTC 在 11-21 见 80,600——从 115,112 算约 −30%，满仓抄底会被打到怀疑人生（如果带杠杆，大概率已经没有"一个月后"）。检查单检查的是"踩踏是否结束"：OI 出清＝强制卖出的燃料烧完、费率转负＝拥挤的多头走光、投降量能＝想走的人集中走完——三项凑齐只能宣布"机械抛压结束了"，对"接下来往哪走"零信息：10·10 之后市场用一个月的阴跌选择了向下（10-24 三票制给的方向甚至是空）。正确流程：检查单 → 观察名单 → 等三票制重新给方向＋模板触发 → 1% 风险进场。它是消防报告，不是开工许可。</p></div>
+  </details>
+  <details><summary>6. 阶段 2 毕业考：下一次突发大行情落地的当晚，按本课的决策树，你要依次问哪三个问题？每个问题分别决定什么？</summary>
+    <div class="ans"><p>问题一：谁在被迫卖？——看针、OI、费率分辨"机械踩踏"还是"预期重定价"：前者卖完即止但修复慢，后者要跌到新剧本算完。它决定你对"跌势什么时候停"抱哪种预期。问题二：谁能把"最怕的事"从桌上拿走？——有可信的兜底者（央行、财政、政策作者本人）就盯公告时间戳，那是分水岭；没有就别幻想 V 形。它决定你要不要等一张公告、以及等多久。问题三：我下单前的规则都生效了吗？——生效就照卡执行（止损认 1R、flat 不接刀、不追第一根大 K）；没生效，当下的动作是减仓补纪律，不是复仇交易。它决定你自己是不是下一个风险源。注意三问的共同点：没有一问在预测行情，全部输出都是"接下来不做什么"。</p></div>
+  </details>
+
+  <nav class="pager" aria-label="课程导航">
+    <a class="pg" href="ct-l13.html"><span class="pg-dir">上一课</span><span class="pg-ttl">第 13 课 · 宏观事件复盘</span></a>
+    <a class="pg pg-toc" href="ct-index.html"><span class="pg-dir">返回</span><span class="pg-ttl">学习地图</span></a>
+    <a class="pg pg-next" href="ct-l15.html"><span class="pg-dir">下一课</span><span class="pg-ttl">第 15 课 · 组合原则与四套模板</span></a>
+  </nav>
+
+  <p class="foot">数据：币安公开历史数据（data.binance.vision），BTCUSDT / ETHUSDT 永续的日线、1 小时线、1 分钟线、标记价格、资金费率与持仓量（OI），均已本地化。文中全部价格、涨跌幅、偏离、OI 与量能数字均由本地真实数据计算（日线为 UTC 交易日口径），三票制判定按第 4 课算法重算；获批概率、GBTC 资金流、关税时间线、全网强平金额与 ADL 触发为公开报道或第三方估算口径，细节以原始来源为准。图表组件：TradingView Lightweight Charts™（Apache-2.0）。本讲义仅为学习笔记，不构成投资建议；合约交易风险极高。</p>
+</section>
+
+</main>
+</div>
+
+<!-- ================= 术语弹注内容 ================= -->
+<div class="notes-src" hidden>
+  <section data-note-id="brsn" data-title="买预期、卖事实" data-en="Buy the Rumor, Sell the News">
+    <p>利好在"将要发生"的阶段被持续买入、在正式落地时反而遭到抛售的现象。机制：为预期进场的资金，其交易在事件兑现那一刻即告完成，剩下的动作只有获利了结；而事件如期落地＝零预期差，没有新信息吸引新买盘。典型标本：2024-01 现货 ETF 获批——获批前三个月 +67%，ETF 开始交易的头一个小时即见顶 49,028，两周 −21%。识别要点：事前涨幅越大、获批（或利好）概率被定价得越满，"卖事实"的坑越深。</p>
+  </section>
+  <section data-note-id="gbtc" data-title="GBTC" data-en="Grayscale Bitcoin Trust">
+    <p>灰度比特币信托：ETF 时代之前美国投资者获得 BTC 敞口的主要工具，份额一度只进不出，牛市溢价、熊市深度折价。2024-01 随获批转为现货 ETF 后份额可赎回，但管理费率显著高于新发行的竞品——折价消失给了老持有人出口，高费率给了他们离开的理由，获批后连续数周大额净流出（公开报道口径），成为"卖事实"阶段一股机械的抛压。</p>
+  </section>
+  <section data-note-id="netflow" data-title="净流入" data-en="ETF Net Inflow / Outflow">
+    <p>现货 ETF 每日申购金额减去赎回金额：正数代表传统资金管道在进水，负数在抽水。Farside Investors、SoSoValue 等网站每日汇总。第 12 课的用法不变：看连续数日的方向而非单日数字，连续大额净流出时多头降功率。本课补充它的时间属性：管道资金走开户、合规、配置的流程，以周和月计——这正是 2024-01"卖压即时、买力迟到"的结构性原因。</p>
+  </section>
+  <section data-note-id="vrev" data-title="V 形反转" data-en="V-Shaped Reversal">
+    <p>急跌后几乎不经过底部盘整、直接以同样陡峭的斜率收复的走势。成立的前提通常是"下跌的理由被一次性拿走"：兜底公告（2023-03 SVB）、政策撤回（2025-04 的 90 天暂停）。特征：拐点精确到一条新闻的时间戳，无法用技术位预测。对确认式系统的含义：V 的底部和右侧主升大概率吃不到（结构确认需要时间），这是设计代价——第 13、14 课各有一场作证。</p>
+  </section>
+  <section data-note-id="cascade" data-title="连环爆仓" data-en="Liquidation Cascade">
+    <p>强平的自我强化循环：价格下跌 → 一批仓位跌破维持保证金 → 强平引擎用市价单平仓 → 市价单砸穿订单簿、价格进一步下挫 → 下一批仓位到线。第 1 课图 1-3 的流水线全速运转时就是它。规模取决于三件事：杠杆堆了多高（OI）、订单簿有多薄（时段与标的）、引信有多短（消息落地方式）。2025-10-10 是迄今最大标本：币安 BTCUSDT 的 OI 一夜 −32%，全网 24 小时强平约 190 亿美元（第三方估算口径）。</p>
+  </section>
+  <section data-note-id="adl" data-title="自动减仓（本课口径）" data-en="ADL, Auto-Deleveraging">
+    <p>保险基金兜不住穿仓损失时的最后手段：系统按盈利与杠杆排序，把对手方向上赚得最多的仓位强制平掉一部分来填窟窿——你盈利的空单也可能被系统平掉。第 1 课讲过机制；本课补实战口径：10·10 当夜多家交易所的部分合约触发了 ADL（公开报道口径），主要集中在流动性薄的币对——这也是极端夜里"赚了方向、丢了仓位"的来源，盈利持仓旁边的 ADL 指示灯满格时要主动减仓。</p>
+  </section>
+  <section data-note-id="flush" data-title="出清" data-en="Flush / Open Interest Washout">
+    <p>一轮下跌把被套的杠杆仓位集中清出市场的过程，仪表特征是 OI 大幅坍塌后停在低位、不再回补。出清登记的事实只有一个：跌势的机械燃料（待强平的仓位）在减少。它不是见底信号——出清可以一波接一波（2026 年 5 月出清后还有 6 月瀑布；10·10 出清后还有 11 月的 80,600）。第 10 课的"多头投降"是它的日线象限版，本课把它升级为修复检查单的证据①。</p>
+  </section>
+  <section data-note-id="repair" data-title="修复交易" data-en="Recovery Trade">
+    <p>踩踏式暴跌后，等待市场从"强制卖出"切换回"自愿定价"再顺新方向进场的打法。本课口径：它的前置条件是三类证据凑齐——OI 出清＋费率转负或归零＋投降量能——但凑齐只把标的放进观察名单；入场仍要等三票制重新给方向、模板给触发、按 1% 风险执行。检查单宣布"踩踏结束"，不宣布"方向向上"：10·10 后三证 10-12 凑齐，一个月后价格反而更低——把它当抄底键，是这套框架最危险的误用。</p>
+  </section>
+</div>
+
+<script src="assets/lightweight-charts.js"></script>
+<script src="assets/ct.js"></script>
+<script src="assets/ctchart.js"></script>
+<script src="assets/data/klines-BTCUSDT-1d.js"></script>
+<script src="assets/data/klines-BTCUSDT-1h.js"></script>
+<script src="assets/data/funding-BTCUSDT.js"></script>
+<script src="assets/data/klines-BTCUSDT-1m.js"></script>
+<script src="assets/data/mark-BTCUSDT-1m.js"></script>
+<script src="assets/data/klines-ETHUSDT-1m.js"></script>
+<script src="assets/data/mark-ETHUSDT-1m.js"></script>
+<script src="assets/data/oi-BTCUSDT.js"></script>
+<script>
+(function(){
+'use strict';
+var FUND = CT.get('funding-BTCUSDT');
+var T = function(iso){ return Date.parse(iso) / 1000; };
+
+/* ---------- 图 14-1 案例六 · ETF 获批 ---------- */
+(function(){
+  var V = {
+    rumor: {
+      src: 'klines-BTCUSDT-1d', a: '2023-09-24', b: '2024-03-21',
+      marks: [
+        {time: T('2024-01-10'), position: 'aboveBar', shape: 'circle', color: 'accent', text: '获批 · 收 46,663'},
+        {time: T('2024-01-11'), position: 'aboveBar', shape: 'arrowDown', color: 'crit', text: '卖事实之顶 49,028'},
+        {time: T('2024-01-23'), position: 'belowBar', shape: 'arrowUp', color: 'series2', text: '低 38,545 · −21%'},
+        {time: T('2024-02-26'), position: 'belowBar', shape: 'circle', color: 'up', text: '三票重新到齐 54,512'},
+        {time: T('2024-03-14'), position: 'aboveBar', shape: 'circle', color: 'accent', text: '新高 73,881'}
+      ],
+      msg: '日线视野：左边三个月 +67% 的腿里，利好一天都还没发生——买的全是预期。获批（圆点）之后价格反而挖了六周的坑，直到 ETF 净流入持续转正才见底；三月的新高说明利好最终全兑现了，<b>跌掉的只是"卖压即时、买力迟到"的时间差</b>。'
+    },
+    land: {
+      src: 'klines-BTCUSDT-1h', a: '2024-01-09', b: '2024-01-13',
+      marks: [
+        {time: T('2024-01-09T21:00:00Z'), position: 'aboveBar', shape: 'circle', color: 'crit', text: '假帖 · 48,100 → 44,417'},
+        {time: T('2024-01-10T22:00:00Z'), position: 'belowBar', shape: 'arrowUp', color: 'accent', text: '正式获批'},
+        {time: T('2024-01-11T14:00:00Z'), position: 'aboveBar', shape: 'arrowDown', color: 'crit', text: 'ETF 开始交易 · 顶 49,028'},
+        {time: T('2024-01-12T22:00:00Z'), position: 'belowBar', shape: 'arrowUp', color: 'series2', text: '次日低 41,370'}
+      ],
+      msg: '获批前后 96 小时：01-09 官方账号被盗的假帖先插出一根 8% 的双向针——全场仓位压在同一个剧本上的证据；01-10 深夜正式获批，价格只拉到 47,699——<b>和假帖那天的 48,100 几乎一样高，真消息没能比假消息多卖一分钱，预期已经满了</b>；北京 1-11 晚 22 点半 ETF 开始交易，头一个小时冲 49,028 即见顶，下一小时 −4.4%。'
+    },
+    fact: {
+      src: 'klines-BTCUSDT-1h', a: '2024-01-10', b: '2024-01-24',
+      marks: [
+        {time: T('2024-01-11T14:00:00Z'), position: 'aboveBar', shape: 'arrowDown', color: 'crit', text: '顶 49,028'},
+        {time: T('2024-01-23T14:00:00Z'), position: 'belowBar', shape: 'arrowUp', color: 'series2', text: '低 38,545'}
+      ],
+      msg: '卖事实两周：没有恐慌瀑布，是温和但几乎不回头的阴跌——每天都有人兑现、每天都有 GBTC 的转出单（公开报道口径），而接棒的管道资金还在走流程。下方费率全程为正、离恐慌极值很远：<b>这不是杠杆风暴，是资金轮换</b>——所以它跌得慢、修复后劲足，和 10·10 的物理性质完全不同。'
+    }
+  };
+  var g = CT.makeChart('a-chart', {panes: [0.24], timeVisible: true});
+  CT.legend('a-legend', [['up', '费率为正：多头付租（下）'], ['down', '费率为负：空头付租（下）']]);
+  var msgEl = document.getElementById('a-msg');
+  function build(key){
+    g.series.forEach(function(it){ if(it.s) g.chart.removeSeries(it.s); });
+    g.series.length = 0;
+    var w = V[key];
+    var rows = CT.slice(CT.get(w.src), w.a, w.b);
+    var cs = g.addCandles(rows);
+    g.addHist(CT.slice(FUND, w.a, w.b).map(function(r){ return {time: CT.ts(r[0]), value: r[1] * 100}; }), 'ud', {pane: 1});
+    g.markers(cs, w.marks);
+    g.fit();
+    msgEl.innerHTML = w.msg;
+  }
+  CT.bindSeg('a-seg', build);
+})();
+
+/* ---------- 图 14-2 案例七 · 关税 1.0 ---------- */
+(function(){
+  var rows = CT.slice(CT.get('klines-BTCUSDT-1h'), '2025-04-01', '2025-04-26');
+  var fund = CT.slice(FUND, '2025-04-01', '2025-04-26').map(function(r){ return {time: CT.ts(r[0]), value: r[1] * 100}; });
+  var g = CT.makeChart('b-chart', {panes: [0.24], timeVisible: true});
+  var cs = g.addCandles(rows);
+  g.addHist(fund, 'ud', {pane: 1});
+  g.markers(cs, [
+    {time: T('2025-04-02T20:00:00Z'), position: 'aboveBar', shape: 'arrowDown', color: 'crit', text: '解放日 · 先插 88,500 再掉头'},
+    {time: T('2025-04-06T23:00:00Z'), position: 'belowBar', shape: 'circle', color: 'series2', text: '周日腿 77,111'},
+    {time: T('2025-04-07T07:00:00Z'), position: 'belowBar', shape: 'arrowUp', color: 'series2', text: '低 74,457'},
+    {time: T('2025-04-09T17:00:00Z'), position: 'belowBar', shape: 'arrowUp', color: 'up', text: '90 天暂停 · 一小时 +5%'},
+    {time: T('2025-04-25T14:00:00Z'), position: 'aboveBar', shape: 'circle', color: 'accent', text: '95,770'}
+  ]);
+  CT.legend('b-legend', [['up', '费率为正：多头付租（下）'], ['down', '费率为负：空头付租（下）']]);
+  var msgEl = document.getElementById('b-msg');
+  var MSG = {
+    all: '全月全景：左边一场 −16% 的阶梯、右边一场 +28% 的 V 形，中间只隔着两个帖子。下方费率全程几乎没动（最低 −0.004%）——<b>这场风暴里币圈的杠杆不是主角，它只是全球风险资产重定价的一节车厢</b>，外加周末替休市的世界值班。',
+    land: '放大解放日：北京 4-03 凌晨 4 点税率表公布，那一小时先冲出 88,500 的高点——市场花了几十分钟才读完逐国税率，然后连续三小时下台阶。<b>公布时刻的第一反应经常是错的</b>：这根上影线就是"不追第一根大 K"的最好广告。',
+    vday: '放大反转夜：04-09 早上见 74,578 的低点时没有任何反转迹象；晚上（北京 4-10 凌晨 1 点）90 天暂停的帖子落地，17 点那根 1 小时线 +5.0%。<b>低点不是被技术位撑住的，是被一个无法预测的帖子砸出来的</b>——所以系统不猜拐点，只在确认后进场：从确认处到 04-25 的 95,770 依然有完整的一段。'
+  };
+  CT.bindSeg('b-seg', function(v){
+    if(v === 'land') g.setRange('2025-04-02T08:00:00Z', '2025-04-03T16:00:00Z');
+    else if(v === 'vday') g.setRange('2025-04-08T12:00:00Z', '2025-04-10T12:00:00Z');
+    else g.fit();
+    msgEl.innerHTML = MSG[v];
+  });
+})();
+
+/* ---------- 图 14-4 案例八 · 双标的放大镜 ---------- */
+(function(){
+  var CFG = {
+    BTC: {
+      k: 'klines-BTCUSDT-1m', m: 'mark-BTCUSDT-1m',
+      pin: '101,517 / 101,878', pinS: '21:20（UTC）· 差 0.36%——强平价夹在中间的多头活了下来',
+      dev: '−1.33%', devS: '21:19 · 低点口径 102,194 对 103,568',
+      range: '−17.1%', oi: '118 → 80 亿（−32%）', oiS: '币安 BTCUSDT · 13:35 → 次日 01:25',
+      marks: [
+        {time: T('2025-10-10T21:19:00Z'), position: 'belowBar', shape: 'arrowUp', color: 'crit', text: '一分钟 −7,375 U'},
+        {time: T('2025-10-10T21:20:00Z'), position: 'belowBar', shape: 'circle', color: 'series2', text: '针尖 101,517 · 标记 101,878'}
+      ]
+    },
+    ETH: {
+      k: 'klines-ETHUSDT-1m', m: 'mark-ETHUSDT-1m',
+      pin: '3,400 / 3,425', pinS: '21:20（UTC）· 差 0.74%——针相对更深一倍',
+      dev: '−1.48%', devS: '21:16 · 低点口径 3,531 对 3,584',
+      range: '−22.6%', oi: '85 → 52 亿（−39%）', oiS: '币安 ETHUSDT · 坍得比 BTC 更狠',
+      marks: [
+        {time: T('2025-10-10T21:16:00Z'), position: 'belowBar', shape: 'arrowUp', color: 'crit', text: '偏离 −1.48%'},
+        {time: T('2025-10-10T21:20:00Z'), position: 'belowBar', shape: 'circle', color: 'series2', text: '针尖 3,400 · 标记 3,425'}
+      ]
+    }
+  };
+  var MSG = {
+    BTC: {
+      storm: 'BTC 的最猛 70 分钟：21:13 起 K 线转为垂直，21:19 一分钟从 109,568 直落 102,194——高低差 7,375 美元。下方的偏离曲线同步撕开到接近 −1%：<b>撕开的宽度，就是强平市价单在订单簿里挤压的深度</b>。',
+      pin: '针尖 20 分钟：橙色标记价一直走在 K 线针尖的上方——插到 101,517 的是最新价，判生死的标记价最低只到 101,878。<b>这 361 美元的缝隙，是那一夜无数"差一点爆仓"的全部解释</b>。',
+      all: '两天全景：拉远看，偏离曲线 99% 的时间贴着 0——两套价格平时根本是一套。<b>它们只在流水线全速运转的那几分钟分家</b>，而那几分钟恰恰是止损触发价类型决定生死的时候。'
+    },
+    ETH: {
+      storm: 'ETH 的同一个 70 分钟：形状和 BTC 一样，幅度全面放大——跌 −22.6%（BTC −17%）、偏离最深 −1.48%（BTC −1.33%）。<b>同一场火，门更窄</b>：ETH 的订单簿深度不如 BTC，同样的强平流量挤出更深的针。',
+      pin: 'ETH 的针尖：3,400 对 3,425——0.74% 的缝隙，是 BTC（0.36%）的两倍。第 1 课图 1-5 的那个例子就取自这里：强平价 3,410 的多头活了下来，3,430 的最新价止损单却被扫掉。<b>流动性差一档，保护的厚度就薄一截，山寨币的缝隙更是以十个百分点计</b>。',
+      all: 'ETH 两天全景：注意 10-11 白天 ETH 的 OI 还在阴跌（见统计格），针也比 BTC 多几根毛刺——<b>越靠后的梯队，余震越久</b>。这就是本课程把你锁在 BTC / ETH 的理由：风暴夜里，门宽就是命。'
+    }
+  };
+  var g = CT.makeChart('m-chart', {panes: [0.26], timeVisible: true, minBarSpacing: 0.01});
+  CT.legend('m-legend', [['series2', '标记价格（判强平）'], ['series4', '最新价对标记价的偏离%（下 · 收盘口径）'], ['muted', '上图 K 线 ＝ 最新价']]);
+  var msgEl = document.getElementById('m-msg');
+  var sym = 'BTC', view = 'storm';
+  function applyView(){
+    if(view === 'storm') g.setRange('2025-10-10T20:40:00Z', '2025-10-10T21:50:00Z');
+    else if(view === 'pin') g.setRange('2025-10-10T21:10:00Z', '2025-10-10T21:30:00Z');
+    else g.fit();
+    msgEl.innerHTML = MSG[sym][view];
+  }
+  function build(){
+    g.series.forEach(function(it){ if(it.s) g.chart.removeSeries(it.s); });
+    g.series.length = 0;
+    var c = CFG[sym];
+    var k = CT.get(c.k), m = CT.get(c.m);
+    var cs = g.addCandles(k);
+    g.addLine(m.map(function(r){ return {time: CT.ts(r[0]), value: r[4]}; }), 'series2', {width: 2, title: '标记价格'});
+    var dev = [];
+    for(var i = 0; i < k.length && i < m.length; i++){
+      if(k[i][0] !== m[i][0]) continue;
+      dev.push({time: CT.ts(k[i][0]), value: (k[i][4] / m[i][4] - 1) * 100});
+    }
+    var dl = g.addLine(dev, 'series4', {pane: 1, width: 1, title: '偏离%'});
+    g.priceLine(dl, 0, 'muted', '0', 2);
+    g.markers(cs, c.marks);
+    document.getElementById('m-pin').textContent = c.pin;
+    document.getElementById('m-pin-s').textContent = c.pinS;
+    document.getElementById('m-dev').textContent = c.dev;
+    document.getElementById('m-dev-s').textContent = c.devS;
+    document.getElementById('m-range').textContent = c.range;
+    document.getElementById('m-oi').textContent = c.oi;
+    document.getElementById('m-oi-s').textContent = c.oiS;
+    applyView();
+  }
+  CT.bindSeg('m-sym', function(v){ sym = v; build(); });
+  CT.bindSeg('m-view', function(v){ view = v; applyView(); });
+})();
+
+/* ---------- 图 14-5 OI 坍塌与针的同步 ---------- */
+(function(){
+  var k1 = CT.get('klines-BTCUSDT-1m');
+  var oi = CT.slice(CT.get('oi-BTCUSDT'), '2025-10-10', '2025-10-12');
+  var g = CT.makeChart('o-chart', {panes: [0.24, 0.16], timeVisible: true, minBarSpacing: 0.01});
+  var cs = g.addCandles(k1);
+  g.addLine(oi.map(function(r){ return {time: CT.ts(r[0]), value: r[2] / 1e8}; }), 'series2', {pane: 1, width: 2, title: 'OI（亿）'});
+  var doi = [];
+  for(var i = 1; i < oi.length; i++){
+    doi.push({time: CT.ts(oi[i][0]), value: (oi[i][2] / oi[i - 1][2] - 1) * 100});
+  }
+  g.addHist(doi, 'ud', {pane: 2});
+  g.markers(cs, [
+    {time: T('2025-10-10T13:35:00Z'), position: 'aboveBar', shape: 'arrowDown', color: 'crit', text: 'OI 峰 118 亿'},
+    {time: T('2025-10-10T21:15:00Z'), position: 'belowBar', shape: 'circle', color: 'crit', text: '5 分钟 −7.3%'},
+    {time: T('2025-10-10T21:40:00Z'), position: 'belowBar', shape: 'circle', color: 'crit', text: '−5.2%'},
+    {time: T('2025-10-10T21:50:00Z'), position: 'belowBar', shape: 'circle', color: 'crit', text: '−7.6%'},
+    {time: T('2025-10-11T01:25:00Z'), position: 'belowBar', shape: 'circle', color: 'accent', text: 'OI 谷 80 亿'}
+  ]);
+  CT.legend('o-legend', [['series2', 'OI 名义价值（亿 USDT · 5 分钟，中）'], ['up', 'OI 5 分钟增（下）'], ['down', 'OI 5 分钟降（下）']]);
+  var msgEl = document.getElementById('o-msg');
+  var MSG = {
+    zoom: '坍塌两小时：20:50 起下方出现第一批红柱——强平开始成批执行；21:15、21:40、21:50 三根最深的红柱（−7.3%、−5.2%、−7.6%）全部贴着价格最长的针。<b>注意 21:20 和 21:45 两次绿柱回跳</b>：要么有人在针尖上开新仓对赌，要么是极端时刻快照的噪声——量级看台阶，别抠单点。',
+    fall: '承接与余波：22 点价格已站回 113,000，中图的 OI 曲线却继续向下、红柱持续出现，直到次日 01:25 的 80 亿才止住。<b>弹回的买盘来自平仓，不是进场</b>——价涨 OI 降（第 10 课四象限），幸存者在撤退，没人急着重新下注。',
+    all: '两天全景：对照第 10 课图 10-6 的同一段数据——全景看"双指纹是否成立"，特写看"每根针对应哪一批强平"。<b>两种镜头是两个问题</b>：全景告诉你发生了踩踏，特写告诉你踩踏怎么长成了针。'
+  };
+  CT.bindSeg('o-seg', function(v){
+    if(v === 'zoom') g.setRange('2025-10-10T20:00:00Z', '2025-10-10T23:00:00Z');
+    else if(v === 'fall') g.setRange('2025-10-10T21:30:00Z', '2025-10-11T06:00:00Z');
+    else g.fit();
+    msgEl.innerHTML = MSG[v];
+  });
+})();
+
+/* ---------- 图 14-6 修复检查单 ---------- */
+(function(){
+  var rows = CT.slice(CT.get('klines-BTCUSDT-1h'), '2025-10-10', '2025-10-16');
+  var fund = CT.slice(FUND, '2025-10-10', '2025-10-16').map(function(r){ return {time: CT.ts(r[0]), value: r[1] * 100}; });
+  var oi = CT.slice(CT.get('oi-BTCUSDT'), '2025-10-10', '2025-10-16');
+  var g = CT.makeChart('r-chart', {panes: [0.18, 0.22], timeVisible: true});
+  var cs = g.addCandles(rows);
+  g.addHist(fund, 'ud', {pane: 1});
+  g.addLine(oi.map(function(r){ return {time: CT.ts(r[0]), value: r[2] / 1e8}; }), 'series2', {pane: 2, width: 2, title: 'OI（亿）'});
+  g.markers(cs, [
+    {time: T('2025-10-10T21:00:00Z'), position: 'belowBar', shape: 'arrowUp', color: 'crit', text: '一小时 145 亿成交'},
+    {time: T('2025-10-11T01:00:00Z'), position: 'belowBar', shape: 'circle', color: 'accent', text: 'OI 见底 80 亿'},
+    {time: T('2025-10-12T00:00:00Z'), position: 'belowBar', shape: 'circle', color: 'series2', text: '费率首次转负'},
+    {time: T('2025-10-13T23:00:00Z'), position: 'aboveBar', shape: 'circle', color: 'muted', text: '收 115,112'}
+  ]);
+  CT.legend('r-legend', [['up', '费率为正（中）'], ['down', '费率为负（中）'], ['series2', 'OI 名义价值（亿 USDT · 下）']]);
+  var msgEl = document.getElementById('r-msg');
+  var MSG = {
+    ev1: '证据① OI 出清：下图的 OI 从 118 亿坍到 10-11 上午的 80 亿（−32%），随后三天只爬回 88 亿——比峰值还低四分之一。<b>坍塌之后不回补，说明被清掉的杠杆没有卷土重来</b>：筹码堆确实空了。单看这一项还不够——FTX 之后 OI 也出清了，照样阴跌两周。',
+    ev2: '证据② 费率转负：中图里，强平夜之后的两期费率反而是 +0.0100% 的基准值（10-11 北京 8 点与 16 点）——多头还没死心；真正的转折在 10-12：北京 8 点 −0.0031% 首次转负，24 点 −0.0109% 探到最深，当天日均费率分位打到 <b>0——一年最低</b>。拥挤的多头租客这才算走光（顺带：分位＜10 时 D1 同时禁止追空）。',
+    ev3: '证据③ 与结论：投降量能早在 10-10 夜里放完——21 点那一小时成交 145 亿 USDT（平时的 19 倍），全天 451 亿（平日的 3.3 倍）。至此三证在 10-12 全部到位，价格也确实修复到 10-13 的 115,112（+2.1%）。<b>但图的右边没有继续涨</b>：10-14 起回落，10-17 死叉，一个月后 80,600。检查单宣布的是"踩踏结束"，方向的事，它一个字都没说。'
+  };
+  CT.bindSeg('r-seg', function(v){
+    if(v === 'ev1') g.setRange('2025-10-10T08:00:00Z', '2025-10-13T00:00:00Z');
+    else if(v === 'ev2') g.setRange('2025-10-10T20:00:00Z', '2025-10-13T12:00:00Z');
+    else g.fit();
+    msgEl.innerHTML = MSG[v];
+  });
+})();
+})();
+</script>
+</body>
+</html>

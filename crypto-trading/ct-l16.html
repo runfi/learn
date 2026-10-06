@@ -1,0 +1,658 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>币圈短线课 · 第 16 课 交易计划、日志与心理</title>
+<link rel="stylesheet" href="assets/ct.css">
+<style>
+pre.copyblock{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px;
+  padding:16px 18px; font-family:var(--mono); font-size:13px; line-height:1.9;
+  overflow-x:auto; max-width:46em; white-space:pre; color:var(--ink-2);
+}
+pre.copyblock b{color:var(--ink)}
+.copybar{display:flex; align-items:center; gap:10px; margin:-6px 0 14px}
+.copybar button{
+  font:inherit; font-size:12.5px; color:var(--accent-ink); background:var(--surface);
+  border:1px solid var(--line-2); border-radius:999px; padding:3px 14px; cursor:pointer;
+}
+.copybar button:hover{border-color:var(--accent)}
+.copybar .done{font-size:12.5px; color:var(--up-ink)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <span class="book"><a href="ct-index.html">币圈短线实战课</a></span>
+  <span class="part"><a href="ct-index.html">学习地图</a> · 阶段 3 组合成体系</span>
+  <span class="prefs">
+    <button id="btn-updown" type="button" title="切换涨跌配色"></button>
+    <button id="btn-theme" type="button" title="切换深浅主题"></button>
+  </span>
+</header>
+
+<div class="layout">
+
+<nav class="sidenav" aria-label="本课目录">
+  <p class="sn-chap">第 16 课 · 交易计划、日志与心理</p>
+  <a href="#top">课首</a>
+  <a href="#s1">16.1 一页纸计划书</a>
+  <a href="#s2">16.2 日志完整版</a>
+  <a href="#s3">16.3 四大恶习与断路器</a>
+  <a href="#s4">16.4 刹车系统</a>
+  <a href="#s5">16.5 转实盘与毕业</a>
+  <a href="#recap">小结 · 术语 · 自测</a>
+</nav>
+
+<main class="article">
+
+<section class="hero" id="top">
+  <span class="chap-no">LESSON 16 · 第 16 课 / 共 16 课</span>
+  <h1>交易计划、日志与心理</h1>
+  <p class="en">TRADING PLAN, JOURNAL AND PSYCHOLOGY — THE EXECUTION LAYER</p>
+  <p class="question">本课问题：系统有了，怎么保证开枪的人不坏事？</p>
+  <p class="lede">第 15 课把四套模板拧成了系统 v1.0——纸面上，你已经拥有一台规则完整的机器。但前十五课所有的证据都指向同一个事实：<strong>杀死账户的几乎从来不是系统，是凌晨两点替系统做决定的那个人。</strong>最后一课不加任何新指标，只装三个零件：计划书把系统变成白纸黑字的合同，日志把执行变成骗不了人的数据，刹车在人失控的瞬间切断电源。这不是心灵鸡汤课——这是整门课最后一面承重墙，也是决定前面十五课是资产还是摆设的那一面。</p>
+  <div class="objectives">
+    <h2>学完你能做到</h2>
+    <ul>
+      <li>写出自己的一页纸《交易计划书 v1.0》，并解释为什么"修改条款"是里面最重要的一条；</li>
+      <li>把日志从工具页的 v0 九行升级成完整版，知道每个新增字段将来喂给哪一环；</li>
+      <li>用执行评分 A–D 给每笔交易打分，把"评过程、不评结果"落成可操作的制度；</li>
+      <li>一眼识别四大恶习的盘中话术，并说出各自对应的断路器硬规则；</li>
+      <li>用 R 的语言谈论亏损（"今天 −1R，按计划"），把连亏当统计属性而不是人格审判；</li>
+      <li>背出五级刹车（单笔 → 日 → 周 → 月 → 生活）和各自的复牌条件；</li>
+      <li>对照核对清单判断自己够不够格转实盘，并解释首月为什么还要把风险减半；</li>
+      <li>看清从这里到量化的路：你的分模板统计表，就是未来第一张策略绩效表。</li>
+    </ul>
+  </div>
+  <p class="colorkey">读图约定：本课默认<span class="up">绿涨</span>·<span class="dn">红跌</span>，可用右上角按钮切成红涨绿跌。带 <b>互动</b> 标签的图可以拖动、调参数；正文里带虚线下划线和角标的词，点一下原地弹出解释。本课出现的时刻一律为北京时间（＝UTC+8）。</p>
+  <nav class="chapmap" aria-label="本课小节">
+    <a href="#s1">一页纸计划书</a><a href="#s2">日志完整版</a><a href="#s3">四大恶习与断路器</a><a href="#s4">刹车系统</a><a href="#s5">转实盘与毕业</a><a href="#recap">小结</a>
+  </nav>
+</section>
+
+<!-- ================= 16.1 ================= -->
+<section class="ch" id="s1">
+  <h2 class="sec"><span class="no">16.1</span>一页纸计划书：把系统变成合同</h2>
+  <p class="sec-en">THE ONE-PAGE TRADING PLAN</p>
+  <div class="prose">
+    <p>到昨天为止，你的系统 v1.0 大部分住在两个地方：第 15 课的四张规则卡里，和你的脑子里。规则卡没问题，脑子是个糟糕的住处——<strong>记忆会被情绪改写，规则会在浮亏时自动变得"灵活"</strong>。盘中每一次"我觉得这次不一样"，都是在用 30 秒的情绪覆盖十五课的工程，而事后你甚至不会记得自己改过规则。临场决策，是整个系统最大的漏点。</p>
+    <p><span class="nt" data-note="plan-doc">计划书</span>干的事很土：把 v1.0 连同风险总则、看盘作息、复盘节律和修改程序，写成一页 A4 纸的合同——签名，注明日期。从此"我的系统"不再是一种感觉，而是一份<strong>可以违反、因此也可以被抓到违反</strong>的文件。抓违反的是 16.2 的日志，罚违反的是 16.4 的刹车，三件套缺一不可。</p>
+  </div>
+  <div class="keypoint">
+    <span class="label">本课最重要的一句话</span>
+    <p><strong>盘中只有执行，没有决策——所有决策都在盘后冷静时做完，写在纸上。</strong></p>
+    <p>开仓、持有、离场的每个动作都应该只是"查表"：查模板卡、查计划书、查日历。凡是查表查不到的情况，答案一律是"不做"。听起来死板？死板正是它的全部价值——灵活的部分你已经在第 4 到 15 课设计完了，设计的时候才是该灵活的时候。</p>
+  </div>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>奥德修斯想听海妖的歌声，又知道听到的人都会跳海。他的办法不是"相信自己的意志力"，而是提前下手：让水手用蜡封住耳朵，把自己绑在桅杆上，并下令"待会儿无论我怎么喊放开我，都不许理我"。行为经济学管这叫<span class="nt" data-note="ulysses">尤利西斯合同</span>——<strong>冷静时的你，抢先没收冲动时的你的权限</strong>。计划书就是那根绑在桅杆上的绳子：它不是写给现在这个清醒地读讲义的你，是写给凌晨两点浮亏 0.8R、手指悬在"全平"和"翻倍补仓"两个按钮之间的那个你。那个你一定会出现，绳子必须现在就绑好。</p>
+  </div>
+  <figure>
+    <p class="fig-title"><span class="fno">图 16-1</span>执行层全景：合同、测谎仪和断路器怎么围住系统<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+      <svg viewBox="0 0 720 312" role="img" aria-label="计划书、盘中执行、日志、复盘、修改提案与刹车系统组成的闭环">
+        <defs>
+          <marker id="f161-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="ar-fill"/></marker>
+          <marker id="f161-ac" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="ar-acc"/></marker>
+        </defs>
+        <rect x="30" y="40" width="150" height="56" rx="8" class="node-hi"/>
+        <text x="105" y="62" text-anchor="middle" class="nt">计划书</text>
+        <text x="105" y="82" text-anchor="middle" class="nd">白纸黑字的合同</text>
+        <rect x="285" y="40" width="150" height="56" rx="8" class="node"/>
+        <text x="360" y="62" text-anchor="middle" class="nt">盘中执行</text>
+        <text x="360" y="82" text-anchor="middle" class="nd">只执行，不决策</text>
+        <rect x="540" y="40" width="150" height="56" rx="8" class="node"/>
+        <text x="615" y="62" text-anchor="middle" class="nt">日志完整版</text>
+        <text x="615" y="82" text-anchor="middle" class="nd">纪律的测谎仪</text>
+        <rect x="540" y="190" width="150" height="56" rx="8" class="node"/>
+        <text x="615" y="212" text-anchor="middle" class="nt">周 / 月复盘</text>
+        <text x="615" y="232" text-anchor="middle" class="nd">分模板统计表</text>
+        <rect x="285" y="190" width="150" height="56" rx="8" class="node-warn"/>
+        <text x="360" y="212" text-anchor="middle" class="nt">修改提案区</text>
+        <text x="360" y="232" text-anchor="middle" class="nd">盘后书面 · 冷静期</text>
+        <rect x="30" y="190" width="150" height="56" rx="8" class="node-dn"/>
+        <text x="105" y="212" text-anchor="middle" class="nt">刹车系统</text>
+        <text x="105" y="232" text-anchor="middle" class="nd">断路器 → 停牌</text>
+        <path d="M180 68 L285 68" class="edge" marker-end="url(#f161-ar)"/>
+        <text x="232" y="60" text-anchor="middle" class="elabel">开盘前读一遍</text>
+        <path d="M435 68 L540 68" class="edge" marker-end="url(#f161-ar)"/>
+        <text x="487" y="60" text-anchor="middle" class="elabel">每笔当场记</text>
+        <path d="M615 96 L615 190" class="edge" marker-end="url(#f161-ar)"/>
+        <text x="624" y="146" class="elabel">周日 / 月末</text>
+        <path d="M540 218 L435 218" class="edge" marker-end="url(#f161-ar)"/>
+        <text x="487" y="210" text-anchor="middle" class="elabel">执行率 · 绩效</text>
+        <path d="M285 206 C 225 160 150 115 112 98" class="edge-acc" marker-end="url(#f161-ac)"/>
+        <text x="228" y="140" text-anchor="middle" class="hi">唯一的改规则通道</text>
+        <path d="M330 96 C 270 150 200 176 152 192" class="edge-dn" marker-end="url(#f161-ar)"/>
+        <text x="252" y="172" text-anchor="middle" class="wt">连亏 · 违规 · −6%</text>
+        <path d="M70 190 L70 96" class="edge-soft" marker-end="url(#f161-ar)"/>
+        <text x="62" y="146" text-anchor="end" class="elabel">复牌先复盘</text>
+        <text x="30" y="284" class="nd">系统 v1.0（四套模板，第 15 课）整篇抄在"计划书"里，一页纸看全；</text>
+        <text x="30" y="304" class="nd">上排是每天的执行环，下排是每周 / 每月的维护环——改规则只许走下排。</text>
+      </svg>
+    </div>
+    <figcaption><b>读图：</b>整个执行层就是两个环。上排的执行环每天转：开盘前读合同 → 盘中只做查表动作 → 每笔当场记日志。下排的维护环每周 / 每月转一次：复盘把日志变成执行率和分模板绩效，想改规则只能经过"修改提案区"的冷静期再回写进合同。左下角的刹车系统横在两个环外面盯着执行——连亏、违规、月亏到线，它直接断电；复牌的入口不在交易页面，在"把书面复盘写完"。注意全图没有一条线从"盘中执行"直接指回"计划书"：<b>盘中改规则这条路，在图上就不存在</b>。</figcaption>
+  </figure>
+  <div class="prose">
+    <h3>《交易计划书 v1.0》模板：复制、填空、签名</h3>
+    <p>下面是一页纸的全文模板。注意四套模板只写名字和一句话定位，细则一律"见第 15 课规则卡"——<strong>计划书必须短到你愿意每个交易日开盘前读一遍</strong>，抄满细则的计划书没人读，等于没有。</p>
+  </div>
+  <div class="copybar"><button type="button" id="copy-plan">复制模板</button><span class="done" id="done-plan"></span></div>
+  <pre class="copyblock" id="tpl-plan"><b>══ 交易计划书 v1.0 ══════════════════════</b>
+持有人：________　签署日期：2026-__-__　版本：v1.0
+<b>一、目标与底线</b>
+本年目标：执行率 ≥90%；攒满 100 笔有完整记录的交易；活着。
+不以收益率为目标——收益是系统的产出，不是我的操作对象。
+底线（示例，按自己情况改）：模拟期亏完虚拟本金 → 重开并重读第 3 课；
+实盘期账户回撤到 −20% → 无条件退回模拟盘补考。
+<b>二、市场与周期</b>
+只做 BTC / ETH 的 U 本位永续；其他品种先过第 12 课那两关再谈。
+周期分工：日线定方向 / 4 小时找位置 / 1 小时扣扳机（第 2 课）。
+<b>三、武器库：四套模板（细则见第 15 课规则卡，此处只列名）</b>
+模板 A 顺势回调——趋势环境的主力武器
+模板 B 收口突破——压缩之后的爆发
+模板 C 区间往返——震荡环境的专用打法
+模板 D 过热过滤——不是武器，是保险丝：它说不行就不行
+先判环境，再选模板；写不出模板名＝没有这笔单。
+<b>四、风险总则（第 3 课，永不松动）</b>
+单笔风险 ≤1% ＝ 100 U；逐仓，杠杆 ≤5 倍；
+月累计 −6% → 停当月；重大事件窗口前后 30 分钟不开新仓；
+FOMC 当天减半或清空；重仓不过周末；
+亏损仓位永不加仓；止损下单即挂、修改只许收紧。
+<b>五、看盘节律（第 2 课）</b>
+早 8 点后 10 分钟日线复盘；晚 20–23 点决策与执行；
+其余时间警报替代盯盘；凌晨数据夜按事件规则处理。
+<b>六、日志与复盘</b>
+每笔用完整版模板（第 16 课）当场记录；
+周日晚周复盘 30 分钟；月末月复盘 60 分钟（含 −6% 核对与提案区）。
+<b>七、修改条款（本合同最重要的一条）</b>
+对本计划书与模板卡的任何修改：
+① 只能在盘后冷静时书面提出，写进月复盘的提案区；
+② 必须附分模板统计数据作为理由——"感觉"不是理由；
+③ 当周提案、次周一生效；生效之前一律按旧规则执行；
+④ 盘中禁止修改任何规则——盘中冒出来的"好主意"只许排队。
+签名：____________（抄完、改完、想清楚了再签——签过名的是合同，没签名的只是草稿）</pre>
+  <div class="prose">
+    <h3>逐条说两句：哪些栏是抄的，哪一栏是新的</h3>
+    <ul>
+      <li><strong>一到六栏没有一个新零件</strong>——目标底线、市场周期、模板清单、风险总则、看盘节律、复盘节律，全是前面十五课装好的东西。把它们抄到一页纸上的意义只有一个词：<em>完备</em>。合同的力量不在条款多新，在于"全部都在这里，别处没有"；</li>
+      <li><strong>目标栏别写收益率。</strong>"今年赚 50%"这种目标会在第一次连亏时反过来咬你——它给了"加仓追进度"一个冠冕堂皇的理由。写你能直接控制的：执行率、笔数、活着；</li>
+      <li><strong>第七栏是本课唯一的新发明，也是全文最重要的一条。</strong>规则的头号敌人不是行情，是三连亏之后那个想"微调一下参数"的你。修改条款给所有修改加了一道<span class="nt" data-note="cooloff">冷静期</span>：当周书面提案、次周一才生效——确保改规则的是复盘桌前的你，不是刚被行情打疼的你。<strong>一条不能盘中修改的规则才叫规则，能随时修改的那叫心情。</strong></li>
+    </ul>
+  </div>
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p><strong>"我写了计划书，所以我会执行。"</strong>写下来只解决了"规则含糊"这一个问题，解决不了"规则清楚但我不想守"。健身计划贴在墙上的人多，练出来的人少——差的不是计划，是<em>发现偏离的机制</em>和<em>偏离的代价</em>。所以计划书从来不单独上岗：日志（16.2）负责让每一次违反都留下记录，执行评分让违反有个刺眼的字母，刹车（16.4）让违反付出停牌的代价。三件套里它只是第一件——<strong>别写完合同就觉得仪式完成了，合同本身不执法</strong>。</p>
+  </div>
+</section>
+
+<!-- ================= 16.2 ================= -->
+<section class="ch" id="s2">
+  <h2 class="sec"><span class="no">16.2</span>日志完整版：从 v0 九行到 v1.0</h2>
+  <p class="sec-en">THE FULL JOURNAL, V0 TO V1.0</p>
+  <div class="prose">
+    <p>第 1 课发给你的<a href="ct-journal.html">《交易日志模板 v0》</a>只有九行，当时承诺过它会跟着课程长大：第 3 课加了 R 记账，第 4 课加了三票判定，第 6 课止损改了 ATR……现在课程到站，把所有欠的字段一次结清。升级的逻辑很简单：<strong>v0 记录的是"我做了什么"，完整版还要记下"系统当时说了什么"</strong>——两者的差，就是执行质量；两者的和，就是未来量化的原始数据。</p>
+    <p>还是老规矩：<strong>"判定"和"计划"两段必须在下单前写完</strong>，写不出来就说明这单不该下；"执行"段平仓后 24 小时内补上。</p>
+  </div>
+  <div class="copybar"><button type="button" id="copy-trade">复制模板</button><span class="done" id="done-trade"></span></div>
+  <pre class="copyblock" id="tpl-trade"><b>── 单号 #0__ ─────────────────────────</b>
+日期时间：2026-__-__ __:__（北京时间）
+标的方向：____USDT 永续 · 多 / 空 · 模拟盘
+<b>判定</b>（下单前写完，写不出就不下）
+激活模板：A / B / C（细则见第 15 课；写不出模板名＝没有这笔单）
+环境态：趋势 / 震荡 / 过渡（第 7 课）
+三票判定：日线 __ ｜ 4 小时 __ ｜ 1 小时触发 __（第 4 课）
+滤网状态：宏观 __（第 11 课）｜币圈事件 __（第 12 课）｜模板 D __（第 10 课）
+事件背景：费率分位 __ ｜ OI 象限 __（第 10 课）｜未来 24 小时日历：______
+<b>计划</b>（下单前写完）
+入场 ______｜止损 ______（＝1R ＝ ____ U）｜目标 ______（≥2R）
+仓位：名义 ____ U ＝ 风险 ÷ 止损距离%（第 3 课公式核对）｜杠杆 __×（≤5，逐仓）
+<b>执行</b>（平仓后 24 小时内）
+实际入场 ______｜离场时间 ______｜离场价 ______
+R 盈亏：____R（低于 −1.1R 必须写原因：滑点 / 挪止损 / 其他______）
+执行评分：A / B / C / D（标准见 16.2 评分表；C 与 D 计入断路器）
+截图留档：进场前 1 小时图 ＋ 离场后 1 小时图，文件名＝单号
+情绪一句话：________________________________
+教训一句话：________________________________</pre>
+  <div class="prose">
+    <h3>新增字段都从哪来、到哪去</h3>
+    <p>每个新字段都不是为了"记得更全"而加的——它们各有一个明确的下游用户：要么喂给周 / 月复盘，要么喂给未来的量化。来路和去处列清楚：</p>
+  </div>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>新增字段</th><th>来自哪课</th><th>复盘时用它回答什么</th></tr></thead>
+      <tbody>
+        <tr><td><b>R 盈亏</b></td><td>第 3 课</td><td>执行有没有走样（反复出现 −1.3R 就是止损被拖的警报）；按模板加总 ＝ 系统质量</td></tr>
+        <tr><td><b>激活模板</b></td><td>第 15 课</td><td>这笔单的期望值来源是什么；"写不出模板"的单从此无处藏身，自动现形</td></tr>
+        <tr><td><b>环境态</b></td><td>第 7 课</td><td>模板和环境配没配对——错配（震荡市硬打突破）是亏损复盘的第一排查项</td></tr>
+        <tr><td><b>三票判定</b></td><td>第 4 课</td><td>票数和结局的关系，攒你自己的统计：两票单和三票单的平均 R 差多少</td></tr>
+        <tr><td><b>滤网状态</b></td><td>第 10 / 11 / 12 课</td><td>三层滤网当时各说了什么；连亏复盘时先查是不是滤网亮灯你硬闯</td></tr>
+        <tr><td><b>费率分位 / OI 象限</b></td><td>第 10 课</td><td>事件背景快照——一段连亏如果全落在集体过热期，那是环境问题不是手法问题</td></tr>
+        <tr><td><b>执行评分</b></td><td>本课</td><td>周复盘只统计它；执行率的原材料，断路器的触发计数器</td></tr>
+        <tr><td><b>截图留档</b></td><td>本课</td><td>防记忆美化——三个月后你只会记得你想记得的版本，截图不配合表演</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="prose">
+    <h3>执行评分 A–D：给"评过程"四个字母</h3>
+    <p>从工具页第一天起，这门课的裁判标准就是"评过程，不评单笔盈亏"。但"过程好不好"不能靠感觉，<span class="nt" data-note="exec-grade">执行评分</span>把它压成四档——打分只问一件事：<strong>这笔单和计划书的距离有多远</strong>，和赚亏完全无关：</p>
+  </div>
+  <div class="tablewrap narrow">
+    <table>
+      <thead><tr><th>评分</th><th>定义</th><th>处置</th></tr></thead>
+      <tbody>
+        <tr><td><b>A</b></td><td>判定、仓位、止损、出场全部按计划——包括按计划亏钱的单</td><td>正常；这是执行率的分子</td></tr>
+        <tr><td><b>B</b></td><td>一处小偏差且不碰硬规则（进场晚了几根 K 线、≥1.5R 时提前止盈之类）</td><td>算执行达标，但偏差必须写进"教训一句话"</td></tr>
+        <tr><td><b>C</b></td><td>一条硬规则被打破：仓位超标 / 止损没挂 / 盘中改目标 / 无模板入场</td><td>计入违规；一周累计 3 笔 → 停一周（16.4）</td></tr>
+        <tr><td><b>D</b></td><td>多条违规，或触碰四大恶习（16.3）任何一条</td><td>计入违规 ＋ 当日立即停手</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="case">
+    <span class="label">真实案例</span>
+    <h4>把工具页那笔 #002 重新过堂：−77 U 的"好看"，评分 D 的真相</h4>
+    <p>回看第 1 课工具页的示例单 #002：ETH 空单，进场理由写的是"看它涨太多想空一下"，止损挂在 3,180，却在 3,164 就吓得手动平了，亏 77 U——比隔壁老老实实吃满止损的 #001（−103 U）"好看"26 U。当时你可能只觉得它"不太对"，现在用完整版重新记一遍账，它漏在哪一目了然：<strong>激活模板——写不出</strong>（v1.0 的四套模板里没有一套叫"看它涨太多"）；<strong>三票判定——没查；环境态——没判；执行——没到止损就跑</strong>。评分 D：无模板入场 ＋ 不按计划持有，双重违规，按本课规则当日停手。再算深一层：这种单的真正成本根本不是 77 U。乱拳偶尔也会蒙中，而它每蒙中一次，教会你的都是"不守规则也没关系"——一个相信"不守规则也没关系"的人，拿着再完整的 v1.0 也只是拿着一张纸。周复盘表上它会落进"无模板"那一行，那一行存在的全部使命，就是让这种单在还只有一两笔的时候就被你亲眼看见。</p>
+    <p class="takeaway">盈亏列永远比评分列好看的人，账户的长期斜率由评分列决定。"评过程"从今天起不再是一句口号，是四个字母。</p>
+  </div>
+  <div class="prose">
+    <h3>周复盘 v1.0：从"执行率"到你的第一张绩效表</h3>
+    <p>工具页的周复盘五问保留，但第 3 问升级成一张分模板统计表。别小看这几行加总——<strong>这张表就是你未来量化的第一张策略绩效表</strong>：阶段 5 要做的回测，本质上就是把"模板 A 在趋势环境里平均每笔 ＋0.4R"这类句子变成代码去大样本验证。没有这张表，回测连假设清单都列不出来；有了它，你的每一周都在为下一程攒数据。</p>
+  </div>
+  <div class="copybar"><button type="button" id="copy-week">复制模板</button><span class="done" id="done-week"></span></div>
+  <pre class="copyblock" id="tpl-week"><b>── 第 __ 周复盘（____-__-__ ~ __-__）── 周日晚 30 分钟</b>
+1. 执行率：本周 __ 笔，评分 A＋B 共 __ 笔 ＝ __%（目标 ≥90%）
+2. 违规清单：每笔 C / D 一行——写触发它的情绪（怕回撤 / 想回本 / 怕踏空…）
+   以及对应断路器有没有按规则工作（停了没有？）
+3. 分模板统计（你未来量化的第一张策略绩效表）：
+   模板 A：__ 笔｜合计 ____R｜平均 ____R / 笔
+   模板 B：__ 笔｜合计 ____R｜平均 ____R / 笔
+   模板 C：__ 笔｜合计 ____R｜平均 ____R / 笔
+   无模板（违规单）：__ 笔｜合计 ____R ←这一行的长期目标是 0 笔
+4. 本周 R 合计：____R（换算成账户 %，顺手核对离月刹车 −6% 还有多远）
+5. 最好的一笔（过程最干净的，不是赚最多的）：#____，好在：________
+6. 下周只改一件事（必须走修改条款流程）：________________</pre>
+  <div class="prose">
+    <h3>月复盘：刹车核对与唯一的修法入口</h3>
+    <p>月复盘干两件周复盘干不了的事：核对月刹车，以及<strong>处理所有规则修改提案</strong>——这是整个体系里唯一允许动规则的地方。</p>
+  </div>
+  <div class="copybar"><button type="button" id="copy-month">复制模板</button><span class="done" id="done-month"></span></div>
+  <pre class="copyblock" id="tpl-month"><b>── ____ 年 __ 月复盘 ── 月末最后一个周日，60 分钟</b>
+1. 月累计：____R ＝ 账户的 ____%
+   −6% 刹车核对：到线了吗？到线后真的停了吗？（没停＝最严重的违规）
+2. 执行率逐周：第 1 周 __% → 第 2 周 __% → 第 3 周 __% → 第 4 周 __%
+   （趋势向下比绝对值更危险——那是纪律在漏气）
+3. 分模板月度汇总：把周表加总——哪套模板在赚钱、哪套在漏水？
+   漏水的那套样本够 10 笔了吗？不够就先别审判它。
+4. 断路器触发记录：日停 __ 次｜周停 __ 次｜主动停牌 __ 次
+   每一次都有书面复牌复盘吗？（缺的补完才算复过盘）
+5. 规则修改提案区（全体系唯一的修法入口）：
+   提案：________________（附分模板统计依据，"感觉"不是依据）
+   处理：通过 → 下周一生效并改写计划书｜驳回 → 写一行驳回理由
+6. 下月风险档位：正常 1% ／ 减半 0.5%
+   （上月触发过月刹车，或执行率 ＜80% → 下月自动减半）</pre>
+</section>
+
+<!-- ================= 16.3 ================= -->
+<section class="ch" id="s3">
+  <h2 class="sec"><span class="no">16.3</span>心理：四大恶习与它们的断路器</h2>
+  <p class="sec-en">THE FOUR DEADLY HABITS AND THEIR CIRCUIT BREAKERS</p>
+  <div class="prose">
+    <h3>先把语言换掉：亏损要用 R 说</h3>
+    <p>短线系统的常态就是四到六成胜率——意味着每隔几天你就要经历一次亏损，每隔几周就要经历一次连亏。语言决定你怎么消化它：说"我今天亏了 103 块"，大脑听到的是惩罚；说"<strong>今天 −1R，按计划</strong>"，大脑听到的是成本入账——像店主看着房租划走，不愉快，但不恐慌。第 3 课的数字值得抄在日志扉页：<strong>胜率 50% 的系统，100 笔内中位最长连亏 6 笔、出现 5 连亏的概率 81%</strong>。连亏写在系统的出厂说明书里，不写在你的人格鉴定里——连亏时唯一该问的是"我执行了吗"，而不是"我是不是不行"。</p>
+    <p>难的是大脑出厂设置和这套语言反着来：兑现盈利舒服，承认亏损痛苦——行为金融学管这叫<span class="nt" data-note="disposition">处置效应</span>，第 3 课用它解释过"不止损是人类默认行为"。本课从另一面用它：<strong>既然默认行为靠不住，对抗它的就不该是意志力，该是程序。</strong>四种最贵的默认行为，每种配一个<span class="nt" data-note="breaker">断路器</span>——条件一触发就强制断电的硬规则，不听解释：</p>
+  </div>
+  <div class="cards">
+    <div class="card">
+      <h4>① 挪止损<span class="en-term">Moving the Stop</span></h4>
+      <p>盘中那句话："再给它一点空间，马上就反弹了。"本质是把 1R 的计划亏损现场改写成 2R、3R——日志里那些 −1.8R 就是这么来的（第 3 课：R 列是测谎仪）。</p>
+      <span class="k">断路器：止损下单即挂；修改只许收紧——放宽一次 ＝ 评分 D ＋ 当日停手</span>
+    </div>
+    <div class="card">
+      <h4>② 报复性交易<span class="en-term">Revenge Trading</span></h4>
+      <p>盘中那句话："刚亏的两笔，今天必须赚回来。"亏损把人切进"回本模式"：加仓位、降标准、缩周期三件事一起发生——这是马丁格尔的情绪版（第 3 课拆过它的死法）。</p>
+      <span class="k">断路器：当日连亏 2 笔 → 停当日，电脑关掉，明天再来</span>
+    </div>
+    <div class="card">
+      <h4>③ 怕踏空追单<span class="en-term">FOMO Chasing</span></h4>
+      <p>盘中那句话："要飞了，等回调就来不及了！"追进去的位置离结构位最远、止损最没处放。记住等式：<strong>错过 ≠ 亏损</strong>——错过的利润是想象的，追单的亏损是真实的。</p>
+      <span class="k">断路器：没有模板触发条件 ＝ 没有这笔单——写不出模板名就关掉下单页</span>
+    </div>
+    <div class="card">
+      <h4>④ 补仓扛单<span class="en-term">Averaging Down</span></h4>
+      <p>盘中那句话："更便宜了，补一点摊平。"第 3 课用期望值算过这笔账：要反弹概率拖到 70% 甚至 80% 以上才打平止损重开，而那个概率是"不想认错"编出来的；10·10 之夜它把 1R 养成了 18R。</p>
+      <span class="k">断路器：亏损仓位永不加仓——无例外，没有"就这一次"</span>
+    </div>
+  </div>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>民航业早就发现：忘放起落架的，往往不是菜鸟，是飞了一万小时的老机长——疲劳、压力、"这套动作我闭着眼都会"的自信，专杀熟练工。行业的解法不是"下次注意"，也不是"换更好的飞行员"，而是一张<strong>起飞前必须逐项念出声的检查单</strong>：它不假设你状态好，它假设你一定会有状态差的那天。外科医生 Gawande 把同样的逻辑搬进手术室，一张 19 项的清单在全球多家医院把并发症压下一大截（证据块细说）。你的计划书加日志就是你的检查单：<strong>"判定"五行就是起飞前检查，"执行评分"就是落地后检查</strong>——老机长都需要念单子，你凭什么例外。</p>
+  </div>
+  <div class="prose">
+    <h3>生理层：身体不达标，直接停牌</h3>
+    <p>还有一类失控和恶习无关，纯粹是硬件问题。睡眠不足的大脑做风险决策时接近微醺状态——这不需要文献背书，翻你自己的日志就能验证：把评分 C / D 的单子和当天的睡眠、情绪状态对一下，规律大概率刺眼。所以刹车系统的第五级是<span class="nt" data-note="halt">停牌</span>的主动版：<strong>熬夜了、生病了、吵架了、工作上挨了一闷棍——当天主动停牌，不开新仓</strong>。这不算违规，恰恰相反，这是整本日志里最职业的记录：业余选手靠状态好的日子赚钱，职业选手靠知道自己哪天状态不好活下来。第 2 课说过的话这里再立一次：半夜焦虑到想爬起来看盘，不是勤奋，是仓位开大了。</p>
+  </div>
+  <div class="evidence">
+    <span class="label">证据与怀疑</span>
+    <h4>清单能救命，但救不了错误的系统</h4>
+    <p><b>证据一（清单传统，定性）</b>：现代航空的安全纪录建立在检查单文化上。它的起点是 1935 年波音 Model 299（B-17 原型机）试飞坠毁——机组忘了解锁升降舵锁定，而当时的结论不是"筛选更优秀的飞行员"，是"给最优秀的飞行员也配一张单子"。外科医生 Atul Gawande 在《清单革命》（2009）里推广了同一逻辑：他参与设计的 WHO 手术安全清单（19 项，核对的全是"本来就会做"的基础动作）在全球多家医院试点中显著压低了并发症率。清单的原理和交易完全同构：<strong>高压环境下的失误极少出在"不懂"，几乎全出在"忘了做本来会做的事"</strong>。<b>证据二（处置效应）</b>：Odean（1998）用美国一家折扣券商上万个真实账户的成交记录证实，散户显著更愿意卖出盈利持仓、留住亏损持仓，而被留住的亏损股其后表现更差——第 3 课引它证明"不止损是出厂设置"，本课换个角度读：<strong>挪止损、扛单不是你意志薄弱，是默认人性，所以对抗它的必须是挂单和程序，不是决心。</strong>要怀疑的地方：① 清单防得住流程错误，防不住系统本身失效——把一套负期望的规则执行到 100%，只是更有纪律地亏钱；执行率回答"按没按规则做"，规则值不值得做要靠统计和回测（阶段 5）回答；② 清单证据来自医疗与航空，搬到交易是机制类比，不是直接实证；③ Odean 的样本是 1990 年代的美股现货散户，外推到带杠杆的 24 小时合约市场只能当方向参考——方向是：杠杆把处置效应的代价放大了数倍，只会更糟。</p>
+  </div>
+  <div class="pitfall">
+    <span class="label">常见误区</span>
+    <p><strong>"心态好就能赚钱。"因果反了。</strong>心态不生产期望值——期望值来自正期望的规则（第 3 课的公式），心态只决定规则能不能被执行出来。<em>它是润滑剂，不是发动机</em>：没有系统的人心态再稳，也只是平静地把钱亏完。而且多数"心态崩了"根本不是心理问题，是工程问题：仓位超标、没挂止损、没有计划——任何正常人处在这个局面里都会心态崩。顺序别搞反：先查这三样硬件，都合规之后还睡不着，再去谈呼吸和冥想。</p>
+  </div>
+</section>
+
+<!-- ================= 16.4 ================= -->
+<section class="ch" id="s4">
+  <h2 class="sec"><span class="no">16.4</span>刹车系统：五级断路器与复牌程序</h2>
+  <p class="sec-en">THE BRAKE SYSTEM</p>
+  <div class="prose">
+    <p>上一节给四大恶习各配了一个断路器，这一节把它们和第 3 课的老刹车（单笔 1%、月亏 6%）焊成一套完整的五级系统。设计原则只有三条：<strong>触发要客观</strong>（数字说了算，不接受"我感觉还行"）；<strong>动作要简单</strong>（只有一个动作：停）；<strong>复牌要有程序</strong>（时间到了不自动恢复，复盘写完才算）。</p>
+  </div>
+  <div class="analogy">
+    <span class="label">打个比方</span>
+    <p>家里的电闸不聪明：电流一超标就跳，它不听解释，不管这条电路上插着的是电暖器还是正在直播的电脑。跳闸很烦人——但它的替代品是火灾。交易里的对应物更微妙，因为<strong>最需要断电的时刻，恰恰是你最确信"再来一笔就回本"的时刻</strong>：判断力的损坏从来不自知，这正是断路器必须不听解释的原因。股票市场在交易所层面装了这套东西（美股的熔断机制），合约市场没有兜底，所以你得在自己账户上装一套私人版。</p>
+  </div>
+  <figure>
+    <p class="fig-title"><span class="fno">图 16-2</span>五级刹车：一级拦不住，下一级接手<span class="sch">示意</span></p>
+    <div class="fig-scroll">
+      <svg viewBox="0 0 720 330" role="img" aria-label="从单笔风险到生活事件的五级停牌阶梯，级别越高停的时间越长">
+        <defs>
+          <marker id="f162-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="ar-fill"/></marker>
+        </defs>
+        <text x="20" y="34" class="wt">一级拦不住，下一级自动接手——越往上，停得越久</text>
+        <text x="20" y="56" class="nd">前四级由数字触发，不接受辩解；第五级由你自己触发，不算违规。</text>
+        <rect x="16" y="226" width="128" height="72" rx="8" class="node"/>
+        <text x="80" y="248" text-anchor="middle" class="nt">① 单笔刹车</text>
+        <text x="80" y="268" text-anchor="middle" class="nd">风险 ≤1%</text>
+        <text x="80" y="286" text-anchor="middle" class="nd">公式焊死（第 3 课）</text>
+        <rect x="156" y="184" width="128" height="72" rx="8" class="node"/>
+        <text x="220" y="206" text-anchor="middle" class="nt">② 日刹车</text>
+        <text x="220" y="226" text-anchor="middle" class="nd">当日连亏 2 笔</text>
+        <text x="220" y="244" text-anchor="middle" class="nd">停当日</text>
+        <rect x="296" y="142" width="128" height="72" rx="8" class="node-warn"/>
+        <text x="360" y="164" text-anchor="middle" class="nt">③ 周刹车</text>
+        <text x="360" y="184" text-anchor="middle" class="nd">一周 3 笔违规</text>
+        <text x="360" y="202" text-anchor="middle" class="nd">停一周</text>
+        <rect x="436" y="100" width="128" height="72" rx="8" class="node-dn"/>
+        <text x="500" y="122" text-anchor="middle" class="nt">④ 月刹车</text>
+        <text x="500" y="142" text-anchor="middle" class="nd">月累计 −6%</text>
+        <text x="500" y="160" text-anchor="middle" class="nd">停当月</text>
+        <rect x="576" y="58" width="128" height="72" rx="8" class="node-hi"/>
+        <text x="640" y="80" text-anchor="middle" class="nt">⑤ 生活刹车</text>
+        <text x="640" y="100" text-anchor="middle" class="nd">睡眠 · 情绪事件</text>
+        <text x="640" y="118" text-anchor="middle" class="nd">主动停牌</text>
+        <path d="M144 258 L156 224" class="edge" marker-end="url(#f162-ar)"/>
+        <path d="M284 216 L296 182" class="edge" marker-end="url(#f162-ar)"/>
+        <path d="M424 174 L436 140" class="edge" marker-end="url(#f162-ar)"/>
+        <path d="M564 132 L576 98" class="edge" marker-end="url(#f162-ar)"/>
+        <text x="16" y="322" class="nd">复牌三件套：停够时长（日停次日 · 周停满 7 天 · 月停下月 1 日）＋ 书面复盘写完 ＋ 复牌首日风险减半热身。</text>
+      </svg>
+    </div>
+    <figcaption><b>读图：</b>五级刹车防的是五种不同尺度的失控：单笔刹车防一次事故放大（第 3 课的"鲨鱼"），日刹车防报复交易当天滚雪球，周刹车防"违规变成习惯"，月刹车防判断力在深坑里继续挖（"食人鱼"），生活刹车防硬件状态拖垮执行。注意阶梯的形状：<b>每一级都比上一级停得更久</b>——因为能穿透上一级跑到这一级的问题，一定比上一级更深。还要注意第五级画在最高处：它是唯一由你主动触发的，也是唯一不算违规的——会用它，比永远用不上它的前四级更能说明你毕业了。</figcaption>
+  </figure>
+  <div class="prose">
+    <p>停牌容易，难的是怎么回来——"感觉好了"不是<span class="nt" data-note="resume">复牌</span>条件，感觉从来都说不准。复牌采取双条件制：<strong>时间停够，且书面复盘写完</strong>，缺一个都继续停。复盘有固定格子，照着填：</p>
+  </div>
+  <div class="copybar"><button type="button" id="copy-resume">复制模板</button><span class="done" id="done-resume"></span></div>
+  <pre class="copyblock" id="tpl-resume"><b>── 复牌申请（写完才许回来）──────────────</b>
+停牌类型：日 / 周 / 月 / 生活事件
+触发事实：____ 年 __ 月 __ 日，________________
+（写数字和事实：当日连亏 2 笔 / 本周第 3 笔违规 / 月累计 −6.2%…）
+当时的情绪与念头（照实写，不许美化）：________________
+涉事单复盘：#____、#____——每单一行，错在流程的哪一步
+修正动作（只许一条，必须可执行、可检查）：________________
+复牌日期：____（日停 → 次日；周停 → 满 7 天；月停 → 下月 1 日）
+复牌后第一天：单笔风险减半热身（0.5%），执行干净再恢复 1%</pre>
+  <div class="rulecard">
+    <div class="rc-head"><span class="label">规则卡</span><span class="rc-name">停牌与复牌规则卡（执行层 · 挂在系统 v1.0 外侧，不改动 v1.0 本体）</span></div>
+    <dl>
+      <dt>标的与周期</dt><dd>BTC / ETH 的 U 本位永续，模拟盘（转实盘条件见 16.5）；怎么打仗由第 15 课的四张模板卡决定，本卡不改它一个字——它只管开机和断电</dd>
+      <dt>过滤条件</dt><dd><b>五级断路器：</b>① 单笔风险 ≤1%（仓位公式焊死，第 3 课）；② 当日连亏 2 笔 → 停当日；③ 一周内评分 C / D 累计 3 笔 → 停一周（满 7 天）；④ 月累计 −6% → 停当月（第 3 课刹车，本课升格为正式停牌程序）；⑤ 睡眠不足、生病、重大情绪事件 → 主动停牌，不计违规</dd>
+      <dt>入场</dt><dd>每笔下单前对照计划书查表：模板名写得出、触发条件已满足（细则见第 15 课）——写不出模板名 ＝ 没有这笔单；停牌期间禁止开任何新仓，已有持仓带着原止损按原计划走完</dd>
+      <dt>止损</dt><dd>下单即挂止损市价单、标记价格触发（第 1 课铁律不变）；盘中修改只许向盈利方向收紧——任何放宽 ＝ 评分 D ＋ 当日停手；亏损仓位永不加仓</dd>
+      <dt>出场</dt><dd>按激活模板的出场规则执行（第 15 课）；手动提前离场必须当笔写明原因，视偏差计 B 或 C；<b>复牌双条件：</b>停够时长 ＋ 书面复牌申请写完，缺一不可</dd>
+      <dt>仓位</dt><dd>单笔 1% 维持；复牌首日与转实盘首月一律减半为 0.5%；月执行率 ＜80% → 下月整月 0.5%，回到 ≥90% 才恢复；一切规则修改走月复盘提案区——当周提案、次周一生效，盘中永远禁改</dd>
+    </dl>
+    <p class="rc-note">这张卡和 v1.0 的关系，就是电闸和电器的关系：它不参与做饭，只负责在闻到糊味的第一时间断电。特别说一句第 ⑤ 级：主动停牌不是认怂，是职业习惯——交易这行没有带伤上场的加分项，只有带伤上场的事故率。</p>
+  </div>
+  <div class="stock">
+    <span class="label">股票上怎么对照</span>
+    <h4>执行层是整门课里"搬家成本"最低的部分：百分之百通用</h4>
+    <ul>
+      <li><b>计划书、日志、执行评分、复盘：</b>原样照搬，一个字段都不用改——把"模板 A–D"换成你的股票策略名即可。心理与风控本来就不分市场；</li>
+      <li><b>刹车系统同源：</b>单笔 2% 与月度 6% 两道防线本来就是 Elder 在股票语境下提出的（第 3 课讲过，合约版收紧到 1%）；股票波动更小，参数可以放宽些，结构一模一样；</li>
+      <li><b>日刹车要按交易制度微调：</b>A 股 T+1 下"当日连亏 2 笔"较难触发，改成"连亏 2 天停 1 天"更合身；美股日内交易者原样照用；</li>
+      <li><b>处置效应的证据本来就来自股票：</b>Odean 研究的就是美股散户——卖盈留亏、挪止损、扛单，股民一样不少，只是杠杆低、死得慢；</li>
+      <li><b>熔断的思路是同一个：</b>美股大盘有三级熔断、A 股有涨跌停，都是"波动超限就强制冷静"。个人刹车系统等于把交易所级的制度装进自己账户——币圈没有官方熔断，这套就是你唯一的熔断。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= 16.5 ================= -->
+<section class="ch" id="s5">
+  <h2 class="sec"><span class="no">16.5</span>落地：转实盘门槛与毕业路线</h2>
+  <p class="sec-en">GOING LIVE AND THE ROAD AHEAD</p>
+  <div class="prose">
+    <p>课程的最后一个落地动作，是把"什么时候可以动真钱"写成和止损价一样客观的东西。注意这张表上没有"赚了多少"——第 3 课的模拟器演示过，20 笔的盈亏主要是运气；<strong>但 20 笔的执行率是真功夫</strong>，它几乎不受运气污染。六项门槛，全绿才放行：</p>
+  </div>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>门槛</th><th>标准</th><th>证据在日志哪里</th></tr></thead>
+      <tbody>
+        <tr><td><b>笔数</b></td><td>模拟 20–30 笔，每笔都有完整记录</td><td>单号连续无跳号——跳号就是漏记，漏记的多半是最难看的那笔</td></tr>
+        <tr><td><b>执行率</b></td><td>评分 A＋B 占比 ≥90%</td><td>周复盘第 1 行逐周加总</td></tr>
+        <tr><td><b>模板覆盖</b></td><td>A / B / C 每类至少实打过一笔；D 至少拦下过一次你想开的仓</td><td>分模板统计表每行笔数 ≥1；被 D 拦下的那次写在情绪栏</td></tr>
+        <tr><td><b>事件日</b></td><td>至少一次带仓或持币观望度过数据日 / FOMC，零违规</td><td>当日日志的"事件背景"栏 ＋ 评分</td></tr>
+        <tr><td><b>连亏</b></td><td>至少经历一次 ≥3 连亏，期间零违规（没加仓翻本、没降标准硬做）</td><td>R 列的连续负号段 ＋ 当周评分与违规清单</td></tr>
+        <tr><td><b>刹车</b></td><td>触发过的每一次停牌都有书面复牌申请</td><td>复牌申请存档（没触发过也行，但触发过而没写 ＝ 不合格）</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="prose">
+    <p>为什么"经历过事件日和连亏"也算门槛？因为没淋过雨的伞不算伞。考核期如果恰好风平浪静——没有数据夜、没有连亏——那说明市场还没出过考题，<strong>宁可多打 10 笔，等到考题出现</strong>。拿一张没考过试的卷子去动真钱，省下的时间会在实盘里加倍还回去。</p>
+  </div>
+  <figure class="lab">
+    <p class="fig-title"><span class="fno">图 16-3</span>考核仪表盘：你离实盘还有多远<span class="ia">互动</span></p>
+    <div class="ctrls">
+      <label class="rg"><span class="rg-top">已完成模拟笔数<output>12</output></span>
+        <input type="range" id="g-n" min="0" max="40" step="1" value="12"></label>
+      <label class="rg"><span class="rg-top">其中违规笔数（评分 C＋D）<output>2</output></span>
+        <input type="range" id="g-v" min="0" max="15" step="1" value="2"></label>
+    </div>
+    <div class="stats">
+      <div class="stat"><span class="k">执行率（A＋B 占比）</span><span class="v" id="g-rate">—</span><span class="s">门槛 ≥90%</span></div>
+      <div class="stat"><span class="k">考核笔数</span><span class="v" id="g-cnt">—</span><span class="s">门槛 ≥20 笔</span></div>
+      <div class="stat"><span class="k">违规笔数</span><span class="v warn" id="g-vio">—</span><span class="s">每一笔都在周复盘留了案底</span></div>
+      <div class="stat"><span class="k">前两项判定</span><span class="v" id="g-verdict">—</span><span class="s">另四项要翻日志核对</span></div>
+    </div>
+    <p class="lab-msg" id="g-msg"></p>
+    <figcaption><b>读图：</b>执行率 ＝ 评分 A＋B 的占比，这台计算器只核前两项门槛，另外四项（模板覆盖、事件日、连亏、刹车记录）要对着上表翻日志打勾。试两件事：① 拉到 30 笔、违规 3 笔——执行率恰好 90% 压线：30 笔的预算里只容得下 3 次失控，这就是"每一笔违规都很贵"的量化含义；② 拉到 10 笔、违规 0 笔——100% 的执行率也不放行，<b>小样本的满分和小样本的盈亏一样，说明不了任何事</b>。</figcaption>
+  </figure>
+  <div class="prose">
+    <h3>转实盘第一个月：0.5%，验证一个新变量</h3>
+    <p>门槛全绿之后转实盘：1 万元本金，按计划书每笔风险 1% ＝ 100 元——但<strong>第一个月一律减半到 0.5% ＝ 50 元</strong>。原因是实盘引入了一个模拟盘测不出的新变量：真钱的疼。同样 −1R，模拟盘是个数字，实盘是你半天的工资——手会不会抖、止损还敢不敢挂满、连亏两笔后还守不守日刹车，这些只有真钱能考。老规矩（工具页就立了的）：<strong>一次只检验一个变量</strong>——首月减半，就是把"真钱压力"这个变量单独拎出来考；首月执行率守住 90%，第二个月恢复 1%，从此按第 3 课的刹车体系长期运转。</p>
+    <p>开实盘账户的那个下午，顺手把第 12 课的防身术清单执行掉：两步验证、API 权限最小化（永远不开提现权限）、备用交易所、长期资产离所存放、每月一次小额提现测试。系统防的是行情风险，那张清单防的是"交易所本身没了"——FTX 的教训，别让它白学。</p>
+    <h3>从这里去哪：阶段 4 的循环，阶段 5 的桥</h3>
+    <p><strong>阶段 4（学习地图）</strong>从明天开始：模拟 → 达标 → 小资金实盘的循环。每周复盘只问"有没有按计划做"；遇到新的大行情，按第 13 课的六步复盘法自己写一份案例，存进日志；哪里被打疼了再回头补哪一课——这门课从此变成你的工具书，不再是课程表。</p>
+    <p><strong>阶段 5（量化）</strong>的入口藏在你的周复盘里。什么时候该出发？当你开始对分模板统计表提问的时候——"模板 B 这 30 笔平均 −0.2R，是行情不配合，还是规则本身有问题？"这种问题手工日志回答不动，就该让代码接手。路线三步：先读《海龟交易法则》，看一套完整的机械化系统长什么样（你会惊讶它和你的模板卡结构多像）；然后把你自己的模板卡逐条翻译成代码、用历史数据回测——<strong>你的分模板统计表就是现成的回测假设清单，每一行都是一个待验证的策略</strong>；最后用 Chan《量化交易》解决数据质量、过拟合、成本和执行这些工程问题。到那天你会发现，这两三个月手写的日志，就是你的第一份研究数据集。</p>
+  </div>
+  <div class="sysup">
+    <span class="label">系统升级</span>
+    <h4>你的交易系统：v1.0 → v1.0 ＋ 执行层（计划书、日志、刹车）</h4>
+    <p>本课装进系统的零件：一页纸计划书（含修改条款与冷静期）· 日志完整版与执行评分 A–D · 四大恶习断路器 · 五级停牌与复牌程序 · 转实盘门槛与首月减半。至此 16 课全部走完：第 15 课的 v1.0 回答"怎么打"，本课的执行层回答"怎么保证真的按它打"。没有 v1.1 了——下一个版本号，由你的月复盘提案区来发布。</p>
+  </div>
+  <div class="task">
+    <span class="label">本周模拟任务</span>
+    <h4>毕业考，三件事（模拟盘，20–30 笔起考）</h4>
+    <ol>
+      <li><b>写出你自己的《交易计划书 v1.0》：</b>复制 16.1 的模板，逐栏改成你的参数（模板摘要抄你在第 15 课定稿的四张规则卡），打印或存成带日期的文件，签名。往后每个交易日开盘前读一遍——读一页纸要不了两分钟；</li>
+      <li><b>日志切换到完整版：</b>复制 16.2 的单笔模板开新账本；先把最近 3 笔旧单用完整版格式补记一遍练手（三票、环境态、评分都补上），之后所有新单一律用完整版，周日晚跑周复盘、月末跑月复盘；</li>
+      <li><b>启动 20–30 笔正式考核：</b>从下一笔开始计数，并在日历上预约"考核后复盘"——第 20 笔之后的第一个周日，对照 16.5 的六项门槛逐项打勾：全绿就按 0.5% 转实盘，不全绿就写明缺哪项、再打 10 笔。<b>这场考试没有不及格，只有"再考一次"——但跳过考试直接上实盘，是整门课教过的最贵的违规。</b></li>
+    </ol>
+  </div>
+  <div class="prose">
+    <h3>出发前的装备盘点</h3>
+    <p>十六课之前，你的自我介绍是"无头苍蝇"。现在清点一下行囊：第 1 课的安全带——你知道强平引擎怎么运转、标记价格判谁生死，下单即挂止损已经是肌肉记忆；第 2、3 课的底盘——三周期分工、看盘节律、1% 仓位公式、R 记账、6% 刹车，"怎么亏"被彻底工程化；第 4 到 10 课的工具箱——七课指标，每个只干一件事，拧成了 v0.7；第 11 到 14 课的雷达——宏观滤镜、币圈事件滤镜，外加两场极端行情的完整复盘，你见过这台机器在风暴里的样子；第 15 课的说明书——四套模板，什么环境打什么仗；加上本课的合同、测谎仪和断路器。课程能给的，到这里全部给完了。接下来的 20–30 笔，老师换成市场本人——它收费贵、脾气差，但教的都是真的。愿你的执行率常年站在 90% 之上，愿你的每一笔亏损都"按计划"，愿你某天带着一本厚厚的日志回来，把它写成代码。出发。</p>
+  </div>
+</section>
+
+<!-- ================= 小结 ================= -->
+<section class="ch recap" id="recap">
+  <h2 class="sec"><span class="no">★</span>本课小结</h2>
+  <p class="sec-en">RECAP</p>
+  <div class="prose">
+    <ol>
+      <li><b>执行层三件套</b>：计划书是合同，日志是测谎仪，刹车是断路器——v1.0 加上它们才算一台完整的机器；杀死账户的从来不是系统，是临场替系统做决定的人。</li>
+      <li><b>盘中只有执行，没有决策</b>：所有决策盘后做完写在纸上，盘中的每个动作都只是查表；查不到的情况，答案一律是"不做"。</li>
+      <li><b>计划书最重要的一条是修改条款</b>：任何修改必须盘后书面提出、附统计依据、当周提案次周生效——能盘中修改的规则不叫规则，叫心情。</li>
+      <li><b>日志完整版的每个字段都有下游</b>：模板、环境、三票、滤网喂给复盘；分模板统计表就是你未来量化的第一张策略绩效表。</li>
+      <li><b>执行评分 A–D 只评过程</b>：按计划亏钱是 A，违规赚钱是 C 起步——盈亏列好看、评分列难看的账户，长期斜率由评分列决定。</li>
+      <li><b>四大恶习各配一个断路器</b>：挪止损（只许收紧）、报复单（日停）、追单（没有触发条件 ＝ 没有这笔单）、补仓（亏损仓位永不加仓）。</li>
+      <li><b>亏损用 R 说话</b>："今天 −1R，按计划"；连亏是统计属性不是人格缺陷——50% 胜率 100 笔内中位最长连亏 6 笔，先查执行，再谈系统。</li>
+      <li><b>五级刹车与双条件复牌</b>：单笔 1% → 日（连亏 2 笔）→ 周（3 笔违规）→ 月（−6%）→ 生活事件主动停牌；复牌 ＝ 停够时长 ＋ 书面复盘，首日减半热身。转实盘门槛六项全绿，首月 0.5%。</li>
+    </ol>
+  </div>
+
+  <h3>术语一览（点击正文中的角标词可随时弹出）</h3>
+  <ol class="notes-list" id="notes-list"></ol>
+
+  <h3>自测</h3>
+  <details><summary>1. 为什么说修改条款是计划书里最重要的一条？盘中你想到一个"明显更好"的参数，正确流程是什么？</summary>
+    <div class="ans"><p>其他六栏都是"内容"，修改条款是"元规则"——它决定所有其他条款在压力下还算不算数：没有它，任何规则都可以在浮亏时被临场"优化"掉，计划书退化成装饰品。盘中想到好参数的流程：① 用一句话记进提案区（手机备忘录即可），② 当下继续按旧规则执行，③ 月复盘时带着分模板统计写成正式提案，④ 通过则次周一生效并改写计划书。顺便说个经验规律：盘后再看，十个"明显更好"的参数里九个只是当时那笔仓位的辩护律师。</p></div>
+  </details>
+  <details><summary>2. 一笔赚了 ＋2.3R 但全程没挂止损的单，评分是什么？为什么说它比一笔 −1R 的 A 单更危险？</summary>
+    <div class="ans"><p>评分 C（打破"下单即挂止损"这条硬规则；若同时还踩了四大恶习则 D），并计入断路器的违规计数。更危险的原因有二：① 风险敞口——没挂止损的单，最坏情况不是 −1R，是 10·10 那种日内 −17% 直奔强平；−1R 的 A 单最坏情况就是 −1R，像房租一样封顶；② 行为强化——心理学里最强的习惯塑造器是"违规之后紧跟奖励"：这 ＋2.3R 会让下一次不挂止损变得更容易。执行评分存在的意义，就是在盈亏列给你发糖的时候拉响警报。</p></div>
+  </details>
+  <details><summary>3. 连亏 4 笔之后，你强烈想把下一笔仓位加倍"效率回本"。用本课加第 3 课的语言，给出至少三个反驳。</summary>
+    <div class="ans"><p>① 统计上：连亏 4 笔在 40%–50% 胜率的系统里是例行节目（第 3 课概率表：50% 胜率 100 笔内 5 连亏概率 81%），它不包含"下一笔更容易赢"的任何信息——期望值不因你需要回本而改变；② 数学上：输了加码就是马丁格尔，它不改期望值，只把结果分布改写成"平时小赢 ＋ 某天毁灭"（第 3 课拆过翻倍链断裂的账）；加倍风险真正放大的是你估错参数的代价；③ 程序上：按日刹车，当日连亏 2 笔你就该停当日了——还在盘前琢磨第 5 笔，说明断路器没执行，先补写复牌申请再说；④ 身份上：这个念头本身就是 16.3 的恶习 ②（报复性交易）的标准话术——把它一字不差写进"情绪一句话"，是本周日志里最值钱的一行。</p></div>
+  </details>
+  <details><summary>4. 五级刹车分别防什么尺度的失控？为什么复牌必须书面复盘，"感觉好了就回来"不行？</summary>
+    <div class="ans"><p>单笔刹车防单次事故放大（第 3 课的鲨鱼）；日刹车防报复交易在当天滚雪球；周刹车防违规从偶发变成习惯；月刹车防判断力在深坑里继续挖（食人鱼）；生活刹车防身体硬件拖垮执行。书面复盘是复牌条件，因为停牌的目的不是惩罚，是修理：不写明"触发事实 ＋ 情绪 ＋ 流程哪一步坏了 ＋ 一条修正动作"，停牌只是"暂停犯错"，复牌当天原样复发。而"感觉好了"恰恰是最不可信的信号——判断力受损的核心症状，就是感觉自己判断力没问题。写下来，下次月复盘才能核对同一个错误有没有重复出现。</p></div>
+  </details>
+  <details><summary>5. 考核两个月：执行率 95%，但账户 −4%，分模板表显示模板 B 合计 −6R。该修心态、修执行，还是修系统？具体怎么走？</summary>
+    <div class="ans"><p>都不是心态问题：执行率 95% 已经排除了执行和心理（这正是把执行率和盈亏分开记的好处——它能告诉你问题不在哪）。这是系统与行情的匹配问题，走月复盘提案区：① 先看样本量——B 有多少笔？不足 10 笔先别审判，统计噪音完全盖得住 −6R；② 查环境态列——B 是突破型模板，如果这两个月环境态大都是震荡，亏损可能是"环境错配但滤网放行了"，该修的是环境判定或滤网阈值，不是 B 本身；③ 形成书面提案（附数据），冷静期后生效，并且一次只改一个变量。这道题就是"心态好就能赚钱"的反面教材：执行层只能保证按规则做，规则值不值得做要靠统计说话——这正是阶段 5 的入口。</p></div>
+  </details>
+  <details><summary>6. 六项门槛全绿了，为什么转实盘第一个月还要把风险从 1% 减到 0.5%？</summary>
+    <div class="ans"><p>因为实盘引入了一个模拟盘无法测试的新变量：真钱的情绪负载。模拟盘的 −1R 是屏幕上的数字，实盘的 −100 元是半天工资——止损还敢不敢挂满、连亏后还守不守日刹车，只有真钱能考出来。按"一次只检验一个变量"的老规矩（工具页周复盘第 5 条），首月减半就是把这个新变量单独拎出来测：如果执行率在 0.5% 下都守不住 90%，说明问题在压力承受而不在系统，加大风险只会放大它。首月干净，第二个月才恢复 1% ＝ 100 元。顺带的数学红利：0.5% 下哪怕撞上中位数级别的 6 连亏，也只是 −3%，离月刹车还有一半余量——给"实盘新手期"多买了一层保险。</p></div>
+  </details>
+
+  <nav class="pager" aria-label="课程导航">
+    <a class="pg" href="ct-l15.html"><span class="pg-dir">上一课</span><span class="pg-ttl">第 15 课 · 组合原则与四套模板</span></a>
+    <a class="pg pg-toc" href="ct-index.html"><span class="pg-dir">返回</span><span class="pg-ttl">学习地图</span></a>
+    <span class="pg pg-next is-off"><span class="pg-dir">课程完结</span><span class="pg-ttl">进入实战循环（学习地图 · 阶段 4）</span></span>
+  </nav>
+
+  <p class="foot">本课为规则与模板课，不含新的行情数据；文中引用的统计（连亏概率、回撤算术、心跳与费率等）均出自前课由本地真实数据计算的结论。研究引用：Odean（1998）、Shefrin 与 Statman（1985，处置效应命名）、Gawande《清单革命》（2009）。本讲义仅为学习笔记，不构成投资建议；合约交易风险极高。</p>
+</section>
+
+</main>
+</div>
+
+<!-- ================= 术语弹注内容 ================= -->
+<div class="notes-src" hidden>
+  <section data-note-id="plan-doc" data-title="计划书" data-en="Trading Plan">
+    <p>把交易系统的全部规则——标的、模板、风险总则、作息、复盘节律和修改程序——写成的一页纸文件，签名注明日期。它的约束力不来自意志力，来自配套机制：日志负责发现偏离（执行评分），刹车负责让偏离付出代价（停牌）。合同、测谎仪、断路器三件套里的第一件。</p>
+  </section>
+  <section data-note-id="ulysses" data-title="尤利西斯合同" data-en="Ulysses Contract">
+    <p>行为经济学术语：在冷静时刻预先限制未来自己选择权的承诺装置，得名于《奥德赛》里奥德修斯把自己绑上桅杆听海妖歌声的桥段——他预见到未来的自己会失控，就提前没收了那个自己的权限。止损单、停牌规则、修改冷静期，都是交易里的尤利西斯合同：对抗冲动的最好时机永远是冲动来临之前。</p>
+  </section>
+  <section data-note-id="cooloff" data-title="冷静期" data-en="Cooling-off Period">
+    <p>借自消费者保护法的概念（大额消费后的法定"后悔期"）。本课用在规则修改上：提案与生效之间强制隔到下周一，确保改规则的是复盘桌前冷静的你，而不是刚被行情打疼、急着"优化"的你。盘中冒出的修改冲动一律先排队——绝大多数排完队就自己消失了。</p>
+  </section>
+  <section data-note-id="exec-grade" data-title="执行评分" data-en="Execution Grade">
+    <p>对单笔交易"过程质量"的打分，本课用 A–D 四档：A 全按计划（含按计划亏损），B 小偏差不碰硬规则，C 打破一条硬规则，D 多条违规或触碰四大恶习。与盈亏完全无关——按计划亏钱是 A，违规赚钱是 C 起步。周复盘的执行率 ＝ A＋B 的占比，也是断路器的违规计数来源。</p>
+  </section>
+  <section data-note-id="disposition" data-title="处置效应" data-en="Disposition Effect">
+    <p>Shefrin 与 Statman（1985）命名、Odean（1998）用真实券商账户数据证实的行为偏差：人倾向于过早兑现盈利、过久持有亏损——赢的单想落袋为安，亏的单想"等它回来"。挪止损和补仓扛单都是它的合约版表现。因为它是人类默认设置而非个别性格缺陷，对抗它靠的是挂单和程序，不是决心。</p>
+  </section>
+  <section data-note-id="breaker" data-title="断路器" data-en="Circuit Breaker">
+    <p>电路里电流过载就自动切断的开关，交易里泛指"条件一触发就强制停止交易"的硬规则。设计三原则：触发客观（数字说了算）、动作简单（只有"停"）、恢复有程序（复牌要书面复盘）。交易所层面的版本叫熔断（如美股三级熔断），本课装的是个人账户版——币圈没有官方熔断，这套就是你唯一的熔断。</p>
+  </section>
+  <section data-note-id="halt" data-title="停牌" data-en="Trading Halt">
+    <p>股票因重大事项被交易所暂停交易叫停牌。本课借用这个词指"按规则暂停自己的交易权限"：日停（当日连亏 2 笔）、周停（一周 3 笔违规）、月停（累计 −6%）、生活停（睡眠不足或情绪事件，主动触发、不算违规）。停牌期间禁开新仓，已有持仓带着原止损按原计划走完。</p>
+  </section>
+  <section data-note-id="resume" data-title="复牌" data-en="Resumption">
+    <p>停牌结束、恢复交易。本课规定复牌是双条件制：停够时长（日停次日、周停满 7 天、月停下月 1 日）且书面复牌申请写完（触发事实、情绪、流程复盘、一条修正动作），缺一不可——"感觉好了"不是条件。复牌首日单笔风险减半热身，执行干净再恢复正常档位。</p>
+  </section>
+</div>
+
+<script src="assets/lightweight-charts.js"></script>
+<script src="assets/ct.js"></script>
+<script src="assets/ctchart.js"></script>
+<script>
+(function(){
+'use strict';
+var fmt = CT.fmtN;
+
+/* ---------- 复制按钮 ---------- */
+function wire(btnId, preId, doneId){
+  var b = document.getElementById(btnId);
+  if(!b) return;
+  b.addEventListener('click', function(){
+    var txt = document.getElementById(preId).innerText;
+    function ok(){
+      document.getElementById(doneId).textContent = '已复制，去粘贴吧';
+      setTimeout(function(){ document.getElementById(doneId).textContent = ''; }, 3000);
+    }
+    function fallback(){
+      var ta = document.createElement('textarea');
+      ta.value = txt; document.body.appendChild(ta); ta.select();
+      try{ document.execCommand('copy'); ok(); }catch(e){}
+      ta.remove();
+    }
+    try{
+      navigator.clipboard.writeText(txt).then(ok, fallback);
+    }catch(e){ fallback(); }
+  });
+}
+wire('copy-plan', 'tpl-plan', 'done-plan');
+wire('copy-trade', 'tpl-trade', 'done-trade');
+wire('copy-week', 'tpl-week', 'done-week');
+wire('copy-month', 'tpl-month', 'done-month');
+wire('copy-resume', 'tpl-resume', 'done-resume');
+
+/* ---------- 图 16-3 考核仪表盘 ---------- */
+(function(){
+  var n = 12, v = 2;
+  function paint(){
+    var vv = Math.min(v, n);
+    var rate = n > 0 ? (n - vv) / n * 100 : 0;
+    var rateEl = document.getElementById('g-rate');
+    rateEl.textContent = n > 0 ? fmt(rate, 0) + '%' : '—';
+    rateEl.className = 'v ' + (n > 0 && rate >= 90 ? 'up' : 'dn');
+    var cntEl = document.getElementById('g-cnt');
+    cntEl.textContent = n + ' 笔';
+    cntEl.className = 'v ' + (n >= 20 ? 'up' : '');
+    document.getElementById('g-vio').textContent = vv + ' 笔';
+    var verdictEl = document.getElementById('g-verdict');
+    var msg;
+    if(n < 20){
+      verdictEl.textContent = '继续积累';
+      verdictEl.className = 'v';
+      msg = '样本还不够：还差 <b>' + (20 - n) + ' 笔</b>到最低门槛。执行率要在 20 笔以上才有意义——第 3 课说过 20 笔的盈亏说明不了任何事，对执行率同样成立，别用 ' + (n || '几') + ' 笔的漂亮数字骗自己。安心打单，每笔完整记录。';
+    }else if(rate >= 90){
+      verdictEl.textContent = '前两项通过';
+      verdictEl.className = 'v up';
+      msg = '笔数和执行率都过线了。注意这只是六项门槛的前两项——<b>模板覆盖、事件日、连亏、刹车记录</b>四项要对着上表翻日志逐项打勾。全绿才启动转实盘流程：首月 0.5% ＝ 50 元 / 笔，验证"真钱压力"这一个新变量。';
+    }else{
+      verdictEl.textContent = '先修执行';
+      verdictEl.className = 'v dn';
+      msg = '执行率 <b>' + fmt(rate, 0) + '%</b>，不足 90%：问题不在系统，在执行。回到 16.3 对号入座——' + vv + ' 笔违规各是哪个恶习干的？对应断路器有没有真的停？违规率降不下来之前，加笔数没有意义：<b>连续 10 笔零违规之后，再重新起算考核</b>。';
+    }
+    if(v > n && n > 0){
+      msg += '（违规笔数已按总笔数 ' + n + ' 截断。）';
+    }
+    document.getElementById('g-msg').innerHTML = msg;
+  }
+  CT.bindRange('g-n', function(val){ n = val; paint(); });
+  CT.bindRange('g-v', function(val){ v = val; paint(); });
+  paint();
+})();
+})();
+</script>
+</body>
+</html>
