@@ -10,13 +10,13 @@
 <aside class="side"><div class="brand">PERSONAL AGENT / FIELD GUIDE</div>
 <h2><a href="index.html">个人 Agent 学习手册</a></h2>
 <nav aria-label="本章目录"><a href="#scope">本章位置与问题地图</a><a href="#outline">学习范围、关键机制与复习问题</a></nav>
-<p>本地静态文档 · 离线可读<br>概念 → 图解 → 案例 → 判断 → FAQ<br>无需服务、登录或模型 API</p></aside><main id="main">
+<p>Personal Agent · 图解教程<br>概念 → 图解 → 案例 → 判断 → FAQ<br>按章节阅读 · 用 FAQ 复习</p></aside><main id="main">
 <header><div class="eyebrow">第 10 章 · 章节提纲 · 非完整教材</div><h1>执行环境、安全与权限</h1>
 <p class="lede">在完整路线中保留这一章的位置、学习问题与验收标准；深入正文将按章节顺序补齐。</p>
 <p class="meta">更新于 2026-11-18 · 图中案例为教学设定 · 阅读不自动代表掌握</p></header>
 <section id="scope">
 <h2><span class="num">第 10 章 / 01</span>本章位置与问题地图</h2><div class="callout warn">
-<p><strong>章节提纲 · 待深入撰写。</strong>本轮完整重写第 01—03 章；本章将既有大纲转换为离线 HTML。下文中的实验、实现和验收均是后续设计，不代表已经执行。</p></div>
+<p><strong>章节提纲 · 待深入撰写。</strong>本轮完整重写第 01—03 章；本章将既有大纲整理为章节提纲。下文中的实验、实现和验收均是后续设计，不代表已经执行。</p></div>
 <figure><div class="fig-title">本章的问题地图</div><div class="stack"><div class="layer"><b>10.1 运行边界</b><small>进程、容器、VM、远端服务；文件/网络/资源隔离；开发 Docker 与工具沙箱区别</small></div><div class="layer"><b>10.2 身份与能力</b><small>用户/组织/项目/Agent/工具账号；认证、授权、scopes、凭据出口和最小权限</small></div><div class="layer"><b>10.3 不可信内容</b><small>Prompt Injection、工具结果污染、记忆投毒、指令与资料分离</small></div><div class="layer"><b>10.4 行动确认</b><small>风险、预览、确认参数/版本、执行前重检、撤销与补偿；TOCTOU 时间差</small></div><div class="layer"><b>10.5 数据生命周期</b><small>工作区、临时文件、持久产物、日志脱敏、账号隔离、删除范围与审计</small></div></div><figcaption>按前置依赖逐节推进。这里保留已确认的课程范围；下面是章节提纲，尚未改写成与第 01—03 章同深度的连续教材。</figcaption></figure></section>
 <section id="outline">
 <h2><span class="num">第 10 章 / 02</span>学习范围、关键机制与复习问题</h2>
@@ -32,4 +32,4 @@
 <li><strong>Prompt Injection 为什么不能只靠提示词解决？</strong> 外部内容可能诱导模型提出错误行动。我还需要限制可用能力、验证参数和权限，并检查实际结果。</li>
 <li><strong>用户说过同意，为什么还要检查？</strong> 我会看同意对应哪个对象和版本。时间或参数变了，原来的确认未必仍适用。</li>
 </ul></section>
-<nav class="endnav" aria-label="章节翻页"><a href="chapter-09.html">← 第 09 章</a><a href="chapter-11.html">第 11 章 →</a></nav><footer>Personal Agent 学习与面试培训。章节范围以 learning-outline.md 为准，四类进度以 course-progress.md 为准。本文不包含实践代码或交互实验。</footer></main></div></body></html>
+<nav class="endnav" aria-label="章节翻页"><a href="chapter-09.html">← 第 09 章</a><a href="chapter-11.html">第 11 章 →</a></nav><footer>Personal Agent 学习与面试培训。按章节逐步学习，用案例和 FAQ 检查自己的解释；教学示例不代表真实生产经历。</footer></main></div></body></html>

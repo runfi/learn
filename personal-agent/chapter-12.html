@@ -10,13 +10,13 @@
 <aside class="side"><div class="brand">PERSONAL AGENT / FIELD GUIDE</div>
 <h2><a href="index.html">个人 Agent 学习手册</a></h2>
 <nav aria-label="本章目录"><a href="#scope">本章位置与问题地图</a><a href="#outline">学习范围、关键机制与复习问题</a></nav>
-<p>本地静态文档 · 离线可读<br>概念 → 图解 → 案例 → 判断 → FAQ<br>无需服务、登录或模型 API</p></aside><main id="main">
+<p>Personal Agent · 图解教程<br>概念 → 图解 → 案例 → 判断 → FAQ<br>按章节阅读 · 用 FAQ 复习</p></aside><main id="main">
 <header><div class="eyebrow">第 12 章 · 章节提纲 · 非完整教材</div><h1>系统评估、问题定位与 RSI</h1>
 <p class="lede">在完整路线中保留这一章的位置、学习问题与验收标准；深入正文将按章节顺序补齐。</p>
 <p class="meta">更新于 2026-11-18 · 图中案例为教学设定 · 阅读不自动代表掌握</p></header>
 <section id="scope">
 <h2><span class="num">第 12 章 / 01</span>本章位置与问题地图</h2><div class="callout warn">
-<p><strong>章节提纲 · 待深入撰写。</strong>本轮完整重写第 01—03 章；本章将既有大纲转换为离线 HTML。下文中的实验、实现和验收均是后续设计，不代表已经执行。</p></div>
+<p><strong>章节提纲 · 待深入撰写。</strong>本轮完整重写第 01—03 章；本章将既有大纲整理为章节提纲。下文中的实验、实现和验收均是后续设计，不代表已经执行。</p></div>
 <figure><div class="fig-title">本章的问题地图</div><div class="stack"><div class="layer"><b>12.1 评估对象</b><small>单元/契约/端到端、回答/检索/记忆/工具/任务；离线与在线差别</small></div><div class="layer"><b>12.2 数据与评分</b><small>基准、失败集、开发集/保留集、规则/人工/模型评分；评分偏差与来源支持</small></div><div class="layer"><b>12.3 对照与诊断</b><small>随机性、多次运行、样本限制、质量/成本/延迟；归因、消融与回归</small></div><div class="layer"><b>12.4 自我改进的层次</b><small>单次自我检查、经验记忆、prompt/skill/策略调整、工具或代码自修改；参数训练边界</small></div><div class="layer"><b>12.5 RSI 闭环</b><small>失败反馈 → 候选差异 → 隔离执行 → 保留集评估 → 接受/拒绝 → 新版本参与下一轮</small></div><div class="layer"><b>12.6 改进的边界</b><small>评估泄漏、过拟合、投机评分、改评估器/权限、错误自强化、预算与无收益停止</small></div></div><figcaption>按前置依赖逐节推进。这里保留已确认的课程范围；下面是章节提纲，尚未改写成与第 01—03 章同深度的连续教材。</figcaption></figure></section>
 <section id="outline">
 <h2><span class="num">第 12 章 / 02</span>学习范围、关键机制与复习问题</h2>
@@ -34,4 +34,4 @@
 <li><strong>RSI 和记住一次教训有什么区别？</strong> 记住教训通常只是更新外部记忆。RSI 还要说清 Agent 怎么改自身策略或实现，以及改进后的版本怎样参与后续改进，并用结果验证。</li>
 <li><strong>自评得分更高为什么还不能上线？</strong> 评分器可能偏、数据可能泄漏，也可能只优化了训练场景。我会看保留任务和回归结果，失败就拒绝或回滚。</li>
 </ul></section>
-<nav class="endnav" aria-label="章节翻页"><a href="chapter-11.html">← 第 11 章</a><a href="chapter-13.html">第 13 章 →</a></nav><footer>Personal Agent 学习与面试培训。章节范围以 learning-outline.md 为准，四类进度以 course-progress.md 为准。本文不包含实践代码或交互实验。</footer></main></div></body></html>
+<nav class="endnav" aria-label="章节翻页"><a href="chapter-11.html">← 第 11 章</a><a href="chapter-13.html">第 13 章 →</a></nav><footer>Personal Agent 学习与面试培训。按章节逐步学习，用案例和 FAQ 检查自己的解释；教学示例不代表真实生产经历。</footer></main></div></body></html>

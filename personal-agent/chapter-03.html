@@ -10,7 +10,7 @@
 <aside class="side"><div class="brand">PERSONAL AGENT / FIELD GUIDE</div>
 <h2><a href="index.html">个人 Agent 学习手册</a></h2>
 <nav aria-label="本章目录"><a href="#goal">从回答一句话，到推进一个目标</a><a href="#loop">最小闭环：决策、行动、观察、再决策</a><a href="#decision">下一步不是只有“继续调用工具”</a><a href="#tools">模型提议什么，执行器真正做什么</a><a href="#identity">调用、尝试与业务操作：三个 ID 不是一回事</a><a href="#walkthrough">完整案例 C：从请求到日历结果</a><a href="#approval">确认绑定具体候选，而不是一句泛泛的“可以”</a><a href="#failure">失败不是同一种失败：纠正、重试、查证、停止</a><a href="#control">循环怎样收敛：预算、进展与停止原因</a><a href="#design">把可控的部分交给规则，把不确定判断留给模型</a><a href="#review">总结、自述与面试 FAQ</a><a href="#sources">依据与继续阅读</a></nav>
-<p>本地静态文档 · 离线可读<br>概念 → 图解 → 案例 → 判断 → FAQ<br>无需服务、登录或模型 API</p></aside><main id="main">
+<p>Personal Agent · 图解教程<br>概念 → 图解 → 案例 → 判断 → FAQ<br>按章节阅读 · 用 FAQ 复习</p></aside><main id="main">
 <header><div class="eyebrow">第 03 章 · 深入教材 · 理论阅读</div><h1>最小 Agent 循环与工具执行</h1>
 <p class="lede">让一次调用进入受约束的行动闭环：根据反馈继续推进，在需要时等待、查证或停止，并用外部事实判断任务完成。</p>
 <p class="meta">更新于 2026-11-18 · 图中案例为教学设定 · 阅读不自动代表掌握</p></header>
@@ -129,6 +129,6 @@
 <p><strong>本章的自述主线：</strong>目标 → 候选行动 → 系统检查 → 工具事实 → 更新状态 → 继续 / 等待 / 结束。第 04 章将进一步回答：工具能力怎样定义、发现、准确调用、扩展和组合。</p></div></section>
 <section id="sources">
 <h2><span class="num">第 03 章 / 12</span>依据与继续阅读</h2>
-<p class="small">核对日期：2026-11-18。以下资料用于对应的通用机制；图、数字和生产情境另标为教学示意，不声称复现论文或描述 Muse 内部实现。来源链接需联网，正文与图解无需联网。</p><ol class="sources"><li><a href="https://arxiv.org/abs/2210.03629">ReAct: Synergizing Reasoning and Acting in Language Models</a> — 2022 论文，页面为 v3；用于行动与环境反馈的研究背景，不要求披露隐藏思维。</li><li><a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview">Claude · Tool use overview</a> — 区分客户端和服务端工具；协议字段随产品不同，不能据此推断 Muse 内部实现。</li><li><a href="https://www.anthropic.com/research/building-effective-agents">Anthropic · Building effective agents</a> — 2024 文章的流程与动态决策分类；本文确认、预算和状态图是独立教学设计。</li><li><a href="https://www.rfc-editor.org/rfc/rfc9110.html#section-9.2">RFC 9110 · HTTP Semantics</a> — 幂等和重试的协议背景；外部业务效果仍需具体服务契约。</li></ol>
+<p class="small">核对日期：2026-11-18。以下资料用于对应的通用机制；图、数字和生产情境另标为教学示意，不声称复现论文或描述 Muse 内部实现。原始资料见以下链接，建议先完成本章，再按需延伸阅读。</p><ol class="sources"><li><a href="https://arxiv.org/abs/2210.03629">ReAct: Synergizing Reasoning and Acting in Language Models</a> — 2022 论文，页面为 v3；用于行动与环境反馈的研究背景，不要求披露隐藏思维。</li><li><a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview">Claude · Tool use overview</a> — 区分客户端和服务端工具；协议字段随产品不同，不能据此推断 Muse 内部实现。</li><li><a href="https://www.anthropic.com/research/building-effective-agents">Anthropic · Building effective agents</a> — 2024 文章的流程与动态决策分类；本文确认、预算和状态图是独立教学设计。</li><li><a href="https://www.rfc-editor.org/rfc/rfc9110.html#section-9.2">RFC 9110 · HTTP Semantics</a> — 幂等和重试的协议背景；外部业务效果仍需具体服务契约。</li></ol>
 <p>案例日期、日程与变体遵循 <a href="casebook.html">固定案例册</a>。本章没有声称工具循环实践已经实现。</p></section>
-<nav class="endnav" aria-label="章节翻页"><a href="chapter-02.html">← 第 02 章</a><a href="chapter-04.html">第 04 章 →</a></nav><footer>Personal Agent 学习与面试培训。章节范围以 learning-outline.md 为准，四类进度以 course-progress.md 为准。本文不包含实践代码或交互实验。</footer></main></div></body></html>
+<nav class="endnav" aria-label="章节翻页"><a href="chapter-02.html">← 第 02 章</a><a href="chapter-04.html">第 04 章 →</a></nav><footer>Personal Agent 学习与面试培训。按章节逐步学习，用案例和 FAQ 检查自己的解释；教学示例不代表真实生产经历。</footer></main></div></body></html>

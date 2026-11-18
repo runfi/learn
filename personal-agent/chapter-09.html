@@ -10,13 +10,13 @@
 <aside class="side"><div class="brand">PERSONAL AGENT / FIELD GUIDE</div>
 <h2><a href="index.html">个人 Agent 学习手册</a></h2>
 <nav aria-label="本章目录"><a href="#scope">本章位置与问题地图</a><a href="#outline">学习范围、关键机制与复习问题</a></nav>
-<p>本地静态文档 · 离线可读<br>概念 → 图解 → 案例 → 判断 → FAQ<br>无需服务、登录或模型 API</p></aside><main id="main">
+<p>Personal Agent · 图解教程<br>概念 → 图解 → 案例 → 判断 → FAQ<br>按章节阅读 · 用 FAQ 复习</p></aside><main id="main">
 <header><div class="eyebrow">第 09 章 · 章节提纲 · 非完整教材</div><h1>复杂任务、后台执行与恢复</h1>
 <p class="lede">在完整路线中保留这一章的位置、学习问题与验收标准；深入正文将按章节顺序补齐。</p>
 <p class="meta">更新于 2026-11-18 · 图中案例为教学设定 · 阅读不自动代表掌握</p></header>
 <section id="scope">
 <h2><span class="num">第 09 章 / 01</span>本章位置与问题地图</h2><div class="callout warn">
-<p><strong>章节提纲 · 待深入撰写。</strong>本轮完整重写第 01—03 章；本章将既有大纲转换为离线 HTML。下文中的实验、实现和验收均是后续设计，不代表已经执行。</p></div>
+<p><strong>章节提纲 · 待深入撰写。</strong>本轮完整重写第 01—03 章；本章将既有大纲整理为章节提纲。下文中的实验、实现和验收均是后续设计，不代表已经执行。</p></div>
 <figure><div class="fig-title">本章的问题地图</div><div class="stack"><div class="layer"><b>09.1 任务模型</b><small>目标、依赖、子步骤、产物、完成条件、重规划；任务/会话/运行实例分离</small></div><div class="layer"><b>09.2 等待与检查点</b><small>ready/running/waiting/completed 等状态、候选版本、输入水位、暂停/恢复/取消</small></div><div class="layer"><b>09.3 队列与 worker</b><small>定时/事件触发、重试、租约、心跳、并发、背压、失败队列</small></div><div class="layer"><b>09.4 副作用一致性</b><small>至少一次交付、幂等键、去重、结果未知、回读查证、事务/outbox 与补偿的适用处</small></div><div class="layer"><b>09.5 恢复与追加要求</b><small>版本冲突、过期候选、取消传播、部分完成和跨步骤预算</small></div></div><figcaption>按前置依赖逐节推进。这里保留已确认的课程范围；下面是章节提纲，尚未改写成与第 01—03 章同深度的连续教材。</figcaption></figure></section>
 <section id="outline">
 <h2><span class="num">第 09 章 / 02</span>学习范围、关键机制与复习问题</h2>
@@ -32,4 +32,4 @@
 <li><strong>超时是不是操作失败？</strong> 只说明没及时收到结果。日历可能已创建，所以我会先查证，再决定重试或报告未知。</li>
 <li><strong>定时任务和模型说“到时提醒你”有什么差别？</strong> 真正提醒需要持久任务、调度器、worker 和投递记录，模型一句承诺没有这些运行保障。</li>
 </ul></section>
-<nav class="endnav" aria-label="章节翻页"><a href="topic-m.html">← 专题 M</a><a href="chapter-10.html">第 10 章 →</a></nav><footer>Personal Agent 学习与面试培训。章节范围以 learning-outline.md 为准，四类进度以 course-progress.md 为准。本文不包含实践代码或交互实验。</footer></main></div></body></html>
+<nav class="endnav" aria-label="章节翻页"><a href="topic-m.html">← 专题 M</a><a href="chapter-10.html">第 10 章 →</a></nav><footer>Personal Agent 学习与面试培训。按章节逐步学习，用案例和 FAQ 检查自己的解释；教学示例不代表真实生产经历。</footer></main></div></body></html>

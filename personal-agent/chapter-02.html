@@ -10,7 +10,7 @@
 <aside class="side"><div class="brand">PERSONAL AGENT / FIELD GUIDE</div>
 <h2><a href="index.html">个人 Agent 学习手册</a></h2>
 <nav aria-label="本章目录"><a href="#scope">先确定边界：这次只完成一次有依据的对话</a><a href="#objects">先分清对象：Session、Message、Turn、Attempt</a><a href="#send">从点击发送开始：前端分支与后端检查</a><a href="#request">模型调用前：组装、校验与输入快照</a><a href="#stream">流式到底流了什么：生成、字节、事件、界面</a><a href="#lifecycle">把终态设计清楚：完成、失败、取消和未知</a><a href="#storage">状态由谁保存：刷新、重启与恢复分别发生什么</a><a href="#concurrency">重试与并发：为什么成功路径之外需要边界</a><a href="#trace">可观测性：用一条 Trace 解释这次发生了什么</a><a href="#diagnose">完整案例：界面没有答案，怎样逐层定位</a><a href="#review">总结、自述与面试 FAQ</a><a href="#sources">依据与继续阅读</a></nav>
-<p>本地静态文档 · 离线可读<br>概念 → 图解 → 案例 → 判断 → FAQ<br>无需服务、登录或模型 API</p></aside><main id="main">
+<p>Personal Agent · 图解教程<br>概念 → 图解 → 案例 → 判断 → FAQ<br>按章节阅读 · 用 FAQ 复习</p></aside><main id="main">
 <header><div class="eyebrow">第 02 章 · 深入教材 · 理论阅读</div><h1>一次对话、会话状态与基础追踪</h1>
 <p class="lede">沿着用户的一次发送，追踪输入、网络、生成、保存与状态。让“没回答、没记住、没保存”都能落到具体证据。</p>
 <p class="meta">更新于 2026-11-18 · 图中案例为教学设定 · 阅读不自动代表掌握</p></header>
@@ -129,6 +129,6 @@
 <p><strong>本章的自述主线：</strong>用户提交 → 后端受理与读取 → 组装实际输入 → 生成与传输 → 保存终态 → 查询与恢复。下一章在“模型输出”之后增加行动选择、工具执行和反馈回流。</p></div></section>
 <section id="sources">
 <h2><span class="num">第 02 章 / 12</span>依据与继续阅读</h2>
-<p class="small">核对日期：2026-11-18。以下资料用于对应的通用机制；图、数字和生产情境另标为教学示意，不声称复现论文或描述 Muse 内部实现。来源链接需联网，正文与图解无需联网。</p><ol class="sources"><li><a href="https://html.spec.whatwg.org/multipage/server-sent-events.html">WHATWG · Server-sent events</a> — 事件格式、UTF-8、EventSource 与重连基础；应用终态名称由系统另行定义。</li><li><a href="https://opentelemetry.io/docs/concepts/signals/traces/">OpenTelemetry · Traces</a> — Trace、Span、父子关系和传播；本文业务对象和层次是教学设计。</li><li><a href="https://www.sqlite.org/atomiccommit.html">SQLite · Atomic Commit</a> — 本地事务原子性与故障处理边界，不保证远程操作同一事务。</li><li><a href="https://www.rfc-editor.org/rfc/rfc9110.html">RFC 9110 · HTTP Semantics</a> — HTTP 方法语义及重试、幂等概念；具体提交去重是应用设计。</li></ol>
+<p class="small">核对日期：2026-11-18。以下资料用于对应的通用机制；图、数字和生产情境另标为教学示意，不声称复现论文或描述 Muse 内部实现。原始资料见以下链接，建议先完成本章，再按需延伸阅读。</p><ol class="sources"><li><a href="https://html.spec.whatwg.org/multipage/server-sent-events.html">WHATWG · Server-sent events</a> — 事件格式、UTF-8、EventSource 与重连基础；应用终态名称由系统另行定义。</li><li><a href="https://opentelemetry.io/docs/concepts/signals/traces/">OpenTelemetry · Traces</a> — Trace、Span、父子关系和传播；本文业务对象和层次是教学设计。</li><li><a href="https://www.sqlite.org/atomiccommit.html">SQLite · Atomic Commit</a> — 本地事务原子性与故障处理边界，不保证远程操作同一事务。</li><li><a href="https://www.rfc-editor.org/rfc/rfc9110.html">RFC 9110 · HTTP Semantics</a> — HTTP 方法语义及重试、幂等概念；具体提交去重是应用设计。</li></ol>
 <p>已讨论的网络细节另有历史 FAQ 归档，但本章已包含理解对话所需的主线。下一章先增加最小行动闭环；长任务恢复第 09 章再展开。</p></section>
-<nav class="endnav" aria-label="章节翻页"><a href="chapter-01.html">← 第 01 章</a><a href="chapter-03.html">第 03 章 →</a></nav><footer>Personal Agent 学习与面试培训。章节范围以 learning-outline.md 为准，四类进度以 course-progress.md 为准。本文不包含实践代码或交互实验。</footer></main></div></body></html>
+<nav class="endnav" aria-label="章节翻页"><a href="chapter-01.html">← 第 01 章</a><a href="chapter-03.html">第 03 章 →</a></nav><footer>Personal Agent 学习与面试培训。按章节逐步学习，用案例和 FAQ 检查自己的解释；教学示例不代表真实生产经历。</footer></main></div></body></html>
