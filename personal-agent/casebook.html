@@ -13,7 +13,7 @@
 <body><a class="skip" href="#main">跳到正文</a><div class="layout">
 <aside class="side"><div class="brand">PERSONAL AGENT / FIELD GUIDE</div>
 <h2><a href="index.html">个人 Agent 学习手册</a></h2>
-<nav aria-label="本章目录"><a href="#case-1">如何使用这些案例</a><a href="#case-2">共同的基准环境</a><a href="#case-3">任务 A：记住我的学习偏好</a><a href="#case-4">任务 B：根据我的笔记解释概念</a><a href="#case-5">任务 C：安排一段学习时间</a><a href="#case-6">各章如何使用同一批任务</a><a href="#case-8">每章固定的案例讲解结构</a><a href="#case-9">教材页面约定</a></nav>
+<nav aria-label="本章目录"><a href="#case-1">如何使用这些案例</a><a href="#case-2">共同的基准环境</a><a href="#case-3">任务 A：记住我的学习偏好</a><a href="#case-4">任务 B：根据我的笔记解释概念</a><a href="#case-5">任务 C：安排一段学习时间</a><a href="#case-6">各章如何使用同一批任务</a></nav>
 <p>Personal Agent · 图解教程<br>概念 → 图解 → 案例 → 判断 → FAQ<br>按章节阅读 · 用 FAQ 复习</p></aside><main id="main">
 <header><div class="eyebrow">固定案例 · 案例与受控变体</div><h1>同一个学习助手，三个贯穿任务</h1>
 <p class="lede">任务 A 保存偏好，任务 B 根据笔记解释，任务 C 安排学习。以下日期、资料和日历均为固定教学设定，不代表真实执行。</p>
@@ -137,21 +137,6 @@
 <div class="table-wrap">
 <table><thead><tr><th scope="col">章节</th><th scope="col">主要任务</th><th scope="col">本章关注什么</th><th scope="col">技术具体做什么</th><th scope="col">可观察的产物或检查</th></tr></thead><tbody><tr><td>01 模型与产品全景</td><td>A、B、C</td><td>能力来源与系统责任</td><td>模型生成候选；系统提供信息、保存与执行</td><td>区分文本、调用请求和真实结果</td></tr><tr><td>02 一次对话与基础追踪</td><td>B，手工提供笔记</td><td>从用户点击到模型与界面</td><td>读取历史、组装消息、流式回传、保存 Trace</td><td>可查看真实请求；此时没有自动检索</td></tr><tr><td>03 最小 Agent 循环</td><td>C，模拟日历</td><td>根据反馈继续行动</td><td>工具请求、校验、执行、回填、确认与停止</td><td>确认前不写入；可逐步追踪循环</td></tr><tr><td>04 工具体系</td><td>B、C</td><td>工具选择、接入和组合</td><td>定义契约、发现与加载、hooks、授权、批量与并行</td><td>选对工具、格式正确与业务正确分别核验</td></tr><tr><td>05 上下文工程</td><td>B、C</td><td>本轮实际提供哪些信息</td><td>选择、组装、预算、裁剪、压缩与回查</td><td>显示各轮真实输入及压缩前后变化</td></tr><tr><td>06 记忆基础</td><td>A、C</td><td>分类、作用范围和简单持久化</td><td>保存显式偏好，在新会话重新读取；分离任务状态</td><td>偏好真实落盘并进入后续上下文</td></tr><tr><td>07 RAG 与检索</td><td>B、B1</td><td>如何找到支持答案的资料</td><td>索引、检索、过滤、重排、引用</td><td>找到 《检索与回答》、《用户长期记忆》；缺少 《用户长期记忆》 时说明不足</td></tr><tr><td>08 长期记忆架构</td><td>A、A1—A3</td><td>记忆生命周期与一致性</td><td>提取、版本更新、召回、冲突、删除传播</td><td>例外不覆盖默认值；更正和删除可追溯</td></tr><tr><td>09 长任务与恢复</td><td>C1、C2、C3、C4</td><td>中断、未知结果和后台执行</td><td>持久化状态、恢复、去重、调度、重新确认</td><td>重启后继续；不重复创建；新候选重新确认</td></tr><tr><td>10 执行环境与安全</td><td>B2、B3、B4、C</td><td>执行边界与数据、行动权限</td><td>隔离、文件/网络限制、凭据、访问控制与审计</td><td>拒绝越权资料和恶意指令；产物限于授权目录</td></tr><tr><td>11 个性化与主动服务</td><td>A1、B、C4</td><td>应用偏好并控制打扰</td><td>当前约束优先、风格适配、提醒频率与静默策略</td><td>下午例外被尊重；提醒范围符合请求</td></tr><tr><td>12 系统评估与 RSI</td><td>A、B、C 及变体，R1</td><td>是否正确，怎样验证改进</td><td>固定夹具、保留集、评估、对照、归因、候选版本与递归改进</td><td>接受/拒绝与回滚依据；不将模拟或自评分等同真实能力</td></tr><tr><td>13 多 Agent 与框架</td><td>B 或 C 的子任务</td><td>协作是否值得</td><td>委派、交接、共享状态、权限和预算</td><td>与单 Agent 对照，说明额外成本</td></tr><tr><td>14 产品整合</td><td>A、B、C</td><td>一套产品如何持续可用</td><td>连接界面、身份、记忆、工具、任务与运行维护</td><td>完整能力表及实现、验证边界</td></tr></tbody></table></div></section>
 
-<section id="case-8">
-<h2><span class="num">固定案例 / 08</span>每章固定的案例讲解结构</h2><ul>
-<li><strong>任务原话：</strong> 引用 A、B 或 C；变体要标出编号和唯一变化。</li>
-<li><strong>本章视角：</strong> 明确这个任务在本章要解决的局部问题。</li>
-<li><strong>已有条件：</strong> 区分用户输入、环境数据、存储状态与授权。</li>
-<li><strong>技术动作：</strong> 谁读取什么，进行了什么计算或调用，输出什么。</li>
-<li><strong>任务进展：</strong> 哪一步已经完成，哪一步仍依赖后续机制。</li>
-<li><strong>核验方法：</strong> 用记录、引用、状态或真实操作结果检查。</li>
-<li><strong>下一章连接：</strong> 说明后续如何继续完善同一任务。</li>
-</ul></section>
-<section id="case-9">
-<h2><span class="num">固定案例 / 09</span>教材页面约定</h2><ul>
-<li>每章使用一致的任务编号、基准数据和术语。</li>
-<li>不放置“开始阅读”“跳到请求演示”“打印 / 保存为 PDF”这组页面入口。</li>
-<li>保留必要的章节目录、演示步骤和自测交互。</li>
-<li>新章节沿用上述约定，不要求读者反复学习新场景。</li>
-</ul></section>
+
+
 <nav class="endnav" aria-label="章节翻页"><a href="index.html">← 课程目录</a></nav><footer>Personal Agent 学习与面试培训。按章节逐步学习，用案例和 FAQ 检查自己的解释；教学示例不代表真实生产经历。</footer></main></div></body></html>
