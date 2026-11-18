@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="一套以图解建立结构、以案例连接机制、以问题检验理解的学习手册。先学理论，逐章深入。"><title>离线学习文档 · 从模型到完整的 Personal Agent</title><style>
+:root{--ink:#171a20;--muted:#4a5160;--accent:#1d5fad;--soft:#eaf1fa;--line:#e2e5ea;--paper:#ffffff;--sand:#fbf0dd;--blue:#f0f3f8}*{box-sizing:border-box}html{scroll-padding-top:24px}body{margin:0;color:var(--ink);background:#f5f6f7;font:17px/1.95 system-ui,"Microsoft YaHei",sans-serif}a{color:var(--accent);text-underline-offset:4px}a:focus-visible{outline:3px solid #a86a20;outline-offset:4px}.layout{max-width:1320px;margin:auto;display:grid;grid-template-columns:238px minmax(0,1fr);gap:50px;padding:0 38px}.side{position:sticky;top:0;align-self:start;height:100vh;overflow:auto;padding:38px 0}.brand{font-size:11px;letter-spacing:2px;color:var(--accent);font-weight:750}.side h2{font-size:19px;margin:8px 0 24px}.side nav{display:grid;gap:4px}.side nav a{font-size:14px;line-height:1.6;padding:7px 10px;text-decoration:none;border-radius:5px}.side nav a:hover{background:var(--soft)}.side p{font-size:12px;color:var(--muted)}main{min-width:0;padding:52px 0 72px}.eyebrow{font-size:12px;letter-spacing:2px;color:var(--accent);font-weight:700}h1{font-size:clamp(32px,4vw,49px);line-height:1.3;letter-spacing:-1px;margin:16px 0 22px}h2{font-size:27px;line-height:1.5;margin:0 0 22px}h3{font-size:20px;line-height:1.6;margin:27px 0 10px}h4{font-size:17px;margin:16px 0 5px}p{margin:12px 0}header{padding-bottom:30px;border-bottom:1px solid var(--line)}.lede{font-size:20px;line-height:1.8;color:var(--muted)}.meta{font-size:13px;color:var(--muted)}section{padding-top:46px;scroll-margin-top:20px}.num{font-size:13px;color:var(--accent);font-weight:650;display:block;letter-spacing:1px;margin-bottom:8px}.callout{padding:18px 23px;background:var(--soft);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;margin:22px 0}.callout p:first-child{margin-top:0}.callout p:last-child{margin-bottom:0}.warn{background:var(--sand);border-color:#a46d24}.small,figcaption{font-size:13px;color:var(--muted);line-height:1.8}figure{margin:25px 0;padding:22px;background:var(--paper);border:1px solid var(--line);border-radius:12px}figcaption{margin-top:16px}.fig-title{font-size:14px;font-weight:750;margin:0 0 20px;color:var(--accent)}.flow{display:flex;align-items:stretch;gap:8px}.node{padding:13px 12px;background:var(--soft);border:1px solid #d8e3ef;border-radius:8px;text-align:center;flex:1;min-width:0;font-size:15px;line-height:1.7}.node b{display:block}.node span{font-size:13px;color:var(--muted)}.arrow{align-self:center;color:#858c9b;font-size:23px}.stack{display:grid;gap:9px}.layer{padding:12px 18px;border:1px solid var(--line);border-left:5px solid var(--accent);border-radius:6px;background:var(--soft);font-size:15px}.layer:nth-child(even){background:var(--blue);border-left-color:#70849d}.layer small{display:block;color:var(--muted);font-size:13px}.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:20px 0}.card{padding:18px 20px;border:1px solid var(--line);background:var(--paper);border-radius:10px}.card h3{margin:0 0 7px}.card p{font-size:15px}.table-wrap{overflow-x:auto;margin:20px 0}table{width:100%;border-collapse:collapse;font-size:15px;line-height:1.8}th,td{padding:12px 14px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}th{background:var(--soft);font-weight:650}td:first-child{font-weight:600}blockquote{margin:18px 0;padding:15px 22px;border-left:3px solid #afc3dc;background:#edf2f8}.svg-wrap{overflow-x:auto}svg{display:block;width:100%;height:auto;min-width:650px}svg text{font-family:system-ui,"Microsoft YaHei",sans-serif}.timeline{margin:12px 0;border-left:2px solid #b7cbe3;padding-left:25px}.event{position:relative;padding:0 0 22px}.event:before{content:"";position:absolute;left:-32px;top:9px;width:12px;height:12px;border-radius:50%;background:var(--accent);border:2px solid var(--paper)}.event b{font-size:15px}.event p{font-size:15px;margin:3px 0}.qa{padding:19px 0;border-bottom:1px solid var(--line)}.qa h3{margin:0 0 10px}.qa p{margin:7px 0}.sources{font-size:14px}.sources li{margin:10px 0}.endnav{display:flex;justify-content:space-between;gap:22px;border-top:1px solid var(--line);margin-top:44px;padding-top:24px}.pill{display:inline-block;padding:2px 9px;background:var(--soft);font-size:12px;border-radius:4px;color:var(--accent)}.barrow{display:grid;grid-template-columns:70px 1fr 70px;gap:12px;align-items:center;margin:10px 0;font-size:14px}.track{background:#e8edf3;border-radius:4px;height:20px;overflow:hidden}.bar{height:100%;background:#1d5fad}.bar.b{background:#6b9bd3}.bar.c{background:#afc9e6}.formula{padding:17px;text-align:center;background:var(--soft);font-family:Georgia,serif;font-size:20px;border-radius:8px}.route{display:grid;grid-template-columns:60px minmax(0,1fr);gap:16px;align-items:start;padding:18px 0;border-bottom:1px solid var(--line)}.route .rnum{font-size:25px;color:#7186a1}.route h3{margin:0}.route p{margin:4px 0;font-size:15px}.route a{text-decoration:none}.muted{color:var(--muted)}ul,ol{padding-left:24px}li{margin:7px 0}footer{font-size:12px;color:var(--muted);padding-top:28px}.skip{position:absolute;left:16px;top:-70px}.skip:focus{top:10px;background:white;padding:8px}
+@media(max-width:1000px){.layout{grid-template-columns:185px minmax(0,1fr);gap:26px;padding:0 24px}.side nav a{font-size:13px}figure{padding:17px}.flow{flex-direction:column}.arrow{transform:rotate(90deg);font-size:18px;line-height:1}.node{flex:auto}}
+@media(max-width:700px){.layout{display:block;padding:0 20px}.side{position:static;height:auto;padding:22px 0 16px;border-bottom:1px solid var(--line)}.side h2{margin:5px 0 14px}.side nav{grid-template-columns:repeat(2,minmax(0,1fr));gap:3px}.side nav a{padding:5px 7px;background:var(--soft)}.side p{display:none}main{padding-top:30px}h1{font-size:34px}h2{font-size:24px}body{font-size:16px}.cards{grid-template-columns:1fr}.lede{font-size:18px}section{padding-top:35px}.callout{padding:16px}.endnav{flex-direction:column}th,td{padding:10px}.barrow{grid-template-columns:58px 1fr 54px}.route{gap:10px;grid-template-columns:42px 1fr}}
+@media print{body{background:white;font-size:11pt}.layout{display:block;max-width:none;padding:0}.side,.skip,.endnav{display:none}main{padding:0}h1{font-size:28pt}h2{font-size:20pt}figure,.card,.qa{break-inside:avoid}section{padding-top:24px}svg{min-width:0}.svg-wrap,.table-wrap{overflow:visible}a{color:inherit}header{border-bottom:1px solid #aaa}}
+</style></head>
+<body><a class="skip" href="#main">跳到正文</a><div class="layout">
+<aside class="side"><div class="brand">PERSONAL AGENT / FIELD GUIDE</div>
+<h2><a href="index.html">个人 Agent 学习手册</a></h2>
+<nav aria-label="本章目录"><a href="#reading">按顺序阅读，一次建立一层理解</a><a href="#chapters">14 章主线与 3 个必学专题</a><a href="#cases">固定案例：让知识接到同一条任务链</a><a href="#progress">教材、实现、验证、理解分别记录</a></nav>
+<p>本地静态文档 · 离线可读<br>概念 → 图解 → 案例 → 判断 → FAQ<br>无需服务、登录或模型 API</p></aside><main id="main">
+<header><div class="eyebrow">离线学习文档 · 14 章主线 + 3 个必学专题</div><h1>从模型到完整的 Personal Agent</h1>
+<p class="lede">一套以图解建立结构、以案例连接机制、以问题检验理解的学习手册。先学理论，逐章深入。</p>
+<p class="meta">更新于 2026-11-18 · 图中案例为教学设定 · 阅读不自动代表掌握</p></header>
+<section id="reading">
+<h2><span class="num">离线学习文档 / 01</span>按顺序阅读，一次建立一层理解</h2>
+<figure><div class="fig-title">完整学习路线</div><div class="flow"><div class="node"><b>01—04 + T</b><span>模型、对话、闭环、工具</span></div><div class="arrow" aria-hidden="true">→</div><div class="node"><b>05—08 + C / M</b><span>上下文、检索、记忆</span></div><div class="arrow" aria-hidden="true">→</div><div class="node"><b>09—11</b><span>恢复、安全、主动服务</span></div><div class="arrow" aria-hidden="true">→</div><div class="node"><b>12—14</b><span>评估、协作、产品整合</span></div></div><figcaption>箭头表示前置依赖，不要求一次读完整套课程。每章用概念、图解、案例、失败分析和 FAQ 建立理解。</figcaption></figure>
+<p>直接双击本文件即可阅读。所有章节使用相对文件链接，样式与图解嵌入各自 HTML；无需启动后端、Docker 或模型服务。参考来源链接需要联网，正文不依赖网络。</p><div class="callout">
+<p>前 3 章已按纯文档方式深入重写；第 04—14 章和 T/C/M 为现有路线的静态提纲，尚未完成同深度正文。阅读页没有实验按钮、弹窗、代码伴读或自动掌握评分。</p></div></section>
+<section id="chapters">
+<h2><span class="num">离线学习文档 / 02</span>14 章主线与 3 个必学专题</h2>
+<article class="route"><div class="rnum">01</div><div>
+<h3><a href="chapter-01.html">模型概念与 Personal Agent 全景</a></h3>
+<p><span class="pill">深入教材已重写</span></p>
+<p>先理解模型如何生成，再分清信息、行动与结果由谁负责。用一张系统地图，把后续十三章放到正确位置。</p></div></article>
+<article class="route"><div class="rnum">02</div><div>
+<h3><a href="chapter-02.html">一次对话、会话状态与基础追踪</a></h3>
+<p><span class="pill">深入教材已重写</span></p>
+<p>沿着用户的一次发送，追踪输入、网络、生成、保存与状态。让“没回答、没记住、没保存”都能落到具体证据。</p></div></article>
+<article class="route"><div class="rnum">03</div><div>
+<h3><a href="chapter-03.html">最小 Agent 循环与工具执行</a></h3>
+<p><span class="pill">深入教材已重写</span></p>
+<p>让一次调用进入受约束的行动闭环：根据反馈继续推进，在需要时等待、查证或停止，并用外部事实判断任务完成。</p></div></article>
+<article class="route"><div class="rnum">04</div><div>
+<h3><a href="chapter-04.html">工具体系与集成策略</a></h3>
+<p><span class="pill">提纲 · 待深入撰写</span></p></div></article>
+<article class="route"><div class="rnum">T</div><div>
+<h3><a href="topic-t.html">工具层与 Muse</a></h3>
+<p><span class="pill">提纲 · 待深入撰写</span></p></div></article>
+<article class="route"><div class="rnum">05</div><div>
+<h3><a href="chapter-05.html">上下文工程、指令加载与压缩</a></h3>
+<p><span class="pill">提纲 · 待深入撰写</span></p></div></article>
+<article class="route"><div class="rnum">C</div><div>
+<h3><a href="topic-c.html">上下文机制与 Muse</a></h3>
+<p><span class="pill">提纲 · 待深入撰写</span></p></div></article>
+<article class="route"><div class="rnum">06</div><div>
+<h3><a href="chapter-06.html">记忆基础、数据结构与保存位置</a></h3>
+<p><span class="pill">提纲 · 待深入撰写</span></p></div></article>
+<article class="route"><div class="rnum">07</div><div>
+<h3><a href="chapter-07.html">RAG、索引与证据检索</a></h3>
+<p><span class="pill">提纲 · 待深入撰写</span></p></div></article>
+<article class="route"><div class="rnum">08</div><div>
+<h3><a href="chapter-08.html">自动记忆、长期架构与 Memory Dreaming</a></h3>
+<p><span class="pill">提纲 · 待深入撰写</span></p></div></article>
+<article class="route"><div class="rnum">M</div><div>
+<h3><a href="topic-m.html">Memory 生命周期与 Muse</a></h3>
+<p><span class="pill">提纲 · 待深入撰写</span></p></div></article>
+<article class="route"><div class="rnum">09</div><div>
+<h3><a href="chapter-09.html">复杂任务、后台执行与恢复</a></h3>
+<p><span class="pill">提纲 · 待深入撰写</span></p></div></article>
+<article class="route"><div class="rnum">10</div><div>
+<h3><a href="chapter-10.html">执行环境、安全与权限</a></h3>
+<p><span class="pill">提纲 · 待深入撰写</span></p></div></article>
+<article class="route"><div class="rnum">11</div><div>
+<h3><a href="chapter-11.html">个性化与主动服务</a></h3>
+<p><span class="pill">提纲 · 待深入撰写</span></p></div></article>
+<article class="route"><div class="rnum">12</div><div>
+<h3><a href="chapter-12.html">系统评估、问题定位与 RSI</a></h3>
+<p><span class="pill">提纲 · 待深入撰写</span></p></div></article>
+<article class="route"><div class="rnum">13</div><div>
+<h3><a href="chapter-13.html">多 Agent、协作与框架取舍</a></h3>
+<p><span class="pill">提纲 · 待深入撰写</span></p></div></article>
+<article class="route"><div class="rnum">14</div><div>
+<h3><a href="chapter-14.html">产品整合、交互与运行维护</a></h3>
+<p><span class="pill">提纲 · 待深入撰写</span></p></div></article></section>
+<section id="cases">
+<h2><span class="num">离线学习文档 / 03</span>固定案例：让知识接到同一条任务链</h2><div class="cards"><div class="card">
+<h3>A · 记住学习偏好</h3>
+<p>从“我记住了”追到真实保存、读取、更正与删除。</p></div><div class="card">
+<h3>B · 根据笔记解释</h3>
+<p>从一条问题追到实际输入、资料依据、引用与检索。</p></div><div class="card">
+<h3>C · 安排学习日程</h3>
+<p>从自然语言追到查询、候选、具体确认、创建与结果核验。</p></div></div>
+<p><a href="casebook.html">查看完整案例与受控变体 →</a></p></section>
+<section id="progress">
+<h2><span class="num">离线学习文档 / 04</span>教材、实现、验证、理解分别记录</h2><div class="table-wrap">
+<table><thead><tr><th scope="col">对象</th><th scope="col">当前状态</th></tr></thead><tbody><tr><td>教材</td><td>01—03 已重写；04—14 及 T/C/M 已提供提纲 HTML，完整正文待写。</td></tr><tr><td>实践代码</td><td>保留 agent_code 原项目和各章独立代码；本次未新增 Agent 工具循环，不作为当前阅读前置。</td></tr><tr><td>文档验证</td><td>静态结构、相对链接、离线依赖和浏览器显示单独检查；不把文档检查等同于业务功能测试。</td></tr><tr><td>用户理解</td><td>Top-k / Top-p 已表示理解，Temperature 已讨论；01 整章及 02/03 的理解均待用户确认。</td></tr></tbody></table></div>
+<p>先理解当前章节，再讨论疑问。需要复习时看章末完整 FAQ 答案；模拟生产情境明确标注，不把教学设计说成真实工作经历。</p></section>
+<nav class="endnav" aria-label="章节翻页"><a href="index.html">← 课程目录</a></nav><footer>Personal Agent 学习与面试培训。章节范围以 learning-outline.md 为准，四类进度以 course-progress.md 为准。本文不包含实践代码或交互实验。</footer></main></div></body></html>

@@ -1,0 +1,31 @@
+# Personal Agent · 个人智能体
+
+[课程目录](index.html) · [在线阅读](https://runfi.github.io/learn/personal-agent/)
+
+14 章主线 + 工具、上下文、Memory 三个必学专题。更新于 2026-11-18。
+
+第 01—03 章为深入理论正文，包含 28 幅图解、完整案例、失败与取舍、自述和完整静态 FAQ。第 04—14 章及 T/C/M 当前是清楚标注的提纲，等待逐章深入撰写。
+
+所有 HTML 内嵌样式和图解，不依赖 JavaScript、CDN、外部字体、后端或模型 API；可在线读，也可下载目录后直接打开 index.html。外部参考资料链接需要联网。教学模拟不冒充真实生产经验或运行结果。
+
+## 文件清单
+
+- [casebook.html](casebook.html)：固定案例与变体。
+- [chapter-01.html](chapter-01.html)：深入教材。
+- [chapter-02.html](chapter-02.html)：深入教材。
+- [chapter-03.html](chapter-03.html)：深入教材。
+- [chapter-04.html](chapter-04.html)：章节 / 专题提纲。
+- [chapter-05.html](chapter-05.html)：章节 / 专题提纲。
+- [chapter-06.html](chapter-06.html)：章节 / 专题提纲。
+- [chapter-07.html](chapter-07.html)：章节 / 专题提纲。
+- [chapter-08.html](chapter-08.html)：章节 / 专题提纲。
+- [chapter-09.html](chapter-09.html)：章节 / 专题提纲。
+- [chapter-10.html](chapter-10.html)：章节 / 专题提纲。
+- [chapter-11.html](chapter-11.html)：章节 / 专题提纲。
+- [chapter-12.html](chapter-12.html)：章节 / 专题提纲。
+- [chapter-13.html](chapter-13.html)：章节 / 专题提纲。
+- [chapter-14.html](chapter-14.html)：章节 / 专题提纲。
+- [index.html](index.html)：课程目录。
+- [topic-c.html](topic-c.html)：章节 / 专题提纲。
+- [topic-m.html](topic-m.html)：章节 / 专题提纲。
+- [topic-t.html](topic-t.html)：章节 / 专题提纲。
