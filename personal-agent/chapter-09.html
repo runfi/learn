@@ -5,7 +5,11 @@
 @media(max-width:1000px){.layout{grid-template-columns:185px minmax(0,1fr);gap:26px;padding:0 24px}.side nav a{font-size:13px}figure{padding:17px}.flow{flex-direction:column}.arrow{transform:rotate(90deg);font-size:18px;line-height:1}.node{flex:auto}}
 @media(max-width:700px){.layout{display:block;padding:0 20px}.side{position:static;height:auto;padding:22px 0 16px;border-bottom:1px solid var(--line)}.side h2{margin:5px 0 14px}.side nav{grid-template-columns:repeat(2,minmax(0,1fr));gap:3px}.side nav a{padding:5px 7px;background:var(--soft)}.side p{display:none}main{padding-top:30px}h1{font-size:34px}h2{font-size:24px}body{font-size:16px}.cards{grid-template-columns:1fr}.lede{font-size:18px}section{padding-top:35px}.callout{padding:16px}.endnav{flex-direction:column}th,td{padding:10px}.barrow{grid-template-columns:58px 1fr 54px}.route{gap:10px;grid-template-columns:42px 1fr}}
 @media print{body{background:white;font-size:11pt}.layout{display:block;max-width:none;padding:0}.side,.skip,.endnav{display:none}main{padding:0}h1{font-size:28pt}h2{font-size:20pt}figure,.card,.qa{break-inside:avoid}section{padding-top:24px}svg{min-width:0}.svg-wrap,.table-wrap{overflow:visible}a{color:inherit}header{border-bottom:1px solid #aaa}}
-</style></head>
+</style>
+<link rel="stylesheet" href="assets/reading-aids.css">
+<script src="assets/reading-terms.js" defer></script>
+<script src="assets/reading-aids.js" defer></script>
+</head>
 <body><a class="skip" href="#main">跳到正文</a><div class="layout">
 <aside class="side"><div class="brand">PERSONAL AGENT / FIELD GUIDE</div>
 <h2><a href="index.html">个人 Agent 学习手册</a></h2>
@@ -16,8 +20,8 @@
 <p class="meta">更新于 2026-11-18 · 图中案例为教学设定 · 阅读不自动代表掌握</p></header>
 <section id="scope">
 <h2><span class="num">第 09 章 / 01</span>本章位置与问题地图</h2><div class="callout warn">
-<p><strong>章节提纲 · 待深入撰写。</strong>本轮完整重写第 01—03 章；本章将既有大纲整理为章节提纲。下文中的实验、实现和验收均是后续设计，不代表已经执行。</p></div>
-<figure><div class="fig-title">本章的问题地图</div><div class="stack"><div class="layer"><b>09.1 任务模型</b><small>目标、依赖、子步骤、产物、完成条件、重规划；任务/会话/运行实例分离</small></div><div class="layer"><b>09.2 等待与检查点</b><small>ready/running/waiting/completed 等状态、候选版本、输入水位、暂停/恢复/取消</small></div><div class="layer"><b>09.3 队列与 worker</b><small>定时/事件触发、重试、租约、心跳、并发、背压、失败队列</small></div><div class="layer"><b>09.4 副作用一致性</b><small>至少一次交付、幂等键、去重、结果未知、回读查证、事务/outbox 与补偿的适用处</small></div><div class="layer"><b>09.5 恢复与追加要求</b><small>版本冲突、过期候选、取消传播、部分完成和跨步骤预算</small></div></div><figcaption>按前置依赖逐节推进。这里保留已确认的课程范围；下面是章节提纲，尚未改写成与第 01—03 章同深度的连续教材。</figcaption></figure></section>
+<p><strong>章节提纲 · 待深入撰写。</strong>本章当前为提纲，完整正文尚待编写。下文中的实验、实现和验收均是后续设计，不代表已经执行。</p></div>
+<figure><div class="fig-title">本章的问题地图</div><div class="stack"><div class="layer"><b>09.1 任务模型</b><small>目标、依赖、子步骤、产物、完成条件、重规划；任务/会话/运行实例分离</small></div><div class="layer"><b>09.2 等待与检查点</b><small>ready/running/waiting/completed 等状态、候选版本、输入水位、暂停/恢复/取消</small></div><div class="layer"><b>09.3 队列与 worker</b><small>定时/事件触发、重试、租约、心跳、并发、背压、失败队列</small></div><div class="layer"><b>09.4 副作用一致性</b><small>至少一次交付、幂等键、去重、结果未知、回读查证、事务/outbox 与补偿的适用处</small></div><div class="layer"><b>09.5 恢复与追加要求</b><small>版本冲突、过期候选、取消传播、部分完成和跨步骤预算</small></div></div><figcaption>按前置依赖逐节推进。下文列出学习范围与核心问题；完整论述将在正文编写时补齐。</figcaption></figure></section>
 <section id="outline">
 <h2><span class="num">第 09 章 / 02</span>学习范围、关键机制与复习问题</h2>
 <p><strong>前置：</strong>03 的状态循环、06 的持久化、08 的后台需求。<strong>目标：</strong>任务在重启、重复消息和未知结果下仍能正确推进。</p>

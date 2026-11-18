@@ -5,7 +5,11 @@
 @media(max-width:1000px){.layout{grid-template-columns:185px minmax(0,1fr);gap:26px;padding:0 24px}.side nav a{font-size:13px}figure{padding:17px}.flow{flex-direction:column}.arrow{transform:rotate(90deg);font-size:18px;line-height:1}.node{flex:auto}}
 @media(max-width:700px){.layout{display:block;padding:0 20px}.side{position:static;height:auto;padding:22px 0 16px;border-bottom:1px solid var(--line)}.side h2{margin:5px 0 14px}.side nav{grid-template-columns:repeat(2,minmax(0,1fr));gap:3px}.side nav a{padding:5px 7px;background:var(--soft)}.side p{display:none}main{padding-top:30px}h1{font-size:34px}h2{font-size:24px}body{font-size:16px}.cards{grid-template-columns:1fr}.lede{font-size:18px}section{padding-top:35px}.callout{padding:16px}.endnav{flex-direction:column}th,td{padding:10px}.barrow{grid-template-columns:58px 1fr 54px}.route{gap:10px;grid-template-columns:42px 1fr}}
 @media print{body{background:white;font-size:11pt}.layout{display:block;max-width:none;padding:0}.side,.skip,.endnav{display:none}main{padding:0}h1{font-size:28pt}h2{font-size:20pt}figure,.card,.qa{break-inside:avoid}section{padding-top:24px}svg{min-width:0}.svg-wrap,.table-wrap{overflow:visible}a{color:inherit}header{border-bottom:1px solid #aaa}}
-</style></head>
+</style>
+<link rel="stylesheet" href="assets/reading-aids.css">
+<script src="assets/reading-terms.js" defer></script>
+<script src="assets/reading-aids.js" defer></script>
+</head>
 <body><a class="skip" href="#main">跳到正文</a><div class="layout">
 <aside class="side"><div class="brand">PERSONAL AGENT / FIELD GUIDE</div>
 <h2><a href="index.html">个人 Agent 学习手册</a></h2>
@@ -16,13 +20,13 @@
 <p class="meta">更新于 2026-11-18 · 图中案例为教学设定 · 阅读不自动代表掌握</p></header>
 <section id="scope">
 <h2><span class="num">第 07 章 / 01</span>本章位置与问题地图</h2><div class="callout warn">
-<p><strong>章节提纲 · 待深入撰写。</strong>本轮完整重写第 01—03 章；本章将既有大纲整理为章节提纲。下文中的实验、实现和验收均是后续设计，不代表已经执行。</p></div>
-<figure><div class="fig-title">本章的问题地图</div><div class="stack"><div class="layer"><b>07.1 入库与定位</b><small>解析、清洗、分块、重叠、文档/块 ID、页码/行号与版本</small></div><div class="layer"><b>07.2 索引的种类</b><small>人工目录、结构化字段索引、倒排/全文索引、向量索引；Embedding 与相似度</small></div><div class="layer"><b>07.3 查询到候选</b><small>查询改写、时间/用户/项目/权限过滤、关键词/向量/混合召回</small></div><div class="layer"><b>07.4 候选到答案</b><small>去重、Top-k、重排、预算、来源组织、引用支持与无答案</small></div><div class="layer"><b>07.5 更新与评估</b><small>增量索引、内容哈希、版本、水位、删除、重建与模型迁移</small></div></div><figcaption>按前置依赖逐节推进。这里保留已确认的课程范围；下面是章节提纲，尚未改写成与第 01—03 章同深度的连续教材。</figcaption></figure></section>
+<p><strong>章节提纲 · 待深入撰写。</strong>本章当前为提纲，完整正文尚待编写。下文中的实验、实现和验收均是后续设计，不代表已经执行。</p></div>
+<figure><div class="fig-title">本章的问题地图</div><div class="stack"><div class="layer"><b>07.1 入库与定位</b><small>解析、清洗、分块、重叠、文档/块 ID、页码/行号与版本</small></div><div class="layer"><b>07.2 索引的种类</b><small>人工目录、结构化字段索引、倒排/全文索引、向量索引；Embedding 与相似度</small></div><div class="layer"><b>07.3 查询到候选</b><small>查询改写、时间/用户/项目/权限过滤、关键词/向量/混合召回</small></div><div class="layer"><b>07.4 候选到答案</b><small>去重、Top-k、重排、预算、来源组织、引用支持与无答案</small></div><div class="layer"><b>07.5 更新与评估</b><small>增量索引、内容哈希、版本、水位、删除、重建与模型迁移</small></div></div><figcaption>按前置依赖逐节推进。下文列出学习范围与核心问题；完整论述将在正文编写时补齐。</figcaption></figure></section>
 <section id="outline">
 <h2><span class="num">第 07 章 / 02</span>学习范围、关键机制与复习问题</h2>
 <p><strong>前置：</strong>06。<strong>目标：</strong>把“资料存在”变成“本次找到正确、可访问、可引用的证据”。</p>
 <div class="table-wrap">
-<table><thead><tr><th scope="col">小课</th><th scope="col">核心问题与机制</th><th scope="col">纸面推演 / 后续验证</th></tr></thead><tbody><tr><td>07.1 入库与定位</td><td>解析、清洗、分块、重叠、文档/块 ID、页码/行号与版本</td><td>N1/N2 命中后能回到准确原文；格式改变不混淆来源</td></tr><tr><td>07.2 索引的种类</td><td>人工目录、结构化字段索引、倒排/全文索引、向量索引；Embedding 与相似度</td><td>精确 ID 查询、关键词和语义查询各用合适路径</td></tr><tr><td>07.3 查询到候选</td><td>查询改写、时间/用户/项目/权限过滤、关键词/向量/混合召回</td><td>区分没召回、被过滤、召回过多；小数据直接提供作为基线</td></tr><tr><td>07.4 候选到答案</td><td>去重、Top-k、重排、预算、来源组织、引用支持与无答案</td><td>B1 缺失依据时不补造；找到不等于用对</td></tr><tr><td>07.5 更新与评估</td><td>增量索引、内容哈希、版本、水位、删除、重建与模型迁移</td><td>正本更新但索引滞后时查明原因；记录召回/排序/引用指标</td></tr></tbody></table></div>
+<table><thead><tr><th scope="col">小课</th><th scope="col">核心问题与机制</th><th scope="col">纸面推演 / 后续验证</th></tr></thead><tbody><tr><td>07.1 入库与定位</td><td>解析、清洗、分块、重叠、文档/块 ID、页码/行号与版本</td><td>《检索与回答》/《用户长期记忆》 命中后能回到准确原文；格式改变不混淆来源</td></tr><tr><td>07.2 索引的种类</td><td>人工目录、结构化字段索引、倒排/全文索引、向量索引；Embedding 与相似度</td><td>精确 ID 查询、关键词和语义查询各用合适路径</td></tr><tr><td>07.3 查询到候选</td><td>查询改写、时间/用户/项目/权限过滤、关键词/向量/混合召回</td><td>区分没召回、被过滤、召回过多；小数据直接提供作为基线</td></tr><tr><td>07.4 候选到答案</td><td>去重、Top-k、重排、预算、来源组织、引用支持与无答案</td><td>B1 缺失依据时不补造；找到不等于用对</td></tr><tr><td>07.5 更新与评估</td><td>增量索引、内容哈希、版本、水位、删除、重建与模型迁移</td><td>正本更新但索引滞后时查明原因；记录召回/排序/引用指标</td></tr></tbody></table></div>
 
 <p><strong>验收：</strong>同一问题展示查询、过滤、候选、重排及最终输入；解释权限要覆盖召回、回读和输出，不能只隐藏 UI。生产规模性能与三份教学笔记实验分开。</p>
 

@@ -5,7 +5,11 @@
 @media(max-width:1000px){.layout{grid-template-columns:185px minmax(0,1fr);gap:26px;padding:0 24px}.side nav a{font-size:13px}figure{padding:17px}.flow{flex-direction:column}.arrow{transform:rotate(90deg);font-size:18px;line-height:1}.node{flex:auto}}
 @media(max-width:700px){.layout{display:block;padding:0 20px}.side{position:static;height:auto;padding:22px 0 16px;border-bottom:1px solid var(--line)}.side h2{margin:5px 0 14px}.side nav{grid-template-columns:repeat(2,minmax(0,1fr));gap:3px}.side nav a{padding:5px 7px;background:var(--soft)}.side p{display:none}main{padding-top:30px}h1{font-size:34px}h2{font-size:24px}body{font-size:16px}.cards{grid-template-columns:1fr}.lede{font-size:18px}section{padding-top:35px}.callout{padding:16px}.endnav{flex-direction:column}th,td{padding:10px}.barrow{grid-template-columns:58px 1fr 54px}.route{gap:10px;grid-template-columns:42px 1fr}}
 @media print{body{background:white;font-size:11pt}.layout{display:block;max-width:none;padding:0}.side,.skip,.endnav{display:none}main{padding:0}h1{font-size:28pt}h2{font-size:20pt}figure,.card,.qa{break-inside:avoid}section{padding-top:24px}svg{min-width:0}.svg-wrap,.table-wrap{overflow:visible}a{color:inherit}header{border-bottom:1px solid #aaa}}
-</style></head>
+</style>
+<link rel="stylesheet" href="assets/reading-aids.css">
+<script src="assets/reading-terms.js" defer></script>
+<script src="assets/reading-aids.js" defer></script>
+</head>
 <body><a class="skip" href="#main">跳到正文</a><div class="layout">
 <aside class="side"><div class="brand">PERSONAL AGENT / FIELD GUIDE</div>
 <h2><a href="index.html">个人 Agent 学习手册</a></h2>
@@ -17,8 +21,8 @@
 <section id="goal">
 <h2><span class="num">第 03 章 / 01</span>从回答一句话，到推进一个目标</h2>
 <p>用户说：“参考我的学习偏好和明天的日程，安排半小时学习 Agent，尽量放在上午。创建前先把具体安排给我确认。”如果系统只生成一个时间建议，它完成了部分对话，却还没有完成安排任务。本章研究怎样依据环境反馈继续推进，直到成功、等待或明确停止。</p><div class="table-wrap">
-<table><thead><tr><th scope="col">案例条件</th><th scope="col">固定教学设定</th><th scope="col">为什么要明确</th></tr></thead><tbody><tr><td>教学时钟</td><td>2026-11-17 20:00，Asia/Shanghai；“明天”为 2026-11-18</td><td>避免读者当天日期改变案例结果</td></tr><tr><td>偏好</td><td>上午，每次 30 分钟；用已提供的偏好快照</td><td>没有在本章暗中实现长期记忆</td></tr><tr><td>候选范围</td><td>09:00–12:00、14:00–18:00</td><td>把“明天”约束成可搜索区间</td></tr><tr><td>已占用时段</td><td>09:00–10:00 有会议，其余候选时间在基准查询时空闲</td><td>最早可选上午时段为 10:00–10:30</td></tr><tr><td>授权</td><td>已允许读教学日历；每次创建须确认具体候选</td><td>读取授权不等于写入授权</td></tr><tr><td>选时策略</td><td>先满足明确约束，再用长期偏好，最后取最早空闲时段</td><td>这是应用策略，不是模型自然保证的规则</td></tr></tbody></table></div><div class="callout">
-<p>所有日历、调用结果和事件 ID 都是<strong>纸面教学设定</strong>，没有执行真实日历操作。我们用它理解通用 Agent 设计；当前 Lab 是否实现某能力，另由进度记录说明。</p></div>
+<table><thead><tr><th scope="col">案例条件</th><th scope="col">固定教学设定</th><th scope="col">为什么要明确</th></tr></thead><tbody><tr><td>教学时钟</td><td>2026-11-17 20:00，Asia/Shanghai；“明天”为 2026-11-18</td><td>避免读者当天日期改变案例结果</td></tr><tr><td>偏好</td><td>本例明确给定：默认上午学习，每次 30 分钟</td><td>输入条件已在本表列出，不依赖已有用户画像</td></tr><tr><td>候选范围</td><td>09:00–12:00、14:00–18:00</td><td>把“明天”约束成可搜索区间</td></tr><tr><td>已占用时段</td><td>09:00–10:00 有会议，其余候选时间在基准查询时空闲</td><td>最早可选上午时段为 10:00–10:30</td></tr><tr><td>授权</td><td>已允许读教学日历；每次创建须确认具体候选</td><td>读取授权不等于写入授权</td></tr><tr><td>选时策略</td><td>先满足明确约束，再用长期偏好，最后取最早空闲时段</td><td>这是应用策略，不是模型自然保证的规则</td></tr></tbody></table></div><div class="callout">
+<p>所有日历、调用结果和事件 ID 都是<strong>纸面教学设定</strong>，没有执行真实日历操作。该场景用于分析通用 Agent 的决策、授权与反馈过程，不声称已经调用真实服务。</p></div>
 <p>本章的学习成果是能画出一次最小闭环：谁选择下一步，谁真正执行，结果怎样进入下一次判断，用户确认在什么位置，以及循环怎样停止。工具接入、完整权限系统和崩溃恢复分别在第 04、10、09 章深入。</p></section>
 <section id="loop">
 <h2><span class="num">第 03 章 / 02</span>最小闭环：决策、行动、观察、再决策</h2>
@@ -52,7 +56,7 @@
 <section id="walkthrough">
 <h2><span class="num">第 03 章 / 06</span>完整案例 C：从请求到日历结果</h2>
 <figure><div class="fig-title">图 5 · 同一任务跨越两轮对话</div><div class="timeline"><div class="event"><b>0 · 接受目标并固定约束</b>
-<p>任务 T-C：明天、半小时、尽量上午、创建前确认。读取已提供的偏好快照；还没有创建事件。</p></div><div class="event"><b>1 · 提出并执行查询 Q1</b>
+<p>任务 T-C：明天、半小时、尽量上午、创建前确认。使用本节列出的默认偏好：上午、30 分钟；还没有创建事件。</p></div><div class="event"><b>1 · 提出并执行查询 Q1</b>
 <p>读权限已具备，查询 2026-11-18 的教学日历；观察到 09:00–10:00 有会议。</p></div><div class="event"><b>2 · 基于观察形成候选 V1</b>
 <p>规则选最早可用上午时段 10:00–10:30，时区 Asia/Shanghai，标题“学习 Agent”。这是建议，不是已创建。</p></div><div class="event"><b>3 · 进入等待确认</b>
 <p>向用户展示日期、起止时间、时区、日历及动作。保存 V1，结束当前轮次；任务仍未完成。</p></div><div class="event"><b>4 · 用户确认 V1</b>
@@ -65,7 +69,7 @@
 <p>查询成功，只证明拿到了日程；生成候选，只证明有一个方案；用户确认，只证明同意该方案。三者都不等于日历已创建。</p></div><div class="card">
 <h3>最终成功</h3>
 <p>外部结果和用户约束一致，且写入经过正确授权。若事件真的创建但日期错了，是动作有结果、任务失败，需要明确报告和修正。</p></div></div>
-<p>任务 B 通常可以在信息充分时直接回答，不必强行调用工具；任务 A 若要长期保存则需要写入与后续读取。三个案例说明：是否进入行动循环，由目标和信息状态决定，不由用户界面是否叫“Agent”决定。</p></section>
+<p>对比两个独立需求：“根据已提供的资料解释概念”可以在信息充分时直接回答；“记住以后每次学习 30 分钟”需要真实保存，并在之后的会话中读取。不同案例说明：是否进入行动循环，由目标和信息状态决定，不由用户界面是否叫“Agent”决定。</p></section>
 <section id="approval">
 <h2><span class="num">第 03 章 / 07</span>确认绑定具体候选，而不是一句泛泛的“可以”</h2>
 <figure><div class="fig-title">图 6 · 候选版本与授权边界</div><div class="flow"><div class="node"><b>候选 V1</b><span>10:00–10:30 / 指定日历</span></div><div class="arrow" aria-hidden="true">→</div><div class="node"><b>用户确认 V1</b><span>同意这个具体动作</span></div><div class="arrow" aria-hidden="true">→</div><div class="node"><b>执行前检查</b><span>候选仍为 V1，约束仍满足</span></div><div class="arrow" aria-hidden="true">→</div><div class="node"><b>执行 V1</b><span>结果关联同一候选</span></div></div><figcaption>如果候选内容改变，确认关系需要重新判断。不能把旧确认自动转移到不同时间、目标日历或更大权限的操作。</figcaption></figure>
@@ -130,5 +134,5 @@
 <section id="sources">
 <h2><span class="num">第 03 章 / 12</span>依据与继续阅读</h2>
 <p class="small">核对日期：2026-11-18。以下资料用于对应的通用机制；图、数字和生产情境另标为教学示意，不声称复现论文或描述 Muse 内部实现。原始资料见以下链接，建议先完成本章，再按需延伸阅读。</p><ol class="sources"><li><a href="https://arxiv.org/abs/2210.03629" target="_blank" rel="noopener noreferrer">ReAct: Synergizing Reasoning and Acting in Language Models</a> — 2022 论文，页面为 v3；用于行动与环境反馈的研究背景，不要求披露隐藏思维。</li><li><a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview" target="_blank" rel="noopener noreferrer">Claude · Tool use overview</a> — 区分客户端和服务端工具；协议字段随产品不同，不能据此推断 Muse 内部实现。</li><li><a href="https://www.anthropic.com/research/building-effective-agents" target="_blank" rel="noopener noreferrer">Anthropic · Building effective agents</a> — 2024 文章的流程与动态决策分类；本文确认、预算和状态图是独立教学设计。</li><li><a href="https://www.rfc-editor.org/rfc/rfc9110.html#section-9.2" target="_blank" rel="noopener noreferrer">RFC 9110 · HTTP Semantics</a> — 幂等和重试的协议背景；外部业务效果仍需具体服务契约。</li></ol>
-<p>案例日期、日程与变体遵循 <a href="casebook.html">固定案例册</a>。本章没有声称工具循环实践已经实现。</p></section>
+<p>案例日期、日程与变体遵循 <a href="casebook.html">固定案例册</a>。案例用于机制推演，不是一次真实日历运行报告。</p></section>
 <nav class="endnav" aria-label="章节翻页"><a href="chapter-02.html">← 第 02 章</a><a href="chapter-04.html">第 04 章 →</a></nav><footer>Personal Agent 学习与面试培训。按章节逐步学习，用案例和 FAQ 检查自己的解释；教学示例不代表真实生产经历。</footer></main></div></body></html>

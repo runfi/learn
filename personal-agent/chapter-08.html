@@ -5,7 +5,11 @@
 @media(max-width:1000px){.layout{grid-template-columns:185px minmax(0,1fr);gap:26px;padding:0 24px}.side nav a{font-size:13px}figure{padding:17px}.flow{flex-direction:column}.arrow{transform:rotate(90deg);font-size:18px;line-height:1}.node{flex:auto}}
 @media(max-width:700px){.layout{display:block;padding:0 20px}.side{position:static;height:auto;padding:22px 0 16px;border-bottom:1px solid var(--line)}.side h2{margin:5px 0 14px}.side nav{grid-template-columns:repeat(2,minmax(0,1fr));gap:3px}.side nav a{padding:5px 7px;background:var(--soft)}.side p{display:none}main{padding-top:30px}h1{font-size:34px}h2{font-size:24px}body{font-size:16px}.cards{grid-template-columns:1fr}.lede{font-size:18px}section{padding-top:35px}.callout{padding:16px}.endnav{flex-direction:column}th,td{padding:10px}.barrow{grid-template-columns:58px 1fr 54px}.route{gap:10px;grid-template-columns:42px 1fr}}
 @media print{body{background:white;font-size:11pt}.layout{display:block;max-width:none;padding:0}.side,.skip,.endnav{display:none}main{padding:0}h1{font-size:28pt}h2{font-size:20pt}figure,.card,.qa{break-inside:avoid}section{padding-top:24px}svg{min-width:0}.svg-wrap,.table-wrap{overflow:visible}a{color:inherit}header{border-bottom:1px solid #aaa}}
-</style></head>
+</style>
+<link rel="stylesheet" href="assets/reading-aids.css">
+<script src="assets/reading-terms.js" defer></script>
+<script src="assets/reading-aids.js" defer></script>
+</head>
 <body><a class="skip" href="#main">跳到正文</a><div class="layout">
 <aside class="side"><div class="brand">PERSONAL AGENT / FIELD GUIDE</div>
 <h2><a href="index.html">个人 Agent 学习手册</a></h2>
@@ -16,8 +20,8 @@
 <p class="meta">更新于 2026-11-18 · 图中案例为教学设定 · 阅读不自动代表掌握</p></header>
 <section id="scope">
 <h2><span class="num">第 08 章 / 01</span>本章位置与问题地图</h2><div class="callout warn">
-<p><strong>章节提纲 · 待深入撰写。</strong>本轮完整重写第 01—03 章；本章将既有大纲整理为章节提纲。下文中的实验、实现和验收均是后续设计，不代表已经执行。</p></div>
-<figure><div class="fig-title">本章的问题地图</div><div class="stack"><div class="layer"><b>08.1 记什么</b><small>显式要求、稳定偏好、已验证事实、可复用经验；一次性状态、猜测和敏感内容的处理策略</small></div><div class="layer"><b>08.2 谁自动写</b><small>模型提候选、规则/程序校验；用户请求、turn 结束、事件、压缩前、定时扫描等触发选择</small></div><div class="layer"><b>08.3 怎么更新</b><small>原始记录、文件/表正本、claims、画像、索引、缓存；去重、冲突、版本、有效时间</small></div><div class="layer"><b>08.4 读什么</b><small>任务需要、身份/范围/权限、有效期、来源可信度；精确读与检索、重排、预算、注入</small></div><div class="layer"><b>08.5 Dreaming</b><small>历史回放、合并重复、发现矛盾、提炼经验、重组目录；与普通摘要/在线写入的差别</small></div><div class="layer"><b>08.6 后台协调</b><small>扫描窗口、水位、输入快照、候选变更、校验、条件提交、索引刷新；中止/重试/预算</small></div><div class="layer"><b>08.7 遗忘与控制</b><small>过期、衰减、归档、停用、删除、墓碑、备份边界、后台再生成阻断</small></div></div><figcaption>按前置依赖逐节推进。这里保留已确认的课程范围；下面是章节提纲，尚未改写成与第 01—03 章同深度的连续教材。</figcaption></figure></section>
+<p><strong>章节提纲 · 待深入撰写。</strong>本章当前为提纲，完整正文尚待编写。下文中的实验、实现和验收均是后续设计，不代表已经执行。</p></div>
+<figure><div class="fig-title">本章的问题地图</div><div class="stack"><div class="layer"><b>08.1 记什么</b><small>显式要求、稳定偏好、已验证事实、可复用经验；一次性状态、猜测和敏感内容的处理策略</small></div><div class="layer"><b>08.2 谁自动写</b><small>模型提候选、规则/程序校验；用户请求、turn 结束、事件、压缩前、定时扫描等触发选择</small></div><div class="layer"><b>08.3 怎么更新</b><small>原始记录、文件/表正本、claims、画像、索引、缓存；去重、冲突、版本、有效时间</small></div><div class="layer"><b>08.4 读什么</b><small>任务需要、身份/范围/权限、有效期、来源可信度；精确读与检索、重排、预算、注入</small></div><div class="layer"><b>08.5 Dreaming</b><small>历史回放、合并重复、发现矛盾、提炼经验、重组目录；与普通摘要/在线写入的差别</small></div><div class="layer"><b>08.6 后台协调</b><small>扫描窗口、水位、输入快照、候选变更、校验、条件提交、索引刷新；中止/重试/预算</small></div><div class="layer"><b>08.7 遗忘与控制</b><small>过期、衰减、归档、停用、删除、墓碑、备份边界、后台再生成阻断</small></div></div><figcaption>按前置依赖逐节推进。下文列出学习范围与核心问题；完整论述将在正文编写时补齐。</figcaption></figure></section>
 <section id="outline">
 <h2><span class="num">第 08 章 / 02</span>学习范围、关键机制与复习问题</h2>
 <p><strong>前置：</strong>06 的数据正本、07 的检索、05 的加载。<strong>目标：</strong>跟踪一条信息从出现到写入、召回、纠错、整理和遗忘。</p>

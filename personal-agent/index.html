@@ -5,11 +5,15 @@
 @media(max-width:1000px){.layout{grid-template-columns:185px minmax(0,1fr);gap:26px;padding:0 24px}.side nav a{font-size:13px}figure{padding:17px}.flow{flex-direction:column}.arrow{transform:rotate(90deg);font-size:18px;line-height:1}.node{flex:auto}}
 @media(max-width:700px){.layout{display:block;padding:0 20px}.side{position:static;height:auto;padding:22px 0 16px;border-bottom:1px solid var(--line)}.side h2{margin:5px 0 14px}.side nav{grid-template-columns:repeat(2,minmax(0,1fr));gap:3px}.side nav a{padding:5px 7px;background:var(--soft)}.side p{display:none}main{padding-top:30px}h1{font-size:34px}h2{font-size:24px}body{font-size:16px}.cards{grid-template-columns:1fr}.lede{font-size:18px}section{padding-top:35px}.callout{padding:16px}.endnav{flex-direction:column}th,td{padding:10px}.barrow{grid-template-columns:58px 1fr 54px}.route{gap:10px;grid-template-columns:42px 1fr}}
 @media print{body{background:white;font-size:11pt}.layout{display:block;max-width:none;padding:0}.side,.skip,.endnav{display:none}main{padding:0}h1{font-size:28pt}h2{font-size:20pt}figure,.card,.qa{break-inside:avoid}section{padding-top:24px}svg{min-width:0}.svg-wrap,.table-wrap{overflow:visible}a{color:inherit}header{border-bottom:1px solid #aaa}}
-</style></head>
+</style>
+<link rel="stylesheet" href="assets/reading-aids.css">
+<script src="assets/reading-terms.js" defer></script>
+<script src="assets/reading-aids.js" defer></script>
+</head>
 <body><a class="skip" href="#main">跳到正文</a><div class="layout">
 <aside class="side"><div class="brand">PERSONAL AGENT / FIELD GUIDE</div>
 <h2><a href="index.html">个人 Agent 学习手册</a></h2>
-<nav aria-label="本章目录"><a href="#reading">按顺序阅读，一次建立一层理解</a><a href="#chapters">14 章主线与 3 个必学专题</a><a href="#cases">固定案例：让知识接到同一条任务链</a><a href="#progress">教材、实现、验证、理解分别记录</a></nav>
+<nav aria-label="本章目录"><a href="#reading">按顺序阅读，一次建立一层理解</a><a href="#chapters">14 章主线与 3 个必学专题</a><a href="#cases">固定案例：让知识接到同一条任务链</a><a href="#progress">课程状态与学习检查</a></nav>
 <p>Personal Agent · 图解教程<br>概念 → 图解 → 案例 → 判断 → FAQ<br>按章节阅读 · 用 FAQ 复习</p></aside><main id="main">
 <header><div class="eyebrow">学习文档 · 14 章主线 + 3 个必学专题</div><h1>从模型到完整的 Personal Agent</h1>
 <p class="lede">一套以图解建立结构、以案例连接机制、以问题检验理解的学习手册。先学理论，逐章深入。</p>
@@ -18,7 +22,7 @@
 <h2><span class="num">学习文档 / 01</span>按顺序阅读，一次建立一层理解</h2>
 <figure><div class="fig-title">完整学习路线</div><div class="flow"><div class="node"><b>01—04 + T</b><span>模型、对话、闭环、工具</span></div><div class="arrow" aria-hidden="true">→</div><div class="node"><b>05—08 + C / M</b><span>上下文、检索、记忆</span></div><div class="arrow" aria-hidden="true">→</div><div class="node"><b>09—11</b><span>恢复、安全、主动服务</span></div><div class="arrow" aria-hidden="true">→</div><div class="node"><b>12—14</b><span>评估、协作、产品整合</span></div></div><figcaption>箭头表示前置依赖，不要求一次读完整套课程。每章用概念、图解、案例、失败分析和 FAQ 建立理解。</figcaption></figure>
 <p>从课程目录进入各章，按“概念 → 图解 → 案例 → 总结与 FAQ”的顺序阅读。需要追溯依据时，可查看章末参考资料。</p><div class="callout">
-<p>前 3 章已按纯文档方式深入重写；第 04—14 章和 T/C/M 为现有路线的章节提纲，尚未完成同深度正文。阅读页没有实验按钮、弹窗、代码伴读或自动掌握评分。</p></div></section>
+<p>前 3 章已按纯文档方式深入重写；第 04—14 章和 T/C/M 为现有路线的章节提纲，尚未完成同深度正文。正文按顺序展开；术语解释与引用注释可就地查看，不需要离开当前段落。</p></div></section>
 <section id="chapters">
 <h2><span class="num">学习文档 / 02</span>14 章主线与 3 个必学专题</h2>
 <article class="route"><div class="rnum">01</div><div>
@@ -85,7 +89,7 @@
 <p>从自然语言追到查询、候选、具体确认、创建与结果核验。</p></div></div>
 <p><a href="casebook.html">查看完整案例与受控变体 →</a></p></section>
 <section id="progress">
-<h2><span class="num">学习文档 / 04</span>教材、实现、验证、理解分别记录</h2><div class="table-wrap">
-<table><thead><tr><th scope="col">对象</th><th scope="col">当前状态</th></tr></thead><tbody><tr><td>教材</td><td>01—03 已重写；04—14 及 T/C/M 已提供提纲 HTML，完整正文待写。</td></tr><tr><td>实践代码</td><td>保留 agent_code 原项目和各章独立代码；本次未新增 Agent 工具循环，不作为当前阅读前置。</td></tr><tr><td>文档验证</td><td>章节链接、内容完整性和页面显示单独检查；不把文档检查等同于业务功能测试。</td></tr><tr><td>用户理解</td><td>Top-k / Top-p 已表示理解，Temperature 已讨论；01 整章及 02/03 的理解均待用户确认。</td></tr></tbody></table></div>
+<h2><span class="num">学习文档 / 04</span>课程状态与学习检查</h2><div class="table-wrap">
+<table><thead><tr><th scope="col">对象</th><th scope="col">当前状态</th></tr></thead><tbody><tr><td>教材</td><td>01—03 已重写；04—14 及 T/C/M 已提供提纲 HTML，完整正文待写。</td></tr><tr><td>实践安排</td><td>当前以概念和机制理解为主，实践内容按章节前置关系逐步展开。</td></tr><tr><td>文档验证</td><td>章节链接、内容完整性和页面显示单独检查；不把文档检查等同于业务功能测试。</td></tr><tr><td>学习检查</td><td>每章末尾提供自述题与完整参考答案。能够解释机制、追踪案例并判断失败原因，才说明形成了可迁移的理解。</td></tr></tbody></table></div>
 <p>先理解当前章节，再讨论疑问。需要复习时看章末完整 FAQ 答案；模拟生产情境明确标注，不把教学设计说成真实工作经历。</p></section>
 <nav class="endnav" aria-label="章节翻页"><a href="index.html">← 课程目录</a></nav><footer>Personal Agent 学习与面试培训。按章节逐步学习，用案例和 FAQ 检查自己的解释；教学示例不代表真实生产经历。</footer></main></div></body></html>

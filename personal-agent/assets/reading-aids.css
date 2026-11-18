@@ -1,0 +1,20 @@
+.term-tip{display:inline;padding:0 1px;border:0;border-bottom:1px dashed #1d5fad;border-radius:2px;background:transparent;color:inherit;font:inherit;line-height:inherit;cursor:pointer;text-decoration:none;text-underline-offset:3px}
+.term-tip:hover,.term-tip[aria-expanded="true"]{background:#eaf1fa;color:#174e8f}
+.reference-note{margin-left:3px;font-size:12px;line-height:0;vertical-align:super;white-space:nowrap}
+.reference-tip{min-width:24px;min-height:24px;padding:1px 3px;border:1px solid #d8e3ef;border-radius:4px;background:#f4f8fd;color:#1d5fad;font:600 11px/1.4 system-ui,"Microsoft YaHei",sans-serif;cursor:pointer;vertical-align:baseline}
+.term-tip:focus-visible,.reference-tip:focus-visible,.reading-popover button:focus-visible,.reading-popover a:focus-visible{outline:2px solid #1d5fad;outline-offset:3px}
+.reading-popover[hidden]{display:none!important}
+.reading-popover{position:fixed;z-index:1000;width:420px;max-width:calc(100vw - 24px);max-height:calc(100vh - 24px);overflow:auto;overscroll-behavior:contain;margin:0;padding:0;border:1px solid #cdd9e6;border-radius:12px;background:#fff;color:#171a20;box-shadow:0 12px 42px #17335024;font:15px/1.85 system-ui,"Microsoft YaHei",sans-serif;text-align:left;box-sizing:border-box}
+.reading-popover .reading-popover__head{position:sticky;top:0;z-index:1;display:flex;align-items:flex-start;gap:12px;padding:14px 16px 12px;background:#fff;border-bottom:1px solid #e2e5ea}
+.reading-popover__heading{flex:1;min-width:0}
+.reading-popover .reading-popover__kind{margin:0 0 4px;color:#1d5fad;font-size:11px;font-weight:700;letter-spacing:.06em}
+.reading-popover .reading-popover__title{margin:0;font-size:18px;line-height:1.6;color:#171a20;overflow-wrap:anywhere}
+.reading-popover .reading-popover__close{flex:none;width:36px;height:36px;border:0;border-radius:6px;padding:0;background:#f0f3f8;color:#4a5160;font:24px/1 system-ui;cursor:pointer}
+.reading-popover__body{padding:4px 16px 16px}
+.reading-popover p{margin:12px 0;font-size:15px;line-height:1.85}
+.reading-popover .reading-popover__example{padding:10px 12px;background:#eaf1fa;border-radius:7px}
+.reading-popover .reading-popover__boundary{color:#4a5160;font-size:13px}
+.reading-popover .reading-popover__link{display:block;border-top:1px solid #e2e5ea;margin-top:14px;padding-top:12px;color:#1d5fad;font-size:13px;line-height:1.8;overflow-wrap:anywhere}
+.reading-guide{color:#4a5160;font-size:13px;line-height:1.8;margin-top:16px}
+@media(max-width:700px){.reading-popover{width:calc(100vw - 24px)}.reading-popover .reading-popover__close{width:44px;height:44px}.reference-tip{min-width:28px;min-height:28px}}
+@media print{.reading-popover,.reading-guide{display:none!important}.term-tip{border:0}.reference-tip{border:0;background:none;color:inherit}}

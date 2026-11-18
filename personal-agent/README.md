@@ -29,3 +29,11 @@
 - [topic-c.html](topic-c.html)：章节 / 专题提纲。
 - [topic-m.html](topic-m.html)：章节 / 专题提纲。
 - [topic-t.html](topic-t.html)：章节 / 专题提纲。
+
+## 术语与引用说明
+
+正文虚线标记的术语可点击查看定义、例子和易混边界；引用上标编号与章末资料列表对应，点击查看来源及用途，原文在新标签页打开。支持关闭按钮、点击外部、Esc 与键盘操作。
+
+发布需同时保留 `assets/reading-terms.js`、`assets/reading-aids.js`、`assets/reading-aids.css`。它们仅辅助阅读，不包含后端调用或阅读跟踪。正文在脚本未运行时仍完整可读。
+
+教材面向所有读者，以原始资料为依据；示例输入和假设在各章明确列出，不依赖私人聊天记录或个人学习进度。
